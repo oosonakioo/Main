@@ -1,0 +1,7426 @@
+[
+ {
+   "id": 1001,
+   "menu": "district",
+   "sort": 1,
+   "parent_categories_id": 10,
+   "title_th": "พระนคร",
+   "title_en": "Phra Nakhon"
+ },
+ {
+   "id": 1002,
+   "menu": "district",
+   "sort": 2,
+   "parent_categories_id": 10,
+   "title_th": "ดุสิต",
+   "title_en": "Dusit"
+ },
+ {
+   "id": 1003,
+   "menu": "district",
+   "sort": 3,
+   "parent_categories_id": 10,
+   "title_th": "หนองจอก",
+   "title_en": "Nong Chok"
+ },
+ {
+   "id": 1004,
+   "menu": "district",
+   "sort": 4,
+   "parent_categories_id": 10,
+   "title_th": "บางรัก",
+   "title_en": "Bang Rak"
+ },
+ {
+   "id": 1005,
+   "menu": "district",
+   "sort": 5,
+   "parent_categories_id": 10,
+   "title_th": "บางเขน",
+   "title_en": "Bang Khen"
+ },
+ {
+   "id": 1006,
+   "menu": "district",
+   "sort": 6,
+   "parent_categories_id": 10,
+   "title_th": "บางกะปิ",
+   "title_en": "Bang Kapi"
+ },
+ {
+   "id": 1007,
+   "menu": "district",
+   "sort": 7,
+   "parent_categories_id": 10,
+   "title_th": "ปทุมวัน",
+   "title_en": "Pathum Wan"
+ },
+ {
+   "id": 1008,
+   "menu": "district",
+   "sort": 8,
+   "parent_categories_id": 10,
+   "title_th": "ป้อมปราบศัตรูพ่าย",
+   "title_en": "Pom Prap Sattru Phai"
+ },
+ {
+   "id": 1009,
+   "menu": "district",
+   "sort": 9,
+   "parent_categories_id": 10,
+   "title_th": "พระโขนง",
+   "title_en": "Phra Khanong"
+ },
+ {
+   "id": 1010,
+   "menu": "district",
+   "sort": 10,
+   "parent_categories_id": 10,
+   "title_th": "มีนบุรี",
+   "title_en": "Min Buri"
+ },
+ {
+   "id": 1011,
+   "menu": "district",
+   "sort": 11,
+   "parent_categories_id": 10,
+   "title_th": "ลาดกระบัง",
+   "title_en": "Lat Krabang"
+ },
+ {
+   "id": 1012,
+   "menu": "district",
+   "sort": 12,
+   "parent_categories_id": 10,
+   "title_th": "ยานนาวา",
+   "title_en": "Yan Nawa"
+ },
+ {
+   "id": 1013,
+   "menu": "district",
+   "sort": 13,
+   "parent_categories_id": 10,
+   "title_th": "สัมพันธวงศ์",
+   "title_en": "Samphanthawong"
+ },
+ {
+   "id": 1014,
+   "menu": "district",
+   "sort": 14,
+   "parent_categories_id": 10,
+   "title_th": "พญาไท",
+   "title_en": "Phaya Thai"
+ },
+ {
+   "id": 1015,
+   "menu": "district",
+   "sort": 15,
+   "parent_categories_id": 10,
+   "title_th": "ธนบุรี",
+   "title_en": "Thon Buri"
+ },
+ {
+   "id": 1016,
+   "menu": "district",
+   "sort": 16,
+   "parent_categories_id": 10,
+   "title_th": "บางกอกใหญ่",
+   "title_en": "Bangkok Yai"
+ },
+ {
+   "id": 1017,
+   "menu": "district",
+   "sort": 17,
+   "parent_categories_id": 10,
+   "title_th": "ห้วยขวาง",
+   "title_en": "Huai Khwang"
+ },
+ {
+   "id": 1018,
+   "menu": "district",
+   "sort": 18,
+   "parent_categories_id": 10,
+   "title_th": "คลองสาน",
+   "title_en": "Khlong San"
+ },
+ {
+   "id": 1019,
+   "menu": "district",
+   "sort": 19,
+   "parent_categories_id": 10,
+   "title_th": "ตลิ่งชัน",
+   "title_en": "Taling Chan"
+ },
+ {
+   "id": 1020,
+   "menu": "district",
+   "sort": 20,
+   "parent_categories_id": 10,
+   "title_th": "บางกอกน้อย",
+   "title_en": "Bangkok Noi"
+ },
+ {
+   "id": 1021,
+   "menu": "district",
+   "sort": 21,
+   "parent_categories_id": 10,
+   "title_th": "บางขุนเทียน",
+   "title_en": "Bang Khun Thian"
+ },
+ {
+   "id": 1022,
+   "menu": "district",
+   "sort": 22,
+   "parent_categories_id": 10,
+   "title_th": "ภาษีเจริญ",
+   "title_en": "Phasi Charoen"
+ },
+ {
+   "id": 1023,
+   "menu": "district",
+   "sort": 23,
+   "parent_categories_id": 10,
+   "title_th": "หนองแขม",
+   "title_en": "Nong Khaem"
+ },
+ {
+   "id": 1024,
+   "menu": "district",
+   "sort": 24,
+   "parent_categories_id": 10,
+   "title_th": "ราษฎร์บูรณะ",
+   "title_en": "Rat Burana"
+ },
+ {
+   "id": 1025,
+   "menu": "district",
+   "sort": 25,
+   "parent_categories_id": 10,
+   "title_th": "บางพลัด",
+   "title_en": "Bang Phlat"
+ },
+ {
+   "id": 1026,
+   "menu": "district",
+   "sort": 26,
+   "parent_categories_id": 10,
+   "title_th": "ดินแดง",
+   "title_en": "Din Daeng"
+ },
+ {
+   "id": 1027,
+   "menu": "district",
+   "sort": 27,
+   "parent_categories_id": 10,
+   "title_th": "บึงกุ่ม",
+   "title_en": "Bueng Kum"
+ },
+ {
+   "id": 1028,
+   "menu": "district",
+   "sort": 28,
+   "parent_categories_id": 10,
+   "title_th": "สาทร",
+   "title_en": "Sathon"
+ },
+ {
+   "id": 1029,
+   "menu": "district",
+   "sort": 29,
+   "parent_categories_id": 10,
+   "title_th": "บางซื่อ",
+   "title_en": "Bang Sue"
+ },
+ {
+   "id": 1030,
+   "menu": "district",
+   "sort": 30,
+   "parent_categories_id": 10,
+   "title_th": "จตุจักร",
+   "title_en": "Chatuchak"
+ },
+ {
+   "id": 1031,
+   "menu": "district",
+   "sort": 31,
+   "parent_categories_id": 10,
+   "title_th": "บางคอแหลม",
+   "title_en": "Bang Kho Laem"
+ },
+ {
+   "id": 1032,
+   "menu": "district",
+   "sort": 32,
+   "parent_categories_id": 10,
+   "title_th": "ประเวศ",
+   "title_en": "Prawet"
+ },
+ {
+   "id": 1033,
+   "menu": "district",
+   "sort": 33,
+   "parent_categories_id": 10,
+   "title_th": "คลองเตย",
+   "title_en": "Khlong Toei"
+ },
+ {
+   "id": 1034,
+   "menu": "district",
+   "sort": 34,
+   "parent_categories_id": 10,
+   "title_th": "สวนหลวง",
+   "title_en": "Suan Luang"
+ },
+ {
+   "id": 1035,
+   "menu": "district",
+   "sort": 35,
+   "parent_categories_id": 10,
+   "title_th": "จอมทอง",
+   "title_en": "Chom Thong"
+ },
+ {
+   "id": 1036,
+   "menu": "district",
+   "sort": 36,
+   "parent_categories_id": 10,
+   "title_th": "ดอนเมือง",
+   "title_en": "Don Mueang"
+ },
+ {
+   "id": 1037,
+   "menu": "district",
+   "sort": 37,
+   "parent_categories_id": 10,
+   "title_th": "ราชเทวี",
+   "title_en": "Ratchathewi"
+ },
+ {
+   "id": 1038,
+   "menu": "district",
+   "sort": 38,
+   "parent_categories_id": 10,
+   "title_th": "ลาดพร้าว",
+   "title_en": "Lat Phrao"
+ },
+ {
+   "id": 1039,
+   "menu": "district",
+   "sort": 39,
+   "parent_categories_id": 10,
+   "title_th": "วัฒนา",
+   "title_en": "Watthana"
+ },
+ {
+   "id": 1040,
+   "menu": "district",
+   "sort": 40,
+   "parent_categories_id": 10,
+   "title_th": "บางแค",
+   "title_en": "Bang Khae"
+ },
+ {
+   "id": 1041,
+   "menu": "district",
+   "sort": 41,
+   "parent_categories_id": 10,
+   "title_th": "หลักสี่",
+   "title_en": "Lak Si"
+ },
+ {
+   "id": 1042,
+   "menu": "district",
+   "sort": 42,
+   "parent_categories_id": 10,
+   "title_th": "สายไหม",
+   "title_en": "Sai Mai"
+ },
+ {
+   "id": 1043,
+   "menu": "district",
+   "sort": 43,
+   "parent_categories_id": 10,
+   "title_th": "คันนายาว",
+   "title_en": "Khan Na Yao"
+ },
+ {
+   "id": 1044,
+   "menu": "district",
+   "sort": 44,
+   "parent_categories_id": 10,
+   "title_th": "สะพานสูง",
+   "title_en": "Saphan Sung"
+ },
+ {
+   "id": 1045,
+   "menu": "district",
+   "sort": 45,
+   "parent_categories_id": 10,
+   "title_th": "วังทองหลาง",
+   "title_en": "Wang Thonglang"
+ },
+ {
+   "id": 1046,
+   "menu": "district",
+   "sort": 46,
+   "parent_categories_id": 10,
+   "title_th": "คลองสามวา",
+   "title_en": "Khlong Sam Wa"
+ },
+ {
+   "id": 1047,
+   "menu": "district",
+   "sort": 47,
+   "parent_categories_id": 10,
+   "title_th": "บางนา",
+   "title_en": "Bang Na"
+ },
+ {
+   "id": 1048,
+   "menu": "district",
+   "sort": 48,
+   "parent_categories_id": 10,
+   "title_th": "ทวีวัฒนา",
+   "title_en": "Thawi Watthana"
+ },
+ {
+   "id": 1049,
+   "menu": "district",
+   "sort": 49,
+   "parent_categories_id": 10,
+   "title_th": "ทุ่งครุ",
+   "title_en": "Thung Khru"
+ },
+ {
+   "id": 1050,
+   "menu": "district",
+   "sort": 50,
+   "parent_categories_id": 10,
+   "title_th": "บางบอน",
+   "title_en": "Bang Bon"
+ },
+ {
+   "id": 1101,
+   "menu": "district",
+   "sort": 51,
+   "parent_categories_id": 11,
+   "title_th": "เมืองสมุทรปราการ",
+   "title_en": "Mueang Samut Prakan"
+ },
+ {
+   "id": 1102,
+   "menu": "district",
+   "sort": 52,
+   "parent_categories_id": 11,
+   "title_th": "บางบ่อ",
+   "title_en": "Bang Bo"
+ },
+ {
+   "id": 1103,
+   "menu": "district",
+   "sort": 53,
+   "parent_categories_id": 11,
+   "title_th": "บางพลี",
+   "title_en": "Bang Phli"
+ },
+ {
+   "id": 1104,
+   "menu": "district",
+   "sort": 54,
+   "parent_categories_id": 11,
+   "title_th": "พระประแดง",
+   "title_en": "Phra Pradaeng"
+ },
+ {
+   "id": 1105,
+   "menu": "district",
+   "sort": 55,
+   "parent_categories_id": 11,
+   "title_th": "พระสมุทรเจดีย์",
+   "title_en": "Phra Samut Chedi"
+ },
+ {
+   "id": 1106,
+   "menu": "district",
+   "sort": 56,
+   "parent_categories_id": 11,
+   "title_th": "บางเสาธง",
+   "title_en": "Bang Sao Thong"
+ },
+ {
+   "id": 1201,
+   "menu": "district",
+   "sort": 57,
+   "parent_categories_id": 12,
+   "title_th": "เมืองนนทบุรี",
+   "title_en": "Mueang Nonthaburi"
+ },
+ {
+   "id": 1202,
+   "menu": "district",
+   "sort": 58,
+   "parent_categories_id": 12,
+   "title_th": "บางกรวย",
+   "title_en": "Bang Kruai"
+ },
+ {
+   "id": 1203,
+   "menu": "district",
+   "sort": 59,
+   "parent_categories_id": 12,
+   "title_th": "บางใหญ่",
+   "title_en": "Bang Yai"
+ },
+ {
+   "id": 1204,
+   "menu": "district",
+   "sort": 60,
+   "parent_categories_id": 12,
+   "title_th": "บางบัวทอง",
+   "title_en": "Bang Bua Thong"
+ },
+ {
+   "id": 1205,
+   "menu": "district",
+   "sort": 61,
+   "parent_categories_id": 12,
+   "title_th": "ไทรน้อย",
+   "title_en": "Sai Noi"
+ },
+ {
+   "id": 1206,
+   "menu": "district",
+   "sort": 62,
+   "parent_categories_id": 12,
+   "title_th": "ปากเกร็ด",
+   "title_en": "Pak Kret"
+ },
+ {
+   "id": 1301,
+   "menu": "district",
+   "sort": 63,
+   "parent_categories_id": 13,
+   "title_th": "เมืองปทุมธานี",
+   "title_en": "Mueang Pathum Thani"
+ },
+ {
+   "id": 1302,
+   "menu": "district",
+   "sort": 64,
+   "parent_categories_id": 13,
+   "title_th": "คลองหลวง",
+   "title_en": "Khlong Luang"
+ },
+ {
+   "id": 1303,
+   "menu": "district",
+   "sort": 65,
+   "parent_categories_id": 13,
+   "title_th": "ธัญบุรี",
+   "title_en": "Thanyaburi"
+ },
+ {
+   "id": 1304,
+   "menu": "district",
+   "sort": 66,
+   "parent_categories_id": 13,
+   "title_th": "หนองเสือ",
+   "title_en": "Nong Suea"
+ },
+ {
+   "id": 1305,
+   "menu": "district",
+   "sort": 67,
+   "parent_categories_id": 13,
+   "title_th": "ลาดหลุมแก้ว",
+   "title_en": "Lat Lum Kaeo"
+ },
+ {
+   "id": 1306,
+   "menu": "district",
+   "sort": 68,
+   "parent_categories_id": 13,
+   "title_th": "ลำลูกกา",
+   "title_en": "Lam Luk Ka"
+ },
+ {
+   "id": 1307,
+   "menu": "district",
+   "sort": 69,
+   "parent_categories_id": 13,
+   "title_th": "สามโคก",
+   "title_en": "Sam Khok"
+ },
+ {
+   "id": 1401,
+   "menu": "district",
+   "sort": 70,
+   "parent_categories_id": 14,
+   "title_th": "พระนครศรีฯ",
+   "title_en": "Phra Nakhon Si Ayutthaya"
+ },
+ {
+   "id": 1402,
+   "menu": "district",
+   "sort": 71,
+   "parent_categories_id": 14,
+   "title_th": "ท่าเรือ",
+   "title_en": "Tha Ruea"
+ },
+ {
+   "id": 1403,
+   "menu": "district",
+   "sort": 72,
+   "parent_categories_id": 14,
+   "title_th": "นครหลวง",
+   "title_en": "Nakhon Luang"
+ },
+ {
+   "id": 1404,
+   "menu": "district",
+   "sort": 73,
+   "parent_categories_id": 14,
+   "title_th": "บางไทร",
+   "title_en": "Bang Sai (Bang Srai)"
+ },
+ {
+   "id": 1405,
+   "menu": "district",
+   "sort": 74,
+   "parent_categories_id": 14,
+   "title_th": "บางบาล",
+   "title_en": "Bang Ban"
+ },
+ {
+   "id": 1406,
+   "menu": "district",
+   "sort": 75,
+   "parent_categories_id": 14,
+   "title_th": "บางปะอิน",
+   "title_en": "Bang Pa-in"
+ },
+ {
+   "id": 1407,
+   "menu": "district",
+   "sort": 76,
+   "parent_categories_id": 14,
+   "title_th": "บางปะหัน",
+   "title_en": "Bang Pahan"
+ },
+ {
+   "id": 1408,
+   "menu": "district",
+   "sort": 77,
+   "parent_categories_id": 14,
+   "title_th": "ผักไห่",
+   "title_en": "Phak Hai"
+ },
+ {
+   "id": 1409,
+   "menu": "district",
+   "sort": 78,
+   "parent_categories_id": 14,
+   "title_th": "ภาชี",
+   "title_en": "Phachi"
+ },
+ {
+   "id": 1410,
+   "menu": "district",
+   "sort": 79,
+   "parent_categories_id": 14,
+   "title_th": "ลาดบัวหลวง",
+   "title_en": "Lat Bua Luang"
+ },
+ {
+   "id": 1411,
+   "menu": "district",
+   "sort": 80,
+   "parent_categories_id": 14,
+   "title_th": "วังน้อย",
+   "title_en": "Wang Noi"
+ },
+ {
+   "id": 1412,
+   "menu": "district",
+   "sort": 81,
+   "parent_categories_id": 14,
+   "title_th": "เสนา",
+   "title_en": "Sena"
+ },
+ {
+   "id": 1413,
+   "menu": "district",
+   "sort": 82,
+   "parent_categories_id": 14,
+   "title_th": "บางซ้าย",
+   "title_en": "Bang Sai (Bang Saai)"
+ },
+ {
+   "id": 1414,
+   "menu": "district",
+   "sort": 83,
+   "parent_categories_id": 14,
+   "title_th": "อุทัย",
+   "title_en": "Uthai"
+ },
+ {
+   "id": 1415,
+   "menu": "district",
+   "sort": 84,
+   "parent_categories_id": 14,
+   "title_th": "มหาราช",
+   "title_en": "Maha Rat"
+ },
+ {
+   "id": 1416,
+   "menu": "district",
+   "sort": 85,
+   "parent_categories_id": 14,
+   "title_th": "บ้านแพรก",
+   "title_en": "Ban Phraek"
+ },
+ {
+   "id": 1501,
+   "menu": "district",
+   "sort": 86,
+   "parent_categories_id": 15,
+   "title_th": "เมืองอ่างทอง",
+   "title_en": "Mueang Ang Thong"
+ },
+ {
+   "id": 1502,
+   "menu": "district",
+   "sort": 87,
+   "parent_categories_id": 15,
+   "title_th": "ไชโย",
+   "title_en": "Chaiyo"
+ },
+ {
+   "id": 1503,
+   "menu": "district",
+   "sort": 88,
+   "parent_categories_id": 15,
+   "title_th": "ป่าโมก",
+   "title_en": "Pa Mok"
+ },
+ {
+   "id": 1504,
+   "menu": "district",
+   "sort": 89,
+   "parent_categories_id": 15,
+   "title_th": "โพธิ์ทอง",
+   "title_en": "Pho Thong"
+ },
+ {
+   "id": 1505,
+   "menu": "district",
+   "sort": 90,
+   "parent_categories_id": 15,
+   "title_th": "แสวงหา",
+   "title_en": "Sawaeng Ha"
+ },
+ {
+   "id": 1506,
+   "menu": "district",
+   "sort": 91,
+   "parent_categories_id": 15,
+   "title_th": "วิเศษชัยชาญ",
+   "title_en": "Wiset Chai Chan"
+ },
+ {
+   "id": 1507,
+   "menu": "district",
+   "sort": 92,
+   "parent_categories_id": 15,
+   "title_th": "สามโก้",
+   "title_en": "Samko"
+ },
+ {
+   "id": 1601,
+   "menu": "district",
+   "sort": 93,
+   "parent_categories_id": 16,
+   "title_th": "เมืองลพบุรี",
+   "title_en": "Mueang Lop Buri"
+ },
+ {
+   "id": 1602,
+   "menu": "district",
+   "sort": 94,
+   "parent_categories_id": 16,
+   "title_th": "พัฒนานิคม",
+   "title_en": "Phatthana Nikhom"
+ },
+ {
+   "id": 1603,
+   "menu": "district",
+   "sort": 95,
+   "parent_categories_id": 16,
+   "title_th": "โคกสำโรง",
+   "title_en": "Khok Samrong"
+ },
+ {
+   "id": 1604,
+   "menu": "district",
+   "sort": 96,
+   "parent_categories_id": 16,
+   "title_th": "ชัยบาดาล",
+   "title_en": "Chai Badan"
+ },
+ {
+   "id": 1605,
+   "menu": "district",
+   "sort": 97,
+   "parent_categories_id": 16,
+   "title_th": "ท่าวุ้ง",
+   "title_en": "Tha Wung"
+ },
+ {
+   "id": 1606,
+   "menu": "district",
+   "sort": 98,
+   "parent_categories_id": 16,
+   "title_th": "บ้านหมี่",
+   "title_en": "Ban Mi"
+ },
+ {
+   "id": 1607,
+   "menu": "district",
+   "sort": 99,
+   "parent_categories_id": 16,
+   "title_th": "ท่าหลวง",
+   "title_en": "Tha Luang"
+ },
+ {
+   "id": 1608,
+   "menu": "district",
+   "sort": 100,
+   "parent_categories_id": 16,
+   "title_th": "สระโบสถ์",
+   "title_en": "Sa Bot"
+ },
+ {
+   "id": 1609,
+   "menu": "district",
+   "sort": 101,
+   "parent_categories_id": 16,
+   "title_th": "โคกเจริญ",
+   "title_en": "Khok Charoen"
+ },
+ {
+   "id": 1610,
+   "menu": "district",
+   "sort": 102,
+   "parent_categories_id": 16,
+   "title_th": "ลำสนธิ",
+   "title_en": "Lam Sonthi"
+ },
+ {
+   "id": 1611,
+   "menu": "district",
+   "sort": 103,
+   "parent_categories_id": 16,
+   "title_th": "หนองม่วง",
+   "title_en": "Nong Muang"
+ },
+ {
+   "id": 1701,
+   "menu": "district",
+   "sort": 104,
+   "parent_categories_id": 17,
+   "title_th": "เมืองสิงห์บุรี",
+   "title_en": "Mueang Sing Buri"
+ },
+ {
+   "id": 1702,
+   "menu": "district",
+   "sort": 105,
+   "parent_categories_id": 17,
+   "title_th": "บางระจัน",
+   "title_en": "Bang Rachan"
+ },
+ {
+   "id": 1703,
+   "menu": "district",
+   "sort": 106,
+   "parent_categories_id": 17,
+   "title_th": "ค่ายบางระจัน",
+   "title_en": "Khai Bang Rachan"
+ },
+ {
+   "id": 1704,
+   "menu": "district",
+   "sort": 107,
+   "parent_categories_id": 17,
+   "title_th": "พรหมบุรี",
+   "title_en": "Phrom Buri"
+ },
+ {
+   "id": 1705,
+   "menu": "district",
+   "sort": 108,
+   "parent_categories_id": 17,
+   "title_th": "ท่าช้าง",
+   "title_en": "Tha Chang"
+ },
+ {
+   "id": 1706,
+   "menu": "district",
+   "sort": 109,
+   "parent_categories_id": 17,
+   "title_th": "อินทร์บุรี",
+   "title_en": "In Buri"
+ },
+ {
+   "id": 1801,
+   "menu": "district",
+   "sort": 110,
+   "parent_categories_id": 18,
+   "title_th": "เมืองชัยนาท",
+   "title_en": "Mueang Chai Nat"
+ },
+ {
+   "id": 1802,
+   "menu": "district",
+   "sort": 111,
+   "parent_categories_id": 18,
+   "title_th": "มโนรมย์",
+   "title_en": "Manorom"
+ },
+ {
+   "id": 1803,
+   "menu": "district",
+   "sort": 112,
+   "parent_categories_id": 18,
+   "title_th": "วัดสิงห์",
+   "title_en": "Wat Sing"
+ },
+ {
+   "id": 1804,
+   "menu": "district",
+   "sort": 113,
+   "parent_categories_id": 18,
+   "title_th": "สรรพยา",
+   "title_en": "Sapphaya"
+ },
+ {
+   "id": 1805,
+   "menu": "district",
+   "sort": 114,
+   "parent_categories_id": 18,
+   "title_th": "สรรคบุรี",
+   "title_en": "Sankhaburi"
+ },
+ {
+   "id": 1806,
+   "menu": "district",
+   "sort": 115,
+   "parent_categories_id": 18,
+   "title_th": "หันคา",
+   "title_en": "Hankha"
+ },
+ {
+   "id": 1807,
+   "menu": "district",
+   "sort": 116,
+   "parent_categories_id": 18,
+   "title_th": "หนองมะโมง",
+   "title_en": "Nong Mamong"
+ },
+ {
+   "id": 1808,
+   "menu": "district",
+   "sort": 117,
+   "parent_categories_id": 18,
+   "title_th": "เนินขาม",
+   "title_en": "Noen Kham"
+ },
+ {
+   "id": 1901,
+   "menu": "district",
+   "sort": 118,
+   "parent_categories_id": 19,
+   "title_th": "เมืองสระบุรี",
+   "title_en": "Mueang Saraburi"
+ },
+ {
+   "id": 1902,
+   "menu": "district",
+   "sort": 119,
+   "parent_categories_id": 19,
+   "title_th": "แก่งคอย",
+   "title_en": "Kaeng Khoi"
+ },
+ {
+   "id": 1903,
+   "menu": "district",
+   "sort": 120,
+   "parent_categories_id": 19,
+   "title_th": "หนองแค",
+   "title_en": "Nong Khae"
+ },
+ {
+   "id": 1904,
+   "menu": "district",
+   "sort": 121,
+   "parent_categories_id": 19,
+   "title_th": "วิหารแดง",
+   "title_en": "Wihan Daeng"
+ },
+ {
+   "id": 1905,
+   "menu": "district",
+   "sort": 122,
+   "parent_categories_id": 19,
+   "title_th": "หนองแซง",
+   "title_en": "Nong Saeng"
+ },
+ {
+   "id": 1906,
+   "menu": "district",
+   "sort": 123,
+   "parent_categories_id": 19,
+   "title_th": "บ้านหมอ",
+   "title_en": "Ban Mo"
+ },
+ {
+   "id": 1907,
+   "menu": "district",
+   "sort": 124,
+   "parent_categories_id": 19,
+   "title_th": "ดอนพุด",
+   "title_en": "Don Phut"
+ },
+ {
+   "id": 1908,
+   "menu": "district",
+   "sort": 125,
+   "parent_categories_id": 19,
+   "title_th": "หนองโดน",
+   "title_en": "Nong Don"
+ },
+ {
+   "id": 1909,
+   "menu": "district",
+   "sort": 126,
+   "parent_categories_id": 19,
+   "title_th": "พระพุทธบาท",
+   "title_en": "Phra Phutthabat"
+ },
+ {
+   "id": 1910,
+   "menu": "district",
+   "sort": 127,
+   "parent_categories_id": 19,
+   "title_th": "เสาไห้",
+   "title_en": "Sao Hai"
+ },
+ {
+   "id": 1911,
+   "menu": "district",
+   "sort": 128,
+   "parent_categories_id": 19,
+   "title_th": "มวกเหล็ก",
+   "title_en": "Muak Lek"
+ },
+ {
+   "id": 1912,
+   "menu": "district",
+   "sort": 129,
+   "parent_categories_id": 19,
+   "title_th": "วังม่วง",
+   "title_en": "Wang Muang"
+ },
+ {
+   "id": 1913,
+   "menu": "district",
+   "sort": 130,
+   "parent_categories_id": 19,
+   "title_th": "เฉลิมพระเกียรติ",
+   "title_en": "Chaloem Phra Kiat"
+ },
+ {
+   "id": 2001,
+   "menu": "district",
+   "sort": 131,
+   "parent_categories_id": 20,
+   "title_th": "เมืองชลบุรี",
+   "title_en": "Mueang Chon Buri"
+ },
+ {
+   "id": 2002,
+   "menu": "district",
+   "sort": 132,
+   "parent_categories_id": 20,
+   "title_th": "บ้านบึง",
+   "title_en": "Ban Bueng"
+ },
+ {
+   "id": 2003,
+   "menu": "district",
+   "sort": 133,
+   "parent_categories_id": 20,
+   "title_th": "หนองใหญ่",
+   "title_en": "Nong Yai"
+ },
+ {
+   "id": 2004,
+   "menu": "district",
+   "sort": 134,
+   "parent_categories_id": 20,
+   "title_th": "บางละมุง",
+   "title_en": "Bang Lamung"
+ },
+ {
+   "id": 2005,
+   "menu": "district",
+   "sort": 135,
+   "parent_categories_id": 20,
+   "title_th": "พานทอง",
+   "title_en": "Phan Thong"
+ },
+ {
+   "id": 2006,
+   "menu": "district",
+   "sort": 136,
+   "parent_categories_id": 20,
+   "title_th": "พนัสนิคม",
+   "title_en": "Phanat Nikhom"
+ },
+ {
+   "id": 2007,
+   "menu": "district",
+   "sort": 137,
+   "parent_categories_id": 20,
+   "title_th": "ศรีราชา",
+   "title_en": "Si Racha"
+ },
+ {
+   "id": 2008,
+   "menu": "district",
+   "sort": 138,
+   "parent_categories_id": 20,
+   "title_th": "เกาะสีชัง",
+   "title_en": "Ko Sichang"
+ },
+ {
+   "id": 2009,
+   "menu": "district",
+   "sort": 139,
+   "parent_categories_id": 20,
+   "title_th": "สัตหีบ",
+   "title_en": "Sattahip"
+ },
+ {
+   "id": 2010,
+   "menu": "district",
+   "sort": 140,
+   "parent_categories_id": 20,
+   "title_th": "บ่อทอง",
+   "title_en": "Bo Thong"
+ },
+ {
+   "id": 2011,
+   "menu": "district",
+   "sort": 141,
+   "parent_categories_id": 20,
+   "title_th": "เกาะจันทร์",
+   "title_en": "Ko Chan"
+ },
+ {
+   "id": 2101,
+   "menu": "district",
+   "sort": 142,
+   "parent_categories_id": 21,
+   "title_th": "เมืองระยอง",
+   "title_en": "Mueang Rayong"
+ },
+ {
+   "id": 2102,
+   "menu": "district",
+   "sort": 143,
+   "parent_categories_id": 21,
+   "title_th": "บ้านฉาง",
+   "title_en": "Ban Chang"
+ },
+ {
+   "id": 2103,
+   "menu": "district",
+   "sort": 144,
+   "parent_categories_id": 21,
+   "title_th": "แกลง",
+   "title_en": "Klaeng"
+ },
+ {
+   "id": 2104,
+   "menu": "district",
+   "sort": 145,
+   "parent_categories_id": 21,
+   "title_th": "วังจันทร์",
+   "title_en": "Wang Chan"
+ },
+ {
+   "id": 2105,
+   "menu": "district",
+   "sort": 146,
+   "parent_categories_id": 21,
+   "title_th": "บ้านค่าย",
+   "title_en": "Ban Khai"
+ },
+ {
+   "id": 2106,
+   "menu": "district",
+   "sort": 147,
+   "parent_categories_id": 21,
+   "title_th": "ปลวกแดง",
+   "title_en": "Pluak Daeng"
+ },
+ {
+   "id": 2107,
+   "menu": "district",
+   "sort": 148,
+   "parent_categories_id": 21,
+   "title_th": "เขาชะเมา",
+   "title_en": "Khao Chamao"
+ },
+ {
+   "id": 2108,
+   "menu": "district",
+   "sort": 149,
+   "parent_categories_id": 21,
+   "title_th": "นิคมพัฒนา",
+   "title_en": "Nikhom Phatthana"
+ },
+ {
+   "id": 2201,
+   "menu": "district",
+   "sort": 150,
+   "parent_categories_id": 22,
+   "title_th": "เมืองจันทบุรี",
+   "title_en": "Mueang Chanthaburi"
+ },
+ {
+   "id": 2202,
+   "menu": "district",
+   "sort": 151,
+   "parent_categories_id": 22,
+   "title_th": "ขลุง",
+   "title_en": "Khlung"
+ },
+ {
+   "id": 2203,
+   "menu": "district",
+   "sort": 152,
+   "parent_categories_id": 22,
+   "title_th": "ท่าใหม่",
+   "title_en": "Tha Mai"
+ },
+ {
+   "id": 2204,
+   "menu": "district",
+   "sort": 153,
+   "parent_categories_id": 22,
+   "title_th": "โป่งน้ำร้อน",
+   "title_en": "Pong Nam Ron"
+ },
+ {
+   "id": 2205,
+   "menu": "district",
+   "sort": 154,
+   "parent_categories_id": 22,
+   "title_th": "มะขาม",
+   "title_en": "Makham"
+ },
+ {
+   "id": 2206,
+   "menu": "district",
+   "sort": 155,
+   "parent_categories_id": 22,
+   "title_th": "แหลมสิงห์",
+   "title_en": "Laem Sing"
+ },
+ {
+   "id": 2207,
+   "menu": "district",
+   "sort": 156,
+   "parent_categories_id": 22,
+   "title_th": "สอยดาว",
+   "title_en": "Soi Dao"
+ },
+ {
+   "id": 2208,
+   "menu": "district",
+   "sort": 157,
+   "parent_categories_id": 22,
+   "title_th": "แก่งหางแมว",
+   "title_en": "Kaeng Hang Maeo"
+ },
+ {
+   "id": 2209,
+   "menu": "district",
+   "sort": 158,
+   "parent_categories_id": 22,
+   "title_th": "นายายอาม",
+   "title_en": "Na Yai Am"
+ },
+ {
+   "id": 2210,
+   "menu": "district",
+   "sort": 159,
+   "parent_categories_id": 22,
+   "title_th": "เขาคิชฌกูฏ",
+   "title_en": "Khao Khitchakut"
+ },
+ {
+   "id": 2301,
+   "menu": "district",
+   "sort": 160,
+   "parent_categories_id": 23,
+   "title_th": "เมืองตราด",
+   "title_en": "Mueang Trat"
+ },
+ {
+   "id": 2302,
+   "menu": "district",
+   "sort": 161,
+   "parent_categories_id": 23,
+   "title_th": "คลองใหญ่",
+   "title_en": "Khlong Yai"
+ },
+ {
+   "id": 2303,
+   "menu": "district",
+   "sort": 162,
+   "parent_categories_id": 23,
+   "title_th": "เขาสมิง",
+   "title_en": "Khao Saming"
+ },
+ {
+   "id": 2304,
+   "menu": "district",
+   "sort": 163,
+   "parent_categories_id": 23,
+   "title_th": "บ่อไร่",
+   "title_en": "Bo Rai"
+ },
+ {
+   "id": 2305,
+   "menu": "district",
+   "sort": 164,
+   "parent_categories_id": 23,
+   "title_th": "แหลมงอบ",
+   "title_en": "Laem Ngop"
+ },
+ {
+   "id": 2306,
+   "menu": "district",
+   "sort": 165,
+   "parent_categories_id": 23,
+   "title_th": "เกาะกูด",
+   "title_en": "Ko Kut"
+ },
+ {
+   "id": 2307,
+   "menu": "district",
+   "sort": 166,
+   "parent_categories_id": 23,
+   "title_th": "เกาะช้าง",
+   "title_en": "Ko Chang"
+ },
+ {
+   "id": 2401,
+   "menu": "district",
+   "sort": 167,
+   "parent_categories_id": 24,
+   "title_th": "เมืองฉะเชิงเทรา",
+   "title_en": "Mueang Chachoengsao"
+ },
+ {
+   "id": 2402,
+   "menu": "district",
+   "sort": 168,
+   "parent_categories_id": 24,
+   "title_th": "บางคล้า",
+   "title_en": "Bang Khla"
+ },
+ {
+   "id": 2403,
+   "menu": "district",
+   "sort": 169,
+   "parent_categories_id": 24,
+   "title_th": "บางน้ำเปรี้ยว",
+   "title_en": "Bang Nam Priao"
+ },
+ {
+   "id": 2404,
+   "menu": "district",
+   "sort": 170,
+   "parent_categories_id": 24,
+   "title_th": "บางปะกง",
+   "title_en": "Bang Pakong"
+ },
+ {
+   "id": 2405,
+   "menu": "district",
+   "sort": 171,
+   "parent_categories_id": 24,
+   "title_th": "บ้านโพธิ์",
+   "title_en": "Ban Pho"
+ },
+ {
+   "id": 2406,
+   "menu": "district",
+   "sort": 172,
+   "parent_categories_id": 24,
+   "title_th": "พนมสารคาม",
+   "title_en": "Phanom Sarakham"
+ },
+ {
+   "id": 2407,
+   "menu": "district",
+   "sort": 173,
+   "parent_categories_id": 24,
+   "title_th": "ราชสาส์น",
+   "title_en": "Ratchasan"
+ },
+ {
+   "id": 2408,
+   "menu": "district",
+   "sort": 174,
+   "parent_categories_id": 24,
+   "title_th": "สนามชัยเขต",
+   "title_en": "Sanam Chai Khet"
+ },
+ {
+   "id": 2409,
+   "menu": "district",
+   "sort": 175,
+   "parent_categories_id": 24,
+   "title_th": "แปลงยาว",
+   "title_en": "Plaeng Yao"
+ },
+ {
+   "id": 2410,
+   "menu": "district",
+   "sort": 176,
+   "parent_categories_id": 24,
+   "title_th": "ท่าตะเกียบ",
+   "title_en": "Tha Takiap"
+ },
+ {
+   "id": 2411,
+   "menu": "district",
+   "sort": 177,
+   "parent_categories_id": 24,
+   "title_th": "คลองเขื่อน",
+   "title_en": "Khlong Khuean"
+ },
+ {
+   "id": 2501,
+   "menu": "district",
+   "sort": 178,
+   "parent_categories_id": 25,
+   "title_th": "เมืองปราจีนบุรี",
+   "title_en": "Mueang Prachin Buri"
+ },
+ {
+   "id": 2502,
+   "menu": "district",
+   "sort": 179,
+   "parent_categories_id": 25,
+   "title_th": "กบินทร์บุรี",
+   "title_en": "Kabin Buri"
+ },
+ {
+   "id": 2503,
+   "menu": "district",
+   "sort": 180,
+   "parent_categories_id": 25,
+   "title_th": "นาดี",
+   "title_en": "Na Di"
+ },
+ {
+   "id": 2506,
+   "menu": "district",
+   "sort": 181,
+   "parent_categories_id": 25,
+   "title_th": "บ้านสร้าง",
+   "title_en": "Ban Sang"
+ },
+ {
+   "id": 2507,
+   "menu": "district",
+   "sort": 182,
+   "parent_categories_id": 25,
+   "title_th": "ประจันตคาม",
+   "title_en": "Prachantakham"
+ },
+ {
+   "id": 2508,
+   "menu": "district",
+   "sort": 183,
+   "parent_categories_id": 25,
+   "title_th": "ศรีมหาโพธิ",
+   "title_en": "Si Maha Phot"
+ },
+ {
+   "id": 2509,
+   "menu": "district",
+   "sort": 184,
+   "parent_categories_id": 25,
+   "title_th": "ศรีมโหสถ",
+   "title_en": "Si Mahosot"
+ },
+ {
+   "id": 2601,
+   "menu": "district",
+   "sort": 185,
+   "parent_categories_id": 26,
+   "title_th": "เมืองนครนายก",
+   "title_en": "Mueang Nakhon Nayok"
+ },
+ {
+   "id": 2602,
+   "menu": "district",
+   "sort": 186,
+   "parent_categories_id": 26,
+   "title_th": "ปากพลี",
+   "title_en": "Pak Phli"
+ },
+ {
+   "id": 2603,
+   "menu": "district",
+   "sort": 187,
+   "parent_categories_id": 26,
+   "title_th": "บ้านนา",
+   "title_en": "Ban Na"
+ },
+ {
+   "id": 2604,
+   "menu": "district",
+   "sort": 188,
+   "parent_categories_id": 26,
+   "title_th": "องครักษ์",
+   "title_en": "Ongkharak"
+ },
+ {
+   "id": 2701,
+   "menu": "district",
+   "sort": 189,
+   "parent_categories_id": 27,
+   "title_th": "เมืองสระแก้ว",
+   "title_en": "Mueang Sa Kaeo"
+ },
+ {
+   "id": 2702,
+   "menu": "district",
+   "sort": 190,
+   "parent_categories_id": 27,
+   "title_th": "คลองหาด",
+   "title_en": "Khlong Hat"
+ },
+ {
+   "id": 2703,
+   "menu": "district",
+   "sort": 191,
+   "parent_categories_id": 27,
+   "title_th": "ตาพระยา",
+   "title_en": "Ta Phraya"
+ },
+ {
+   "id": 2704,
+   "menu": "district",
+   "sort": 192,
+   "parent_categories_id": 27,
+   "title_th": "วังน้ำเย็น",
+   "title_en": "Wang Nam Yen"
+ },
+ {
+   "id": 2705,
+   "menu": "district",
+   "sort": 193,
+   "parent_categories_id": 27,
+   "title_th": "วัฒนานคร",
+   "title_en": "Watthana Nakhon"
+ },
+ {
+   "id": 2706,
+   "menu": "district",
+   "sort": 194,
+   "parent_categories_id": 27,
+   "title_th": "อรัญประเทศ",
+   "title_en": "Aranyaprathet"
+ },
+ {
+   "id": 2707,
+   "menu": "district",
+   "sort": 195,
+   "parent_categories_id": 27,
+   "title_th": "เขาฉกรรจ์",
+   "title_en": "Khao Chakan"
+ },
+ {
+   "id": 2708,
+   "menu": "district",
+   "sort": 196,
+   "parent_categories_id": 27,
+   "title_th": "โคกสูง",
+   "title_en": "Khok Sung"
+ },
+ {
+   "id": 2709,
+   "menu": "district",
+   "sort": 197,
+   "parent_categories_id": 27,
+   "title_th": "วังสมบูรณ์",
+   "title_en": "Wang Sombun"
+ },
+ {
+   "id": 3001,
+   "menu": "district",
+   "sort": 198,
+   "parent_categories_id": 30,
+   "title_th": "เมืองนครราชสีมา",
+   "title_en": "Mueang Nakhon Ratchasima"
+ },
+ {
+   "id": 3002,
+   "menu": "district",
+   "sort": 199,
+   "parent_categories_id": 30,
+   "title_th": "ครบุรี",
+   "title_en": "Khon Buri"
+ },
+ {
+   "id": 3003,
+   "menu": "district",
+   "sort": 200,
+   "parent_categories_id": 30,
+   "title_th": "เสิงสาง",
+   "title_en": "Soeng Sang"
+ },
+ {
+   "id": 3004,
+   "menu": "district",
+   "sort": 201,
+   "parent_categories_id": 30,
+   "title_th": "คง",
+   "title_en": "Khong"
+ },
+ {
+   "id": 3005,
+   "menu": "district",
+   "sort": 202,
+   "parent_categories_id": 30,
+   "title_th": "บ้านเหลื่อม",
+   "title_en": "Ban Lueam"
+ },
+ {
+   "id": 3006,
+   "menu": "district",
+   "sort": 203,
+   "parent_categories_id": 30,
+   "title_th": "จักราช",
+   "title_en": "Chakkarat"
+ },
+ {
+   "id": 3007,
+   "menu": "district",
+   "sort": 204,
+   "parent_categories_id": 30,
+   "title_th": "โชคชัย",
+   "title_en": "Chok Chai"
+ },
+ {
+   "id": 3008,
+   "menu": "district",
+   "sort": 205,
+   "parent_categories_id": 30,
+   "title_th": "ด่านขุนทด",
+   "title_en": "Dan Khun Thot"
+ },
+ {
+   "id": 3009,
+   "menu": "district",
+   "sort": 206,
+   "parent_categories_id": 30,
+   "title_th": "โนนไทย",
+   "title_en": "Non Thai"
+ },
+ {
+   "id": 3010,
+   "menu": "district",
+   "sort": 207,
+   "parent_categories_id": 30,
+   "title_th": "โนนสูง",
+   "title_en": "Non Sung"
+ },
+ {
+   "id": 3011,
+   "menu": "district",
+   "sort": 208,
+   "parent_categories_id": 30,
+   "title_th": "ขามสะแกแสง",
+   "title_en": "Kham Sakaesaeng"
+ },
+ {
+   "id": 3012,
+   "menu": "district",
+   "sort": 209,
+   "parent_categories_id": 30,
+   "title_th": "บัวใหญ่",
+   "title_en": "Bua Yai"
+ },
+ {
+   "id": 3013,
+   "menu": "district",
+   "sort": 210,
+   "parent_categories_id": 30,
+   "title_th": "ประทาย",
+   "title_en": "Prathai"
+ },
+ {
+   "id": 3014,
+   "menu": "district",
+   "sort": 211,
+   "parent_categories_id": 30,
+   "title_th": "ปักธงชัย",
+   "title_en": "Pak Thong Chai"
+ },
+ {
+   "id": 3015,
+   "menu": "district",
+   "sort": 212,
+   "parent_categories_id": 30,
+   "title_th": "พิมาย",
+   "title_en": "Phimai"
+ },
+ {
+   "id": 3016,
+   "menu": "district",
+   "sort": 213,
+   "parent_categories_id": 30,
+   "title_th": "ห้วยแถลง",
+   "title_en": "Huai Thalaeng"
+ },
+ {
+   "id": 3017,
+   "menu": "district",
+   "sort": 214,
+   "parent_categories_id": 30,
+   "title_th": "ชุมพวง",
+   "title_en": "Chum Phuang"
+ },
+ {
+   "id": 3018,
+   "menu": "district",
+   "sort": 215,
+   "parent_categories_id": 30,
+   "title_th": "สูงเนิน",
+   "title_en": "Sung Noen"
+ },
+ {
+   "id": 3019,
+   "menu": "district",
+   "sort": 216,
+   "parent_categories_id": 30,
+   "title_th": "ขามทะเลสอ",
+   "title_en": "Kham Thale So"
+ },
+ {
+   "id": 3020,
+   "menu": "district",
+   "sort": 217,
+   "parent_categories_id": 30,
+   "title_th": "สีคิ้ว",
+   "title_en": "Sikhio"
+ },
+ {
+   "id": 3021,
+   "menu": "district",
+   "sort": 218,
+   "parent_categories_id": 30,
+   "title_th": "ปากช่อง",
+   "title_en": "Pak Chong"
+ },
+ {
+   "id": 3022,
+   "menu": "district",
+   "sort": 219,
+   "parent_categories_id": 30,
+   "title_th": "หนองบุญมาก",
+   "title_en": "Nong Bunnak"
+ },
+ {
+   "id": 3023,
+   "menu": "district",
+   "sort": 220,
+   "parent_categories_id": 30,
+   "title_th": "แก้งสนามนาง",
+   "title_en": "Kaeng Sanam Nang"
+ },
+ {
+   "id": 3024,
+   "menu": "district",
+   "sort": 221,
+   "parent_categories_id": 30,
+   "title_th": "โนนแดง",
+   "title_en": "Non Daeng"
+ },
+ {
+   "id": 3025,
+   "menu": "district",
+   "sort": 222,
+   "parent_categories_id": 30,
+   "title_th": "วังน้ำเขียว",
+   "title_en": "Wang Nam Khiao"
+ },
+ {
+   "id": 3026,
+   "menu": "district",
+   "sort": 223,
+   "parent_categories_id": 30,
+   "title_th": "เทพารักษ์",
+   "title_en": "Thepharak"
+ },
+ {
+   "id": 3027,
+   "menu": "district",
+   "sort": 224,
+   "parent_categories_id": 30,
+   "title_th": "เมืองยาง",
+   "title_en": "Mueang Yang"
+ },
+ {
+   "id": 3028,
+   "menu": "district",
+   "sort": 225,
+   "parent_categories_id": 30,
+   "title_th": "พระทองคำ",
+   "title_en": "Phra Thong Kham"
+ },
+ {
+   "id": 3029,
+   "menu": "district",
+   "sort": 226,
+   "parent_categories_id": 30,
+   "title_th": "ลำทะเมนชัย",
+   "title_en": "Lam Thamenchai"
+ },
+ {
+   "id": 3030,
+   "menu": "district",
+   "sort": 227,
+   "parent_categories_id": 30,
+   "title_th": "บัวลาย",
+   "title_en": "Bua Lai"
+ },
+ {
+   "id": 3031,
+   "menu": "district",
+   "sort": 228,
+   "parent_categories_id": 30,
+   "title_th": "สีดา",
+   "title_en": "Sida"
+ },
+ {
+   "id": 3032,
+   "menu": "district",
+   "sort": 229,
+   "parent_categories_id": 30,
+   "title_th": "เฉลิมพระเกียรติ",
+   "title_en": "Chaloem Phra Kiat"
+ },
+ {
+   "id": 3101,
+   "menu": "district",
+   "sort": 230,
+   "parent_categories_id": 31,
+   "title_th": "เมืองบุรีรัมย์",
+   "title_en": "Mueang Buri Ram"
+ },
+ {
+   "id": 3102,
+   "menu": "district",
+   "sort": 231,
+   "parent_categories_id": 31,
+   "title_th": "คูเมือง",
+   "title_en": "Khu Mueang"
+ },
+ {
+   "id": 3103,
+   "menu": "district",
+   "sort": 232,
+   "parent_categories_id": 31,
+   "title_th": "กระสัง",
+   "title_en": "Krasang"
+ },
+ {
+   "id": 3104,
+   "menu": "district",
+   "sort": 233,
+   "parent_categories_id": 31,
+   "title_th": "นางรอง",
+   "title_en": "Nang Rong"
+ },
+ {
+   "id": 3105,
+   "menu": "district",
+   "sort": 234,
+   "parent_categories_id": 31,
+   "title_th": "หนองกี่",
+   "title_en": "Nong Ki"
+ },
+ {
+   "id": 3106,
+   "menu": "district",
+   "sort": 235,
+   "parent_categories_id": 31,
+   "title_th": "ละหานทราย",
+   "title_en": "Lahan Sai"
+ },
+ {
+   "id": 3107,
+   "menu": "district",
+   "sort": 236,
+   "parent_categories_id": 31,
+   "title_th": "ประโคนชัย",
+   "title_en": "Prakhon Chai"
+ },
+ {
+   "id": 3108,
+   "menu": "district",
+   "sort": 237,
+   "parent_categories_id": 31,
+   "title_th": "บ้านกรวด",
+   "title_en": "Ban Kruat"
+ },
+ {
+   "id": 3109,
+   "menu": "district",
+   "sort": 238,
+   "parent_categories_id": 31,
+   "title_th": "พุทไธสง",
+   "title_en": "Phutthaisong"
+ },
+ {
+   "id": 3110,
+   "menu": "district",
+   "sort": 239,
+   "parent_categories_id": 31,
+   "title_th": "ลำปลายมาศ",
+   "title_en": "Lam Plai Mat"
+ },
+ {
+   "id": 3111,
+   "menu": "district",
+   "sort": 240,
+   "parent_categories_id": 31,
+   "title_th": "สตึก",
+   "title_en": "Satuek"
+ },
+ {
+   "id": 3112,
+   "menu": "district",
+   "sort": 241,
+   "parent_categories_id": 31,
+   "title_th": "ปะคำ",
+   "title_en": "Pakham"
+ },
+ {
+   "id": 3113,
+   "menu": "district",
+   "sort": 242,
+   "parent_categories_id": 31,
+   "title_th": "นาโพธิ์",
+   "title_en": "Na Pho"
+ },
+ {
+   "id": 3114,
+   "menu": "district",
+   "sort": 243,
+   "parent_categories_id": 31,
+   "title_th": "หนองหงส์",
+   "title_en": "Nong Hong"
+ },
+ {
+   "id": 3115,
+   "menu": "district",
+   "sort": 244,
+   "parent_categories_id": 31,
+   "title_th": "พลับพลาชัย",
+   "title_en": "Phlapphla Chai"
+ },
+ {
+   "id": 3116,
+   "menu": "district",
+   "sort": 245,
+   "parent_categories_id": 31,
+   "title_th": "ห้วยราช",
+   "title_en": "Huai Rat"
+ },
+ {
+   "id": 3117,
+   "menu": "district",
+   "sort": 246,
+   "parent_categories_id": 31,
+   "title_th": "โนนสุวรรณ",
+   "title_en": "Non Suwan"
+ },
+ {
+   "id": 3118,
+   "menu": "district",
+   "sort": 247,
+   "parent_categories_id": 31,
+   "title_th": "ชำนิ",
+   "title_en": "Chamni"
+ },
+ {
+   "id": 3119,
+   "menu": "district",
+   "sort": 248,
+   "parent_categories_id": 31,
+   "title_th": "บ้านใหม่ไชยพจน์",
+   "title_en": "Ban Mai Chaiyaphot"
+ },
+ {
+   "id": 3120,
+   "menu": "district",
+   "sort": 249,
+   "parent_categories_id": 31,
+   "title_th": "โนนดินแดง",
+   "title_en": "Non Din Daeng"
+ },
+ {
+   "id": 3121,
+   "menu": "district",
+   "sort": 250,
+   "parent_categories_id": 31,
+   "title_th": "บ้านด่าน",
+   "title_en": "Ban Dan"
+ },
+ {
+   "id": 3122,
+   "menu": "district",
+   "sort": 251,
+   "parent_categories_id": 31,
+   "title_th": "แคนดง",
+   "title_en": "Khaen Dong"
+ },
+ {
+   "id": 3123,
+   "menu": "district",
+   "sort": 252,
+   "parent_categories_id": 31,
+   "title_th": "เฉลิมพระเกียรติ",
+   "title_en": "Chaloem Phra Kiat"
+ },
+ {
+   "id": 3201,
+   "menu": "district",
+   "sort": 253,
+   "parent_categories_id": 32,
+   "title_th": "เมืองสุรินทร์",
+   "title_en": "Mueang Surin"
+ },
+ {
+   "id": 3202,
+   "menu": "district",
+   "sort": 254,
+   "parent_categories_id": 32,
+   "title_th": "ชุมพลบุรี",
+   "title_en": "Chumphon Buri"
+ },
+ {
+   "id": 3203,
+   "menu": "district",
+   "sort": 255,
+   "parent_categories_id": 32,
+   "title_th": "ท่าตูม",
+   "title_en": "Tha Tum"
+ },
+ {
+   "id": 3204,
+   "menu": "district",
+   "sort": 256,
+   "parent_categories_id": 32,
+   "title_th": "จอมพระ",
+   "title_en": "Chom Phra"
+ },
+ {
+   "id": 3205,
+   "menu": "district",
+   "sort": 257,
+   "parent_categories_id": 32,
+   "title_th": "ปราสาท",
+   "title_en": "Prasat"
+ },
+ {
+   "id": 3206,
+   "menu": "district",
+   "sort": 258,
+   "parent_categories_id": 32,
+   "title_th": "กาบเชิง",
+   "title_en": "Kap Choeng"
+ },
+ {
+   "id": 3207,
+   "menu": "district",
+   "sort": 259,
+   "parent_categories_id": 32,
+   "title_th": "รัตนบุรี",
+   "title_en": "Rattanaburi"
+ },
+ {
+   "id": 3208,
+   "menu": "district",
+   "sort": 260,
+   "parent_categories_id": 32,
+   "title_th": "สนม",
+   "title_en": "Sanom"
+ },
+ {
+   "id": 3209,
+   "menu": "district",
+   "sort": 261,
+   "parent_categories_id": 32,
+   "title_th": "ศีขรภูมิ",
+   "title_en": "Sikhoraphum"
+ },
+ {
+   "id": 3210,
+   "menu": "district",
+   "sort": 262,
+   "parent_categories_id": 32,
+   "title_th": "สังขะ",
+   "title_en": "Sangkha"
+ },
+ {
+   "id": 3211,
+   "menu": "district",
+   "sort": 263,
+   "parent_categories_id": 32,
+   "title_th": "ลำดวน",
+   "title_en": "Lamduan"
+ },
+ {
+   "id": 3212,
+   "menu": "district",
+   "sort": 264,
+   "parent_categories_id": 32,
+   "title_th": "สำโรงทาบ",
+   "title_en": "Samrong Thap"
+ },
+ {
+   "id": 3213,
+   "menu": "district",
+   "sort": 265,
+   "parent_categories_id": 32,
+   "title_th": "บัวเชด",
+   "title_en": "Buachet"
+ },
+ {
+   "id": 3214,
+   "menu": "district",
+   "sort": 266,
+   "parent_categories_id": 32,
+   "title_th": "พนมดงรัก",
+   "title_en": "Phanom Dong Rak"
+ },
+ {
+   "id": 3215,
+   "menu": "district",
+   "sort": 267,
+   "parent_categories_id": 32,
+   "title_th": "ศรีณรงค์",
+   "title_en": "Si Narong"
+ },
+ {
+   "id": 3216,
+   "menu": "district",
+   "sort": 268,
+   "parent_categories_id": 32,
+   "title_th": "เขวาสินรินทร์",
+   "title_en": "Khwao Sinarin"
+ },
+ {
+   "id": 3217,
+   "menu": "district",
+   "sort": 269,
+   "parent_categories_id": 32,
+   "title_th": "โนนนารายณ์",
+   "title_en": "Non Narai"
+ },
+ {
+   "id": 3301,
+   "menu": "district",
+   "sort": 270,
+   "parent_categories_id": 33,
+   "title_th": "เมืองศรีสะเกษ",
+   "title_en": "Mueang Si Sa Ket"
+ },
+ {
+   "id": 3302,
+   "menu": "district",
+   "sort": 271,
+   "parent_categories_id": 33,
+   "title_th": "ยางชุมน้อย",
+   "title_en": "Yang Chum Noi"
+ },
+ {
+   "id": 3303,
+   "menu": "district",
+   "sort": 272,
+   "parent_categories_id": 33,
+   "title_th": "กันทรารมย์",
+   "title_en": "Kanthararom"
+ },
+ {
+   "id": 3304,
+   "menu": "district",
+   "sort": 273,
+   "parent_categories_id": 33,
+   "title_th": "กันทรลักษ์",
+   "title_en": "Kantharalak"
+ },
+ {
+   "id": 3305,
+   "menu": "district",
+   "sort": 274,
+   "parent_categories_id": 33,
+   "title_th": "ขุขันธ์",
+   "title_en": "Khukhan"
+ },
+ {
+   "id": 3306,
+   "menu": "district",
+   "sort": 275,
+   "parent_categories_id": 33,
+   "title_th": "ไพรบึง",
+   "title_en": "Phrai Bueng"
+ },
+ {
+   "id": 3307,
+   "menu": "district",
+   "sort": 276,
+   "parent_categories_id": 33,
+   "title_th": "ปรางค์กู่",
+   "title_en": "Prang Ku"
+ },
+ {
+   "id": 3308,
+   "menu": "district",
+   "sort": 277,
+   "parent_categories_id": 33,
+   "title_th": "ขุนหาญ",
+   "title_en": "Khun Han"
+ },
+ {
+   "id": 3309,
+   "menu": "district",
+   "sort": 278,
+   "parent_categories_id": 33,
+   "title_th": "ราษีไศล",
+   "title_en": "Rasi Salai"
+ },
+ {
+   "id": 3310,
+   "menu": "district",
+   "sort": 279,
+   "parent_categories_id": 33,
+   "title_th": "อุทุมพรพิสัย",
+   "title_en": "Uthumphon Phisai"
+ },
+ {
+   "id": 3311,
+   "menu": "district",
+   "sort": 280,
+   "parent_categories_id": 33,
+   "title_th": "บึงบูรพ์",
+   "title_en": "Bueng Bun"
+ },
+ {
+   "id": 3312,
+   "menu": "district",
+   "sort": 281,
+   "parent_categories_id": 33,
+   "title_th": "ห้วยทับทัน",
+   "title_en": "Huai Thap Than"
+ },
+ {
+   "id": 3313,
+   "menu": "district",
+   "sort": 282,
+   "parent_categories_id": 33,
+   "title_th": "โนนคูณ",
+   "title_en": "Non Khun"
+ },
+ {
+   "id": 3314,
+   "menu": "district",
+   "sort": 283,
+   "parent_categories_id": 33,
+   "title_th": "ศรีรัตนะ",
+   "title_en": "Si Rattana"
+ },
+ {
+   "id": 3315,
+   "menu": "district",
+   "sort": 284,
+   "parent_categories_id": 33,
+   "title_th": "น้ำเกลี้ยง",
+   "title_en": "Nam Kliang"
+ },
+ {
+   "id": 3316,
+   "menu": "district",
+   "sort": 285,
+   "parent_categories_id": 33,
+   "title_th": "วังหิน",
+   "title_en": "Wang Hin"
+ },
+ {
+   "id": 3317,
+   "menu": "district",
+   "sort": 286,
+   "parent_categories_id": 33,
+   "title_th": "ภูสิงห์",
+   "title_en": "Phu Sing"
+ },
+ {
+   "id": 3318,
+   "menu": "district",
+   "sort": 287,
+   "parent_categories_id": 33,
+   "title_th": "เมืองจันทร์",
+   "title_en": "Mueang Chan"
+ },
+ {
+   "id": 3319,
+   "menu": "district",
+   "sort": 288,
+   "parent_categories_id": 33,
+   "title_th": "เบญจลักษ์",
+   "title_en": "Benchalak"
+ },
+ {
+   "id": 3320,
+   "menu": "district",
+   "sort": 289,
+   "parent_categories_id": 33,
+   "title_th": "พยุห์",
+   "title_en": "Phayu"
+ },
+ {
+   "id": 3321,
+   "menu": "district",
+   "sort": 290,
+   "parent_categories_id": 33,
+   "title_th": "โพธิ์ศรีสุวรรณ",
+   "title_en": "Pho Si Suwan"
+ },
+ {
+   "id": 3322,
+   "menu": "district",
+   "sort": 291,
+   "parent_categories_id": 33,
+   "title_th": "ศิลาลาด",
+   "title_en": "Sila Lat"
+ },
+ {
+   "id": 3401,
+   "menu": "district",
+   "sort": 292,
+   "parent_categories_id": 34,
+   "title_th": "เมืองอุบลราชธานี",
+   "title_en": "Mueang Ubon Ratchathani"
+ },
+ {
+   "id": 3402,
+   "menu": "district",
+   "sort": 293,
+   "parent_categories_id": 34,
+   "title_th": "ศรีเมืองใหม่",
+   "title_en": "Si Mueang Mai"
+ },
+ {
+   "id": 3403,
+   "menu": "district",
+   "sort": 294,
+   "parent_categories_id": 34,
+   "title_th": "โขงเจียม",
+   "title_en": "Khong Chiam"
+ },
+ {
+   "id": 3404,
+   "menu": "district",
+   "sort": 295,
+   "parent_categories_id": 34,
+   "title_th": "เขื่องใน",
+   "title_en": "Khueang Nai"
+ },
+ {
+   "id": 3405,
+   "menu": "district",
+   "sort": 296,
+   "parent_categories_id": 34,
+   "title_th": "เขมราฐ",
+   "title_en": "Khemmarat"
+ },
+ {
+   "id": 3407,
+   "menu": "district",
+   "sort": 297,
+   "parent_categories_id": 34,
+   "title_th": "เดชอุดม",
+   "title_en": "Det Udom"
+ },
+ {
+   "id": 3408,
+   "menu": "district",
+   "sort": 298,
+   "parent_categories_id": 34,
+   "title_th": "นาจะหลวย",
+   "title_en": "Na Chaluai"
+ },
+ {
+   "id": 3409,
+   "menu": "district",
+   "sort": 299,
+   "parent_categories_id": 34,
+   "title_th": "น้ำยืน",
+   "title_en": "Nam Yuen"
+ },
+ {
+   "id": 3410,
+   "menu": "district",
+   "sort": 300,
+   "parent_categories_id": 34,
+   "title_th": "บุณฑริก",
+   "title_en": "Buntharik"
+ },
+ {
+   "id": 3411,
+   "menu": "district",
+   "sort": 301,
+   "parent_categories_id": 34,
+   "title_th": "ตระการพืชผล",
+   "title_en": "Trakan Phuet Phon"
+ },
+ {
+   "id": 3412,
+   "menu": "district",
+   "sort": 302,
+   "parent_categories_id": 34,
+   "title_th": "กุดข้าวปุ้น",
+   "title_en": "Kut Khaopun"
+ },
+ {
+   "id": 3414,
+   "menu": "district",
+   "sort": 303,
+   "parent_categories_id": 34,
+   "title_th": "ม่วงสามสิบ",
+   "title_en": "Muang Sam Sip"
+ },
+ {
+   "id": 3415,
+   "menu": "district",
+   "sort": 304,
+   "parent_categories_id": 34,
+   "title_th": "วารินชำราบ",
+   "title_en": "Warin Chamrap"
+ },
+ {
+   "id": 3419,
+   "menu": "district",
+   "sort": 305,
+   "parent_categories_id": 34,
+   "title_th": "พิบูลมังสาหาร",
+   "title_en": "Phibun Mangsahan"
+ },
+ {
+   "id": 3420,
+   "menu": "district",
+   "sort": 306,
+   "parent_categories_id": 34,
+   "title_th": "ตาลสุม",
+   "title_en": "Tan Sum"
+ },
+ {
+   "id": 3421,
+   "menu": "district",
+   "sort": 307,
+   "parent_categories_id": 34,
+   "title_th": "โพธิ์ไทร",
+   "title_en": "Pho Sai"
+ },
+ {
+   "id": 3422,
+   "menu": "district",
+   "sort": 308,
+   "parent_categories_id": 34,
+   "title_th": "สำโรง",
+   "title_en": "Samrong"
+ },
+ {
+   "id": 3424,
+   "menu": "district",
+   "sort": 309,
+   "parent_categories_id": 34,
+   "title_th": "ดอนมดแดง",
+   "title_en": "Don Mot Daeng"
+ },
+ {
+   "id": 3425,
+   "menu": "district",
+   "sort": 310,
+   "parent_categories_id": 34,
+   "title_th": "สิรินธร",
+   "title_en": "Sirindhorn"
+ },
+ {
+   "id": 3426,
+   "menu": "district",
+   "sort": 311,
+   "parent_categories_id": 34,
+   "title_th": "ทุ่งศรีอุดม",
+   "title_en": "Thung Si Udom"
+ },
+ {
+   "id": 3429,
+   "menu": "district",
+   "sort": 312,
+   "parent_categories_id": 34,
+   "title_th": "นาเยีย",
+   "title_en": "Na Yia"
+ },
+ {
+   "id": 3430,
+   "menu": "district",
+   "sort": 313,
+   "parent_categories_id": 34,
+   "title_th": "นาตาล",
+   "title_en": "Na Tan"
+ },
+ {
+   "id": 3431,
+   "menu": "district",
+   "sort": 314,
+   "parent_categories_id": 34,
+   "title_th": "เหล่าเสือโก้ก",
+   "title_en": "Lao Suea Kok"
+ },
+ {
+   "id": 3432,
+   "menu": "district",
+   "sort": 315,
+   "parent_categories_id": 34,
+   "title_th": "สว่างวีระวงศ์",
+   "title_en": "Sawang Wirawong"
+ },
+ {
+   "id": 3433,
+   "menu": "district",
+   "sort": 316,
+   "parent_categories_id": 34,
+   "title_th": "น้ำขุ่น",
+   "title_en": "Nam Khun"
+ },
+ {
+   "id": 3501,
+   "menu": "district",
+   "sort": 317,
+   "parent_categories_id": 35,
+   "title_th": "เมืองยโสธร",
+   "title_en": "Mueang Yasothon"
+ },
+ {
+   "id": 3502,
+   "menu": "district",
+   "sort": 318,
+   "parent_categories_id": 35,
+   "title_th": "ทรายมูล",
+   "title_en": "Sai Mun"
+ },
+ {
+   "id": 3503,
+   "menu": "district",
+   "sort": 319,
+   "parent_categories_id": 35,
+   "title_th": "กุดชุม",
+   "title_en": "Kut Chum"
+ },
+ {
+   "id": 3504,
+   "menu": "district",
+   "sort": 320,
+   "parent_categories_id": 35,
+   "title_th": "คำเขื่อนแก้ว",
+   "title_en": "Kham Khuean Kaeo"
+ },
+ {
+   "id": 3505,
+   "menu": "district",
+   "sort": 321,
+   "parent_categories_id": 35,
+   "title_th": "ป่าติ้ว",
+   "title_en": "Pa Tio"
+ },
+ {
+   "id": 3506,
+   "menu": "district",
+   "sort": 322,
+   "parent_categories_id": 35,
+   "title_th": "มหาชนะชัย",
+   "title_en": "Maha Chana Chai"
+ },
+ {
+   "id": 3507,
+   "menu": "district",
+   "sort": 323,
+   "parent_categories_id": 35,
+   "title_th": "ค้อวัง",
+   "title_en": "Kho Wang"
+ },
+ {
+   "id": 3508,
+   "menu": "district",
+   "sort": 324,
+   "parent_categories_id": 35,
+   "title_th": "เลิงนกทา",
+   "title_en": "Loeng Nok Tha"
+ },
+ {
+   "id": 3509,
+   "menu": "district",
+   "sort": 325,
+   "parent_categories_id": 35,
+   "title_th": "ไทยเจริญ",
+   "title_en": "Thai Charoen"
+ },
+ {
+   "id": 3601,
+   "menu": "district",
+   "sort": 326,
+   "parent_categories_id": 36,
+   "title_th": "เมืองชัยภูมิ",
+   "title_en": "Mueang Chaiyaphum"
+ },
+ {
+   "id": 3602,
+   "menu": "district",
+   "sort": 327,
+   "parent_categories_id": 36,
+   "title_th": "บ้านเขว้า",
+   "title_en": "Ban Khwao"
+ },
+ {
+   "id": 3603,
+   "menu": "district",
+   "sort": 328,
+   "parent_categories_id": 36,
+   "title_th": "คอนสวรรค์",
+   "title_en": "Khon Sawan"
+ },
+ {
+   "id": 3604,
+   "menu": "district",
+   "sort": 329,
+   "parent_categories_id": 36,
+   "title_th": "เกษตรสมบูรณ์",
+   "title_en": "Kaset Sombun"
+ },
+ {
+   "id": 3605,
+   "menu": "district",
+   "sort": 330,
+   "parent_categories_id": 36,
+   "title_th": "หนองบัวแดง",
+   "title_en": "Nong Bua Daeng"
+ },
+ {
+   "id": 3606,
+   "menu": "district",
+   "sort": 331,
+   "parent_categories_id": 36,
+   "title_th": "จัตุรัส",
+   "title_en": "Chatturat"
+ },
+ {
+   "id": 3607,
+   "menu": "district",
+   "sort": 332,
+   "parent_categories_id": 36,
+   "title_th": "บำเหน็จณรงค์",
+   "title_en": "Bamnet Narong"
+ },
+ {
+   "id": 3608,
+   "menu": "district",
+   "sort": 333,
+   "parent_categories_id": 36,
+   "title_th": "หนองบัวระเหว",
+   "title_en": "Nong Bua Rawe"
+ },
+ {
+   "id": 3609,
+   "menu": "district",
+   "sort": 334,
+   "parent_categories_id": 36,
+   "title_th": "เทพสถิต",
+   "title_en": "Thep Sathit"
+ },
+ {
+   "id": 3610,
+   "menu": "district",
+   "sort": 335,
+   "parent_categories_id": 36,
+   "title_th": "ภูเขียว",
+   "title_en": "Phu Khiao"
+ },
+ {
+   "id": 3611,
+   "menu": "district",
+   "sort": 336,
+   "parent_categories_id": 36,
+   "title_th": "บ้านแท่น",
+   "title_en": "Ban Thaen"
+ },
+ {
+   "id": 3612,
+   "menu": "district",
+   "sort": 337,
+   "parent_categories_id": 36,
+   "title_th": "แก้งคร้อ",
+   "title_en": "Kaeng Khro"
+ },
+ {
+   "id": 3613,
+   "menu": "district",
+   "sort": 338,
+   "parent_categories_id": 36,
+   "title_th": "คอนสาร",
+   "title_en": "Khon San"
+ },
+ {
+   "id": 3614,
+   "menu": "district",
+   "sort": 339,
+   "parent_categories_id": 36,
+   "title_th": "ภักดีชุมพล",
+   "title_en": "Phakdi Chumphon"
+ },
+ {
+   "id": 3615,
+   "menu": "district",
+   "sort": 340,
+   "parent_categories_id": 36,
+   "title_th": "เนินสง่า",
+   "title_en": "Noen Sa-nga"
+ },
+ {
+   "id": 3616,
+   "menu": "district",
+   "sort": 341,
+   "parent_categories_id": 36,
+   "title_th": "ซับใหญ่",
+   "title_en": "Sap Yai"
+ },
+ {
+   "id": 3701,
+   "menu": "district",
+   "sort": 342,
+   "parent_categories_id": 37,
+   "title_th": "เมืองอำนาจเจริญ",
+   "title_en": "Mueang Amnat Charoen"
+ },
+ {
+   "id": 3702,
+   "menu": "district",
+   "sort": 343,
+   "parent_categories_id": 37,
+   "title_th": "ชานุมาน",
+   "title_en": "Chanuman"
+ },
+ {
+   "id": 3703,
+   "menu": "district",
+   "sort": 344,
+   "parent_categories_id": 37,
+   "title_th": "ปทุมราชวงศา",
+   "title_en": "Pathum Ratchawongsa"
+ },
+ {
+   "id": 3704,
+   "menu": "district",
+   "sort": 345,
+   "parent_categories_id": 37,
+   "title_th": "พนา",
+   "title_en": "Phana"
+ },
+ {
+   "id": 3705,
+   "menu": "district",
+   "sort": 346,
+   "parent_categories_id": 37,
+   "title_th": "เสนางคนิคม",
+   "title_en": "Senangkhanikhom"
+ },
+ {
+   "id": 3706,
+   "menu": "district",
+   "sort": 347,
+   "parent_categories_id": 37,
+   "title_th": "หัวตะพาน",
+   "title_en": "Hua Taphan"
+ },
+ {
+   "id": 3707,
+   "menu": "district",
+   "sort": 348,
+   "parent_categories_id": 37,
+   "title_th": "ลืออำนาจ",
+   "title_en": "Lue Amnat"
+ },
+ {
+   "id": 3801,
+   "menu": "district",
+   "sort": 349,
+   "parent_categories_id": 38,
+   "title_th": "เมืองบึงกาฬ",
+   "title_en": "Mueang Bueng Kan"
+ },
+ {
+   "id": 3802,
+   "menu": "district",
+   "sort": 350,
+   "parent_categories_id": 38,
+   "title_th": "พรเจริญ",
+   "title_en": "Phon Charoen"
+ },
+ {
+   "id": 3803,
+   "menu": "district",
+   "sort": 351,
+   "parent_categories_id": 38,
+   "title_th": "โซ่พิสัย",
+   "title_en": "So Phisai"
+ },
+ {
+   "id": 3804,
+   "menu": "district",
+   "sort": 352,
+   "parent_categories_id": 38,
+   "title_th": "เซกา",
+   "title_en": "Seka"
+ },
+ {
+   "id": 3805,
+   "menu": "district",
+   "sort": 353,
+   "parent_categories_id": 38,
+   "title_th": "ปากคาด",
+   "title_en": "Pak Khat"
+ },
+ {
+   "id": 3806,
+   "menu": "district",
+   "sort": 354,
+   "parent_categories_id": 38,
+   "title_th": "บึงโขงหลง",
+   "title_en": "Bueng Khong Long"
+ },
+ {
+   "id": 3807,
+   "menu": "district",
+   "sort": 355,
+   "parent_categories_id": 38,
+   "title_th": "ศรีวิไล",
+   "title_en": "Si Wilai"
+ },
+ {
+   "id": 3808,
+   "menu": "district",
+   "sort": 356,
+   "parent_categories_id": 38,
+   "title_th": "บุ่งคล้า",
+   "title_en": "Bung Khla"
+ },
+ {
+   "id": 3901,
+   "menu": "district",
+   "sort": 357,
+   "parent_categories_id": 39,
+   "title_th": "เมืองหนองบัวลำภู",
+   "title_en": "Mueang Nong Bua Lam Phu"
+ },
+ {
+   "id": 3902,
+   "menu": "district",
+   "sort": 358,
+   "parent_categories_id": 39,
+   "title_th": "นากลาง",
+   "title_en": "Na Klang"
+ },
+ {
+   "id": 3903,
+   "menu": "district",
+   "sort": 359,
+   "parent_categories_id": 39,
+   "title_th": "โนนสัง",
+   "title_en": "Non Sang"
+ },
+ {
+   "id": 3904,
+   "menu": "district",
+   "sort": 360,
+   "parent_categories_id": 39,
+   "title_th": "ศรีบุญเรือง",
+   "title_en": "Si Bun Rueang"
+ },
+ {
+   "id": 3905,
+   "menu": "district",
+   "sort": 361,
+   "parent_categories_id": 39,
+   "title_th": "สุวรรณคูหา",
+   "title_en": "Suwannakhuha"
+ },
+ {
+   "id": 3906,
+   "menu": "district",
+   "sort": 362,
+   "parent_categories_id": 39,
+   "title_th": "นาวัง",
+   "title_en": "Na Wang"
+ },
+ {
+   "id": 4001,
+   "menu": "district",
+   "sort": 363,
+   "parent_categories_id": 40,
+   "title_th": "เมืองขอนแก่น",
+   "title_en": "Mueang Khon Kaen"
+ },
+ {
+   "id": 4002,
+   "menu": "district",
+   "sort": 364,
+   "parent_categories_id": 40,
+   "title_th": "บ้านฝาง",
+   "title_en": "Ban Fang"
+ },
+ {
+   "id": 4003,
+   "menu": "district",
+   "sort": 365,
+   "parent_categories_id": 40,
+   "title_th": "พระยืน",
+   "title_en": "Phra Yuen"
+ },
+ {
+   "id": 4004,
+   "menu": "district",
+   "sort": 366,
+   "parent_categories_id": 40,
+   "title_th": "หนองเรือ",
+   "title_en": "Nong Ruea"
+ },
+ {
+   "id": 4005,
+   "menu": "district",
+   "sort": 367,
+   "parent_categories_id": 40,
+   "title_th": "ชุมแพ",
+   "title_en": "Chum Phae"
+ },
+ {
+   "id": 4006,
+   "menu": "district",
+   "sort": 368,
+   "parent_categories_id": 40,
+   "title_th": "สีชมพู",
+   "title_en": "Si Chomphu"
+ },
+ {
+   "id": 4007,
+   "menu": "district",
+   "sort": 369,
+   "parent_categories_id": 40,
+   "title_th": "น้ำพอง",
+   "title_en": "Nam Phong"
+ },
+ {
+   "id": 4008,
+   "menu": "district",
+   "sort": 370,
+   "parent_categories_id": 40,
+   "title_th": "อุบลรัตน์",
+   "title_en": "Ubolratana"
+ },
+ {
+   "id": 4009,
+   "menu": "district",
+   "sort": 371,
+   "parent_categories_id": 40,
+   "title_th": "กระนวน",
+   "title_en": "Kranuan"
+ },
+ {
+   "id": 4010,
+   "menu": "district",
+   "sort": 372,
+   "parent_categories_id": 40,
+   "title_th": "บ้านไผ่",
+   "title_en": "Ban Phai"
+ },
+ {
+   "id": 4011,
+   "menu": "district",
+   "sort": 373,
+   "parent_categories_id": 40,
+   "title_th": "เปือยน้อย",
+   "title_en": "Pueai Noi"
+ },
+ {
+   "id": 4012,
+   "menu": "district",
+   "sort": 374,
+   "parent_categories_id": 40,
+   "title_th": "พล",
+   "title_en": "Phon"
+ },
+ {
+   "id": 4013,
+   "menu": "district",
+   "sort": 375,
+   "parent_categories_id": 40,
+   "title_th": "แวงใหญ่",
+   "title_en": "Waeng Yai"
+ },
+ {
+   "id": 4014,
+   "menu": "district",
+   "sort": 376,
+   "parent_categories_id": 40,
+   "title_th": "แวงน้อย",
+   "title_en": "Waeng Noi"
+ },
+ {
+   "id": 4015,
+   "menu": "district",
+   "sort": 377,
+   "parent_categories_id": 40,
+   "title_th": "หนองสองห้อง",
+   "title_en": "Nong Song Hong"
+ },
+ {
+   "id": 4016,
+   "menu": "district",
+   "sort": 378,
+   "parent_categories_id": 40,
+   "title_th": "ภูเวียง",
+   "title_en": "Phu Wiang"
+ },
+ {
+   "id": 4017,
+   "menu": "district",
+   "sort": 379,
+   "parent_categories_id": 40,
+   "title_th": "มัญจาคีรี",
+   "title_en": "Mancha Khiri"
+ },
+ {
+   "id": 4018,
+   "menu": "district",
+   "sort": 380,
+   "parent_categories_id": 40,
+   "title_th": "ชนบท",
+   "title_en": "Chonnabot"
+ },
+ {
+   "id": 4019,
+   "menu": "district",
+   "sort": 381,
+   "parent_categories_id": 40,
+   "title_th": "เขาสวนกวาง",
+   "title_en": "Khao Suan Kwang"
+ },
+ {
+   "id": 4020,
+   "menu": "district",
+   "sort": 382,
+   "parent_categories_id": 40,
+   "title_th": "ภูผาม่าน",
+   "title_en": "Phu Pha Man"
+ },
+ {
+   "id": 4021,
+   "menu": "district",
+   "sort": 383,
+   "parent_categories_id": 40,
+   "title_th": "ซำสูง",
+   "title_en": "Sam Sung"
+ },
+ {
+   "id": 4022,
+   "menu": "district",
+   "sort": 384,
+   "parent_categories_id": 40,
+   "title_th": "โคกโพธิ์ไชย",
+   "title_en": "Khok Pho Chai"
+ },
+ {
+   "id": 4023,
+   "menu": "district",
+   "sort": 385,
+   "parent_categories_id": 40,
+   "title_th": "หนองนาคำ",
+   "title_en": "Nong Na Kham"
+ },
+ {
+   "id": 4024,
+   "menu": "district",
+   "sort": 386,
+   "parent_categories_id": 40,
+   "title_th": "บ้านแฮด",
+   "title_en": "Ban Haet"
+ },
+ {
+   "id": 4025,
+   "menu": "district",
+   "sort": 387,
+   "parent_categories_id": 40,
+   "title_th": "โนนศิลา",
+   "title_en": "Non Sila"
+ },
+ {
+   "id": 4026,
+   "menu": "district",
+   "sort": 388,
+   "parent_categories_id": 40,
+   "title_th": "เวียงเก่า",
+   "title_en": "Wiang Kao"
+ },
+ {
+   "id": 4101,
+   "menu": "district",
+   "sort": 389,
+   "parent_categories_id": 41,
+   "title_th": "เมืองอุดรธานี",
+   "title_en": "Mueang Udon Thani"
+ },
+ {
+   "id": 4102,
+   "menu": "district",
+   "sort": 390,
+   "parent_categories_id": 41,
+   "title_th": "กุดจับ",
+   "title_en": "Kut Chap"
+ },
+ {
+   "id": 4103,
+   "menu": "district",
+   "sort": 391,
+   "parent_categories_id": 41,
+   "title_th": "หนองวัวซอ",
+   "title_en": "Nong Wua So"
+ },
+ {
+   "id": 4104,
+   "menu": "district",
+   "sort": 392,
+   "parent_categories_id": 41,
+   "title_th": "กุมภวาปี",
+   "title_en": "Kumphawapi"
+ },
+ {
+   "id": 4105,
+   "menu": "district",
+   "sort": 393,
+   "parent_categories_id": 41,
+   "title_th": "โนนสะอาด",
+   "title_en": "Non Sa-at"
+ },
+ {
+   "id": 4106,
+   "menu": "district",
+   "sort": 394,
+   "parent_categories_id": 41,
+   "title_th": "หนองหาน",
+   "title_en": "Nong Han"
+ },
+ {
+   "id": 4107,
+   "menu": "district",
+   "sort": 395,
+   "parent_categories_id": 41,
+   "title_th": "ทุ่งฝน",
+   "title_en": "Thung Fon"
+ },
+ {
+   "id": 4108,
+   "menu": "district",
+   "sort": 396,
+   "parent_categories_id": 41,
+   "title_th": "ไชยวาน",
+   "title_en": "Chai Wan"
+ },
+ {
+   "id": 4109,
+   "menu": "district",
+   "sort": 397,
+   "parent_categories_id": 41,
+   "title_th": "ศรีธาตุ",
+   "title_en": "Si That"
+ },
+ {
+   "id": 4110,
+   "menu": "district",
+   "sort": 398,
+   "parent_categories_id": 41,
+   "title_th": "วังสามหมอ",
+   "title_en": "Wang Sam Mo"
+ },
+ {
+   "id": 4111,
+   "menu": "district",
+   "sort": 399,
+   "parent_categories_id": 41,
+   "title_th": "บ้านดุง",
+   "title_en": "Ban Dung"
+ },
+ {
+   "id": 4117,
+   "menu": "district",
+   "sort": 400,
+   "parent_categories_id": 41,
+   "title_th": "บ้านผือ",
+   "title_en": "Ban Phue"
+ },
+ {
+   "id": 4118,
+   "menu": "district",
+   "sort": 401,
+   "parent_categories_id": 41,
+   "title_th": "น้ำโสม",
+   "title_en": "Nam Som"
+ },
+ {
+   "id": 4119,
+   "menu": "district",
+   "sort": 402,
+   "parent_categories_id": 41,
+   "title_th": "เพ็ญ",
+   "title_en": "Phen"
+ },
+ {
+   "id": 4120,
+   "menu": "district",
+   "sort": 403,
+   "parent_categories_id": 41,
+   "title_th": "สร้างคอม",
+   "title_en": "Sang Khom"
+ },
+ {
+   "id": 4121,
+   "menu": "district",
+   "sort": 404,
+   "parent_categories_id": 41,
+   "title_th": "หนองแสง",
+   "title_en": "Nong Saeng"
+ },
+ {
+   "id": 4122,
+   "menu": "district",
+   "sort": 405,
+   "parent_categories_id": 41,
+   "title_th": "นายูง",
+   "title_en": "Na Yung"
+ },
+ {
+   "id": 4123,
+   "menu": "district",
+   "sort": 406,
+   "parent_categories_id": 41,
+   "title_th": "พิบูลย์รักษ์",
+   "title_en": "Phibun Rak"
+ },
+ {
+   "id": 4124,
+   "menu": "district",
+   "sort": 407,
+   "parent_categories_id": 41,
+   "title_th": "กู่แก้ว",
+   "title_en": "Ku Kaeo"
+ },
+ {
+   "id": 4125,
+   "menu": "district",
+   "sort": 408,
+   "parent_categories_id": 41,
+   "title_th": "ประจักษ์ศิลปาคม",
+   "title_en": "Prachaksinlapakhom"
+ },
+ {
+   "id": 4201,
+   "menu": "district",
+   "sort": 409,
+   "parent_categories_id": 42,
+   "title_th": "เมืองเลย",
+   "title_en": "Mueang Loei"
+ },
+ {
+   "id": 4202,
+   "menu": "district",
+   "sort": 410,
+   "parent_categories_id": 42,
+   "title_th": "นาด้วง",
+   "title_en": "Na Duang"
+ },
+ {
+   "id": 4203,
+   "menu": "district",
+   "sort": 411,
+   "parent_categories_id": 42,
+   "title_th": "เชียงคาน",
+   "title_en": "Chiang Khan"
+ },
+ {
+   "id": 4204,
+   "menu": "district",
+   "sort": 412,
+   "parent_categories_id": 42,
+   "title_th": "ปากชม",
+   "title_en": "Pak Chom"
+ },
+ {
+   "id": 4205,
+   "menu": "district",
+   "sort": 413,
+   "parent_categories_id": 42,
+   "title_th": "ด่านซ้าย",
+   "title_en": "Dan Sai"
+ },
+ {
+   "id": 4206,
+   "menu": "district",
+   "sort": 414,
+   "parent_categories_id": 42,
+   "title_th": "นาแห้ว",
+   "title_en": "Na Haeo"
+ },
+ {
+   "id": 4207,
+   "menu": "district",
+   "sort": 415,
+   "parent_categories_id": 42,
+   "title_th": "ภูเรือ",
+   "title_en": "Phu Ruea"
+ },
+ {
+   "id": 4208,
+   "menu": "district",
+   "sort": 416,
+   "parent_categories_id": 42,
+   "title_th": "ท่าลี่",
+   "title_en": "Tha Li"
+ },
+ {
+   "id": 4209,
+   "menu": "district",
+   "sort": 417,
+   "parent_categories_id": 42,
+   "title_th": "วังสะพุง",
+   "title_en": "Wang Saphung"
+ },
+ {
+   "id": 4210,
+   "menu": "district",
+   "sort": 418,
+   "parent_categories_id": 42,
+   "title_th": "ภูกระดึง",
+   "title_en": "Phu Kradueng"
+ },
+ {
+   "id": 4211,
+   "menu": "district",
+   "sort": 419,
+   "parent_categories_id": 42,
+   "title_th": "ภูหลวง",
+   "title_en": "Phu Luang"
+ },
+ {
+   "id": 4212,
+   "menu": "district",
+   "sort": 420,
+   "parent_categories_id": 42,
+   "title_th": "ผาขาว",
+   "title_en": "Pha Khao"
+ },
+ {
+   "id": 4213,
+   "menu": "district",
+   "sort": 421,
+   "parent_categories_id": 42,
+   "title_th": "เอราวัณ",
+   "title_en": "Erawan"
+ },
+ {
+   "id": 4214,
+   "menu": "district",
+   "sort": 422,
+   "parent_categories_id": 42,
+   "title_th": "หนองหิน",
+   "title_en": "Nong Hin"
+ },
+ {
+   "id": 4301,
+   "menu": "district",
+   "sort": 423,
+   "parent_categories_id": 43,
+   "title_th": "เมืองหนองคาย",
+   "title_en": "Mueang Nong Khai"
+ },
+ {
+   "id": 4302,
+   "menu": "district",
+   "sort": 424,
+   "parent_categories_id": 43,
+   "title_th": "ท่าบ่อ",
+   "title_en": "Tha Bo"
+ },
+ {
+   "id": 4305,
+   "menu": "district",
+   "sort": 425,
+   "parent_categories_id": 43,
+   "title_th": "โพนพิสัย",
+   "title_en": "Phon Phisai"
+ },
+ {
+   "id": 4307,
+   "menu": "district",
+   "sort": 426,
+   "parent_categories_id": 43,
+   "title_th": "ศรีเชียงใหม่",
+   "title_en": "Si Chiang Mai"
+ },
+ {
+   "id": 4308,
+   "menu": "district",
+   "sort": 427,
+   "parent_categories_id": 43,
+   "title_th": "สังคม",
+   "title_en": "Sangkhom"
+ },
+ {
+   "id": 4314,
+   "menu": "district",
+   "sort": 428,
+   "parent_categories_id": 43,
+   "title_th": "สระใคร",
+   "title_en": "Sakhrai"
+ },
+ {
+   "id": 4315,
+   "menu": "district",
+   "sort": 429,
+   "parent_categories_id": 43,
+   "title_th": "เฝ้าไร่",
+   "title_en": "Fao Rai"
+ },
+ {
+   "id": 4316,
+   "menu": "district",
+   "sort": 430,
+   "parent_categories_id": 43,
+   "title_th": "รัตนวาปี",
+   "title_en": "Rattanawapi"
+ },
+ {
+   "id": 4317,
+   "menu": "district",
+   "sort": 431,
+   "parent_categories_id": 43,
+   "title_th": "โพธิ์ตาก",
+   "title_en": "Pho Tak"
+ },
+ {
+   "id": 4401,
+   "menu": "district",
+   "sort": 432,
+   "parent_categories_id": 44,
+   "title_th": "เมืองมหาสารคาม",
+   "title_en": "Mueang Maha Sarakham"
+ },
+ {
+   "id": 4402,
+   "menu": "district",
+   "sort": 433,
+   "parent_categories_id": 44,
+   "title_th": "แกดำ",
+   "title_en": "Kae Dam"
+ },
+ {
+   "id": 4403,
+   "menu": "district",
+   "sort": 434,
+   "parent_categories_id": 44,
+   "title_th": "โกสุมพิสัย",
+   "title_en": "Kosum Phisai"
+ },
+ {
+   "id": 4404,
+   "menu": "district",
+   "sort": 435,
+   "parent_categories_id": 44,
+   "title_th": "กันทรวิชัย",
+   "title_en": "Kantharawichai"
+ },
+ {
+   "id": 4405,
+   "menu": "district",
+   "sort": 436,
+   "parent_categories_id": 44,
+   "title_th": "เชียงยืน",
+   "title_en": "Chiang Yuen"
+ },
+ {
+   "id": 4406,
+   "menu": "district",
+   "sort": 437,
+   "parent_categories_id": 44,
+   "title_th": "บรบือ",
+   "title_en": "Borabue"
+ },
+ {
+   "id": 4407,
+   "menu": "district",
+   "sort": 438,
+   "parent_categories_id": 44,
+   "title_th": "นาเชือก",
+   "title_en": "Na Chueak"
+ },
+ {
+   "id": 4408,
+   "menu": "district",
+   "sort": 439,
+   "parent_categories_id": 44,
+   "title_th": "พยัคฆภูมิพิสัย",
+   "title_en": "Phayakkhaphum Phisai"
+ },
+ {
+   "id": 4409,
+   "menu": "district",
+   "sort": 440,
+   "parent_categories_id": 44,
+   "title_th": "วาปีปทุม",
+   "title_en": "Wapi Pathum"
+ },
+ {
+   "id": 4410,
+   "menu": "district",
+   "sort": 441,
+   "parent_categories_id": 44,
+   "title_th": "นาดูน",
+   "title_en": "Na Dun"
+ },
+ {
+   "id": 4411,
+   "menu": "district",
+   "sort": 442,
+   "parent_categories_id": 44,
+   "title_th": "ยางสีสุราช",
+   "title_en": "Yang Sisurat"
+ },
+ {
+   "id": 4412,
+   "menu": "district",
+   "sort": 443,
+   "parent_categories_id": 44,
+   "title_th": "กุดรัง",
+   "title_en": "Kut Rang"
+ },
+ {
+   "id": 4413,
+   "menu": "district",
+   "sort": 444,
+   "parent_categories_id": 44,
+   "title_th": "ชื่นชม",
+   "title_en": "Chuen Chom"
+ },
+ {
+   "id": 4501,
+   "menu": "district",
+   "sort": 445,
+   "parent_categories_id": 45,
+   "title_th": "เมืองร้อยเอ็ด",
+   "title_en": "Mueang Roi Et"
+ },
+ {
+   "id": 4502,
+   "menu": "district",
+   "sort": 446,
+   "parent_categories_id": 45,
+   "title_th": "เกษตรวิสัย",
+   "title_en": "Kaset Wisai"
+ },
+ {
+   "id": 4503,
+   "menu": "district",
+   "sort": 447,
+   "parent_categories_id": 45,
+   "title_th": "ปทุมรัตต์",
+   "title_en": "Pathum Rat"
+ },
+ {
+   "id": 4504,
+   "menu": "district",
+   "sort": 448,
+   "parent_categories_id": 45,
+   "title_th": "จตุรพักตรพิมาน",
+   "title_en": "Chaturaphak Phiman"
+ },
+ {
+   "id": 4505,
+   "menu": "district",
+   "sort": 449,
+   "parent_categories_id": 45,
+   "title_th": "ธวัชบุรี",
+   "title_en": "Thawat Buri"
+ },
+ {
+   "id": 4506,
+   "menu": "district",
+   "sort": 450,
+   "parent_categories_id": 45,
+   "title_th": "พนมไพร",
+   "title_en": "Phanom Phrai"
+ },
+ {
+   "id": 4507,
+   "menu": "district",
+   "sort": 451,
+   "parent_categories_id": 45,
+   "title_th": "โพนทอง",
+   "title_en": "Phon Thong"
+ },
+ {
+   "id": 4508,
+   "menu": "district",
+   "sort": 452,
+   "parent_categories_id": 45,
+   "title_th": "โพธิ์ชัย",
+   "title_en": "Pho Chai"
+ },
+ {
+   "id": 4509,
+   "menu": "district",
+   "sort": 453,
+   "parent_categories_id": 45,
+   "title_th": "หนองพอก",
+   "title_en": "Nong Phok"
+ },
+ {
+   "id": 4510,
+   "menu": "district",
+   "sort": 454,
+   "parent_categories_id": 45,
+   "title_th": "เสลภูมิ",
+   "title_en": "Selaphum"
+ },
+ {
+   "id": 4511,
+   "menu": "district",
+   "sort": 455,
+   "parent_categories_id": 45,
+   "title_th": "สุวรรณภูมิ",
+   "title_en": "Suwannaphum"
+ },
+ {
+   "id": 4512,
+   "menu": "district",
+   "sort": 456,
+   "parent_categories_id": 45,
+   "title_th": "เมืองสรวง",
+   "title_en": "Mueang Suang"
+ },
+ {
+   "id": 4513,
+   "menu": "district",
+   "sort": 457,
+   "parent_categories_id": 45,
+   "title_th": "โพนทราย",
+   "title_en": "Phon Sai"
+ },
+ {
+   "id": 4514,
+   "menu": "district",
+   "sort": 458,
+   "parent_categories_id": 45,
+   "title_th": "อาจสามารถ",
+   "title_en": "At Samat"
+ },
+ {
+   "id": 4515,
+   "menu": "district",
+   "sort": 459,
+   "parent_categories_id": 45,
+   "title_th": "เมยวดี",
+   "title_en": "Moei Wadi"
+ },
+ {
+   "id": 4516,
+   "menu": "district",
+   "sort": 460,
+   "parent_categories_id": 45,
+   "title_th": "ศรีสมเด็จ",
+   "title_en": "Si Somdet"
+ },
+ {
+   "id": 4517,
+   "menu": "district",
+   "sort": 461,
+   "parent_categories_id": 45,
+   "title_th": "จังหาร",
+   "title_en": "Changhan"
+ },
+ {
+   "id": 4518,
+   "menu": "district",
+   "sort": 462,
+   "parent_categories_id": 45,
+   "title_th": "เชียงขวัญ",
+   "title_en": "Chiang Khwan"
+ },
+ {
+   "id": 4519,
+   "menu": "district",
+   "sort": 463,
+   "parent_categories_id": 45,
+   "title_th": "หนองฮี",
+   "title_en": "Nong Hi"
+ },
+ {
+   "id": 4520,
+   "menu": "district",
+   "sort": 464,
+   "parent_categories_id": 45,
+   "title_th": "ทุ่งเขาหลวง",
+   "title_en": "Thung Khao Luang"
+ },
+ {
+   "id": 4601,
+   "menu": "district",
+   "sort": 465,
+   "parent_categories_id": 46,
+   "title_th": "เมืองกาฬสินธุ์",
+   "title_en": "Mueang Kalasin"
+ },
+ {
+   "id": 4602,
+   "menu": "district",
+   "sort": 466,
+   "parent_categories_id": 46,
+   "title_th": "นามน",
+   "title_en": "Na Mon"
+ },
+ {
+   "id": 4603,
+   "menu": "district",
+   "sort": 467,
+   "parent_categories_id": 46,
+   "title_th": "กมลาไสย",
+   "title_en": "Kamalasai"
+ },
+ {
+   "id": 4604,
+   "menu": "district",
+   "sort": 468,
+   "parent_categories_id": 46,
+   "title_th": "ร่องคำ",
+   "title_en": "Rong Kham"
+ },
+ {
+   "id": 4605,
+   "menu": "district",
+   "sort": 469,
+   "parent_categories_id": 46,
+   "title_th": "กุฉินารายณ์",
+   "title_en": "Kuchinarai"
+ },
+ {
+   "id": 4606,
+   "menu": "district",
+   "sort": 470,
+   "parent_categories_id": 46,
+   "title_th": "เขาวง",
+   "title_en": "Khao Wong"
+ },
+ {
+   "id": 4607,
+   "menu": "district",
+   "sort": 471,
+   "parent_categories_id": 46,
+   "title_th": "ยางตลาด",
+   "title_en": "Yang Talat"
+ },
+ {
+   "id": 4608,
+   "menu": "district",
+   "sort": 472,
+   "parent_categories_id": 46,
+   "title_th": "ห้วยเม็ก",
+   "title_en": "Huai Mek"
+ },
+ {
+   "id": 4609,
+   "menu": "district",
+   "sort": 473,
+   "parent_categories_id": 46,
+   "title_th": "สหัสขันธ์",
+   "title_en": "Sahatsakhan"
+ },
+ {
+   "id": 4610,
+   "menu": "district",
+   "sort": 474,
+   "parent_categories_id": 46,
+   "title_th": "คำม่วง",
+   "title_en": "Kham Muang"
+ },
+ {
+   "id": 4611,
+   "menu": "district",
+   "sort": 475,
+   "parent_categories_id": 46,
+   "title_th": "ท่าคันโท",
+   "title_en": "Tha Khantho"
+ },
+ {
+   "id": 4612,
+   "menu": "district",
+   "sort": 476,
+   "parent_categories_id": 46,
+   "title_th": "หนองกุงศรี",
+   "title_en": "Nong Kung Si"
+ },
+ {
+   "id": 4613,
+   "menu": "district",
+   "sort": 477,
+   "parent_categories_id": 46,
+   "title_th": "สมเด็จ",
+   "title_en": "Somdet"
+ },
+ {
+   "id": 4614,
+   "menu": "district",
+   "sort": 478,
+   "parent_categories_id": 46,
+   "title_th": "ห้วยผึ้ง",
+   "title_en": "Huai Phueng"
+ },
+ {
+   "id": 4615,
+   "menu": "district",
+   "sort": 479,
+   "parent_categories_id": 46,
+   "title_th": "สามชัย",
+   "title_en": "Sam Chai"
+ },
+ {
+   "id": 4616,
+   "menu": "district",
+   "sort": 480,
+   "parent_categories_id": 46,
+   "title_th": "นาคู",
+   "title_en": "Na Khu"
+ },
+ {
+   "id": 4617,
+   "menu": "district",
+   "sort": 481,
+   "parent_categories_id": 46,
+   "title_th": "ดอนจาน",
+   "title_en": "Don Chan"
+ },
+ {
+   "id": 4618,
+   "menu": "district",
+   "sort": 482,
+   "parent_categories_id": 46,
+   "title_th": "ฆ้องชัย",
+   "title_en": "Khong Chai"
+ },
+ {
+   "id": 4701,
+   "menu": "district",
+   "sort": 483,
+   "parent_categories_id": 47,
+   "title_th": "เมืองสกลนคร",
+   "title_en": "Mueang Sakon Nakhon"
+ },
+ {
+   "id": 4702,
+   "menu": "district",
+   "sort": 484,
+   "parent_categories_id": 47,
+   "title_th": "กุสุมาลย์",
+   "title_en": "Kusuman"
+ },
+ {
+   "id": 4703,
+   "menu": "district",
+   "sort": 485,
+   "parent_categories_id": 47,
+   "title_th": "กุดบาก",
+   "title_en": "Kut Bak"
+ },
+ {
+   "id": 4704,
+   "menu": "district",
+   "sort": 486,
+   "parent_categories_id": 47,
+   "title_th": "พรรณานิคม",
+   "title_en": "Phanna Nikhom"
+ },
+ {
+   "id": 4705,
+   "menu": "district",
+   "sort": 487,
+   "parent_categories_id": 47,
+   "title_th": "พังโคน",
+   "title_en": "Phang Khon"
+ },
+ {
+   "id": 4706,
+   "menu": "district",
+   "sort": 488,
+   "parent_categories_id": 47,
+   "title_th": "วาริชภูมิ",
+   "title_en": "Waritchaphum"
+ },
+ {
+   "id": 4707,
+   "menu": "district",
+   "sort": 489,
+   "parent_categories_id": 47,
+   "title_th": "นิคมน้ำอูน",
+   "title_en": "Nikhom Nam Un"
+ },
+ {
+   "id": 4708,
+   "menu": "district",
+   "sort": 490,
+   "parent_categories_id": 47,
+   "title_th": "วานรนิวาส",
+   "title_en": "Wanon Niwat"
+ },
+ {
+   "id": 4709,
+   "menu": "district",
+   "sort": 491,
+   "parent_categories_id": 47,
+   "title_th": "คำตากล้า",
+   "title_en": "Kham Ta Kla"
+ },
+ {
+   "id": 4710,
+   "menu": "district",
+   "sort": 492,
+   "parent_categories_id": 47,
+   "title_th": "บ้านม่วง",
+   "title_en": "Ban Muang"
+ },
+ {
+   "id": 4711,
+   "menu": "district",
+   "sort": 493,
+   "parent_categories_id": 47,
+   "title_th": "อากาศอำนวย",
+   "title_en": "Akat Amnuai"
+ },
+ {
+   "id": 4712,
+   "menu": "district",
+   "sort": 494,
+   "parent_categories_id": 47,
+   "title_th": "สว่างแดนดิน",
+   "title_en": "Sawang Daen Din"
+ },
+ {
+   "id": 4713,
+   "menu": "district",
+   "sort": 495,
+   "parent_categories_id": 47,
+   "title_th": "ส่องดาว",
+   "title_en": "Song Dao"
+ },
+ {
+   "id": 4714,
+   "menu": "district",
+   "sort": 496,
+   "parent_categories_id": 47,
+   "title_th": "เต่างอย",
+   "title_en": "Tao Ngoi"
+ },
+ {
+   "id": 4715,
+   "menu": "district",
+   "sort": 497,
+   "parent_categories_id": 47,
+   "title_th": "โคกศรีสุพรรณ",
+   "title_en": "Khok Si Suphan"
+ },
+ {
+   "id": 4716,
+   "menu": "district",
+   "sort": 498,
+   "parent_categories_id": 47,
+   "title_th": "เจริญศิลป์",
+   "title_en": "Charoen Sin"
+ },
+ {
+   "id": 4717,
+   "menu": "district",
+   "sort": 499,
+   "parent_categories_id": 47,
+   "title_th": "โพนนาแก้ว",
+   "title_en": "Phon Na Kaeo"
+ },
+ {
+   "id": 4718,
+   "menu": "district",
+   "sort": 500,
+   "parent_categories_id": 47,
+   "title_th": "ภูพาน",
+   "title_en": "Phu Phan"
+ },
+ {
+   "id": 4801,
+   "menu": "district",
+   "sort": 501,
+   "parent_categories_id": 48,
+   "title_th": "เมืองนครพนม",
+   "title_en": "Mueang Nakhon Phanom"
+ },
+ {
+   "id": 4802,
+   "menu": "district",
+   "sort": 502,
+   "parent_categories_id": 48,
+   "title_th": "ปลาปาก",
+   "title_en": "Pla Pak"
+ },
+ {
+   "id": 4803,
+   "menu": "district",
+   "sort": 503,
+   "parent_categories_id": 48,
+   "title_th": "ท่าอุเทน",
+   "title_en": "Tha Uthen"
+ },
+ {
+   "id": 4804,
+   "menu": "district",
+   "sort": 504,
+   "parent_categories_id": 48,
+   "title_th": "บ้านแพง",
+   "title_en": "Ban Phaeng"
+ },
+ {
+   "id": 4805,
+   "menu": "district",
+   "sort": 505,
+   "parent_categories_id": 48,
+   "title_th": "ธาตุพนม",
+   "title_en": "That Phanom"
+ },
+ {
+   "id": 4806,
+   "menu": "district",
+   "sort": 506,
+   "parent_categories_id": 48,
+   "title_th": "เรณูนคร",
+   "title_en": "Renu Nakhon"
+ },
+ {
+   "id": 4807,
+   "menu": "district",
+   "sort": 507,
+   "parent_categories_id": 48,
+   "title_th": "นาแก",
+   "title_en": "Na Kae"
+ },
+ {
+   "id": 4808,
+   "menu": "district",
+   "sort": 508,
+   "parent_categories_id": 48,
+   "title_th": "ศรีสงคราม",
+   "title_en": "Si Songkhram"
+ },
+ {
+   "id": 4809,
+   "menu": "district",
+   "sort": 509,
+   "parent_categories_id": 48,
+   "title_th": "นาหว้า",
+   "title_en": "Na Wa"
+ },
+ {
+   "id": 4810,
+   "menu": "district",
+   "sort": 510,
+   "parent_categories_id": 48,
+   "title_th": "โพนสวรรค์",
+   "title_en": "Phon Sawan"
+ },
+ {
+   "id": 4811,
+   "menu": "district",
+   "sort": 511,
+   "parent_categories_id": 48,
+   "title_th": "นาทม",
+   "title_en": "Na Thom"
+ },
+ {
+   "id": 4812,
+   "menu": "district",
+   "sort": 512,
+   "parent_categories_id": 48,
+   "title_th": "วังยาง",
+   "title_en": "Wang Yang"
+ },
+ {
+   "id": 4901,
+   "menu": "district",
+   "sort": 513,
+   "parent_categories_id": 49,
+   "title_th": "เมืองมุกดาหาร",
+   "title_en": "Mueang Mukdahan"
+ },
+ {
+   "id": 4902,
+   "menu": "district",
+   "sort": 514,
+   "parent_categories_id": 49,
+   "title_th": "นิคมคำสร้อย",
+   "title_en": "Nikhom Kham Soi"
+ },
+ {
+   "id": 4903,
+   "menu": "district",
+   "sort": 515,
+   "parent_categories_id": 49,
+   "title_th": "ดอนตาล",
+   "title_en": "Don Tan"
+ },
+ {
+   "id": 4904,
+   "menu": "district",
+   "sort": 516,
+   "parent_categories_id": 49,
+   "title_th": "ดงหลวง",
+   "title_en": "Dong Luang"
+ },
+ {
+   "id": 4905,
+   "menu": "district",
+   "sort": 517,
+   "parent_categories_id": 49,
+   "title_th": "คำชะอี",
+   "title_en": "Khamcha-i"
+ },
+ {
+   "id": 4906,
+   "menu": "district",
+   "sort": 518,
+   "parent_categories_id": 49,
+   "title_th": "หว้านใหญ่",
+   "title_en": "Wan Yai"
+ },
+ {
+   "id": 4907,
+   "menu": "district",
+   "sort": 519,
+   "parent_categories_id": 49,
+   "title_th": "หนองสูง",
+   "title_en": "Nong Sung"
+ },
+ {
+   "id": 5001,
+   "menu": "district",
+   "sort": 520,
+   "parent_categories_id": 50,
+   "title_th": "เมืองเชียงใหม่",
+   "title_en": "Mueang Chiang Mai"
+ },
+ {
+   "id": 5002,
+   "menu": "district",
+   "sort": 521,
+   "parent_categories_id": 50,
+   "title_th": "จอมทอง",
+   "title_en": "Chom Thong"
+ },
+ {
+   "id": 5003,
+   "menu": "district",
+   "sort": 522,
+   "parent_categories_id": 50,
+   "title_th": "แม่แจ่ม",
+   "title_en": "Mae Chaem"
+ },
+ {
+   "id": 5004,
+   "menu": "district",
+   "sort": 523,
+   "parent_categories_id": 50,
+   "title_th": "เชียงดาว",
+   "title_en": "Chiang Dao"
+ },
+ {
+   "id": 5005,
+   "menu": "district",
+   "sort": 524,
+   "parent_categories_id": 50,
+   "title_th": "ดอยสะเก็ด",
+   "title_en": "Doi Saket"
+ },
+ {
+   "id": 5006,
+   "menu": "district",
+   "sort": 525,
+   "parent_categories_id": 50,
+   "title_th": "แม่แตง",
+   "title_en": "Mae Taeng"
+ },
+ {
+   "id": 5007,
+   "menu": "district",
+   "sort": 526,
+   "parent_categories_id": 50,
+   "title_th": "แม่ริม",
+   "title_en": "Mae Rim"
+ },
+ {
+   "id": 5008,
+   "menu": "district",
+   "sort": 527,
+   "parent_categories_id": 50,
+   "title_th": "สะเมิง",
+   "title_en": "Samoeng"
+ },
+ {
+   "id": 5009,
+   "menu": "district",
+   "sort": 528,
+   "parent_categories_id": 50,
+   "title_th": "ฝาง",
+   "title_en": "Fang"
+ },
+ {
+   "id": 5010,
+   "menu": "district",
+   "sort": 529,
+   "parent_categories_id": 50,
+   "title_th": "แม่อาย",
+   "title_en": "Mae Ai"
+ },
+ {
+   "id": 5011,
+   "menu": "district",
+   "sort": 530,
+   "parent_categories_id": 50,
+   "title_th": "พร้าว",
+   "title_en": "Phrao"
+ },
+ {
+   "id": 5012,
+   "menu": "district",
+   "sort": 531,
+   "parent_categories_id": 50,
+   "title_th": "สันป่าตอง",
+   "title_en": "San Pa Tong"
+ },
+ {
+   "id": 5013,
+   "menu": "district",
+   "sort": 532,
+   "parent_categories_id": 50,
+   "title_th": "สันกำแพง",
+   "title_en": "San Kamphaeng"
+ },
+ {
+   "id": 5014,
+   "menu": "district",
+   "sort": 533,
+   "parent_categories_id": 50,
+   "title_th": "สันทราย",
+   "title_en": "San Sai"
+ },
+ {
+   "id": 5015,
+   "menu": "district",
+   "sort": 534,
+   "parent_categories_id": 50,
+   "title_th": "หางดง",
+   "title_en": "Hang Dong"
+ },
+ {
+   "id": 5016,
+   "menu": "district",
+   "sort": 535,
+   "parent_categories_id": 50,
+   "title_th": "ฮอด",
+   "title_en": "Hot"
+ },
+ {
+   "id": 5017,
+   "menu": "district",
+   "sort": 536,
+   "parent_categories_id": 50,
+   "title_th": "ดอยเต่า",
+   "title_en": "Doi Tao"
+ },
+ {
+   "id": 5018,
+   "menu": "district",
+   "sort": 537,
+   "parent_categories_id": 50,
+   "title_th": "อมก๋อย",
+   "title_en": "Omkoi"
+ },
+ {
+   "id": 5019,
+   "menu": "district",
+   "sort": 538,
+   "parent_categories_id": 50,
+   "title_th": "สารภี",
+   "title_en": "Saraphi"
+ },
+ {
+   "id": 5020,
+   "menu": "district",
+   "sort": 539,
+   "parent_categories_id": 50,
+   "title_th": "เวียงแหง",
+   "title_en": "Wiang Haeng"
+ },
+ {
+   "id": 5021,
+   "menu": "district",
+   "sort": 540,
+   "parent_categories_id": 50,
+   "title_th": "ไชยปราการ",
+   "title_en": "Chai Prakan"
+ },
+ {
+   "id": 5022,
+   "menu": "district",
+   "sort": 541,
+   "parent_categories_id": 50,
+   "title_th": "แม่วาง",
+   "title_en": "Mae Wang"
+ },
+ {
+   "id": 5023,
+   "menu": "district",
+   "sort": 542,
+   "parent_categories_id": 50,
+   "title_th": "แม่ออน",
+   "title_en": "Mae On"
+ },
+ {
+   "id": 5024,
+   "menu": "district",
+   "sort": 543,
+   "parent_categories_id": 50,
+   "title_th": "ดอยหล่อ",
+   "title_en": "Doi Lo"
+ },
+ {
+   "id": 5026,
+   "menu": "district",
+   "sort": 544,
+   "parent_categories_id": 50,
+   "title_th": "กัลยาณิวัฒนา",
+   "title_en": "Galyani Vadhana"
+ },
+ {
+   "id": 5101,
+   "menu": "district",
+   "sort": 545,
+   "parent_categories_id": 51,
+   "title_th": "เมืองลำพูน",
+   "title_en": "Mueang Lamphun"
+ },
+ {
+   "id": 5102,
+   "menu": "district",
+   "sort": 546,
+   "parent_categories_id": 51,
+   "title_th": "แม่ทา",
+   "title_en": "Mae Tha"
+ },
+ {
+   "id": 5103,
+   "menu": "district",
+   "sort": 547,
+   "parent_categories_id": 51,
+   "title_th": "บ้านโฮ่ง",
+   "title_en": "Ban Hong"
+ },
+ {
+   "id": 5104,
+   "menu": "district",
+   "sort": 548,
+   "parent_categories_id": 51,
+   "title_th": "ลี้",
+   "title_en": "Li"
+ },
+ {
+   "id": 5105,
+   "menu": "district",
+   "sort": 549,
+   "parent_categories_id": 51,
+   "title_th": "ทุ่งหัวช้าง",
+   "title_en": "Thung Hua Chang"
+ },
+ {
+   "id": 5106,
+   "menu": "district",
+   "sort": 550,
+   "parent_categories_id": 51,
+   "title_th": "ป่าซาง",
+   "title_en": "Pa Sang"
+ },
+ {
+   "id": 5107,
+   "menu": "district",
+   "sort": 551,
+   "parent_categories_id": 51,
+   "title_th": "บ้านธิ",
+   "title_en": "Ban Thi"
+ },
+ {
+   "id": 5108,
+   "menu": "district",
+   "sort": 552,
+   "parent_categories_id": 51,
+   "title_th": "เวียงหนองล่อง",
+   "title_en": "Wiang Nong Long"
+ },
+ {
+   "id": 5201,
+   "menu": "district",
+   "sort": 553,
+   "parent_categories_id": 52,
+   "title_th": "เมืองลำปาง",
+   "title_en": "Mueang Lampang"
+ },
+ {
+   "id": 5202,
+   "menu": "district",
+   "sort": 554,
+   "parent_categories_id": 52,
+   "title_th": "แม่เมาะ",
+   "title_en": "Mae Mo"
+ },
+ {
+   "id": 5203,
+   "menu": "district",
+   "sort": 555,
+   "parent_categories_id": 52,
+   "title_th": "เกาะคา",
+   "title_en": "Ko Kha"
+ },
+ {
+   "id": 5204,
+   "menu": "district",
+   "sort": 556,
+   "parent_categories_id": 52,
+   "title_th": "เสริมงาม",
+   "title_en": "Soem Ngam"
+ },
+ {
+   "id": 5205,
+   "menu": "district",
+   "sort": 557,
+   "parent_categories_id": 52,
+   "title_th": "งาว",
+   "title_en": "Ngao"
+ },
+ {
+   "id": 5206,
+   "menu": "district",
+   "sort": 558,
+   "parent_categories_id": 52,
+   "title_th": "แจ้ห่ม",
+   "title_en": "Chae Hom"
+ },
+ {
+   "id": 5207,
+   "menu": "district",
+   "sort": 559,
+   "parent_categories_id": 52,
+   "title_th": "วังเหนือ",
+   "title_en": "Wang Nuea"
+ },
+ {
+   "id": 5208,
+   "menu": "district",
+   "sort": 560,
+   "parent_categories_id": 52,
+   "title_th": "เถิน",
+   "title_en": "Thoen"
+ },
+ {
+   "id": 5209,
+   "menu": "district",
+   "sort": 561,
+   "parent_categories_id": 52,
+   "title_th": "แม่พริก",
+   "title_en": "Mae Phrik"
+ },
+ {
+   "id": 5210,
+   "menu": "district",
+   "sort": 562,
+   "parent_categories_id": 52,
+   "title_th": "แม่ทะ",
+   "title_en": "Mae Tha"
+ },
+ {
+   "id": 5211,
+   "menu": "district",
+   "sort": 563,
+   "parent_categories_id": 52,
+   "title_th": "สบปราบ",
+   "title_en": "Sop Prap"
+ },
+ {
+   "id": 5212,
+   "menu": "district",
+   "sort": 564,
+   "parent_categories_id": 52,
+   "title_th": "ห้างฉัตร",
+   "title_en": "Hang Chat"
+ },
+ {
+   "id": 5213,
+   "menu": "district",
+   "sort": 565,
+   "parent_categories_id": 52,
+   "title_th": "เมืองปาน",
+   "title_en": "Mueang Pan"
+ },
+ {
+   "id": 5301,
+   "menu": "district",
+   "sort": 566,
+   "parent_categories_id": 53,
+   "title_th": "เมืองอุตรดิตถ์",
+   "title_en": "Mueang Uttaradit"
+ },
+ {
+   "id": 5302,
+   "menu": "district",
+   "sort": 567,
+   "parent_categories_id": 53,
+   "title_th": "ตรอน",
+   "title_en": "Tron"
+ },
+ {
+   "id": 5303,
+   "menu": "district",
+   "sort": 568,
+   "parent_categories_id": 53,
+   "title_th": "ท่าปลา",
+   "title_en": "Tha Pla"
+ },
+ {
+   "id": 5304,
+   "menu": "district",
+   "sort": 569,
+   "parent_categories_id": 53,
+   "title_th": "น้ำปาด",
+   "title_en": "Nam Pat"
+ },
+ {
+   "id": 5305,
+   "menu": "district",
+   "sort": 570,
+   "parent_categories_id": 53,
+   "title_th": "ฟากท่า",
+   "title_en": "Fak Tha"
+ },
+ {
+   "id": 5306,
+   "menu": "district",
+   "sort": 571,
+   "parent_categories_id": 53,
+   "title_th": "บ้านโคก",
+   "title_en": "Ban Khok"
+ },
+ {
+   "id": 5307,
+   "menu": "district",
+   "sort": 572,
+   "parent_categories_id": 53,
+   "title_th": "พิชัย",
+   "title_en": "Phichai"
+ },
+ {
+   "id": 5308,
+   "menu": "district",
+   "sort": 573,
+   "parent_categories_id": 53,
+   "title_th": "ลับแล",
+   "title_en": "Laplae"
+ },
+ {
+   "id": 5309,
+   "menu": "district",
+   "sort": 574,
+   "parent_categories_id": 53,
+   "title_th": "ทองแสนขัน",
+   "title_en": "Thong Saen Khan"
+ },
+ {
+   "id": 5401,
+   "menu": "district",
+   "sort": 575,
+   "parent_categories_id": 54,
+   "title_th": "เมืองแพร่",
+   "title_en": "Mueang Phrae"
+ },
+ {
+   "id": 5402,
+   "menu": "district",
+   "sort": 576,
+   "parent_categories_id": 54,
+   "title_th": "ร้องกวาง",
+   "title_en": "Rong Kwang"
+ },
+ {
+   "id": 5403,
+   "menu": "district",
+   "sort": 577,
+   "parent_categories_id": 54,
+   "title_th": "ลอง",
+   "title_en": "Long"
+ },
+ {
+   "id": 5404,
+   "menu": "district",
+   "sort": 578,
+   "parent_categories_id": 54,
+   "title_th": "สูงเม่น",
+   "title_en": "Sung Men"
+ },
+ {
+   "id": 5405,
+   "menu": "district",
+   "sort": 579,
+   "parent_categories_id": 54,
+   "title_th": "เด่นชัย",
+   "title_en": "Den Chai"
+ },
+ {
+   "id": 5406,
+   "menu": "district",
+   "sort": 580,
+   "parent_categories_id": 54,
+   "title_th": "สอง",
+   "title_en": "Song"
+ },
+ {
+   "id": 5407,
+   "menu": "district",
+   "sort": 581,
+   "parent_categories_id": 54,
+   "title_th": "วังชิ้น",
+   "title_en": "Wang Chin"
+ },
+ {
+   "id": 5408,
+   "menu": "district",
+   "sort": 582,
+   "parent_categories_id": 54,
+   "title_th": "หนองม่วงไข่",
+   "title_en": "Nong Muang Khai"
+ },
+ {
+   "id": 5501,
+   "menu": "district",
+   "sort": 583,
+   "parent_categories_id": 55,
+   "title_th": "เมืองน่าน",
+   "title_en": "Mueang Nan"
+ },
+ {
+   "id": 5502,
+   "menu": "district",
+   "sort": 584,
+   "parent_categories_id": 55,
+   "title_th": "แม่จริม",
+   "title_en": "Mae Charim"
+ },
+ {
+   "id": 5503,
+   "menu": "district",
+   "sort": 585,
+   "parent_categories_id": 55,
+   "title_th": "บ้านหลวง",
+   "title_en": "Ban Luang"
+ },
+ {
+   "id": 5504,
+   "menu": "district",
+   "sort": 586,
+   "parent_categories_id": 55,
+   "title_th": "นาน้อย",
+   "title_en": "Na Noi"
+ },
+ {
+   "id": 5505,
+   "menu": "district",
+   "sort": 587,
+   "parent_categories_id": 55,
+   "title_th": "ปัว",
+   "title_en": "Pua"
+ },
+ {
+   "id": 5506,
+   "menu": "district",
+   "sort": 588,
+   "parent_categories_id": 55,
+   "title_th": "ท่าวังผา",
+   "title_en": "Tha Wang Pha"
+ },
+ {
+   "id": 5507,
+   "menu": "district",
+   "sort": 589,
+   "parent_categories_id": 55,
+   "title_th": "เวียงสา",
+   "title_en": "Wiang Sa"
+ },
+ {
+   "id": 5508,
+   "menu": "district",
+   "sort": 590,
+   "parent_categories_id": 55,
+   "title_th": "ทุ่งช้าง",
+   "title_en": "Thung Chang"
+ },
+ {
+   "id": 5509,
+   "menu": "district",
+   "sort": 591,
+   "parent_categories_id": 55,
+   "title_th": "เชียงกลาง",
+   "title_en": "Chiang Klang"
+ },
+ {
+   "id": 5510,
+   "menu": "district",
+   "sort": 592,
+   "parent_categories_id": 55,
+   "title_th": "นาหมื่น",
+   "title_en": "Na Muen"
+ },
+ {
+   "id": 5511,
+   "menu": "district",
+   "sort": 593,
+   "parent_categories_id": 55,
+   "title_th": "สันติสุข",
+   "title_en": "Santi Suk"
+ },
+ {
+   "id": 5512,
+   "menu": "district",
+   "sort": 594,
+   "parent_categories_id": 55,
+   "title_th": "บ่อเกลือ",
+   "title_en": "Bo Kluea"
+ },
+ {
+   "id": 5513,
+   "menu": "district",
+   "sort": 595,
+   "parent_categories_id": 55,
+   "title_th": "สองแคว",
+   "title_en": "Song Khwae"
+ },
+ {
+   "id": 5514,
+   "menu": "district",
+   "sort": 596,
+   "parent_categories_id": 55,
+   "title_th": "ภูเพียง",
+   "title_en": "Phu Phiang"
+ },
+ {
+   "id": 5515,
+   "menu": "district",
+   "sort": 597,
+   "parent_categories_id": 55,
+   "title_th": "เฉลิมพระเกียรติ",
+   "title_en": "Chaloem Phra Kiat"
+ },
+ {
+   "id": 5601,
+   "menu": "district",
+   "sort": 598,
+   "parent_categories_id": 56,
+   "title_th": "เมืองพะเยา",
+   "title_en": "Mueang Phayao"
+ },
+ {
+   "id": 5602,
+   "menu": "district",
+   "sort": 599,
+   "parent_categories_id": 56,
+   "title_th": "จุน",
+   "title_en": "Chun"
+ },
+ {
+   "id": 5603,
+   "menu": "district",
+   "sort": 600,
+   "parent_categories_id": 56,
+   "title_th": "เชียงคำ",
+   "title_en": "Chiang Kham"
+ },
+ {
+   "id": 5604,
+   "menu": "district",
+   "sort": 601,
+   "parent_categories_id": 56,
+   "title_th": "เชียงม่วน",
+   "title_en": "Chiang Muan"
+ },
+ {
+   "id": 5605,
+   "menu": "district",
+   "sort": 602,
+   "parent_categories_id": 56,
+   "title_th": "ดอกคำใต้",
+   "title_en": "Dok Khamtai"
+ },
+ {
+   "id": 5606,
+   "menu": "district",
+   "sort": 603,
+   "parent_categories_id": 56,
+   "title_th": "ปง",
+   "title_en": "Pong"
+ },
+ {
+   "id": 5607,
+   "menu": "district",
+   "sort": 604,
+   "parent_categories_id": 56,
+   "title_th": "แม่ใจ",
+   "title_en": "Mae Chai"
+ },
+ {
+   "id": 5608,
+   "menu": "district",
+   "sort": 605,
+   "parent_categories_id": 56,
+   "title_th": "ภูซาง",
+   "title_en": "Phu Sang"
+ },
+ {
+   "id": 5609,
+   "menu": "district",
+   "sort": 606,
+   "parent_categories_id": 56,
+   "title_th": "ภูกามยาว",
+   "title_en": "Phu Kamyao"
+ },
+ {
+   "id": 5701,
+   "menu": "district",
+   "sort": 607,
+   "parent_categories_id": 57,
+   "title_th": "เมืองเชียงราย",
+   "title_en": "Mueang Chiang Rai"
+ },
+ {
+   "id": 5702,
+   "menu": "district",
+   "sort": 608,
+   "parent_categories_id": 57,
+   "title_th": "เวียงชัย",
+   "title_en": "Wiang Chai"
+ },
+ {
+   "id": 5703,
+   "menu": "district",
+   "sort": 609,
+   "parent_categories_id": 57,
+   "title_th": "เชียงของ",
+   "title_en": "Chiang Khong"
+ },
+ {
+   "id": 5704,
+   "menu": "district",
+   "sort": 610,
+   "parent_categories_id": 57,
+   "title_th": "เทิง",
+   "title_en": "Thoeng"
+ },
+ {
+   "id": 5705,
+   "menu": "district",
+   "sort": 611,
+   "parent_categories_id": 57,
+   "title_th": "พาน",
+   "title_en": "Phan"
+ },
+ {
+   "id": 5706,
+   "menu": "district",
+   "sort": 612,
+   "parent_categories_id": 57,
+   "title_th": "ป่าแดด",
+   "title_en": "Pa Daet"
+ },
+ {
+   "id": 5707,
+   "menu": "district",
+   "sort": 613,
+   "parent_categories_id": 57,
+   "title_th": "แม่จัน",
+   "title_en": "Mae Chan"
+ },
+ {
+   "id": 5708,
+   "menu": "district",
+   "sort": 614,
+   "parent_categories_id": 57,
+   "title_th": "เชียงแสน",
+   "title_en": "Chiang Saen"
+ },
+ {
+   "id": 5709,
+   "menu": "district",
+   "sort": 615,
+   "parent_categories_id": 57,
+   "title_th": "แม่สาย",
+   "title_en": "Mae Sai"
+ },
+ {
+   "id": 5710,
+   "menu": "district",
+   "sort": 616,
+   "parent_categories_id": 57,
+   "title_th": "แม่สรวย",
+   "title_en": "Mae Suai"
+ },
+ {
+   "id": 5711,
+   "menu": "district",
+   "sort": 617,
+   "parent_categories_id": 57,
+   "title_th": "เวียงป่าเป้า",
+   "title_en": "Wiang Pa Pao"
+ },
+ {
+   "id": 5712,
+   "menu": "district",
+   "sort": 618,
+   "parent_categories_id": 57,
+   "title_th": "พญาเม็งราย",
+   "title_en": "Phaya Mengrai"
+ },
+ {
+   "id": 5713,
+   "menu": "district",
+   "sort": 619,
+   "parent_categories_id": 57,
+   "title_th": "เวียงแก่น",
+   "title_en": "Wiang Kaen"
+ },
+ {
+   "id": 5714,
+   "menu": "district",
+   "sort": 620,
+   "parent_categories_id": 57,
+   "title_th": "ขุนตาล",
+   "title_en": "Khun Tan"
+ },
+ {
+   "id": 5715,
+   "menu": "district",
+   "sort": 621,
+   "parent_categories_id": 57,
+   "title_th": "แม่ฟ้าหลวง",
+   "title_en": "Mae Fa Luang"
+ },
+ {
+   "id": 5716,
+   "menu": "district",
+   "sort": 622,
+   "parent_categories_id": 57,
+   "title_th": "แม่ลาว",
+   "title_en": "Mae Lao"
+ },
+ {
+   "id": 5717,
+   "menu": "district",
+   "sort": 623,
+   "parent_categories_id": 57,
+   "title_th": "เวียงเชียงรุ้ง",
+   "title_en": "Wiang Chiang Rung"
+ },
+ {
+   "id": 5718,
+   "menu": "district",
+   "sort": 624,
+   "parent_categories_id": 57,
+   "title_th": "ดอยหลวง",
+   "title_en": "Doi Luang"
+ },
+ {
+   "id": 5801,
+   "menu": "district",
+   "sort": 625,
+   "parent_categories_id": 58,
+   "title_th": "เมืองแม่ฮ่องสอน",
+   "title_en": "Mueang Mae Hong Son"
+ },
+ {
+   "id": 5802,
+   "menu": "district",
+   "sort": 626,
+   "parent_categories_id": 58,
+   "title_th": "ขุนยวม",
+   "title_en": "Khun Yuam"
+ },
+ {
+   "id": 5803,
+   "menu": "district",
+   "sort": 627,
+   "parent_categories_id": 58,
+   "title_th": "ปาย",
+   "title_en": "Pai"
+ },
+ {
+   "id": 5804,
+   "menu": "district",
+   "sort": 628,
+   "parent_categories_id": 58,
+   "title_th": "แม่สะเรียง",
+   "title_en": "Mae Sariang"
+ },
+ {
+   "id": 5805,
+   "menu": "district",
+   "sort": 629,
+   "parent_categories_id": 58,
+   "title_th": "แม่ลาน้อย",
+   "title_en": "Mae La Noi"
+ },
+ {
+   "id": 5806,
+   "menu": "district",
+   "sort": 630,
+   "parent_categories_id": 58,
+   "title_th": "สบเมย",
+   "title_en": "Sop Moei"
+ },
+ {
+   "id": 5807,
+   "menu": "district",
+   "sort": 631,
+   "parent_categories_id": 58,
+   "title_th": "ปางมะผ้า",
+   "title_en": "Pang Mapha"
+ },
+ {
+   "id": 6001,
+   "menu": "district",
+   "sort": 632,
+   "parent_categories_id": 60,
+   "title_th": "เมืองนครสวรรค์",
+   "title_en": "Mueang Nakhon Sawan"
+ },
+ {
+   "id": 6002,
+   "menu": "district",
+   "sort": 633,
+   "parent_categories_id": 60,
+   "title_th": "โกรกพระ",
+   "title_en": "Krok Phra"
+ },
+ {
+   "id": 6003,
+   "menu": "district",
+   "sort": 634,
+   "parent_categories_id": 60,
+   "title_th": "ชุมแสง",
+   "title_en": "Chum Saeng"
+ },
+ {
+   "id": 6004,
+   "menu": "district",
+   "sort": 635,
+   "parent_categories_id": 60,
+   "title_th": "หนองบัว",
+   "title_en": "Nong Bua"
+ },
+ {
+   "id": 6005,
+   "menu": "district",
+   "sort": 636,
+   "parent_categories_id": 60,
+   "title_th": "บรรพตพิสัย",
+   "title_en": "Banphot Phisai"
+ },
+ {
+   "id": 6006,
+   "menu": "district",
+   "sort": 637,
+   "parent_categories_id": 60,
+   "title_th": "เก้าเลี้ยว",
+   "title_en": "Kao Liao"
+ },
+ {
+   "id": 6007,
+   "menu": "district",
+   "sort": 638,
+   "parent_categories_id": 60,
+   "title_th": "ตาคลี",
+   "title_en": "Takhli"
+ },
+ {
+   "id": 6008,
+   "menu": "district",
+   "sort": 639,
+   "parent_categories_id": 60,
+   "title_th": "ท่าตะโก",
+   "title_en": "Tha Tako"
+ },
+ {
+   "id": 6009,
+   "menu": "district",
+   "sort": 640,
+   "parent_categories_id": 60,
+   "title_th": "ไพศาลี",
+   "title_en": "Phaisali"
+ },
+ {
+   "id": 6010,
+   "menu": "district",
+   "sort": 641,
+   "parent_categories_id": 60,
+   "title_th": "พยุหะคีรี",
+   "title_en": "Phayuha Khiri"
+ },
+ {
+   "id": 6011,
+   "menu": "district",
+   "sort": 642,
+   "parent_categories_id": 60,
+   "title_th": "ลาดยาว",
+   "title_en": "Lat Yao"
+ },
+ {
+   "id": 6012,
+   "menu": "district",
+   "sort": 643,
+   "parent_categories_id": 60,
+   "title_th": "ตากฟ้า",
+   "title_en": "Tak Fa"
+ },
+ {
+   "id": 6013,
+   "menu": "district",
+   "sort": 644,
+   "parent_categories_id": 60,
+   "title_th": "แม่วงก์",
+   "title_en": "Mae Wong"
+ },
+ {
+   "id": 6014,
+   "menu": "district",
+   "sort": 645,
+   "parent_categories_id": 60,
+   "title_th": "แม่เปิน",
+   "title_en": "Mae Poen"
+ },
+ {
+   "id": 6015,
+   "menu": "district",
+   "sort": 646,
+   "parent_categories_id": 60,
+   "title_th": "ชุมตาบง",
+   "title_en": "Chum Ta Bong"
+ },
+ {
+   "id": 6101,
+   "menu": "district",
+   "sort": 647,
+   "parent_categories_id": 61,
+   "title_th": "เมืองอุทัยธานี",
+   "title_en": "Mueang Uthai Thani"
+ },
+ {
+   "id": 6102,
+   "menu": "district",
+   "sort": 648,
+   "parent_categories_id": 61,
+   "title_th": "ทัพทัน",
+   "title_en": "Thap Than"
+ },
+ {
+   "id": 6103,
+   "menu": "district",
+   "sort": 649,
+   "parent_categories_id": 61,
+   "title_th": "สว่างอารมณ์",
+   "title_en": "Sawang Arom"
+ },
+ {
+   "id": 6104,
+   "menu": "district",
+   "sort": 650,
+   "parent_categories_id": 61,
+   "title_th": "หนองฉาง",
+   "title_en": "Nong Chang"
+ },
+ {
+   "id": 6105,
+   "menu": "district",
+   "sort": 651,
+   "parent_categories_id": 61,
+   "title_th": "หนองขาหย่าง",
+   "title_en": "Nong Khayang"
+ },
+ {
+   "id": 6106,
+   "menu": "district",
+   "sort": 652,
+   "parent_categories_id": 61,
+   "title_th": "บ้านไร่",
+   "title_en": "Ban Rai"
+ },
+ {
+   "id": 6107,
+   "menu": "district",
+   "sort": 653,
+   "parent_categories_id": 61,
+   "title_th": "ลานสัก",
+   "title_en": "Lan Sak"
+ },
+ {
+   "id": 6108,
+   "menu": "district",
+   "sort": 654,
+   "parent_categories_id": 61,
+   "title_th": "ห้วยคต",
+   "title_en": "Huai Khot"
+ },
+ {
+   "id": 6201,
+   "menu": "district",
+   "sort": 655,
+   "parent_categories_id": 62,
+   "title_th": "เมืองกำแพงเพชร",
+   "title_en": "Mueang Kamphaeng Phet"
+ },
+ {
+   "id": 6202,
+   "menu": "district",
+   "sort": 656,
+   "parent_categories_id": 62,
+   "title_th": "ไทรงาม",
+   "title_en": "Sai Ngam"
+ },
+ {
+   "id": 6203,
+   "menu": "district",
+   "sort": 657,
+   "parent_categories_id": 62,
+   "title_th": "คลองลาน",
+   "title_en": "Khlong Lan"
+ },
+ {
+   "id": 6204,
+   "menu": "district",
+   "sort": 658,
+   "parent_categories_id": 62,
+   "title_th": "ขาณุวรลักษบุรี",
+   "title_en": "Khanu Woralaksaburi"
+ },
+ {
+   "id": 6205,
+   "menu": "district",
+   "sort": 659,
+   "parent_categories_id": 62,
+   "title_th": "คลองขลุง",
+   "title_en": "Khlong Khlung"
+ },
+ {
+   "id": 6206,
+   "menu": "district",
+   "sort": 660,
+   "parent_categories_id": 62,
+   "title_th": "พรานกระต่าย",
+   "title_en": "Phran Kratai"
+ },
+ {
+   "id": 6207,
+   "menu": "district",
+   "sort": 661,
+   "parent_categories_id": 62,
+   "title_th": "ลานกระบือ",
+   "title_en": "Lan Krabue"
+ },
+ {
+   "id": 6208,
+   "menu": "district",
+   "sort": 662,
+   "parent_categories_id": 62,
+   "title_th": "ทรายทองวัฒนา",
+   "title_en": "Sai Thong Watthana"
+ },
+ {
+   "id": 6209,
+   "menu": "district",
+   "sort": 663,
+   "parent_categories_id": 62,
+   "title_th": "ปางศิลาทอง",
+   "title_en": "Pang Sila Thong"
+ },
+ {
+   "id": 6210,
+   "menu": "district",
+   "sort": 664,
+   "parent_categories_id": 62,
+   "title_th": "บึงสามัคคี",
+   "title_en": "Bueng Samakkhi"
+ },
+ {
+   "id": 6211,
+   "menu": "district",
+   "sort": 665,
+   "parent_categories_id": 62,
+   "title_th": "โกสัมพีนคร",
+   "title_en": "Kosamphi Nakhon"
+ },
+ {
+   "id": 6301,
+   "menu": "district",
+   "sort": 666,
+   "parent_categories_id": 63,
+   "title_th": "เมืองตาก",
+   "title_en": "Mueang Tak"
+ },
+ {
+   "id": 6302,
+   "menu": "district",
+   "sort": 667,
+   "parent_categories_id": 63,
+   "title_th": "บ้านตาก",
+   "title_en": "Ban Tak"
+ },
+ {
+   "id": 6303,
+   "menu": "district",
+   "sort": 668,
+   "parent_categories_id": 63,
+   "title_th": "สามเงา",
+   "title_en": "Sam Ngao"
+ },
+ {
+   "id": 6304,
+   "menu": "district",
+   "sort": 669,
+   "parent_categories_id": 63,
+   "title_th": "แม่ระมาด",
+   "title_en": "Mae Ramat"
+ },
+ {
+   "id": 6305,
+   "menu": "district",
+   "sort": 670,
+   "parent_categories_id": 63,
+   "title_th": "ท่าสองยาง",
+   "title_en": "Tha Song Yang"
+ },
+ {
+   "id": 6306,
+   "menu": "district",
+   "sort": 671,
+   "parent_categories_id": 63,
+   "title_th": "แม่สอด",
+   "title_en": "Mae Sot"
+ },
+ {
+   "id": 6307,
+   "menu": "district",
+   "sort": 672,
+   "parent_categories_id": 63,
+   "title_th": "พบพระ",
+   "title_en": "Phop Phra"
+ },
+ {
+   "id": 6308,
+   "menu": "district",
+   "sort": 673,
+   "parent_categories_id": 63,
+   "title_th": "อุ้มผาง",
+   "title_en": "Umphang"
+ },
+ {
+   "id": 6309,
+   "menu": "district",
+   "sort": 674,
+   "parent_categories_id": 63,
+   "title_th": "วังเจ้า",
+   "title_en": "Wang Chao"
+ },
+ {
+   "id": 6401,
+   "menu": "district",
+   "sort": 675,
+   "parent_categories_id": 64,
+   "title_th": "เมืองสุโขทัย",
+   "title_en": "Mueang Sukhothai"
+ },
+ {
+   "id": 6402,
+   "menu": "district",
+   "sort": 676,
+   "parent_categories_id": 64,
+   "title_th": "บ้านด่านลานหอย",
+   "title_en": "Ban Dan Lan Hoi"
+ },
+ {
+   "id": 6403,
+   "menu": "district",
+   "sort": 677,
+   "parent_categories_id": 64,
+   "title_th": "คีรีมาศ",
+   "title_en": "Khiri Mat"
+ },
+ {
+   "id": 6404,
+   "menu": "district",
+   "sort": 678,
+   "parent_categories_id": 64,
+   "title_th": "กงไกรลาศ",
+   "title_en": "Kong Krailat"
+ },
+ {
+   "id": 6405,
+   "menu": "district",
+   "sort": 679,
+   "parent_categories_id": 64,
+   "title_th": "ศรีสัชนาลัย",
+   "title_en": "Si Satchanalai"
+ },
+ {
+   "id": 6406,
+   "menu": "district",
+   "sort": 680,
+   "parent_categories_id": 64,
+   "title_th": "ศรีสำโรง",
+   "title_en": "Si Samrong"
+ },
+ {
+   "id": 6407,
+   "menu": "district",
+   "sort": 681,
+   "parent_categories_id": 64,
+   "title_th": "สวรรคโลก",
+   "title_en": "Sawankhalok"
+ },
+ {
+   "id": 6408,
+   "menu": "district",
+   "sort": 682,
+   "parent_categories_id": 64,
+   "title_th": "ศรีนคร",
+   "title_en": "Si Nakhon"
+ },
+ {
+   "id": 6409,
+   "menu": "district",
+   "sort": 683,
+   "parent_categories_id": 64,
+   "title_th": "ทุ่งเสลี่ยม",
+   "title_en": "Thung Saliam"
+ },
+ {
+   "id": 6501,
+   "menu": "district",
+   "sort": 684,
+   "parent_categories_id": 65,
+   "title_th": "เมืองพิษณุโลก",
+   "title_en": "Mueang Phitsanulok"
+ },
+ {
+   "id": 6502,
+   "menu": "district",
+   "sort": 685,
+   "parent_categories_id": 65,
+   "title_th": "นครไทย",
+   "title_en": "Nakhon Thai"
+ },
+ {
+   "id": 6503,
+   "menu": "district",
+   "sort": 686,
+   "parent_categories_id": 65,
+   "title_th": "ชาติตระการ",
+   "title_en": "Chat Trakan"
+ },
+ {
+   "id": 6504,
+   "menu": "district",
+   "sort": 687,
+   "parent_categories_id": 65,
+   "title_th": "บางระกำ",
+   "title_en": "Bang Rakam"
+ },
+ {
+   "id": 6505,
+   "menu": "district",
+   "sort": 688,
+   "parent_categories_id": 65,
+   "title_th": "บางกระทุ่ม",
+   "title_en": "Bang Krathum"
+ },
+ {
+   "id": 6506,
+   "menu": "district",
+   "sort": 689,
+   "parent_categories_id": 65,
+   "title_th": "พรหมพิราม",
+   "title_en": "Phrom Phiram"
+ },
+ {
+   "id": 6507,
+   "menu": "district",
+   "sort": 690,
+   "parent_categories_id": 65,
+   "title_th": "วัดโบสถ์",
+   "title_en": "Wat Bot"
+ },
+ {
+   "id": 6508,
+   "menu": "district",
+   "sort": 691,
+   "parent_categories_id": 65,
+   "title_th": "วังทอง",
+   "title_en": "Wang Thong"
+ },
+ {
+   "id": 6509,
+   "menu": "district",
+   "sort": 692,
+   "parent_categories_id": 65,
+   "title_th": "เนินมะปราง",
+   "title_en": "Noen Maprang"
+ },
+ {
+   "id": 6601,
+   "menu": "district",
+   "sort": 693,
+   "parent_categories_id": 66,
+   "title_th": "เมืองพิจิตร",
+   "title_en": "Mueang Phichit"
+ },
+ {
+   "id": 6602,
+   "menu": "district",
+   "sort": 694,
+   "parent_categories_id": 66,
+   "title_th": "วังทรายพูน",
+   "title_en": "Wang Sai Phun"
+ },
+ {
+   "id": 6603,
+   "menu": "district",
+   "sort": 695,
+   "parent_categories_id": 66,
+   "title_th": "โพธิ์ประทับช้าง",
+   "title_en": "Pho Prathap Chang"
+ },
+ {
+   "id": 6604,
+   "menu": "district",
+   "sort": 696,
+   "parent_categories_id": 66,
+   "title_th": "ตะพานหิน",
+   "title_en": "Taphan Hin"
+ },
+ {
+   "id": 6605,
+   "menu": "district",
+   "sort": 697,
+   "parent_categories_id": 66,
+   "title_th": "บางมูลนาก",
+   "title_en": "Bang Mun Nak"
+ },
+ {
+   "id": 6606,
+   "menu": "district",
+   "sort": 698,
+   "parent_categories_id": 66,
+   "title_th": "โพทะเล",
+   "title_en": "Pho Thale"
+ },
+ {
+   "id": 6607,
+   "menu": "district",
+   "sort": 699,
+   "parent_categories_id": 66,
+   "title_th": "สามง่าม",
+   "title_en": "Sam Ngam"
+ },
+ {
+   "id": 6608,
+   "menu": "district",
+   "sort": 700,
+   "parent_categories_id": 66,
+   "title_th": "ทับคล้อ",
+   "title_en": "Thap Khlo"
+ },
+ {
+   "id": 6609,
+   "menu": "district",
+   "sort": 701,
+   "parent_categories_id": 66,
+   "title_th": "สากเหล็ก",
+   "title_en": "Sak Lek"
+ },
+ {
+   "id": 6610,
+   "menu": "district",
+   "sort": 702,
+   "parent_categories_id": 66,
+   "title_th": "บึงนาราง",
+   "title_en": "Bueng Na Rang"
+ },
+ {
+   "id": 6611,
+   "menu": "district",
+   "sort": 703,
+   "parent_categories_id": 66,
+   "title_th": "ดงเจริญ",
+   "title_en": "Dong Charoen"
+ },
+ {
+   "id": 6612,
+   "menu": "district",
+   "sort": 704,
+   "parent_categories_id": 66,
+   "title_th": "วชิรบารมี",
+   "title_en": "Wachirabarami"
+ },
+ {
+   "id": 6701,
+   "menu": "district",
+   "sort": 705,
+   "parent_categories_id": 67,
+   "title_th": "เมืองเพชรบูรณ์",
+   "title_en": "Mueang Phetchabun"
+ },
+ {
+   "id": 6702,
+   "menu": "district",
+   "sort": 706,
+   "parent_categories_id": 67,
+   "title_th": "ชนแดน",
+   "title_en": "Chon Daen"
+ },
+ {
+   "id": 6703,
+   "menu": "district",
+   "sort": 707,
+   "parent_categories_id": 67,
+   "title_th": "หล่มสัก",
+   "title_en": "Lom Sak"
+ },
+ {
+   "id": 6704,
+   "menu": "district",
+   "sort": 708,
+   "parent_categories_id": 67,
+   "title_th": "หล่มเก่า",
+   "title_en": "Lom Kao"
+ },
+ {
+   "id": 6705,
+   "menu": "district",
+   "sort": 709,
+   "parent_categories_id": 67,
+   "title_th": "วิเชียรบุรี",
+   "title_en": "Wichian Buri"
+ },
+ {
+   "id": 6706,
+   "menu": "district",
+   "sort": 710,
+   "parent_categories_id": 67,
+   "title_th": "ศรีเทพ",
+   "title_en": "Si Thep"
+ },
+ {
+   "id": 6707,
+   "menu": "district",
+   "sort": 711,
+   "parent_categories_id": 67,
+   "title_th": "หนองไผ่",
+   "title_en": "Nong Phai"
+ },
+ {
+   "id": 6708,
+   "menu": "district",
+   "sort": 712,
+   "parent_categories_id": 67,
+   "title_th": "บึงสามพัน",
+   "title_en": "Bueng Sam Phan"
+ },
+ {
+   "id": 6709,
+   "menu": "district",
+   "sort": 713,
+   "parent_categories_id": 67,
+   "title_th": "น้ำหนาว",
+   "title_en": "Nam Nao"
+ },
+ {
+   "id": 6710,
+   "menu": "district",
+   "sort": 714,
+   "parent_categories_id": 67,
+   "title_th": "วังโป่ง",
+   "title_en": "Wang Pong"
+ },
+ {
+   "id": 6711,
+   "menu": "district",
+   "sort": 715,
+   "parent_categories_id": 67,
+   "title_th": "เขาค้อ",
+   "title_en": "Khao Kho"
+ },
+ {
+   "id": 7001,
+   "menu": "district",
+   "sort": 716,
+   "parent_categories_id": 70,
+   "title_th": "เมืองราชบุรี",
+   "title_en": "Mueang Ratchaburi"
+ },
+ {
+   "id": 7002,
+   "menu": "district",
+   "sort": 717,
+   "parent_categories_id": 70,
+   "title_th": "จอมบึง",
+   "title_en": "Chom Bueng"
+ },
+ {
+   "id": 7003,
+   "menu": "district",
+   "sort": 718,
+   "parent_categories_id": 70,
+   "title_th": "สวนผึ้ง",
+   "title_en": "Suan Phueng"
+ },
+ {
+   "id": 7004,
+   "menu": "district",
+   "sort": 719,
+   "parent_categories_id": 70,
+   "title_th": "ดำเนินสะดวก",
+   "title_en": "Damnoen Saduak"
+ },
+ {
+   "id": 7005,
+   "menu": "district",
+   "sort": 720,
+   "parent_categories_id": 70,
+   "title_th": "บ้านโป่ง",
+   "title_en": "Ban Pong"
+ },
+ {
+   "id": 7006,
+   "menu": "district",
+   "sort": 721,
+   "parent_categories_id": 70,
+   "title_th": "บางแพ",
+   "title_en": "Bang Phae"
+ },
+ {
+   "id": 7007,
+   "menu": "district",
+   "sort": 722,
+   "parent_categories_id": 70,
+   "title_th": "โพธาราม",
+   "title_en": "Photharam"
+ },
+ {
+   "id": 7008,
+   "menu": "district",
+   "sort": 723,
+   "parent_categories_id": 70,
+   "title_th": "ปากท่อ",
+   "title_en": "Pak Tho"
+ },
+ {
+   "id": 7009,
+   "menu": "district",
+   "sort": 724,
+   "parent_categories_id": 70,
+   "title_th": "วัดเพลง",
+   "title_en": "Wat Phleng"
+ },
+ {
+   "id": 7010,
+   "menu": "district",
+   "sort": 725,
+   "parent_categories_id": 70,
+   "title_th": "บ้านคา",
+   "title_en": "Ban Kha"
+ },
+ {
+   "id": 7101,
+   "menu": "district",
+   "sort": 726,
+   "parent_categories_id": 71,
+   "title_th": "เมืองกาญจนบุรี",
+   "title_en": "Mueang Kanchanaburi"
+ },
+ {
+   "id": 7102,
+   "menu": "district",
+   "sort": 727,
+   "parent_categories_id": 71,
+   "title_th": "ไทรโยค",
+   "title_en": "Sai Yok"
+ },
+ {
+   "id": 7103,
+   "menu": "district",
+   "sort": 728,
+   "parent_categories_id": 71,
+   "title_th": "บ่อพลอย",
+   "title_en": "Bo Phloi"
+ },
+ {
+   "id": 7104,
+   "menu": "district",
+   "sort": 729,
+   "parent_categories_id": 71,
+   "title_th": "ศรีสวัสดิ์",
+   "title_en": "Si Sawat"
+ },
+ {
+   "id": 7105,
+   "menu": "district",
+   "sort": 730,
+   "parent_categories_id": 71,
+   "title_th": "ท่ามะกา",
+   "title_en": "Tha Maka"
+ },
+ {
+   "id": 7106,
+   "menu": "district",
+   "sort": 731,
+   "parent_categories_id": 71,
+   "title_th": "ท่าม่วง",
+   "title_en": "Tha Muang"
+ },
+ {
+   "id": 7107,
+   "menu": "district",
+   "sort": 732,
+   "parent_categories_id": 71,
+   "title_th": "ทองผาภูมิ",
+   "title_en": "Thong Pha Phum"
+ },
+ {
+   "id": 7108,
+   "menu": "district",
+   "sort": 733,
+   "parent_categories_id": 71,
+   "title_th": "สังขละบุรี",
+   "title_en": "Sangkhla Buri"
+ },
+ {
+   "id": 7109,
+   "menu": "district",
+   "sort": 734,
+   "parent_categories_id": 71,
+   "title_th": "พนมทวน",
+   "title_en": "Phanom Thuan"
+ },
+ {
+   "id": 7110,
+   "menu": "district",
+   "sort": 735,
+   "parent_categories_id": 71,
+   "title_th": "เลาขวัญ",
+   "title_en": "Lao Khwan"
+ },
+ {
+   "id": 7111,
+   "menu": "district",
+   "sort": 736,
+   "parent_categories_id": 71,
+   "title_th": "ด่านมะขามเตี้ย",
+   "title_en": "Dan Makham Tia"
+ },
+ {
+   "id": 7112,
+   "menu": "district",
+   "sort": 737,
+   "parent_categories_id": 71,
+   "title_th": "หนองปรือ",
+   "title_en": "Nong Prue"
+ },
+ {
+   "id": 7113,
+   "menu": "district",
+   "sort": 738,
+   "parent_categories_id": 71,
+   "title_th": "ห้วยกระเจา",
+   "title_en": "Huai Krachao"
+ },
+ {
+   "id": 7201,
+   "menu": "district",
+   "sort": 739,
+   "parent_categories_id": 72,
+   "title_th": "เมืองสุพรรณบุรี",
+   "title_en": "Mueang Suphan Buri"
+ },
+ {
+   "id": 7202,
+   "menu": "district",
+   "sort": 740,
+   "parent_categories_id": 72,
+   "title_th": "เดิมบางนางบวช",
+   "title_en": "Doem Bang Nang Buat"
+ },
+ {
+   "id": 7203,
+   "menu": "district",
+   "sort": 741,
+   "parent_categories_id": 72,
+   "title_th": "ด่านช้าง",
+   "title_en": "Dan Chang"
+ },
+ {
+   "id": 7204,
+   "menu": "district",
+   "sort": 742,
+   "parent_categories_id": 72,
+   "title_th": "บางปลาม้า",
+   "title_en": "Bang Pla Ma"
+ },
+ {
+   "id": 7205,
+   "menu": "district",
+   "sort": 743,
+   "parent_categories_id": 72,
+   "title_th": "ศรีประจันต์",
+   "title_en": "Si Prachan"
+ },
+ {
+   "id": 7206,
+   "menu": "district",
+   "sort": 744,
+   "parent_categories_id": 72,
+   "title_th": "ดอนเจดีย์",
+   "title_en": "Don Chedi"
+ },
+ {
+   "id": 7207,
+   "menu": "district",
+   "sort": 745,
+   "parent_categories_id": 72,
+   "title_th": "สองพี่น้อง",
+   "title_en": "Song Phi Nong"
+ },
+ {
+   "id": 7208,
+   "menu": "district",
+   "sort": 746,
+   "parent_categories_id": 72,
+   "title_th": "สามชุก",
+   "title_en": "Sam Chuk"
+ },
+ {
+   "id": 7209,
+   "menu": "district",
+   "sort": 747,
+   "parent_categories_id": 72,
+   "title_th": "อู่ทอง",
+   "title_en": "U Thong"
+ },
+ {
+   "id": 7210,
+   "menu": "district",
+   "sort": 748,
+   "parent_categories_id": 72,
+   "title_th": "หนองหญ้าไซ",
+   "title_en": "Nong Ya Sai"
+ },
+ {
+   "id": 7301,
+   "menu": "district",
+   "sort": 749,
+   "parent_categories_id": 73,
+   "title_th": "เมืองนครปฐม",
+   "title_en": "Mueang Nakhon Pathom"
+ },
+ {
+   "id": 7302,
+   "menu": "district",
+   "sort": 750,
+   "parent_categories_id": 73,
+   "title_th": "กำแพงแสน",
+   "title_en": "Kamphaeng Saen"
+ },
+ {
+   "id": 7303,
+   "menu": "district",
+   "sort": 751,
+   "parent_categories_id": 73,
+   "title_th": "นครชัยศรี",
+   "title_en": "Nakhon Chai Si"
+ },
+ {
+   "id": 7304,
+   "menu": "district",
+   "sort": 752,
+   "parent_categories_id": 73,
+   "title_th": "ดอนตูม",
+   "title_en": "Don Tum"
+ },
+ {
+   "id": 7305,
+   "menu": "district",
+   "sort": 753,
+   "parent_categories_id": 73,
+   "title_th": "บางเลน",
+   "title_en": "Bang Len"
+ },
+ {
+   "id": 7306,
+   "menu": "district",
+   "sort": 754,
+   "parent_categories_id": 73,
+   "title_th": "สามพราน",
+   "title_en": "Sam Phran"
+ },
+ {
+   "id": 7307,
+   "menu": "district",
+   "sort": 755,
+   "parent_categories_id": 73,
+   "title_th": "พุทธมณฑล",
+   "title_en": "Phutthamonthon"
+ },
+ {
+   "id": 7401,
+   "menu": "district",
+   "sort": 756,
+   "parent_categories_id": 74,
+   "title_th": "เมืองสมุทรสาคร",
+   "title_en": "Mueang Samut Sakhon"
+ },
+ {
+   "id": 7402,
+   "menu": "district",
+   "sort": 757,
+   "parent_categories_id": 74,
+   "title_th": "กระทุ่มแบน",
+   "title_en": "Krathum Baen"
+ },
+ {
+   "id": 7403,
+   "menu": "district",
+   "sort": 758,
+   "parent_categories_id": 74,
+   "title_th": "บ้านแพ้ว",
+   "title_en": "Ban Phaeo"
+ },
+ {
+   "id": 7501,
+   "menu": "district",
+   "sort": 759,
+   "parent_categories_id": 75,
+   "title_th": "เมืองสมุทรสงคราม",
+   "title_en": "Mueang Samut Songkhram"
+ },
+ {
+   "id": 7502,
+   "menu": "district",
+   "sort": 760,
+   "parent_categories_id": 75,
+   "title_th": "บางคนที",
+   "title_en": "Bang Khonthi"
+ },
+ {
+   "id": 7503,
+   "menu": "district",
+   "sort": 761,
+   "parent_categories_id": 75,
+   "title_th": "อัมพวา",
+   "title_en": "Amphawa"
+ },
+ {
+   "id": 7601,
+   "menu": "district",
+   "sort": 762,
+   "parent_categories_id": 76,
+   "title_th": "เมืองเพชรบุรี",
+   "title_en": "Mueang Phetchaburi"
+ },
+ {
+   "id": 7602,
+   "menu": "district",
+   "sort": 763,
+   "parent_categories_id": 76,
+   "title_th": "เขาย้อย",
+   "title_en": "Khao Yoi"
+ },
+ {
+   "id": 7603,
+   "menu": "district",
+   "sort": 764,
+   "parent_categories_id": 76,
+   "title_th": "หนองหญ้าปล้อง",
+   "title_en": "Nong Ya Plong"
+ },
+ {
+   "id": 7604,
+   "menu": "district",
+   "sort": 765,
+   "parent_categories_id": 76,
+   "title_th": "ชะอำ",
+   "title_en": "Cha-am"
+ },
+ {
+   "id": 7605,
+   "menu": "district",
+   "sort": 766,
+   "parent_categories_id": 76,
+   "title_th": "ท่ายาง",
+   "title_en": "Tha Yang"
+ },
+ {
+   "id": 7606,
+   "menu": "district",
+   "sort": 767,
+   "parent_categories_id": 76,
+   "title_th": "บ้านลาด",
+   "title_en": "Ban Lat"
+ },
+ {
+   "id": 7607,
+   "menu": "district",
+   "sort": 768,
+   "parent_categories_id": 76,
+   "title_th": "บ้านแหลม",
+   "title_en": "Ban Laem"
+ },
+ {
+   "id": 7608,
+   "menu": "district",
+   "sort": 769,
+   "parent_categories_id": 76,
+   "title_th": "แก่งกระจาน",
+   "title_en": "Kaeng Krachan"
+ },
+ {
+   "id": 7701,
+   "menu": "district",
+   "sort": 770,
+   "parent_categories_id": 77,
+   "title_th": "เมืองประจวบคีรีขันธ์",
+   "title_en": "Mueang Prachuap Khiri Khan"
+ },
+ {
+   "id": 7702,
+   "menu": "district",
+   "sort": 771,
+   "parent_categories_id": 77,
+   "title_th": "กุยบุรี",
+   "title_en": "Kui Buri"
+ },
+ {
+   "id": 7703,
+   "menu": "district",
+   "sort": 772,
+   "parent_categories_id": 77,
+   "title_th": "ทับสะแก",
+   "title_en": "Thap Sakae"
+ },
+ {
+   "id": 7704,
+   "menu": "district",
+   "sort": 773,
+   "parent_categories_id": 77,
+   "title_th": "บางสะพาน",
+   "title_en": "Bang Saphan"
+ },
+ {
+   "id": 7705,
+   "menu": "district",
+   "sort": 774,
+   "parent_categories_id": 77,
+   "title_th": "บางสะพานน้อย",
+   "title_en": "Bang Saphan Noi"
+ },
+ {
+   "id": 7706,
+   "menu": "district",
+   "sort": 775,
+   "parent_categories_id": 77,
+   "title_th": "ปราณบุรี",
+   "title_en": "Pran Buri"
+ },
+ {
+   "id": 7707,
+   "menu": "district",
+   "sort": 776,
+   "parent_categories_id": 77,
+   "title_th": "หัวหิน",
+   "title_en": "Hua Hin"
+ },
+ {
+   "id": 7708,
+   "menu": "district",
+   "sort": 777,
+   "parent_categories_id": 77,
+   "title_th": "สามร้อยยอด",
+   "title_en": "Sam Roi Yot"
+ },
+ {
+   "id": 8001,
+   "menu": "district",
+   "sort": 778,
+   "parent_categories_id": 80,
+   "title_th": "เมืองนครศรีธรรมราช",
+   "title_en": "Mueang Nakhon Si Thammarat"
+ },
+ {
+   "id": 8002,
+   "menu": "district",
+   "sort": 779,
+   "parent_categories_id": 80,
+   "title_th": "พรหมคีรี",
+   "title_en": "Phrom Khiri"
+ },
+ {
+   "id": 8003,
+   "menu": "district",
+   "sort": 780,
+   "parent_categories_id": 80,
+   "title_th": "ลานสกา",
+   "title_en": "Lan Saka"
+ },
+ {
+   "id": 8004,
+   "menu": "district",
+   "sort": 781,
+   "parent_categories_id": 80,
+   "title_th": "ฉวาง",
+   "title_en": "Chawang"
+ },
+ {
+   "id": 8005,
+   "menu": "district",
+   "sort": 782,
+   "parent_categories_id": 80,
+   "title_th": "พิปูน",
+   "title_en": "Phipun"
+ },
+ {
+   "id": 8006,
+   "menu": "district",
+   "sort": 783,
+   "parent_categories_id": 80,
+   "title_th": "เชียรใหญ่",
+   "title_en": "Chian Yai"
+ },
+ {
+   "id": 8007,
+   "menu": "district",
+   "sort": 784,
+   "parent_categories_id": 80,
+   "title_th": "ชะอวด",
+   "title_en": "Cha-uat"
+ },
+ {
+   "id": 8008,
+   "menu": "district",
+   "sort": 785,
+   "parent_categories_id": 80,
+   "title_th": "ท่าศาลา",
+   "title_en": "Tha Sala"
+ },
+ {
+   "id": 8009,
+   "menu": "district",
+   "sort": 786,
+   "parent_categories_id": 80,
+   "title_th": "ทุ่งสง",
+   "title_en": "Thung Song"
+ },
+ {
+   "id": 8010,
+   "menu": "district",
+   "sort": 787,
+   "parent_categories_id": 80,
+   "title_th": "นาบอน",
+   "title_en": "Na Bon"
+ },
+ {
+   "id": 8011,
+   "menu": "district",
+   "sort": 788,
+   "parent_categories_id": 80,
+   "title_th": "ทุ่งใหญ่",
+   "title_en": "Thung Yai"
+ },
+ {
+   "id": 8012,
+   "menu": "district",
+   "sort": 789,
+   "parent_categories_id": 80,
+   "title_th": "ปากพนัง",
+   "title_en": "Pak Phanang"
+ },
+ {
+   "id": 8013,
+   "menu": "district",
+   "sort": 790,
+   "parent_categories_id": 80,
+   "title_th": "ร่อนพิบูลย์",
+   "title_en": "Ron Phibun"
+ },
+ {
+   "id": 8014,
+   "menu": "district",
+   "sort": 791,
+   "parent_categories_id": 80,
+   "title_th": "สิชล",
+   "title_en": "Sichon"
+ },
+ {
+   "id": 8015,
+   "menu": "district",
+   "sort": 792,
+   "parent_categories_id": 80,
+   "title_th": "ขนอม",
+   "title_en": "Khanom"
+ },
+ {
+   "id": 8016,
+   "menu": "district",
+   "sort": 793,
+   "parent_categories_id": 80,
+   "title_th": "หัวไทร",
+   "title_en": "Hua Sai"
+ },
+ {
+   "id": 8017,
+   "menu": "district",
+   "sort": 794,
+   "parent_categories_id": 80,
+   "title_th": "บางขัน",
+   "title_en": "Bang Khan"
+ },
+ {
+   "id": 8018,
+   "menu": "district",
+   "sort": 795,
+   "parent_categories_id": 80,
+   "title_th": "ถ้ำพรรณรา",
+   "title_en": "Tham Phannara"
+ },
+ {
+   "id": 8019,
+   "menu": "district",
+   "sort": 796,
+   "parent_categories_id": 80,
+   "title_th": "จุฬาภรณ์",
+   "title_en": "Chulabhorn"
+ },
+ {
+   "id": 8020,
+   "menu": "district",
+   "sort": 797,
+   "parent_categories_id": 80,
+   "title_th": "พระพรหม",
+   "title_en": "Phra Phrom"
+ },
+ {
+   "id": 8021,
+   "menu": "district",
+   "sort": 798,
+   "parent_categories_id": 80,
+   "title_th": "นบพิตำ",
+   "title_en": "Nopphitam"
+ },
+ {
+   "id": 8022,
+   "menu": "district",
+   "sort": 799,
+   "parent_categories_id": 80,
+   "title_th": "ช้างกลาง",
+   "title_en": "Chang Klang"
+ },
+ {
+   "id": 8023,
+   "menu": "district",
+   "sort": 800,
+   "parent_categories_id": 80,
+   "title_th": "เฉลิมพระเกียรติ",
+   "title_en": "Chaloem Phra Kiat"
+ },
+ {
+   "id": 8101,
+   "menu": "district",
+   "sort": 801,
+   "parent_categories_id": 81,
+   "title_th": "เมืองกระบี่",
+   "title_en": "Mueang Krabi"
+ },
+ {
+   "id": 8102,
+   "menu": "district",
+   "sort": 802,
+   "parent_categories_id": 81,
+   "title_th": "เขาพนม",
+   "title_en": "Khao Phanom"
+ },
+ {
+   "id": 8103,
+   "menu": "district",
+   "sort": 803,
+   "parent_categories_id": 81,
+   "title_th": "เกาะลันตา",
+   "title_en": "Ko Lanta"
+ },
+ {
+   "id": 8104,
+   "menu": "district",
+   "sort": 804,
+   "parent_categories_id": 81,
+   "title_th": "คลองท่อม",
+   "title_en": "Khlong Thom"
+ },
+ {
+   "id": 8105,
+   "menu": "district",
+   "sort": 805,
+   "parent_categories_id": 81,
+   "title_th": "อ่าวลึก",
+   "title_en": "Ao Luek"
+ },
+ {
+   "id": 8106,
+   "menu": "district",
+   "sort": 806,
+   "parent_categories_id": 81,
+   "title_th": "ปลายพระยา",
+   "title_en": "Plai Phraya"
+ },
+ {
+   "id": 8107,
+   "menu": "district",
+   "sort": 807,
+   "parent_categories_id": 81,
+   "title_th": "ลำทับ",
+   "title_en": "Lam Thap"
+ },
+ {
+   "id": 8108,
+   "menu": "district",
+   "sort": 808,
+   "parent_categories_id": 81,
+   "title_th": "เหนือคลอง",
+   "title_en": "Nuea Khlong"
+ },
+ {
+   "id": 8201,
+   "menu": "district",
+   "sort": 809,
+   "parent_categories_id": 82,
+   "title_th": "เมืองพังงา",
+   "title_en": "Mueang Phang-nga"
+ },
+ {
+   "id": 8202,
+   "menu": "district",
+   "sort": 810,
+   "parent_categories_id": 82,
+   "title_th": "เกาะยาว",
+   "title_en": "Ko Yao"
+ },
+ {
+   "id": 8203,
+   "menu": "district",
+   "sort": 811,
+   "parent_categories_id": 82,
+   "title_th": "กะปง",
+   "title_en": "Kapong"
+ },
+ {
+   "id": 8204,
+   "menu": "district",
+   "sort": 812,
+   "parent_categories_id": 82,
+   "title_th": "ตะกั่วทุ่ง",
+   "title_en": "Takua Thung"
+ },
+ {
+   "id": 8205,
+   "menu": "district",
+   "sort": 813,
+   "parent_categories_id": 82,
+   "title_th": "ตะกั่วป่า",
+   "title_en": "Takua Pa"
+ },
+ {
+   "id": 8206,
+   "menu": "district",
+   "sort": 814,
+   "parent_categories_id": 82,
+   "title_th": "คุระบุรี",
+   "title_en": "Khura Buri"
+ },
+ {
+   "id": 8207,
+   "menu": "district",
+   "sort": 815,
+   "parent_categories_id": 82,
+   "title_th": "ทับปุด",
+   "title_en": "Thap Put"
+ },
+ {
+   "id": 8208,
+   "menu": "district",
+   "sort": 816,
+   "parent_categories_id": 82,
+   "title_th": "ท้ายเหมือง",
+   "title_en": "Thai Mueang"
+ },
+ {
+   "id": 8301,
+   "menu": "district",
+   "sort": 817,
+   "parent_categories_id": 83,
+   "title_th": "เมืองภูเก็ต",
+   "title_en": "Mueang Phuket"
+ },
+ {
+   "id": 8302,
+   "menu": "district",
+   "sort": 818,
+   "parent_categories_id": 83,
+   "title_th": "กะทู้",
+   "title_en": "Kathu"
+ },
+ {
+   "id": 8303,
+   "menu": "district",
+   "sort": 819,
+   "parent_categories_id": 83,
+   "title_th": "ถลาง",
+   "title_en": "Thalang"
+ },
+ {
+   "id": 8401,
+   "menu": "district",
+   "sort": 820,
+   "parent_categories_id": 84,
+   "title_th": "เมืองสุราษฎร์ธานี",
+   "title_en": "Mueang Surat Thani"
+ },
+ {
+   "id": 8402,
+   "menu": "district",
+   "sort": 821,
+   "parent_categories_id": 84,
+   "title_th": "กาญจนดิษฐ์",
+   "title_en": "Kanchanadit"
+ },
+ {
+   "id": 8403,
+   "menu": "district",
+   "sort": 822,
+   "parent_categories_id": 84,
+   "title_th": "ดอนสัก",
+   "title_en": "Don Sak"
+ },
+ {
+   "id": 8404,
+   "menu": "district",
+   "sort": 823,
+   "parent_categories_id": 84,
+   "title_th": "เกาะสมุย",
+   "title_en": "Ko Samui"
+ },
+ {
+   "id": 8405,
+   "menu": "district",
+   "sort": 824,
+   "parent_categories_id": 84,
+   "title_th": "เกาะพะงัน",
+   "title_en": "Ko Pha-ngan"
+ },
+ {
+   "id": 8406,
+   "menu": "district",
+   "sort": 825,
+   "parent_categories_id": 84,
+   "title_th": "ไชยา",
+   "title_en": "Chaiya"
+ },
+ {
+   "id": 8407,
+   "menu": "district",
+   "sort": 826,
+   "parent_categories_id": 84,
+   "title_th": "ท่าชนะ",
+   "title_en": "Tha Chana"
+ },
+ {
+   "id": 8408,
+   "menu": "district",
+   "sort": 827,
+   "parent_categories_id": 84,
+   "title_th": "คีรีรัฐนิคม",
+   "title_en": "Khiri Rat Nikhom"
+ },
+ {
+   "id": 8409,
+   "menu": "district",
+   "sort": 828,
+   "parent_categories_id": 84,
+   "title_th": "บ้านตาขุน",
+   "title_en": "Ban Ta Khun"
+ },
+ {
+   "id": 8410,
+   "menu": "district",
+   "sort": 829,
+   "parent_categories_id": 84,
+   "title_th": "พนม",
+   "title_en": "Phanom"
+ },
+ {
+   "id": 8411,
+   "menu": "district",
+   "sort": 830,
+   "parent_categories_id": 84,
+   "title_th": "ท่าฉาง",
+   "title_en": "Tha Chang"
+ },
+ {
+   "id": 8412,
+   "menu": "district",
+   "sort": 831,
+   "parent_categories_id": 84,
+   "title_th": "บ้านนาสาร",
+   "title_en": "Ban Na San"
+ },
+ {
+   "id": 8413,
+   "menu": "district",
+   "sort": 832,
+   "parent_categories_id": 84,
+   "title_th": "บ้านนาเดิม",
+   "title_en": "Ban Na Doem"
+ },
+ {
+   "id": 8414,
+   "menu": "district",
+   "sort": 833,
+   "parent_categories_id": 84,
+   "title_th": "เคียนซา",
+   "title_en": "Khian Sa"
+ },
+ {
+   "id": 8415,
+   "menu": "district",
+   "sort": 834,
+   "parent_categories_id": 84,
+   "title_th": "เวียงสระ",
+   "title_en": "Wiang Sa"
+ },
+ {
+   "id": 8416,
+   "menu": "district",
+   "sort": 835,
+   "parent_categories_id": 84,
+   "title_th": "พระแสง",
+   "title_en": "Phrasaeng"
+ },
+ {
+   "id": 8417,
+   "menu": "district",
+   "sort": 836,
+   "parent_categories_id": 84,
+   "title_th": "พุนพิน",
+   "title_en": "Phunphin"
+ },
+ {
+   "id": 8418,
+   "menu": "district",
+   "sort": 837,
+   "parent_categories_id": 84,
+   "title_th": "ชัยบุรี",
+   "title_en": "Chai Buri"
+ },
+ {
+   "id": 8419,
+   "menu": "district",
+   "sort": 838,
+   "parent_categories_id": 84,
+   "title_th": "วิภาวดี",
+   "title_en": "Vibhavadi"
+ },
+ {
+   "id": 8501,
+   "menu": "district",
+   "sort": 839,
+   "parent_categories_id": 85,
+   "title_th": "เมืองระนอง",
+   "title_en": "Mueang Ranong"
+ },
+ {
+   "id": 8502,
+   "menu": "district",
+   "sort": 840,
+   "parent_categories_id": 85,
+   "title_th": "ละอุ่น",
+   "title_en": "La-un"
+ },
+ {
+   "id": 8503,
+   "menu": "district",
+   "sort": 841,
+   "parent_categories_id": 85,
+   "title_th": "กะเปอร์",
+   "title_en": "Kapoe"
+ },
+ {
+   "id": 8504,
+   "menu": "district",
+   "sort": 842,
+   "parent_categories_id": 85,
+   "title_th": "กระบุรี",
+   "title_en": "Kra Buri"
+ },
+ {
+   "id": 8505,
+   "menu": "district",
+   "sort": 843,
+   "parent_categories_id": 85,
+   "title_th": "สุขสำราญ",
+   "title_en": "Suk Samran"
+ },
+ {
+   "id": 8601,
+   "menu": "district",
+   "sort": 844,
+   "parent_categories_id": 86,
+   "title_th": "เมืองชุมพร",
+   "title_en": "Mueang Chumphon"
+ },
+ {
+   "id": 8602,
+   "menu": "district",
+   "sort": 845,
+   "parent_categories_id": 86,
+   "title_th": "ท่าแซะ",
+   "title_en": "Tha Sae"
+ },
+ {
+   "id": 8603,
+   "menu": "district",
+   "sort": 846,
+   "parent_categories_id": 86,
+   "title_th": "ปะทิว",
+   "title_en": "Pathio"
+ },
+ {
+   "id": 8604,
+   "menu": "district",
+   "sort": 847,
+   "parent_categories_id": 86,
+   "title_th": "หลังสวน",
+   "title_en": "Lang Suan"
+ },
+ {
+   "id": 8605,
+   "menu": "district",
+   "sort": 848,
+   "parent_categories_id": 86,
+   "title_th": "ละแม",
+   "title_en": "Lamae"
+ },
+ {
+   "id": 8606,
+   "menu": "district",
+   "sort": 849,
+   "parent_categories_id": 86,
+   "title_th": "พะโต๊ะ",
+   "title_en": "Phato"
+ },
+ {
+   "id": 8607,
+   "menu": "district",
+   "sort": 850,
+   "parent_categories_id": 86,
+   "title_th": "สวี",
+   "title_en": "Sawi"
+ },
+ {
+   "id": 8608,
+   "menu": "district",
+   "sort": 851,
+   "parent_categories_id": 86,
+   "title_th": "ทุ่งตะโก",
+   "title_en": "Thung Tako"
+ },
+ {
+   "id": 9001,
+   "menu": "district",
+   "sort": 852,
+   "parent_categories_id": 90,
+   "title_th": "เมืองสงขลา",
+   "title_en": "Mueang Songkhla"
+ },
+ {
+   "id": 9002,
+   "menu": "district",
+   "sort": 853,
+   "parent_categories_id": 90,
+   "title_th": "สทิงพระ",
+   "title_en": "Sathing Phra"
+ },
+ {
+   "id": 9003,
+   "menu": "district",
+   "sort": 854,
+   "parent_categories_id": 90,
+   "title_th": "จะนะ",
+   "title_en": "Chana"
+ },
+ {
+   "id": 9004,
+   "menu": "district",
+   "sort": 855,
+   "parent_categories_id": 90,
+   "title_th": "นาทวี",
+   "title_en": "Na Thawi"
+ },
+ {
+   "id": 9005,
+   "menu": "district",
+   "sort": 856,
+   "parent_categories_id": 90,
+   "title_th": "เทพา",
+   "title_en": "Thepha"
+ },
+ {
+   "id": 9006,
+   "menu": "district",
+   "sort": 857,
+   "parent_categories_id": 90,
+   "title_th": "สะบ้าย้อย",
+   "title_en": "Saba Yoi"
+ },
+ {
+   "id": 9007,
+   "menu": "district",
+   "sort": 858,
+   "parent_categories_id": 90,
+   "title_th": "ระโนด",
+   "title_en": "Ranot"
+ },
+ {
+   "id": 9008,
+   "menu": "district",
+   "sort": 859,
+   "parent_categories_id": 90,
+   "title_th": "กระแสสินธุ์",
+   "title_en": "Krasae Sin"
+ },
+ {
+   "id": 9009,
+   "menu": "district",
+   "sort": 860,
+   "parent_categories_id": 90,
+   "title_th": "รัตภูมิ",
+   "title_en": "Rattaphum"
+ },
+ {
+   "id": 9010,
+   "menu": "district",
+   "sort": 861,
+   "parent_categories_id": 90,
+   "title_th": "สะเดา",
+   "title_en": "Sadao"
+ },
+ {
+   "id": 9011,
+   "menu": "district",
+   "sort": 862,
+   "parent_categories_id": 90,
+   "title_th": "หาดใหญ่",
+   "title_en": "Hat Yai"
+ },
+ {
+   "id": 9012,
+   "menu": "district",
+   "sort": 863,
+   "parent_categories_id": 90,
+   "title_th": "นาหม่อม",
+   "title_en": "Na Mom"
+ },
+ {
+   "id": 9013,
+   "menu": "district",
+   "sort": 864,
+   "parent_categories_id": 90,
+   "title_th": "ควนเนียง",
+   "title_en": "Khuan Niang"
+ },
+ {
+   "id": 9014,
+   "menu": "district",
+   "sort": 865,
+   "parent_categories_id": 90,
+   "title_th": "บางกล่ำ",
+   "title_en": "Bang Klam"
+ },
+ {
+   "id": 9015,
+   "menu": "district",
+   "sort": 866,
+   "parent_categories_id": 90,
+   "title_th": "สิงหนคร",
+   "title_en": "Singhanakhon"
+ },
+ {
+   "id": 9016,
+   "menu": "district",
+   "sort": 867,
+   "parent_categories_id": 90,
+   "title_th": "คลองหอยโข่ง",
+   "title_en": "Khlong Hoi Khong"
+ },
+ {
+   "id": 9101,
+   "menu": "district",
+   "sort": 868,
+   "parent_categories_id": 91,
+   "title_th": "เมืองสตูล",
+   "title_en": "Mueang Satun"
+ },
+ {
+   "id": 9102,
+   "menu": "district",
+   "sort": 869,
+   "parent_categories_id": 91,
+   "title_th": "ควนโดน",
+   "title_en": "Khuan Don"
+ },
+ {
+   "id": 9103,
+   "menu": "district",
+   "sort": 870,
+   "parent_categories_id": 91,
+   "title_th": "ควนกาหลง",
+   "title_en": "Khuan Kalong"
+ },
+ {
+   "id": 9104,
+   "menu": "district",
+   "sort": 871,
+   "parent_categories_id": 91,
+   "title_th": "ท่าแพ",
+   "title_en": "Tha Phae"
+ },
+ {
+   "id": 9105,
+   "menu": "district",
+   "sort": 872,
+   "parent_categories_id": 91,
+   "title_th": "ละงู",
+   "title_en": "La-ngu"
+ },
+ {
+   "id": 9106,
+   "menu": "district",
+   "sort": 873,
+   "parent_categories_id": 91,
+   "title_th": "ทุ่งหว้า",
+   "title_en": "Thung Wa"
+ },
+ {
+   "id": 9107,
+   "menu": "district",
+   "sort": 874,
+   "parent_categories_id": 91,
+   "title_th": "มะนัง",
+   "title_en": "Manang"
+ },
+ {
+   "id": 9201,
+   "menu": "district",
+   "sort": 875,
+   "parent_categories_id": 92,
+   "title_th": "เมืองตรัง",
+   "title_en": "Mueang Trang"
+ },
+ {
+   "id": 9202,
+   "menu": "district",
+   "sort": 876,
+   "parent_categories_id": 92,
+   "title_th": "กันตัง",
+   "title_en": "Kantang"
+ },
+ {
+   "id": 9203,
+   "menu": "district",
+   "sort": 877,
+   "parent_categories_id": 92,
+   "title_th": "ย่านตาขาว",
+   "title_en": "Yan Ta Khao"
+ },
+ {
+   "id": 9204,
+   "menu": "district",
+   "sort": 878,
+   "parent_categories_id": 92,
+   "title_th": "ปะเหลียน",
+   "title_en": "Palian"
+ },
+ {
+   "id": 9205,
+   "menu": "district",
+   "sort": 879,
+   "parent_categories_id": 92,
+   "title_th": "สิเกา",
+   "title_en": "Sikao"
+ },
+ {
+   "id": 9206,
+   "menu": "district",
+   "sort": 880,
+   "parent_categories_id": 92,
+   "title_th": "ห้วยยอด",
+   "title_en": "Huai Yot"
+ },
+ {
+   "id": 9207,
+   "menu": "district",
+   "sort": 881,
+   "parent_categories_id": 92,
+   "title_th": "วังวิเศษ",
+   "title_en": "Wang Wiset"
+ },
+ {
+   "id": 9208,
+   "menu": "district",
+   "sort": 882,
+   "parent_categories_id": 92,
+   "title_th": "นาโยง",
+   "title_en": "Na Yong"
+ },
+ {
+   "id": 9209,
+   "menu": "district",
+   "sort": 883,
+   "parent_categories_id": 92,
+   "title_th": "รัษฎา",
+   "title_en": "Ratsada"
+ },
+ {
+   "id": 9210,
+   "menu": "district",
+   "sort": 884,
+   "parent_categories_id": 92,
+   "title_th": "หาดสำราญ",
+   "title_en": "Hat Samran"
+ },
+ {
+   "id": 9301,
+   "menu": "district",
+   "sort": 885,
+   "parent_categories_id": 93,
+   "title_th": "เมืองพัทลุง",
+   "title_en": "Muang Phatthalung"
+ },
+ {
+   "id": 9302,
+   "menu": "district",
+   "sort": 886,
+   "parent_categories_id": 93,
+   "title_th": "กงหรา",
+   "title_en": "Kong Ra"
+ },
+ {
+   "id": 9303,
+   "menu": "district",
+   "sort": 887,
+   "parent_categories_id": 93,
+   "title_th": "เขาชัยสน",
+   "title_en": "Khao Chaison"
+ },
+ {
+   "id": 9304,
+   "menu": "district",
+   "sort": 888,
+   "parent_categories_id": 93,
+   "title_th": "ตะโหมด",
+   "title_en": "Tamot"
+ },
+ {
+   "id": 9305,
+   "menu": "district",
+   "sort": 889,
+   "parent_categories_id": 93,
+   "title_th": "ควนขนุน",
+   "title_en": "Khuan Khanun"
+ },
+ {
+   "id": 9306,
+   "menu": "district",
+   "sort": 890,
+   "parent_categories_id": 93,
+   "title_th": "ปากพะยูน",
+   "title_en": "Pak Phayun"
+ },
+ {
+   "id": 9307,
+   "menu": "district",
+   "sort": 891,
+   "parent_categories_id": 93,
+   "title_th": "ศรีบรรพต",
+   "title_en": "Si Banphot"
+ },
+ {
+   "id": 9308,
+   "menu": "district",
+   "sort": 892,
+   "parent_categories_id": 93,
+   "title_th": "ป่าบอน",
+   "title_en": "Pa Bon"
+ },
+ {
+   "id": 9309,
+   "menu": "district",
+   "sort": 893,
+   "parent_categories_id": 93,
+   "title_th": "บางแก้ว",
+   "title_en": "Bang Kaeo"
+ },
+ {
+   "id": 9310,
+   "menu": "district",
+   "sort": 894,
+   "parent_categories_id": 93,
+   "title_th": "ป่าพะยอม",
+   "title_en": "Pa Phayom"
+ },
+ {
+   "id": 9311,
+   "menu": "district",
+   "sort": 895,
+   "parent_categories_id": 93,
+   "title_th": "ศรีนครินทร์",
+   "title_en": "Srinagarindra"
+ },
+ {
+   "id": 9401,
+   "menu": "district",
+   "sort": 896,
+   "parent_categories_id": 94,
+   "title_th": "เมืองปัตตานี",
+   "title_en": "Mueang Pattani"
+ },
+ {
+   "id": 9402,
+   "menu": "district",
+   "sort": 897,
+   "parent_categories_id": 94,
+   "title_th": "โคกโพธิ์",
+   "title_en": "Khok Pho"
+ },
+ {
+   "id": 9403,
+   "menu": "district",
+   "sort": 898,
+   "parent_categories_id": 94,
+   "title_th": "หนองจิก",
+   "title_en": "Nong Chik"
+ },
+ {
+   "id": 9404,
+   "menu": "district",
+   "sort": 899,
+   "parent_categories_id": 94,
+   "title_th": "ปะนาเระ",
+   "title_en": "Panare"
+ },
+ {
+   "id": 9405,
+   "menu": "district",
+   "sort": 900,
+   "parent_categories_id": 94,
+   "title_th": "มายอ",
+   "title_en": "Mayo"
+ },
+ {
+   "id": 9406,
+   "menu": "district",
+   "sort": 901,
+   "parent_categories_id": 94,
+   "title_th": "ทุ่งยางแดง",
+   "title_en": "Thung Yang Daeng"
+ },
+ {
+   "id": 9407,
+   "menu": "district",
+   "sort": 902,
+   "parent_categories_id": 94,
+   "title_th": "สายบุรี",
+   "title_en": "Sai Buri"
+ },
+ {
+   "id": 9408,
+   "menu": "district",
+   "sort": 903,
+   "parent_categories_id": 94,
+   "title_th": "ไม้แก่น",
+   "title_en": "Mai Kaen"
+ },
+ {
+   "id": 9409,
+   "menu": "district",
+   "sort": 904,
+   "parent_categories_id": 94,
+   "title_th": "ยะหริ่ง",
+   "title_en": "Yaring"
+ },
+ {
+   "id": 9410,
+   "menu": "district",
+   "sort": 905,
+   "parent_categories_id": 94,
+   "title_th": "ยะรัง",
+   "title_en": "Yarang"
+ },
+ {
+   "id": 9411,
+   "menu": "district",
+   "sort": 906,
+   "parent_categories_id": 94,
+   "title_th": "กะพ้อ",
+   "title_en": "Kapho"
+ },
+ {
+   "id": 9412,
+   "menu": "district",
+   "sort": 907,
+   "parent_categories_id": 94,
+   "title_th": "แม่ลาน",
+   "title_en": "Mae Lan"
+ },
+ {
+   "id": 9501,
+   "menu": "district",
+   "sort": 908,
+   "parent_categories_id": 95,
+   "title_th": "เมืองยะลา",
+   "title_en": "Mueang Yala"
+ },
+ {
+   "id": 9502,
+   "menu": "district",
+   "sort": 909,
+   "parent_categories_id": 95,
+   "title_th": "เบตง",
+   "title_en": "Betong"
+ },
+ {
+   "id": 9503,
+   "menu": "district",
+   "sort": 910,
+   "parent_categories_id": 95,
+   "title_th": "บันนังสตา",
+   "title_en": "Bannang Sata"
+ },
+ {
+   "id": 9504,
+   "menu": "district",
+   "sort": 911,
+   "parent_categories_id": 95,
+   "title_th": "ธารโต",
+   "title_en": "Than To"
+ },
+ {
+   "id": 9505,
+   "menu": "district",
+   "sort": 912,
+   "parent_categories_id": 95,
+   "title_th": "ยะหา",
+   "title_en": "Yaha"
+ },
+ {
+   "id": 9506,
+   "menu": "district",
+   "sort": 913,
+   "parent_categories_id": 95,
+   "title_th": "รามัน",
+   "title_en": "Raman"
+ },
+ {
+   "id": 9507,
+   "menu": "district",
+   "sort": 914,
+   "parent_categories_id": 95,
+   "title_th": "กาบัง",
+   "title_en": "Kabang"
+ },
+ {
+   "id": 9508,
+   "menu": "district",
+   "sort": 915,
+   "parent_categories_id": 95,
+   "title_th": "กรงปินัง",
+   "title_en": "Krong Pinang"
+ },
+ {
+   "id": 9601,
+   "menu": "district",
+   "sort": 916,
+   "parent_categories_id": 96,
+   "title_th": "เมืองนราธิวาส",
+   "title_en": "Mueang Narathiwat"
+ },
+ {
+   "id": 9602,
+   "menu": "district",
+   "sort": 917,
+   "parent_categories_id": 96,
+   "title_th": "ตากใบ",
+   "title_en": "Tak Bai"
+ },
+ {
+   "id": 9603,
+   "menu": "district",
+   "sort": 918,
+   "parent_categories_id": 96,
+   "title_th": "บาเจาะ",
+   "title_en": "Bacho"
+ },
+ {
+   "id": 9604,
+   "menu": "district",
+   "sort": 919,
+   "parent_categories_id": 96,
+   "title_th": "ยี่งอ",
+   "title_en": "Yi-ngo"
+ },
+ {
+   "id": 9605,
+   "menu": "district",
+   "sort": 920,
+   "parent_categories_id": 96,
+   "title_th": "ระแงะ",
+   "title_en": "Ra-ngae"
+ },
+ {
+   "id": 9606,
+   "menu": "district",
+   "sort": 921,
+   "parent_categories_id": 96,
+   "title_th": "รือเสาะ",
+   "title_en": "Rueso"
+ },
+ {
+   "id": 9607,
+   "menu": "district",
+   "sort": 922,
+   "parent_categories_id": 96,
+   "title_th": "ศรีสาคร",
+   "title_en": "Si Sakhon"
+ },
+ {
+   "id": 9608,
+   "menu": "district",
+   "sort": 923,
+   "parent_categories_id": 96,
+   "title_th": "แว้ง",
+   "title_en": "Waeng"
+ },
+ {
+   "id": 9609,
+   "menu": "district",
+   "sort": 924,
+   "parent_categories_id": 96,
+   "title_th": "สุคิริน",
+   "title_en": "Sukhirin"
+ },
+ {
+   "id": 9610,
+   "menu": "district",
+   "sort": 925,
+   "parent_categories_id": 96,
+   "title_th": "สุไหงโก-ลก",
+   "title_en": "Su-ngai Kolok"
+ },
+ {
+   "id": 9611,
+   "menu": "district",
+   "sort": 926,
+   "parent_categories_id": 96,
+   "title_th": "สุไหงปาดี",
+   "title_en": "Su-ngai Padi"
+ },
+ {
+   "id": 9612,
+   "menu": "district",
+   "sort": 927,
+   "parent_categories_id": 96,
+   "title_th": "จะแนะ",
+   "title_en": "Chanae"
+ },
+ {
+   "id": 9613,
+   "menu": "district",
+   "sort": 928,
+   "parent_categories_id": 96,
+   "title_th": "เจาะไอร้อง",
+   "title_en": "Cho-airong"
+ }
+]

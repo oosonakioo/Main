@@ -1,0 +1,618 @@
+[
+ {
+   "id": 10,
+   "menu": "province",
+   "sort": 1,
+   "parent_categories_id": 1,
+   "title_th": "กรุงเทพมหานคร",
+   "title_en": "Bangkok"
+ },
+ {
+   "id": 11,
+   "menu": "province",
+   "sort": 2,
+   "parent_categories_id": 1,
+   "title_th": "สมุทรปราการ",
+   "title_en": "Samut Prakan"
+ },
+ {
+   "id": 12,
+   "menu": "province",
+   "sort": 3,
+   "parent_categories_id": 1,
+   "title_th": "นนทบุรี",
+   "title_en": "Nonthaburi"
+ },
+ {
+   "id": 13,
+   "menu": "province",
+   "sort": 4,
+   "parent_categories_id": 1,
+   "title_th": "ปทุมธานี",
+   "title_en": "Pathum Thani"
+ },
+ {
+   "id": 14,
+   "menu": "province",
+   "sort": 5,
+   "parent_categories_id": 2,
+   "title_th": "พระนครศรีอยุธยา",
+   "title_en": "Phra Nakhon Si Ayutthaya"
+ },
+ {
+   "id": 15,
+   "menu": "province",
+   "sort": 6,
+   "parent_categories_id": 2,
+   "title_th": "อ่างทอง",
+   "title_en": "Ang Thong"
+ },
+ {
+   "id": 16,
+   "menu": "province",
+   "sort": 7,
+   "parent_categories_id": 2,
+   "title_th": "ลพบุรี",
+   "title_en": "Lop Buri"
+ },
+ {
+   "id": 17,
+   "menu": "province",
+   "sort": 8,
+   "parent_categories_id": 2,
+   "title_th": "สิงห์บุรี",
+   "title_en": "Sing Buri"
+ },
+ {
+   "id": 18,
+   "menu": "province",
+   "sort": 9,
+   "parent_categories_id": 2,
+   "title_th": "ชัยนาท",
+   "title_en": "Chai Nat"
+ },
+ {
+   "id": 19,
+   "menu": "province",
+   "sort": 10,
+   "parent_categories_id": 2,
+   "title_th": "สระบุรี",
+   "title_en": "Saraburi"
+ },
+ {
+   "id": 20,
+   "menu": "province",
+   "sort": 11,
+   "parent_categories_id": 3,
+   "title_th": "ชลบุรี",
+   "title_en": "Chon Buri"
+ },
+ {
+   "id": 21,
+   "menu": "province",
+   "sort": 12,
+   "parent_categories_id": 3,
+   "title_th": "ระยอง",
+   "title_en": "Rayong"
+ },
+ {
+   "id": 22,
+   "menu": "province",
+   "sort": 13,
+   "parent_categories_id": 3,
+   "title_th": "จันทบุรี",
+   "title_en": "Chanthaburi"
+ },
+ {
+   "id": 23,
+   "menu": "province",
+   "sort": 14,
+   "parent_categories_id": 3,
+   "title_th": "ตราด",
+   "title_en": "Trat"
+ },
+ {
+   "id": 24,
+   "menu": "province",
+   "sort": 15,
+   "parent_categories_id": 3,
+   "title_th": "ฉะเชิงเทรา",
+   "title_en": "Chachoengsao"
+ },
+ {
+   "id": 25,
+   "menu": "province",
+   "sort": 16,
+   "parent_categories_id": 3,
+   "title_th": "ปราจีนบุรี",
+   "title_en": "Prachin Buri"
+ },
+ {
+   "id": 26,
+   "menu": "province",
+   "sort": 17,
+   "parent_categories_id": 2,
+   "title_th": "นครนายก",
+   "title_en": "Nakhon Nayok"
+ },
+ {
+   "id": 27,
+   "menu": "province",
+   "sort": 18,
+   "parent_categories_id": 3,
+   "title_th": "สระแก้ว",
+   "title_en": "Sa Kaeo"
+ },
+ {
+   "id": 30,
+   "menu": "province",
+   "sort": 19,
+   "parent_categories_id": 6,
+   "title_th": "นครราชสีมา",
+   "title_en": "Nakhon Ratchasima"
+ },
+ {
+   "id": 31,
+   "menu": "province",
+   "sort": 20,
+   "parent_categories_id": 6,
+   "title_th": "บุรีรัมย์",
+   "title_en": "Buri Ram"
+ },
+ {
+   "id": 32,
+   "menu": "province",
+   "sort": 21,
+   "parent_categories_id": 6,
+   "title_th": "สุรินทร์",
+   "title_en": "Surin"
+ },
+ {
+   "id": 33,
+   "menu": "province",
+   "sort": 22,
+   "parent_categories_id": 6,
+   "title_th": "ศรีสะเกษ",
+   "title_en": "Si Sa Ket"
+ },
+ {
+   "id": 34,
+   "menu": "province",
+   "sort": 23,
+   "parent_categories_id": 6,
+   "title_th": "อุบลราชธานี",
+   "title_en": "Ubon Ratchathani"
+ },
+ {
+   "id": 35,
+   "menu": "province",
+   "sort": 24,
+   "parent_categories_id": 6,
+   "title_th": "ยโสธร",
+   "title_en": "Yasothon"
+ },
+ {
+   "id": 36,
+   "menu": "province",
+   "sort": 25,
+   "parent_categories_id": 6,
+   "title_th": "ชัยภูมิ",
+   "title_en": "Chaiyaphum"
+ },
+ {
+   "id": 37,
+   "menu": "province",
+   "sort": 26,
+   "parent_categories_id": 6,
+   "title_th": "อำนาจเจริญ",
+   "title_en": "Amnat Charoen"
+ },
+ {
+   "id": 38,
+   "menu": "province",
+   "sort": 27,
+   "parent_categories_id": 6,
+   "title_th": "บึงกาฬ",
+   "title_en": "Bueng Kan"
+ },
+ {
+   "id": 39,
+   "menu": "province",
+   "sort": 28,
+   "parent_categories_id": 6,
+   "title_th": "หนองบัวลำภู",
+   "title_en": "Nong Bua Lam Phu"
+ },
+ {
+   "id": 40,
+   "menu": "province",
+   "sort": 29,
+   "parent_categories_id": 6,
+   "title_th": "ขอนแก่น",
+   "title_en": "Khon Kaen"
+ },
+ {
+   "id": 41,
+   "menu": "province",
+   "sort": 30,
+   "parent_categories_id": 6,
+   "title_th": "อุดรธานี",
+   "title_en": "Udon Thani"
+ },
+ {
+   "id": 42,
+   "menu": "province",
+   "sort": 31,
+   "parent_categories_id": 6,
+   "title_th": "เลย",
+   "title_en": "Loei"
+ },
+ {
+   "id": 43,
+   "menu": "province",
+   "sort": 32,
+   "parent_categories_id": 6,
+   "title_th": "หนองคาย",
+   "title_en": "Nong Khai"
+ },
+ {
+   "id": 44,
+   "menu": "province",
+   "sort": 33,
+   "parent_categories_id": 6,
+   "title_th": "มหาสารคาม",
+   "title_en": "Maha Sarakham"
+ },
+ {
+   "id": 45,
+   "menu": "province",
+   "sort": 34,
+   "parent_categories_id": 6,
+   "title_th": "ร้อยเอ็ด",
+   "title_en": "Roi Et"
+ },
+ {
+   "id": 46,
+   "menu": "province",
+   "sort": 35,
+   "parent_categories_id": 6,
+   "title_th": "กาฬสินธุ์",
+   "title_en": "Kalasin"
+ },
+ {
+   "id": 47,
+   "menu": "province",
+   "sort": 36,
+   "parent_categories_id": 6,
+   "title_th": "สกลนคร",
+   "title_en": "Sakon Nakhon"
+ },
+ {
+   "id": 48,
+   "menu": "province",
+   "sort": 37,
+   "parent_categories_id": 6,
+   "title_th": "นครพนม",
+   "title_en": "Nakhon Phanom"
+ },
+ {
+   "id": 49,
+   "menu": "province",
+   "sort": 38,
+   "parent_categories_id": 6,
+   "title_th": "มุกดาหาร",
+   "title_en": "Mukdahan"
+ },
+ {
+   "id": 50,
+   "menu": "province",
+   "sort": 39,
+   "parent_categories_id": 4,
+   "title_th": "เชียงใหม่",
+   "title_en": "Chiang Mai"
+ },
+ {
+   "id": 51,
+   "menu": "province",
+   "sort": 40,
+   "parent_categories_id": 4,
+   "title_th": "ลำพูน",
+   "title_en": "Lamphun"
+ },
+ {
+   "id": 52,
+   "menu": "province",
+   "sort": 41,
+   "parent_categories_id": 4,
+   "title_th": "ลำปาง",
+   "title_en": "Lampang"
+ },
+ {
+   "id": 53,
+   "menu": "province",
+   "sort": 42,
+   "parent_categories_id": 4,
+   "title_th": "อุตรดิตถ์",
+   "title_en": "Uttaradit"
+ },
+ {
+   "id": 54,
+   "menu": "province",
+   "sort": 43,
+   "parent_categories_id": 4,
+   "title_th": "แพร่",
+   "title_en": "Phrae"
+ },
+ {
+   "id": 55,
+   "menu": "province",
+   "sort": 44,
+   "parent_categories_id": 4,
+   "title_th": "น่าน",
+   "title_en": "Nan"
+ },
+ {
+   "id": 56,
+   "menu": "province",
+   "sort": 45,
+   "parent_categories_id": 4,
+   "title_th": "พะเยา",
+   "title_en": "Phayao"
+ },
+ {
+   "id": 57,
+   "menu": "province",
+   "sort": 46,
+   "parent_categories_id": 4,
+   "title_th": "เชียงราย",
+   "title_en": "Chiang Rai"
+ },
+ {
+   "id": 58,
+   "menu": "province",
+   "sort": 47,
+   "parent_categories_id": 4,
+   "title_th": "แม่ฮ่องสอน",
+   "title_en": "Mae Hong Son"
+ },
+ {
+   "id": 60,
+   "menu": "province",
+   "sort": 48,
+   "parent_categories_id": 2,
+   "title_th": "นครสวรรค์",
+   "title_en": "Nakhon Sawan"
+ },
+ {
+   "id": 61,
+   "menu": "province",
+   "sort": 49,
+   "parent_categories_id": 2,
+   "title_th": "อุทัยธานี",
+   "title_en": "Uthai Thani"
+ },
+ {
+   "id": 62,
+   "menu": "province",
+   "sort": 50,
+   "parent_categories_id": 2,
+   "title_th": "กำแพงเพชร",
+   "title_en": "Kamphaeng Phet"
+ },
+ {
+   "id": 63,
+   "menu": "province",
+   "sort": 51,
+   "parent_categories_id": 5,
+   "title_th": "ตาก",
+   "title_en": "Tak"
+ },
+ {
+   "id": 64,
+   "menu": "province",
+   "sort": 52,
+   "parent_categories_id": 2,
+   "title_th": "สุโขทัย",
+   "title_en": "Sukhothai"
+ },
+ {
+   "id": 65,
+   "menu": "province",
+   "sort": 53,
+   "parent_categories_id": 2,
+   "title_th": "พิษณุโลก",
+   "title_en": "Phitsanulok"
+ },
+ {
+   "id": 66,
+   "menu": "province",
+   "sort": 54,
+   "parent_categories_id": 2,
+   "title_th": "พิจิตร",
+   "title_en": "Phichit"
+ },
+ {
+   "id": 67,
+   "menu": "province",
+   "sort": 55,
+   "parent_categories_id": 2,
+   "title_th": "เพชรบูรณ์",
+   "title_en": "Phetchabun"
+ },
+ {
+   "id": 70,
+   "menu": "province",
+   "sort": 56,
+   "parent_categories_id": 5,
+   "title_th": "ราชบุรี",
+   "title_en": "Ratchaburi"
+ },
+ {
+   "id": 71,
+   "menu": "province",
+   "sort": 57,
+   "parent_categories_id": 5,
+   "title_th": "กาญจนบุรี",
+   "title_en": "Kanchanaburi"
+ },
+ {
+   "id": 72,
+   "menu": "province",
+   "sort": 58,
+   "parent_categories_id": 2,
+   "title_th": "สุพรรณบุรี",
+   "title_en": "Suphan Buri"
+ },
+ {
+   "id": 73,
+   "menu": "province",
+   "sort": 59,
+   "parent_categories_id": 1,
+   "title_th": "นครปฐม",
+   "title_en": "Nakhon Pathom"
+ },
+ {
+   "id": 74,
+   "menu": "province",
+   "sort": 60,
+   "parent_categories_id": 1,
+   "title_th": "สมุทรสาคร",
+   "title_en": "Samut Sakhon"
+ },
+ {
+   "id": 75,
+   "menu": "province",
+   "sort": 61,
+   "parent_categories_id": 2,
+   "title_th": "สมุทรสงคราม",
+   "title_en": "Samut Songkhram"
+ },
+ {
+   "id": 76,
+   "menu": "province",
+   "sort": 62,
+   "parent_categories_id": 5,
+   "title_th": "เพชรบุรี",
+   "title_en": "Phetchaburi"
+ },
+ {
+   "id": 77,
+   "menu": "province",
+   "sort": 63,
+   "parent_categories_id": 5,
+   "title_th": "ประจวบคีรีขันธ์",
+   "title_en": "Prachuap Khiri Khan"
+ },
+ {
+   "id": 80,
+   "menu": "province",
+   "sort": 64,
+   "parent_categories_id": 7,
+   "title_th": "นครศรีธรรมราช",
+   "title_en": "Nakhon Si Thammarat"
+ },
+ {
+   "id": 81,
+   "menu": "province",
+   "sort": 65,
+   "parent_categories_id": 7,
+   "title_th": "กระบี่",
+   "title_en": "Krabi"
+ },
+ {
+   "id": 82,
+   "menu": "province",
+   "sort": 66,
+   "parent_categories_id": 7,
+   "title_th": "พังงา",
+   "title_en": "Phang-nga"
+ },
+ {
+   "id": 83,
+   "menu": "province",
+   "sort": 67,
+   "parent_categories_id": 7,
+   "title_th": "ภูเก็ต",
+   "title_en": "Phuket"
+ },
+ {
+   "id": 84,
+   "menu": "province",
+   "sort": 68,
+   "parent_categories_id": 7,
+   "title_th": "สุราษฎร์ธานี",
+   "title_en": "Surat Thani"
+ },
+ {
+   "id": 85,
+   "menu": "province",
+   "sort": 69,
+   "parent_categories_id": 7,
+   "title_th": "ระนอง",
+   "title_en": "Ranong"
+ },
+ {
+   "id": 86,
+   "menu": "province",
+   "sort": 70,
+   "parent_categories_id": 7,
+   "title_th": "ชุมพร",
+   "title_en": "Chumphon"
+ },
+ {
+   "id": 90,
+   "menu": "province",
+   "sort": 71,
+   "parent_categories_id": 7,
+   "title_th": "สงขลา",
+   "title_en": "Songkhla"
+ },
+ {
+   "id": 91,
+   "menu": "province",
+   "sort": 72,
+   "parent_categories_id": 7,
+   "title_th": "สตูล",
+   "title_en": "Satun"
+ },
+ {
+   "id": 92,
+   "menu": "province",
+   "sort": 73,
+   "parent_categories_id": 7,
+   "title_th": "ตรัง",
+   "title_en": "Trang"
+ },
+ {
+   "id": 93,
+   "menu": "province",
+   "sort": 74,
+   "parent_categories_id": 7,
+   "title_th": "พัทลุง",
+   "title_en": "Phatthalung"
+ },
+ {
+   "id": 94,
+   "menu": "province",
+   "sort": 75,
+   "parent_categories_id": 7,
+   "title_th": "ปัตตานี",
+   "title_en": "Pattani"
+ },
+ {
+   "id": 95,
+   "menu": "province",
+   "sort": 76,
+   "parent_categories_id": 7,
+   "title_th": "ยะลา",
+   "title_en": "Yala"
+ },
+ {
+   "id": 96,
+   "menu": "province",
+   "sort": 77,
+   "parent_categories_id": 7,
+   "title_th": "นราธิวาส",
+   "title_en": "Narathiwat"
+ }
+]

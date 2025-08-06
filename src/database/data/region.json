@@ -1,0 +1,58 @@
+[
+ {
+   "id": 1,
+   "menu": "region",
+   "sort": 1,
+   "parent_categories_id": "",
+   "title_th": "กรุงเทพมหานครและปริมณฑล",
+   "title_en": "Bangkok Metropolitan"
+ },
+ {
+   "id": 2,
+   "menu": "region",
+   "sort": 2,
+   "parent_categories_id": "",
+   "title_th": "กลาง",
+   "title_en": "Central"
+ },
+ {
+   "id": 3,
+   "menu": "region",
+   "sort": 3,
+   "parent_categories_id": "",
+   "title_th": "ตะวันออก",
+   "title_en": "Eastern"
+ },
+ {
+   "id": 4,
+   "menu": "region",
+   "sort": 4,
+   "parent_categories_id": "",
+   "title_th": "เหนือ",
+   "title_en": "North"
+ },
+ {
+   "id": 5,
+   "menu": "region",
+   "sort": 5,
+   "parent_categories_id": "",
+   "title_th": "ตะวันตก",
+   "title_en": "Western"
+ },
+ {
+   "id": 6,
+   "menu": "region",
+   "sort": 6,
+   "parent_categories_id": "",
+   "title_th": "ตะวันออกเฉียงเหนือ",
+   "title_en": " Northeast"
+ },
+ {
+   "id": 7,
+   "menu": "region",
+   "sort": 7,
+   "parent_categories_id": "",
+   "title_th": "ใต้",
+   "title_en": "Southern"
+ }
+]
