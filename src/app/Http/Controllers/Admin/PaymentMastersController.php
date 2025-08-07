@@ -155,7 +155,7 @@ class PaymentMastersController extends AdminController
     private function doValidate(Request $request)
     {
         $validate = [];
-        $this->validate($request, $validate);
+        $request->validate($validate);
     }
 
     private function doSave(Request $request, $paymentmaster)

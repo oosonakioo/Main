@@ -93,7 +93,7 @@ class GallerysController extends AdminController
             $validate[$title] = 'required';
             // $validate[$detail] = 'required';
         }
-        $this->validate($request, $validate);
+        $request->validate($validate);
     }
 
     private function isPinToHome(Request $request)

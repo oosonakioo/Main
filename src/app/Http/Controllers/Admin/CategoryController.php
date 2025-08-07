@@ -91,7 +91,7 @@ class CategoryController extends AdminController
             $validate[$title] = 'required';
             // $validate[$detail] = 'required';
         }
-        $this->validate($request, $validate);
+        $request->validate($validate);
     }
 
     private function doSave(Request $request, $category)

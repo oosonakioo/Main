@@ -84,7 +84,7 @@ class NewsController extends AdminController
         //    $validate['sort'] = 'required';
         // }
 
-        $this->validate($request, $validate);
+        $request->validate($validate);
     }
 
     private function isPinToHome(Request $request)

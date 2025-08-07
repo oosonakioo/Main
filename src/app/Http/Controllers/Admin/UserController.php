@@ -88,7 +88,7 @@ class UserController extends AdminController
             $validate['email'] = 'required|email';
             $validate['password'] = 'required';
         }
-        $this->validate($request, $validate);
+        $request->validate($validate);
     }
 
     private function doSave(Request $request, $users)

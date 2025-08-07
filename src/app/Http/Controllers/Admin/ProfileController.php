@@ -22,7 +22,7 @@ class ProfileController extends AdminController
 
     public function update(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'password' => 'required|confirmed|min:6',
         ]);
 

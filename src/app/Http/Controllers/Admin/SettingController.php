@@ -51,7 +51,7 @@ class SettingController extends AdminController
 
     public function update(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'desc' => 'required',
             'keyword' => 'required',

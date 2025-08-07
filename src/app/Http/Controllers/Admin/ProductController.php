@@ -109,7 +109,7 @@ class ProductController extends AdminController
 
         // $validate['price'] = 'required';
         // $validate['image'] = 'required';
-        $this->validate($request, $validate);
+        $request->validate($validate);
     }
 
     private function doSave(Request $request, $product)

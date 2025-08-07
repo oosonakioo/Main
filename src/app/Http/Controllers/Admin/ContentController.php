@@ -38,7 +38,7 @@ class ContentController extends AdminController
             $content->translateOrNew($locale)->detail = $request[$detail];
         }
 
-        $this->validate($request, $validate);
+        $request->validate($validate);
         $content->save();
 
         return Helper::redirect('admin/content/'.$menu);
