@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -9,7 +11,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Validator;
 
-class AuthController extends Controller
+class AuthController extends Controller implements HasMiddleware
 {
     /*
     |--------------------------------------------------------------------------
@@ -33,14 +35,11 @@ class AuthController extends Controller
 
     protected $redirectAfterLogout = '/admin';
 
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        return [
+            new Middleware('guest', except: ['logout']),
+        ];
     }
 
     /**
