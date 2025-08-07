@@ -3,4 +3,5 @@
 Homestead.yaml
 Homestead.json
 .env
-/.phpunit.cache
+/.phpunit.cache/storage/pail
+/.nova
