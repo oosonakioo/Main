@@ -7,7 +7,7 @@ use App\User;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as Input;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class UserController extends AdminController
