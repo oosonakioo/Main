@@ -11,13 +11,13 @@
 
 namespace Symfony\Component\HttpKernel\Fragment;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Implements the inline rendering strategy where the Request is rendered by the current HTTP kernel.
@@ -27,15 +27,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class InlineFragmentRenderer extends RoutableFragmentRenderer
 {
     private $kernel;
+
     private $dispatcher;
 
     /**
      * Constructor.
      *
-     * @param HttpKernelInterface      $kernel     A HttpKernelInterface instance
-     * @param EventDispatcherInterface $dispatcher A EventDispatcherInterface instance
+     * @param  HttpKernelInterface  $kernel  A HttpKernelInterface instance
+     * @param  EventDispatcherInterface  $dispatcher  A EventDispatcherInterface instance
      */
-    public function __construct(HttpKernelInterface $kernel, EventDispatcherInterface $dispatcher = null)
+    public function __construct(HttpKernelInterface $kernel, ?EventDispatcherInterface $dispatcher = null)
     {
         $this->kernel = $kernel;
         $this->dispatcher = $dispatcher;
@@ -48,7 +49,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
      *
      *  * alt: an alternative URI to render in case of an error
      */
-    public function render($uri, Request $request, array $options = array())
+    public function render($uri, Request $request, array $options = [])
     {
         $reference = null;
         if ($uri instanceof ControllerReference) {
@@ -59,10 +60,10 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
             // want that as we want to preserve objects (so we manually set Request attributes
             // below instead)
             $attributes = $reference->attributes;
-            $reference->attributes = array();
+            $reference->attributes = [];
 
             // The request format and locale might have been overridden by the user
-            foreach (array('_format', '_locale') as $key) {
+            foreach (['_format', '_locale'] as $key) {
                 if (isset($attributes[$key])) {
                     $reference->attributes[$key] = $attributes[$key];
                 }
@@ -76,7 +77,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         $subRequest = $this->createSubRequest($uri, $request);
 
         // override Request attributes as they can be objects (which are not supported by the generated URI)
-        if (null !== $reference) {
+        if ($reference !== null) {
             $subRequest->attributes->add($reference->attributes);
         }
 
@@ -102,11 +103,11 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
                 return $this->render($alt, $request, $options);
             }
 
-            if (!isset($options['ignore_errors']) || !$options['ignore_errors']) {
+            if (! isset($options['ignore_errors']) || ! $options['ignore_errors']) {
                 throw $e;
             }
 
-            return new Response();
+            return new Response;
         }
     }
 
@@ -132,7 +133,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         unset($server['HTTP_IF_MODIFIED_SINCE']);
         unset($server['HTTP_IF_NONE_MATCH']);
 
-        $subRequest = Request::create($uri, 'get', array(), $cookies, array(), $server);
+        $subRequest = Request::create($uri, 'get', [], $cookies, [], $server);
         if ($request->headers->has('Surrogate-Capability')) {
             $subRequest->headers->set('Surrogate-Capability', $request->headers->get('Surrogate-Capability'));
         }

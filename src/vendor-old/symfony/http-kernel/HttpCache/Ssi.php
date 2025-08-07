@@ -23,18 +23,19 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class Ssi implements SurrogateInterface
 {
     private $contentTypes;
-    private $phpEscapeMap = array(
-        array('<?', '<%', '<s', '<S'),
-        array('<?php echo "<?"; ?>', '<?php echo "<%"; ?>', '<?php echo "<s"; ?>', '<?php echo "<S"; ?>'),
-    );
+
+    private $phpEscapeMap = [
+        ['<?', '<%', '<s', '<S'],
+        ['<?php echo "<?"; ?>', '<?php echo "<%"; ?>', '<?php echo "<s"; ?>', '<?php echo "<S"; ?>'],
+    ];
 
     /**
      * Constructor.
      *
-     * @param array $contentTypes An array of content-type that should be parsed for SSI information
-     *                            (default: text/html, text/xml, application/xhtml+xml, and application/xml)
+     * @param  array  $contentTypes  An array of content-type that should be parsed for SSI information
+     *                               (default: text/html, text/xml, application/xhtml+xml, and application/xml)
      */
-    public function __construct(array $contentTypes = array('text/html', 'text/xml', 'application/xhtml+xml', 'application/xml'))
+    public function __construct(array $contentTypes = ['text/html', 'text/xml', 'application/xhtml+xml', 'application/xml'])
     {
         $this->contentTypes = $contentTypes;
     }
@@ -52,7 +53,7 @@ class Ssi implements SurrogateInterface
      */
     public function createCacheStrategy()
     {
-        return new ResponseCacheStrategy();
+        return new ResponseCacheStrategy;
     }
 
     /**
@@ -64,7 +65,7 @@ class Ssi implements SurrogateInterface
             return false;
         }
 
-        return false !== strpos($value, 'SSI/1.0');
+        return strpos($value, 'SSI/1.0') !== false;
     }
 
     /**
@@ -83,7 +84,7 @@ class Ssi implements SurrogateInterface
      */
     public function addSurrogateControl(Response $response)
     {
-        if (false !== strpos($response->getContent(), '<!--#include')) {
+        if (strpos($response->getContent(), '<!--#include') !== false) {
             $response->headers->set('Surrogate-Control', 'content="SSI/1.0"');
         }
     }
@@ -93,7 +94,7 @@ class Ssi implements SurrogateInterface
      */
     public function needsParsing(Response $response)
     {
-        if (!$control = $response->headers->get('Surrogate-Control')) {
+        if (! $control = $response->headers->get('Surrogate-Control')) {
             return false;
         }
 
@@ -119,7 +120,7 @@ class Ssi implements SurrogateInterface
         }
 
         $parts = explode(';', $type);
-        if (!in_array($parts[0], $this->contentTypes)) {
+        if (! in_array($parts[0], $this->contentTypes)) {
             return $response;
         }
 
@@ -131,22 +132,22 @@ class Ssi implements SurrogateInterface
 
         $i = 1;
         while (isset($chunks[$i])) {
-            $options = array();
+            $options = [];
             preg_match_all('/(virtual)="([^"]*?)"/', $chunks[$i], $matches, PREG_SET_ORDER);
             foreach ($matches as $set) {
                 $options[$set[1]] = $set[2];
             }
 
-            if (!isset($options['virtual'])) {
+            if (! isset($options['virtual'])) {
                 throw new \RuntimeException('Unable to process an SSI tag without a "virtual" attribute.');
             }
 
             $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, \'\', false) ?>'."\n",
                 var_export($options['virtual'], true)
             );
-            ++$i;
+            $i++;
             $chunks[$i] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[$i]);
-            ++$i;
+            $i++;
         }
         $content = implode('', $chunks);
 
@@ -156,7 +157,7 @@ class Ssi implements SurrogateInterface
         // remove SSI/1.0 from the Surrogate-Control header
         if ($response->headers->has('Surrogate-Control')) {
             $value = $response->headers->get('Surrogate-Control');
-            if ('content="SSI/1.0"' == $value) {
+            if ($value == 'content="SSI/1.0"') {
                 $response->headers->remove('Surrogate-Control');
             } elseif (preg_match('#,\s*content="SSI/1.0"#', $value)) {
                 $response->headers->set('Surrogate-Control', preg_replace('#,\s*content="SSI/1.0"#', '', $value));
@@ -171,12 +172,12 @@ class Ssi implements SurrogateInterface
      */
     public function handle(HttpCache $cache, $uri, $alt, $ignoreErrors)
     {
-        $subRequest = Request::create($uri, 'get', array(), $cache->getRequest()->cookies->all(), array(), $cache->getRequest()->server->all());
+        $subRequest = Request::create($uri, 'get', [], $cache->getRequest()->cookies->all(), [], $cache->getRequest()->server->all());
 
         try {
             $response = $cache->handle($subRequest, HttpKernelInterface::SUB_REQUEST, true);
 
-            if (!$response->isSuccessful()) {
+            if (! $response->isSuccessful()) {
                 throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %s).', $subRequest->getUri(), $response->getStatusCode()));
             }
 
@@ -186,7 +187,7 @@ class Ssi implements SurrogateInterface
                 return $this->handle($cache, $alt, '', $ignoreErrors);
             }
 
-            if (!$ignoreErrors) {
+            if (! $ignoreErrors) {
                 throw $e;
             }
         }

@@ -7,21 +7,19 @@
  * tokens. If a token is not recognized but a TagTransform is defined for
  * that element, the element will be transformed accordingly.
  */
-
 class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
 {
-
     /**
-     * @param HTMLPurifier_Token[] $tokens
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_Token[]  $tokens
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array|HTMLPurifier_Token[]
      */
     public function execute($tokens, $config, $context)
     {
         $definition = $config->getHTMLDefinition();
         $generator = new HTMLPurifier_Generator($config, $context);
-        $result = array();
+        $result = [];
 
         $escape_invalid_tags = $config->get('Core.EscapeInvalidTags');
         $remove_invalid_img = $config->get('Core.RemoveInvalidImg');
@@ -30,7 +28,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
         $trusted = $config->get('HTML.Trusted');
         $comment_lookup = $config->get('HTML.AllowedComments');
         $comment_regexp = $config->get('HTML.AllowedCommentsRegexp');
-        $check_comments = $comment_lookup !== array() || $comment_regexp !== null;
+        $check_comments = $comment_lookup !== [] || $comment_regexp !== null;
 
         $remove_script_contents = $config->get('Core.RemoveScriptContents');
         $hidden_elements = $config->get('Core.HiddenElements');
@@ -42,7 +40,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
             unset($hidden_elements['script']);
         }
 
-        $attr_validator = new HTMLPurifier_AttrValidator();
+        $attr_validator = new HTMLPurifier_AttrValidator;
 
         // removes tokens until it reaches a closing tag with its value
         $remove_until = false;
@@ -55,7 +53,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
 
         $e = false;
         if ($config->get('Core.CollectErrors')) {
-            $e =& $context->get('ErrorCollector');
+            $e = &$context->get('ErrorCollector');
         }
 
         foreach ($tokens as $token) {
@@ -64,7 +62,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     continue;
                 }
             }
-            if (!empty($token->is_tag)) {
+            if (! empty($token->is_tag)) {
                 // DEFINITION CALL
 
                 // before any processing, try to transform the element
@@ -89,12 +87,12 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                         $attr_validator->validateToken($token, $config, $context);
                         $ok = true;
                         foreach ($definition->info[$token->name]->required_attr as $name) {
-                            if (!isset($token->attr[$name])) {
+                            if (! isset($token->attr[$name])) {
                                 $ok = false;
                                 break;
                             }
                         }
-                        if (!$ok) {
+                        if (! $ok) {
                             if ($e) {
                                 $e->send(
                                     E_ERROR,
@@ -102,6 +100,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                                     $name
                                 );
                             }
+
                             continue;
                         }
                         $token->armor['ValidateAttributes'] = true;
@@ -140,6 +139,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                             $e->send(E_ERROR, 'Strategy_RemoveForeignElements: Foreign element removed');
                         }
                     }
+
                     continue;
                 }
             } elseif ($token instanceof HTMLPurifier_Token_Comment) {
@@ -162,7 +162,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                         $found_double_hyphen = true;
                         $token->data = str_replace('--', '-', $token->data);
                     }
-                    if ($trusted || !empty($comment_lookup[trim($token->data)]) ||
+                    if ($trusted || ! empty($comment_lookup[trim($token->data)]) ||
                         ($comment_regexp !== null && preg_match($comment_regexp, trim($token->data)))) {
                         // OK good
                         if ($e) {
@@ -180,6 +180,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                         if ($e) {
                             $e->send(E_NOTICE, 'Strategy_RemoveForeignElements: Comment removed');
                         }
+
                         continue;
                     }
                 } else {
@@ -187,6 +188,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     if ($e) {
                         $e->send(E_NOTICE, 'Strategy_RemoveForeignElements: Comment removed');
                     }
+
                     continue;
                 }
             } elseif ($token instanceof HTMLPurifier_Token_Text) {
@@ -200,6 +202,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
             $e->send(E_ERROR, 'Strategy_RemoveForeignElements: Token removed to end', $remove_until);
         }
         $context->destroy('CurrentToken');
+
         return $result;
     }
 }

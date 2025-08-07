@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
@@ -23,11 +24,11 @@ class Request implements RequestInterface
     private $uri;
 
     /**
-     * @param string                               $method  HTTP method
-     * @param string|UriInterface                  $uri     URI
-     * @param array                                $headers Request headers
-     * @param string|null|resource|StreamInterface $body    Request body
-     * @param string                               $version Protocol version
+     * @param  string  $method  HTTP method
+     * @param  string|UriInterface  $uri  URI
+     * @param  array  $headers  Request headers
+     * @param  string|null|resource|StreamInterface  $body  Request body
+     * @param  string  $version  Protocol version
      */
     public function __construct(
         $method,
@@ -36,7 +37,7 @@ class Request implements RequestInterface
         $body = null,
         $version = '1.1'
     ) {
-        if (!($uri instanceof UriInterface)) {
+        if (! ($uri instanceof UriInterface)) {
             $uri = new Uri($uri);
         }
 
@@ -45,7 +46,7 @@ class Request implements RequestInterface
         $this->setHeaders($headers);
         $this->protocol = $version;
 
-        if (!$this->hasHeader('Host')) {
+        if (! $this->hasHeader('Host')) {
             $this->updateHostFromUri();
         }
 
@@ -65,7 +66,7 @@ class Request implements RequestInterface
             $target = '/';
         }
         if ($this->uri->getQuery() != '') {
-            $target .= '?' . $this->uri->getQuery();
+            $target .= '?'.$this->uri->getQuery();
         }
 
         return $target;
@@ -81,6 +82,7 @@ class Request implements RequestInterface
 
         $new = clone $this;
         $new->requestTarget = $requestTarget;
+
         return $new;
     }
 
@@ -93,6 +95,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
         $new->method = strtoupper($method);
+
         return $new;
     }
 
@@ -110,7 +113,7 @@ class Request implements RequestInterface
         $new = clone $this;
         $new->uri = $uri;
 
-        if (!$preserveHost) {
+        if (! $preserveHost) {
             $new->updateHostFromUri();
         }
 
@@ -126,7 +129,7 @@ class Request implements RequestInterface
         }
 
         if (($port = $this->uri->getPort()) !== null) {
-            $host .= ':' . $port;
+            $host .= ':'.$port;
         }
 
         if (isset($this->headerNames['host'])) {

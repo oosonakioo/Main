@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -25,27 +25,25 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class MockingVariadicArgumentsTest extends MockeryTestCase
 {
-
-    public function setup()
+    protected function setup()
     {
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown()
+    protected function teardown()
     {
         $this->container->mockery_close();
     }
 
     /** @test */
-    public function shouldAllowMockingVariadicArguments()
+    public function should_allow_mocking_variadic_arguments()
     {
         $mock = $this->container->mock("test\Mockery\TestWithVariadicArguments");
 
-        $mock->shouldReceive("foo")->andReturn("notbar");
-        $this->assertEquals("notbar", $mock->foo());
+        $mock->shouldReceive('foo')->andReturn('notbar');
+        $this->assertEquals('notbar', $mock->foo());
     }
 }
-
 
 abstract class TestWithVariadicArguments
 {

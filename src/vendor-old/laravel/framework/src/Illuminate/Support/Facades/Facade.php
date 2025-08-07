@@ -3,8 +3,8 @@
 namespace Illuminate\Support\Facades;
 
 use Mockery;
-use RuntimeException;
 use Mockery\MockInterface;
+use RuntimeException;
 
 abstract class Facade
 {
@@ -197,7 +197,7 @@ abstract class Facade
      * Handle dynamic, static calls to the object.
      *
      * @param  string  $method
-     * @param  array   $args
+     * @param  array  $args
      * @return mixed
      *
      * @throws \RuntimeException

@@ -19,9 +19,9 @@ use Symfony\Component\CssSelector\Parser\Shortcut\EmptyStringParser;
  */
 class EmptyStringParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testParse()
+    public function test_parse()
     {
-        $parser = new EmptyStringParser();
+        $parser = new EmptyStringParser;
         $selectors = $parser->parse('');
         $this->assertCount(1, $selectors);
 

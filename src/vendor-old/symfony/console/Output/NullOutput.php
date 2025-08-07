@@ -38,7 +38,7 @@ class NullOutput implements OutputInterface
     public function getFormatter()
     {
         // to comply with the interface we must return a OutputFormatterInterface
-        return new OutputFormatter();
+        return new OutputFormatter;
     }
 
     /**

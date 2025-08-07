@@ -14,7 +14,7 @@ class MemcachedCacheTest extends CacheTest
 
     protected function setUp()
     {
-        $this->memcached = new Memcached();
+        $this->memcached = new Memcached;
         $this->memcached->setOption(Memcached::OPT_COMPRESSION, false);
         $this->memcached->addServer('127.0.0.1', 11211);
 
@@ -44,7 +44,7 @@ class MemcachedCacheTest extends CacheTest
         return $ids;
     }
 
-    public function testGetMemcachedReturnsInstanceOfMemcached()
+    public function test_get_memcached_returns_instance_of_memcached()
     {
         $this->assertInstanceOf('Memcached', $this->_getCacheDriver()->getMemcached());
     }
@@ -54,8 +54,9 @@ class MemcachedCacheTest extends CacheTest
      */
     protected function _getCacheDriver()
     {
-        $driver = new MemcachedCache();
+        $driver = new MemcachedCache;
         $driver->setMemcached($this->memcached);
+
         return $driver;
     }
 }

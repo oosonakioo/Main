@@ -2,25 +2,26 @@
 
 /**
  * Validates a URI in CSS syntax, which uses url('http://example.com')
+ *
  * @note While theoretically speaking a URI in a CSS document could
  *       be non-embedded, as of CSS2 there is no such usage so we're
  *       generalizing it. This may need to be changed in the future.
+ *
  * @warning Since HTMLPurifier_AttrDef_CSS blindly uses semicolons as
  *          the separator, you cannot put a literal semicolon in
  *          in the URI. Try percent encoding it, in that case.
  */
 class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
 {
-
     public function __construct()
     {
         parent::__construct(true); // always embedded
     }
 
     /**
-     * @param string $uri_string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $uri_string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($uri_string, $config, $context)
@@ -42,7 +43,7 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         }
         $uri = trim(substr($uri_string, 0, $new_length));
 
-        if (!empty($uri) && ($uri[0] == "'" || $uri[0] == '"')) {
+        if (! empty($uri) && ($uri[0] == "'" || $uri[0] == '"')) {
             $quote = $uri[0];
             $new_length = strlen($uri) - 1;
             if ($uri[$new_length] !== $quote) {
@@ -60,11 +61,11 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         }
 
         // extra sanity check; should have been done by URI
-        $result = str_replace(array('"', "\\", "\n", "\x0c", "\r"), "", $result);
+        $result = str_replace(['"', '\\', "\n", "\x0c", "\r"], '', $result);
 
         // suspicious characters are ()'; we're going to percent encode
         // them for safety.
-        $result = str_replace(array('(', ')', "'"), array('%28', '%29', '%27'), $result);
+        $result = str_replace(['(', ')', "'"], ['%28', '%29', '%27'], $result);
 
         // there's an extra bug where ampersands lose their escaping on
         // an innerHTML cycle, so a very unlucky query parameter could

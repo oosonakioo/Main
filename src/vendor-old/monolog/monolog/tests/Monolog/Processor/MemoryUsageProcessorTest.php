@@ -19,9 +19,9 @@ class MemoryUsageProcessorTest extends TestCase
      * @covers Monolog\Processor\MemoryUsageProcessor::__invoke
      * @covers Monolog\Processor\MemoryProcessor::formatBytes
      */
-    public function testProcessor()
+    public function test_processor()
     {
-        $processor = new MemoryUsageProcessor();
+        $processor = new MemoryUsageProcessor;
         $record = $processor($this->getRecord());
         $this->assertArrayHasKey('memory_usage', $record['extra']);
         $this->assertRegExp('#[0-9.]+ (M|K)?B$#', $record['extra']['memory_usage']);
@@ -31,7 +31,7 @@ class MemoryUsageProcessorTest extends TestCase
      * @covers Monolog\Processor\MemoryUsageProcessor::__invoke
      * @covers Monolog\Processor\MemoryProcessor::formatBytes
      */
-    public function testProcessorWithoutFormatting()
+    public function test_processor_without_formatting()
     {
         $processor = new MemoryUsageProcessor(true, false);
         $record = $processor($this->getRecord());

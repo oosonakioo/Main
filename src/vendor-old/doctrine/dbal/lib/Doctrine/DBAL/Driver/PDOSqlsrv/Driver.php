@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,7 +32,7 @@ class Driver extends AbstractSQLServerDriver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
     {
         return new Connection(
             $this->_constructPdoDsn($params),
@@ -44,7 +45,6 @@ class Driver extends AbstractSQLServerDriver
     /**
      * Constructs the Sqlsrv PDO DSN.
      *
-     * @param array $params
      *
      * @return string The DSN.
      */
@@ -56,16 +56,16 @@ class Driver extends AbstractSQLServerDriver
             $dsn .= $params['host'];
         }
 
-        if (isset($params['port']) && !empty($params['port'])) {
-            $dsn .= ',' . $params['port'];
+        if (isset($params['port']) && ! empty($params['port'])) {
+            $dsn .= ','.$params['port'];
         }
 
         if (isset($params['dbname'])) {
-            $dsn .= ';Database=' .  $params['dbname'];
+            $dsn .= ';Database='.$params['dbname'];
         }
 
         if (isset($params['MultipleActiveResultSets'])) {
-            $dsn .= '; MultipleActiveResultSets=' . ($params['MultipleActiveResultSets'] ? 'true' : 'false');
+            $dsn .= '; MultipleActiveResultSets='.($params['MultipleActiveResultSets'] ? 'true' : 'false');
         }
 
         return $dsn;

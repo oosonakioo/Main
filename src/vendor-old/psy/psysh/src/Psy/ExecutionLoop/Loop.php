@@ -29,8 +29,6 @@ class Loop
      *
      * The non-forking loop doesn't have much use for Configuration, so we'll
      * just ignore it.
-     *
-     * @param Configuration $config
      */
     public function __construct(Configuration $config)
     {
@@ -41,14 +39,12 @@ class Loop
      * Run the execution loop.
      *
      * @throws ThrowUpException if thrown by the `throw-up` command.
-     *
-     * @param Shell $shell
      */
     public function run(Shell $shell)
     {
         $loop = function ($__psysh__) {
             // Load user-defined includes
-            set_error_handler(array($__psysh__, 'handleError'));
+            set_error_handler([$__psysh__, 'handleError']);
             try {
                 foreach ($__psysh__->getIncludes() as $__psysh_include__) {
                     include $__psysh_include__;
@@ -71,11 +67,11 @@ class Loop
 
                     // evaluate the current code buffer
                     ob_start(
-                        array($__psysh__, 'writeStdout'),
+                        [$__psysh__, 'writeStdout'],
                         version_compare(PHP_VERSION, '5.4', '>=') ? 1 : 2
                     );
 
-                    set_error_handler(array($__psysh__, 'handleError'));
+                    set_error_handler([$__psysh__, 'handleError']);
                     $_ = eval($__psysh__->flushCode() ?: Loop::NOOP_INPUT);
                     restore_error_handler();
 

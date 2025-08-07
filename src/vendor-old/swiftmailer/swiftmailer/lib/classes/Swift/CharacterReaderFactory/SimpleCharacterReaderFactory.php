@@ -20,14 +20,14 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
      *
      * @var array
      */
-    private static $_map = array();
+    private static $_map = [];
 
     /**
      * Factories which have already been loaded.
      *
      * @var Swift_CharacterReaderFactory[]
      */
-    private static $_loaded = array();
+    private static $_loaded = [];
 
     /**
      * Creates a new CharacterReaderFactory.
@@ -50,28 +50,28 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
 
         $prefix = 'Swift_CharacterReader_';
 
-        $singleByte = array(
+        $singleByte = [
             'class' => $prefix.'GenericFixedWidthReader',
-            'constructor' => array(1),
-            );
+            'constructor' => [1],
+        ];
 
-        $doubleByte = array(
+        $doubleByte = [
             'class' => $prefix.'GenericFixedWidthReader',
-            'constructor' => array(2),
-            );
+            'constructor' => [2],
+        ];
 
-        $fourBytes = array(
+        $fourBytes = [
             'class' => $prefix.'GenericFixedWidthReader',
-            'constructor' => array(4),
-            );
+            'constructor' => [4],
+        ];
 
         // Utf-8
-        self::$_map['utf-?8'] = array(
+        self::$_map['utf-?8'] = [
             'class' => $prefix.'Utf8Reader',
-            'constructor' => array(),
-            );
+            'constructor' => [],
+        ];
 
-        //7-8 bit charsets
+        // 7-8 bit charsets
         self::$_map['(us-)?ascii'] = $singleByte;
         self::$_map['(iso|iec)-?8859-?[0-9]+'] = $singleByte;
         self::$_map['windows-?125[0-9]'] = $singleByte;
@@ -84,10 +84,10 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
         self::$_map['(cork|t1)'] = $singleByte;
         self::$_map['v?iscii'] = $singleByte;
 
-        //16 bits
+        // 16 bits
         self::$_map['(ucs-?2|utf-?16)'] = $doubleByte;
 
-        //32 bits
+        // 32 bits
         self::$_map['(ucs-?4|utf-?32)'] = $fourBytes;
 
         // Fallback
@@ -97,8 +97,7 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
     /**
      * Returns a CharacterReader suitable for the charset applied.
      *
-     * @param string $charset
-     *
+     * @param  string  $charset
      * @return Swift_CharacterReader
      */
     public function getReaderFor($charset)
@@ -107,7 +106,7 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
         foreach (self::$_map as $pattern => $spec) {
             $re = '/^'.$pattern.'$/D';
             if (preg_match($re, $charset)) {
-                if (!array_key_exists($pattern, self::$_loaded)) {
+                if (! array_key_exists($pattern, self::$_loaded)) {
                     $reflector = new ReflectionClass($spec['class']);
                     if ($reflector->getConstructor()) {
                         $reader = $reflector->newInstanceArgs($spec['constructor']);

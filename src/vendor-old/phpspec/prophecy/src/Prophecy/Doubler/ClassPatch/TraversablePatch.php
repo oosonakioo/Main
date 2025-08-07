@@ -25,7 +25,6 @@ class TraversablePatch implements ClassPatchInterface
     /**
      * Supports nodetree, that implement Traversable, but not Iterator or IteratorAggregate.
      *
-     * @param ClassNode $node
      *
      * @return bool
      */
@@ -39,13 +38,13 @@ class TraversablePatch implements ClassPatchInterface
         }
 
         foreach ($node->getInterfaces() as $interface) {
-            if ('Traversable' !== $interface && !is_subclass_of($interface, 'Traversable')) {
+            if ($interface !== 'Traversable' && ! is_subclass_of($interface, 'Traversable')) {
                 continue;
             }
-            if ('Iterator' === $interface || is_subclass_of($interface, 'Iterator')) {
+            if ($interface === 'Iterator' || is_subclass_of($interface, 'Iterator')) {
                 continue;
             }
-            if ('IteratorAggregate' === $interface || is_subclass_of($interface, 'IteratorAggregate')) {
+            if ($interface === 'IteratorAggregate' || is_subclass_of($interface, 'IteratorAggregate')) {
                 continue;
             }
 
@@ -57,8 +56,6 @@ class TraversablePatch implements ClassPatchInterface
 
     /**
      * Forces class to implement Iterator interface.
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {

@@ -4,8 +4,6 @@ namespace Faker\Provider\at_AT;
 
 /**
  * Class Payment
- *
- * @package Faker\Provider\at_AT
  */
 class Payment extends \Faker\Provider\Payment
 {
@@ -18,14 +16,13 @@ class Payment extends \Faker\Provider\Payment
      * @see http://www.iecomputersystems.com/ordering/eu_vat_numbers.htm
      * @see http://en.wikipedia.org/wiki/VAT_identification_number
      *
-     * @param bool $spacedNationalPrefix
-     *
+     * @param  bool  $spacedNationalPrefix
      * @return string VAT Number
      */
     public static function vat($spacedNationalPrefix = true)
     {
-        $prefix = ($spacedNationalPrefix) ? "AT U" : "ATU";
+        $prefix = ($spacedNationalPrefix) ? 'AT U' : 'ATU';
 
-        return sprintf("%s%d", $prefix, self::randomNumber(8, true));
+        return sprintf('%s%d', $prefix, self::randomNumber(8, true));
     }
 }

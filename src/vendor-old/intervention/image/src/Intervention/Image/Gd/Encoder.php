@@ -63,7 +63,7 @@ class Encoder extends \Intervention\Image\AbstractEncoder
     protected function processTiff()
     {
         throw new \Intervention\Image\Exception\NotSupportedException(
-            "TIFF format is not supported by Gd Driver."
+            'TIFF format is not supported by Gd Driver.'
         );
     }
 
@@ -75,7 +75,7 @@ class Encoder extends \Intervention\Image\AbstractEncoder
     protected function processBmp()
     {
         throw new \Intervention\Image\Exception\NotSupportedException(
-            "BMP format is not supported by Gd Driver."
+            'BMP format is not supported by Gd Driver.'
         );
     }
 
@@ -87,7 +87,7 @@ class Encoder extends \Intervention\Image\AbstractEncoder
     protected function processIco()
     {
         throw new \Intervention\Image\Exception\NotSupportedException(
-            "ICO format is not supported by Gd Driver."
+            'ICO format is not supported by Gd Driver.'
         );
     }
 
@@ -99,7 +99,7 @@ class Encoder extends \Intervention\Image\AbstractEncoder
     protected function processPsd()
     {
         throw new \Intervention\Image\Exception\NotSupportedException(
-            "PSD format is not supported by Gd Driver."
+            'PSD format is not supported by Gd Driver.'
         );
     }
 }

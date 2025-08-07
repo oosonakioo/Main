@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Query\Grammars;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Str;
 
 class PostgresGrammar extends Grammar
 {
@@ -22,7 +22,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile the lock into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
      * @return string
      */
@@ -38,7 +37,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile a "where date" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -53,7 +51,6 @@ class PostgresGrammar extends Grammar
      * Compile a date based where clause.
      *
      * @param  string  $type
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -67,7 +64,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile an update statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
      * @return string
      */
@@ -90,7 +86,7 @@ class PostgresGrammar extends Grammar
     /**
      * Compile the columns for the update statement.
      *
-     * @param  array   $values
+     * @param  array  $values
      * @return string
      */
     protected function compileUpdateColumns($values)
@@ -110,7 +106,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile the "from" clause for an update with a join.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string|null
      */
     protected function compileUpdateFrom(Builder $query)
@@ -136,7 +131,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile the additional where clauses for updates with joins.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     protected function compileUpdateWheres(Builder $query)
@@ -162,7 +156,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile the "join" clauses for an update.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     protected function compileUpdateJoinWheres(Builder $query)
@@ -184,8 +177,7 @@ class PostgresGrammar extends Grammar
     /**
      * Compile an insert and get ID statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array   $values
+     * @param  array  $values
      * @param  string  $sequence
      * @return string
      */
@@ -201,7 +193,6 @@ class PostgresGrammar extends Grammar
     /**
      * Compile a truncate table statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
      */
     public function compileTruncate(Builder $query)

@@ -27,7 +27,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase
         @unlink(self::$cacheFile);
     }
 
-    public function testWriteCacheFileCreatesTheFile()
+    public function test_write_cache_file_creates_the_file()
     {
         $warmer = new TestCacheWarmer(self::$cacheFile);
         $warmer->warmUp(dirname(self::$cacheFile));
@@ -38,7 +38,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testWriteNonWritableCacheFileThrowsARuntimeException()
+    public function test_write_non_writable_cache_file_throws_a_runtime_exception()
     {
         $nonWritableFile = '/this/file/is/very/probably/not/writable';
         $warmer = new TestCacheWarmer($nonWritableFile);

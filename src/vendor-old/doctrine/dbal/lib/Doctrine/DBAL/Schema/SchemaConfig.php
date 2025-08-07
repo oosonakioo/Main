@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,17 +25,18 @@ namespace Doctrine\DBAL\Schema;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SchemaConfig
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $hasExplicitForeignKeyIndexes = false;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxIdentifierLength = 63;
 
@@ -46,10 +48,10 @@ class SchemaConfig
     /**
      * @var array
      */
-    protected $defaultTableOptions = array();
+    protected $defaultTableOptions = [];
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasExplicitForeignKeyIndexes()
     {
@@ -57,8 +59,7 @@ class SchemaConfig
     }
 
     /**
-     * @param boolean $flag
-     *
+     * @param  bool  $flag
      * @return void
      */
     public function setExplicitForeignKeyIndexes($flag)
@@ -67,8 +68,7 @@ class SchemaConfig
     }
 
     /**
-     * @param integer $length
-     *
+     * @param  int  $length
      * @return void
      */
     public function setMaxIdentifierLength($length)
@@ -77,7 +77,7 @@ class SchemaConfig
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getMaxIdentifierLength()
     {
@@ -97,8 +97,7 @@ class SchemaConfig
     /**
      * Sets the default namespace name of schema objects.
      *
-     * @param string $name The value to set.
-     *
+     * @param  string  $name  The value to set.
      * @return void
      */
     public function setName($name)
@@ -118,8 +117,6 @@ class SchemaConfig
     }
 
     /**
-     * @param array $defaultTableOptions
-     *
      * @return void
      */
     public function setDefaultTableOptions(array $defaultTableOptions)

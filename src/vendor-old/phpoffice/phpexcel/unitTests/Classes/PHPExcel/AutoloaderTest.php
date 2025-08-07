@@ -1,19 +1,16 @@
 <?php
 
-
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
-
-    public function setUp()
+    protected function setUp()
     {
-        if (!defined('PHPEXCEL_ROOT'))
-        {
-            define('PHPEXCEL_ROOT', APPLICATION_PATH . '/');
+        if (! defined('PHPEXCEL_ROOT')) {
+            define('PHPEXCEL_ROOT', APPLICATION_PATH.'/');
         }
-        require_once(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+        require_once PHPEXCEL_ROOT.'PHPExcel/Autoloader.php';
     }
 
-    public function testAutoloaderNonPHPExcelClass()
+    public function test_autoloader_non_php_excel_class()
     {
         $className = 'InvalidClass';
 
@@ -24,7 +21,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
-    public function testAutoloaderInvalidPHPExcelClass()
+    public function test_autoloader_invalid_php_excel_class()
     {
         $className = 'PHPExcel_Invalid_Class';
 
@@ -35,7 +32,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
-    public function testAutoloadValidPHPExcelClass()
+    public function test_autoload_valid_php_excel_class()
     {
         $className = 'PHPExcel_IOFactory';
 
@@ -44,13 +41,12 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(class_exists($className));
     }
 
-    public function testAutoloadInstantiateSuccess()
+    public function test_autoload_instantiate_success()
     {
-        $result = new PHPExcel_Calculation_Function(1,2,3);
+        $result = new PHPExcel_Calculation_Function(1, 2, 3);
         //    Must return an object...
         $this->assertTrue(is_object($result));
         //    ... of the correct type
-        $this->assertTrue(is_a($result,'PHPExcel_Calculation_Function'));
+        $this->assertTrue(is_a($result, 'PHPExcel_Calculation_Function'));
     }
-
 }

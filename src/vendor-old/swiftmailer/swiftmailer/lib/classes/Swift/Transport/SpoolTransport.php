@@ -24,7 +24,7 @@ class Swift_Transport_SpoolTransport implements Swift_Transport
     /**
      * Constructor.
      */
-    public function __construct(Swift_Events_EventDispatcher $eventDispatcher, Swift_Spool $spool = null)
+    public function __construct(Swift_Events_EventDispatcher $eventDispatcher, ?Swift_Spool $spool = null)
     {
         $this->_eventDispatcher = $eventDispatcher;
         $this->_spool = $spool;
@@ -33,7 +33,6 @@ class Swift_Transport_SpoolTransport implements Swift_Transport
     /**
      * Sets the spool object.
      *
-     * @param Swift_Spool $spool
      *
      * @return $this
      */
@@ -67,23 +66,17 @@ class Swift_Transport_SpoolTransport implements Swift_Transport
     /**
      * Starts this Transport mechanism.
      */
-    public function start()
-    {
-    }
+    public function start() {}
 
     /**
      * Stops this Transport mechanism.
      */
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     /**
      * Sends the given message.
      *
-     * @param Swift_Mime_Message $message
-     * @param string[]           $failedRecipients An array of failures by-reference
-     *
+     * @param  string[]  $failedRecipients  An array of failures by-reference
      * @return int The number of sent e-mail's
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
@@ -107,8 +100,6 @@ class Swift_Transport_SpoolTransport implements Swift_Transport
 
     /**
      * Register a plugin.
-     *
-     * @param Swift_Events_EventListener $plugin
      */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {

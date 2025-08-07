@@ -16,15 +16,15 @@ class AppServiceProvider extends ServiceProvider
     {
         $langurl = Request::server('REQUEST_URI');
         if (strpos($langurl, '/en/') !== false) {
-            $lang = "en";
-            $lang_map = "&language=en&region=EN";
+            $lang = 'en';
+            $lang_map = '&language=en&region=EN';
         } else {
-            $lang = "th";
-            $lang_map = "&language=th&region=TH";
+            $lang = 'th';
+            $lang_map = '&language=th&region=TH';
         }
         view()->share([
             'lang' => $lang,
-            'lang_map' => $lang_map
+            'lang_map' => $lang_map,
         ]);
 
     }

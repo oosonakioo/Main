@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -28,24 +28,24 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
  */
 class MockingVoidMethodsTest extends MockeryTestCase
 {
-    public function setup()
+    protected function setup()
     {
-        require_once __DIR__ . '/Fixtures/VoidMethod.php';
+        require_once __DIR__.'/Fixtures/VoidMethod.php';
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown()
+    protected function teardown()
     {
         $this->container->mockery_close();
     }
 
     /** @test */
-    public function shouldAllowMockingVoidMethods()
+    public function should_allow_mocking_void_methods()
     {
         $this->expectOutputString('1');
 
         $mock = $this->container->mock('test\Mockery\Fixtures\VoidMethod');
-        $mock->shouldReceive("foo")->andReturnUsing(
+        $mock->shouldReceive('foo')->andReturnUsing(
             function () {
                 echo 1;
             }

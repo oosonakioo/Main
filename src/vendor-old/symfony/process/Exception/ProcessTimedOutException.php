@@ -21,9 +21,11 @@ use Symfony\Component\Process\Process;
 class ProcessTimedOutException extends RuntimeException
 {
     const TYPE_GENERAL = 1;
+
     const TYPE_IDLE = 2;
 
     private $process;
+
     private $timeoutType;
 
     public function __construct(Process $process, $timeoutType)

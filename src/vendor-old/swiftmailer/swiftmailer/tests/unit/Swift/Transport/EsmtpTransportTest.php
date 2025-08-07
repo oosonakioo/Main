@@ -4,14 +4,14 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
 {
     protected function _getTransport($buf, $dispatcher = null)
     {
-        if (!$dispatcher) {
+        if (! $dispatcher) {
             $dispatcher = $this->_createEventDispatcher();
         }
 
-        return new Swift_Transport_EsmtpTransport($buf, array(), $dispatcher);
+        return new Swift_Transport_EsmtpTransport($buf, [], $dispatcher);
     }
 
-    public function testHostCanBeSetAndFetched()
+    public function test_host_can_be_set_and_fetched()
     {
         $buf = $this->_getBuffer();
         $smtp = $this->_getTransport($buf);
@@ -19,7 +19,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         $this->assertEquals('foo', $smtp->getHost(), '%s: Host should be returned');
     }
 
-    public function testPortCanBeSetAndFetched()
+    public function test_port_can_be_set_and_fetched()
     {
         $buf = $this->_getBuffer();
         $smtp = $this->_getTransport($buf);
@@ -27,7 +27,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         $this->assertEquals(25, $smtp->getPort(), '%s: Port should be returned');
     }
 
-    public function testTimeoutCanBeSetAndFetched()
+    public function test_timeout_can_be_set_and_fetched()
     {
         $buf = $this->_getBuffer();
         $buf->shouldReceive('setParam')
@@ -39,7 +39,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         $this->assertEquals(10, $smtp->getTimeout(), '%s: Timeout should be returned');
     }
 
-    public function testEncryptionCanBeSetAndFetched()
+    public function test_encryption_can_be_set_and_fetched()
     {
         $buf = $this->_getBuffer();
         $smtp = $this->_getTransport($buf);
@@ -47,12 +47,12 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         $this->assertEquals('tls', $smtp->getEncryption(), '%s: Crypto should be returned');
     }
 
-    public function testStartSendsHeloToInitiate()
+    public function test_start_sends_helo_to_initiate()
     {
-        //Overridden for EHLO instead
+        // Overridden for EHLO instead
     }
 
-    public function testStartSendsEhloToInitiate()
+    public function test_start_sends_ehlo_to_initiate()
     {
         /* -- RFC 2821, 3.2.
 
@@ -114,7 +114,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         }
     }
 
-    public function testHeloIsUsedAsFallback()
+    public function test_helo_is_used_as_fallback()
     {
         /* -- RFC 2821, 4.1.4.
 
@@ -156,13 +156,13 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         } catch (Exception $e) {
             $this->fail(
                 'Starting Esmtp should fallback to HELO if needed and accept 250 response'
-                );
+            );
         }
     }
 
-    public function testInvalidHeloResponseCausesException()
+    public function test_invalid_helo_response_causes_exception()
     {
-        //Overridden to first try EHLO
+        // Overridden to first try EHLO
         $buf = $this->_getBuffer();
         $smtp = $this->_getTransport($buf);
 
@@ -199,7 +199,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         }
     }
 
-    public function testDomainNameIsPlacedInEhlo()
+    public function test_domain_name_is_placed_in_ehlo()
     {
         /* -- RFC 2821, 4.1.4.
 
@@ -234,9 +234,9 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         $smtp->start();
     }
 
-    public function testDomainNameIsPlacedInHelo()
+    public function test_domain_name_is_placed_in_helo()
     {
-        //Overridden to include ESMTP
+        // Overridden to include ESMTP
         /* -- RFC 2821, 4.1.4.
 
        The SMTP client MUST, if possible, ensure that the domain parameter
@@ -278,7 +278,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
         $smtp->start();
     }
 
-    public function testFluidInterface()
+    public function test_fluid_interface()
     {
         $buf = $this->_getBuffer();
         $smtp = $this->_getTransport($buf);
@@ -290,8 +290,7 @@ class Swift_Transport_EsmtpTransportTest extends Swift_Transport_AbstractSmtpEve
             ->setHost('foo')
             ->setPort(25)
             ->setEncryption('tls')
-            ->setTimeout(30)
-            ;
+            ->setTimeout(30);
         $this->assertEquals($ref, $smtp);
     }
 }

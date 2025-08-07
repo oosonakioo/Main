@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Schema;
  *
  * @link   www.doctrine-project.org
  * @since  1.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class DB2SchemaManager extends AbstractSchemaManager
@@ -59,7 +61,7 @@ class DB2SchemaManager extends AbstractSchemaManager
 
         $default = null;
 
-        if (null !== $tableColumn['default'] && 'NULL' != $tableColumn['default']) {
+        if ($tableColumn['default'] !== null && $tableColumn['default'] != 'NULL') {
             $default = trim($tableColumn['default'], "'");
         }
 
@@ -90,20 +92,20 @@ class DB2SchemaManager extends AbstractSchemaManager
                 break;
         }
 
-        $options = array(
-            'length'        => $length,
-            'unsigned'      => (bool) $unsigned,
-            'fixed'         => (bool) $fixed,
-            'default'       => $default,
-            'autoincrement' => (boolean) $tableColumn['autoincrement'],
-            'notnull'       => (bool) ($tableColumn['nulls'] == 'N'),
-            'scale'         => null,
-            'precision'     => null,
-            'comment'       => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
+        $options = [
+            'length' => $length,
+            'unsigned' => (bool) $unsigned,
+            'fixed' => (bool) $fixed,
+            'default' => $default,
+            'autoincrement' => (bool) $tableColumn['autoincrement'],
+            'notnull' => (bool) ($tableColumn['nulls'] == 'N'),
+            'scale' => null,
+            'precision' => null,
+            'comment' => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
                 ? $tableColumn['comment']
                 : null,
-            'platformOptions' => array(),
-        );
+            'platformOptions' => [],
+        ];
 
         if ($scale !== null && $precision !== null) {
             $options['scale'] = $scale;
@@ -118,7 +120,7 @@ class DB2SchemaManager extends AbstractSchemaManager
      */
     protected function _getPortableTablesList($tables)
     {
-        $tableNames = array();
+        $tableNames = [];
         foreach ($tables as $tableRow) {
             $tableRow = array_change_key_case($tableRow, \CASE_LOWER);
             $tableNames[] = $tableRow['name'];
@@ -134,7 +136,7 @@ class DB2SchemaManager extends AbstractSchemaManager
     {
         foreach ($tableIndexRows as &$tableIndexRow) {
             $tableIndexRow = array_change_key_case($tableIndexRow, \CASE_LOWER);
-            $tableIndexRow['primary'] = (boolean) $tableIndexRow['primary'];
+            $tableIndexRow['primary'] = (bool) $tableIndexRow['primary'];
         }
 
         return parent::_getPortableTableIndexesList($tableIndexRows, $tableName);
@@ -159,22 +161,22 @@ class DB2SchemaManager extends AbstractSchemaManager
      */
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
-        $foreignKeys = array();
+        $foreignKeys = [];
 
         foreach ($tableForeignKeys as $tableForeignKey) {
             $tableForeignKey = array_change_key_case($tableForeignKey, \CASE_LOWER);
 
-            if (!isset($foreignKeys[$tableForeignKey['index_name']])) {
-                $foreignKeys[$tableForeignKey['index_name']] = array(
-                    'local_columns'   => array($tableForeignKey['local_column']),
-                    'foreign_table'   => $tableForeignKey['foreign_table'],
-                    'foreign_columns' => array($tableForeignKey['foreign_column']),
-                    'name'            => $tableForeignKey['index_name'],
-                    'options'         => array(
+            if (! isset($foreignKeys[$tableForeignKey['index_name']])) {
+                $foreignKeys[$tableForeignKey['index_name']] = [
+                    'local_columns' => [$tableForeignKey['local_column']],
+                    'foreign_table' => $tableForeignKey['foreign_table'],
+                    'foreign_columns' => [$tableForeignKey['foreign_column']],
+                    'name' => $tableForeignKey['index_name'],
+                    'options' => [
                         'onUpdate' => $tableForeignKey['on_update'],
                         'onDelete' => $tableForeignKey['on_delete'],
-                    )
-                );
+                    ],
+                ];
             } else {
                 $foreignKeys[$tableForeignKey['index_name']]['local_columns'][] = $tableForeignKey['local_column'];
                 $foreignKeys[$tableForeignKey['index_name']]['foreign_columns'][] = $tableForeignKey['foreign_column'];
@@ -189,10 +191,10 @@ class DB2SchemaManager extends AbstractSchemaManager
      */
     protected function _getPortableForeignKeyRuleDef($def)
     {
-        if ($def == "C") {
-            return "CASCADE";
-        } elseif ($def == "N") {
-            return "SET NULL";
+        if ($def == 'C') {
+            return 'CASCADE';
+        } elseif ($def == 'N') {
+            return 'SET NULL';
         }
 
         return null;
@@ -205,10 +207,10 @@ class DB2SchemaManager extends AbstractSchemaManager
     {
         $view = array_change_key_case($view, \CASE_LOWER);
         // sadly this still segfaults on PDO_IBM, see http://pecl.php.net/bugs/bug.php?id=17199
-        //$view['text'] = (is_resource($view['text']) ? stream_get_contents($view['text']) : $view['text']);
-        if (!is_resource($view['text'])) {
+        // $view['text'] = (is_resource($view['text']) ? stream_get_contents($view['text']) : $view['text']);
+        if (! is_resource($view['text'])) {
             $pos = strpos($view['text'], ' AS ');
-            $sql = substr($view['text'], $pos+4);
+            $sql = substr($view['text'], $pos + 4);
         } else {
             $sql = '';
         }

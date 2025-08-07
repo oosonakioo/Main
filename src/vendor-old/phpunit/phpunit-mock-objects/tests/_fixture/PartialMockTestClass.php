@@ -1,4 +1,5 @@
 <?php
+
 class PartialMockTestClass
 {
     public $constructorCalled = false;
@@ -8,11 +9,7 @@ class PartialMockTestClass
         $this->constructorCalled = true;
     }
 
-    public function doSomething()
-    {
-    }
+    public function doSomething() {}
 
-    public function doAnotherThing()
-    {
-    }
+    public function doAnotherThing() {}
 }

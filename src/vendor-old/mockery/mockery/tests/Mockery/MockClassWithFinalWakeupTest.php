@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2012 Philip Graham <philip.robert.graham@gmail.com>
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -25,7 +25,6 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class MockClassWithFinalWakeupTest extends MockeryTestCase
 {
-
     protected function setUp()
     {
         $this->container = new \Mockery\Container;
@@ -43,7 +42,7 @@ class MockClassWithFinalWakeupTest extends MockeryTestCase
      * a __wakeup method marked as final. As long as __wakeup is not one of the
      * mocked methods.
      */
-    public function testCreateMockForClassWithFinalWakeup()
+    public function test_create_mock_for_class_with_final_wakeup()
     {
         $mock = $this->container->mock("test\Mockery\TestWithFinalWakeup");
         $this->assertInstanceOf("test\Mockery\TestWithFinalWakeup", $mock);
@@ -54,7 +53,7 @@ class MockClassWithFinalWakeupTest extends MockeryTestCase
         $this->assertEquals('test\Mockery\TestWithFinalWakeup::__wakeup', $mock->__wakeup());
     }
 
-    public function testCreateMockForClassWithNonFinalWakeup()
+    public function test_create_mock_for_class_with_non_final_wakeup()
     {
         $mock = $this->container->mock('test\Mockery\TestWithNonFinalWakeup');
         $this->assertInstanceOf('test\Mockery\TestWithNonFinalWakeup', $mock);
@@ -66,7 +65,6 @@ class MockClassWithFinalWakeupTest extends MockeryTestCase
 
 class TestWithFinalWakeup
 {
-
     public function foo()
     {
         return 'foo';
@@ -83,9 +81,7 @@ class TestWithFinalWakeup
     }
 }
 
-class SubclassWithFinalWakeup extends TestWithFinalWakeup
-{
-}
+class SubclassWithFinalWakeup extends TestWithFinalWakeup {}
 
 class TestWithNonFinalWakeup
 {

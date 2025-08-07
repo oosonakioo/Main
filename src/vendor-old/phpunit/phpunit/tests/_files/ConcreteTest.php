@@ -1,7 +1,6 @@
 <?php
+
 class ConcreteTest extends AbstractTest
 {
-    public function testTwo()
-    {
-    }
+    public function test_two() {}
 }

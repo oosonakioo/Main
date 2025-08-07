@@ -15,9 +15,9 @@ use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
 use Symfony\Component\CssSelector\Parser\Reader;
 use Symfony\Component\CssSelector\Parser\Token;
-use Symfony\Component\CssSelector\Parser\TokenStream;
 use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerEscaping;
 use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerPatterns;
+use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector comment handler.
@@ -41,10 +41,6 @@ class StringHandler implements HandlerInterface
      */
     private $escaping;
 
-    /**
-     * @param TokenizerPatterns $patterns
-     * @param TokenizerEscaping $escaping
-     */
     public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
     {
         $this->patterns = $patterns;
@@ -58,14 +54,14 @@ class StringHandler implements HandlerInterface
     {
         $quote = $reader->getSubstring(1);
 
-        if (!in_array($quote, array("'", '"'))) {
+        if (! in_array($quote, ["'", '"'])) {
             return false;
         }
 
         $reader->moveForward(1);
         $match = $reader->findPattern($this->patterns->getQuotedStringPattern($quote));
 
-        if (!$match) {
+        if (! $match) {
             throw new InternalErrorException(sprintf('Should have found at least an empty match at %s.', $reader->getPosition()));
         }
 

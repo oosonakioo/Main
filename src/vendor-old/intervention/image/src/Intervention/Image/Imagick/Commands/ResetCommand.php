@@ -7,8 +7,8 @@ class ResetCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Resets given image to its backup state
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

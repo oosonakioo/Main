@@ -17,9 +17,9 @@ class GNUReadlineTest extends \PHPUnit_Framework_TestCase
 {
     private $historyFile;
 
-    public function setUp()
+    protected function setUp()
     {
-        if (!GNUReadline::isSupported()) {
+        if (! GNUReadline::isSupported()) {
             $this->markTestSkipped('GNUReadline not enabled');
         }
 
@@ -27,53 +27,53 @@ class GNUReadlineTest extends \PHPUnit_Framework_TestCase
         file_put_contents($this->historyFile, "_HiStOrY_V2_\n");
     }
 
-    public function testHistory()
+    public function test_history()
     {
         $readline = new GNUReadline($this->historyFile);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
-        $this->assertEquals(array('foo'), $readline->listHistory());
+        $this->assertEquals(['foo'], $readline->listHistory());
         $readline->addHistory('bar');
-        $this->assertEquals(array('foo', 'bar'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar'], $readline->listHistory());
         $readline->addHistory('baz');
-        $this->assertEquals(array('foo', 'bar', 'baz'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar', 'baz'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
     /**
-     * @depends testHistory
+     * @depends test_history
      */
-    public function testHistorySize()
+    public function test_history_size()
     {
         $readline = new GNUReadline($this->historyFile, 2);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
         $readline->addHistory('bar');
-        $this->assertEquals(array('foo', 'bar'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar'], $readline->listHistory());
         $readline->addHistory('baz');
-        $this->assertEquals(array('bar', 'baz'), $readline->listHistory());
+        $this->assertEquals(['bar', 'baz'], $readline->listHistory());
         $readline->addHistory('w00t');
-        $this->assertEquals(array('baz', 'w00t'), $readline->listHistory());
+        $this->assertEquals(['baz', 'w00t'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
     /**
-     * @depends testHistory
+     * @depends test_history
      */
-    public function testHistoryEraseDups()
+    public function test_history_erase_dups()
     {
         $readline = new GNUReadline($this->historyFile, 0, true);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
         $readline->addHistory('bar');
         $readline->addHistory('foo');
-        $this->assertEquals(array('bar', 'foo'), $readline->listHistory());
+        $this->assertEquals(['bar', 'foo'], $readline->listHistory());
         $readline->addHistory('baz');
         $readline->addHistory('w00t');
         $readline->addHistory('baz');
-        $this->assertEquals(array('bar', 'foo', 'w00t', 'baz'), $readline->listHistory());
+        $this->assertEquals(['bar', 'foo', 'w00t', 'baz'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }

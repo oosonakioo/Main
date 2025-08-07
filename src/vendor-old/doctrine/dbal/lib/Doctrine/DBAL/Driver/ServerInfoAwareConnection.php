@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Driver;
  * Contract for a connection that is able to provide information about the server it is connected to.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -38,7 +40,7 @@ interface ServerInfoAwareConnection
     /**
      * Checks whether a query is required to retrieve the database server version.
      *
-     * @return boolean True if a query is required to retrieve the database server version, false otherwise.
+     * @return bool True if a query is required to retrieve the database server version, false otherwise.
      */
     public function requiresQueryForServerVersion();
 }

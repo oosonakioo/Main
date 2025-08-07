@@ -1,10 +1,11 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
- * @package   FPDI
  * @copyright Copyright (c) 2015 Setasign - Jan Slabon (http://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
+ *
  * @version   1.6.1
  */
 
@@ -16,91 +17,91 @@ class pdf_parser
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_NULL = 0;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_NUMERIC = 1;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_TOKEN = 2;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_HEX = 3;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_STRING = 4;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_DICTIONARY = 5;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_ARRAY = 6;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_OBJDEC = 7;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_OBJREF = 8;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_OBJECT = 9;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_STREAM = 10;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_BOOLEAN = 11;
 
     /**
      * Type constant
      *
-     * @var integer
+     * @var int
      */
     const TYPE_REAL = 12;
 
@@ -109,7 +110,7 @@ class pdf_parser
      *
      * @var int
      */
-    static public $searchForStartxrefLength = 5500;
+    public static $searchForStartxrefLength = 5500;
 
     /**
      * Filename
@@ -156,7 +157,7 @@ class pdf_parser
     /**
      * For reading encrypted documents and xref/object streams are in use
      *
-     * @var boolean
+     * @var bool
      */
     protected $_readPlain = true;
 
@@ -170,7 +171,8 @@ class pdf_parser
     /**
      * Constructor
      *
-     * @param string $filename Source filename
+     * @param  string  $filename  Source filename
+     *
      * @throws InvalidArgumentException
      */
     public function __construct($filename)
@@ -179,19 +181,19 @@ class pdf_parser
 
         $this->_f = @fopen($this->filename, 'rb');
 
-        if (!$this->_f) {
+        if (! $this->_f) {
             throw new InvalidArgumentException(sprintf('Cannot open %s !', $filename));
         }
 
         $this->getPdfVersion();
 
-        if (!class_exists('pdf_context')) {
-            require_once('pdf_context.php');
+        if (! class_exists('pdf_context')) {
+            require_once 'pdf_context.php';
         }
         $this->_c = new pdf_context($this->_f);
 
         // Read xref-Data
-        $this->_xref = array();
+        $this->_xref = [];
         $this->_readXref($this->_xref, $this->_findXref());
 
         // Check for Encryption
@@ -242,8 +244,9 @@ class pdf_parser
         if ($this->_pdfVersion === null) {
             fseek($this->_f, 0);
             preg_match('/\d\.\d/', fread($this->_f, 16), $m);
-            if (isset($m[0]))
+            if (isset($m[0])) {
                 $this->_pdfVersion = $m[0];
+            }
         }
 
         return $this->_pdfVersion;
@@ -264,7 +267,8 @@ class pdf_parser
     /**
      * Find the xref table
      *
-     * @return integer
+     * @return int
+     *
      * @throws Exception
      */
     protected function _findXref()
@@ -279,18 +283,18 @@ class pdf_parser
         $data = fread($this->_f, $toRead);
 
         $keywordPos = strpos(strrev($data), strrev('startxref'));
-        if (false === $keywordPos) {
+        if ($keywordPos === false) {
             $keywordPos = strpos(strrev($data), strrev('startref'));
         }
 
-        if (false === $keywordPos) {
+        if ($keywordPos === false) {
             throw new Exception('Unable to find "startxref" keyword.');
         }
 
         $pos = strlen($data) - $keywordPos;
         $data = substr($data, $pos);
 
-        if (!preg_match('/\s*(\d+).*$/s', $data, $matches)) {
+        if (! preg_match('/\s*(\d+).*$/s', $data, $matches)) {
             throw new Exception('Unable to find pointer to xref table.');
         }
 
@@ -300,9 +304,10 @@ class pdf_parser
     /**
      * Read the xref table
      *
-     * @param array $result Array of xref table entries
-     * @param integer $offset of xref table
-     * @return boolean
+     * @param  array  $result  Array of xref table entries
+     * @param  int  $offset  of xref table
+     * @return bool
+     *
      * @throws Exception
      */
     protected function _readXref(&$result, $offset)
@@ -321,7 +326,7 @@ class pdf_parser
             if (is_array($xrefStreamObjDec) && isset($xrefStreamObjDec[0]) && $xrefStreamObjDec[0] == self::TYPE_OBJDEC) {
                 throw new Exception(
                     sprintf(
-                        'This document (%s) probably uses a compression technique which is not supported by the ' .
+                        'This document (%s) probably uses a compression technique which is not supported by the '.
                         'free parser shipped with FPDI. (See https://www.setasign.com/fpdi-pdf-parser for more details)',
                         $this->filename
                     )
@@ -331,7 +336,7 @@ class pdf_parser
             }
         }
 
-        if (!isset($result['xrefLocation'])) {
+        if (! isset($result['xrefLocation'])) {
             $result['xrefLocation'] = $tempPos + $xrefPos;
             $result['maxObject'] = 0;
         }
@@ -342,7 +347,7 @@ class pdf_parser
         fseek($this->_f, $tempPos = $tempPos + $xrefPos + 4); // set the handle directly after the "xref"-keyword
         $data = fread($this->_f, $bytesPerCycle);
 
-        while (($trailerPos = strpos($data, 'trailer', max($bytesPerCycle * $cycles++, 0))) === false && !feof($this->_f)) {
+        while (($trailerPos = strpos($data, 'trailer', max($bytesPerCycle * $cycles++, 0))) === false && ! feof($this->_f)) {
             $data .= fread($this->_f, $bytesPerCycle);
         }
 
@@ -376,18 +381,20 @@ class pdf_parser
             if ($line) {
                 $pieces = explode(' ', $line);
                 $c = count($pieces);
-                switch($c) {
+                switch ($c) {
                     case 2:
-                        $start = (int)$pieces[0];
-                        $end   = $start + (int)$pieces[1];
-                        if ($end > $result['maxObject'])
+                        $start = (int) $pieces[0];
+                        $end = $start + (int) $pieces[1];
+                        if ($end > $result['maxObject']) {
                             $result['maxObject'] = $end;
+                        }
                         break;
                     case 3:
-                        if (!isset($result['xref'][$start]))
-                            $result['xref'][$start] = array();
+                        if (! isset($result['xref'][$start])) {
+                            $result['xref'][$start] = [];
+                        }
 
-                        if (!array_key_exists($gen = (int) $pieces[1], $result['xref'][$start])) {
+                        if (! array_key_exists($gen = (int) $pieces[1], $result['xref'][$start])) {
                             $result['xref'][$start][$gen] = $pieces[2] == 'n' ? (int) $pieces[0] : null;
                         }
                         $start++;
@@ -404,7 +411,7 @@ class pdf_parser
         $this->_c->reset($tempPos + $trailerPos + 7);
         $trailer = $this->_readValue($this->_c);
 
-        if (!isset($result['trailer'])) {
+        if (! isset($result['trailer'])) {
             $result['trailer'] = $trailer;
         }
 
@@ -421,9 +428,10 @@ class pdf_parser
     /**
      * Reads a PDF value
      *
-     * @param pdf_context $c
-     * @param string $token A token
+     * @param  pdf_context  $c
+     * @param  string  $token  A token
      * @return mixed
+     *
      * @throws Exception
      */
     protected function _readValue(&$c, $token = null)
@@ -443,7 +451,7 @@ class pdf_parser
 
                 $pos = $c->offset;
 
-                while(1) {
+                while (1) {
 
                     $match = strpos($c->buffer, '>', $pos);
 
@@ -451,7 +459,7 @@ class pdf_parser
                     // reading more data from the stream
 
                     if ($match === false) {
-                        if (!$c->increaseLength()) {
+                        if (! $c->increaseLength()) {
                             return false;
                         } else {
                             continue;
@@ -461,14 +469,14 @@ class pdf_parser
                     $result = substr($c->buffer, $c->offset, $match - $c->offset);
                     $c->offset = $match + 1;
 
-                    return array (self::TYPE_HEX, $result);
+                    return [self::TYPE_HEX, $result];
                 }
                 break;
 
             case '<<':
                 // This is a dictionary.
 
-                $result = array();
+                $result = [];
 
                 // Recurse into this function until we reach
                 // the end of the dictionary.
@@ -477,25 +485,25 @@ class pdf_parser
                         return false;
                     }
 
-                    if (($value =   $this->_readValue($c)) === false) {
+                    if (($value = $this->_readValue($c)) === false) {
                         return false;
                     }
 
                     // Catch missing value
                     if ($value[0] == self::TYPE_TOKEN && $value[1] == '>>') {
-                        $result[$key] = array(self::TYPE_NULL);
+                        $result[$key] = [self::TYPE_NULL];
                         break;
                     }
 
                     $result[$key] = $value;
                 }
 
-                return array (self::TYPE_DICTIONARY, $result);
+                return [self::TYPE_DICTIONARY, $result];
 
             case '[':
                 // This is an array.
 
-                $result = array();
+                $result = [];
 
                 // Recurse into this function until we reach
                 // the end of the array.
@@ -511,7 +519,7 @@ class pdf_parser
                     $result[] = $value;
                 }
 
-                return array (self::TYPE_ARRAY, $result);
+                return [self::TYPE_ARRAY, $result];
 
             case '(':
                 // This is a string
@@ -531,12 +539,12 @@ class pdf_parser
                                 $pos++;
                         }
                     }
-                } while($openBrackets != 0 && $c->increaseLength());
+                } while ($openBrackets != 0 && $c->increaseLength());
 
                 $result = substr($c->buffer, $c->offset, $pos - $c->offset - 1);
                 $c->offset = $pos;
 
-                return array (self::TYPE_STRING, $result);
+                return [self::TYPE_STRING, $result];
 
             case 'stream':
                 $tempPos = $c->getPos() - strlen($c->buffer);
@@ -555,10 +563,12 @@ class pdf_parser
                 }
 
                 $e = 0; // ensure line breaks in front of the stream
-                if ($c->buffer[0] == chr(10) || $c->buffer[0] == chr(13))
+                if ($c->buffer[0] == chr(10) || $c->buffer[0] == chr(13)) {
                     $e++;
-                if ($c->buffer[1] == chr(10) && $c->buffer[0] != chr(10))
+                }
+                if ($c->buffer[1] == chr(10) && $c->buffer[0] != chr(10)) {
                     $e++;
+                }
 
                 if ($this->_currentObj[1][1]['/Length'][0] == self::TYPE_OBJREF) {
                     $tmpLength = $this->resolveObject($this->_currentObj[1][1]['/Length']);
@@ -583,7 +593,7 @@ class pdf_parser
                     // round trip will start at a new offset
                 }
 
-                return array(self::TYPE_STREAM, $v);
+                return [self::TYPE_STREAM, $v];
 
             default:
                 if (is_numeric($token)) {
@@ -600,9 +610,9 @@ class pdf_parser
                             if (($tok3 = $this->_readToken($c)) !== false) {
                                 switch ($tok3) {
                                     case 'obj':
-                                        return array(self::TYPE_OBJDEC, (int)$token, (int)$tok2);
+                                        return [self::TYPE_OBJDEC, (int) $token, (int) $tok2];
                                     case 'R':
-                                        return array(self::TYPE_OBJREF, (int)$token, (int)$tok2);
+                                        return [self::TYPE_OBJREF, (int) $token, (int) $tok2];
                                 }
                                 // If we get to this point, that numeric value up
                                 // there was just a numeric value. Push the extra
@@ -614,26 +624,28 @@ class pdf_parser
                         array_push($c->stack, $tok2);
                     }
 
-                    if ($token === (string)((int)$token))
-                        return array(self::TYPE_NUMERIC, (int)$token);
-                    else
-                        return array(self::TYPE_REAL, (float)$token);
-                } else if ($token == 'true' || $token == 'false') {
-                    return array(self::TYPE_BOOLEAN, $token == 'true');
-                } else if ($token == 'null') {
-                   return array(self::TYPE_NULL);
+                    if ($token === (string) ((int) $token)) {
+                        return [self::TYPE_NUMERIC, (int) $token];
+                    } else {
+                        return [self::TYPE_REAL, (float) $token];
+                    }
+                } elseif ($token == 'true' || $token == 'false') {
+                    return [self::TYPE_BOOLEAN, $token == 'true'];
+                } elseif ($token == 'null') {
+                    return [self::TYPE_NULL];
                 } else {
                     // Just a token. Return it.
-                    return array(self::TYPE_TOKEN, $token);
+                    return [self::TYPE_TOKEN, $token];
                 }
-         }
+        }
     }
 
     /**
      * Resolve an object
      *
-     * @param array $objSpec The object-data
-     * @return array|boolean
+     * @param  array  $objSpec  The object-data
+     * @return array|bool
+     *
      * @throws Exception
      */
     public function resolveObject($objSpec)
@@ -641,7 +653,7 @@ class pdf_parser
         $c = $this->_c;
 
         // Exit if we get invalid data
-        if (!is_array($objSpec)) {
+        if (! is_array($objSpec)) {
             return false;
         }
 
@@ -666,14 +678,14 @@ class pdf_parser
                 $header = $this->_readValue($c);
 
                 if ($header[0] != self::TYPE_OBJDEC || $header[1] != $objSpec[1] || $header[2] != $objSpec[2]) {
-                    $toSearchFor = $objSpec[1] . ' ' . $objSpec[2] . ' obj';
-                    if (preg_match('/' . $toSearchFor . '/', $c->buffer)) {
+                    $toSearchFor = $objSpec[1].' '.$objSpec[2].' obj';
+                    if (preg_match('/'.$toSearchFor.'/', $c->buffer)) {
                         $c->offset = strpos($c->buffer, $toSearchFor) + strlen($toSearchFor);
                         // reset stack
-                        $c->stack = array();
+                        $c->stack = [];
                     } else {
                         throw new Exception(
-                            sprintf("Unable to find object (%s, %s) at expected location.", $objSpec[1], $objSpec[2])
+                            sprintf('Unable to find object (%s, %s) at expected location.', $objSpec[1], $objSpec[2])
                         );
                     }
                 }
@@ -681,13 +693,13 @@ class pdf_parser
                 // If we're being asked to store all the information
                 // about the object, we add the object ID and generation
                 // number for later use
-                $result = array (
+                $result = [
                     self::TYPE_OBJECT,
                     'obj' => $objSpec[1],
-                    'gen' => $objSpec[2]
-                );
+                    'gen' => $objSpec[2],
+                ];
 
-                $this->_currentObj =& $result;
+                $this->_currentObj = &$result;
 
                 // Now simply read the object data until
                 // we encounter an end-of-object marker
@@ -713,7 +725,7 @@ class pdf_parser
 
             } else {
                 throw new Exception(
-                    sprintf("Unable to find object (%s, %s) at expected location.", $objSpec[1], $objSpec[2])
+                    sprintf('Unable to find object (%s, %s) at expected location.', $objSpec[1], $objSpec[2])
                 );
             }
 
@@ -726,7 +738,7 @@ class pdf_parser
     /**
      * Reads a token from the context
      *
-     * @param pdf_context $c
+     * @param  pdf_context  $c
      * @return mixed
      */
     protected function _readToken($c)
@@ -742,7 +754,7 @@ class pdf_parser
         // Strip away any whitespace
 
         do {
-            if (!$c->ensureContent()) {
+            if (! $c->ensureContent()) {
                 return false;
             }
             $c->offset += strspn($c->buffer, "\x20\x0A\x0C\x0D\x09\x00", $c->offset);
@@ -772,11 +784,12 @@ class pdf_parser
                 // appropriate case and return the token
 
                 if ($c->buffer[$c->offset] == $char) {
-                    if (!$c->ensureContent()) {
+                    if (! $c->ensureContent()) {
                         return false;
                     }
                     $c->offset++;
-                    return $char . $char;
+
+                    return $char.$char;
                 } else {
                     return $char;
                 }
@@ -786,10 +799,10 @@ class pdf_parser
                 // This is a comment - jump over it!
 
                 $pos = $c->offset;
-                while(1) {
+                while (1) {
                     $match = preg_match("/(\r\n|\r|\n)/", $c->buffer, $m, PREG_OFFSET_CAPTURE, $pos);
                     if ($match === 0) {
-                        if (!$c->increaseLength()) {
+                        if (! $c->increaseLength()) {
                             return false;
                         } else {
                             continue;
@@ -807,11 +820,11 @@ class pdf_parser
                 // a dictionary entry or a numeric value)
                 // Find the end and return it.
 
-                if (!$c->ensureContent()) {
+                if (! $c->ensureContent()) {
                     return false;
                 }
 
-                while(1) {
+                while (1) {
 
                     // Determine the length of the token
 
@@ -841,13 +854,14 @@ class pdf_parser
     /**
      * Un-filter a stream object
      *
-     * @param array $obj
+     * @param  array  $obj
      * @return string
+     *
      * @throws Exception
      */
     protected function _unFilterStream($obj)
     {
-        $filters = array();
+        $filters = [];
 
         if (isset($obj[1][1]['/Filter'])) {
             $filter = $obj[1][1]['/Filter'];
@@ -859,14 +873,14 @@ class pdf_parser
 
             if ($filter[0] == pdf_parser::TYPE_TOKEN) {
                 $filters[] = $filter;
-            } else if ($filter[0] == pdf_parser::TYPE_ARRAY) {
+            } elseif ($filter[0] == pdf_parser::TYPE_ARRAY) {
                 $filters = $filter[1];
             }
         }
 
         $stream = $obj[2][1];
 
-        foreach ($filters AS $filter) {
+        foreach ($filters as $filter) {
             switch ($filter[1]) {
                 case '/FlateDecode':
                 case '/Fl':
@@ -893,24 +907,24 @@ class pdf_parser
                     }
                     break;
                 case '/LZWDecode':
-                    if (!class_exists('FilterLZW')) {
-                        require_once('filters/FilterLZW.php');
+                    if (! class_exists('FilterLZW')) {
+                        require_once 'filters/FilterLZW.php';
                     }
-                    $decoder = new FilterLZW();
+                    $decoder = new FilterLZW;
                     $stream = $decoder->decode($stream);
                     break;
                 case '/ASCII85Decode':
-                    if (!class_exists('FilterASCII85')) {
-                        require_once('filters/FilterASCII85.php');
+                    if (! class_exists('FilterASCII85')) {
+                        require_once 'filters/FilterASCII85.php';
                     }
-                    $decoder = new FilterASCII85();
+                    $decoder = new FilterASCII85;
                     $stream = $decoder->decode($stream);
                     break;
                 case '/ASCIIHexDecode':
-                    if (!class_exists('FilterASCIIHexDecode')) {
-                        require_once('filters/FilterASCIIHexDecode.php');
+                    if (! class_exists('FilterASCIIHexDecode')) {
+                        require_once 'filters/FilterASCIIHexDecode.php';
                     }
-                    $decoder = new FilterASCIIHexDecode();
+                    $decoder = new FilterASCIIHexDecode;
                     $stream = $decoder->decode($stream);
                     break;
                 case null:

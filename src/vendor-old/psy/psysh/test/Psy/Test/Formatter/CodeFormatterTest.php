@@ -20,7 +20,7 @@ class CodeFormatterTest extends \PHPUnit_Framework_TestCase
         echo 'whot!';
     }
 
-    public function testFormat()
+    public function test_format()
     {
         $expected = <<<'EOS'
   > 18|     private function ignoreThisMethod($arg)
@@ -30,7 +30,7 @@ class CodeFormatterTest extends \PHPUnit_Framework_TestCase
 EOS;
 
         $formatted = CodeFormatter::format(new \ReflectionMethod($this, 'ignoreThisMethod'));
-        $formattedWithoutColors = preg_replace('#' . chr(27) . '\[\d\d?m#', '', $formatted);
+        $formattedWithoutColors = preg_replace('#'.chr(27).'\[\d\d?m#', '', $formatted);
 
         $this->assertEquals($expected, rtrim($formattedWithoutColors));
         $this->assertNotEquals($expected, rtrim($formatted));
@@ -38,9 +38,10 @@ EOS;
 
     /**
      * @dataProvider filenames
+     *
      * @expectedException Psy\Exception\RuntimeException
      */
-    public function testCodeFormatterThrowsException($filename)
+    public function test_code_formatter_throws_exception($filename)
     {
         $reflector = $this->getMockBuilder('ReflectionClass')
             ->disableOriginalConstructor()
@@ -56,6 +57,6 @@ EOS;
 
     public function filenames()
     {
-        return array(array(null), array('not a file'));
+        return [[null], ['not a file']];
     }
 }

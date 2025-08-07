@@ -28,8 +28,7 @@ abstract class ObjectRouteLoader extends Loader
      * For example, if your application uses a service container,
      * the $id may be a service id.
      *
-     * @param string $id
-     *
+     * @param  string  $id
      * @return object
      */
     abstract protected function getServiceObject($id);
@@ -37,9 +36,8 @@ abstract class ObjectRouteLoader extends Loader
     /**
      * Calls the service that will load the routes.
      *
-     * @param mixed       $resource Some value that will resolve to a callable
-     * @param string|null $type     The resource type
-     *
+     * @param  mixed  $resource  Some value that will resolve to a callable
+     * @param  string|null  $type  The resource type
      * @return RouteCollection
      */
     public function load($resource, $type = null)
@@ -54,17 +52,17 @@ abstract class ObjectRouteLoader extends Loader
 
         $loaderObject = $this->getServiceObject($serviceString);
 
-        if (!is_object($loaderObject)) {
+        if (! is_object($loaderObject)) {
             throw new \LogicException(sprintf('%s:getServiceObject() must return an object: %s returned', get_class($this), gettype($loaderObject)));
         }
 
-        if (!method_exists($loaderObject, $method)) {
+        if (! method_exists($loaderObject, $method)) {
             throw new \BadMethodCallException(sprintf('Method "%s" not found on "%s" when importing routing resource "%s"', $method, get_class($loaderObject), $resource));
         }
 
-        $routeCollection = call_user_func(array($loaderObject, $method), $this);
+        $routeCollection = call_user_func([$loaderObject, $method], $this);
 
-        if (!$routeCollection instanceof RouteCollection) {
+        if (! $routeCollection instanceof RouteCollection) {
             $type = is_object($routeCollection) ? get_class($routeCollection) : gettype($routeCollection);
 
             throw new \LogicException(sprintf('The %s::%s method must return a RouteCollection: %s returned', get_class($loaderObject), $method, $type));
@@ -81,7 +79,7 @@ abstract class ObjectRouteLoader extends Loader
      */
     public function supports($resource, $type = null)
     {
-        return 'service' === $type;
+        return $type === 'service';
     }
 
     private function addClassResource(\ReflectionClass $class, RouteCollection $collection)

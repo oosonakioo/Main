@@ -26,8 +26,7 @@ interface Readline
     /**
      * Add a line to the command history.
      *
-     * @param string $line
-     *
+     * @param  string  $line
      * @return bool Success
      */
     public function addHistory($line);
@@ -56,8 +55,7 @@ interface Readline
     /**
      * Read a single line of input from the user.
      *
-     * @param null|string $prompt
-     *
+     * @param  null|string  $prompt
      * @return false|string
      */
     public function readline($prompt = null);

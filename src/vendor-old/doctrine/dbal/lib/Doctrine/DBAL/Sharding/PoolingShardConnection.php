@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -70,7 +71,7 @@ class PoolingShardConnection extends Connection
     private $activeConnections;
 
     /**
-     * @var integer
+     * @var int
      */
     private $activeShardId;
 
@@ -80,20 +81,15 @@ class PoolingShardConnection extends Connection
     private $connections;
 
     /**
-     * @param array                         $params
-     * @param \Doctrine\DBAL\Driver         $driver
-     * @param \Doctrine\DBAL\Configuration  $config
-     * @param \Doctrine\Common\EventManager $eventManager
-     *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $params, Driver $driver, Configuration $config = null, EventManager $eventManager = null)
+    public function __construct(array $params, Driver $driver, ?Configuration $config = null, ?EventManager $eventManager = null)
     {
-        if ( !isset($params['global']) || !isset($params['shards'])) {
+        if (! isset($params['global']) || ! isset($params['shards'])) {
             throw new \InvalidArgumentException("Connection Parameters require 'global' and 'shards' configurations.");
         }
 
-        if ( !isset($params['shardChoser'])) {
+        if (! isset($params['shardChoser'])) {
             throw new \InvalidArgumentException("Missing Shard Choser configuration 'shardChoser'");
         }
 
@@ -101,23 +97,23 @@ class PoolingShardConnection extends Connection
             $params['shardChoser'] = new $params['shardChoser'];
         }
 
-        if ( ! ($params['shardChoser'] instanceof ShardChoser)) {
+        if (! ($params['shardChoser'] instanceof ShardChoser)) {
             throw new \InvalidArgumentException("The 'shardChoser' configuration is not a valid instance of Doctrine\DBAL\Sharding\ShardChoser\ShardChoser");
         }
 
         $this->connections[0] = array_merge($params, $params['global']);
 
         foreach ($params['shards'] as $shard) {
-            if ( ! isset($shard['id'])) {
+            if (! isset($shard['id'])) {
                 throw new \InvalidArgumentException("Missing 'id' for one configured shard. Please specify a unique shard-id.");
             }
 
-            if ( !is_numeric($shard['id']) || $shard['id'] < 1) {
-                throw new \InvalidArgumentException("Shard Id has to be a non-negative number.");
+            if (! is_numeric($shard['id']) || $shard['id'] < 1) {
+                throw new \InvalidArgumentException('Shard Id has to be a non-negative number.');
             }
 
             if (isset($this->connections[$shard['id']])) {
-                throw new \InvalidArgumentException("Shard " . $shard['id'] . " is duplicated in the configuration.");
+                throw new \InvalidArgumentException('Shard '.$shard['id'].' is duplicated in the configuration.');
             }
 
             $this->connections[$shard['id']] = array_merge($params, $shard);
@@ -128,8 +124,8 @@ class PoolingShardConnection extends Connection
 
     /**
      * Get active shard id.
-     * 
-     * @return integer
+     *
+     * @return int
      */
     public function getActiveShardId()
     {
@@ -187,9 +183,8 @@ class PoolingShardConnection extends Connection
     /**
      * Connects to a given shard.
      *
-     * @param mixed $shardId
-     *
-     * @return boolean
+     * @param  mixed  $shardId
+     * @return bool
      *
      * @throws \Doctrine\DBAL\Sharding\ShardingException
      */
@@ -204,10 +199,10 @@ class PoolingShardConnection extends Connection
         }
 
         if ($this->getTransactionNestingLevel() > 0) {
-            throw new ShardingException("Cannot switch shard when transaction is active.");
+            throw new ShardingException('Cannot switch shard when transaction is active.');
         }
 
-        $this->activeShardId = (int)$shardId;
+        $this->activeShardId = (int) $shardId;
 
         if (isset($this->activeConnections[$this->activeShardId])) {
             $this->_conn = $this->activeConnections[$this->activeShardId];
@@ -228,15 +223,14 @@ class PoolingShardConnection extends Connection
     /**
      * Connects to a specific connection.
      *
-     * @param string $shardId
-     *
+     * @param  string  $shardId
      * @return \Doctrine\DBAL\Driver\Connection
      */
     protected function connectTo($shardId)
     {
         $params = $this->getParams();
 
-        $driverOptions = isset($params['driverOptions']) ? $params['driverOptions'] : array();
+        $driverOptions = isset($params['driverOptions']) ? $params['driverOptions'] : [];
 
         $connectionParams = $this->connections[$shardId];
 
@@ -247,9 +241,8 @@ class PoolingShardConnection extends Connection
     }
 
     /**
-     * @param string|null $shardId
-     *
-     * @return boolean
+     * @param  string|null  $shardId
+     * @return bool
      */
     public function isConnected($shardId = null)
     {
@@ -265,8 +258,8 @@ class PoolingShardConnection extends Connection
      */
     public function close()
     {
-        $this->_conn             = null;
+        $this->_conn = null;
         $this->activeConnections = null;
-        $this->activeShardId     = null;
+        $this->activeShardId = null;
     }
 }

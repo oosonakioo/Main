@@ -3,6 +3,7 @@
 class Swift_Bug51Test extends \SwiftMailerTestCase
 {
     private $_attachmentFile;
+
     private $_outputFile;
 
     protected function setUp()
@@ -20,10 +21,10 @@ class Swift_Bug51Test extends \SwiftMailerTestCase
         unlink($this->_outputFile);
     }
 
-    public function testAttachmentsDoNotGetTruncatedUsingToByteStream()
+    public function test_attachments_do_not_get_truncated_using_to_byte_stream()
     {
-        //Run 100 times with 10KB attachments
-        for ($i = 0; $i < 10; ++$i) {
+        // Run 100 times with 10KB attachments
+        for ($i = 0; $i < 10; $i++) {
             $message = $this->_createMessageWithRandomAttachment(
                 10000, $this->_attachmentFile
             );
@@ -42,10 +43,10 @@ class Swift_Bug51Test extends \SwiftMailerTestCase
         }
     }
 
-    public function testAttachmentsDoNotGetTruncatedUsingToString()
+    public function test_attachments_do_not_get_truncated_using_to_string()
     {
-        //Run 100 times with 10KB attachments
-        for ($i = 0; $i < 10; ++$i) {
+        // Run 100 times with 10KB attachments
+        for ($i = 0; $i < 10; $i++) {
             $message = $this->_createMessageWithRandomAttachment(
                 10000, $this->_attachmentFile
             );
@@ -67,7 +68,7 @@ class Swift_Bug51Test extends \SwiftMailerTestCase
         $attachmentDataStart = strpos($source, "\r\n\r\n", $base64declaration);
         $attachmentDataEnd = strpos($source, "\r\n--", $attachmentDataStart);
 
-        if (false === $attachmentDataEnd) {
+        if ($attachmentDataEnd === false) {
             $attachmentBase64 = trim(substr($source, $attachmentDataStart));
         } else {
             $attachmentBase64 = trim(substr(
@@ -86,7 +87,7 @@ class Swift_Bug51Test extends \SwiftMailerTestCase
 
         file_put_contents($file, '');
         $fp = fopen($file, 'wb');
-        for ($i = 0; $i < $byteCount; ++$i) {
+        for ($i = 0; $i < $byteCount; $i++) {
             $byteVal = rand(0, 255);
             fwrite($fp, pack('i', $byteVal));
         }
@@ -102,8 +103,7 @@ class Swift_Bug51Test extends \SwiftMailerTestCase
             ->setBody('test')
             ->setFrom('a@b.c')
             ->setTo('d@e.f')
-            ->attach(Swift_Attachment::fromPath($attachmentPath))
-            ;
+            ->attach(Swift_Attachment::fromPath($attachmentPath));
 
         return $message;
     }

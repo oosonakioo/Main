@@ -11,31 +11,37 @@
 
 namespace Symfony\Component\HttpKernel\Tests\HttpCache;
 
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class TestHttpKernel extends HttpKernel implements ControllerResolverInterface
 {
     protected $body;
+
     protected $status;
+
     protected $headers;
+
     protected $called = false;
+
     protected $customizer;
+
     protected $catch = false;
+
     protected $backendRequest;
 
-    public function __construct($body, $status, $headers, \Closure $customizer = null)
+    public function __construct($body, $status, $headers, ?\Closure $customizer = null)
     {
         $this->body = $body;
         $this->status = $status;
         $this->headers = $headers;
         $this->customizer = $customizer;
 
-        parent::__construct(new EventDispatcher(), $this);
+        parent::__construct(new EventDispatcher, $this);
     }
 
     public function getBackendRequest()
@@ -58,12 +64,12 @@ class TestHttpKernel extends HttpKernel implements ControllerResolverInterface
 
     public function getController(Request $request)
     {
-        return array($this, 'callController');
+        return [$this, 'callController'];
     }
 
     public function getArguments(Request $request, $controller)
     {
-        return array($request);
+        return [$request];
     }
 
     public function callController(Request $request)

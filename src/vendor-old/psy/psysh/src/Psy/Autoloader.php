@@ -23,21 +23,21 @@ class Autoloader
      */
     public static function register()
     {
-        spl_autoload_register(array(__CLASS__, 'autoload'));
+        spl_autoload_register([__CLASS__, 'autoload']);
     }
 
     /**
      * Autoload Psy classes.
      *
-     * @param string $class
+     * @param  string  $class
      */
     public static function autoload($class)
     {
-        if (0 !== strpos($class, 'Psy')) {
+        if (strpos($class, 'Psy') !== 0) {
             return;
         }
 
-        $file = dirname(__DIR__) . '/' . strtr($class, '\\', '/') . '.php';
+        $file = dirname(__DIR__).'/'.strtr($class, '\\', '/').'.php';
         if (is_file($file)) {
             require $file;
         }

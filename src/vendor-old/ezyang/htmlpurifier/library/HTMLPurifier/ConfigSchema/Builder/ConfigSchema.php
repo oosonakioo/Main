@@ -6,14 +6,13 @@
  */
 class HTMLPurifier_ConfigSchema_Builder_ConfigSchema
 {
-
     /**
-     * @param HTMLPurifier_ConfigSchema_Interchange $interchange
+     * @param  HTMLPurifier_ConfigSchema_Interchange  $interchange
      * @return HTMLPurifier_ConfigSchema
      */
     public function build($interchange)
     {
-        $schema = new HTMLPurifier_ConfigSchema();
+        $schema = new HTMLPurifier_ConfigSchema;
         foreach ($interchange->directives as $d) {
             $schema->add(
                 $d->id->key,
@@ -41,6 +40,7 @@ class HTMLPurifier_ConfigSchema_Builder_ConfigSchema
             }
         }
         $schema->postProcess();
+
         return $schema;
     }
 }

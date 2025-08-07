@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,15 +29,15 @@ class SQLSrvException extends DBALException
      *
      * @return \Doctrine\DBAL\Driver\SQLSrv\SQLSrvException
      */
-    static public function fromSqlSrvErrors()
+    public static function fromSqlSrvErrors()
     {
         $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
-        $message = "";
+        $message = '';
         foreach ($errors as $error) {
-            $message .= "SQLSTATE [".$error['SQLSTATE'].", ".$error['code']."]: ". $error['message']."\n";
+            $message .= 'SQLSTATE ['.$error['SQLSTATE'].', '.$error['code'].']: '.$error['message']."\n";
         }
-        if ( ! $message) {
-            $message = "SQL Server error occurred but no error message was retrieved from driver.";
+        if (! $message) {
+            $message = 'SQL Server error occurred but no error message was retrieved from driver.';
         }
 
         return new self(rtrim($message));

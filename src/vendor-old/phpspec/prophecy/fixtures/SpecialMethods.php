@@ -4,33 +4,20 @@ namespace Fixtures\Prophecy;
 
 class SpecialMethods
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
-    function __destruct()
-    {
-    }
+    public function __destruct() {}
 
-    function __call($name, $arguments)
-    {
-    }
+    public function __call($name, $arguments) {}
 
-    function __sleep()
-    {
-    }
+    public function __sleep() {}
 
-    function __wakeup()
-    {
-    }
+    public function __wakeup() {}
 
-    function __toString()
+    public function __toString()
     {
         return '';
     }
 
-    function __invoke()
-    {
-    }
-
+    public function __invoke() {}
 }

@@ -29,14 +29,12 @@ class ForkingLoop extends Loop
      * Forks into a master and a loop process. The loop process will handle the
      * evaluation of all instructions, then return its state via a socket upon
      * completion.
-     *
-     * @param Shell $shell
      */
     public function run(Shell $shell)
     {
-        list($up, $down) = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+        [$up, $down] = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
 
-        if (!$up) {
+        if (! $up) {
             throw new \RuntimeException('Unable to create socket pair.');
         }
 
@@ -50,8 +48,8 @@ class ForkingLoop extends Loop
             fclose($up);
 
             // Wait for a return value from the loop process.
-            $read   = array($down);
-            $write  = null;
+            $read = [$down];
+            $write = null;
             $except = null;
             if (stream_select($read, $write, $except, null) === false) {
                 throw new \RuntimeException('Error waiting for execution loop.');
@@ -125,7 +123,7 @@ class ForkingLoop extends Loop
             pcntl_waitpid($pid, $status);
 
             // worker exited cleanly, let's bail
-            if (!pcntl_wexitstatus($status)) {
+            if (! pcntl_wexitstatus($status)) {
                 posix_kill(posix_getpid(), SIGKILL);
             }
 
@@ -142,13 +140,12 @@ class ForkingLoop extends Loop
      * loop. We'll just ignore these unserializable classes, and serialize what
      * we can.
      *
-     * @param array $return
      *
      * @return string
      */
     private function serializeReturn(array $return)
     {
-        $serializable = array();
+        $serializable = [];
 
         foreach ($return as $key => $value) {
             // No need to return magic variables

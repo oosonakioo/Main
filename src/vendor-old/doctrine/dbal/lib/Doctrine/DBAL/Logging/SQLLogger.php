@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Logging;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -34,13 +36,12 @@ interface SQLLogger
     /**
      * Logs a SQL statement somewhere.
      *
-     * @param string     $sql    The SQL to be executed.
-     * @param array|null $params The SQL parameters.
-     * @param array|null $types  The SQL parameter types.
-     *
+     * @param  string  $sql  The SQL to be executed.
+     * @param  array|null  $params  The SQL parameters.
+     * @param  array|null  $types  The SQL parameter types.
      * @return void
      */
-    public function startQuery($sql, array $params = null, array $types = null);
+    public function startQuery($sql, ?array $params = null, ?array $types = null);
 
     /**
      * Marks the last started query as stopped. This can be used for timing of queries.

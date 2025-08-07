@@ -4,13 +4,12 @@ use Mockery as m;
 
 class Swift_Bug534Test extends \PHPUnit_Framework_TestCase
 {
-    public function testEmbeddedImagesAreEmbedded()
+    public function test_embedded_images_are_embedded()
     {
         $message = Swift_Message::newInstance()
             ->setFrom('from@example.com')
             ->setTo('to@example.com')
-            ->setSubject('test')
-        ;
+            ->setSubject('test');
         $cid = $message->embed(Swift_Image::fromPath(__DIR__.'/../../_samples/files/swiftmailer.png'));
         $message->setBody('<img src="'.$cid.'" />', 'text/html');
 
@@ -25,13 +24,13 @@ class Swift_Bug534Test extends \PHPUnit_Framework_TestCase
             return true;
         };
 
-        $failedRecipients = array();
+        $failedRecipients = [];
 
         $transport = m::mock('Swift_Transport');
         $transport->shouldReceive('isStarted')->andReturn(true);
         $transport->shouldReceive('send')->with(m::on($messageValidation), $failedRecipients)->andReturn(1);
 
-        $memorySpool = new Swift_MemorySpool();
+        $memorySpool = new Swift_MemorySpool;
         $memorySpool->queueMessage($message);
         $memorySpool->flushQueue($transport, $failedRecipients);
     }

@@ -11,16 +11,16 @@
 
 namespace Symfony\Component\Routing\Tests\Matcher\Dumper;
 
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Matcher\Dumper\DumperCollection;
 use Symfony\Component\Routing\Matcher\Dumper\DumperPrefixCollection;
 use Symfony\Component\Routing\Matcher\Dumper\DumperRoute;
-use Symfony\Component\Routing\Matcher\Dumper\DumperCollection;
+use Symfony\Component\Routing\Route;
 
 class DumperPrefixCollectionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAddPrefixRoute()
+    public function test_add_prefix_route()
     {
-        $coll = new DumperPrefixCollection();
+        $coll = new DumperPrefixCollection;
         $coll->setPrefix('');
 
         $route = new DumperRoute('bar', new Route('/foo/bar'));
@@ -64,9 +64,9 @@ EOF;
         $this->assertSame($expect, $this->collectionToString($result->getRoot(), '            '));
     }
 
-    public function testMergeSlashNodes()
+    public function test_merge_slash_nodes()
     {
-        $coll = new DumperPrefixCollection();
+        $coll = new DumperPrefixCollection;
         $coll->setPrefix('');
 
         $route = new DumperRoute('bar', new Route('/foo/bar'));

@@ -2,19 +2,19 @@
 
 namespace Illuminate\Filesystem;
 
-use RuntimeException;
-use InvalidArgumentException;
-use Illuminate\Support\Collection;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\Adapter\Local as LocalAdapter;
-use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Contracts\Filesystem\Cloud as CloudFilesystemContract;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractFileNotFoundException;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
+use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\AdapterInterface;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemInterface;
+use RuntimeException;
 
-class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
+class FilesystemAdapter implements CloudFilesystemContract, FilesystemContract
 {
     /**
      * The Flysystem filesystem implementation.
@@ -26,7 +26,6 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     /**
      * Create a new filesystem adapter instance.
      *
-     * @param  \League\Flysystem\FilesystemInterface  $driver
      * @return void
      */
     public function __construct(FilesystemInterface $driver)
@@ -371,7 +370,6 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      * Pass dynamic methods call onto Flysystem.
      *
      * @param  string  $method
-     * @param  array  $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException

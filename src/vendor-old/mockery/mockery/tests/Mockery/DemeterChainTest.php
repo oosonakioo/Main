@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -23,20 +23,20 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class DemeterChainTest extends MockeryTestCase
 {
-    /** @var  Mockery\Mock $this->mock */
+    /** @var Mockery\Mock $this->mock */
     private $mock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->mock = $this->mock = Mockery::mock('object')->shouldIgnoreMissing();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->mock->mockery_getContainer()->mockery_close();
     }
 
-    public function testTwoChains()
+    public function test_two_chains()
     {
         $this->mock->shouldReceive('getElement->getFirst')
             ->once()
@@ -57,7 +57,7 @@ class DemeterChainTest extends MockeryTestCase
         $this->mock->mockery_getContainer()->mockery_close();
     }
 
-    public function testTwoChainsWithExpectedParameters()
+    public function test_two_chains_with_expected_parameters()
     {
         $this->mock->shouldReceive('getElement->getFirst')
             ->once()
@@ -80,7 +80,7 @@ class DemeterChainTest extends MockeryTestCase
         $this->mock->mockery_getContainer()->mockery_close();
     }
 
-    public function testThreeChains()
+    public function test_three_chains()
     {
         $this->mock->shouldReceive('getElement->getFirst')
             ->once()
@@ -107,7 +107,7 @@ class DemeterChainTest extends MockeryTestCase
         );
     }
 
-    public function testManyChains()
+    public function test_many_chains()
     {
         $this->mock->shouldReceive('getElements->getFirst')
             ->once()
@@ -121,7 +121,7 @@ class DemeterChainTest extends MockeryTestCase
         $this->mock->getElements()->getSecond();
     }
 
-    public function testTwoNotRelatedChains()
+    public function test_two_not_related_chains()
     {
         $this->mock->shouldReceive('getElement->getFirst')
             ->once()
@@ -141,7 +141,7 @@ class DemeterChainTest extends MockeryTestCase
         );
     }
 
-    public function testDemeterChain()
+    public function test_demeter_chain()
     {
         $this->mock->shouldReceive('getElement->getFirst')
             ->once()
@@ -150,7 +150,7 @@ class DemeterChainTest extends MockeryTestCase
         $this->assertEquals('somethingElse', $this->mock->getElement()->getFirst());
     }
 
-    public function testMultiLevelDemeterChain()
+    public function test_multi_level_demeter_chain()
     {
         $this->mock->shouldReceive('levelOne->levelTwo->getFirst')
             ->andReturn('first');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHPExcel
  *
@@ -19,12 +20,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   PHPExcel
- * @package    PHPExcel
+ *
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ *
  * @version    ##VERSION##, ##DATE##
  */
-
 
 /**
  * PHPExcel_WorksheetIterator
@@ -32,7 +33,7 @@
  * Used to iterate worksheets in PHPExcel
  *
  * @category   PHPExcel
- * @package    PHPExcel
+ *
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_WorksheetIterator implements Iterator
@@ -53,10 +54,8 @@ class PHPExcel_WorksheetIterator implements Iterator
 
     /**
      * Create a new worksheet iterator
-     *
-     * @param PHPExcel         $subject
      */
-    public function __construct(PHPExcel $subject = null)
+    public function __construct(?PHPExcel $subject = null)
     {
         // Set subject
         $this->_subject = $subject;
@@ -103,13 +102,13 @@ class PHPExcel_WorksheetIterator implements Iterator
      */
     public function next()
     {
-        ++$this->_position;
+        $this->_position++;
     }
 
     /**
      * More PHPExcel_Worksheet instances available?
      *
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {

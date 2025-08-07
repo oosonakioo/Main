@@ -12,32 +12,38 @@ class Use_ extends Stmt
      * Stmt\UseUse is unknown. It's only the other way around for mixed group use declarations.
      */
     const TYPE_UNKNOWN = 0;
+
     /** Class or namespace import */
     const TYPE_NORMAL = 1;
+
     /** Function import */
     const TYPE_FUNCTION = 2;
+
     /** Constant import */
     const TYPE_CONSTANT = 3;
 
     /** @var int Type of alias */
     public $type;
+
     /** @var UseUse[] Aliases */
     public $uses;
 
     /**
      * Constructs an alias (use) list node.
      *
-     * @param UseUse[] $uses       Aliases
-     * @param int      $type       Type of alias
-     * @param array    $attributes Additional attributes
+     * @param  UseUse[]  $uses  Aliases
+     * @param  int  $type  Type of alias
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct(array $uses, $type = self::TYPE_NORMAL, array $attributes = array()) {
+    public function __construct(array $uses, $type = self::TYPE_NORMAL, array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->type = $type;
         $this->uses = $uses;
     }
 
-    public function getSubNodeNames() {
-        return array('type', 'uses');
+    public function getSubNodeNames()
+    {
+        return ['type', 'uses'];
     }
 }

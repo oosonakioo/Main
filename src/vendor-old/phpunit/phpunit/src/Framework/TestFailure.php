@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -32,9 +33,6 @@ class PHPUnit_Framework_TestFailure
 
     /**
      * Constructs a TestFailure with the given test and exception.
-     *
-     * @param PHPUnit_Framework_Test $failedTest
-     * @param Exception              $thrownException
      */
     public function __construct(PHPUnit_Framework_Test $failedTest, Exception $thrownException)
     {
@@ -43,7 +41,7 @@ class PHPUnit_Framework_TestFailure
         } else {
             $this->testName = get_class($failedTest);
         }
-        if (!$failedTest instanceof PHPUnit_Framework_TestCase || !$failedTest->isInIsolation()) {
+        if (! $failedTest instanceof PHPUnit_Framework_TestCase || ! $failedTest->isInIsolation()) {
             $this->failedTest = $failedTest;
         }
         $this->thrownException = $thrownException;
@@ -78,7 +76,6 @@ class PHPUnit_Framework_TestFailure
     /**
      * Returns a description for an exception.
      *
-     * @param Exception $e
      *
      * @return string
      *
@@ -90,18 +87,18 @@ class PHPUnit_Framework_TestFailure
             $buffer = $e->toString();
 
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $e->getComparisonFailure()) {
-                $buffer = $buffer . $e->getComparisonFailure()->getDiff();
+                $buffer = $buffer.$e->getComparisonFailure()->getDiff();
             }
 
-            if (!empty($buffer)) {
-                $buffer = trim($buffer) . "\n";
+            if (! empty($buffer)) {
+                $buffer = trim($buffer)."\n";
             }
         } elseif ($e instanceof PHPUnit_Framework_Error) {
-            $buffer = $e->getMessage() . "\n";
+            $buffer = $e->getMessage()."\n";
         } elseif ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
-            $buffer = $e->getClassname() . ': ' . $e->getMessage() . "\n";
+            $buffer = $e->getClassname().': '.$e->getMessage()."\n";
         } else {
-            $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
+            $buffer = get_class($e).': '.$e->getMessage()."\n";
         }
 
         return $buffer;
@@ -162,6 +159,6 @@ class PHPUnit_Framework_TestFailure
      */
     public function isFailure()
     {
-        return ($this->thrownException() instanceof PHPUnit_Framework_AssertionFailedError);
+        return $this->thrownException() instanceof PHPUnit_Framework_AssertionFailedError;
     }
 }

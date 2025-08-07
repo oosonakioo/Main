@@ -29,18 +29,19 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class Esi implements SurrogateInterface
 {
     private $contentTypes;
-    private $phpEscapeMap = array(
-        array('<?', '<%', '<s', '<S'),
-        array('<?php echo "<?"; ?>', '<?php echo "<%"; ?>', '<?php echo "<s"; ?>', '<?php echo "<S"; ?>'),
-    );
+
+    private $phpEscapeMap = [
+        ['<?', '<%', '<s', '<S'],
+        ['<?php echo "<?"; ?>', '<?php echo "<%"; ?>', '<?php echo "<s"; ?>', '<?php echo "<S"; ?>'],
+    ];
 
     /**
      * Constructor.
      *
-     * @param array $contentTypes An array of content-type that should be parsed for ESI information
-     *                            (default: text/html, text/xml, application/xhtml+xml, and application/xml)
+     * @param  array  $contentTypes  An array of content-type that should be parsed for ESI information
+     *                               (default: text/html, text/xml, application/xhtml+xml, and application/xml)
      */
-    public function __construct(array $contentTypes = array('text/html', 'text/xml', 'application/xhtml+xml', 'application/xml'))
+    public function __construct(array $contentTypes = ['text/html', 'text/xml', 'application/xhtml+xml', 'application/xml'])
     {
         $this->contentTypes = $contentTypes;
     }
@@ -57,14 +58,13 @@ class Esi implements SurrogateInterface
      */
     public function createCacheStrategy()
     {
-        return new ResponseCacheStrategy();
+        return new ResponseCacheStrategy;
     }
 
     /**
      * Checks that at least one surrogate has ESI/1.0 capability.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return bool true if one surrogate has ESI/1.0 capability, false otherwise
      */
     public function hasSurrogateCapability(Request $request)
@@ -73,13 +73,13 @@ class Esi implements SurrogateInterface
             return false;
         }
 
-        return false !== strpos($value, 'ESI/1.0');
+        return strpos($value, 'ESI/1.0') !== false;
     }
 
     /**
      * Adds ESI/1.0 capability to the given Request.
      *
-     * @param Request $request A Request instance
+     * @param  Request  $request  A Request instance
      */
     public function addSurrogateCapability(Request $request)
     {
@@ -94,11 +94,11 @@ class Esi implements SurrogateInterface
      *
      * This method only adds an ESI HTTP header if the Response has some ESI tags.
      *
-     * @param Response $response A Response instance
+     * @param  Response  $response  A Response instance
      */
     public function addSurrogateControl(Response $response)
     {
-        if (false !== strpos($response->getContent(), '<esi:include')) {
+        if (strpos($response->getContent(), '<esi:include') !== false) {
             $response->headers->set('Surrogate-Control', 'content="ESI/1.0"');
         }
     }
@@ -106,13 +106,12 @@ class Esi implements SurrogateInterface
     /**
      * Checks that the Response needs to be parsed for ESI tags.
      *
-     * @param Response $response A Response instance
-     *
+     * @param  Response  $response  A Response instance
      * @return bool true if the Response needs to be parsed, false otherwise
      */
     public function needsParsing(Response $response)
     {
-        if (!$control = $response->headers->get('Surrogate-Control')) {
+        if (! $control = $response->headers->get('Surrogate-Control')) {
             return false;
         }
 
@@ -122,11 +121,10 @@ class Esi implements SurrogateInterface
     /**
      * Renders an ESI tag.
      *
-     * @param string $uri          A URI
-     * @param string $alt          An alternate URI
-     * @param bool   $ignoreErrors Whether to ignore errors or not
-     * @param string $comment      A comment to add as an esi:include tag
-     *
+     * @param  string  $uri  A URI
+     * @param  string  $alt  An alternate URI
+     * @param  bool  $ignoreErrors  Whether to ignore errors or not
+     * @param  string  $comment  A comment to add as an esi:include tag
      * @return string
      */
     public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '')
@@ -137,7 +135,7 @@ class Esi implements SurrogateInterface
             $alt ? sprintf(' alt="%s"', $alt) : ''
         );
 
-        if (!empty($comment)) {
+        if (! empty($comment)) {
             return sprintf("<esi:comment text=\"%s\" />\n%s", $comment, $html);
         }
 
@@ -147,9 +145,8 @@ class Esi implements SurrogateInterface
     /**
      * Replaces a Response ESI tags with the included resource content.
      *
-     * @param Request  $request  A Request instance
-     * @param Response $response A Response instance
-     *
+     * @param  Request  $request  A Request instance
+     * @param  Response  $response  A Response instance
      * @return Response
      */
     public function process(Request $request, Response $response)
@@ -160,7 +157,7 @@ class Esi implements SurrogateInterface
         }
 
         $parts = explode(';', $type);
-        if (!in_array($parts[0], $this->contentTypes)) {
+        if (! in_array($parts[0], $this->contentTypes)) {
             return $response;
         }
 
@@ -174,24 +171,24 @@ class Esi implements SurrogateInterface
 
         $i = 1;
         while (isset($chunks[$i])) {
-            $options = array();
+            $options = [];
             preg_match_all('/(src|onerror|alt)="([^"]*?)"/', $chunks[$i], $matches, PREG_SET_ORDER);
             foreach ($matches as $set) {
                 $options[$set[1]] = $set[2];
             }
 
-            if (!isset($options['src'])) {
+            if (! isset($options['src'])) {
                 throw new \RuntimeException('Unable to process an ESI tag without a "src" attribute.');
             }
 
             $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, %s, %s) ?>'."\n",
                 var_export($options['src'], true),
                 var_export(isset($options['alt']) ? $options['alt'] : '', true),
-                isset($options['onerror']) && 'continue' === $options['onerror'] ? 'true' : 'false'
+                isset($options['onerror']) && $options['onerror'] === 'continue' ? 'true' : 'false'
             );
-            ++$i;
+            $i++;
             $chunks[$i] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[$i]);
-            ++$i;
+            $i++;
         }
         $content = implode('', $chunks);
 
@@ -201,7 +198,7 @@ class Esi implements SurrogateInterface
         // remove ESI/1.0 from the Surrogate-Control header
         if ($response->headers->has('Surrogate-Control')) {
             $value = $response->headers->get('Surrogate-Control');
-            if ('content="ESI/1.0"' == $value) {
+            if ($value == 'content="ESI/1.0"') {
                 $response->headers->remove('Surrogate-Control');
             } elseif (preg_match('#,\s*content="ESI/1.0"#', $value)) {
                 $response->headers->set('Surrogate-Control', preg_replace('#,\s*content="ESI/1.0"#', '', $value));
@@ -214,11 +211,10 @@ class Esi implements SurrogateInterface
     /**
      * Handles an ESI from the cache.
      *
-     * @param HttpCache $cache        An HttpCache instance
-     * @param string    $uri          The main URI
-     * @param string    $alt          An alternative URI
-     * @param bool      $ignoreErrors Whether to ignore errors or not
-     *
+     * @param  HttpCache  $cache  An HttpCache instance
+     * @param  string  $uri  The main URI
+     * @param  string  $alt  An alternative URI
+     * @param  bool  $ignoreErrors  Whether to ignore errors or not
      * @return string
      *
      * @throws \RuntimeException
@@ -226,12 +222,12 @@ class Esi implements SurrogateInterface
      */
     public function handle(HttpCache $cache, $uri, $alt, $ignoreErrors)
     {
-        $subRequest = Request::create($uri, 'get', array(), $cache->getRequest()->cookies->all(), array(), $cache->getRequest()->server->all());
+        $subRequest = Request::create($uri, 'get', [], $cache->getRequest()->cookies->all(), [], $cache->getRequest()->server->all());
 
         try {
             $response = $cache->handle($subRequest, HttpKernelInterface::SUB_REQUEST, true);
 
-            if (!$response->isSuccessful()) {
+            if (! $response->isSuccessful()) {
                 throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %s).', $subRequest->getUri(), $response->getStatusCode()));
             }
 
@@ -241,7 +237,7 @@ class Esi implements SurrogateInterface
                 return $this->handle($cache, $alt, '', $ignoreErrors);
             }
 
-            if (!$ignoreErrors) {
+            if (! $ignoreErrors) {
                 throw $e;
             }
         }

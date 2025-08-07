@@ -23,15 +23,15 @@ class CouchDBHandler extends AbstractProcessingHandler
 {
     private $options;
 
-    public function __construct(array $options = array(), $level = Logger::DEBUG, $bubble = true)
+    public function __construct(array $options = [], $level = Logger::DEBUG, $bubble = true)
     {
-        $this->options = array_merge(array(
-            'host'     => 'localhost',
-            'port'     => 5984,
-            'dbname'   => 'logger',
+        $this->options = array_merge([
+            'host' => 'localhost',
+            'port' => 5984,
+            'dbname' => 'logger',
             'username' => null,
             'password' => null,
-        ), $options);
+        ], $options);
 
         parent::__construct($level, $bubble);
     }
@@ -47,17 +47,17 @@ class CouchDBHandler extends AbstractProcessingHandler
         }
 
         $url = 'http://'.$basicAuth.$this->options['host'].':'.$this->options['port'].'/'.$this->options['dbname'];
-        $context = stream_context_create(array(
-            'http' => array(
-                'method'        => 'POST',
-                'content'       => $record['formatted'],
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'content' => $record['formatted'],
                 'ignore_errors' => true,
                 'max_redirects' => 0,
-                'header'        => 'Content-type: application/json',
-            ),
-        ));
+                'header' => 'Content-type: application/json',
+            ],
+        ]);
 
-        if (false === @file_get_contents($url, null, $context)) {
+        if (@file_get_contents($url, null, $context) === false) {
             throw new \RuntimeException(sprintf('Could not connect to %s', $url));
         }
     }

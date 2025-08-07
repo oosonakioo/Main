@@ -11,15 +11,15 @@
 
 namespace Symfony\Component\HttpKernel\Tests\HttpCache;
 
-use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpCache\Esi;
 
 class EsiTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHasSurrogateEsiCapability()
+    public function test_has_surrogate_esi_capability()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $request->headers->set('Surrogate-Capability', 'abc="ESI/1.0"');
@@ -33,9 +33,9 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($esi->hasSurrogateCapability($request));
     }
 
-    public function testAddSurrogateEsiCapability()
+    public function test_add_surrogate_esi_capability()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $esi->addSurrogateCapability($request);
@@ -45,9 +45,9 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('symfony2="ESI/1.0", symfony2="ESI/1.0"', $request->headers->get('Surrogate-Capability'));
     }
 
-    public function testAddSurrogateControl()
+    public function test_add_surrogate_control()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $response = new Response('foo <esi:include src="" />');
         $esi->addSurrogateControl($response);
@@ -58,21 +58,21 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $response->headers->get('Surrogate-Control'));
     }
 
-    public function testNeedsEsiParsing()
+    public function test_needs_esi_parsing()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
-        $response = new Response();
+        $response = new Response;
         $response->headers->set('Surrogate-Control', 'content="ESI/1.0"');
         $this->assertTrue($esi->needsParsing($response));
 
-        $response = new Response();
+        $response = new Response;
         $this->assertFalse($esi->needsParsing($response));
     }
 
-    public function testRenderIncludeTag()
+    public function test_render_include_tag()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $this->assertEquals('<esi:include src="/" onerror="continue" alt="/alt" />', $esi->renderIncludeTag('/', '/alt', true));
         $this->assertEquals('<esi:include src="/" alt="/alt" />', $esi->renderIncludeTag('/', '/alt', false));
@@ -80,21 +80,21 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('<esi:comment text="some comment" />'."\n".'<esi:include src="/" onerror="continue" alt="/alt" />', $esi->renderIncludeTag('/', '/alt', true, 'some comment'));
     }
 
-    public function testProcessDoesNothingIfContentTypeIsNotHtml()
+    public function test_process_does_nothing_if_content_type_is_not_html()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
-        $response = new Response();
+        $response = new Response;
         $response->headers->set('Content-Type', 'text/plain');
         $esi->process($request, $response);
 
         $this->assertFalse($response->headers->has('x-body-eval'));
     }
 
-    public function testMultilineEsiRemoveTagsAreRemoved()
+    public function test_multiline_esi_remove_tags_are_removed()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $response = new Response('<esi:remove> <a href="http://www.example.com">www.example.com</a> </esi:remove> Keep this'."<esi:remove>\n <a>www.example.com</a> </esi:remove> And this");
@@ -103,9 +103,9 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(' Keep this And this', $response->getContent());
     }
 
-    public function testCommentTagsAreRemoved()
+    public function test_comment_tags_are_removed()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $response = new Response('<esi:comment text="some comment &gt;" /> Keep this');
@@ -114,9 +114,9 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(' Keep this', $response->getContent());
     }
 
-    public function testProcess()
+    public function test_process()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $response = new Response('foo <esi:comment text="some comment" /><esi:include src="..." alt="alt" onerror="continue" />');
@@ -141,9 +141,9 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo <?php echo $this->surrogate->handle($this, \'...\', \'\', false) ?>'."\n", $response->getContent());
     }
 
-    public function testProcessEscapesPhpTags()
+    public function test_process_escapes_php_tags()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $response = new Response('<?php <? <% <script language=php>');
@@ -155,18 +155,18 @@ class EsiTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testProcessWhenNoSrcInAnEsi()
+    public function test_process_when_no_src_in_an_esi()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $response = new Response('foo <esi:include />');
         $esi->process($request, $response);
     }
 
-    public function testProcessRemoveSurrogateControlHeader()
+    public function test_process_remove_surrogate_control_header()
     {
-        $esi = new Esi();
+        $esi = new Esi;
 
         $request = Request::create('/');
         $response = new Response('foo <esi:include src="..." />');
@@ -185,9 +185,9 @@ class EsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('no-store', $response->headers->get('surrogate-control'));
     }
 
-    public function testHandle()
+    public function test_handle()
     {
-        $esi = new Esi();
+        $esi = new Esi;
         $cache = $this->getCache(Request::create('/'), new Response('foo'));
         $this->assertEquals('foo', $esi->handle($cache, '/', '/alt', true));
     }
@@ -195,51 +195,48 @@ class EsiTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testHandleWhenResponseIsNot200()
+    public function test_handle_when_response_is_not200()
     {
-        $esi = new Esi();
+        $esi = new Esi;
         $response = new Response('foo');
         $response->setStatusCode(404);
         $cache = $this->getCache(Request::create('/'), $response);
         $esi->handle($cache, '/', '/alt', false);
     }
 
-    public function testHandleWhenResponseIsNot200AndErrorsAreIgnored()
+    public function test_handle_when_response_is_not200_and_errors_are_ignored()
     {
-        $esi = new Esi();
+        $esi = new Esi;
         $response = new Response('foo');
         $response->setStatusCode(404);
         $cache = $this->getCache(Request::create('/'), $response);
         $this->assertEquals('', $esi->handle($cache, '/', '/alt', true));
     }
 
-    public function testHandleWhenResponseIsNot200AndAltIsPresent()
+    public function test_handle_when_response_is_not200_and_alt_is_present()
     {
-        $esi = new Esi();
+        $esi = new Esi;
         $response1 = new Response('foo');
         $response1->setStatusCode(404);
         $response2 = new Response('bar');
-        $cache = $this->getCache(Request::create('/'), array($response1, $response2));
+        $cache = $this->getCache(Request::create('/'), [$response1, $response2]);
         $this->assertEquals('bar', $esi->handle($cache, '/', '/alt', false));
     }
 
     protected function getCache($request, $response)
     {
-        $cache = $this->getMock('Symfony\Component\HttpKernel\HttpCache\HttpCache', array('getRequest', 'handle'), array(), '', false);
+        $cache = $this->getMock('Symfony\Component\HttpKernel\HttpCache\HttpCache', ['getRequest', 'handle'], [], '', false);
         $cache->expects($this->any())
-              ->method('getRequest')
-              ->will($this->returnValue($request))
-        ;
+            ->method('getRequest')
+            ->will($this->returnValue($request));
         if (is_array($response)) {
             $cache->expects($this->any())
-                  ->method('handle')
-                  ->will(call_user_func_array(array($this, 'onConsecutiveCalls'), $response))
-            ;
+                ->method('handle')
+                ->will(call_user_func_array([$this, 'onConsecutiveCalls'], $response));
         } else {
             $cache->expects($this->any())
-                  ->method('handle')
-                  ->will($this->returnValue($response))
-            ;
+                ->method('handle')
+                ->will($this->returnValue($response));
         }
 
         return $cache;

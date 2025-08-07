@@ -21,29 +21,32 @@ use Exception;
 class Call
 {
     private $methodName;
+
     private $arguments;
+
     private $returnValue;
+
     private $exception;
+
     private $file;
+
     private $line;
 
     /**
      * Initializes call.
      *
-     * @param string      $methodName
-     * @param array       $arguments
-     * @param mixed       $returnValue
-     * @param Exception   $exception
-     * @param null|string $file
-     * @param null|int    $line
+     * @param  string  $methodName
+     * @param  mixed  $returnValue
+     * @param  null|string  $file
+     * @param  null|int  $line
      */
     public function __construct($methodName, array $arguments, $returnValue,
-                                Exception $exception = null, $file, $line)
+        ?Exception $exception, $file, $line)
     {
-        $this->methodName  = $methodName;
-        $this->arguments   = $arguments;
+        $this->methodName = $methodName;
+        $this->arguments = $arguments;
         $this->returnValue = $returnValue;
-        $this->exception   = $exception;
+        $this->exception = $exception;
 
         if ($file) {
             $this->file = $file;
@@ -118,7 +121,7 @@ class Call
      */
     public function getCallPlace()
     {
-        if (null === $this->file) {
+        if ($this->file === null) {
             return 'unknown';
         }
 

@@ -19,21 +19,21 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  */
 class HtmlDumperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGet()
+    public function test_get()
     {
         require __DIR__.'/Fixtures/dumb-var.php';
 
         $dumper = new HtmlDumper('php://output');
         $dumper->setDumpHeader('<foo></foo>');
         $dumper->setDumpBoundaries('<bar>', '</bar>');
-        $cloner = new VarCloner();
-        $cloner->addCasters(array(
+        $cloner = new VarCloner;
+        $cloner->addCasters([
             ':stream' => function ($res, $a) {
                 unset($a['uri'], $a['wrapper_data']);
 
                 return $a;
             },
-        ));
+        ]);
         $data = $cloner->cloneVar($var);
 
         ob_start();
@@ -110,14 +110,14 @@ EOTXT
         );
     }
 
-    public function testCharset()
+    public function test_charset()
     {
         $var = mb_convert_encoding('Словарь', 'CP1251', 'UTF-8');
 
         $dumper = new HtmlDumper('php://output', 'CP1251');
         $dumper->setDumpHeader('<foo></foo>');
         $dumper->setDumpBoundaries('<bar>', '</bar>');
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
 
         $data = $cloner->cloneVar($var);
         $out = fopen('php://memory', 'r+b');
@@ -126,7 +126,7 @@ EOTXT
         $out = stream_get_contents($out);
 
         $this->assertStringMatchesFormat(
-            <<<EOTXT
+            <<<'EOTXT'
 <foo></foo><bar>b"<span class=sf-dump-str title="7 binary or non-UTF-8 characters">&#1057;&#1083;&#1086;&#1074;&#1072;&#1088;&#1100;</span>"
 </bar>
 

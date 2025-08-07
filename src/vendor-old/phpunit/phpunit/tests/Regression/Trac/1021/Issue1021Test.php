@@ -1,23 +1,22 @@
 <?php
+
 class Issue1021Test extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provider
      */
-    public function testSomething($data)
+    public function test_something($data)
     {
         $this->assertTrue($data);
     }
 
     /**
-     * @depends testSomething
+     * @depends test_something
      */
-    public function testSomethingElse()
-    {
-    }
+    public function test_something_else() {}
 
     public function provider()
     {
-        return array(array(true));
+        return [[true]];
     }
 }

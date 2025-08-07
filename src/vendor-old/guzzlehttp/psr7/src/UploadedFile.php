@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
@@ -58,11 +59,11 @@ class UploadedFile implements UploadedFileInterface
     private $stream;
 
     /**
-     * @param StreamInterface|string|resource $streamOrFile
-     * @param int $size
-     * @param int $errorStatus
-     * @param string|null $clientFilename
-     * @param string|null $clientMediaType
+     * @param  StreamInterface|string|resource  $streamOrFile
+     * @param  int  $size
+     * @param  int  $errorStatus
+     * @param  string|null  $clientFilename
+     * @param  string|null  $clientMediaType
      */
     public function __construct(
         $streamOrFile,
@@ -84,7 +85,8 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Depending on the value set file or stream variable
      *
-     * @param mixed $streamOrFile
+     * @param  mixed  $streamOrFile
+     *
      * @throws InvalidArgumentException
      */
     private function setStreamOrFile($streamOrFile)
@@ -103,18 +105,19 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param int $error
+     * @param  int  $error
+     *
      * @throws InvalidArgumentException
      */
     private function setError($error)
     {
-        if (false === is_int($error)) {
+        if (is_int($error) === false) {
             throw new InvalidArgumentException(
                 'Upload file error status must be an integer'
             );
         }
 
-        if (false === in_array($error, UploadedFile::$errors)) {
+        if (in_array($error, UploadedFile::$errors) === false) {
             throw new InvalidArgumentException(
                 'Invalid error status for UploadedFile'
             );
@@ -124,12 +127,13 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param int $size
+     * @param  int  $size
+     *
      * @throws InvalidArgumentException
      */
     private function setSize($size)
     {
-        if (false === is_int($size)) {
+        if (is_int($size) === false) {
             throw new InvalidArgumentException(
                 'Upload file size must be an integer'
             );
@@ -139,8 +143,8 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param mixed $param
-     * @return boolean
+     * @param  mixed  $param
+     * @return bool
      */
     private function isStringOrNull($param)
     {
@@ -148,21 +152,22 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param mixed $param
-     * @return boolean
+     * @param  mixed  $param
+     * @return bool
      */
     private function isStringNotEmpty($param)
     {
-        return is_string($param) && false === empty($param);
+        return is_string($param) && empty($param) === false;
     }
 
     /**
-     * @param string|null $clientFilename
+     * @param  string|null  $clientFilename
+     *
      * @throws InvalidArgumentException
      */
     private function setClientFilename($clientFilename)
     {
-        if (false === $this->isStringOrNull($clientFilename)) {
+        if ($this->isStringOrNull($clientFilename) === false) {
             throw new InvalidArgumentException(
                 'Upload file client filename must be a string or null'
             );
@@ -172,12 +177,13 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param string|null $clientMediaType
+     * @param  string|null  $clientMediaType
+     *
      * @throws InvalidArgumentException
      */
     private function setClientMediaType($clientMediaType)
     {
-        if (false === $this->isStringOrNull($clientMediaType)) {
+        if ($this->isStringOrNull($clientMediaType) === false) {
             throw new InvalidArgumentException(
                 'Upload file client media type must be a string or null'
             );
@@ -189,7 +195,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Return true if there is no upload error
      *
-     * @return boolean
+     * @return bool
      */
     private function isOk()
     {
@@ -197,7 +203,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isMoved()
     {
@@ -209,7 +215,7 @@ class UploadedFile implements UploadedFileInterface
      */
     private function validateActive()
     {
-        if (false === $this->isOk()) {
+        if ($this->isOk() === false) {
             throw new RuntimeException('Cannot retrieve stream due to upload error');
         }
 
@@ -220,6 +226,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws RuntimeException if the upload was not successful.
      */
     public function getStream()
@@ -238,17 +245,19 @@ class UploadedFile implements UploadedFileInterface
      *
      * @see http://php.net/is_uploaded_file
      * @see http://php.net/move_uploaded_file
-     * @param string $targetPath Path to which to move the uploaded file.
+     *
+     * @param  string  $targetPath  Path to which to move the uploaded file.
+     *
      * @throws RuntimeException if the upload was not successful.
      * @throws InvalidArgumentException if the $path specified is invalid.
      * @throws RuntimeException on any error during the move operation, or on
-     *     the second or subsequent call to the method.
+     *                          the second or subsequent call to the method.
      */
     public function moveTo($targetPath)
     {
         $this->validateActive();
 
-        if (false === $this->isStringNotEmpty($targetPath)) {
+        if ($this->isStringNotEmpty($targetPath) === false) {
             throw new InvalidArgumentException(
                 'Invalid path provided for move operation; must be a non-empty string'
             );
@@ -267,7 +276,7 @@ class UploadedFile implements UploadedFileInterface
             $this->moved = true;
         }
 
-        if (false === $this->moved) {
+        if ($this->moved === false) {
             throw new RuntimeException(
                 sprintf('Uploaded file could not be moved to %s', $targetPath)
             );
@@ -288,6 +297,7 @@ class UploadedFile implements UploadedFileInterface
      * {@inheritdoc}
      *
      * @see http://php.net/manual/en/features.file-upload.errors.php
+     *
      * @return int One of PHP's UPLOAD_ERR_XXX constants.
      */
     public function getError()
@@ -299,7 +309,7 @@ class UploadedFile implements UploadedFileInterface
      * {@inheritdoc}
      *
      * @return string|null The filename sent by the client or null if none
-     *     was provided.
+     *                     was provided.
      */
     public function getClientFilename()
     {

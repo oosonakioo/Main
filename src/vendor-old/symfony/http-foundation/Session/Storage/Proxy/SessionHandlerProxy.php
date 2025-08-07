@@ -25,8 +25,6 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
 
     /**
      * Constructor.
-     *
-     * @param \SessionHandlerInterface $handler
      */
     public function __construct(\SessionHandlerInterface $handler)
     {

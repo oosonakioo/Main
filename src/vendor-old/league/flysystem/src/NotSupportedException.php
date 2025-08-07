@@ -10,7 +10,6 @@ class NotSupportedException extends RuntimeException
     /**
      * Create a new exception for a link.
      *
-     * @param SplFileInfo $file
      *
      * @return static
      */
@@ -18,14 +17,13 @@ class NotSupportedException extends RuntimeException
     {
         $message = 'Links are not supported, encountered link at ';
 
-        return new static($message . $file->getPathname());
+        return new static($message.$file->getPathname());
     }
 
     /**
      * Create a new exception for a link.
      *
-     * @param string $systemType
-     *
+     * @param  string  $systemType
      * @return static
      */
     public static function forFtpSystemType($systemType)

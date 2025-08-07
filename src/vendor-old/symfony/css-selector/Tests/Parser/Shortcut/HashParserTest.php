@@ -20,9 +20,9 @@ use Symfony\Component\CssSelector\Parser\Shortcut\HashParser;
 class HashParserTest extends \PHPUnit_Framework_TestCase
 {
     /** @dataProvider getParseTestData */
-    public function testParse($source, $representation)
+    public function test_parse($source, $representation)
     {
-        $parser = new HashParser();
+        $parser = new HashParser;
         $selectors = $parser->parse($source);
         $this->assertCount(1, $selectors);
 
@@ -33,12 +33,12 @@ class HashParserTest extends \PHPUnit_Framework_TestCase
 
     public function getParseTestData()
     {
-        return array(
-            array('#testid', 'Hash[Element[*]#testid]'),
-            array('testel#testid', 'Hash[Element[testel]#testid]'),
-            array('testns|#testid', 'Hash[Element[testns|*]#testid]'),
-            array('testns|*#testid', 'Hash[Element[testns|*]#testid]'),
-            array('testns|testel#testid', 'Hash[Element[testns|testel]#testid]'),
-        );
+        return [
+            ['#testid', 'Hash[Element[*]#testid]'],
+            ['testel#testid', 'Hash[Element[testel]#testid]'],
+            ['testns|#testid', 'Hash[Element[testns|*]#testid]'],
+            ['testns|*#testid', 'Hash[Element[testns|*]#testid]'],
+            ['testns|testel#testid', 'Hash[Element[testns|testel]#testid]'],
+        ];
     }
 }

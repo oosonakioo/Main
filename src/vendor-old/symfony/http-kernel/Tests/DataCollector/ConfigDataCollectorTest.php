@@ -11,21 +11,21 @@
 
 namespace Symfony\Component\HttpKernel\Tests\DataCollector;
 
-use Symfony\Component\HttpKernel\DataCollector\ConfigDataCollector;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\ConfigDataCollector;
+use Symfony\Component\HttpKernel\Kernel;
 
 class ConfigDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCollect()
+    public function test_collect()
     {
         $kernel = new KernelForTest('test', true);
-        $c = new ConfigDataCollector();
+        $c = new ConfigDataCollector;
         $c->setCacheVersionInfo(false);
         $c->setKernel($kernel);
-        $c->collect(new Request(), new Response());
+        $c->collect(new Request, new Response);
 
         $this->assertSame('test', $c->getEnv());
         $this->assertTrue($c->isDebug());
@@ -66,16 +66,12 @@ class KernelForTest extends Kernel
         return 'testkernel';
     }
 
-    public function registerBundles()
-    {
-    }
+    public function registerBundles() {}
 
     public function getBundles()
     {
-        return array();
+        return [];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-    }
+    public function registerContainerConfiguration(LoaderInterface $loader) {}
 }

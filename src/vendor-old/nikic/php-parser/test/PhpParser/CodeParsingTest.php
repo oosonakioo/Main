@@ -2,25 +2,24 @@
 
 namespace PhpParser;
 
-use PhpParser\Comment;
-
-require_once __DIR__ . '/CodeTestAbstract.php';
+require_once __DIR__.'/CodeTestAbstract.php';
 
 class CodeParsingTest extends CodeTestAbstract
 {
     /**
      * @dataProvider provideTestParse
      */
-    public function testParse($name, $code, $expected, $mode) {
-        $lexer = new Lexer\Emulative(array('usedAttributes' => array(
-            'startLine', 'endLine', 'startFilePos', 'endFilePos', 'comments'
-        )));
-        $parser5 = new Parser\Php5($lexer, array(
+    public function test_parse($name, $code, $expected, $mode)
+    {
+        $lexer = new Lexer\Emulative(['usedAttributes' => [
+            'startLine', 'endLine', 'startFilePos', 'endFilePos', 'comments',
+        ]]);
+        $parser5 = new Parser\Php5($lexer, [
             'throwOnError' => false,
-        ));
-        $parser7 = new Parser\Php7($lexer, array(
+        ]);
+        $parser7 = new Parser\Php7($lexer, [
             'throwOnError' => false,
-        ));
+        ]);
 
         $output5 = $this->getParseOutput($parser5, $code);
         $output7 = $this->getParseOutput($parser7, $code);
@@ -28,7 +27,7 @@ class CodeParsingTest extends CodeTestAbstract
         if ($mode === 'php5') {
             $this->assertSame($expected, $output5, $name);
             $this->assertNotSame($expected, $output7, $name);
-        } else if ($mode === 'php7') {
+        } elseif ($mode === 'php7') {
             $this->assertNotSame($expected, $output5, $name);
             $this->assertSame($expected, $output7, $name);
         } else {
@@ -37,16 +36,17 @@ class CodeParsingTest extends CodeTestAbstract
         }
     }
 
-    private function getParseOutput(Parser $parser, $code) {
+    private function getParseOutput(Parser $parser, $code)
+    {
         $stmts = $parser->parse($code);
         $errors = $parser->getErrors();
 
         $output = '';
         foreach ($errors as $error) {
-            $output .= $this->formatErrorMessage($error, $code) . "\n";
+            $output .= $this->formatErrorMessage($error, $code)."\n";
         }
 
-        if (null !== $stmts) {
+        if ($stmts !== null) {
             $dumper = new NodeDumper(['dumpComments' => true]);
             $output .= $dumper->dump($stmts);
         }
@@ -54,14 +54,16 @@ class CodeParsingTest extends CodeTestAbstract
         return canonicalize($output);
     }
 
-    public function provideTestParse() {
-        return $this->getTests(__DIR__ . '/../code/parser', 'test');
+    public function provideTestParse()
+    {
+        return $this->getTests(__DIR__.'/../code/parser', 'test');
     }
 
-    private function formatErrorMessage(Error $e, $code) {
+    private function formatErrorMessage(Error $e, $code)
+    {
         if ($e->hasColumnInfo()) {
-            return $e->getRawMessage() . ' from ' . $e->getStartLine() . ':' . $e->getStartColumn($code)
-                . ' to ' . $e->getEndLine() . ':' . $e->getEndColumn($code);
+            return $e->getRawMessage().' from '.$e->getStartLine().':'.$e->getStartColumn($code)
+                .' to '.$e->getEndLine().':'.$e->getEndColumn($code);
         } else {
             return $e->getMessage();
         }

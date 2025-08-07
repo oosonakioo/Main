@@ -4,5 +4,5 @@ namespace Intervention\Image\Exception;
 
 class ImageException extends \RuntimeException
 {
-    # nothing to override
+    // nothing to override
 }

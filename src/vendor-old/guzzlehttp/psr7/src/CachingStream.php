@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -20,12 +21,12 @@ class CachingStream implements StreamInterface
     /**
      * We will treat the buffer object as the body of the stream
      *
-     * @param StreamInterface $stream Stream to cache
-     * @param StreamInterface $target Optionally specify where data is cached
+     * @param  StreamInterface  $stream  Stream to cache
+     * @param  StreamInterface  $target  Optionally specify where data is cached
      */
     public function __construct(
         StreamInterface $stream,
-        StreamInterface $target = null
+        ?StreamInterface $target = null
     ) {
         $this->remoteStream = $stream;
         $this->stream = $target ?: new Stream(fopen('php://temp', 'r+'));
@@ -62,7 +63,7 @@ class CachingStream implements StreamInterface
         if ($diff > 0) {
             // Read the remoteStream until we have read in at least the amount
             // of bytes requested, or we reach the end of the file.
-            while ($diff > 0 && !$this->remoteStream->eof()) {
+            while ($diff > 0 && ! $this->remoteStream->eof()) {
                 $this->read($diff);
                 $diff = $byte - $this->stream->getSize();
             }

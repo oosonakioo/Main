@@ -26,8 +26,6 @@ class LegacyEmptyPass extends CodeCleanerPass
      * Validate use of empty in PHP < 5.5.
      *
      * @throws ParseErrorException if the user used empty with anything but a variable.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
@@ -35,11 +33,11 @@ class LegacyEmptyPass extends CodeCleanerPass
             return;
         }
 
-        if (!$node instanceof ExprEmpty) {
+        if (! $node instanceof ExprEmpty) {
             return;
         }
 
-        if (!$node->expr instanceof Variable) {
+        if (! $node->expr instanceof Variable) {
             $msg = sprintf('syntax error, unexpected %s', $this->getUnexpectedThing($node->expr));
 
             throw new ParseErrorException($msg, $node->expr->getLine());

@@ -9,7 +9,7 @@ class Processor
     /**
      * Split a string into seperate properties
      *
-     * @param string $propertiesString
+     * @param  string  $propertiesString
      * @return array
      */
     public function splitIntoSeparateProperties($propertiesString)
@@ -17,7 +17,7 @@ class Processor
         $propertiesString = $this->cleanup($propertiesString);
 
         $properties = (array) explode(';', $propertiesString);
-        $keysToRemove = array();
+        $keysToRemove = [];
         $numberOfProperties = count($properties);
 
         for ($i = 0; $i < $numberOfProperties; $i++) {
@@ -25,12 +25,12 @@ class Processor
 
             // if the new property begins with base64 it is part of the current property
             if (isset($properties[$i + 1]) && strpos(trim($properties[$i + 1]), 'base64,') === 0) {
-                $properties[$i] .= ';' . trim($properties[$i + 1]);
+                $properties[$i] .= ';'.trim($properties[$i + 1]);
                 $keysToRemove[] = $i + 1;
             }
         }
 
-        if (!empty($keysToRemove)) {
+        if (! empty($keysToRemove)) {
             foreach ($keysToRemove as $key) {
                 unset($properties[$key]);
             }
@@ -40,13 +40,12 @@ class Processor
     }
 
     /**
-     * @param $string
      * @return mixed|string
      */
     private function cleanup($string)
     {
-        $string = str_replace(array("\r", "\n"), '', $string);
-        $string = str_replace(array("\t"), ' ', $string);
+        $string = str_replace(["\r", "\n"], '', $string);
+        $string = str_replace(["\t"], ' ', $string);
         $string = str_replace('"', '\'', $string);
         $string = preg_replace('|/\*.*?\*/|', '', $string);
         $string = preg_replace('/\s\s+/', ' ', $string);
@@ -60,16 +59,16 @@ class Processor
     /**
      * Convert a property-string into an object
      *
-     * @param string $property
+     * @param  string  $property
      * @return Property|null
      */
-    public function convertToObject($property, Specificity $specificity = null)
+    public function convertToObject($property, ?Specificity $specificity = null)
     {
         if (strpos($property, ':') === false) {
             return null;
         }
 
-        list($name, $value) = explode(':', $property, 2);
+        [$name, $value] = explode(':', $property, 2);
 
         $name = trim($name);
         $value = trim($value);
@@ -84,12 +83,11 @@ class Processor
     /**
      * Convert an array of property-strings into objects
      *
-     * @param array $properties
      * @return Property[]
      */
-    public function convertArrayToObjects(array $properties, Specificity $specificity = null)
+    public function convertArrayToObjects(array $properties, ?Specificity $specificity = null)
     {
-        $objects = array();
+        $objects = [];
 
         foreach ($properties as $property) {
             $object = $this->convertToObject($property, $specificity);
@@ -106,12 +104,11 @@ class Processor
     /**
      * Build the property-string for multiple properties
      *
-     * @param array $properties
      * @return string
      */
     public function buildPropertiesString(array $properties)
     {
-        $chunks = array();
+        $chunks = [];
 
         foreach ($properties as $property) {
             $chunks[] = $property->toString();

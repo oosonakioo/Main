@@ -49,9 +49,6 @@ class ClassPreloader
     /**
      * Create a new class preloader instance.
      *
-     * @param \PhpParser\PrettyPrinter\Standard    $printer
-     * @param \PhpParser\Parser                    $parser
-     * @param \ClassPreloader\Parser\NodeTraverser $traverser
      *
      * @return void
      */
@@ -65,12 +62,11 @@ class ClassPreloader
     /**
      * Prepare the output file and directory.
      *
-     * @param string $output
-     * @param bool   $strict
+     * @param  string  $output
+     * @param  bool  $strict
+     * @return resource
      *
      * @throws \RuntimeException
-     *
-     * @return resource
      */
     public function prepareOutput($output, $strict = false)
     {
@@ -80,13 +76,13 @@ class ClassPreloader
 
         $dir = dirname($output);
 
-        if (!is_dir($dir) && !mkdir($dir, 0777, true)) {
+        if (! is_dir($dir) && ! mkdir($dir, 0777, true)) {
             throw new RuntimeException("Unable to create directory $dir.");
         }
 
         $handle = fopen($output, 'w');
 
-        if (!$handle) {
+        if (! $handle) {
             throw new RuntimeException("Unable to open $output for writing.");
         }
 
@@ -102,19 +98,18 @@ class ClassPreloader
     /**
      * Get a pretty printed string of code from a file while applying visitors.
      *
-     * @param string $file
+     * @param  string  $file
+     * @return string
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     public function getCode($file, $comments = true)
     {
-        if (!is_string($file) || empty($file)) {
+        if (! is_string($file) || empty($file)) {
             throw new RuntimeException('Invalid filename provided.');
         }
 
-        if (!is_readable($file)) {
+        if (! is_readable($file)) {
             throw new RuntimeException("Cannot open $file for reading.");
         }
 
@@ -142,9 +137,7 @@ class ClassPreloader
     /**
      * Wrap the code into a namespace.
      *
-     * @param array  $parsed
-     * @param string $pretty
-     *
+     * @param  string  $pretty
      * @return string
      */
     protected function getCodeWrappedIntoNamespace(array $parsed, $pretty)
@@ -161,7 +154,6 @@ class ClassPreloader
     /**
      * Check parsed code for having namespaces.
      *
-     * @param array $parsed
      *
      * @return bool
      */
@@ -176,6 +168,6 @@ class ClassPreloader
             }
         );
 
-        return !empty($node);
+        return ! empty($node);
     }
 }

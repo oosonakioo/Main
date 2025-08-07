@@ -11,9 +11,9 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
-use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Logger;
+use Monolog\TestCase;
 
 function error_log()
 {
@@ -24,15 +24,17 @@ class ErrorLogHandlerTest extends TestCase
 {
     protected function setUp()
     {
-        $GLOBALS['error_log'] = array();
+        $GLOBALS['error_log'] = [];
     }
 
     /**
      * @covers Monolog\Handler\ErrorLogHandler::__construct
+     *
      * @expectedException InvalidArgumentException
+     *
      * @expectedExceptionMessage The given message type "42" is not supported
      */
-    public function testShouldNotAcceptAnInvalidTypeOnContructor()
+    public function test_should_not_accept_an_invalid_type_on_contructor()
     {
         new ErrorLogHandler(42);
     }
@@ -40,7 +42,7 @@ class ErrorLogHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\ErrorLogHandler::write
      */
-    public function testShouldLogMessagesUsingErrorLogFuncion()
+    public function test_should_log_messages_using_error_log_funcion()
     {
         $type = ErrorLogHandler::OPERATING_SYSTEM;
         $handler = new ErrorLogHandler($type);

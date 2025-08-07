@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,11 +20,11 @@
 
 namespace Doctrine\DBAL\Driver\PDOPgSql;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\AbstractPostgreSQLDriver;
 use Doctrine\DBAL\Driver\PDOConnection;
-use Doctrine\DBAL\DBALException;
-use PDOException;
 use PDO;
+use PDOException;
 
 /**
  * Driver that connects through pdo_pgsql.
@@ -35,7 +36,7 @@ class Driver extends AbstractPostgreSQLDriver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
     {
         try {
             $pdo = new PDOConnection(
@@ -47,7 +48,7 @@ class Driver extends AbstractPostgreSQLDriver
 
             if (defined('PDO::PGSQL_ATTR_DISABLE_PREPARES')
                 && (! isset($driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES])
-                    || true === $driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES]
+                    || $driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES] === true
                 )
             ) {
                 $pdo->setAttribute(PDO::PGSQL_ATTR_DISABLE_PREPARES, true);
@@ -58,7 +59,7 @@ class Driver extends AbstractPostgreSQLDriver
              * - passing client_encoding via the 'options' param breaks pgbouncer support
              */
             if (isset($params['charset'])) {
-              $pdo->query('SET NAMES \''.$params['charset'].'\'');
+                $pdo->query('SET NAMES \''.$params['charset'].'\'');
             }
 
             return $pdo;
@@ -70,7 +71,6 @@ class Driver extends AbstractPostgreSQLDriver
     /**
      * Constructs the Postgres PDO DSN.
      *
-     * @param array $params
      *
      * @return string The DSN.
      */
@@ -79,24 +79,24 @@ class Driver extends AbstractPostgreSQLDriver
         $dsn = 'pgsql:';
 
         if (isset($params['host']) && $params['host'] != '') {
-            $dsn .= 'host=' . $params['host'] . ' ';
+            $dsn .= 'host='.$params['host'].' ';
         }
 
         if (isset($params['port']) && $params['port'] != '') {
-            $dsn .= 'port=' . $params['port'] . ' ';
+            $dsn .= 'port='.$params['port'].' ';
         }
 
         if (isset($params['dbname'])) {
-            $dsn .= 'dbname=' . $params['dbname'] . ' ';
+            $dsn .= 'dbname='.$params['dbname'].' ';
         } else {
             // Used for temporary connections to allow operations like dropping the database currently connected to.
             // Connecting without an explicit database does not work, therefore "postgres" database is used
-            // as it is certainly present in every server setup. 
-            $dsn .= 'dbname=postgres' . ' ';
+            // as it is certainly present in every server setup.
+            $dsn .= 'dbname=postgres'.' ';
         }
 
         if (isset($params['sslmode'])) {
-            $dsn .= 'sslmode=' . $params['sslmode'] . ' ';
+            $dsn .= 'sslmode='.$params['sslmode'].' ';
         }
 
         return $dsn;

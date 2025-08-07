@@ -3,9 +3,9 @@
 namespace Illuminate\Foundation\Testing\Constraints;
 
 use PHPUnit_Framework_Constraint;
-use Symfony\Component\DomCrawler\Crawler;
-use SebastianBergmann\Comparator\ComparisonFailure;
 use PHPUnit_Framework_ExpectationFailedException as FailedExpection;
+use SebastianBergmann\Comparator\ComparisonFailure;
+use Symfony\Component\DomCrawler\Crawler;
 
 abstract class PageConstraint extends PHPUnit_Framework_Constraint
 {
@@ -63,12 +63,11 @@ abstract class PageConstraint extends PHPUnit_Framework_Constraint
      *
      * @param  \Symfony\Component\DomCrawler\Crawler|string  $crawler
      * @param  string  $description
-     * @param  \SebastianBergmann\Comparator\ComparisonFailure|null  $comparisonFailure
      * @return void
      *
      * @throws \PHPUnit_Framework_ExpectationFailedException
      */
-    protected function fail($crawler, $description, ComparisonFailure $comparisonFailure = null)
+    protected function fail($crawler, $description, ?ComparisonFailure $comparisonFailure = null)
     {
         $html = $this->html($crawler);
 

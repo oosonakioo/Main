@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Exporter package.
  *
@@ -30,12 +31,12 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
         $obj2 = new \stdClass;
         $obj2->foo = 'bar';
 
-        $obj3 = (object)array(1,2,"Test\r\n",4,5,6,7,8);
+        $obj3 = (object) [1, 2, "Test\r\n", 4, 5, 6, 7, 8];
 
         $obj = new \stdClass;
-        //@codingStandardsIgnoreStart
+        // @codingStandardsIgnoreStart
         $obj->null = null;
-        //@codingStandardsIgnoreEnd
+        // @codingStandardsIgnoreEnd
         $obj->boolean = true;
         $obj->integer = 1;
         $obj->double = 1.2;
@@ -43,24 +44,24 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
         $obj->text = "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext";
         $obj->object = $obj2;
         $obj->objectagain = $obj2;
-        $obj->array = array('foo' => 'bar');
+        $obj->array = ['foo' => 'bar'];
         $obj->self = $obj;
 
         $storage = new \SplObjectStorage;
         $storage->attach($obj2);
         $storage->foo = $obj2;
 
-        return array(
-            array(null, 'null'),
-            array(true, 'true'),
-            array(false, 'false'),
-            array(1, '1'),
-            array(1.0, '1.0'),
-            array(1.2, '1.2'),
-            array(fopen('php://memory', 'r'), 'resource(%d) of type (stream)'),
-            array('1', "'1'"),
-            array(array(array(1,2,3), array(3,4,5)),
-        <<<EOF
+        return [
+            [null, 'null'],
+            [true, 'true'],
+            [false, 'false'],
+            [1, '1'],
+            [1.0, '1.0'],
+            [1.2, '1.2'],
+            [fopen('php://memory', 'r'), 'resource(%d) of type (stream)'],
+            ['1', "'1'"],
+            [[[1, 2, 3], [3, 4, 5]],
+                <<<'EOF'
 Array &0 (
     0 => Array &1 (
         0 => 1
@@ -74,10 +75,10 @@ Array &0 (
     )
 )
 EOF
-            ),
+            ],
             // \n\r and \r is converted to \n
-            array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
-            <<<EOF
+            ["this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
+                <<<'EOF'
 'this
 is
 a
@@ -90,10 +91,10 @@ very
 long
 text'
 EOF
-            ),
-            array(new \stdClass, 'stdClass Object &%x ()'),
-            array($obj,
-            <<<EOF
+            ],
+            [new \stdClass, 'stdClass Object &%x ()'],
+            [$obj,
+                <<<'EOF'
 stdClass Object &%x (
     'null' => null
     'boolean' => true
@@ -121,10 +122,10 @@ text'
     'self' => stdClass Object &%x
 )
 EOF
-            ),
-            array(array(), 'Array &%d ()'),
-            array($storage,
-            <<<EOF
+            ],
+            [[], 'Array &%d ()'],
+            [$storage,
+                <<<'EOF'
 SplObjectStorage Object &%x (
     'foo' => stdClass Object &%x (
         'foo' => 'bar'
@@ -135,9 +136,9 @@ SplObjectStorage Object &%x (
     )
 )
 EOF
-            ),
-            array($obj3,
-            <<<EOF
+            ],
+            [$obj3,
+                <<<EOF
 stdClass Object &%x (
     0 => 1
     1 => 2
@@ -149,30 +150,30 @@ stdClass Object &%x (
     7 => 8
 )
 EOF
-            ),
-            array(
-                chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5),
-                'Binary String: 0x000102030405'
-            ),
-            array(
-                implode('', array_map('chr', range(0x0e, 0x1f))),
-                'Binary String: 0x0e0f101112131415161718191a1b1c1d1e1f'
-            ),
-            array(
-                chr(0x00) . chr(0x09),
-                'Binary String: 0x0009'
-            ),
-            array(
+            ],
+            [
+                chr(0).chr(1).chr(2).chr(3).chr(4).chr(5),
+                'Binary String: 0x000102030405',
+            ],
+            [
+                implode('', array_map('chr', range(0x0E, 0x1F))),
+                'Binary String: 0x0e0f101112131415161718191a1b1c1d1e1f',
+            ],
+            [
+                chr(0x00).chr(0x09),
+                'Binary String: 0x0009',
+            ],
+            [
                 '',
-                "''"
-            ),
-        );
+                "''",
+            ],
+        ];
     }
 
     /**
      * @dataProvider exportProvider
      */
-    public function testExport($value, $expected)
+    public function test_export($value, $expected)
     {
         $this->assertStringMatchesFormat(
             $expected,
@@ -180,7 +181,7 @@ EOF
         );
     }
 
-    public function testExport2()
+    public function test_export2()
     {
         if (PHP_VERSION === '5.3.3') {
             $this->markTestSkipped('Skipped due to "Nesting level too deep - recursive dependency?" fatal error');
@@ -189,7 +190,7 @@ EOF
         $obj = new \stdClass;
         $obj->foo = 'bar';
 
-        $array = array(
+        $array = [
             0 => 0,
             'null' => null,
             'boolean' => true,
@@ -199,12 +200,12 @@ EOF
             'text' => "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
             'object' => $obj,
             'objectagain' => $obj,
-            'array' => array('foo' => 'bar'),
-        );
+            'array' => ['foo' => 'bar'],
+        ];
 
         $array['self'] = &$array;
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 Array &%d (
     0 => 0
     'null' => null
@@ -269,30 +270,30 @@ EOF;
         $obj = new \stdClass;
         $obj->foo = 'bar';
 
-        $array = array(
+        $array = [
             'foo' => 'bar',
-        );
+        ];
 
-        return array(
-            array(null, 'null'),
-            array(true, 'true'),
-            array(1, '1'),
-            array(1.0, '1.0'),
-            array(1.2, '1.2'),
-            array('1', "'1'"),
+        return [
+            [null, 'null'],
+            [true, 'true'],
+            [1, '1'],
+            [1.0, '1.0'],
+            [1.2, '1.2'],
+            ['1', "'1'"],
             // \n\r and \r is converted to \n
-            array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext", "'this\\nis\\na\\nvery\\nvery\\nvery\\nvery...g\\ntext'"),
-            array(new \stdClass, 'stdClass Object ()'),
-            array($obj, 'stdClass Object (...)'),
-            array(array(), 'Array ()'),
-            array($array, 'Array (...)'),
-        );
+            ["this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext", "'this\\nis\\na\\nvery\\nvery\\nvery\\nvery...g\\ntext'"],
+            [new \stdClass, 'stdClass Object ()'],
+            [$obj, 'stdClass Object (...)'],
+            [[], 'Array ()'],
+            [$array, 'Array (...)'],
+        ];
     }
 
     /**
      * @dataProvider shortenedExportProvider
      */
-    public function testShortenedExport($value, $expected)
+    public function test_shortened_export($value, $expected)
     {
         $this->assertSame(
             $expected,
@@ -303,7 +304,7 @@ EOF;
     /**
      * @requires extension mbstring
      */
-    public function testShortenedExportForMultibyteCharacters()
+    public function test_shortened_export_for_multibyte_characters()
     {
         $oldMbLanguage = mb_language();
         mb_language('Japanese');
@@ -312,8 +313,8 @@ EOF;
 
         try {
             $this->assertSame(
-              "'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくや...しゑひもせす'",
-              $this->trimNewline($this->exporter->shortenedExport('いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす'))
+                "'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくや...しゑひもせす'",
+                $this->trimNewline($this->exporter->shortenedExport('いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす'))
             );
         } catch (\Exception $e) {
             mb_internal_encoding($oldMbInternalEncoding);
@@ -327,18 +328,17 @@ EOF;
 
     public function provideNonBinaryMultibyteStrings()
     {
-        return array(
-            array(implode('', array_map('chr', range(0x09, 0x0d))), 5),
-            array(implode('', array_map('chr', range(0x20, 0x7f))), 96),
-            array(implode('', array_map('chr', range(0x80, 0xff))), 128),
-        );
+        return [
+            [implode('', array_map('chr', range(0x09, 0x0D))), 5],
+            [implode('', array_map('chr', range(0x20, 0x7F))), 96],
+            [implode('', array_map('chr', range(0x80, 0xFF))), 128],
+        ];
     }
-
 
     /**
      * @dataProvider provideNonBinaryMultibyteStrings
      */
-    public function testNonBinaryStringExport($value, $expectedLength)
+    public function test_non_binary_string_export($value, $expectedLength)
     {
         $this->assertRegExp(
             "~'.{{$expectedLength}}'\$~s",
@@ -346,9 +346,9 @@ EOF;
         );
     }
 
-    public function testNonObjectCanBeReturnedAsArray()
+    public function test_non_object_can_be_returned_as_array()
     {
-        $this->assertEquals(array(true), $this->exporter->toArray(true));
+        $this->assertEquals([true], $this->exporter->toArray(true));
     }
 
     private function trimNewline($string)

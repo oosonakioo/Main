@@ -30,14 +30,17 @@ use Symfony\Component\Console\Output\StreamOutput;
 class ApplicationTester
 {
     private $application;
+
     private $input;
+
     private $output;
+
     private $statusCode;
 
     /**
      * Constructor.
      *
-     * @param Application $application An Application instance to test
+     * @param  Application  $application  An Application instance to test
      */
     public function __construct(Application $application)
     {
@@ -53,12 +56,11 @@ class ApplicationTester
      *  * decorated:   Sets the output decorated flag
      *  * verbosity:   Sets the output verbosity flag
      *
-     * @param array $input   An array of arguments and options
-     * @param array $options An array of options
-     *
+     * @param  array  $input  An array of arguments and options
+     * @param  array  $options  An array of options
      * @return int The command exit code
      */
-    public function run(array $input, $options = array())
+    public function run(array $input, $options = [])
     {
         $this->input = new ArrayInput($input);
         if (isset($options['interactive'])) {
@@ -79,8 +81,7 @@ class ApplicationTester
     /**
      * Gets the display returned by the last execution of the application.
      *
-     * @param bool $normalize Whether to normalize end of lines to \n or not
-     *
+     * @param  bool  $normalize  Whether to normalize end of lines to \n or not
      * @return string The display
      */
     public function getDisplay($normalize = false)

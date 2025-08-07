@@ -10,8 +10,7 @@ class Util
     /**
      * Get normalized pathinfo.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array pathinfo
      */
     public static function pathinfo($path)
@@ -26,8 +25,7 @@ class Util
     /**
      * Normalize a dirname return value.
      *
-     * @param string $dirname
-     *
+     * @param  string  $dirname
      * @return string normalized dirname
      */
     public static function normalizeDirname($dirname)
@@ -38,8 +36,7 @@ class Util
     /**
      * Get a normalized dirname from a path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string dirname
      */
     public static function dirname($path)
@@ -50,8 +47,6 @@ class Util
     /**
      * Map result arrays.
      *
-     * @param array $object
-     * @param array $map
      *
      * @return array mapped result
      */
@@ -60,7 +55,7 @@ class Util
         $result = [];
 
         foreach ($map as $from => $to) {
-            if ( ! isset($object[$from])) {
+            if (! isset($object[$from])) {
                 continue;
             }
 
@@ -73,11 +68,10 @@ class Util
     /**
      * Normalize path.
      *
-     * @param string $path
+     * @param  string  $path
+     * @return string
      *
      * @throws LogicException
-     *
-     * @return string
      */
     public static function normalizePath($path)
     {
@@ -87,11 +81,10 @@ class Util
     /**
      * Normalize relative directories in a path.
      *
-     * @param string $path
+     * @param  string  $path
+     * @return string
      *
      * @throws LogicException
-     *
-     * @return string
      */
     public static function normalizeRelativePath($path)
     {
@@ -104,20 +97,20 @@ class Util
             switch ($part) {
                 case '':
                 case '.':
-                break;
+                    break;
 
-            case '..':
-                if (empty($parts)) {
-                    throw new LogicException(
-                        'Path is outside of the defined root, path: [' . $path . ']'
-                    );
-                }
-                array_pop($parts);
-                break;
+                case '..':
+                    if (empty($parts)) {
+                        throw new LogicException(
+                            'Path is outside of the defined root, path: ['.$path.']'
+                        );
+                    }
+                    array_pop($parts);
+                    break;
 
-            default:
-                $parts[] = $part;
-                break;
+                default:
+                    $parts[] = $part;
+                    break;
             }
         }
 
@@ -127,11 +120,11 @@ class Util
     /**
      * Removes unprintable characters and invalid unicode characters.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string $path
      */
-    protected static function removeFunkyWhiteSpace($path) {
+    protected static function removeFunkyWhiteSpace($path)
+    {
         // We do this check in a loop, since removing invalid unicode characters
         // can lead to new characters being created.
         while (preg_match('#\p{C}+|^\./#u', $path)) {
@@ -144,21 +137,19 @@ class Util
     /**
      * Normalize prefix.
      *
-     * @param string $prefix
-     * @param string $separator
-     *
+     * @param  string  $prefix
+     * @param  string  $separator
      * @return string normalized path
      */
     public static function normalizePrefix($prefix, $separator)
     {
-        return rtrim($prefix, $separator) . $separator;
+        return rtrim($prefix, $separator).$separator;
     }
 
     /**
      * Get content size.
      *
-     * @param string $contents
-     *
+     * @param  string  $contents
      * @return int content size
      */
     public static function contentSize($contents)
@@ -169,16 +160,15 @@ class Util
     /**
      * Guess MIME Type based on the path of the file and it's content.
      *
-     * @param string $path
-     * @param string|resource $content
-     *
+     * @param  string  $path
+     * @param  string|resource  $content
      * @return string|null MIME Type or NULL if no extension detected
      */
     public static function guessMimeType($path, $content)
     {
         $mimeType = MimeType::detectByContent($content);
 
-        if ( ! (empty($mimeType) || in_array($mimeType, ['application/x-empty', 'text/plain', 'text/x-asm']))) {
+        if (! (empty($mimeType) || in_array($mimeType, ['application/x-empty', 'text/plain', 'text/x-asm']))) {
             return $mimeType;
         }
 
@@ -188,7 +178,6 @@ class Util
     /**
      * Emulate directories.
      *
-     * @param array $listing
      *
      * @return array listing with emulated directories
      */
@@ -198,7 +187,7 @@ class Util
         $listedDirectories = [];
 
         foreach ($listing as $object) {
-            list($directories, $listedDirectories) = static::emulateObjectDirectories(
+            [$directories, $listedDirectories] = static::emulateObjectDirectories(
                 $object,
                 $directories,
                 $listedDirectories
@@ -217,8 +206,7 @@ class Util
     /**
      * Ensure a Config instance.
      *
-     * @param null|array|Config $config
-     *
+     * @param  null|array|Config  $config
      * @return Config config instance
      *
      * @throw  LogicException
@@ -226,7 +214,7 @@ class Util
     public static function ensureConfig($config)
     {
         if ($config === null) {
-            return new Config();
+            return new Config;
         }
 
         if ($config instanceof Config) {
@@ -243,7 +231,7 @@ class Util
     /**
      * Rewind a stream.
      *
-     * @param resource $resource
+     * @param  resource  $resource
      */
     public static function rewindStream($resource)
     {
@@ -262,8 +250,7 @@ class Util
     /**
      * Get the size of a stream.
      *
-     * @param resource $resource
-     *
+     * @param  resource  $resource
      * @return int stream size
      */
     public static function getStreamSize($resource)
@@ -276,9 +263,6 @@ class Util
     /**
      * Emulate the directories of a single object.
      *
-     * @param array $object
-     * @param array $directories
-     * @param array $listedDirectories
      *
      * @return array
      */
@@ -294,7 +278,7 @@ class Util
 
         $parent = $object['dirname'];
 
-        while ( ! empty($parent) && ! in_array($parent, $directories)) {
+        while (! empty($parent) && ! in_array($parent, $directories)) {
             $directories[] = $parent;
             $parent = static::dirname($parent);
         }

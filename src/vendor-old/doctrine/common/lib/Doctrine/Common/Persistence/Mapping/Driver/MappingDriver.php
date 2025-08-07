@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,6 +26,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
  * Contract for metadata drivers.
  *
  * @since  2.2
+ *
  * @author Jonathan H. Wage <jonwage@gmail.com>
  */
 interface MappingDriver
@@ -32,9 +34,7 @@ interface MappingDriver
     /**
      * Loads the metadata for the specified class into the provided container.
      *
-     * @param string        $className
-     * @param ClassMetadata $metadata
-     *
+     * @param  string  $className
      * @return void
      */
     public function loadMetadataForClass($className, ClassMetadata $metadata);
@@ -50,9 +50,8 @@ interface MappingDriver
      * Returns whether the class with the specified name should have its metadata loaded.
      * This is only the case if it is either mapped as an Entity or a MappedSuperclass.
      *
-     * @param string $className
-     *
-     * @return boolean
+     * @param  string  $className
+     * @return bool
      */
     public function isTransient($className);
 }

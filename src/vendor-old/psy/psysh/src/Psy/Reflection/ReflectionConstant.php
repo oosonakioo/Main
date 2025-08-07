@@ -19,27 +19,29 @@ namespace Psy\Reflection;
 class ReflectionConstant implements \Reflector
 {
     private $class;
+
     private $name;
+
     private $value;
 
     /**
      * Construct a ReflectionConstant object.
      *
-     * @param mixed  $class
-     * @param string $name
+     * @param  mixed  $class
+     * @param  string  $name
      */
     public function __construct($class, $name)
     {
-        if (!$class instanceof \ReflectionClass) {
+        if (! $class instanceof \ReflectionClass) {
             $class = new \ReflectionClass($class);
         }
 
         $this->class = $class;
-        $this->name  = $name;
+        $this->name = $name;
 
         $constants = $class->getConstants();
-        if (!array_key_exists($name, $constants)) {
-            throw new \InvalidArgumentException('Unknown constant: ' . $name);
+        if (! array_key_exists($name, $constants)) {
+            throw new \InvalidArgumentException('Unknown constant: '.$name);
         }
 
         $this->value = $constants[$name];
@@ -83,7 +85,7 @@ class ReflectionConstant implements \Reflector
      */
     public function getFileName()
     {
-        return;
+
         // return $this->class->getFileName();
     }
 

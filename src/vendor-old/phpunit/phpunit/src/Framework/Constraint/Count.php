@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -19,7 +20,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
     protected $expectedCount = 0;
 
     /**
-     * @param int $expected
+     * @param  int  $expected
      */
     public function __construct($expected)
     {
@@ -31,8 +32,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other
-     *
+     * @param  mixed  $other
      * @return bool
      */
     protected function matches($other)
@@ -41,8 +41,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * @param mixed $other
-     *
+     * @param  mixed  $other
      * @return bool
      */
     protected function getCountOf($other)
@@ -56,7 +55,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
                 $iterator = $other;
             }
 
-            $key   = $iterator->key();
+            $key = $iterator->key();
             $count = iterator_count($iterator);
 
             // manually rewind $iterator to previous key, since iterator_count
@@ -78,8 +77,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
-     *
+     * @param  mixed  $other  Evaluated value or object.
      * @return string
      */
     protected function failureDescription($other)

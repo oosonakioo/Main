@@ -15,21 +15,21 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class OutputFormatterStyleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstructor()
+    public function test_constructor()
     {
-        $style = new OutputFormatterStyle('green', 'black', array('bold', 'underscore'));
+        $style = new OutputFormatterStyle('green', 'black', ['bold', 'underscore']);
         $this->assertEquals("\033[32;40;1;4mfoo\033[39;49;22;24m", $style->apply('foo'));
 
-        $style = new OutputFormatterStyle('red', null, array('blink'));
+        $style = new OutputFormatterStyle('red', null, ['blink']);
         $this->assertEquals("\033[31;5mfoo\033[39;25m", $style->apply('foo'));
 
         $style = new OutputFormatterStyle(null, 'white');
         $this->assertEquals("\033[47mfoo\033[49m", $style->apply('foo'));
     }
 
-    public function testForeground()
+    public function test_foreground()
     {
-        $style = new OutputFormatterStyle();
+        $style = new OutputFormatterStyle;
 
         $style->setForeground('black');
         $this->assertEquals("\033[30mfoo\033[39m", $style->apply('foo'));
@@ -44,9 +44,9 @@ class OutputFormatterStyleTest extends \PHPUnit_Framework_TestCase
         $style->setForeground('undefined-color');
     }
 
-    public function testBackground()
+    public function test_background()
     {
-        $style = new OutputFormatterStyle();
+        $style = new OutputFormatterStyle;
 
         $style->setBackground('black');
         $this->assertEquals("\033[40mfoo\033[49m", $style->apply('foo'));
@@ -61,11 +61,11 @@ class OutputFormatterStyleTest extends \PHPUnit_Framework_TestCase
         $style->setBackground('undefined-color');
     }
 
-    public function testOptions()
+    public function test_options()
     {
-        $style = new OutputFormatterStyle();
+        $style = new OutputFormatterStyle;
 
-        $style->setOptions(array('reverse', 'conceal'));
+        $style->setOptions(['reverse', 'conceal']);
         $this->assertEquals("\033[7;8mfoo\033[27;28m", $style->apply('foo'));
 
         $style->setOption('bold');
@@ -77,7 +77,7 @@ class OutputFormatterStyleTest extends \PHPUnit_Framework_TestCase
         $style->setOption('bold');
         $this->assertEquals("\033[8;1mfoo\033[28;22m", $style->apply('foo'));
 
-        $style->setOptions(array('bold'));
+        $style->setOptions(['bold']);
         $this->assertEquals("\033[1mfoo\033[22m", $style->apply('foo'));
 
         try {

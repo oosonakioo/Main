@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -141,36 +142,35 @@
  */
 class PHPUnit_Util_Configuration
 {
-    private static $instances = array();
+    private static $instances = [];
 
     protected $document;
+
     protected $xpath;
+
     protected $filename;
 
     /**
      * Loads a PHPUnit configuration file.
      *
-     * @param string $filename
+     * @param  string  $filename
      */
     protected function __construct($filename)
     {
         $this->filename = $filename;
         $this->document = PHPUnit_Util_XML::loadFile($filename, false, true, true);
-        $this->xpath    = new DOMXPath($this->document);
+        $this->xpath = new DOMXPath($this->document);
     }
 
     /**
      * @since  Method available since Release 3.4.0
      */
-    final private function __clone()
-    {
-    }
+    final private function __clone() {}
 
     /**
      * Returns a PHPUnit configuration object.
      *
-     * @param string $filename
-     *
+     * @param  string  $filename
      * @return PHPUnit_Util_Configuration
      *
      * @since  Method available since Release 3.4.0
@@ -188,7 +188,7 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if (!isset(self::$instances[$realpath])) {
+        if (! isset(self::$instances[$realpath])) {
             self::$instances[$realpath] = new self($realpath);
         }
 
@@ -216,7 +216,7 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
-        $addUncoveredFilesFromWhitelist     = true;
+        $addUncoveredFilesFromWhitelist = true;
         $processUncoveredFilesFromWhitelist = false;
 
         $tmp = $this->xpath->query('filter/whitelist');
@@ -241,46 +241,46 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        return array(
-          'blacklist' => array(
-            'include' => array(
-              'directory' => $this->readFilterDirectories(
-                  'filter/blacklist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/blacklist/file'
-              )
-            ),
-            'exclude' => array(
-              'directory' => $this->readFilterDirectories(
-                  'filter/blacklist/exclude/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/blacklist/exclude/file'
-              )
-            )
-          ),
-          'whitelist' => array(
-            'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
-            'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
-            'include'                            => array(
-              'directory' => $this->readFilterDirectories(
-                  'filter/whitelist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/whitelist/file'
-              )
-            ),
-            'exclude' => array(
-              'directory' => $this->readFilterDirectories(
-                  'filter/whitelist/exclude/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/whitelist/exclude/file'
-              )
-            )
-          )
-        );
+        return [
+            'blacklist' => [
+                'include' => [
+                    'directory' => $this->readFilterDirectories(
+                        'filter/blacklist/directory'
+                    ),
+                    'file' => $this->readFilterFiles(
+                        'filter/blacklist/file'
+                    ),
+                ],
+                'exclude' => [
+                    'directory' => $this->readFilterDirectories(
+                        'filter/blacklist/exclude/directory'
+                    ),
+                    'file' => $this->readFilterFiles(
+                        'filter/blacklist/exclude/file'
+                    ),
+                ],
+            ],
+            'whitelist' => [
+                'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
+                'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
+                'include' => [
+                    'directory' => $this->readFilterDirectories(
+                        'filter/whitelist/directory'
+                    ),
+                    'file' => $this->readFilterFiles(
+                        'filter/whitelist/file'
+                    ),
+                ],
+                'exclude' => [
+                    'directory' => $this->readFilterDirectories(
+                        'filter/whitelist/exclude/directory'
+                    ),
+                    'file' => $this->readFilterFiles(
+                        'filter/whitelist/exclude/file'
+                    ),
+                ],
+            ],
+        ];
     }
 
     /**
@@ -292,10 +292,10 @@ class PHPUnit_Util_Configuration
      */
     public function getGroupConfiguration()
     {
-        $groups = array(
-          'include' => array(),
-          'exclude' => array()
-        );
+        $groups = [
+            'include' => [],
+            'exclude' => [],
+        ];
 
         foreach ($this->xpath->query('groups/include/group') as $group) {
             $groups['include'][] = (string) $group->textContent;
@@ -317,12 +317,12 @@ class PHPUnit_Util_Configuration
      */
     public function getListenerConfiguration()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
-            $class     = (string) $listener->getAttribute('class');
-            $file      = '';
-            $arguments = array();
+            $class = (string) $listener->getAttribute('class');
+            $file = '';
+            $arguments = [];
 
             if ($listener->getAttribute('file')) {
                 $file = $this->toAbsolutePath(
@@ -346,11 +346,11 @@ class PHPUnit_Util_Configuration
                 }
             }
 
-            $result[] = array(
-              'class'     => $class,
-              'file'      => $file,
-              'arguments' => $arguments
-            );
+            $result[] = [
+                'class' => $class,
+                'file' => $file,
+                'arguments' => $arguments,
+            ];
         }
 
         return $result;
@@ -363,13 +363,13 @@ class PHPUnit_Util_Configuration
      */
     public function getLoggingConfiguration()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->xpath->query('logging/log') as $log) {
-            $type   = (string) $log->getAttribute('type');
+            $type = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
 
-            if (!$target) {
+            if (! $target) {
                 continue;
             }
 
@@ -433,19 +433,19 @@ class PHPUnit_Util_Configuration
      */
     public function getPHPConfiguration()
     {
-        $result = array(
-          'include_path' => array(),
-          'ini'          => array(),
-          'const'        => array(),
-          'var'          => array(),
-          'env'          => array(),
-          'post'         => array(),
-          'get'          => array(),
-          'cookie'       => array(),
-          'server'       => array(),
-          'files'        => array(),
-          'request'      => array()
-        );
+        $result = [
+            'include_path' => [],
+            'ini' => [],
+            'const' => [],
+            'var' => [],
+            'env' => [],
+            'post' => [],
+            'get' => [],
+            'cookie' => [],
+            'server' => [],
+            'files' => [],
+            'request' => [],
+        ];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
             $path = (string) $includePath->textContent;
@@ -455,22 +455,22 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
-            $name  = (string) $ini->getAttribute('name');
+            $name = (string) $ini->getAttribute('name');
             $value = (string) $ini->getAttribute('value');
 
             $result['ini'][$name] = $value;
         }
 
         foreach ($this->xpath->query('php/const') as $const) {
-            $name  = (string) $const->getAttribute('name');
+            $name = (string) $const->getAttribute('name');
             $value = (string) $const->getAttribute('value');
 
             $result['const'][$name] = $this->getBoolean($value, $value);
         }
 
-        foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
-            foreach ($this->xpath->query('php/' . $array) as $var) {
-                $name  = (string) $var->getAttribute('name');
+        foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
+            foreach ($this->xpath->query('php/'.$array) as $var) {
+                $name = (string) $var->getAttribute('name');
                 $value = (string) $var->getAttribute('value');
 
                 $result[$array][$name] = $this->getBoolean($value, $value);
@@ -492,8 +492,8 @@ class PHPUnit_Util_Configuration
         if (! empty($configuration['include_path'])) {
             ini_set(
                 'include_path',
-                implode(PATH_SEPARATOR, $configuration['include_path']) .
-                PATH_SEPARATOR .
+                implode(PATH_SEPARATOR, $configuration['include_path']).
+                PATH_SEPARATOR.
                 ini_get('include_path')
             );
         }
@@ -507,12 +507,12 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($configuration['const'] as $name => $value) {
-            if (!defined($name)) {
+            if (! defined($name)) {
                 define($name, $value);
             }
         }
 
-        foreach (array('var', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+        foreach (['var', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             // See https://github.com/sebastianbergmann/phpunit/issues/277
             switch ($array) {
                 case 'var':
@@ -524,7 +524,7 @@ class PHPUnit_Util_Configuration
                     break;
 
                 default:
-                    $target = &$GLOBALS['_' . strtoupper($array)];
+                    $target = &$GLOBALS['_'.strtoupper($array)];
                     break;
             }
 
@@ -534,10 +534,10 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($configuration['env'] as $name => $value) {
-            if (false === getenv($name)) {
+            if (getenv($name) === false) {
                 putenv("{$name}={$value}");
             }
-            if (!isset($_ENV[$name])) {
+            if (! isset($_ENV[$name])) {
                 $_ENV[$name] = $value;
             }
         }
@@ -552,8 +552,8 @@ class PHPUnit_Util_Configuration
      */
     public function getPHPUnitConfiguration()
     {
-        $result = array();
-        $root   = $this->document->documentElement;
+        $result = [];
+        $root = $this->document->documentElement;
 
         if ($root->hasAttribute('cacheTokens')) {
             $result['cacheTokens'] = $this->getBoolean(
@@ -782,11 +782,11 @@ class PHPUnit_Util_Configuration
                 false
             );
 
-            $result['reportUselessTests']          = $flag;
-            $result['strictCoverage']              = $flag;
-            $result['disallowTestOutput']          = $flag;
-            $result['enforceTimeLimit']            = $flag;
-            $result['disallowTodoAnnotatedTests']  = $flag;
+            $result['reportUselessTests'] = $flag;
+            $result['strictCoverage'] = $flag;
+            $result['disallowTestOutput'] = $flag;
+            $result['enforceTimeLimit'] = $flag;
+            $result['disallowTodoAnnotatedTests'] = $flag;
             $result['deprecatedStrictModeSetting'] = true;
         }
 
@@ -809,10 +809,10 @@ class PHPUnit_Util_Configuration
      */
     public function getSeleniumBrowserConfiguration()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->xpath->query('selenium/browser') as $config) {
-            $name    = (string) $config->getAttribute('name');
+            $name = (string) $config->getAttribute('name');
             $browser = (string) $config->getAttribute('browser');
 
             if ($config->hasAttribute('host')) {
@@ -839,13 +839,13 @@ class PHPUnit_Util_Configuration
                 $timeout = 30000;
             }
 
-            $result[] = array(
-              'name'    => $name,
-              'browser' => $browser,
-              'host'    => $host,
-              'port'    => $port,
-              'timeout' => $timeout
-            );
+            $result[] = [
+                'name' => $name,
+                'browser' => $browser,
+                'host' => $host,
+                'port' => $port,
+                'timeout' => $timeout,
+            ];
         }
 
         return $result;
@@ -884,8 +884,6 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param DOMElement $testSuiteNode
-     *
      * @return PHPUnit_Framework_TestSuite
      *
      * @since  Method available since Release 3.4.0
@@ -900,7 +898,7 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
         }
 
-        $exclude = array();
+        $exclude = [];
 
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
             $excludeFile = (string) $excludeNode->textContent;
@@ -934,7 +932,7 @@ class PHPUnit_Util_Configuration
                 $phpVersionOperator = '>=';
             }
 
-            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+            if (! version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
                 continue;
             }
 
@@ -975,7 +973,7 @@ class PHPUnit_Util_Configuration
                 $this->toAbsolutePath($file)
             );
 
-            if (!isset($file[0])) {
+            if (! isset($file[0])) {
                 continue;
             }
 
@@ -993,7 +991,7 @@ class PHPUnit_Util_Configuration
                 $phpVersionOperator = '>=';
             }
 
-            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+            if (! version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
                 continue;
             }
 
@@ -1004,9 +1002,8 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param string $value
-     * @param bool   $default
-     *
+     * @param  string  $value
+     * @param  bool  $default
      * @return bool
      *
      * @since  Method available since Release 3.2.3
@@ -1023,9 +1020,8 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param string $value
-     * @param bool   $default
-     *
+     * @param  string  $value
+     * @param  bool  $default
      * @return bool
      *
      * @since  Method available since Release 3.6.0
@@ -1040,20 +1036,19 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param string $query
-     *
+     * @param  string  $query
      * @return array
      *
      * @since  Method available since Release 3.2.3
      */
     protected function readFilterDirectories($query)
     {
-        $directories = array();
+        $directories = [];
 
         foreach ($this->xpath->query($query) as $directory) {
             $directoryPath = (string) $directory->textContent;
 
-            if (!$directoryPath) {
+            if (! $directoryPath) {
                 continue;
             }
 
@@ -1075,27 +1070,26 @@ class PHPUnit_Util_Configuration
                 $group = 'DEFAULT';
             }
 
-            $directories[] = array(
-              'path'   => $this->toAbsolutePath($directoryPath),
-              'prefix' => $prefix,
-              'suffix' => $suffix,
-              'group'  => $group
-            );
+            $directories[] = [
+                'path' => $this->toAbsolutePath($directoryPath),
+                'prefix' => $prefix,
+                'suffix' => $suffix,
+                'group' => $group,
+            ];
         }
 
         return $directories;
     }
 
     /**
-     * @param string $query
-     *
+     * @param  string  $query
      * @return array
      *
      * @since  Method available since Release 3.2.3
      */
     protected function readFilterFiles($query)
     {
-        $files = array();
+        $files = [];
 
         foreach ($this->xpath->query($query) as $file) {
             $filePath = (string) $file->textContent;
@@ -1109,9 +1103,8 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param string $path
-     * @param bool   $useIncludePath
-     *
+     * @param  string  $path
+     * @param  bool  $useIncludePath
      * @return string
      *
      * @since  Method available since Release 3.5.0
@@ -1143,9 +1136,9 @@ class PHPUnit_Util_Configuration
             return $path;
         }
 
-        $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+        $file = dirname($this->filename).DIRECTORY_SEPARATOR.$path;
 
-        if ($useIncludePath && !file_exists($file)) {
+        if ($useIncludePath && ! file_exists($file)) {
             $includePathFile = stream_resolve_include_path($path);
 
             if ($includePathFile) {

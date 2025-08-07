@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
-use Symfony\Component\VarDumper\Exception\ThrowingCasterException;
 use Symfony\Component\VarDumper\Cloner\Stub;
+use Symfony\Component\VarDumper\Exception\ThrowingCasterException;
 
 /**
  * Casts common Exception classes to array representation.
@@ -22,8 +22,10 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 class ExceptionCaster
 {
     public static $srcContext = 1;
+
     public static $traceArgs = true;
-    public static $errorTypes = array(
+
+    public static $errorTypes = [
         E_DEPRECATED => 'E_DEPRECATED',
         E_USER_DEPRECATED => 'E_USER_DEPRECATED',
         E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
@@ -39,7 +41,7 @@ class ExceptionCaster
         E_USER_WARNING => 'E_USER_WARNING',
         E_USER_NOTICE => 'E_USER_NOTICE',
         E_STRICT => 'E_STRICT',
-    );
+    ];
 
     public static function castError(\Error $e, array $a, Stub $stub, $isNested, $filter = 0)
     {
@@ -67,11 +69,11 @@ class ExceptionCaster
 
         if (isset($a[$xPrefix.'previous'], $a[$xPrefix.'trace'])) {
             $b = (array) $a[$xPrefix.'previous'];
-            array_unshift($b[$xPrefix.'trace'], array(
+            array_unshift($b[$xPrefix.'trace'], [
                 'function' => 'new '.get_class($a[$xPrefix.'previous']),
                 'file' => $b[$prefix.'file'],
                 'line' => $b[$prefix.'line'],
-            ));
+            ]);
             $a[$xPrefix.'trace'] = new TraceStub($b[$xPrefix.'trace'], false, 0, -1 - count($a[$xPrefix.'trace']->value));
         }
 
@@ -82,20 +84,20 @@ class ExceptionCaster
 
     public static function castTraceStub(TraceStub $trace, array $a, Stub $stub, $isNested)
     {
-        if (!$isNested) {
+        if (! $isNested) {
             return $a;
         }
         $stub->class = '';
         $stub->handle = 0;
         $frames = $trace->value;
 
-        $a = array();
+        $a = [];
         $j = count($frames);
         if (0 > $i = $trace->sliceOffset) {
             $i = max(0, $j + $i);
         }
-        if (!isset($trace->value[$i])) {
-            return array();
+        if (! isset($trace->value[$i])) {
+            return [];
         }
         $lastCall = isset($frames[$i]['function']) ? ' ==> '.(isset($frames[$i]['class']) ? $frames[0]['class'].$frames[$i]['type'] : '').$frames[$i]['function'].'()' : '';
 
@@ -103,12 +105,12 @@ class ExceptionCaster
             $call = isset($frames[$i]['function']) ? (isset($frames[$i]['class']) ? $frames[$i]['class'].$frames[$i]['type'] : '').$frames[$i]['function'].'()' : '???';
 
             $a[Caster::PREFIX_VIRTUAL.$j.'. '.$call.$lastCall] = new FrameStub(
-                array(
+                [
                     'object' => isset($frames[$i]['object']) ? $frames[$i]['object'] : null,
                     'class' => isset($frames[$i]['class']) ? $frames[$i]['class'] : null,
                     'type' => isset($frames[$i]['type']) ? $frames[$i]['type'] : null,
                     'function' => isset($frames[$i]['function']) ? $frames[$i]['function'] : null,
-                ) + $frames[$i - 1],
+                ] + $frames[$i - 1],
                 $trace->keepArgs,
                 true
             );
@@ -116,16 +118,16 @@ class ExceptionCaster
             $lastCall = ' ==> '.$call;
         }
         $a[Caster::PREFIX_VIRTUAL.$j.'. {main}'.$lastCall] = new FrameStub(
-            array(
+            [
                 'object' => null,
                 'class' => null,
                 'type' => null,
                 'function' => '{main}',
-            ) + $frames[$i - 1],
+            ] + $frames[$i - 1],
             $trace->keepArgs,
             true
         );
-        if (null !== $trace->sliceLength) {
+        if ($trace->sliceLength !== null) {
             $a = array_slice($a, 0, $trace->sliceLength, true);
         }
 
@@ -134,7 +136,7 @@ class ExceptionCaster
 
     public static function castFrameStub(FrameStub $frame, array $a, Stub $stub, $isNested)
     {
-        if (!$isNested) {
+        if (! $isNested) {
             return $a;
         }
         $f = $frame->value;
@@ -145,11 +147,11 @@ class ExceptionCaster
                 $f['file'] = substr($f['file'], 0, -strlen($match[0]));
                 $f['line'] = (int) $match[1];
             }
-            if (file_exists($f['file']) && 0 <= self::$srcContext) {
+            if (file_exists($f['file']) && self::$srcContext >= 0) {
                 $src[$f['file'].':'.$f['line']] = self::extractSource(explode("\n", file_get_contents($f['file'])), $f['line'], self::$srcContext);
 
-                if (!empty($f['class']) && is_subclass_of($f['class'], 'Twig_Template') && method_exists($f['class'], 'getDebugInfo')) {
-                    $template = isset($f['object']) ? $f['object'] : new $f['class'](new \Twig_Environment(new \Twig_Loader_Filesystem()));
+                if (! empty($f['class']) && is_subclass_of($f['class'], 'Twig_Template') && method_exists($f['class'], 'getDebugInfo')) {
+                    $template = isset($f['object']) ? $f['object'] : new $f['class'](new \Twig_Environment(new \Twig_Loader_Filesystem));
 
                     try {
                         $templateName = $template->getTemplateName();
@@ -172,7 +174,7 @@ class ExceptionCaster
             unset($a[$prefix.'class'], $a[$prefix.'type'], $a[$prefix.'function']);
         }
         foreach ($a as $k => $v) {
-            if (!$v) {
+            if (! $v) {
                 unset($a[$k]);
             }
         }
@@ -189,15 +191,15 @@ class ExceptionCaster
             $trace = $a[$xPrefix.'trace'];
             unset($a[$xPrefix.'trace']); // Ensures the trace is always last
         } else {
-            $trace = array();
+            $trace = [];
         }
 
-        if (!($filter & Caster::EXCLUDE_VERBOSE)) {
-            array_unshift($trace, array(
+        if (! ($filter & Caster::EXCLUDE_VERBOSE)) {
+            array_unshift($trace, [
                 'function' => $xClass ? 'new '.$xClass : null,
                 'file' => $a[Caster::PREFIX_PROTECTED.'file'],
                 'line' => $a[Caster::PREFIX_PROTECTED.'line'],
-            ));
+            ]);
             $a[$xPrefix.'trace'] = new TraceStub($trace, self::$traceArgs);
         }
         if (empty($a[$xPrefix.'previous'])) {
@@ -210,31 +212,31 @@ class ExceptionCaster
 
     private static function extractSource(array $srcArray, $line, $srcContext)
     {
-        $src = array();
+        $src = [];
 
-        for ($i = $line - 1 - $srcContext; $i <= $line - 1 + $srcContext; ++$i) {
+        for ($i = $line - 1 - $srcContext; $i <= $line - 1 + $srcContext; $i++) {
             $src[] = (isset($srcArray[$i]) ? $srcArray[$i] : '')."\n";
         }
 
         $ltrim = 0;
         do {
             $pad = null;
-            for ($i = $srcContext << 1; $i >= 0; --$i) {
-                if (isset($src[$i][$ltrim]) && "\r" !== ($c = $src[$i][$ltrim]) && "\n" !== $c) {
-                    if (null === $pad) {
+            for ($i = $srcContext << 1; $i >= 0; $i--) {
+                if (isset($src[$i][$ltrim]) && "\r" !== ($c = $src[$i][$ltrim]) && $c !== "\n") {
+                    if ($pad === null) {
                         $pad = $c;
                     }
-                    if ((' ' !== $c && "\t" !== $c) || $pad !== $c) {
+                    if (($c !== ' ' && $c !== "\t") || $pad !== $c) {
                         break;
                     }
                 }
             }
-            ++$ltrim;
-        } while (0 > $i && null !== $pad);
+            $ltrim++;
+        } while ($i < 0 && $pad !== null);
 
         if (--$ltrim) {
             foreach ($src as $i => $line) {
-                $src[$i] = isset($line[$ltrim]) && "\r" !== $line[$ltrim] ? substr($line, $ltrim) : ltrim($line, " \t");
+                $src[$i] = isset($line[$ltrim]) && $line[$ltrim] !== "\r" ? substr($line, $ltrim) : ltrim($line, " \t");
             }
         }
 

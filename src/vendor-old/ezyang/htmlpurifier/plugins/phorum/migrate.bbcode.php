@@ -14,10 +14,11 @@
  * present, otherwise the module won't work. This ensures that the user
  * explicitly says, "No, I do not need to migrate."
  */
+if (! defined('PHORUM')) {
+    exit;
+}
 
-if(!defined("PHORUM")) exit;
-
-require_once(dirname(__FILE__) . "/../bbcode/bbcode.php");
+require_once dirname(__FILE__).'/../bbcode/bbcode.php';
 
 /**
  * 'format' hook style function that will be called to convert

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -19,7 +21,6 @@ interface Formatter
     /**
      * Formats a tag into a string representation according to a specific format, such as Markdown.
      *
-     * @param Tag $tag
      *
      * @return string
      */

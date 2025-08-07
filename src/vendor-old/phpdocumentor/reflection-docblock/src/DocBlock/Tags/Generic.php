@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -26,10 +28,10 @@ class Generic extends BaseTag implements Factory\StaticMethod
     /**
      * Parses a tag and populates the member variables.
      *
-     * @param string $name Name of the tag.
-     * @param Description $description The contents of the given tag.
+     * @param  string  $name  Name of the tag.
+     * @param  Description  $description  The contents of the given tag.
      */
-    public function __construct($name, Description $description = null)
+    public function __construct($name, ?Description $description = null)
     {
         $this->validateTagName($name);
 
@@ -40,18 +42,15 @@ class Generic extends BaseTag implements Factory\StaticMethod
     /**
      * Creates a new tag that represents any unknown tag type.
      *
-     * @param string             $body
-     * @param string             $name
-     * @param DescriptionFactory $descriptionFactory
-     * @param TypeContext        $context
-     *
+     * @param  string  $body
+     * @param  string  $name
      * @return static
      */
     public static function create(
         $body,
         $name = '',
-        DescriptionFactory $descriptionFactory = null,
-        TypeContext $context = null
+        ?DescriptionFactory $descriptionFactory = null,
+        ?TypeContext $context = null
     ) {
         Assert::string($body);
         Assert::stringNotEmpty($name);
@@ -69,22 +68,21 @@ class Generic extends BaseTag implements Factory\StaticMethod
      */
     public function __toString()
     {
-        return ($this->description ? $this->description->render() : '');
+        return $this->description ? $this->description->render() : '';
     }
 
     /**
      * Validates if the tag name matches the expected format, otherwise throws an exception.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return void
      */
     private function validateTagName($name)
     {
-        if (! preg_match('/^' . StandardTagFactory::REGEX_TAGNAME . '$/u', $name)) {
+        if (! preg_match('/^'.StandardTagFactory::REGEX_TAGNAME.'$/u', $name)) {
             throw new \InvalidArgumentException(
-                'The tag name "' . $name . '" is not wellformed. Tags may only consist of letters, underscores, '
-                . 'hyphens and backslashes.'
+                'The tag name "'.$name.'" is not wellformed. Tags may only consist of letters, underscores, '
+                .'hyphens and backslashes.'
             );
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -46,12 +47,12 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase
     protected $useOutputBuffering = false;
 
     /**
-     * @param string $message
+     * @param  string  $message
      */
     public function __construct($className, $methodName, $message = '')
     {
         $this->message = $message;
-        parent::__construct($className . '::' . $methodName);
+        parent::__construct($className.'::'.$methodName);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,12 +20,12 @@
 
 namespace Doctrine\DBAL\Id;
 
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Sequence;
+use Doctrine\DBAL\Schema\Table;
 
 class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visitor
 {
@@ -34,7 +35,7 @@ class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visit
     private $generatorTableName;
 
     /**
-     * @param string $generatorTableName
+     * @param  string  $generatorTableName
      */
     public function __construct($generatorTableName = 'sequences')
     {
@@ -48,42 +49,32 @@ class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visit
     {
         $table = $schema->createTable($this->generatorTableName);
         $table->addColumn('sequence_name', 'string');
-        $table->addColumn('sequence_value', 'integer', array('default' => 1));
-        $table->addColumn('sequence_increment_by', 'integer', array('default' => 1));
+        $table->addColumn('sequence_value', 'integer', ['default' => 1]);
+        $table->addColumn('sequence_increment_by', 'integer', ['default' => 1]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function acceptTable(Table $table)
-    {
-    }
+    public function acceptTable(Table $table) {}
 
     /**
      * {@inheritdoc}
      */
-    public function acceptColumn(Table $table, Column $column)
-    {
-    }
+    public function acceptColumn(Table $table, Column $column) {}
 
     /**
      * {@inheritdoc}
      */
-    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
-    {
-    }
+    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint) {}
 
     /**
      * {@inheritdoc}
      */
-    public function acceptIndex(Table $table, Index $index)
-    {
-    }
+    public function acceptIndex(Table $table, Index $index) {}
 
     /**
      * {@inheritdoc}
      */
-    public function acceptSequence(Sequence $sequence)
-    {
-    }
+    public function acceptSequence(Sequence $sequence) {}
 }

@@ -43,8 +43,6 @@ class GetResponseEvent extends KernelEvent
 
     /**
      * Sets a response and stops event propagation.
-     *
-     * @param Response $response
      */
     public function setResponse(Response $response)
     {
@@ -60,6 +58,6 @@ class GetResponseEvent extends KernelEvent
      */
     public function hasResponse()
     {
-        return null !== $this->response;
+        return $this->response !== null;
     }
 }

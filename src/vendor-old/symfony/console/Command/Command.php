@@ -11,16 +11,16 @@
 
 namespace Symfony\Component\Console\Command;
 
-use Symfony\Component\Console\Exception\ExceptionInterface;
-use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all commands.
@@ -30,38 +30,51 @@ use Symfony\Component\Console\Exception\LogicException;
 class Command
 {
     private $application;
+
     private $name;
+
     private $processTitle;
-    private $aliases = array();
+
+    private $aliases = [];
+
     private $definition;
+
     private $help;
+
     private $description;
+
     private $ignoreValidationErrors = false;
+
     private $applicationDefinitionMerged = false;
+
     private $applicationDefinitionMergedWithArgs = false;
+
     private $code;
-    private $synopsis = array();
-    private $usages = array();
+
+    private $synopsis = [];
+
+    private $usages = [];
+
     private $helperSet;
 
     /**
      * Constructor.
      *
-     * @param string|null $name The name of the command; passing null means it must be set in configure()
+     * @param  string|null  $name  The name of the command; passing null means it must be set in configure()
      *
      * @throws LogicException When the command name is empty
      */
     public function __construct($name = null)
     {
-        $this->definition = new InputDefinition();
+        $this->definition = new InputDefinition;
 
-        if (null !== $name) {
+        if ($name !== null) {
             $this->setName($name);
         }
 
         $this->configure();
 
-        if (!$this->name) {
+        if (! $this->name) {
             throw new LogicException(sprintf('The command defined in "%s" cannot have an empty name.', get_class($this)));
         }
     }
@@ -79,9 +92,9 @@ class Command
     /**
      * Sets the application instance for this command.
      *
-     * @param Application $application An Application instance
+     * @param  Application  $application  An Application instance
      */
-    public function setApplication(Application $application = null)
+    public function setApplication(?Application $application = null)
     {
         $this->application = $application;
         if ($application) {
@@ -94,7 +107,7 @@ class Command
     /**
      * Sets the helper set.
      *
-     * @param HelperSet $helperSet A HelperSet instance
+     * @param  HelperSet  $helperSet  A HelperSet instance
      */
     public function setHelperSet(HelperSet $helperSet)
     {
@@ -137,9 +150,7 @@ class Command
     /**
      * Configures the current command.
      */
-    protected function configure()
-    {
-    }
+    protected function configure() {}
 
     /**
      * Executes the current command.
@@ -149,9 +160,8 @@ class Command
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
+     * @param  InputInterface  $input  An InputInterface instance
+     * @param  OutputInterface  $output  An OutputInterface instance
      * @return null|int null or 0 if everything went fine, or an error code
      *
      * @throws LogicException When this abstract method is not implemented
@@ -170,12 +180,10 @@ class Command
      * This means that this is the only place where the command can
      * interactively ask for values of missing required arguments.
      *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
+     * @param  InputInterface  $input  An InputInterface instance
+     * @param  OutputInterface  $output  An OutputInterface instance
      */
-    protected function interact(InputInterface $input, OutputInterface $output)
-    {
-    }
+    protected function interact(InputInterface $input, OutputInterface $output) {}
 
     /**
      * Initializes the command just after the input has been validated.
@@ -183,12 +191,10 @@ class Command
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialized based on the input arguments and options.
      *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
+     * @param  InputInterface  $input  An InputInterface instance
+     * @param  OutputInterface  $output  An OutputInterface instance
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-    }
+    protected function initialize(InputInterface $input, OutputInterface $output) {}
 
     /**
      * Runs the command.
@@ -197,9 +203,8 @@ class Command
      * setCode() method or by overriding the execute() method
      * in a sub-class.
      *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
+     * @param  InputInterface  $input  An InputInterface instance
+     * @param  OutputInterface  $output  An OutputInterface instance
      * @return int The command exit code
      *
      * @throws \Exception
@@ -220,19 +225,19 @@ class Command
         try {
             $input->bind($this->definition);
         } catch (ExceptionInterface $e) {
-            if (!$this->ignoreValidationErrors) {
+            if (! $this->ignoreValidationErrors) {
                 throw $e;
             }
         }
 
         $this->initialize($input, $output);
 
-        if (null !== $this->processTitle) {
+        if ($this->processTitle !== null) {
             if (function_exists('cli_set_process_title')) {
                 cli_set_process_title($this->processTitle);
             } elseif (function_exists('setproctitle')) {
                 setproctitle($this->processTitle);
-            } elseif (OutputInterface::VERBOSITY_VERY_VERBOSE === $output->getVerbosity()) {
+            } elseif ($output->getVerbosity() === OutputInterface::VERBOSITY_VERY_VERBOSE) {
                 $output->writeln('<comment>Install the proctitle PECL to be able to change the process title.</comment>');
             }
         }
@@ -244,7 +249,7 @@ class Command
         // The command name argument is often omitted when a command is executed directly with its run() method.
         // It would fail the validation if we didn't make sure the command argument is present,
         // since it's required by the application.
-        if ($input->hasArgument('command') && null === $input->getArgument('command')) {
+        if ($input->hasArgument('command') && $input->getArgument('command') === null) {
             $input->setArgument('command', $this->getName());
         }
 
@@ -265,8 +270,7 @@ class Command
      * If this method is used, it overrides the code defined
      * in the execute() method.
      *
-     * @param callable $code A callable(InputInterface $input, OutputInterface $output)
-     *
+     * @param  callable  $code  A callable(InputInterface $input, OutputInterface $output)
      * @return Command The current instance
      *
      * @throws InvalidArgumentException
@@ -277,7 +281,7 @@ class Command
     {
         if ($code instanceof \Closure) {
             $r = new \ReflectionFunction($code);
-            if (null === $r->getClosureThis()) {
+            if ($r->getClosureThis() === null) {
                 $code = \Closure::bind($code, $this);
             }
         }
@@ -292,11 +296,11 @@ class Command
      *
      * This method is not part of public API and should not be used directly.
      *
-     * @param bool $mergeArgs Whether to merge or not the Application definition arguments to Command definition arguments
+     * @param  bool  $mergeArgs  Whether to merge or not the Application definition arguments to Command definition arguments
      */
     public function mergeApplicationDefinition($mergeArgs = true)
     {
-        if (null === $this->application || (true === $this->applicationDefinitionMerged && ($this->applicationDefinitionMergedWithArgs || !$mergeArgs))) {
+        if ($this->application === null || ($this->applicationDefinitionMerged === true && ($this->applicationDefinitionMergedWithArgs || ! $mergeArgs))) {
             return;
         }
 
@@ -317,8 +321,7 @@ class Command
     /**
      * Sets an array of argument and option instances.
      *
-     * @param array|InputDefinition $definition An array of argument and option instances or a definition instance
-     *
+     * @param  array|InputDefinition  $definition  An array of argument and option instances or a definition instance
      * @return Command The current instance
      */
     public function setDefinition($definition)
@@ -362,11 +365,10 @@ class Command
     /**
      * Adds an argument.
      *
-     * @param string $name        The argument name
-     * @param int    $mode        The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
-     * @param string $description A description text
-     * @param mixed  $default     The default value (for InputArgument::OPTIONAL mode only)
-     *
+     * @param  string  $name  The argument name
+     * @param  int  $mode  The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
+     * @param  string  $description  A description text
+     * @param  mixed  $default  The default value (for InputArgument::OPTIONAL mode only)
      * @return Command The current instance
      */
     public function addArgument($name, $mode = null, $description = '', $default = null)
@@ -379,12 +381,11 @@ class Command
     /**
      * Adds an option.
      *
-     * @param string $name        The option name
-     * @param string $shortcut    The shortcut (can be null)
-     * @param int    $mode        The option mode: One of the InputOption::VALUE_* constants
-     * @param string $description A description text
-     * @param mixed  $default     The default value (must be null for InputOption::VALUE_NONE)
-     *
+     * @param  string  $name  The option name
+     * @param  string  $shortcut  The shortcut (can be null)
+     * @param  int  $mode  The option mode: One of the InputOption::VALUE_* constants
+     * @param  string  $description  A description text
+     * @param  mixed  $default  The default value (must be null for InputOption::VALUE_NONE)
      * @return Command The current instance
      */
     public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
@@ -402,8 +403,7 @@ class Command
      *
      *     $command->setName('foo:bar');
      *
-     * @param string $name The command name
-     *
+     * @param  string  $name  The command name
      * @return Command The current instance
      *
      * @throws InvalidArgumentException When the name is invalid
@@ -425,8 +425,7 @@ class Command
      *
      * PHP 5.5+ or the proctitle PECL library is required
      *
-     * @param string $title The process title
-     *
+     * @param  string  $title  The process title
      * @return Command The current instance
      */
     public function setProcessTitle($title)
@@ -449,8 +448,7 @@ class Command
     /**
      * Sets the description for the command.
      *
-     * @param string $description The description for the command
-     *
+     * @param  string  $description  The description for the command
      * @return Command The current instance
      */
     public function setDescription($description)
@@ -473,8 +471,7 @@ class Command
     /**
      * Sets the help for the command.
      *
-     * @param string $help The help for the command
-     *
+     * @param  string  $help  The help for the command
      * @return Command The current instance
      */
     public function setHelp($help)
@@ -504,14 +501,14 @@ class Command
     {
         $name = $this->name;
 
-        $placeholders = array(
+        $placeholders = [
             '%command.name%',
             '%command.full_name%',
-        );
-        $replacements = array(
+        ];
+        $replacements = [
             $name,
             $_SERVER['PHP_SELF'].' '.$name,
-        );
+        ];
 
         return str_replace($placeholders, $replacements, $this->getHelp() ?: $this->getDescription());
     }
@@ -519,15 +516,14 @@ class Command
     /**
      * Sets the aliases for the command.
      *
-     * @param string[] $aliases An array of aliases for the command
-     *
+     * @param  string[]  $aliases  An array of aliases for the command
      * @return Command The current instance
      *
      * @throws InvalidArgumentException When an alias is invalid
      */
     public function setAliases($aliases)
     {
-        if (!is_array($aliases) && !$aliases instanceof \Traversable) {
+        if (! is_array($aliases) && ! $aliases instanceof \Traversable) {
             throw new InvalidArgumentException('$aliases must be an array or an instance of \Traversable');
         }
 
@@ -553,15 +549,14 @@ class Command
     /**
      * Returns the synopsis for the command.
      *
-     * @param bool $short Whether to show the short version of the synopsis (with options folded) or not
-     *
+     * @param  bool  $short  Whether to show the short version of the synopsis (with options folded) or not
      * @return string The synopsis
      */
     public function getSynopsis($short = false)
     {
         $key = $short ? 'short' : 'long';
 
-        if (!isset($this->synopsis[$key])) {
+        if (! isset($this->synopsis[$key])) {
             $this->synopsis[$key] = trim(sprintf('%s %s', $this->name, $this->definition->getSynopsis($short)));
         }
 
@@ -571,11 +566,11 @@ class Command
     /**
      * Add a command usage example.
      *
-     * @param string $usage The usage, it'll be prefixed with the command name
+     * @param  string  $usage  The usage, it'll be prefixed with the command name
      */
     public function addUsage($usage)
     {
-        if (0 !== strpos($usage, $this->name)) {
+        if (strpos($usage, $this->name) !== 0) {
             $usage = sprintf('%s %s', $this->name, $usage);
         }
 
@@ -597,16 +592,15 @@ class Command
     /**
      * Gets a helper instance by name.
      *
-     * @param string $name The helper name
-     *
+     * @param  string  $name  The helper name
      * @return mixed The helper value
      *
-     * @throws LogicException           if no HelperSet is defined
+     * @throws LogicException if no HelperSet is defined
      * @throws InvalidArgumentException if the helper is not defined
      */
     public function getHelper($name)
     {
-        if (null === $this->helperSet) {
+        if ($this->helperSet === null) {
             throw new LogicException(sprintf('Cannot retrieve helper "%s" because there is no HelperSet defined. Did you forget to add your command to the application or to set the application on the command using the setApplication() method? You can also set the HelperSet directly using the setHelperSet() method.', $name));
         }
 
@@ -618,13 +612,13 @@ class Command
      *
      * It must be non-empty and parts can optionally be separated by ":".
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @throws InvalidArgumentException When the name is invalid
      */
     private function validateName($name)
     {
-        if (!preg_match('/^[^\:]++(\:[^\:]++)*$/', $name)) {
+        if (! preg_match('/^[^\:]++(\:[^\:]++)*$/', $name)) {
             throw new InvalidArgumentException(sprintf('Command name "%s" is invalid.', $name));
         }
     }

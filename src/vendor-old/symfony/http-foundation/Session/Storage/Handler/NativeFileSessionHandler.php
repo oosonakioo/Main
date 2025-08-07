@@ -23,9 +23,9 @@ class NativeFileSessionHandler extends NativeSessionHandler
     /**
      * Constructor.
      *
-     * @param string $savePath Path of directory to save session files
-     *                         Default null will leave setting as defined by PHP.
-     *                         '/path', 'N;/path', or 'N;octal-mode;/path
+     * @param  string  $savePath  Path of directory to save session files
+     *                            Default null will leave setting as defined by PHP.
+     *                            '/path', 'N;/path', or 'N;octal-mode;/path
      *
      * @see http://php.net/session.configuration.php#ini.session.save-path for further details.
      *
@@ -33,7 +33,7 @@ class NativeFileSessionHandler extends NativeSessionHandler
      */
     public function __construct($savePath = null)
     {
-        if (null === $savePath) {
+        if ($savePath === null) {
             $savePath = ini_get('session.save_path');
         }
 
@@ -48,7 +48,7 @@ class NativeFileSessionHandler extends NativeSessionHandler
             $baseDir = ltrim(strrchr($savePath, ';'), ';');
         }
 
-        if ($baseDir && !is_dir($baseDir) && !@mkdir($baseDir, 0777, true) && !is_dir($baseDir)) {
+        if ($baseDir && ! is_dir($baseDir) && ! @mkdir($baseDir, 0777, true) && ! is_dir($baseDir)) {
             throw new \RuntimeException(sprintf('Session Storage was not able to create directory "%s"', $baseDir));
         }
 

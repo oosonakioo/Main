@@ -16,10 +16,10 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 abstract class AbstractOperationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetEmptyDomains()
+    public function test_get_empty_domains()
     {
         $this->assertEquals(
-            array(),
+            [],
             $this->createOperation(
                 new MessageCatalogue('en'),
                 new MessageCatalogue('en')
@@ -27,18 +27,18 @@ abstract class AbstractOperationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetMergedDomains()
+    public function test_get_merged_domains()
     {
         $this->assertEquals(
-            array('a', 'b', 'c'),
+            ['a', 'b', 'c'],
             $this->createOperation(
-                new MessageCatalogue('en', array('a' => array(), 'b' => array())),
-                new MessageCatalogue('en', array('b' => array(), 'c' => array()))
+                new MessageCatalogue('en', ['a' => [], 'b' => []]),
+                new MessageCatalogue('en', ['b' => [], 'c' => []])
             )->getDomains()
         );
     }
 
-    public function testGetMessagesFromUnknownDomain()
+    public function test_get_messages_from_unknown_domain()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->createOperation(
@@ -47,18 +47,18 @@ abstract class AbstractOperationTest extends \PHPUnit_Framework_TestCase
         )->getMessages('domain');
     }
 
-    public function testGetEmptyMessages()
+    public function test_get_empty_messages()
     {
         $this->assertEquals(
-            array(),
+            [],
             $this->createOperation(
-                new MessageCatalogue('en', array('a' => array())),
+                new MessageCatalogue('en', ['a' => []]),
                 new MessageCatalogue('en')
             )->getMessages('a')
         );
     }
 
-    public function testGetEmptyResult()
+    public function test_get_empty_result()
     {
         $this->assertEquals(
             new MessageCatalogue('en'),

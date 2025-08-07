@@ -21,7 +21,7 @@ class ConstantEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list constants when no Reflector is present.
         //
@@ -35,19 +35,19 @@ class ConstantEnumerator extends Enumerator
         }
 
         // only list constants if we are specifically asked
-        if (!$input->getOption('constants')) {
+        if (! $input->getOption('constants')) {
             return;
         }
 
-        $category  = $input->getOption('user') ? 'user' : $input->getOption('category');
-        $label     = $category ? ucfirst($category) . ' Constants' : 'Constants';
+        $category = $input->getOption('user') ? 'user' : $input->getOption('category');
+        $label = $category ? ucfirst($category).' Constants' : 'Constants';
         $constants = $this->prepareConstants($this->getConstants($category));
 
         if (empty($constants)) {
             return;
         }
 
-        $ret = array();
+        $ret = [];
         $ret[$label] = $constants;
 
         return $ret;
@@ -58,43 +58,41 @@ class ConstantEnumerator extends Enumerator
      *
      * Optionally restrict constants to a given category, e.g. "date".
      *
-     * @param string $category
-     *
+     * @param  string  $category
      * @return array
      */
     protected function getConstants($category = null)
     {
-        if (!$category) {
+        if (! $category) {
             return get_defined_constants();
         }
 
         $consts = get_defined_constants(true);
 
-        return isset($consts[$category]) ? $consts[$category] : array();
+        return isset($consts[$category]) ? $consts[$category] : [];
     }
 
     /**
      * Prepare formatted constant array.
      *
-     * @param array $constants
      *
      * @return array
      */
     protected function prepareConstants(array $constants)
     {
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         $names = array_keys($constants);
         natcasesort($names);
 
         foreach ($names as $name) {
             if ($this->showItem($name)) {
-                $ret[$name] = array(
-                    'name'  => $name,
+                $ret[$name] = [
+                    'name' => $name,
                     'style' => self::IS_CONSTANT,
                     'value' => $this->presentRef($constants[$name]),
-                );
+                ];
             }
         }
 

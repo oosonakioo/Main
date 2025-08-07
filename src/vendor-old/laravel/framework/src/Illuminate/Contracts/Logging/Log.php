@@ -8,7 +8,6 @@ interface Log
      * Log an alert message to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function alert($message, array $context = []);
@@ -17,7 +16,6 @@ interface Log
      * Log a critical message to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function critical($message, array $context = []);
@@ -26,7 +24,6 @@ interface Log
      * Log an error message to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function error($message, array $context = []);
@@ -35,7 +32,6 @@ interface Log
      * Log a warning message to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function warning($message, array $context = []);
@@ -44,7 +40,6 @@ interface Log
      * Log a notice to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function notice($message, array $context = []);
@@ -53,7 +48,6 @@ interface Log
      * Log an informational message to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function info($message, array $context = []);
@@ -62,7 +56,6 @@ interface Log
      * Log a debug message to the logs.
      *
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function debug($message, array $context = []);
@@ -72,7 +65,6 @@ interface Log
      *
      * @param  string  $level
      * @param  string  $message
-     * @param  array  $context
      * @return void
      */
     public function log($level, $message, array $context = []);
@@ -90,7 +82,7 @@ interface Log
      * Register a daily file log handler.
      *
      * @param  string  $path
-     * @param  int     $days
+     * @param  int  $days
      * @param  string  $level
      * @return void
      */

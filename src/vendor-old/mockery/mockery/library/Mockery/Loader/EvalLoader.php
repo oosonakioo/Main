@@ -3,7 +3,6 @@
 namespace Mockery\Loader;
 
 use Mockery\Generator\MockDefinition;
-use Mockery\Loader\Loader;
 
 class EvalLoader implements Loader
 {
@@ -13,6 +12,6 @@ class EvalLoader implements Loader
             return;
         }
 
-        eval("?>" . $definition->getCode());
+        eval('?>'.$definition->getCode());
     }
 }

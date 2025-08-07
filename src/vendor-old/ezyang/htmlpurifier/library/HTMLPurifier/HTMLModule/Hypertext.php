@@ -5,14 +5,13 @@
  */
 class HTMLPurifier_HTMLModule_Hypertext extends HTMLPurifier_HTMLModule
 {
-
     /**
      * @type string
      */
     public $name = 'Hypertext';
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -21,7 +20,7 @@ class HTMLPurifier_HTMLModule_Hypertext extends HTMLPurifier_HTMLModule
             'Inline',
             'Inline',
             'Common',
-            array(
+            [
                 // 'accesskey' => 'Character',
                 // 'charset' => 'Charset',
                 'href' => 'URI',
@@ -30,10 +29,10 @@ class HTMLPurifier_HTMLModule_Hypertext extends HTMLPurifier_HTMLModule
                 'rev' => new HTMLPurifier_AttrDef_HTML_LinkTypes('rev'),
                 // 'tabindex' => 'Number',
                 // 'type' => 'ContentType',
-            )
+            ]
         );
         $a->formatting = true;
-        $a->excludes = array('a' => true);
+        $a->excludes = ['a' => true];
     }
 }
 

@@ -2,18 +2,18 @@
 
 class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
 {
-    //Most tests are already covered in QpEncoderTest since this subclass only
+    // Most tests are already covered in QpEncoderTest since this subclass only
     // adds a getName() method
 
-    public function testNameIsQ()
+    public function test_name_is_q()
     {
         $encoder = $this->_createEncoder(
             $this->_createCharacterStream(true)
-            );
+        );
         $this->assertEquals('Q', $encoder->getName());
     }
 
-    public function testSpaceAndTabNeverAppear()
+    public function test_space_and_tab_never_appear()
     {
         /* -- RFC 2047, 4.
      Only a subset of the printable ASCII characters may be used in
@@ -23,16 +23,16 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
 
         $charStream = $this->_createCharacterStream();
         $charStream->shouldReceive('readBytes')
-                   ->atLeast()->times(6)
-                   ->andReturn(array(ord('a')), array(0x20), array(0x09), array(0x20), array(ord('b')), false);
+            ->atLeast()->times(6)
+            ->andReturn([ord('a')], [0x20], [0x09], [0x20], [ord('b')], false);
 
         $encoder = $this->_createEncoder($charStream);
         $this->assertNotRegExp('~[ \t]~', $encoder->encodeString("a \t b"),
             '%s: encoded-words in headers cannot contain LWSP as per RFC 2047.'
-            );
+        );
     }
 
-    public function testSpaceIsRepresentedByUnderscore()
+    public function test_space_is_represented_by_underscore()
     {
         /* -- RFC 2047, 4.2.
         (2) The 8-bit hexadecimal value 20 (e.g., ISO-8859-1 SPACE) may be
@@ -45,25 +45,25 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
        */
         $charStream = $this->_createCharacterStream();
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('a')));
+            ->once()
+            ->andReturn([ord('a')]);
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(0x20));
+            ->once()
+            ->andReturn([0x20]);
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('b')));
+            ->once()
+            ->andReturn([ord('b')]);
         $charStream->shouldReceive('readBytes')
-                   ->zeroOrMoreTimes()
-                   ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $encoder = $this->_createEncoder($charStream);
         $this->assertEquals('a_b', $encoder->encodeString('a b'),
             '%s: Spaces can be represented by more readable underscores as per RFC 2047.'
-            );
+        );
     }
 
-    public function testEqualsAndQuestionAndUnderscoreAreEncoded()
+    public function test_equals_and_question_and_underscore_are_encoded()
     {
         /* -- RFC 2047, 4.2.
         (3) 8-bit values which correspond to printable ASCII characters other
@@ -74,25 +74,25 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
        */
         $charStream = $this->_createCharacterStream();
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('=')));
+            ->once()
+            ->andReturn([ord('=')]);
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('?')));
+            ->once()
+            ->andReturn([ord('?')]);
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('_')));
+            ->once()
+            ->andReturn([ord('_')]);
         $charStream->shouldReceive('readBytes')
-                   ->zeroOrMoreTimes()
-                   ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $encoder = $this->_createEncoder($charStream);
         $this->assertEquals('=3D=3F=5F', $encoder->encodeString('=?_'),
             '%s: Chars =, ? and _ (underscore) may not appear as per RFC 2047.'
-            );
+        );
     }
 
-    public function testParensAndQuotesAreEncoded()
+    public function test_parens_and_quotes_are_encoded()
     {
         /* -- RFC 2047, 5 (2).
      A "Q"-encoded 'encoded-word' which appears in a 'comment' MUST NOT
@@ -101,25 +101,25 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
 
         $charStream = $this->_createCharacterStream();
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('(')));
+            ->once()
+            ->andReturn([ord('(')]);
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord('"')));
+            ->once()
+            ->andReturn([ord('"')]);
         $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array(ord(')')));
+            ->once()
+            ->andReturn([ord(')')]);
         $charStream->shouldReceive('readBytes')
-                   ->zeroOrMoreTimes()
-                   ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $encoder = $this->_createEncoder($charStream);
         $this->assertEquals('=28=22=29', $encoder->encodeString('(")'),
             '%s: Chars (, " (DQUOTE) and ) may not appear as per RFC 2047.'
-            );
+        );
     }
 
-    public function testOnlyCharactersAllowedInPhrasesAreUsed()
+    public function test_only_characters_allowed_in_phrases_are_used()
     {
         /* -- RFC 2047, 5.
         (3) As a replacement for a 'word' entity within a 'phrase', for example,
@@ -139,19 +139,19 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
         $allowedBytes = array_merge(
             range(ord('a'), ord('z')), range(ord('A'), ord('Z')),
             range(ord('0'), ord('9')),
-            array(ord('!'), ord('*'), ord('+'), ord('-'), ord('/'))
-            );
+            [ord('!'), ord('*'), ord('+'), ord('-'), ord('/')]
+        );
 
         foreach (range(0x00, 0xFF) as $byte) {
             $char = pack('C', $byte);
 
             $charStream = $this->_createCharacterStream();
             $charStream->shouldReceive('readBytes')
-                   ->once()
-                   ->andReturn(array($byte));
+                ->once()
+                ->andReturn([$byte]);
             $charStream->shouldReceive('readBytes')
-                   ->zeroOrMoreTimes()
-                   ->andReturn(false);
+                ->zeroOrMoreTimes()
+                ->andReturn(false);
 
             $encoder = $this->_createEncoder($charStream);
             $encodedChar = $encoder->encodeString($char);
@@ -159,21 +159,21 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
             if (in_array($byte, $allowedBytes)) {
                 $this->assertEquals($char, $encodedChar,
                     '%s: Character '.$char.' should not be encoded.'
-                    );
-            } elseif (0x20 == $byte) {
-                //Special case
+                );
+            } elseif ($byte == 0x20) {
+                // Special case
                 $this->assertEquals('_', $encodedChar,
                     '%s: Space character should be replaced.'
-                    );
+                );
             } else {
                 $this->assertEquals(sprintf('=%02X', $byte), $encodedChar,
                     '%s: Byte '.$byte.' should be encoded.'
-                    );
+                );
             }
         }
     }
 
-    public function testEqualsNeverAppearsAtEndOfLine()
+    public function test_equals_never_appears_at_end_of_line()
     {
         /* -- RFC 2047, 5 (3).
         The 'encoded-text' in an 'encoded-word' must be self-contained;
@@ -190,20 +190,20 @@ class Swift_Mime_HeaderEncoder_QpHeaderEncoderTest extends \SwiftMailerTestCase
 
         $output = '';
         $seq = 0;
-        for (; $seq < 140; ++$seq) {
+        for (; $seq < 140; $seq++) {
             $charStream->shouldReceive('readBytes')
-                       ->once()
-                       ->andReturn(array(ord('a')));
+                ->once()
+                ->andReturn([ord('a')]);
 
-            if (75 == $seq) {
+            if ($seq == 75) {
                 $output .= "\r\n"; // =\r\n
             }
             $output .= 'a';
         }
 
         $charStream->shouldReceive('readBytes')
-                   ->zeroOrMoreTimes()
-                   ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $encoder = $this->_createEncoder($charStream);
         $this->assertEquals($output, $encoder->encodeString($input));

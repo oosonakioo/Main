@@ -2,8 +2,8 @@
 
 namespace Illuminate\Mail\Transport;
 
-use Swift_Mime_Message;
 use GuzzleHttp\ClientInterface;
+use Swift_Mime_Message;
 
 class MandrillTransport extends Transport
 {
@@ -24,7 +24,6 @@ class MandrillTransport extends Transport
     /**
      * Create a new Mandrill transport instance.
      *
-     * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
      * @return void
      */
@@ -62,7 +61,6 @@ class MandrillTransport extends Transport
      *
      * Note that Mandrill still respects CC, BCC headers in raw message itself.
      *
-     * @param  \Swift_Mime_Message $message
      * @return array
      */
     protected function getToAddresses(Swift_Mime_Message $message)

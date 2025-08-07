@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,13 +17,13 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
     private $callback;
 
     /**
-     * @param callable $callback
+     * @param  callable  $callback
      *
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($callback)
     {
-        if (!is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 1,
                 'callable'
@@ -38,8 +39,7 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $value. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     *
+     * @param  mixed  $other  Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)

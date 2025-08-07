@@ -17,17 +17,18 @@
 interface Swift_CharacterReader
 {
     const MAP_TYPE_INVALID = 0x01;
+
     const MAP_TYPE_FIXED_LEN = 0x02;
+
     const MAP_TYPE_POSITIONS = 0x03;
 
     /**
      * Returns the complete character map.
      *
-     * @param string $string
-     * @param int    $startOffset
-     * @param array  $currentMap
-     * @param mixed  $ignoredChars
-     *
+     * @param  string  $string
+     * @param  int  $startOffset
+     * @param  array  $currentMap
+     * @param  mixed  $ignoredChars
      * @return int
      */
     public function getCharPositions($string, $startOffset, &$currentMap, &$ignoredChars);
@@ -48,9 +49,8 @@ interface Swift_CharacterReader
      * A value of zero means this is already a valid character.
      * A value of -1 means this cannot possibly be a valid character.
      *
-     * @param int[] $bytes
-     * @param int   $size
-     *
+     * @param  int[]  $bytes
+     * @param  int  $size
      * @return int
      */
     public function validateByteSequence($bytes, $size);

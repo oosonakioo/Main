@@ -13,21 +13,20 @@ namespace Hamcrest;
  */
 class Matchers
 {
-
     /**
      * Evaluates to true only if each $matcher[$i] is satisfied by $array[$i].
      */
     public static function anArray(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Arrays\IsArray', 'anArray'), $args);
+
+        return call_user_func_array(['\Hamcrest\Arrays\IsArray', 'anArray'], $args);
     }
 
     /**
      * Evaluates to true if any item in an array satisfies the given matcher.
      *
-     * @param mixed $item as a {@link Hamcrest\Matcher} or a value.
-     *
+     * @param  mixed  $item  as a {@link Hamcrest\Matcher} or a value.
      * @return \Hamcrest\Arrays\IsArrayContaining
      */
     public static function hasItemInArray($item)
@@ -38,8 +37,7 @@ class Matchers
     /**
      * Evaluates to true if any item in an array satisfies the given matcher.
      *
-     * @param mixed $item as a {@link Hamcrest\Matcher} or a value.
-     *
+     * @param  mixed  $item  as a {@link Hamcrest\Matcher} or a value.
      * @return \Hamcrest\Arrays\IsArrayContaining
      */
     public static function hasValue($item)
@@ -53,7 +51,8 @@ class Matchers
     public static function arrayContainingInAnyOrder(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Arrays\IsArrayContainingInAnyOrder', 'arrayContainingInAnyOrder'), $args);
+
+        return call_user_func_array(['\Hamcrest\Arrays\IsArrayContainingInAnyOrder', 'arrayContainingInAnyOrder'], $args);
     }
 
     /**
@@ -62,7 +61,8 @@ class Matchers
     public static function containsInAnyOrder(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Arrays\IsArrayContainingInAnyOrder', 'arrayContainingInAnyOrder'), $args);
+
+        return call_user_func_array(['\Hamcrest\Arrays\IsArrayContainingInAnyOrder', 'arrayContainingInAnyOrder'], $args);
     }
 
     /**
@@ -71,7 +71,8 @@ class Matchers
     public static function arrayContaining(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Arrays\IsArrayContainingInOrder', 'arrayContaining'), $args);
+
+        return call_user_func_array(['\Hamcrest\Arrays\IsArrayContainingInOrder', 'arrayContaining'], $args);
     }
 
     /**
@@ -80,14 +81,14 @@ class Matchers
     public static function contains(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Arrays\IsArrayContainingInOrder', 'arrayContaining'), $args);
+
+        return call_user_func_array(['\Hamcrest\Arrays\IsArrayContainingInOrder', 'arrayContaining'], $args);
     }
 
     /**
      * Evaluates to true if any key in an array matches the given matcher.
      *
-     * @param mixed $key as a {@link Hamcrest\Matcher} or a value.
-     *
+     * @param  mixed  $key  as a {@link Hamcrest\Matcher} or a value.
      * @return \Hamcrest\Arrays\IsArrayContainingKey
      */
     public static function hasKeyInArray($key)
@@ -98,8 +99,7 @@ class Matchers
     /**
      * Evaluates to true if any key in an array matches the given matcher.
      *
-     * @param mixed $key as a {@link Hamcrest\Matcher} or a value.
-     *
+     * @param  mixed  $key  as a {@link Hamcrest\Matcher} or a value.
      * @return \Hamcrest\Arrays\IsArrayContainingKey
      */
     public static function hasKey($key)
@@ -126,8 +126,7 @@ class Matchers
     /**
      * Does array size satisfy a given matcher?
      *
-     * @param \Hamcrest\Matcher|int $size as a {@link Hamcrest\Matcher} or a value.
-     *
+     * @param  \Hamcrest\Matcher|int  $size  as a {@link Hamcrest\Matcher} or a value.
      * @return \Hamcrest\Arrays\IsArrayWithSize
      */
     public static function arrayWithSize($size)
@@ -181,7 +180,8 @@ class Matchers
     public static function allOf(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Core\AllOf', 'allOf'), $args);
+
+        return call_user_func_array(['\Hamcrest\Core\AllOf', 'allOf'], $args);
     }
 
     /**
@@ -190,7 +190,8 @@ class Matchers
     public static function anyOf(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Core\AnyOf', 'anyOf'), $args);
+
+        return call_user_func_array(['\Hamcrest\Core\AnyOf', 'anyOf'], $args);
     }
 
     /**
@@ -199,7 +200,8 @@ class Matchers
     public static function noneOf(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Core\AnyOf', 'noneOf'), $args);
+
+        return call_user_func_array(['\Hamcrest\Core\AnyOf', 'noneOf'], $args);
     }
 
     /**
@@ -232,15 +234,15 @@ class Matchers
     public static function describedAs(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Core\DescribedAs', 'describedAs'), $args);
+
+        return call_user_func_array(['\Hamcrest\Core\DescribedAs', 'describedAs'], $args);
     }
 
     /**
-     * @param Matcher $itemMatcher
-     *   A matcher to apply to every element in an array.
-     *
+     * @param  Matcher  $itemMatcher
+     *                                A matcher to apply to every element in an array.
      * @return \Hamcrest\Core\Every
-     *   Evaluates to TRUE for a collection in which every item matches $itemMatcher
+     *                              Evaluates to TRUE for a collection in which every item matches $itemMatcher
      */
     public static function everyItem(\Hamcrest\Matcher $itemMatcher)
     {
@@ -270,8 +272,7 @@ class Matchers
     /**
      * This matcher always evaluates to true.
      *
-     * @param string $description A meaningful string used when describing itself.
-     *
+     * @param  string  $description  A meaningful string used when describing itself.
      * @return \Hamcrest\Core\IsAnything
      */
     public static function anything($description = 'ANYTHING')
@@ -292,7 +293,8 @@ class Matchers
     public static function hasItem(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Core\IsCollectionContaining', 'hasItem'), $args);
+
+        return call_user_func_array(['\Hamcrest\Core\IsCollectionContaining', 'hasItem'], $args);
     }
 
     /**
@@ -307,7 +309,8 @@ class Matchers
     public static function hasItems(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Core\IsCollectionContaining', 'hasItems'), $args);
+
+        return call_user_func_array(['\Hamcrest\Core\IsCollectionContaining', 'hasItems'], $args);
     }
 
     /**
@@ -376,10 +379,9 @@ class Matchers
     /**
      * Creates a new instance of IsSame.
      *
-     * @param mixed $object
-     *   The predicate evaluates to true only when the argument is
-     *   this object.
-     *
+     * @param  mixed  $object
+     *                         The predicate evaluates to true only when the argument is
+     *                         this object.
      * @return \Hamcrest\Core\IsSame
      */
     public static function sameInstance($object)
@@ -570,7 +572,8 @@ class Matchers
     public static function stringContainsInOrder(/* args... */)
     {
         $args = func_get_args();
-        return call_user_func_array(array('\Hamcrest\Text\StringContainsInOrder', 'stringContainsInOrder'), $args);
+
+        return call_user_func_array(['\Hamcrest\Text\StringContainsInOrder', 'stringContainsInOrder'], $args);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -24,28 +25,30 @@ use Mockery;
 
 class NoMatchingExpectationException extends Mockery\Exception
 {
-
     protected $method = null;
 
-    protected $actual = array();
+    protected $actual = [];
 
     protected $mockObject = null;
 
     public function setMock(Mockery\MockInterface $mock)
     {
         $this->mockObject = $mock;
+
         return $this;
     }
 
     public function setMethodName($name)
     {
         $this->method = $name;
+
         return $this;
     }
 
     public function setActualArguments($count)
     {
         $this->actual = $count;
+
         return $this;
     }
 

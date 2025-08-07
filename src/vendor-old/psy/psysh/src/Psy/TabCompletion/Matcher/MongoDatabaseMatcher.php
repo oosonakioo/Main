@@ -23,7 +23,7 @@ class MongoDatabaseMatcher extends AbstractContextAwareMatcher
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array())
+    public function getMatches(array $tokens, array $info = [])
     {
         $input = $this->getInput($tokens);
 
@@ -36,8 +36,8 @@ class MongoDatabaseMatcher extends AbstractContextAwareMatcher
         $objectName = str_replace('$', '', $objectToken[1]);
         $object = $this->getVariable($objectName);
 
-        if (!$object instanceof \MongoDB) {
-            return array();
+        if (! $object instanceof \MongoDB) {
+            return [];
         }
 
         return array_filter(

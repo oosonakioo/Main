@@ -14,10 +14,12 @@ namespace Symfony\Component\Translation;
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
-class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInterface
+class DataCollectorTranslator implements TranslatorBagInterface, TranslatorInterface
 {
     const MESSAGE_DEFINED = 0;
+
     const MESSAGE_MISSING = 1;
+
     const MESSAGE_EQUALS_FALLBACK = 2;
 
     /**
@@ -28,14 +30,14 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * @var array
      */
-    private $messages = array();
+    private $messages = [];
 
     /**
-     * @param TranslatorInterface $translator The translator must implement TranslatorBagInterface
+     * @param  TranslatorInterface  $translator  The translator must implement TranslatorBagInterface
      */
     public function __construct(TranslatorInterface $translator)
     {
-        if (!$translator instanceof TranslatorBagInterface) {
+        if (! $translator instanceof TranslatorBagInterface) {
             throw new \InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', get_class($translator)));
         }
 
@@ -45,7 +47,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $trans = $this->translator->trans($id, $parameters, $domain, $locale);
         $this->collectMessage($locale, $domain, $id, $trans, $parameters);
@@ -56,7 +58,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         $trans = $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
         $this->collectMessage($locale, $domain, $id, $trans, $parameters, $number);
@@ -93,7 +95,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
      */
     public function __call($method, $args)
     {
-        return call_user_func_array(array($this->translator, $method), $args);
+        return call_user_func_array([$this->translator, $method], $args);
     }
 
     /**
@@ -105,16 +107,16 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     }
 
     /**
-     * @param string|null $locale
-     * @param string|null $domain
-     * @param string      $id
-     * @param string      $translation
-     * @param array|null  $parameters
-     * @param int|null    $number
+     * @param  string|null  $locale
+     * @param  string|null  $domain
+     * @param  string  $id
+     * @param  string  $translation
+     * @param  array|null  $parameters
+     * @param  int|null  $number
      */
-    private function collectMessage($locale, $domain, $id, $translation, $parameters = array(), $number = null)
+    private function collectMessage($locale, $domain, $id, $translation, $parameters = [], $number = null)
     {
-        if (null === $domain) {
+        if ($domain === null) {
             $domain = 'messages';
         }
 
@@ -139,7 +141,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
             $state = self::MESSAGE_MISSING;
         }
 
-        $this->messages[] = array(
+        $this->messages[] = [
             'locale' => $locale,
             'domain' => $domain,
             'id' => $id,
@@ -147,6 +149,6 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
             'parameters' => $parameters,
             'transChoiceNumber' => $number,
             'state' => $state,
-        );
+        ];
     }
 }

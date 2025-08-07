@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,7 +38,7 @@ class RuntimeReflectionService implements ReflectionService
      */
     public function getParentClasses($class)
     {
-        if ( ! class_exists($class)) {
+        if (! class_exists($class)) {
             throw MappingException::nonExistingClass($class);
         }
 

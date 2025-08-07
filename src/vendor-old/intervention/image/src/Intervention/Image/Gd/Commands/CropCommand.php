@@ -10,8 +10,8 @@ class CropCommand extends ResizeCommand
     /**
      * Crop an image instance
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -22,7 +22,7 @@ class CropCommand extends ResizeCommand
 
         if (is_null($width) || is_null($height)) {
             throw new \Intervention\Image\Exception\InvalidArgumentException(
-                "Width and height of cutout needs to be defined."
+                'Width and height of cutout needs to be defined.'
             );
         }
 

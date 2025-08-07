@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -27,8 +28,8 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
     protected $type;
 
     /**
-     * @param string $type
-     * @param bool   $isNativeType
+     * @param  string  $type
+     * @param  bool  $isNativeType
      */
     public function __construct($type, $isNativeType = true)
     {
@@ -55,10 +56,9 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
-     *
+     * @param  mixed  $other  Value or object to evaluate.
+     * @param  string  $description  Additional information about the test
+     * @param  bool  $returnResult  Whether to return a result or throw an exception
      * @return mixed
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
@@ -68,7 +68,7 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
         $success = true;
 
         foreach ($other as $item) {
-            if (!$this->constraint->evaluate($item, '', true)) {
+            if (! $this->constraint->evaluate($item, '', true)) {
                 $success = false;
                 break;
             }
@@ -78,7 +78,7 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
             return $success;
         }
 
-        if (!$success) {
+        if (! $success) {
             $this->fail($other, $description);
         }
     }
@@ -90,6 +90,6 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
      */
     public function toString()
     {
-        return 'contains only values of type "' . $this->type . '"';
+        return 'contains only values of type "'.$this->type.'"';
     }
 }

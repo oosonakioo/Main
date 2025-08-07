@@ -11,59 +11,59 @@
 
 namespace Symfony\Component\Translation\Tests\Dumper;
 
-use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Dumper\XliffFileDumper;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class XliffFileDumperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFormatCatalogue()
+    public function test_format_catalogue()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(array(
+        $catalogue->add([
             'foo' => 'bar',
             'key' => '',
             'key.with.cdata' => '<source> & <target>',
-        ));
-        $catalogue->setMetadata('foo', array('notes' => array(array('priority' => 1, 'from' => 'bar', 'content' => 'baz'))));
-        $catalogue->setMetadata('key', array('notes' => array(array('content' => 'baz'), array('content' => 'qux'))));
+        ]);
+        $catalogue->setMetadata('foo', ['notes' => [['priority' => 1, 'from' => 'bar', 'content' => 'baz']]]);
+        $catalogue->setMetadata('key', ['notes' => [['content' => 'baz'], ['content' => 'qux']]]);
 
-        $dumper = new XliffFileDumper();
+        $dumper = new XliffFileDumper;
 
         $this->assertStringEqualsFile(
             __DIR__.'/../fixtures/resources-clean.xlf',
-            $dumper->formatCatalogue($catalogue, 'messages', array('default_locale' => 'fr_FR'))
+            $dumper->formatCatalogue($catalogue, 'messages', ['default_locale' => 'fr_FR'])
         );
     }
 
-    public function testFormatCatalogueXliff2()
+    public function test_format_catalogue_xliff2()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(array(
+        $catalogue->add([
             'foo' => 'bar',
             'key' => '',
             'key.with.cdata' => '<source> & <target>',
-        ));
-        $catalogue->setMetadata('key', array('target-attributes' => array('order' => 1)));
+        ]);
+        $catalogue->setMetadata('key', ['target-attributes' => ['order' => 1]]);
 
-        $dumper = new XliffFileDumper();
+        $dumper = new XliffFileDumper;
 
         $this->assertStringEqualsFile(
             __DIR__.'/../fixtures/resources-2.0-clean.xlf',
-            $dumper->formatCatalogue($catalogue, 'messages', array('default_locale' => 'fr_FR', 'xliff_version' => '2.0'))
+            $dumper->formatCatalogue($catalogue, 'messages', ['default_locale' => 'fr_FR', 'xliff_version' => '2.0'])
         );
     }
 
-    public function testFormatCatalogueWithCustomToolInfo()
+    public function test_format_catalogue_with_custom_tool_info()
     {
-        $options = array(
+        $options = [
             'default_locale' => 'en_US',
-            'tool_info' => array('tool-id' => 'foo', 'tool-name' => 'foo', 'tool-version' => '0.0', 'tool-company' => 'Foo'),
-        );
+            'tool_info' => ['tool-id' => 'foo', 'tool-name' => 'foo', 'tool-version' => '0.0', 'tool-company' => 'Foo'],
+        ];
 
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(array('foo' => 'bar'));
+        $catalogue->add(['foo' => 'bar']);
 
-        $dumper = new XliffFileDumper();
+        $dumper = new XliffFileDumper;
 
         $this->assertStringEqualsFile(
             __DIR__.'/../fixtures/resources-tool-info.xlf',
@@ -71,19 +71,19 @@ class XliffFileDumperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFormatCatalogueWithTargetAttributesMetadata()
+    public function test_format_catalogue_with_target_attributes_metadata()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(array(
+        $catalogue->add([
             'foo' => 'bar',
-        ));
-        $catalogue->setMetadata('foo', array('target-attributes' => array('state' => 'needs-translation')));
+        ]);
+        $catalogue->setMetadata('foo', ['target-attributes' => ['state' => 'needs-translation']]);
 
-        $dumper = new XliffFileDumper();
+        $dumper = new XliffFileDumper;
 
         $this->assertStringEqualsFile(
             __DIR__.'/../fixtures/resources-target-attributes.xlf',
-            $dumper->formatCatalogue($catalogue, 'messages', array('default_locale' => 'fr_FR'))
+            $dumper->formatCatalogue($catalogue, 'messages', ['default_locale' => 'fr_FR'])
         );
     }
 }

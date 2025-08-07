@@ -9,10 +9,10 @@ class ArrayCacheTest extends CacheTest
 {
     protected function _getCacheDriver()
     {
-        return new ArrayCache();
+        return new ArrayCache;
     }
 
-    public function testGetStats()
+    public function test_get_stats()
     {
         $cache = $this->_getCacheDriver();
         $cache->fetch('test1');

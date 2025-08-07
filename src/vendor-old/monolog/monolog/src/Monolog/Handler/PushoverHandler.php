@@ -17,27 +17,37 @@ use Monolog\Logger;
  * Sends notifications through the pushover api to mobile phones
  *
  * @author Sebastian Göttschkes <sebastian.goettschkes@googlemail.com>
+ *
  * @see    https://www.pushover.net/api
  */
 class PushoverHandler extends SocketHandler
 {
     private $token;
+
     private $users;
+
     private $title;
+
     private $user;
+
     private $retry;
+
     private $expire;
 
     private $highPriorityLevel;
+
     private $emergencyLevel;
+
     private $useFormattedMessage = false;
 
     /**
      * All parameters that can be sent to Pushover
+     *
      * @see https://pushover.net/api
+     *
      * @var array
      */
-    private $parameterNames = array(
+    private $parameterNames = [
         'token' => true,
         'user' => true,
         'message' => true,
@@ -51,33 +61,35 @@ class PushoverHandler extends SocketHandler
         'retry' => true,
         'expire' => true,
         'callback' => true,
-    );
+    ];
 
     /**
      * Sounds the api supports by default
+     *
      * @see https://pushover.net/api#sounds
+     *
      * @var array
      */
-    private $sounds = array(
+    private $sounds = [
         'pushover', 'bike', 'bugle', 'cashregister', 'classical', 'cosmic', 'falling', 'gamelan', 'incoming',
         'intermission', 'magic', 'mechanical', 'pianobar', 'siren', 'spacealarm', 'tugboat', 'alien', 'climb',
         'persistent', 'echo', 'updown', 'none',
-    );
+    ];
 
     /**
-     * @param string       $token             Pushover api token
-     * @param string|array $users             Pushover user id or array of ids the message will be sent to
-     * @param string       $title             Title sent to the Pushover API
-     * @param int          $level             The minimum logging level at which this handler will be triggered
-     * @param Boolean      $bubble            Whether the messages that are handled can bubble up the stack or not
-     * @param Boolean      $useSSL            Whether to connect via SSL. Required when pushing messages to users that are not
-     *                                        the pushover.net app owner. OpenSSL is required for this option.
-     * @param int          $highPriorityLevel The minimum logging level at which this handler will start
-     *                                        sending "high priority" requests to the Pushover API
-     * @param int          $emergencyLevel    The minimum logging level at which this handler will start
-     *                                        sending "emergency" requests to the Pushover API
-     * @param int          $retry             The retry parameter specifies how often (in seconds) the Pushover servers will send the same notification to the user.
-     * @param int          $expire            The expire parameter specifies how many seconds your notification will continue to be retried for (every retry seconds).
+     * @param  string  $token  Pushover api token
+     * @param  string|array  $users  Pushover user id or array of ids the message will be sent to
+     * @param  string  $title  Title sent to the Pushover API
+     * @param  int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
+     * @param  bool  $useSSL  Whether to connect via SSL. Required when pushing messages to users that are not
+     *                        the pushover.net app owner. OpenSSL is required for this option.
+     * @param  int  $highPriorityLevel  The minimum logging level at which this handler will start
+     *                                  sending "high priority" requests to the Pushover API
+     * @param  int  $emergencyLevel  The minimum logging level at which this handler will start
+     *                               sending "emergency" requests to the Pushover API
+     * @param  int  $retry  The retry parameter specifies how often (in seconds) the Pushover servers will send the same notification to the user.
+     * @param  int  $expire  The expire parameter specifies how many seconds your notification will continue to be retried for (every retry seconds).
      */
     public function __construct($token, $users, $title = null, $level = Logger::CRITICAL, $bubble = true, $useSSL = true, $highPriorityLevel = Logger::CRITICAL, $emergencyLevel = Logger::EMERGENCY, $retry = 30, $expire = 25200)
     {
@@ -97,7 +109,7 @@ class PushoverHandler extends SocketHandler
     {
         $content = $this->buildContent($record);
 
-        return $this->buildHeader($content) . $content;
+        return $this->buildHeader($content).$content;
     }
 
     private function buildContent($record)
@@ -110,13 +122,13 @@ class PushoverHandler extends SocketHandler
 
         $timestamp = $record['datetime']->getTimestamp();
 
-        $dataArray = array(
+        $dataArray = [
             'token' => $this->token,
             'user' => $this->user,
             'message' => $message,
             'title' => $this->title,
             'timestamp' => $timestamp,
-        );
+        ];
 
         if (isset($record['level']) && $record['level'] >= $this->emergencyLevel) {
             $dataArray['priority'] = 2;
@@ -134,7 +146,7 @@ class PushoverHandler extends SocketHandler
         $dataArray = array_merge($extra, $context, $dataArray);
 
         // Only pass sounds that are supported by the API
-        if (isset($dataArray['sound']) && !in_array($dataArray['sound'], $this->sounds)) {
+        if (isset($dataArray['sound']) && ! in_array($dataArray['sound'], $this->sounds)) {
             unset($dataArray['sound']);
         }
 
@@ -146,7 +158,7 @@ class PushoverHandler extends SocketHandler
         $header = "POST /1/messages.json HTTP/1.1\r\n";
         $header .= "Host: api.pushover.net\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: " . strlen($content) . "\r\n";
+        $header .= 'Content-Length: '.strlen($content)."\r\n";
         $header .= "\r\n";
 
         return $header;
@@ -176,10 +188,11 @@ class PushoverHandler extends SocketHandler
 
     /**
      * Use the formatted message?
-     * @param bool $value
+     *
+     * @param  bool  $value
      */
     public function useFormattedMessage($value)
     {
-        $this->useFormattedMessage = (boolean) $value;
+        $this->useFormattedMessage = (bool) $value;
     }
 }

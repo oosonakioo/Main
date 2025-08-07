@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +20,7 @@
 
 namespace Doctrine\DBAL\Driver\Mysqli;
 
-use Doctrine\DBAL\Driver\Connection as Connection;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\PingableConnection;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 
@@ -40,19 +41,17 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
     private $_conn;
 
     /**
-     * @param array  $params
-     * @param string $username
-     * @param string $password
-     * @param array  $driverOptions
+     * @param  string  $username
+     * @param  string  $password
      *
      * @throws \Doctrine\DBAL\Driver\Mysqli\MysqliException
      */
-    public function __construct(array $params, $username, $password, array $driverOptions = array())
+    public function __construct(array $params, $username, $password, array $driverOptions = [])
     {
         $port = isset($params['port']) ? $params['port'] : ini_get('mysqli.default_port');
 
         // Fallback to default MySQL port if not given.
-        if ( ! $port) {
+        if (! $port) {
             $port = 3306;
         }
 
@@ -67,7 +66,7 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
 
         set_error_handler(function () {});
 
-        if ( ! $this->_conn->real_connect($params['host'], $username, $password, $dbname, $port, $socket, $flags)) {
+        if (! $this->_conn->real_connect($params['host'], $username, $password, $dbname, $port, $socket, $flags)) {
             restore_error_handler();
 
             throw new MysqliException($this->_conn->connect_error, @$this->_conn->sqlstate ?: 'HY000', $this->_conn->connect_errno);
@@ -101,7 +100,7 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
         $minorVersion = floor(($this->_conn->server_version - $majorVersion * 10000) / 100);
         $patchVersion = floor($this->_conn->server_version - $majorVersion * 10000 - $minorVersion * 100);
 
-        return $majorVersion . '.' . $minorVersion . '.' . $patchVersion;
+        return $majorVersion.'.'.$minorVersion.'.'.$patchVersion;
     }
 
     /**
@@ -136,9 +135,9 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
     /**
      * {@inheritdoc}
      */
-    public function quote($input, $type=\PDO::PARAM_STR)
+    public function quote($input, $type = \PDO::PARAM_STR)
     {
-        return "'". $this->_conn->escape_string($input) ."'";
+        return "'".$this->_conn->escape_string($input)."'";
     }
 
     /**
@@ -146,7 +145,7 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
      */
     public function exec($statement)
     {
-        if (false === $this->_conn->query($statement)) {
+        if ($this->_conn->query($statement) === false) {
             throw new MysqliException($this->_conn->error, $this->_conn->sqlstate, $this->_conn->errno);
         }
 
@@ -206,20 +205,19 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
     /**
      * Apply the driver options to the connection.
      *
-     * @param array $driverOptions
      *
      * @throws MysqliException When one of of the options is not supported.
      * @throws MysqliException When applying doesn't work - e.g. due to incorrect value.
      */
-    private function setDriverOptions(array $driverOptions = array())
+    private function setDriverOptions(array $driverOptions = [])
     {
-        $supportedDriverOptions = array(
+        $supportedDriverOptions = [
             \MYSQLI_OPT_CONNECT_TIMEOUT,
             \MYSQLI_OPT_LOCAL_INFILE,
             \MYSQLI_INIT_COMMAND,
             \MYSQLI_READ_DEFAULT_FILE,
             \MYSQLI_READ_DEFAULT_GROUP,
-        );
+        ];
 
         if (defined('MYSQLI_SERVER_PUBLIC_KEY')) {
             $supportedDriverOptions[] = \MYSQLI_SERVER_PUBLIC_KEY;
@@ -233,7 +231,7 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
                 continue;
             }
 
-            if (!in_array($option, $supportedDriverOptions, true)) {
+            if (! in_array($option, $supportedDriverOptions, true)) {
                 throw new MysqliException(
                     sprintf($exceptionMsg, 'Unsupported', $option, $value)
                 );
@@ -243,7 +241,7 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
                 continue;
             }
 
-            $msg  = sprintf($exceptionMsg, 'Failed to set', $option, $value);
+            $msg = sprintf($exceptionMsg, 'Failed to set', $option, $value);
             $msg .= sprintf(', error: %s (%d)', mysqli_error($this->_conn), mysqli_errno($this->_conn));
 
             throw new MysqliException(

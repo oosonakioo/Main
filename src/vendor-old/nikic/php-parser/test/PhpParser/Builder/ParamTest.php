@@ -8,59 +8,61 @@ use PhpParser\Node\Scalar;
 
 class ParamTest extends \PHPUnit_Framework_TestCase
 {
-    public function createParamBuilder($name) {
+    public function createParamBuilder($name)
+    {
         return new Param($name);
     }
 
     /**
      * @dataProvider provideTestDefaultValues
      */
-    public function testDefaultValues($value, $expectedValueNode) {
+    public function test_default_values($value, $expectedValueNode)
+    {
         $node = $this->createParamBuilder('test')
             ->setDefault($value)
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals($expectedValueNode, $node->default);
     }
 
-    public function provideTestDefaultValues() {
-        return array(
-            array(
+    public function provideTestDefaultValues()
+    {
+        return [
+            [
                 null,
-                new Expr\ConstFetch(new Node\Name('null'))
-            ),
-            array(
+                new Expr\ConstFetch(new Node\Name('null')),
+            ],
+            [
                 true,
-                new Expr\ConstFetch(new Node\Name('true'))
-            ),
-            array(
+                new Expr\ConstFetch(new Node\Name('true')),
+            ],
+            [
                 false,
-                new Expr\ConstFetch(new Node\Name('false'))
-            ),
-            array(
+                new Expr\ConstFetch(new Node\Name('false')),
+            ],
+            [
                 31415,
-                new Scalar\LNumber(31415)
-            ),
-            array(
+                new Scalar\LNumber(31415),
+            ],
+            [
                 3.1415,
-                new Scalar\DNumber(3.1415)
-            ),
-            array(
+                new Scalar\DNumber(3.1415),
+            ],
+            [
                 'Hallo World',
-                new Scalar\String_('Hallo World')
-            ),
-            array(
-                array(1, 2, 3),
-                new Expr\Array_(array(
+                new Scalar\String_('Hallo World'),
+            ],
+            [
+                [1, 2, 3],
+                new Expr\Array_([
                     new Expr\ArrayItem(new Scalar\LNumber(1)),
                     new Expr\ArrayItem(new Scalar\LNumber(2)),
                     new Expr\ArrayItem(new Scalar\LNumber(3)),
-                ))
-            ),
-            array(
-                array('foo' => 'bar', 'bar' => 'foo'),
-                new Expr\Array_(array(
+                ]),
+            ],
+            [
+                ['foo' => 'bar', 'bar' => 'foo'],
+                new Expr\Array_([
                     new Expr\ArrayItem(
                         new Scalar\String_('bar'),
                         new Scalar\String_('foo')
@@ -69,20 +71,20 @@ class ParamTest extends \PHPUnit_Framework_TestCase
                         new Scalar\String_('foo'),
                         new Scalar\String_('bar')
                     ),
-                ))
-            ),
-            array(
+                ]),
+            ],
+            [
                 new Scalar\MagicConst\Dir,
-                new Scalar\MagicConst\Dir
-            )
-        );
+                new Scalar\MagicConst\Dir,
+            ],
+        ];
     }
 
-    public function testTypeHints() {
+    public function test_type_hints()
+    {
         $node = $this->createParamBuilder('test')
             ->setTypeHint('array')
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Node\Param('test', null, 'array'),
@@ -91,8 +93,7 @@ class ParamTest extends \PHPUnit_Framework_TestCase
 
         $node = $this->createParamBuilder('test')
             ->setTypeHint('callable')
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Node\Param('test', null, 'callable'),
@@ -101,8 +102,7 @@ class ParamTest extends \PHPUnit_Framework_TestCase
 
         $node = $this->createParamBuilder('test')
             ->setTypeHint('Some\Class')
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Node\Param('test', null, new Node\Name('Some\Class')),
@@ -110,11 +110,11 @@ class ParamTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testByRef() {
+    public function test_by_ref()
+    {
         $node = $this->createParamBuilder('test')
             ->makeByRef()
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Node\Param('test', null, null, true),

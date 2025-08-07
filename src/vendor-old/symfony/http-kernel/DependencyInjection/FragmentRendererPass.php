@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\HttpKernel\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Adds services tagged kernel.fragment_renderer as HTTP content rendering strategies.
@@ -22,11 +22,12 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class FragmentRendererPass implements CompilerPassInterface
 {
     private $handlerService;
+
     private $rendererTag;
 
     /**
-     * @param string $handlerService Service name of the fragment handler in the container
-     * @param string $rendererTag    Tag name used for fragments
+     * @param  string  $handlerService  Service name of the fragment handler in the container
+     * @param  string  $rendererTag  Tag name used for fragments
      */
     public function __construct($handlerService = 'fragment.handler', $rendererTag = 'kernel.fragment_renderer')
     {
@@ -36,14 +37,14 @@ class FragmentRendererPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->handlerService)) {
+        if (! $container->hasDefinition($this->handlerService)) {
             return;
         }
 
         $definition = $container->getDefinition($this->handlerService);
         foreach ($container->findTaggedServiceIds($this->rendererTag) as $id => $tags) {
             $def = $container->getDefinition($id);
-            if (!$def->isPublic()) {
+            if (! $def->isPublic()) {
                 throw new \InvalidArgumentException(sprintf('The service "%s" must be public as fragment renderer are lazy-loaded.', $id));
             }
 
@@ -54,8 +55,8 @@ class FragmentRendererPass implements CompilerPassInterface
             $class = $container->getParameterBag()->resolveValue($def->getClass());
             $interface = 'Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface';
 
-            if (!is_subclass_of($class, $interface)) {
-                if (!class_exists($class, false)) {
+            if (! is_subclass_of($class, $interface)) {
+                if (! class_exists($class, false)) {
                     throw new \InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
                 }
 
@@ -63,7 +64,7 @@ class FragmentRendererPass implements CompilerPassInterface
             }
 
             foreach ($tags as $tag) {
-                $definition->addMethodCall('addRendererService', array($tag['alias'], $id));
+                $definition->addMethodCall('addRendererService', [$tag['alias'], $id]);
             }
         }
     }

@@ -8,10 +8,12 @@ class TestsBase extends TestCase
     protected $queriesCount;
 
     const DB_NAME = 'translatable_test';
+
     const DB_USERNAME = 'homestead';
+
     const DB_PASSWORD = 'secret';
 
-    public function setUp()
+    protected function setUp()
     {
         $this->dropDb();
         $this->createDb();
@@ -33,8 +35,8 @@ class TestsBase extends TestCase
     }
 
     /**
-     * @param $query
-     * return void
+     * @param  $query
+     *                return void
      */
     private function runQuery($query)
     {
@@ -48,7 +50,7 @@ class TestsBase extends TestCase
         exec($command.' 2>/dev/null');
     }
 
-    public function testRunningMigration()
+    public function test_running_migration()
     {
         $country = Country::find(1);
         $this->assertEquals('gr', $country->code);
@@ -64,7 +66,7 @@ class TestsBase extends TestCase
         $app['path.base'] = __DIR__.'/..';
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
-            'driver'   => 'mysql',
+            'driver' => 'mysql',
             'host' => 'localhost',
             'database' => static::DB_NAME,
             'username' => static::DB_USERNAME,
@@ -119,7 +121,7 @@ class TestsBase extends TestCase
         // Makes sure the migrations table is created
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--path'     => $migrationsPath,
+            '--path' => $migrationsPath,
         ]);
 
         // We empty all tables
@@ -130,13 +132,11 @@ class TestsBase extends TestCase
         // Migrate
         $artisan->call('migrate', [
             '--database' => 'mysql',
-            '--path'     => $migrationsPath,
+            '--path' => $migrationsPath,
         ]);
     }
 
     /**
-     * @param $bindings
-     *
      * @return mixed
      */
     private function formatBindingsForSqlInjection($bindings)
@@ -155,9 +155,6 @@ class TestsBase extends TestCase
     }
 
     /**
-     * @param $query
-     * @param $bindings
-     *
      * @return string
      */
     private function insertBindingsIntoQuery($query, $bindings)

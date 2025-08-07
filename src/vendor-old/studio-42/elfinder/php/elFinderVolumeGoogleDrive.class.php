@@ -133,14 +133,13 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     }
 
     /*********************************************************************/
-    /*                        ORIGINAL FUNCTIONS                         */
+    /*                        ORIGINAL FUNCTIONS */
     /*********************************************************************/
 
     /**
      * Get Parent ID, Item ID, Parent Path as an array from path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array
      */
     protected function _gd_splitPath($path)
@@ -167,14 +166,13 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             }
         }
 
-        return array($pid, $id, $parent);
+        return [$pid, $id, $parent];
     }
 
     /**
      * Drive query and fetchAll.
      *
-     * @param string $sql
-     *
+     * @param  string  $sql
      * @return bool|array
      */
     private function _gd_query($opts)
@@ -182,9 +180,9 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         $result = [];
         $pageToken = null;
         $parameters = [
-                'fields' => self::FETCHFIELDS_LIST,
-                'pageSize' => 1000,
-                'spaces' => 'drive',
+            'fields' => self::FETCHFIELDS_LIST,
+            'pageSize' => 1000,
+            'spaces' => 'drive',
         ];
 
         if (is_array($opts)) {
@@ -210,14 +208,13 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Get dat(googledrive metadata) from GoogleDrive.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array googledrive metadata
      */
     private function _gd_getFile($path, $fields = '')
     {
-        list(, $itemId) = $this->_gd_splitPath($path);
-        if (!$fields) {
+        [, $itemId] = $this->_gd_splitPath($path);
+        if (! $fields) {
             $fields = self::FETCHFIELDS_GET;
         }
         try {
@@ -235,8 +232,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Parse line from googledrive metadata output and return file stat (array).
      *
-     * @param string $raw line from ftp_rawlist() output
-     *
+     * @param  string  $raw  line from ftp_rawlist() output
      * @return array
      *
      * @author Dmitry Levashov
@@ -278,7 +274,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
 
             if ($published) {
                 $stat['url'] = $this->_gd_getLink($raw);
-            } elseif (!$this->disabledGetUrl) {
+            } elseif (! $this->disabledGetUrl) {
                 $stat['url'] = '1';
             }
         }
@@ -289,14 +285,13 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Get dat(googledrive metadata) from GoogleDrive.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array googledrive metadata
      */
     private function _gd_getNameByPath($path)
     {
-        list(, $itemId) = $this->_gd_splitPath($path);
-        if (!$this->names) {
+        [, $itemId] = $this->_gd_splitPath($path);
+        if (! $this->names) {
             $this->_gd_getDirectoryData();
         }
 
@@ -306,7 +301,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Make cache of $parents, $names and $directories.
      *
-     * @param string $usecache
+     * @param  string  $usecache
      */
     protected function _gd_getDirectoryData($usecache = true)
     {
@@ -331,8 +326,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
 
         $data = [];
         $opts = [
-                'fields' => 'files(id, name, parents)',
-                'q' => sprintf('trashed=false and mimeType="%s"', self::DIRMIME),
+            'fields' => 'files(id, name, parents)',
+            'q' => sprintf('trashed=false and mimeType="%s"', self::DIRMIME),
         ];
         $res = $this->_gd_query($opts);
         foreach ($res as $raw) {
@@ -354,17 +349,16 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         }
         $this->directories = $data;
         $this->session->set($this->id.$this->netMountKey, [
-                'parents' => $this->parents,
-                'names' => $this->names,
-                'directories' => $this->directories,
+            'parents' => $this->parents,
+            'names' => $this->names,
+            'directories' => $this->directories,
         ]);
     }
 
     /**
      * Get descendants directories.
      *
-     * @param string $itemId
-     *
+     * @param  string  $itemId
      * @return array
      */
     protected function _gd_getDirectories($itemId)
@@ -387,7 +381,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Get ID based path from item ID.
      *
-     * @param string $path
+     * @param  string  $path
      */
     protected function _gd_getMountPaths($id)
     {
@@ -395,11 +389,11 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         if ($this->directories === null) {
             $this->_gd_getDirectoryData();
         }
-        list($pid) = explode('/', $id, 2);
+        [$pid] = explode('/', $id, 2);
         $path = $id;
         if ('/'.$pid === $this->root) {
             $root = true;
-        } elseif (!isset($this->parents[$pid])) {
+        } elseif (! isset($this->parents[$pid])) {
             $root = true;
             $path = ltrim(substr($path, strlen($pid)), '/');
         }
@@ -421,8 +415,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return is published.
      *
-     * @param object $file
-     *
+     * @param  object  $file
      * @return bool
      */
     protected function _gd_isPublished($file)
@@ -445,8 +438,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * return item URL link.
      *
-     * @param object $file
-     *
+     * @param  object  $file
      * @return string
      */
     protected function _gd_getLink($file)
@@ -464,8 +456,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Get download url.
      *
-     * @param Google_Service_Drive_DriveFile $file
-     *
+     * @param  Google_Service_Drive_DriveFile  $file
      * @return string|false
      */
     protected function _gd_getDownloadUrl($file)
@@ -490,18 +481,17 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Get thumbnail from GoogleDrive.com.
      *
-     * @param string $path
-     * @param string $size
-     *
-     * @return string | boolean
+     * @param  string  $path
+     * @param  string  $size
+     * @return string | bool
      */
     protected function _gd_getThumbnail($path)
     {
-        list(, $itemId) = $this->_gd_splitPath($path);
+        [, $itemId] = $this->_gd_splitPath($path);
 
         try {
             $contents = $this->service->files->get($itemId, [
-                    'alt' => 'media',
+                'alt' => 'media',
             ]);
             $contents = $contents->getBody()->detach();
             rewind($contents);
@@ -515,8 +505,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Publish permissions specified path item.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return bool
      */
     protected function _gd_publish($path)
@@ -540,14 +529,13 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * unPublish permissions specified path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return bool
      */
     protected function _gd_unPublish($path)
     {
         if ($file = $this->_gd_getFile($path)) {
-            if (!$this->_gd_isPublished($file)) {
+            if (! $this->_gd_isPublished($file)) {
                 return true;
             }
             $permissions = $file->getPermissions();
@@ -573,16 +561,15 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Read file chunk.
      *
-     * @param resource $handle
-     * @param int      $chunkSize
-     *
+     * @param  resource  $handle
+     * @param  int  $chunkSize
      * @return string
      */
     protected function _gd_readFileChunk($handle, $chunkSize)
     {
         $byteCount = 0;
         $giantChunk = '';
-        while (!feof($handle)) {
+        while (! feof($handle)) {
             // fread will never return more than 8192 bytes if the stream is read buffered and it does not represent a plain file
             $chunk = fread($handle, 8192);
             $byteCount += strlen($chunk);
@@ -596,7 +583,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     }
 
     /*********************************************************************/
-    /*                        EXTENDED FUNCTIONS                         */
+    /*                        EXTENDED FUNCTIONS */
     /*********************************************************************/
 
     /**
@@ -621,12 +608,12 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             include_once $options['googleApiClient'];
         }
 
-        if (!isset($options['pass'])) {
+        if (! isset($options['pass'])) {
             $options['pass'] = '';
         }
 
         try {
-            $client = new \Google_Client();
+            $client = new \Google_Client;
             $client->setClientId($options['client_id']);
             $client->setClientSecret($options['client_secret']);
 
@@ -639,7 +626,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
 
             $options = array_merge($this->session->get('GoogleDriveAuthParams', []), $options);
 
-            if (!isset($options['access_token'])) {
+            if (! isset($options['access_token'])) {
                 $options['access_token'] = $this->session->get('GoogleDriveTokens', []);
                 $this->session->remove('GoogleDriveTokens');
             }
@@ -678,9 +665,9 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                            .'?cmd=netmount&protocol=googledrive&host=1';
                 $client->setRedirectUri($callback);
 
-                if (!$aToken && empty($_GET['code'])) {
+                if (! $aToken && empty($_GET['code'])) {
                     $client->setScopes([Google_Service_Drive::DRIVE]);
-                    if (!empty($options['offline'])) {
+                    if (! empty($options['offline'])) {
                         $client->setApprovalPrompt('force');
                         $client->setAccessType('offline');
                     }
@@ -705,7 +692,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                         return ['exit' => 'callback', 'out' => $out];
                     }
                 } else {
-                    if (!empty($_GET['code'])) {
+                    if (! empty($_GET['code'])) {
                         $aToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
                         $options['access_token'] = $aToken;
                         $this->session->set('GoogleDriveTokens', $aToken)->set('GoogleDriveAuthParams', $options);
@@ -757,7 +744,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             }
         }
 
-        if (!$aToken) {
+        if (! $aToken) {
             return ['exit' => true, 'error' => elFinder::ERROR_REAUTH_REQUIRE];
         }
 
@@ -790,13 +777,12 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * process of on netunmount
      * Drop `googledrive` & rm thumbs.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return bool
      */
     public function netunmount($netVolumes, $key)
     {
-        if (!$this->options['useGoogleTmb']) {
+        if (! $this->options['useGoogleTmb']) {
             if ($tmbs = glob(rtrim($this->options['tmbPath'], '\\/').DIRECTORY_SEPARATOR.$this->netMountKey.'*.png')) {
                 foreach ($tmbs as $file) {
                     unlink($file);
@@ -813,24 +799,23 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * For item ID based path file system
      * Please override if needed on each drivers.
      *
-     * @param string $path file cache
-     *
+     * @param  string  $path  file cache
      * @return array
      */
     protected function isNameExists($path)
     {
-        list($parentId, $name) = $this->_gd_splitPath($path);
+        [$parentId, $name] = $this->_gd_splitPath($path);
         $opts = [
-                'q' => sprintf('trashed=false and "%s" in parents and name="%s"', $parentId, $name),
-                'fields' => self::FETCHFIELDS_LIST,
-            ];
+            'q' => sprintf('trashed=false and "%s" in parents and name="%s"', $parentId, $name),
+            'fields' => self::FETCHFIELDS_LIST,
+        ];
         $srcFile = $this->_gd_query($opts);
 
         return empty($srcFile) ? false : $this->_gd_parseRaw($srcFile[0]);
     }
 
     /*********************************************************************/
-    /*                        INIT AND CONFIGURE                         */
+    /*                        INIT AND CONFIGURE */
     /*********************************************************************/
 
     /**
@@ -860,25 +845,25 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                     return $this->setError('Required option "client_secret" is undefined.');
                 }
             }
-            if (!$this->options['access_token'] && !$this->options['refresh_token']) {
+            if (! $this->options['access_token'] && ! $this->options['refresh_token']) {
                 return $this->setError('Required option "access_token" or "refresh_token" is undefined.');
             }
         } else {
-            if (!is_readable($this->options['serviceAccountConfigFile'])) {
+            if (! is_readable($this->options['serviceAccountConfigFile'])) {
                 return $this->setError('Option "serviceAccountConfigFile" file is not readable.');
             }
             $serviceAccountConfig = $this->options['serviceAccountConfigFile'];
         }
 
         try {
-            if (!$serviceAccountConfig) {
+            if (! $serviceAccountConfig) {
                 $aTokenFile = '';
                 if ($this->options['refresh_token']) {
                     // permanent mount
                     $aToken = $this->options['refresh_token'];
                     $this->options['access_token'] = '';
                     $tmp = elFinder::getStaticVar('commonTempPath');
-                    if (!$tmp) {
+                    if (! $tmp) {
                         $tmp = $this->getTempPath();
                     }
                     if ($tmp) {
@@ -890,7 +875,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                 } else {
                     // make net mount key for network mount
                     if (is_array($this->options['access_token'])) {
-                        $aToken = !empty($this->options['access_token']['refresh_token'])
+                        $aToken = ! empty($this->options['access_token']['refresh_token'])
                             ? $this->options['access_token']['refresh_token']
                             : $this->options['access_token']['access_token'];
                     } else {
@@ -900,19 +885,19 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             }
 
             $errors = [];
-            if (!$this->service) {
-                if ($this->options['googleApiClient'] && !class_exists('Google_Client')) {
+            if (! $this->service) {
+                if ($this->options['googleApiClient'] && ! class_exists('Google_Client')) {
                     include_once $this->options['googleApiClient'];
                 }
-                if (!class_exists('Google_Client')) {
+                if (! class_exists('Google_Client')) {
                     return $this->setError('Class Google_Client not found.');
                 }
 
-                $this->client = new \Google_Client();
+                $this->client = new \Google_Client;
 
                 $client = $this->client;
 
-                if (!$serviceAccountConfig) {
+                if (! $serviceAccountConfig) {
                     if ($this->options['access_token']) {
                         $client->setAccessToken($this->options['access_token']);
                     }
@@ -926,7 +911,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                         } else {
                             $access_token['refresh_token'] = $this->options['access_token']['refresh_token'];
                         }
-                        if (!empty($this->options['netkey'])) {
+                        if (! empty($this->options['netkey'])) {
                             elFinder::$instance->updateNetVolumeOption($this->options['netkey'], 'access_token', $access_token);
                         }
                         $this->options['access_token'] = $access_token;
@@ -946,7 +931,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             $errors[] = $e->getMessage();
         }
 
-        if (!$this->service) {
+        if (! $this->service) {
             $this->session->remove($this->id.$this->netMountKey);
             if ($aTokenFile) {
                 unlink($aTokenFile);
@@ -970,16 +955,16 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
 
         $this->rootName = $this->options['alias'];
 
-        if (!empty($this->options['tmpPath'])) {
+        if (! empty($this->options['tmpPath'])) {
             if ((is_dir($this->options['tmpPath']) || mkdir($this->options['tmpPath'])) && is_writable($this->options['tmpPath'])) {
                 $this->tmp = $this->options['tmpPath'];
             }
         }
 
-        if (!$this->tmp && is_writable($this->options['tmbPath'])) {
+        if (! $this->tmp && is_writable($this->options['tmbPath'])) {
             $this->tmp = $this->options['tmbPath'];
         }
-        if (!$this->tmp && ($tmp = elFinder::getStaticVar('commonTempPath'))) {
+        if (! $this->tmp && ($tmp = elFinder::getStaticVar('commonTempPath'))) {
             $this->tmp = $tmp;
         }
 
@@ -1014,7 +999,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     }
 
     /*********************************************************************/
-    /*                               FS API                              */
+    /*                               FS API */
     /*********************************************************************/
 
     /**
@@ -1022,14 +1007,12 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      *
      * @author Dmitry (dio) Levashov
      **/
-    public function umount()
-    {
-    }
+    public function umount() {}
 
     /**
      * Cache dir contents.
      *
-     * @param string $path dir path
+     * @param  string  $path  dir path
      *
      * @author Dmitry Levashov
      **/
@@ -1038,7 +1021,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         $this->dirsCache[$path] = [];
         $hasDir = false;
 
-        list(, $pid) = $this->_gd_splitPath($path);
+        [, $pid] = $this->_gd_splitPath($path);
 
         $opts = [
             'fields' => self::FETCHFIELDS_LIST,
@@ -1054,7 +1037,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                 if ($stat = $this->_gd_parseRaw($raw)) {
                     $stat = $this->updateCache($mountPath.$raw->id, $stat);
                     if (empty($stat['hidden']) && $path !== $mountPath.$raw->id) {
-                        if (!$hasDir && $stat['mime'] === 'directory') {
+                        if (! $hasDir && $stat['mime'] === 'directory') {
                             $hasDir = true;
                         }
                         $this->dirsCache[$path][] = $mountPath.$raw->id;
@@ -1073,17 +1056,16 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Recursive files search.
      *
-     * @param string $path  dir path
-     * @param string $q     search string
-     * @param array  $mimes
-     *
+     * @param  string  $path  dir path
+     * @param  string  $q  search string
+     * @param  array  $mimes
      * @return array
      *
      * @author Naoki Sawada
      **/
     protected function doSearch($path, $q, $mimes)
     {
-        list(, $itemId) = $this->_gd_splitPath($path);
+        [, $itemId] = $this->_gd_splitPath($path);
 
         $path = $this->_normpath($path.'/');
         $result = [];
@@ -1095,7 +1077,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         }
 
         $tmp = [];
-        if (!$mimes) {
+        if (! $mimes) {
             foreach (explode(' ', $q) as $_v) {
                 $tmp[] = 'fullText contains \''.str_replace('\'', '\\\'', $_v).'\'';
             }
@@ -1125,7 +1107,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                         $paths = $this->_gd_getMountPaths($parent);
                         foreach ($paths as $path) {
                             $path = ($path === '') ? '/' : (rtrim($path, '/').'/');
-                            if (!isset($this->cache[$path.$raw->id])) {
+                            if (! isset($this->cache[$path.$raw->id])) {
                                 $stat = $this->updateCache($path.$raw->id, $stat);
                             } else {
                                 $stat = $this->cache[$path.$raw->id];
@@ -1147,10 +1129,9 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * Copy file/recursive copy dir only in current volume.
      * Return new file path or false.
      *
-     * @param string $src  source path
-     * @param string $dst  destination dir path
-     * @param string $name new file name (optionaly)
-     *
+     * @param  string  $src  source path
+     * @param  string  $dst  destination dir path
+     * @param  string  $name  new file name (optionaly)
      * @return string|false
      *
      * @author Dmitry (dio) Levashov
@@ -1163,8 +1144,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         if ($res['mimeType'] == self::DIRMIME) {
             $newDir = $this->_mkdir($dst, $name);
             if ($newDir) {
-                list(, $itemId) = $this->_gd_splitPath($newDir);
-                list(, $srcId) = $this->_gd_splitPath($src);
+                [, $itemId] = $this->_gd_splitPath($newDir);
+                [, $srcId] = $this->_gd_splitPath($src);
                 $path = $this->_joinPath($dst, $itemId);
                 $opts = [
                     'q' => sprintf('trashed=false and "%s" in parents', $srcId),
@@ -1191,9 +1172,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Remove file/ recursive remove dir.
      *
-     * @param string $path  file path
-     * @param bool   $force try to remove even if file locked
-     *
+     * @param  string  $path  file path
+     * @param  bool  $force  try to remove even if file locked
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1210,16 +1190,16 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_RM, $this->_path($path), elFinder::ERROR_FILE_NOT_FOUND);
         }
 
-        if (!$force && !empty($stat['locked'])) {
+        if (! $force && ! empty($stat['locked'])) {
             return $this->setError(elFinder::ERROR_LOCKED, $this->_path($path));
         }
 
         if ($stat['mime'] == 'directory') {
-            if (!$recursive && !$this->_rmdir($path)) {
+            if (! $recursive && ! $this->_rmdir($path)) {
                 return $this->setError(elFinder::ERROR_RM, $this->_path($path));
             }
         } else {
-            if (!$recursive && !$this->_unlink($path)) {
+            if (! $recursive && ! $this->_unlink($path)) {
                 return $this->setError(elFinder::ERROR_RM, $this->_path($path));
             }
         }
@@ -1232,9 +1212,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Create thumnbnail and return it's URL on success.
      *
-     * @param string $path file path
-     * @param string $mime file mime type
-     *
+     * @param  string  $path  file path
+     * @param  string  $mime  file mime type
      * @return string|false
      *
      * @author Dmitry (dio) Levashov
@@ -1242,7 +1221,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      **/
     protected function createTmb($path, $stat)
     {
-        if (!$stat || !$this->canCreateTmb($path, $stat)) {
+        if (! $stat || ! $this->canCreateTmb($path, $stat)) {
             return false;
         }
 
@@ -1250,10 +1229,10 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         $tmb = $this->tmbPath.DIRECTORY_SEPARATOR.$name;
 
         // copy image into tmbPath so some drivers does not store files on local fs
-        if (!$data = $this->_gd_getThumbnail($path)) {
+        if (! $data = $this->_gd_getThumbnail($path)) {
             return false;
         }
-        if (!file_put_contents($tmb, $data)) {
+        if (! file_put_contents($tmb, $data)) {
             return false;
         }
 
@@ -1272,7 +1251,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             if ($this->options['tmbCrop']) {
 
                 /* Resize and crop if image bigger than thumbnail */
-                if (!(($s[0] > $tmbSize && $s[1] <= $tmbSize) || ($s[0] <= $tmbSize && $s[1] > $tmbSize)) || ($s[0] > $tmbSize && $s[1] > $tmbSize)) {
+                if (! (($s[0] > $tmbSize && $s[1] <= $tmbSize) || ($s[0] <= $tmbSize && $s[1] > $tmbSize)) || ($s[0] > $tmbSize && $s[1] > $tmbSize)) {
                     $result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
                 }
 
@@ -1288,7 +1267,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             $result = $this->imgSquareFit($tmb, $tmbSize, $tmbSize, 'center', 'middle', $this->options['tmbBgColor'], 'png');
         }
 
-        if (!$result) {
+        if (! $result) {
             unlink($tmb);
 
             return false;
@@ -1300,8 +1279,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return thumbnail file name for required file.
      *
-     * @param array $stat file stat
-     *
+     * @param  array  $stat  file stat
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -1315,16 +1293,15 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * Return content URL (for netmout volume driver)
      * If file.url == 1 requests from JavaScript client with XHR.
      *
-     * @param string $hash    file hash
-     * @param array  $options options array
-     *
+     * @param  string  $hash  file hash
+     * @param  array  $options  options array
      * @return bool|string
      *
      * @author Naoki Sawada
      */
     public function getContentUrl($hash, $options = [])
     {
-        if (($file = $this->file($hash)) == false || !$file['url'] || $file['url'] == 1) {
+        if (($file = $this->file($hash)) == false || ! $file['url'] || $file['url'] == 1) {
             $path = $this->decode($hash);
 
             if ($this->_gd_publish($path)) {
@@ -1357,15 +1334,14 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return parent directory path.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Dmitry (dio) Levashov
      **/
     protected function _dirname($path)
     {
-        list(, , $parent) = $this->_gd_splitPath($path);
+        [, , $parent] = $this->_gd_splitPath($path);
 
         return $this->_normpath($parent);
     }
@@ -1373,15 +1349,14 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return file name.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Dmitry (dio) Levashov
      **/
     protected function _basename($path)
     {
-        list(, $basename) = $this->_gd_splitPath($path);
+        [, $basename] = $this->_gd_splitPath($path);
 
         return $basename;
     }
@@ -1389,9 +1364,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Join dir name and file name and retur full path.
      *
-     * @param string $dir
-     * @param string $name
-     *
+     * @param  string  $dir
+     * @param  string  $name
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -1404,8 +1378,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return normalized path, this works the same as os.path.normpath() in Python.
      *
-     * @param string $path path
-     *
+     * @param  string  $path  path
      * @return string
      *
      * @author Troex Nevelin
@@ -1423,8 +1396,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return file path related to root dir.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -1437,8 +1409,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Convert path related to root dir into real path.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -1451,15 +1422,14 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return fake path started from root dir.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Dmitry (dio) Levashov
      **/
     protected function _path($path)
     {
-        if (!$this->names) {
+        if (! $this->names) {
             $this->_gd_getDirectoryData();
         }
         $path = $this->_normpath(substr($path, strlen($this->root)));
@@ -1475,9 +1445,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return true if $path is children of $parent.
      *
-     * @param string $path   path to check
-     * @param string $parent parent path
-     *
+     * @param  string  $path  path to check
+     * @param  string  $parent  parent path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1503,8 +1472,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      *
      * If file does not exists - returns empty array or false.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return array|false
      *
      * @author Dmitry (dio) Levashov
@@ -1521,8 +1489,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return true if path is dir and has at least one childs directory.
      *
-     * @param string $path dir path
-     *
+     * @param  string  $path  dir path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1532,7 +1499,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         if ($this->directories === null) {
             $this->_gd_getDirectoryData();
         }
-        list(, $itemId) = $this->_gd_splitPath($path);
+        [, $itemId] = $this->_gd_splitPath($path);
 
         return isset($this->directories[$itemId]);
     }
@@ -1541,9 +1508,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * Return object width and height
      * Ususaly used for images, but can be realize for video etc...
      *
-     * @param string $path file path
-     * @param string $mime file mime type
-     *
+     * @param  string  $path  file path
+     * @param  string  $mime  file mime type
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -1569,8 +1535,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Return files list in directory.
      *
-     * @param string $path dir path
-     *
+     * @param  string  $path  dir path
      * @return array
      *
      * @author Dmitry (dio) Levashov
@@ -1586,9 +1551,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Open file and return file pointer.
      *
-     * @param string $path  file path
-     * @param bool   $write open file for writing
-     *
+     * @param  string  $path  file path
+     * @param  bool  $write  open file for writing
      * @return resource|false
      *
      * @author Dmitry (dio) Levashov
@@ -1599,7 +1563,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             if ($file = $this->_gd_getFile($path)) {
                 if ($dlurl = $this->_gd_getDownloadUrl($file)) {
                     $token = $this->client->getAccessToken();
-                    if (!$token && $this->client->isUsingApplicationDefaultCredentials()) {
+                    if (! $token && $this->client->isUsingApplicationDefaultCredentials()) {
                         $this->client->fetchAccessTokenWithAssertion();
                         $token = $this->client->getAccessToken();
                     }
@@ -1612,10 +1576,10 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                         }
                     }
                     if ($access_token) {
-                        $data = array(
-                                'target' => $dlurl,
-                                'headers' => array('Authorization: Bearer '.$access_token),
-                        );
+                        $data = [
+                            'target' => $dlurl,
+                            'headers' => ['Authorization: Bearer '.$access_token],
+                        ];
 
                         return elFinder::getStreamByUrl($data);
                     }
@@ -1629,8 +1593,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Close opened file.
      *
-     * @param resource $fp file pointer
-     *
+     * @param  resource  $fp  file pointer
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1648,9 +1611,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Create dir and return created dir path or false on failed.
      *
-     * @param string $path parent dir path
-     * @param string $name new directory name
-     *
+     * @param  string  $path  parent dir path
+     * @param  string  $name  new directory name
      * @return string|bool
      *
      * @author Dmitry (dio) Levashov
@@ -1658,16 +1620,16 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     protected function _mkdir($path, $name)
     {
         $path = $this->_joinPath($path, $name);
-        list($parentId, , $parent) = $this->_gd_splitPath($path);
+        [$parentId, , $parent] = $this->_gd_splitPath($path);
 
         try {
-            $file = new \Google_Service_Drive_DriveFile();
+            $file = new \Google_Service_Drive_DriveFile;
 
             $file->setName($name);
             $file->setMimeType(self::DIRMIME);
             $file->setParents([$parentId]);
 
-            //create the Folder in the Parent
+            // create the Folder in the Parent
             $obj = $this->service->files->create($file);
 
             if ($obj instanceof Google_Service_Drive_DriveFile) {
@@ -1686,9 +1648,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Create file and return it's path or false on failed.
      *
-     * @param string $path parent dir path
-     * @param string $name new file name
-     *
+     * @param  string  $path  parent dir path
+     * @param  string  $name  new file name
      * @return string|bool
      *
      * @author Dmitry (dio) Levashov
@@ -1701,9 +1662,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Create symlink. FTP driver does not support symlinks.
      *
-     * @param string $target link target
-     * @param string $path   symlink path
-     *
+     * @param  string  $target  link target
+     * @param  string  $path  symlink path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1716,10 +1676,9 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Copy file into another file.
      *
-     * @param string $source    source file path
-     * @param string $targetDir target directory path
-     * @param string $name      new file name
-     *
+     * @param  string  $source  source file path
+     * @param  string  $targetDir  target directory path
+     * @param  string  $name  new file name
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1729,14 +1688,14 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         $path = $this->_normpath($targetDir.'/'.$name);
 
         try {
-            $file = new \Google_Service_Drive_DriveFile();
+            $file = new \Google_Service_Drive_DriveFile;
             $file->setName($name);
 
-            //Set the Parent id
-            list(, $parentId) = $this->_gd_splitPath($targetDir);
+            // Set the Parent id
+            [, $parentId] = $this->_gd_splitPath($targetDir);
             $file->setParents([$parentId]);
 
-            list(, $srcId) = $this->_gd_splitPath($source);
+            [, $srcId] = $this->_gd_splitPath($source);
             $file = $this->service->files->copy($srcId, $file, ['fields' => self::FETCHFIELDS_GET]);
             $itemId = $file->id;
 
@@ -1752,25 +1711,24 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * Move file into another parent dir.
      * Return new file path or false.
      *
-     * @param string $source source file path
-     * @param string $target target dir path
-     * @param string $name   file name
-     *
+     * @param  string  $source  source file path
+     * @param  string  $target  target dir path
+     * @param  string  $name  file name
      * @return string|bool
      *
      * @author Dmitry (dio) Levashov
      **/
     protected function _move($source, $targetDir, $name)
     {
-        list($removeParents, $itemId) = $this->_gd_splitPath($source);
+        [$removeParents, $itemId] = $this->_gd_splitPath($source);
         $target = $this->_normpath($targetDir.'/'.$itemId);
         try {
-            //moving and renaming a file or directory
-            $files = new \Google_Service_Drive_DriveFile();
+            // moving and renaming a file or directory
+            $files = new \Google_Service_Drive_DriveFile;
             $files->setName($name);
 
-            //Set new Parent and remove old parent
-            list(, $addParents) = $this->_gd_splitPath($targetDir);
+            // Set new Parent and remove old parent
+            [, $addParents] = $this->_gd_splitPath($targetDir);
             $opts = ['addParents' => $addParents, 'removeParents' => $removeParents];
 
             $file = $this->service->files->update($itemId, $files, $opts);
@@ -1788,8 +1746,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Remove file.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1797,10 +1754,10 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     protected function _unlink($path)
     {
         try {
-            $files = new \Google_Service_Drive_DriveFile();
+            $files = new \Google_Service_Drive_DriveFile;
             $files->setTrashed(true);
 
-            list($pid, $itemId) = $this->_gd_splitPath($path);
+            [$pid, $itemId] = $this->_gd_splitPath($path);
             $opts = ['removeParents' => $pid];
             $this->service->files->update($itemId, $files, $opts);
         } catch (Exception $e) {
@@ -1813,8 +1770,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Remove dir.
      *
-     * @param string $path dir path
-     *
+     * @param  string  $path  dir path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -1831,11 +1787,10 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      * Create new file and write into it from file pointer.
      * Return new file path or false on error.
      *
-     * @param resource $fp   file pointer
-     * @param string   $dir  target dir path
-     * @param string   $name file name
-     * @param array    $stat file stat (required by some virtual fs)
-     *
+     * @param  resource  $fp  file pointer
+     * @param  string  $dir  target dir path
+     * @param  string  $name  file name
+     * @param  array  $stat  file stat (required by some virtual fs)
      * @return bool|string
      *
      * @author Dmitry (dio) Levashov
@@ -1845,12 +1800,12 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         if ($name !== '') {
             $path .= '/'.$name;
         }
-        list($parentId, $itemId, $parent) = $this->_gd_splitPath($path);
+        [$parentId, $itemId, $parent] = $this->_gd_splitPath($path);
         if ($name === '') {
             $stat['iid'] = $itemId;
         }
 
-        if (!$stat || empty($stat['iid'])) {
+        if (! $stat || empty($stat['iid'])) {
             $opts = [
                 'q' => sprintf('trashed=false and "%s" in parents and name="%s"', $parentId, $name),
                 'fields' => self::FETCHFIELDS_LIST,
@@ -1865,7 +1820,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
             $mode = 'update';
             $mime = isset($stat['mime']) ? $stat['mime'] : '';
 
-            $file = new Google_Service_Drive_DriveFile();
+            $file = new Google_Service_Drive_DriveFile;
             if ($srcFile) {
                 $mime = $srcFile->getMimeType();
             } else {
@@ -1876,7 +1831,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                 ]);
             }
 
-            if (!$mime) {
+            if (! $mime) {
                 $mime = self::mimetypeInternalDetect($name);
             }
             if ($mime === 'unknown') {
@@ -1889,7 +1844,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                 $size = $stat['size'];
             } else {
                 $fstat = fstat($fp);
-                if (!empty($fstat['size'])) {
+                if (! empty($fstat['size'])) {
                     $size = $fstat['size'];
                 }
             }
@@ -1923,7 +1878,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
                 // Upload the various chunks. $status will be false until the process is
                 // complete.
                 $status = false;
-                while (!$status && !feof($fp)) {
+                while (! $status && ! feof($fp)) {
                     elFinder::extendTimeLimit();
                     // read until you get $chunkSizeBytes from TESTFILE
                     // fread will never return more than 8192 bytes if the stream is read buffered and it does not represent a plain file
@@ -1963,8 +1918,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Get file contents.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string|false
      *
      * @author Dmitry (dio) Levashov
@@ -1974,7 +1928,7 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
         $contents = '';
 
         try {
-            list(, $itemId) = $this->_gd_splitPath($path);
+            [, $itemId] = $this->_gd_splitPath($path);
 
             $contents = $this->service->files->get($itemId, [
                 'alt' => 'media',
@@ -1990,9 +1944,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Write a string to a file.
      *
-     * @param string $path    file path
-     * @param string $content new file content
-     *
+     * @param  string  $path  file path
+     * @param  string  $content  new file content
      * @return bool
      *
      * @author Dmitry (dio) Levashov
@@ -2036,9 +1989,8 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
     /**
      * Unpack archive.
      *
-     * @param string $path archive path
-     * @param array  $arc  archiver command and arguments (same as in $this->archivers)
-     *
+     * @param  string  $path  archive path
+     * @param  array  $arc  archiver command and arguments (same as in $this->archivers)
      * @return true
      *
      * @author Dmitry (dio) Levashov
@@ -2046,30 +1998,28 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      **/
     protected function _unpack($path, $arc)
     {
-        die('Not yet implemented. (_unpack)');
-        //return false;
+        exit('Not yet implemented. (_unpack)');
+        // return false;
     }
 
     /**
      * Recursive symlinks search.
      *
-     * @param string $path file/dir path
-     *
+     * @param  string  $path  file/dir path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
      **/
     protected function _findSymlinks($path)
     {
-        die('Not yet implemented. (_findSymlinks)');
+        exit('Not yet implemented. (_findSymlinks)');
     }
 
     /**
      * Extract files from archive.
      *
-     * @param string $path archive path
-     * @param array  $arc  archiver command and arguments (same as in $this->archivers)
-     *
+     * @param  string  $path  archive path
+     * @param  array  $arc  archiver command and arguments (same as in $this->archivers)
      * @return true
      *
      * @author Dmitry (dio) Levashov,
@@ -2077,17 +2027,16 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      **/
     protected function _extract($path, $arc)
     {
-        die('Not yet implemented. (_extract)');
+        exit('Not yet implemented. (_extract)');
     }
 
     /**
      * Create archive and return its path.
      *
-     * @param string $dir   target dir
-     * @param array  $files files names list
-     * @param string $name  archive name
-     * @param array  $arc   archiver options
-     *
+     * @param  string  $dir  target dir
+     * @param  array  $files  files names list
+     * @param  string  $name  archive name
+     * @param  array  $arc  archiver options
      * @return string|bool
      *
      * @author Dmitry (dio) Levashov,
@@ -2095,6 +2044,6 @@ class elFinderVolumeGoogleDrive extends elFinderVolumeDriver
      **/
     protected function _archive($dir, $files, $name, $arc)
     {
-        die('Not yet implemented. (_archive)');
+        exit('Not yet implemented. (_archive)');
     }
 } // END class

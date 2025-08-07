@@ -17,8 +17,6 @@ class PredisCache extends CacheProvider
     private $client;
 
     /**
-     * @param ClientInterface $client
-     *
      * @return void
      */
     public function __construct(ClientInterface $client)
@@ -32,7 +30,7 @@ class PredisCache extends CacheProvider
     protected function doFetch($id)
     {
         $result = $this->client->get($id);
-        if (null === $result) {
+        if ($result === null) {
             return false;
         }
 
@@ -44,7 +42,7 @@ class PredisCache extends CacheProvider
      */
     protected function doFetchMultiple(array $keys)
     {
-        $fetchedItems = call_user_func_array(array($this->client, 'mget'), $keys);
+        $fetchedItems = call_user_func_array([$this->client, 'mget'], $keys);
 
         return array_map('unserialize', array_filter(array_combine($keys, $fetchedItems)));
     }
@@ -125,12 +123,12 @@ class PredisCache extends CacheProvider
     {
         $info = $this->client->info();
 
-        return array(
-            Cache::STATS_HITS              => $info['Stats']['keyspace_hits'],
-            Cache::STATS_MISSES            => $info['Stats']['keyspace_misses'],
-            Cache::STATS_UPTIME            => $info['Server']['uptime_in_seconds'],
-            Cache::STATS_MEMORY_USAGE      => $info['Memory']['used_memory'],
-            Cache::STATS_MEMORY_AVAILABLE  => false
-        );
+        return [
+            Cache::STATS_HITS => $info['Stats']['keyspace_hits'],
+            Cache::STATS_MISSES => $info['Stats']['keyspace_misses'],
+            Cache::STATS_UPTIME => $info['Server']['uptime_in_seconds'],
+            Cache::STATS_MEMORY_USAGE => $info['Memory']['used_memory'],
+            Cache::STATS_MEMORY_AVAILABLE => false,
+        ];
     }
 }

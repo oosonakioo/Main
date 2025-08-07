@@ -15,17 +15,17 @@ use Symfony\Component\Routing\Matcher\Dumper\DumperCollection;
 
 class DumperCollectionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetRoot()
+    public function test_get_root()
     {
-        $a = new DumperCollection();
+        $a = new DumperCollection;
 
-        $b = new DumperCollection();
+        $b = new DumperCollection;
         $a->add($b);
 
-        $c = new DumperCollection();
+        $c = new DumperCollection;
         $b->add($c);
 
-        $d = new DumperCollection();
+        $d = new DumperCollection;
         $c->add($d);
 
         $this->assertSame($a, $c->getRoot());

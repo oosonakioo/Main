@@ -29,14 +29,15 @@ use Monolog\Logger;
 class SyslogHandler extends AbstractSyslogHandler
 {
     protected $ident;
+
     protected $logopts;
 
     /**
-     * @param string  $ident
-     * @param mixed   $facility
-     * @param int     $level    The minimum logging level at which this handler will be triggered
-     * @param Boolean $bubble   Whether the messages that are handled can bubble up the stack or not
-     * @param int     $logopts  Option flags for the openlog() call, defaults to LOG_PID
+     * @param  string  $ident
+     * @param  mixed  $facility
+     * @param  int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
+     * @param  int  $logopts  Option flags for the openlog() call, defaults to LOG_PID
      */
     public function __construct($ident, $facility = LOG_USER, $level = Logger::DEBUG, $bubble = true, $logopts = LOG_PID)
     {
@@ -59,7 +60,7 @@ class SyslogHandler extends AbstractSyslogHandler
      */
     protected function write(array $record)
     {
-        if (!openlog($this->ident, $this->logopts, $this->facility)) {
+        if (! openlog($this->ident, $this->logopts, $this->facility)) {
             throw new \LogicException('Can\'t open syslog for ident "'.$this->ident.'" and facility "'.$this->facility.'"');
         }
         syslog($this->logLevels[$record['level']], (string) $record['formatted']);

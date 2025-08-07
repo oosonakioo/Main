@@ -2,7 +2,6 @@
 
 namespace spec\Prophecy\Prophecy;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Argument\ArgumentsWildcard;
@@ -16,45 +15,45 @@ use Prophecy\Prophecy\RevealerInterface;
 
 class ObjectProphecySpec extends ObjectBehavior
 {
-    function let(LazyDouble $lazyDouble, ProphecySubjectInterface $double)
+    public function let(LazyDouble $lazyDouble, ProphecySubjectInterface $double)
     {
         $this->beConstructedWith($lazyDouble);
 
         $lazyDouble->getInstance()->willReturn($double);
     }
 
-    function it_implements_ProphecyInterface()
+    public function it_implements_ProphecyInterface()
     {
         $this->shouldBeAnInstanceOf('Prophecy\Prophecy\ProphecyInterface');
     }
 
-    function it_sets_parentClass_during_willExtend_call($lazyDouble)
+    public function it_sets_parentClass_during_willExtend_call($lazyDouble)
     {
         $lazyDouble->setParentClass('123')->shouldBeCalled();
 
         $this->willExtend('123');
     }
 
-    function it_adds_interface_during_willImplement_call($lazyDouble)
+    public function it_adds_interface_during_willImplement_call($lazyDouble)
     {
         $lazyDouble->addInterface('222')->shouldBeCalled();
 
         $this->willImplement('222');
     }
 
-    function it_sets_constructor_arguments_during_willBeConstructedWith_call($lazyDouble)
+    public function it_sets_constructor_arguments_during_willBeConstructedWith_call($lazyDouble)
     {
-        $lazyDouble->setArguments(array(1, 2, 5))->shouldBeCalled();
+        $lazyDouble->setArguments([1, 2, 5])->shouldBeCalled();
 
-        $this->willBeConstructedWith(array(1, 2, 5));
+        $this->willBeConstructedWith([1, 2, 5]);
     }
 
-    function it_does_not_have_method_prophecies_by_default()
+    public function it_does_not_have_method_prophecies_by_default()
     {
         $this->getMethodProphecies()->shouldHaveCount(0);
     }
 
-    function it_should_get_method_prophecies_by_method_name(
+    public function it_should_get_method_prophecies_by_method_name(
         MethodProphecy $method1,
         MethodProphecy $method2,
         ArgumentsWildcard $arguments
@@ -72,37 +71,37 @@ class ObjectProphecySpec extends ObjectBehavior
         $methods[0]->getMethodName()->shouldReturn('setName');
     }
 
-    function it_should_return_empty_array_if_no_method_prophecies_found()
+    public function it_should_return_empty_array_if_no_method_prophecies_found()
     {
         $methods = $this->getMethodProphecies('setName');
         $methods->shouldHaveCount(0);
     }
 
-    function it_should_proxy_makeProphecyMethodCall_to_CallCenter($lazyDouble, CallCenter $callCenter)
+    public function it_should_proxy_makeProphecyMethodCall_to_CallCenter($lazyDouble, CallCenter $callCenter)
     {
         $this->beConstructedWith($lazyDouble, $callCenter);
 
-        $callCenter->makeCall($this->getWrappedObject(), 'setName', array('everzet'))->willReturn(42);
+        $callCenter->makeCall($this->getWrappedObject(), 'setName', ['everzet'])->willReturn(42);
 
-        $this->makeProphecyMethodCall('setName', array('everzet'))->shouldReturn(42);
+        $this->makeProphecyMethodCall('setName', ['everzet'])->shouldReturn(42);
     }
 
-    function it_should_reveal_arguments_and_return_values_from_callCenter(
+    public function it_should_reveal_arguments_and_return_values_from_callCenter(
         $lazyDouble,
         CallCenter $callCenter,
         RevealerInterface $revealer
     ) {
         $this->beConstructedWith($lazyDouble, $callCenter, $revealer);
 
-        $revealer->reveal(array('question'))->willReturn(array('life'));
+        $revealer->reveal(['question'])->willReturn(['life']);
         $revealer->reveal('answer')->willReturn(42);
 
-        $callCenter->makeCall($this->getWrappedObject(), 'setName', array('life'))->willReturn('answer');
+        $callCenter->makeCall($this->getWrappedObject(), 'setName', ['life'])->willReturn('answer');
 
-        $this->makeProphecyMethodCall('setName', array('question'))->shouldReturn(42);
+        $this->makeProphecyMethodCall('setName', ['question'])->shouldReturn(42);
     }
 
-    function it_should_proxy_getProphecyMethodCalls_to_CallCenter(
+    public function it_should_proxy_getProphecyMethodCalls_to_CallCenter(
         $lazyDouble,
         CallCenter $callCenter,
         ArgumentsWildcard $wildcard,
@@ -110,12 +109,12 @@ class ObjectProphecySpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($lazyDouble, $callCenter);
 
-        $callCenter->findCalls('setName', $wildcard)->willReturn(array($call));
+        $callCenter->findCalls('setName', $wildcard)->willReturn([$call]);
 
-        $this->findProphecyMethodCalls('setName', $wildcard)->shouldReturn(array($call));
+        $this->findProphecyMethodCalls('setName', $wildcard)->shouldReturn([$call]);
     }
 
-    function its_addMethodProphecy_adds_method_prophecy(
+    public function its_addMethodProphecy_adds_method_prophecy(
         MethodProphecy $methodProphecy,
         ArgumentsWildcard $argumentsWildcard
     ) {
@@ -124,12 +123,12 @@ class ObjectProphecySpec extends ObjectBehavior
 
         $this->addMethodProphecy($methodProphecy);
 
-        $this->getMethodProphecies()->shouldReturn(array(
-            'getUsername' => array($methodProphecy)
-        ));
+        $this->getMethodProphecies()->shouldReturn([
+            'getUsername' => [$methodProphecy],
+        ]);
     }
 
-    function its_addMethodProphecy_handles_prophecies_with_different_arguments(
+    public function its_addMethodProphecy_handles_prophecies_with_different_arguments(
         MethodProphecy $methodProphecy1,
         MethodProphecy $methodProphecy2,
         ArgumentsWildcard $argumentsWildcard1,
@@ -144,15 +143,15 @@ class ObjectProphecySpec extends ObjectBehavior
         $this->addMethodProphecy($methodProphecy1);
         $this->addMethodProphecy($methodProphecy2);
 
-        $this->getMethodProphecies()->shouldReturn(array(
-            'getUsername' => array(
+        $this->getMethodProphecies()->shouldReturn([
+            'getUsername' => [
                 $methodProphecy1,
                 $methodProphecy2,
-            )
-        ));
+            ],
+        ]);
     }
 
-    function its_addMethodProphecy_handles_prophecies_for_different_methods(
+    public function its_addMethodProphecy_handles_prophecies_for_different_methods(
         MethodProphecy $methodProphecy1,
         MethodProphecy $methodProphecy2,
         ArgumentsWildcard $argumentsWildcard1,
@@ -167,17 +166,17 @@ class ObjectProphecySpec extends ObjectBehavior
         $this->addMethodProphecy($methodProphecy1);
         $this->addMethodProphecy($methodProphecy2);
 
-        $this->getMethodProphecies()->shouldReturn(array(
-            'getUsername' => array(
-                $methodProphecy1
-            ),
-            'isUsername' => array(
-                $methodProphecy2
-            )
-        ));
+        $this->getMethodProphecies()->shouldReturn([
+            'getUsername' => [
+                $methodProphecy1,
+            ],
+            'isUsername' => [
+                $methodProphecy2,
+            ],
+        ]);
     }
 
-    function its_addMethodProphecy_throws_exception_when_method_has_no_ArgumentsWildcard(MethodProphecy $methodProphecy)
+    public function its_addMethodProphecy_throws_exception_when_method_has_no_ArgumentsWildcard(MethodProphecy $methodProphecy)
     {
         $methodProphecy->getArgumentsWildcard()->willReturn(null);
         $methodProphecy->getObjectProphecy()->willReturn($this);
@@ -188,12 +187,12 @@ class ObjectProphecySpec extends ObjectBehavior
         );
     }
 
-    function it_returns_null_after_checkPredictions_call_if_there_is_no_method_prophecies()
+    public function it_returns_null_after_checkPredictions_call_if_there_is_no_method_prophecies()
     {
         $this->checkProphecyMethodsPredictions()->shouldReturn(null);
     }
 
-    function it_throws_AggregateException_during_checkPredictions_if_predictions_fail(
+    public function it_throws_AggregateException_during_checkPredictions_if_predictions_fail(
         MethodProphecy $methodProphecy1, MethodProphecy $methodProphecy2,
         ArgumentsWildcard $argumentsWildcard1,
         ArgumentsWildcard $argumentsWildcard2
@@ -215,7 +214,7 @@ class ObjectProphecySpec extends ObjectBehavior
             ->duringCheckProphecyMethodsPredictions();
     }
 
-    function it_returns_new_MethodProphecy_instance_for_arbitrary_call(
+    public function it_returns_new_MethodProphecy_instance_for_arbitrary_call(
         Doubler $doubler,
         ProphecySubjectInterface $reflection
     ) {
@@ -226,7 +225,7 @@ class ObjectProphecySpec extends ObjectBehavior
         $return->getMethodName()->shouldReturn('getProphecy');
     }
 
-    function it_returns_same_MethodProphecy_for_same_registered_signature(
+    public function it_returns_same_MethodProphecy_for_same_registered_signature(
         Doubler $doubler,
         ProphecySubjectInterface $reflection
     ) {
@@ -238,7 +237,7 @@ class ObjectProphecySpec extends ObjectBehavior
         $methodProphecy2->shouldBe($methodProphecy1);
     }
 
-    function it_returns_new_MethodProphecy_for_different_signatures(
+    public function it_returns_new_MethodProphecy_for_different_signatures(
         Doubler $doubler,
         ProphecySubjectInterface $reflection
     ) {
@@ -253,14 +252,14 @@ class ObjectProphecySpec extends ObjectBehavior
         $methodProphecy2->shouldNotBe($methodProphecy1);
     }
 
-    function it_returns_new_MethodProphecy_for_all_callback_signatures(
+    public function it_returns_new_MethodProphecy_for_all_callback_signatures(
         Doubler $doubler,
         ProphecySubjectInterface $reflection
     ) {
         $doubler->double(Argument::any())->willReturn($reflection);
 
-        $this->addMethodProphecy($methodProphecy1 = $this->getProphecy(function(){}));
-        $methodProphecy2 = $this->getProphecy(function(){});
+        $this->addMethodProphecy($methodProphecy1 = $this->getProphecy(function () {}));
+        $methodProphecy2 = $this->getProphecy(function () {});
 
         $methodProphecy2->shouldNotBe($methodProphecy1);
     }
@@ -268,12 +267,13 @@ class ObjectProphecySpec extends ObjectBehavior
 
 class ObjectProphecySpecFixtureA
 {
-	public $errors;
+    public $errors;
 }
 
 class ObjectProphecySpecFixtureB extends ObjectProphecySpecFixtureA
 {
     public $errors;
+
     public $value = null;
 
     public function __construct($value)

@@ -8,11 +8,11 @@ abstract class Swift_Transport_StreamBuffer_AbstractStreamBufferAcceptanceTest e
 
     protected function setUp()
     {
-        if (true == getenv('TRAVIS')) {
+        if (getenv('TRAVIS') == true) {
             $this->markTestSkipped(
                 'Will fail on travis-ci if not skipped due to travis blocking '.
                 'socket mailing tcp connections.'
-             );
+            );
         }
 
         $this->_buffer = new Swift_Transport_StreamBuffer(
@@ -20,7 +20,7 @@ abstract class Swift_Transport_StreamBuffer_AbstractStreamBufferAcceptanceTest e
         );
     }
 
-    public function testReadLine()
+    public function test_read_line()
     {
         $this->_initializeBuffer();
 
@@ -33,7 +33,7 @@ abstract class Swift_Transport_StreamBuffer_AbstractStreamBufferAcceptanceTest e
         $this->_buffer->terminate();
     }
 
-    public function testWrite()
+    public function test_write()
     {
         $this->_initializeBuffer();
 
@@ -52,7 +52,7 @@ abstract class Swift_Transport_StreamBuffer_AbstractStreamBufferAcceptanceTest e
         $this->_buffer->terminate();
     }
 
-    public function testBindingOtherStreamsMirrorsWriteOperations()
+    public function test_binding_other_streams_mirrors_write_operations()
     {
         $this->_initializeBuffer();
 
@@ -79,7 +79,7 @@ abstract class Swift_Transport_StreamBuffer_AbstractStreamBufferAcceptanceTest e
         $this->_buffer->write('y');
     }
 
-    public function testBindingOtherStreamsMirrorsFlushOperations()
+    public function test_binding_other_streams_mirrors_flush_operations()
     {
         $this->_initializeBuffer();
 
@@ -97,7 +97,7 @@ abstract class Swift_Transport_StreamBuffer_AbstractStreamBufferAcceptanceTest e
         $this->_buffer->flushBuffers();
     }
 
-    public function testUnbindingStreamPreventsFurtherWrites()
+    public function test_unbinding_stream_prevents_further_writes()
     {
         $this->_initializeBuffer();
 

@@ -44,8 +44,6 @@ class FunctionReturnInWriteContextPass extends CodeCleanerPass
      * @throws FatalErrorException if a function is used as an argument in the isset
      * @throws FatalErrorException if a function is used as an argument in the empty, only for PHP < 5.5
      * @throws FatalErrorException if a value is assigned to a function
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
@@ -58,7 +56,7 @@ class FunctionReturnInWriteContextPass extends CodeCleanerPass
             }
         } elseif ($node instanceof IssetNode) {
             foreach ($node->vars as $var) {
-                if (!$this->isCallNode($var)) {
+                if (! $this->isCallNode($var)) {
                     continue;
                 }
 
@@ -68,7 +66,7 @@ class FunctionReturnInWriteContextPass extends CodeCleanerPass
                     throw new FatalErrorException(self::EXCEPTION_MESSAGE);
                 }
             }
-        } elseif ($node instanceof EmptyNode && !$this->isPhp55 && $this->isCallNode($node->expr)) {
+        } elseif ($node instanceof EmptyNode && ! $this->isPhp55 && $this->isCallNode($node->expr)) {
             throw new FatalErrorException(self::EXCEPTION_MESSAGE);
         } elseif ($node instanceof AssignNode && $this->isCallNode($node->var)) {
             throw new FatalErrorException(self::EXCEPTION_MESSAGE);

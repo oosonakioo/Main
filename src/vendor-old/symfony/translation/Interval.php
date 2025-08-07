@@ -36,9 +36,8 @@ class Interval
     /**
      * Tests if the given number is in the math interval.
      *
-     * @param int    $number   A number
-     * @param string $interval An interval
-     *
+     * @param  int  $number  A number
+     * @param  string  $interval  An interval
      * @return bool
      *
      * @throws \InvalidArgumentException
@@ -47,7 +46,7 @@ class Interval
     {
         $interval = trim($interval);
 
-        if (!preg_match('/^'.self::getIntervalRegexp().'$/x', $interval, $matches)) {
+        if (! preg_match('/^'.self::getIntervalRegexp().'$/x', $interval, $matches)) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid interval.', $interval));
         }
 
@@ -62,9 +61,8 @@ class Interval
             $rightNumber = self::convertNumber($matches['right']);
 
             return
-                ('[' === $matches['left_delimiter'] ? $number >= $leftNumber : $number > $leftNumber)
-                && (']' === $matches['right_delimiter'] ? $number <= $rightNumber : $number < $rightNumber)
-            ;
+                ($matches['left_delimiter'] === '[' ? $number >= $leftNumber : $number > $leftNumber)
+                && ($matches['right_delimiter'] === ']' ? $number <= $rightNumber : $number < $rightNumber);
         }
 
         return false;
@@ -96,9 +94,9 @@ EOF;
 
     private static function convertNumber($number)
     {
-        if ('-Inf' === $number) {
+        if ($number === '-Inf') {
             return log(0);
-        } elseif ('+Inf' === $number || 'Inf' === $number) {
+        } elseif ($number === '+Inf' || $number === 'Inf') {
             return -log(0);
         }
 

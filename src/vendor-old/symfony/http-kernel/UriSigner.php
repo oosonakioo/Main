@@ -23,7 +23,7 @@ class UriSigner
     /**
      * Constructor.
      *
-     * @param string $secret A secret
+     * @param  string  $secret  A secret
      */
     public function __construct($secret)
     {
@@ -36,8 +36,7 @@ class UriSigner
      * The given URI is signed by adding a _hash query string parameter
      * which value depends on the URI and the secret.
      *
-     * @param string $uri A URI to sign
-     *
+     * @param  string  $uri  A URI to sign
      * @return string The signed URI
      */
     public function sign($uri)
@@ -46,12 +45,12 @@ class UriSigner
         if (isset($url['query'])) {
             parse_str($url['query'], $params);
         } else {
-            $params = array();
+            $params = [];
         }
 
         $uri = $this->buildUrl($url, $params);
 
-        return $uri.(false === strpos($uri, '?') ? '?' : '&').'_hash='.$this->computeHash($uri);
+        return $uri.(strpos($uri, '?') === false ? '?' : '&').'_hash='.$this->computeHash($uri);
     }
 
     /**
@@ -61,8 +60,7 @@ class UriSigner
      * (as it is generated that way by the sign() method, it should
      * never be a problem).
      *
-     * @param string $uri A signed URI
-     *
+     * @param  string  $uri  A signed URI
      * @return bool True if the URI is signed correctly, false otherwise
      */
     public function check($uri)
@@ -71,7 +69,7 @@ class UriSigner
         if (isset($url['query'])) {
             parse_str($url['query'], $params);
         } else {
-            $params = array();
+            $params = [];
         }
 
         if (empty($params['_hash'])) {
@@ -89,7 +87,7 @@ class UriSigner
         return urlencode(base64_encode(hash_hmac('sha256', $uri, $this->secret, true)));
     }
 
-    private function buildUrl(array $url, array $params = array())
+    private function buildUrl(array $url, array $params = [])
     {
         ksort($params, SORT_STRING);
         $url['query'] = http_build_query($params, '', '&');
@@ -98,7 +96,7 @@ class UriSigner
         $host = isset($url['host']) ? $url['host'] : '';
         $port = isset($url['port']) ? ':'.$url['port'] : '';
         $user = isset($url['user']) ? $url['user'] : '';
-        $pass = isset($url['pass']) ? ':'.$url['pass']  : '';
+        $pass = isset($url['pass']) ? ':'.$url['pass'] : '';
         $pass = ($user || $pass) ? "$pass@" : '';
         $path = isset($url['path']) ? $url['path'] : '';
         $query = isset($url['query']) && $url['query'] ? '?'.$url['query'] : '';

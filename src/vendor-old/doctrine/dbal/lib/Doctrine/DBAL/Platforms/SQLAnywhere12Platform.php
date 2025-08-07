@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Schema\Sequence;
  * SAP Sybase SQL Anywhere 12 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -37,10 +39,10 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
      */
     public function getCreateSequenceSQL(Sequence $sequence)
     {
-        return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) .
-            ' INCREMENT BY ' . $sequence->getAllocationSize() .
-            ' START WITH ' . $sequence->getInitialValue() .
-            ' MINVALUE ' . $sequence->getInitialValue();
+        return 'CREATE SEQUENCE '.$sequence->getQuotedName($this).
+            ' INCREMENT BY '.$sequence->getAllocationSize().
+            ' START WITH '.$sequence->getInitialValue().
+            ' MINVALUE '.$sequence->getInitialValue();
     }
 
     /**
@@ -48,8 +50,8 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
      */
     public function getAlterSequenceSQL(Sequence $sequence)
     {
-        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) .
-            ' INCREMENT BY ' . $sequence->getAllocationSize();
+        return 'ALTER SEQUENCE '.$sequence->getQuotedName($this).
+            ' INCREMENT BY '.$sequence->getAllocationSize();
     }
 
     /**
@@ -77,7 +79,7 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
             $sequence = $sequence->getQuotedName($this);
         }
 
-        return 'DROP SEQUENCE ' . $sequence;
+        return 'DROP SEQUENCE '.$sequence;
     }
 
     /**
@@ -93,7 +95,7 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
      */
     public function getSequenceNextValSQL($sequenceName)
     {
-        return 'SELECT ' . $sequenceName . '.NEXTVAL';
+        return 'SELECT '.$sequenceName.'.NEXTVAL';
     }
 
     /**
@@ -109,8 +111,8 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
      */
     protected function getAdvancedIndexOptionsSQL(Index $index)
     {
-        if ( ! $index->isPrimary() && $index->isUnique() && $index->hasFlag('with_nulls_not_distinct')) {
-            return ' WITH NULLS NOT DISTINCT' . parent::getAdvancedIndexOptionsSQL($index);
+        if (! $index->isPrimary() && $index->isUnique() && $index->hasFlag('with_nulls_not_distinct')) {
+            return ' WITH NULLS NOT DISTINCT'.parent::getAdvancedIndexOptionsSQL($index);
         }
 
         return parent::getAdvancedIndexOptionsSQL($index);

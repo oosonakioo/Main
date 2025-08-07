@@ -1,13 +1,13 @@
 <?php
 
-
 class Swift_FileByteStreamConsecutiveReadCalls extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     *
      * @expectedException \Swift_IoException
      */
-    public function shouldThrowExceptionOnConsecutiveRead()
+    public function should_throw_exception_on_consecutive_read()
     {
         $fbs = new \Swift_ByteStream_FileByteStream('does not exist');
         try {

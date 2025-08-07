@@ -4,7 +4,7 @@ class Swift_Transport_SendmailTransportTest extends Swift_Transport_AbstractSmtp
 {
     protected function _getTransport($buf, $dispatcher = null, $command = '/usr/sbin/sendmail -bs')
     {
-        if (!$dispatcher) {
+        if (! $dispatcher) {
             $dispatcher = $this->_createEventDispatcher();
         }
         $transport = new Swift_Transport_SendmailTransport($buf, $dispatcher);
@@ -15,7 +15,7 @@ class Swift_Transport_SendmailTransportTest extends Swift_Transport_AbstractSmtp
 
     protected function _getSendmail($buf, $dispatcher = null)
     {
-        if (!$dispatcher) {
+        if (! $dispatcher) {
             $dispatcher = $this->_createEventDispatcher();
         }
         $sendmail = new Swift_Transport_SendmailTransport($buf, $dispatcher);
@@ -23,7 +23,7 @@ class Swift_Transport_SendmailTransportTest extends Swift_Transport_AbstractSmtp
         return $sendmail;
     }
 
-    public function testCommandCanBeSetAndFetched()
+    public function test_command_can_be_set_and_fetched()
     {
         $buf = $this->_getBuffer();
         $sendmail = $this->_getSendmail($buf);
@@ -34,96 +34,96 @@ class Swift_Transport_SendmailTransportTest extends Swift_Transport_AbstractSmtp
         $this->assertEquals('/usr/sbin/sendmail -oi -t', $sendmail->getCommand());
     }
 
-    public function testSendingMessageIn_t_ModeUsesSimplePipe()
+    public function test_sending_message_in_t_mode_uses_simple_pipe()
     {
         $buf = $this->_getBuffer();
         $sendmail = $this->_getSendmail($buf);
         $message = $this->_createMessage();
 
         $message->shouldReceive('getTo')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('foo@bar' => 'Foobar', 'zip@button' => 'Zippy'));
+            ->zeroOrMoreTimes()
+            ->andReturn(['foo@bar' => 'Foobar', 'zip@button' => 'Zippy']);
         $message->shouldReceive('toByteStream')
-                ->once()
-                ->with($buf);
+            ->once()
+            ->with($buf);
         $buf->shouldReceive('initialize')
             ->once();
         $buf->shouldReceive('terminate')
             ->once();
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array("\r\n" => "\n", "\n." => "\n.."));
+            ->with(["\r\n" => "\n", "\n." => "\n.."]);
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array());
+            ->with([]);
 
         $sendmail->setCommand('/usr/sbin/sendmail -t');
         $this->assertEquals(2, $sendmail->send($message));
     }
 
-    public function testSendingIn_t_ModeWith_i_FlagDoesntEscapeDot()
+    public function test_sending_in_t_mode_with_i_flag_doesnt_escape_dot()
     {
         $buf = $this->_getBuffer();
         $sendmail = $this->_getSendmail($buf);
         $message = $this->_createMessage();
 
         $message->shouldReceive('getTo')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('foo@bar' => 'Foobar', 'zip@button' => 'Zippy'));
+            ->zeroOrMoreTimes()
+            ->andReturn(['foo@bar' => 'Foobar', 'zip@button' => 'Zippy']);
         $message->shouldReceive('toByteStream')
-                ->once()
-                ->with($buf);
+            ->once()
+            ->with($buf);
         $buf->shouldReceive('initialize')
             ->once();
         $buf->shouldReceive('terminate')
             ->once();
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array("\r\n" => "\n"));
+            ->with(["\r\n" => "\n"]);
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array());
+            ->with([]);
 
         $sendmail->setCommand('/usr/sbin/sendmail -i -t');
         $this->assertEquals(2, $sendmail->send($message));
     }
 
-    public function testSendingInTModeWith_oi_FlagDoesntEscapeDot()
+    public function test_sending_in_t_mode_with_oi_flag_doesnt_escape_dot()
     {
         $buf = $this->_getBuffer();
         $sendmail = $this->_getSendmail($buf);
         $message = $this->_createMessage();
 
         $message->shouldReceive('getTo')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('foo@bar' => 'Foobar', 'zip@button' => 'Zippy'));
+            ->zeroOrMoreTimes()
+            ->andReturn(['foo@bar' => 'Foobar', 'zip@button' => 'Zippy']);
         $message->shouldReceive('toByteStream')
-                ->once()
-                ->with($buf);
+            ->once()
+            ->with($buf);
         $buf->shouldReceive('initialize')
             ->once();
         $buf->shouldReceive('terminate')
             ->once();
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array("\r\n" => "\n"));
+            ->with(["\r\n" => "\n"]);
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array());
+            ->with([]);
 
         $sendmail->setCommand('/usr/sbin/sendmail -oi -t');
         $this->assertEquals(2, $sendmail->send($message));
     }
 
-    public function testSendingMessageRegeneratesId()
+    public function test_sending_message_regenerates_id()
     {
         $buf = $this->_getBuffer();
         $sendmail = $this->_getSendmail($buf);
         $message = $this->_createMessage();
 
         $message->shouldReceive('getTo')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('foo@bar' => 'Foobar', 'zip@button' => 'Zippy'));
+            ->zeroOrMoreTimes()
+            ->andReturn(['foo@bar' => 'Foobar', 'zip@button' => 'Zippy']);
         $message->shouldReceive('generateId');
         $buf->shouldReceive('initialize')
             ->once();
@@ -131,16 +131,16 @@ class Swift_Transport_SendmailTransportTest extends Swift_Transport_AbstractSmtp
             ->once();
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array("\r\n" => "\n", "\n." => "\n.."));
+            ->with(["\r\n" => "\n", "\n." => "\n.."]);
         $buf->shouldReceive('setWriteTranslations')
             ->once()
-            ->with(array());
+            ->with([]);
 
         $sendmail->setCommand('/usr/sbin/sendmail -t');
         $this->assertEquals(2, $sendmail->send($message));
     }
 
-    public function testFluidInterface()
+    public function test_fluid_interface()
     {
         $buf = $this->_getBuffer();
         $sendmail = $this->_getTransport($buf);

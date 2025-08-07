@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -14,14 +15,14 @@ class MultipartStream implements StreamInterface
     private $boundary;
 
     /**
-     * @param array  $elements Array of associative arrays, each containing a
-     *                         required "name" key mapping to the form field,
-     *                         name, a required "contents" key mapping to a
-     *                         StreamInterface/resource/string, an optional
-     *                         "headers" associative array of custom headers,
-     *                         and an optional "filename" key mapping to a
-     *                         string to send as the filename in the part.
-     * @param string $boundary You can optionally provide a specific boundary
+     * @param  array  $elements  Array of associative arrays, each containing a
+     *                           required "name" key mapping to the form field,
+     *                           name, a required "contents" key mapping to a
+     *                           StreamInterface/resource/string, an optional
+     *                           "headers" associative array of custom headers,
+     *                           and an optional "filename" key mapping to a
+     *                           string to send as the filename in the part.
+     * @param  string  $boundary  You can optionally provide a specific boundary
      *
      * @throws \InvalidArgumentException
      */
@@ -56,7 +57,7 @@ class MultipartStream implements StreamInterface
             $str .= "{$key}: {$value}\r\n";
         }
 
-        return "--{$this->boundary}\r\n" . trim($str) . "\r\n\r\n";
+        return "--{$this->boundary}\r\n".trim($str)."\r\n\r\n";
     }
 
     /**
@@ -64,7 +65,7 @@ class MultipartStream implements StreamInterface
      */
     protected function createStream(array $elements)
     {
-        $stream = new AppendStream();
+        $stream = new AppendStream;
 
         foreach ($elements as $element) {
             $this->addElement($stream, $element);
@@ -79,7 +80,7 @@ class MultipartStream implements StreamInterface
     private function addElement(AppendStream $stream, array $element)
     {
         foreach (['contents', 'name'] as $key) {
-            if (!array_key_exists($key, $element)) {
+            if (! array_key_exists($key, $element)) {
                 throw new \InvalidArgumentException("A '{$key}' key is required");
             }
         }
@@ -93,7 +94,7 @@ class MultipartStream implements StreamInterface
             }
         }
 
-        list($body, $headers) = $this->createElement(
+        [$body, $headers] = $this->createElement(
             $element['name'],
             $element['contents'],
             isset($element['filename']) ? $element['filename'] : null,
@@ -112,7 +113,7 @@ class MultipartStream implements StreamInterface
     {
         // Set a default content-disposition header if one was no provided
         $disposition = $this->getHeader($headers, 'content-disposition');
-        if (!$disposition) {
+        if (! $disposition) {
             $headers['Content-Disposition'] = ($filename === '0' || $filename)
                 ? sprintf('form-data; name="%s"; filename="%s"',
                     $name,
@@ -122,7 +123,7 @@ class MultipartStream implements StreamInterface
 
         // Set a default content-length header if one was no provided
         $length = $this->getHeader($headers, 'content-length');
-        if (!$length) {
+        if (! $length) {
             if ($length = $stream->getSize()) {
                 $headers['Content-Length'] = (string) $length;
             }
@@ -130,7 +131,7 @@ class MultipartStream implements StreamInterface
 
         // Set a default Content-Type if one was not supplied
         $type = $this->getHeader($headers, 'content-type');
-        if (!$type && ($filename === '0' || $filename)) {
+        if (! $type && ($filename === '0' || $filename)) {
             if ($type = mimetype_from_filename($filename)) {
                 $headers['Content-Type'] = $type;
             }

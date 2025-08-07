@@ -1,4 +1,5 @@
 <?php
+
 require_once 'BankAccount.php';
 
 class BankAccountTest extends PHPUnit_Framework_TestCase
@@ -13,7 +14,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     /**
      * @covers BankAccount::getBalance
      */
-    public function testBalanceIsInitiallyZero()
+    public function test_balance_is_initially_zero()
     {
         $this->assertEquals(0, $this->ba->getBalance());
     }
@@ -21,7 +22,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     /**
      * @covers BankAccount::withdrawMoney
      */
-    public function testBalanceCannotBecomeNegative()
+    public function test_balance_cannot_become_negative()
     {
         try {
             $this->ba->withdrawMoney(1);
@@ -37,7 +38,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     /**
      * @covers BankAccount::depositMoney
      */
-    public function testBalanceCannotBecomeNegative2()
+    public function test_balance_cannot_become_negative2()
     {
         try {
             $this->ba->depositMoney(-1);
@@ -55,7 +56,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
      * @covers BankAccount::depositMoney
      * @covers BankAccount::withdrawMoney
      */
-    public function testDepositWithdrawMoney()
+    public function test_deposit_withdraw_money()
     {
         $this->assertEquals(0, $this->ba->getBalance());
         $this->ba->depositMoney(1);

@@ -19,19 +19,19 @@ class FlowdockFormatterTest extends TestCase
     /**
      * @covers Monolog\Formatter\FlowdockFormatter::format
      */
-    public function testFormat()
+    public function test_format()
     {
         $formatter = new FlowdockFormatter('test_source', 'source@test.com');
         $record = $this->getRecord();
 
-        $expected = array(
+        $expected = [
             'source' => 'test_source',
             'from_address' => 'source@test.com',
             'subject' => 'in test_source: WARNING - test',
             'content' => 'test',
-            'tags' => array('#logs', '#warning', '#test'),
+            'tags' => ['#logs', '#warning', '#test'],
             'project' => 'test_source',
-        );
+        ];
         $formatted = $formatter->format($record);
 
         $this->assertEquals($expected, $formatted['flowdock']);
@@ -40,13 +40,13 @@ class FlowdockFormatterTest extends TestCase
     /**
      * @ covers Monolog\Formatter\FlowdockFormatter::formatBatch
      */
-    public function testFormatBatch()
+    public function test_format_batch()
     {
         $formatter = new FlowdockFormatter('test_source', 'source@test.com');
-        $records = array(
+        $records = [
             $this->getRecord(Logger::WARNING),
             $this->getRecord(Logger::DEBUG),
-        );
+        ];
         $formatted = $formatter->formatBatch($records);
 
         $this->assertArrayHasKey('flowdock', $formatted[0]);

@@ -39,23 +39,17 @@ class Swift_Transport_NullTransport implements Swift_Transport
     /**
      * Starts this Transport mechanism.
      */
-    public function start()
-    {
-    }
+    public function start() {}
 
     /**
      * Stops this Transport mechanism.
      */
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     /**
      * Sends the given message.
      *
-     * @param Swift_Mime_Message $message
-     * @param string[]           $failedRecipients An array of failures by-reference
-     *
+     * @param  string[]  $failedRecipients  An array of failures by-reference
      * @return int The number of sent emails
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
@@ -76,15 +70,13 @@ class Swift_Transport_NullTransport implements Swift_Transport
             count((array) $message->getTo())
             + count((array) $message->getCc())
             + count((array) $message->getBcc())
-            );
+        );
 
         return $count;
     }
 
     /**
      * Register a plugin.
-     *
-     * @param Swift_Events_EventListener $plugin
      */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {

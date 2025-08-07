@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -25,32 +25,32 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class MethodWithNullableReturnType extends MockeryTestCase
 {
-    public function nonNullablePrimitive() : string
+    public function nonNullablePrimitive(): string
     {
         return 'test';
     }
 
-    public function nullablePrimitive() : ?string
+    public function nullablePrimitive(): ?string
     {
         return null;
     }
 
-    public function nonNullableSelf() : self
+    public function nonNullableSelf(): self
     {
         return $this;
     }
 
-    public function nullableSelf() : ?self
+    public function nullableSelf(): ?self
     {
         return null;
     }
 
-    public function nonNullableClass() : MethodWithNullableReturnType
+    public function nonNullableClass(): MethodWithNullableReturnType
     {
         return $this;
     }
 
-    public function nullableClass() : ?MethodWithNullableReturnType
+    public function nullableClass(): ?MethodWithNullableReturnType
     {
         return null;
     }

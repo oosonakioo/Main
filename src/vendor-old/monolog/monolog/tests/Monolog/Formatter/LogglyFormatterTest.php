@@ -18,9 +18,9 @@ class LogglyFormatterTest extends TestCase
     /**
      * @covers Monolog\Formatter\LogglyFormatter::__construct
      */
-    public function testConstruct()
+    public function test_construct()
     {
-        $formatter = new LogglyFormatter();
+        $formatter = new LogglyFormatter;
         $this->assertEquals(LogglyFormatter::BATCH_MODE_NEWLINES, $formatter->getBatchMode());
         $formatter = new LogglyFormatter(LogglyFormatter::BATCH_MODE_JSON);
         $this->assertEquals(LogglyFormatter::BATCH_MODE_JSON, $formatter->getBatchMode());
@@ -29,12 +29,12 @@ class LogglyFormatterTest extends TestCase
     /**
      * @covers Monolog\Formatter\LogglyFormatter::format
      */
-    public function testFormat()
+    public function test_format()
     {
-        $formatter = new LogglyFormatter();
+        $formatter = new LogglyFormatter;
         $record = $this->getRecord();
         $formatted_decoded = json_decode($formatter->format($record), true);
-        $this->assertArrayHasKey("timestamp", $formatted_decoded);
-        $this->assertEquals(new \DateTime($formatted_decoded["timestamp"]), $record["datetime"]);
+        $this->assertArrayHasKey('timestamp', $formatted_decoded);
+        $this->assertEquals(new \DateTime($formatted_decoded['timestamp']), $record['datetime']);
     }
 }

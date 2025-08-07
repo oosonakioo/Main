@@ -16,8 +16,7 @@ namespace Mockery\Tests;
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -27,7 +26,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 class GeneratorTest extends MockeryTestCase
 {
     /** @test */
-    public function shouldNotDuplicateDoublyInheritedMethods()
+    public function should_not_duplicate_doubly_inherited_methods()
     {
         $container = new \Mockery\Container;
         $mock = $container->mock('Mockery\Tests\Evenement_EventEmitter', 'Mockery\Tests\Chatroulette_ConnectionInterface');
@@ -41,9 +40,7 @@ interface Evenement_EventEmitterInterface
 
 class Evenement_EventEmitter implements Evenement_EventEmitterInterface
 {
-    public function on($name, $callback)
-    {
-    }
+    public function on($name, $callback) {}
 }
 
 interface React_StreamInterface extends Evenement_EventEmitterInterface
@@ -61,6 +58,4 @@ interface React_WritableStreamInterface extends React_StreamInterface
     public function write($data);
 }
 
-interface Chatroulette_ConnectionInterface extends React_ReadableStreamInterface, React_WritableStreamInterface
-{
-}
+interface Chatroulette_ConnectionInterface extends React_ReadableStreamInterface, React_WritableStreamInterface {}

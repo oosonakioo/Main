@@ -28,10 +28,10 @@ abstract class AbstractEncoder
     /**
      * Output quality of encoder instance
      *
-     * @var integer
+     * @var int
      */
     public $quality;
-    
+
     /**
      * Processes and returns encoded image as JPEG string
      *
@@ -77,9 +77,8 @@ abstract class AbstractEncoder
     /**
      * Process a given image
      *
-     * @param  Image   $image
      * @param  string  $format
-     * @param  integer $quality
+     * @param  int  $quality
      * @return Image
      */
     public function process(Image $image, $format = null, $quality = null)
@@ -145,7 +144,7 @@ abstract class AbstractEncoder
             case 'image/vnd.adobe.photoshop':
                 $this->result = $this->processPsd();
                 break;
-                
+
             default:
                 throw new \Intervention\Image\Exception\NotSupportedException(
                     "Encoding format ({$format}) is not supported."
@@ -175,7 +174,7 @@ abstract class AbstractEncoder
     /**
      * Sets image to process
      *
-     * @param Image $image
+     * @param  Image  $image
      */
     protected function setImage($image)
     {
@@ -185,7 +184,7 @@ abstract class AbstractEncoder
     /**
      * Determines output format
      *
-     * @param string $format
+     * @param  string  $format
      */
     protected function setFormat($format = null)
     {
@@ -201,7 +200,7 @@ abstract class AbstractEncoder
     /**
      * Determines output quality
      *
-     * @param integer $quality
+     * @param  int  $quality
      */
     protected function setQuality($quality)
     {

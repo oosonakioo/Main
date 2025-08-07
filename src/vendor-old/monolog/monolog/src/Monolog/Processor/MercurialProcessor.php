@@ -21,6 +21,7 @@ use Monolog\Logger;
 class MercurialProcessor
 {
     private $level;
+
     private static $cache;
 
     public function __construct($level = Logger::DEBUG)
@@ -29,7 +30,6 @@ class MercurialProcessor
     }
 
     /**
-     * @param  array $record
      * @return array
      */
     public function __invoke(array $record)
@@ -52,12 +52,12 @@ class MercurialProcessor
 
         $result = explode(' ', trim(`hg id -nb`));
         if (count($result) >= 3) {
-            return self::$cache = array(
+            return self::$cache = [
                 'branch' => $result[1],
                 'revision' => $result[2],
-            );
+            ];
         }
 
-        return self::$cache = array();
+        return self::$cache = [];
     }
 }

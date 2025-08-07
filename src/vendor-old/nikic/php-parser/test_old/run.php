@@ -3,13 +3,14 @@
 error_reporting(E_ALL | E_STRICT);
 ini_set('short_open_tag', false);
 
-if ('cli' !== php_sapi_name()) {
-    die('This script is designed for running on the command line.');
+if (php_sapi_name() !== 'cli') {
+    exit('This script is designed for running on the command line.');
 }
 
-function showHelp($error) {
-    die($error . "\n\n" .
-<<<OUTPUT
+function showHelp($error)
+{
+    exit($error."\n\n".
+<<<'OUTPUT'
 This script has to be called with the following signature:
 
     php run.php [--no-progress] testType pathToTestFiles
@@ -24,14 +25,14 @@ OUTPUT
     );
 }
 
-$options = array();
-$arguments = array();
+$options = [];
+$arguments = [];
 
 // remove script name from argv
 array_shift($argv);
 
 foreach ($argv as $arg) {
-    if ('-' === $arg[0]) {
+    if ($arg[0] === '-') {
         $options[] = $arg;
     } else {
         $arguments[] = $arg;
@@ -60,20 +61,20 @@ $dir = $arguments[1];
 switch ($testType) {
     case 'Symfony':
         $version = 'Php5';
-        $fileFilter = function($path) {
-            return preg_match('~\.php(?:\.cache)?$~', $path) && false === strpos($path, 'skeleton');
+        $fileFilter = function ($path) {
+            return preg_match('~\.php(?:\.cache)?$~', $path) && strpos($path, 'skeleton') === false;
         };
-        $codeExtractor = function($file, $code) {
+        $codeExtractor = function ($file, $code) {
             return $code;
         };
         break;
     case 'PHP5':
     case 'PHP7':
-    $version = $testType === 'PHP5' ? 'Php5' : 'Php7';
-        $fileFilter = function($path) {
+        $version = $testType === 'PHP5' ? 'Php5' : 'Php7';
+        $fileFilter = function ($path) {
             return preg_match('~\.phpt$~', $path);
         };
-        $codeExtractor = function($file, $code) {
+        $codeExtractor = function ($file, $code) {
             if (preg_match('~(?:
 # skeleton files
   ext.gmp.tests.001
@@ -99,7 +100,7 @@ switch ($testType) {
                 return null;
             }
 
-            if (!preg_match('~--FILE--\s*(.*?)--[A-Z]+--~s', $code, $matches)) {
+            if (! preg_match('~--FILE--\s*(.*?)--[A-Z]+--~s', $code, $matches)) {
                 return null;
             }
             if (preg_match('~--EXPECT(?:F|REGEX)?--\s*(?:Parse|Fatal) error~', $code)) {
@@ -113,13 +114,13 @@ switch ($testType) {
         showHelp('Test type must be one of: PHP5, PHP7 or Symfony');
 }
 
-require_once dirname(__FILE__) . '/../lib/PhpParser/Autoloader.php';
+require_once dirname(__FILE__).'/../lib/PhpParser/Autoloader.php';
 PhpParser\Autoloader::register();
 
-$parserName    = 'PhpParser\Parser\\' . $version;
-$parser        = new $parserName(new PhpParser\Lexer\Emulative);
+$parserName = 'PhpParser\Parser\\'.$version;
+$parser = new $parserName(new PhpParser\Lexer\Emulative);
 $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-$nodeDumper    = new PhpParser\NodeDumper;
+$nodeDumper = new PhpParser\NodeDumper;
 
 $parseFail = $ppFail = $compareFail = $count = 0;
 
@@ -127,10 +128,9 @@ $readTime = $parseTime = $ppTime = $reparseTime = $compareTime = 0;
 $totalStartTime = microtime(true);
 
 foreach (new RecursiveIteratorIterator(
-             new RecursiveDirectoryIterator($dir),
-             RecursiveIteratorIterator::LEAVES_ONLY)
-         as $file) {
-    if (!$fileFilter($file)) {
+    new RecursiveDirectoryIterator($dir),
+    RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
+    if (! $fileFilter($file)) {
         continue;
     }
 
@@ -144,10 +144,10 @@ foreach (new RecursiveIteratorIterator(
 
     set_time_limit(10);
 
-    ++$count;
+    $count++;
 
     if ($showProgress) {
-        echo substr(str_pad('Testing file ' . $count . ': ' . substr($file, strlen($dir)), 79), 0, 79), "\r";
+        echo substr(str_pad('Testing file '.$count.': '.substr($file, strlen($dir)), 79), 0, 79), "\r";
     }
 
     try {
@@ -156,7 +156,7 @@ foreach (new RecursiveIteratorIterator(
         $parseTime += microtime(true) - $startTime;
 
         $startTime = microtime(true);
-        $code = '<?php' . "\n" . $prettyPrinter->prettyPrint($stmts);
+        $code = '<?php'."\n".$prettyPrinter->prettyPrint($stmts);
         $ppTime += microtime(true) - $startTime;
 
         try {
@@ -168,13 +168,13 @@ foreach (new RecursiveIteratorIterator(
             $same = $nodeDumper->dump($stmts) == $nodeDumper->dump($ppStmts);
             $compareTime += microtime(true) - $startTime;
 
-            if (!$same) {
+            if (! $same) {
                 echo $file, ":\n    Result of initial parse and parse after pretty print differ\n";
                 if ($verbose) {
                     echo "Pretty printer output:\n=====\n$code\n=====\n\n";
                 }
 
-                ++$compareFail;
+                $compareFail++;
             }
         } catch (PhpParser\Error $e) {
             echo $file, ":\n    Parse of pretty print failed with message: {$e->getMessage()}\n";
@@ -182,42 +182,42 @@ foreach (new RecursiveIteratorIterator(
                 echo "Pretty printer output:\n=====\n$code\n=====\n\n";
             }
 
-            ++$ppFail;
+            $ppFail++;
         }
     } catch (PhpParser\Error $e) {
         echo $file, ":\n    Parse failed with message: {$e->getMessage()}\n";
 
-        ++$parseFail;
+        $parseFail++;
     }
 }
 
-if (0 === $parseFail && 0 === $ppFail && 0 === $compareFail) {
+if ($parseFail === 0 && $ppFail === 0 && $compareFail === 0) {
     $exit = 0;
     echo "\n\n", 'All tests passed.', "\n";
 } else {
     $exit = 1;
     echo "\n\n", '==========', "\n\n", 'There were: ', "\n";
-    if (0 !== $parseFail) {
+    if ($parseFail !== 0) {
         echo '    ', $parseFail,   ' parse failures.',        "\n";
     }
-    if (0 !== $ppFail) {
+    if ($ppFail !== 0) {
         echo '    ', $ppFail,      ' pretty print failures.', "\n";
     }
-    if (0 !== $compareFail) {
+    if ($compareFail !== 0) {
         echo '    ', $compareFail, ' compare failures.',      "\n";
     }
 }
 
 echo "\n",
-     'Tested files:         ', $count,        "\n",
-     "\n",
-     'Reading files took:   ', $readTime,    "\n",
-     'Parsing took:         ', $parseTime,   "\n",
-     'Pretty printing took: ', $ppTime,      "\n",
-     'Reparsing took:       ', $reparseTime, "\n",
-     'Comparing took:       ', $compareTime, "\n",
-     "\n",
-     'Total time:           ', microtime(true) - $totalStartTime, "\n",
-     'Maximum memory usage: ', memory_get_peak_usage(true), "\n";
+'Tested files:         ', $count,        "\n",
+"\n",
+'Reading files took:   ', $readTime,    "\n",
+'Parsing took:         ', $parseTime,   "\n",
+'Pretty printing took: ', $ppTime,      "\n",
+'Reparsing took:       ', $reparseTime, "\n",
+'Comparing took:       ', $compareTime, "\n",
+"\n",
+'Total time:           ', microtime(true) - $totalStartTime, "\n",
+'Maximum memory usage: ', memory_get_peak_usage(true), "\n";
 
 exit($exit);

@@ -36,15 +36,14 @@ class AcceptHeaderItem
     /**
      * @var array
      */
-    private $attributes = array();
+    private $attributes = [];
 
     /**
      * Constructor.
      *
-     * @param string $value
-     * @param array  $attributes
+     * @param  string  $value
      */
-    public function __construct($value, array $attributes = array())
+    public function __construct($value, array $attributes = [])
     {
         $this->value = $value;
         foreach ($attributes as $name => $value) {
@@ -55,21 +54,20 @@ class AcceptHeaderItem
     /**
      * Builds an AcceptHeaderInstance instance from a string.
      *
-     * @param string $itemValue
-     *
+     * @param  string  $itemValue
      * @return AcceptHeaderItem
      */
     public static function fromString($itemValue)
     {
         $bits = preg_split('/\s*(?:;*("[^"]+");*|;*(\'[^\']+\');*|;+)\s*/', $itemValue, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $value = array_shift($bits);
-        $attributes = array();
+        $attributes = [];
 
         $lastNullAttribute = null;
         foreach ($bits as $bit) {
             if (($start = substr($bit, 0, 1)) === ($end = substr($bit, -1)) && ($start === '"' || $start === '\'')) {
                 $attributes[$lastNullAttribute] = substr($bit, 1, -1);
-            } elseif ('=' === $end) {
+            } elseif ($end === '=') {
                 $lastNullAttribute = $bit = substr($bit, 0, -1);
                 $attributes[$bit] = null;
             } else {
@@ -101,8 +99,7 @@ class AcceptHeaderItem
     /**
      * Set the item value.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return AcceptHeaderItem
      */
     public function setValue($value)
@@ -125,8 +122,7 @@ class AcceptHeaderItem
     /**
      * Set the item quality.
      *
-     * @param float $quality
-     *
+     * @param  float  $quality
      * @return AcceptHeaderItem
      */
     public function setQuality($quality)
@@ -149,8 +145,7 @@ class AcceptHeaderItem
     /**
      * Set the item index.
      *
-     * @param int $index
-     *
+     * @param  int  $index
      * @return AcceptHeaderItem
      */
     public function setIndex($index)
@@ -173,8 +168,7 @@ class AcceptHeaderItem
     /**
      * Tests if an attribute exists.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     public function hasAttribute($name)
@@ -185,9 +179,8 @@ class AcceptHeaderItem
     /**
      * Returns an attribute by its name.
      *
-     * @param string $name
-     * @param mixed  $default
-     *
+     * @param  string  $name
+     * @param  mixed  $default
      * @return mixed
      */
     public function getAttribute($name, $default = null)
@@ -208,14 +201,13 @@ class AcceptHeaderItem
     /**
      * Set an attribute.
      *
-     * @param string $name
-     * @param string $value
-     *
+     * @param  string  $name
+     * @param  string  $value
      * @return AcceptHeaderItem
      */
     public function setAttribute($name, $value)
     {
-        if ('q' === $name) {
+        if ($name === 'q') {
             $this->quality = (float) $value;
         } else {
             $this->attributes[$name] = (string) $value;

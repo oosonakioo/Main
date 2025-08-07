@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\Translation\Loader;
 
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Translation\Exception\InvalidResourceException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Symfony\Component\Config\Resource\FileResource;
 
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
@@ -25,23 +25,23 @@ abstract class FileLoader extends ArrayLoader
      */
     public function load($resource, $locale, $domain = 'messages')
     {
-        if (!stream_is_local($resource)) {
+        if (! stream_is_local($resource)) {
             throw new InvalidResourceException(sprintf('This is not a local file "%s".', $resource));
         }
 
-        if (!file_exists($resource)) {
+        if (! file_exists($resource)) {
             throw new NotFoundResourceException(sprintf('File "%s" not found.', $resource));
         }
 
         $messages = $this->loadResource($resource);
 
         // empty resource
-        if (null === $messages) {
-            $messages = array();
+        if ($messages === null) {
+            $messages = [];
         }
 
         // not an array
-        if (!is_array($messages)) {
+        if (! is_array($messages)) {
             throw new InvalidResourceException(sprintf('Unable to load file "%s".', $resource));
         }
 

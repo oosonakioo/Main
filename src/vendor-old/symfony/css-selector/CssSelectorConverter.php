@@ -29,22 +29,21 @@ class CssSelectorConverter
     private $translator;
 
     /**
-     * @param bool $html Whether HTML support should be enabled. Disable it for XML documents
+     * @param  bool  $html  Whether HTML support should be enabled. Disable it for XML documents
      */
     public function __construct($html = true)
     {
-        $this->translator = new Translator();
+        $this->translator = new Translator;
 
         if ($html) {
             $this->translator->registerExtension(new HtmlExtension($this->translator));
         }
 
         $this->translator
-            ->registerParserShortcut(new EmptyStringParser())
-            ->registerParserShortcut(new ElementParser())
-            ->registerParserShortcut(new ClassParser())
-            ->registerParserShortcut(new HashParser())
-        ;
+            ->registerParserShortcut(new EmptyStringParser)
+            ->registerParserShortcut(new ElementParser)
+            ->registerParserShortcut(new ClassParser)
+            ->registerParserShortcut(new HashParser);
     }
 
     /**
@@ -53,9 +52,8 @@ class CssSelectorConverter
      * Optionally, a prefix can be added to the resulting XPath
      * expression with the $prefix parameter.
      *
-     * @param string $cssExpr The CSS expression
-     * @param string $prefix  An optional prefix for the XPath expression
-     *
+     * @param  string  $cssExpr  The CSS expression
+     * @param  string  $prefix  An optional prefix for the XPath expression
      * @return string
      */
     public function toXPath($cssExpr, $prefix = 'descendant-or-self::')

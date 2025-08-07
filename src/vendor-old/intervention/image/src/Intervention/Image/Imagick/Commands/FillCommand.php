@@ -3,16 +3,16 @@
 namespace Intervention\Image\Imagick\Commands;
 
 use Intervention\Image\Image;
-use Intervention\Image\Imagick\Decoder;
 use Intervention\Image\Imagick\Color;
+use Intervention\Image\Imagick\Decoder;
 
 class FillCommand extends \Intervention\Image\Commands\AbstractCommand
 {
     /**
      * Fills image with color or pattern
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -57,7 +57,7 @@ class FillCommand extends \Intervention\Image\Commands\AbstractCommand
                 // replace image core
                 $image->setCore($canvas);
 
-            // flood fill with color
+                // flood fill with color
             } elseif ($filling instanceof Color) {
 
                 // create canvas with filling
@@ -91,7 +91,7 @@ class FillCommand extends \Intervention\Image\Commands\AbstractCommand
             } elseif ($filling instanceof Color) {
 
                 // fill whole image with color
-                $draw = new \ImagickDraw();
+                $draw = new \ImagickDraw;
                 $draw->setFillColor($filling->getPixel());
                 $draw->rectangle(0, 0, $image->getWidth(), $image->getHeight());
                 $image->getCore()->drawImage($draw);

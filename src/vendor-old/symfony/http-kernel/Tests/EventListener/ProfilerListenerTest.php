@@ -12,10 +12,10 @@
 namespace Symfony\Component\HttpKernel\Tests\EventListener;
 
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\EventListener\ProfilerListener;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\ProfilerListener;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -24,7 +24,7 @@ class ProfilerListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test a master and sub request with an exception and `onlyException` profiler option enabled.
      */
-    public function testKernelTerminate()
+    public function test_kernel_terminate()
     {
         $profile = $this->getMockBuilder('Symfony\Component\HttpKernel\Profiler\Profile')
             ->disableOriginalConstructor()
@@ -52,7 +52,7 @@ class ProfilerListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $requestStack = new RequestStack();
+        $requestStack = new RequestStack;
         $requestStack->push($masterRequest);
 
         $onlyException = true;

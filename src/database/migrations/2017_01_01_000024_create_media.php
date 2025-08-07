@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateMedia extends Migration
 {
@@ -18,7 +18,7 @@ class CreateMedia extends Migration
             $table->string('images', 250);
             $table->string('videos', 500);
             $table->string('downloads', 500);
-			      $table->boolean('pin_home_page')->default(false);
+            $table->boolean('pin_home_page')->default(false);
             $table->boolean('active')->default(false);
             $table->integer('sort')->unsigned();
             $table->timestamps();

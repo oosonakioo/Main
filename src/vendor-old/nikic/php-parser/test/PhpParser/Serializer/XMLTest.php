@@ -9,16 +9,17 @@ class XMLTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PhpParser\Serializer\XML<extended>
      */
-    public function testSerialize() {
-        $code = <<<CODE
+    public function test_serialize()
+    {
+        $code = <<<'CODE'
 <?php
 // comment
 /** doc comment */
-function functionName(&\$a = 0, \$b = 1.0) {
+function functionName(&$a = 0, $b = 1.0) {
     echo 'Foo';
 }
 CODE;
-        $xml = <<<XML
+        $xml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <AST xmlns:node="http://nikic.github.com/PHPParser/XML/node" xmlns:subNode="http://nikic.github.com/PHPParser/XML/subNode" xmlns:attribute="http://nikic.github.com/PHPParser/XML/attribute" xmlns:scalar="http://nikic.github.com/PHPParser/XML/scalar">
  <scalar:array>
@@ -153,7 +154,7 @@ CODE;
 </AST>
 XML;
 
-        $parser     = new PhpParser\Parser\Php7(new PhpParser\Lexer);
+        $parser = new PhpParser\Parser\Php7(new PhpParser\Lexer);
         $serializer = new XML;
 
         $code = str_replace("\r\n", "\n", $code);
@@ -163,10 +164,12 @@ XML;
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage Unexpected node type
      */
-    public function testError() {
+    public function test_error()
+    {
         $serializer = new XML;
-        $serializer->serialize(array(new \stdClass));
+        $serializer->serialize([new \stdClass]);
     }
 }

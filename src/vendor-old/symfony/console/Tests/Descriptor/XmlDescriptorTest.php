@@ -17,7 +17,7 @@ class XmlDescriptorTest extends AbstractDescriptorTest
 {
     protected function getDescriptor()
     {
-        return new XmlDescriptor();
+        return new XmlDescriptor;
     }
 
     protected function getFormat()

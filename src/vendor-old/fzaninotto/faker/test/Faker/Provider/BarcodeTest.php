@@ -9,15 +9,15 @@ class BarcodeTest extends \PHPUnit_Framework_TestCase
 {
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Barcode($faker));
         $faker->seed(0);
         $this->faker = $faker;
     }
 
-    public function testEan8()
+    public function test_ean8()
     {
         $code = $this->faker->ean8();
         $this->assertRegExp('/^\d{8}$/i', $code);
@@ -26,7 +26,7 @@ class BarcodeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(TestableBarcode::eanChecksum($codeWithoutChecksum), $checksum);
     }
 
-    public function testEan13()
+    public function test_ean13()
     {
         $code = $this->faker->ean13();
         $this->assertRegExp('/^\d{13}$/i', $code);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Schema\Table;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaCreateTableEventArgs extends SchemaEventArgs
@@ -54,19 +56,13 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
     /**
      * @var array
      */
-    private $_sql = array();
+    private $_sql = [];
 
-    /**
-     * @param \Doctrine\DBAL\Schema\Table               $table
-     * @param array                                     $columns
-     * @param array                                     $options
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     */
     public function __construct(Table $table, array $columns, array $options, AbstractPlatform $platform)
     {
-        $this->_table    = $table;
-        $this->_columns  = $columns;
-        $this->_options  = $options;
+        $this->_table = $table;
+        $this->_columns = $columns;
+        $this->_options = $options;
         $this->_platform = $platform;
     }
 
@@ -103,8 +99,7 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
     }
 
     /**
-     * @param string|array $sql
-     *
+     * @param  string|array  $sql
      * @return \Doctrine\DBAL\Event\SchemaCreateTableEventArgs
      */
     public function addSql($sql)

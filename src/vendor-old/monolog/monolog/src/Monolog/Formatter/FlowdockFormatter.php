@@ -29,8 +29,8 @@ class FlowdockFormatter implements FormatterInterface
     private $sourceEmail;
 
     /**
-     * @param string $source
-     * @param string $sourceEmail
+     * @param  string  $source
+     * @param  string  $sourceEmail
      */
     public function __construct($source, $sourceEmail)
     {
@@ -43,14 +43,14 @@ class FlowdockFormatter implements FormatterInterface
      */
     public function format(array $record)
     {
-        $tags = array(
+        $tags = [
             '#logs',
-            '#' . strtolower($record['level_name']),
-            '#' . $record['channel'],
-        );
+            '#'.strtolower($record['level_name']),
+            '#'.$record['channel'],
+        ];
 
         foreach ($record['extra'] as $value) {
-            $tags[] = '#' . $value;
+            $tags[] = '#'.$value;
         }
 
         $subject = sprintf(
@@ -60,14 +60,14 @@ class FlowdockFormatter implements FormatterInterface
             $this->getShortMessage($record['message'])
         );
 
-        $record['flowdock'] = array(
+        $record['flowdock'] = [
             'source' => $this->source,
             'from_address' => $this->sourceEmail,
             'subject' => $subject,
             'content' => $record['message'],
             'tags' => $tags,
             'project' => $this->source,
-        );
+        ];
 
         return $record;
     }
@@ -77,7 +77,7 @@ class FlowdockFormatter implements FormatterInterface
      */
     public function formatBatch(array $records)
     {
-        $formatted = array();
+        $formatted = [];
 
         foreach ($records as $record) {
             $formatted[] = $this->format($record);
@@ -87,15 +87,14 @@ class FlowdockFormatter implements FormatterInterface
     }
 
     /**
-     * @param string $message
-     *
+     * @param  string  $message
      * @return string
      */
     public function getShortMessage($message)
     {
         static $hasMbString;
 
-        if (null === $hasMbString) {
+        if ($hasMbString === null) {
             $hasMbString = function_exists('mb_strlen');
         }
 
@@ -103,11 +102,11 @@ class FlowdockFormatter implements FormatterInterface
 
         if ($hasMbString) {
             if (mb_strlen($message, 'UTF-8') > $maxLength) {
-                $message = mb_substr($message, 0, $maxLength - 4, 'UTF-8') . ' ...';
+                $message = mb_substr($message, 0, $maxLength - 4, 'UTF-8').' ...';
             }
         } else {
             if (strlen($message) > $maxLength) {
-                $message = substr($message, 0, $maxLength - 4) . ' ...';
+                $message = substr($message, 0, $maxLength - 4).' ...';
             }
         }
 

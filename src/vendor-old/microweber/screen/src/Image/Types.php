@@ -8,10 +8,10 @@ use Screen\Image\Types\Type;
 
 class Types
 {
-    protected static $typesMap = array(
+    protected static $typesMap = [
         Jpg::FORMAT => 'Screen\Image\Types\Jpg',
         Png::FORMAT => 'Screen\Image\Types\Png',
-    );
+    ];
 
     /**
      * Returns all the available image types
@@ -26,7 +26,6 @@ class Types
     /**
      * Check if an image type is available
      *
-     * @param $type
      *
      * @return bool
      */
@@ -38,22 +37,22 @@ class Types
     /**
      * Returns an instance of the requested image type
      *
-     * @param string $type Image type
-     *
+     * @param  string  $type  Image type
      * @return Type
+     *
      * @throws \Exception
      */
     public static function getClass($type)
     {
-        if (!static::isAvailable($type)) {
+        if (! static::isAvailable($type)) {
             throw new \Exception(
-                "Invalid image format '{$type}'. " .
-                "Allowed formats are: " . implode(', ', static::available())
+                "Invalid image format '{$type}'. ".
+                'Allowed formats are: '.implode(', ', static::available())
             );
         }
 
         $className = static::$typesMap[strtolower($type)];
 
-        return new $className();
+        return new $className;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,6 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -43,17 +45,17 @@ class ImportCommand extends Command
     protected function configure()
     {
         $this
-        ->setName('dbal:import')
-        ->setDescription('Import SQL file(s) directly to Database.')
-        ->setDefinition(array(
-            new InputArgument(
-                'file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'File path(s) of SQL to be executed.'
-            )
-        ))
-        ->setHelp(<<<EOT
+            ->setName('dbal:import')
+            ->setDescription('Import SQL file(s) directly to Database.')
+            ->setDefinition([
+                new InputArgument(
+                    'file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'File path(s) of SQL to be executed.'
+                ),
+            ])
+            ->setHelp(<<<'EOT'
 Import SQL file(s) directly to Database.
 EOT
-        );
+            );
     }
 
     /**
@@ -68,15 +70,15 @@ EOT
                 $filePath = realpath($fileName);
 
                 // Phar compatibility.
-                if (false === $filePath) {
+                if ($filePath === false) {
                     $filePath = $fileName;
                 }
 
-                if ( ! file_exists($filePath)) {
+                if (! file_exists($filePath)) {
                     throw new \InvalidArgumentException(
                         sprintf("SQL file '<info>%s</info>' does not exist.", $filePath)
                     );
-                } elseif ( ! is_readable($filePath)) {
+                } elseif (! is_readable($filePath)) {
                     throw new \InvalidArgumentException(
                         sprintf("SQL file '<info>%s</info>' does not have read permissions.", $filePath)
                     );
@@ -101,9 +103,9 @@ EOT
                             $lines++;
                         } while ($stmt->nextRowset());
 
-                        $output->write(sprintf('%d statements executed!', $lines) . PHP_EOL);
+                        $output->write(sprintf('%d statements executed!', $lines).PHP_EOL);
                     } catch (\PDOException $e) {
-                        $output->write('error!' . PHP_EOL);
+                        $output->write('error!'.PHP_EOL);
 
                         throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
                     }
@@ -113,11 +115,11 @@ EOT
                     $rs = $stmt->execute();
 
                     if ($rs) {
-                        $output->writeln('OK!' . PHP_EOL);
+                        $output->writeln('OK!'.PHP_EOL);
                     } else {
                         $error = $stmt->errorInfo();
 
-                        $output->write('error!' . PHP_EOL);
+                        $output->write('error!'.PHP_EOL);
 
                         throw new \RuntimeException($error[2], $error[0]);
                     }

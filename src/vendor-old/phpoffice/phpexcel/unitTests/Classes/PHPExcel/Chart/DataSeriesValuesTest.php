@@ -1,55 +1,52 @@
 <?php
 
-
 class DataSeriesValuesTest extends PHPUnit_Framework_TestCase
 {
-
-    public function setUp()
+    protected function setUp()
     {
-        if (!defined('PHPEXCEL_ROOT'))
-        {
-            define('PHPEXCEL_ROOT', APPLICATION_PATH . '/');
+        if (! defined('PHPEXCEL_ROOT')) {
+            define('PHPEXCEL_ROOT', APPLICATION_PATH.'/');
         }
-        require_once(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
-	}
+        require_once PHPEXCEL_ROOT.'PHPExcel/Autoloader.php';
+    }
 
-	public function testSetDataType()
-	{
-		$dataTypeValues = array(
-			'Number',
-			'String'
-		);
+    public function test_set_data_type()
+    {
+        $dataTypeValues = [
+            'Number',
+            'String',
+        ];
 
-		$testInstance = new PHPExcel_Chart_DataSeriesValues;
+        $testInstance = new PHPExcel_Chart_DataSeriesValues;
 
-		foreach($dataTypeValues as $dataTypeValue) {
-			$result = $testInstance->setDataType($dataTypeValue);
-			$this->assertTrue($result instanceof PHPExcel_Chart_DataSeriesValues);
-		}
-	}
+        foreach ($dataTypeValues as $dataTypeValue) {
+            $result = $testInstance->setDataType($dataTypeValue);
+            $this->assertTrue($result instanceof PHPExcel_Chart_DataSeriesValues);
+        }
+    }
 
-	public function testSetInvalidDataTypeThrowsException()
-	{
-		$testInstance = new PHPExcel_Chart_DataSeriesValues;
+    public function test_set_invalid_data_type_throws_exception()
+    {
+        $testInstance = new PHPExcel_Chart_DataSeriesValues;
 
-		try {
-			$result = $testInstance->setDataType('BOOLEAN');
-		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'Invalid datatype for chart data series values');
-			return;
-		}
-		$this->fail('An expected exception has not been raised.');
-	}
+        try {
+            $result = $testInstance->setDataType('BOOLEAN');
+        } catch (Exception $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid datatype for chart data series values');
 
-	public function testGetDataType()
-	{
-		$dataTypeValue = 'String';
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+    }
 
-		$testInstance = new PHPExcel_Chart_DataSeriesValues;
-		$setValue = $testInstance->setDataType($dataTypeValue);
+    public function test_get_data_type()
+    {
+        $dataTypeValue = 'String';
 
-		$result = $testInstance->getDataType();
-		$this->assertEquals($dataTypeValue,$result);
-	}
+        $testInstance = new PHPExcel_Chart_DataSeriesValues;
+        $setValue = $testInstance->setDataType($dataTypeValue);
 
+        $result = $testInstance->getDataType();
+        $this->assertEquals($dataTypeValue, $result);
+    }
 }

@@ -9,7 +9,6 @@
  */
 class FSTools_File
 {
-
     /** Filename of file this object represents */
     protected $name;
 
@@ -21,6 +20,7 @@ class FSTools_File
 
     /**
      * Filename of file you wish to instantiate.
+     *
      * @note This file need not exist
      */
     public function __construct($name, $fs = false)
@@ -30,13 +30,20 @@ class FSTools_File
     }
 
     /** Returns the filename of the file. */
-    public function getName() {return $this->name;}
+    public function getName()
+    {
+        return $this->name;
+    }
 
     /** Returns directory of the file without trailing slash */
-    public function getDirectory() {return $this->fs->dirname($this->name);}
+    public function getDirectory()
+    {
+        return $this->fs->dirname($this->name);
+    }
 
     /**
      * Retrieves the contents of a file
+     *
      * @todo Throw an exception if file doesn't exist
      */
     public function get()
@@ -70,6 +77,7 @@ class FSTools_File
 
     /**
      * Chmod a file
+     *
      * @note We ignore errors because of some weird owner trickery due
      *       to SVN duality
      */
@@ -81,61 +89,85 @@ class FSTools_File
     /** Opens file's handle */
     public function open($mode)
     {
-        if ($this->handle) $this->close();
+        if ($this->handle) {
+            $this->close();
+        }
         $this->handle = $this->fs->fopen($this->name, $mode);
+
         return true;
     }
 
     /** Closes file's handle */
     public function close()
     {
-        if (!$this->handle) return false;
+        if (! $this->handle) {
+            return false;
+        }
         $status = $this->fs->fclose($this->handle);
         $this->handle = false;
+
         return $status;
     }
 
     /** Retrieves a line from an open file, with optional max length $length */
     public function getLine($length = null)
     {
-        if (!$this->handle) $this->open('r');
-        if ($length === null) return $this->fs->fgets($this->handle);
-        else return $this->fs->fgets($this->handle, $length);
+        if (! $this->handle) {
+            $this->open('r');
+        }
+        if ($length === null) {
+            return $this->fs->fgets($this->handle);
+        } else {
+            return $this->fs->fgets($this->handle, $length);
+        }
     }
 
     /** Retrieves a character from an open file */
     public function getChar()
     {
-        if (!$this->handle) $this->open('r');
+        if (! $this->handle) {
+            $this->open('r');
+        }
+
         return $this->fs->fgetc($this->handle);
     }
 
     /** Retrieves an $length bytes of data from an open data */
     public function read($length)
     {
-        if (!$this->handle) $this->open('r');
+        if (! $this->handle) {
+            $this->open('r');
+        }
+
         return $this->fs->fread($this->handle, $length);
     }
 
     /** Writes to an open file */
     public function put($string)
     {
-        if (!$this->handle) $this->open('a');
+        if (! $this->handle) {
+            $this->open('a');
+        }
+
         return $this->fs->fwrite($this->handle, $string);
     }
 
     /** Returns TRUE if the end of the file has been reached */
     public function eof()
     {
-        if (!$this->handle) return true;
+        if (! $this->handle) {
+            return true;
+        }
+
         return $this->fs->feof($this->handle);
     }
 
     public function __destruct()
     {
-        if ($this->handle) $this->close();
+        if ($this->handle) {
+            $this->close();
+        }
     }
-
 }
 
 // vim: et sw=4 sts=4

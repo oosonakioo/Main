@@ -2,16 +2,14 @@
 
 namespace spec\Prophecy\Doubler\Generator;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Prophecy\Doubler\Generator\Node\ArgumentNode;
 use Prophecy\Doubler\Generator\Node\ClassNode;
 use Prophecy\Doubler\Generator\Node\MethodNode;
 
 class ClassCodeGeneratorSpec extends ObjectBehavior
 {
-    function it_generates_proper_php_code_for_specific_ClassNode(
+    public function it_generates_proper_php_code_for_specific_ClassNode(
         ClassNode $class,
         MethodNode $method1,
         MethodNode $method2,
@@ -23,17 +21,17 @@ class ClassCodeGeneratorSpec extends ObjectBehavior
         ArgumentNode $argument31
     ) {
         $class->getParentClass()->willReturn('RuntimeException');
-        $class->getInterfaces()->willReturn(array(
-            'Prophecy\Doubler\Generator\MirroredInterface', 'ArrayAccess', 'ArrayIterator'
-        ));
-        $class->getProperties()->willReturn(array('name' => 'public', 'email' => 'private'));
-        $class->getMethods()->willReturn(array($method1, $method2, $method3, $method4));
+        $class->getInterfaces()->willReturn([
+            'Prophecy\Doubler\Generator\MirroredInterface', 'ArrayAccess', 'ArrayIterator',
+        ]);
+        $class->getProperties()->willReturn(['name' => 'public', 'email' => 'private']);
+        $class->getMethods()->willReturn([$method1, $method2, $method3, $method4]);
 
         $method1->getName()->willReturn('getName');
         $method1->getVisibility()->willReturn('public');
         $method1->returnsReference()->willReturn(false);
         $method1->isStatic()->willReturn(true);
-        $method1->getArguments()->willReturn(array($argument11, $argument12));
+        $method1->getArguments()->willReturn([$argument11, $argument12]);
         $method1->hasReturnType()->willReturn(true);
         $method1->getReturnType()->willReturn('string');
         $method1->hasNullableReturnType()->willReturn(true);
@@ -43,7 +41,7 @@ class ClassCodeGeneratorSpec extends ObjectBehavior
         $method2->getVisibility()->willReturn('protected');
         $method2->returnsReference()->willReturn(false);
         $method2->isStatic()->willReturn(false);
-        $method2->getArguments()->willReturn(array($argument21));
+        $method2->getArguments()->willReturn([$argument21]);
         $method2->hasReturnType()->willReturn(false);
         $method2->hasNullableReturnType()->willReturn(true);
         $method2->getCode()->willReturn('return $this->email;');
@@ -52,7 +50,7 @@ class ClassCodeGeneratorSpec extends ObjectBehavior
         $method3->getVisibility()->willReturn('public');
         $method3->returnsReference()->willReturn(true);
         $method3->isStatic()->willReturn(false);
-        $method3->getArguments()->willReturn(array($argument31));
+        $method3->getArguments()->willReturn([$argument31]);
         $method3->hasReturnType()->willReturn(true);
         $method3->getReturnType()->willReturn('string');
         $method3->hasNullableReturnType()->willReturn(false);
@@ -62,7 +60,7 @@ class ClassCodeGeneratorSpec extends ObjectBehavior
         $method4->getVisibility()->willReturn('public');
         $method4->returnsReference()->willReturn(false);
         $method4->isStatic()->willReturn(false);
-        $method4->getArguments()->willReturn(array());
+        $method4->getArguments()->willReturn([]);
         $method4->hasReturnType()->willReturn(true);
         $method4->getReturnType()->willReturn('void');
         $method4->hasNullableReturnType()->willReturn(false);
@@ -171,11 +169,11 @@ return;
 }
 PHP;
         }
-        $expected = strtr($expected, array("\r\n" => "\n", "\r" => "\n"));
+        $expected = strtr($expected, ["\r\n" => "\n", "\r" => "\n"]);
         $code->shouldBe($expected);
     }
 
-    function it_generates_proper_php_code_for_variadics(
+    public function it_generates_proper_php_code_for_variadics(
         ClassNode $class,
         MethodNode $method1,
         MethodNode $method2,
@@ -187,17 +185,17 @@ PHP;
         ArgumentNode $argument4
     ) {
         $class->getParentClass()->willReturn('stdClass');
-        $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
-        $class->getProperties()->willReturn(array());
-        $class->getMethods()->willReturn(array(
-            $method1, $method2, $method3, $method4
-        ));
+        $class->getInterfaces()->willReturn(['Prophecy\Doubler\Generator\MirroredInterface']);
+        $class->getProperties()->willReturn([]);
+        $class->getMethods()->willReturn([
+            $method1, $method2, $method3, $method4,
+        ]);
 
         $method1->getName()->willReturn('variadic');
         $method1->getVisibility()->willReturn('public');
         $method1->returnsReference()->willReturn(false);
         $method1->isStatic()->willReturn(false);
-        $method1->getArguments()->willReturn(array($argument1));
+        $method1->getArguments()->willReturn([$argument1]);
         $method1->hasReturnType()->willReturn(false);
         $method1->getCode()->willReturn('');
 
@@ -205,7 +203,7 @@ PHP;
         $method2->getVisibility()->willReturn('public');
         $method2->returnsReference()->willReturn(false);
         $method2->isStatic()->willReturn(false);
-        $method2->getArguments()->willReturn(array($argument2));
+        $method2->getArguments()->willReturn([$argument2]);
         $method2->hasReturnType()->willReturn(false);
         $method2->getCode()->willReturn('');
 
@@ -213,7 +211,7 @@ PHP;
         $method3->getVisibility()->willReturn('public');
         $method3->returnsReference()->willReturn(false);
         $method3->isStatic()->willReturn(false);
-        $method3->getArguments()->willReturn(array($argument3));
+        $method3->getArguments()->willReturn([$argument3]);
         $method3->hasReturnType()->willReturn(false);
         $method3->getCode()->willReturn('');
 
@@ -221,7 +219,7 @@ PHP;
         $method4->getVisibility()->willReturn('public');
         $method4->returnsReference()->willReturn(false);
         $method4->isStatic()->willReturn(false);
-        $method4->getArguments()->willReturn(array($argument4));
+        $method4->getArguments()->willReturn([$argument4]);
         $method4->hasReturnType()->willReturn(false);
         $method4->getCode()->willReturn('');
 
@@ -274,24 +272,24 @@ public  function variadicWithTypeByRef(\\ReflectionClass &...$args) {
 }
 }
 PHP;
-        $expected = strtr($expected, array("\r\n" => "\n", "\r" => "\n"));
+        $expected = strtr($expected, ["\r\n" => "\n", "\r" => "\n"]);
         $code->shouldBe($expected);
     }
 
-    function it_overrides_properly_methods_with_args_passed_by_reference(
+    public function it_overrides_properly_methods_with_args_passed_by_reference(
         ClassNode $class,
         MethodNode $method,
         ArgumentNode $argument
     ) {
         $class->getParentClass()->willReturn('RuntimeException');
-        $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
-        $class->getProperties()->willReturn(array());
-        $class->getMethods()->willReturn(array($method));
+        $class->getInterfaces()->willReturn(['Prophecy\Doubler\Generator\MirroredInterface']);
+        $class->getProperties()->willReturn([]);
+        $class->getMethods()->willReturn([$method]);
 
         $method->getName()->willReturn('getName');
         $method->getVisibility()->willReturn('public');
         $method->isStatic()->willReturn(false);
-        $method->getArguments()->willReturn(array($argument));
+        $method->getArguments()->willReturn([$argument]);
         $method->hasReturnType()->willReturn(false);
         $method->returnsReference()->willReturn(false);
         $method->getCode()->willReturn('return $this->name;');
@@ -305,7 +303,7 @@ PHP;
         $argument->isNullable()->willReturn(false);
 
         $code = $this->generate('CustomClass', $class);
-        $expected =<<<'PHP'
+        $expected = <<<'PHP'
 namespace  {
 class CustomClass extends \RuntimeException implements \Prophecy\Doubler\Generator\MirroredInterface {
 
@@ -316,19 +314,19 @@ return $this->name;
 }
 }
 PHP;
-        $expected = strtr($expected, array("\r\n" => "\n", "\r" => "\n"));
+        $expected = strtr($expected, ["\r\n" => "\n", "\r" => "\n"]);
         $code->shouldBe($expected);
     }
 
-    function it_generates_empty_class_for_empty_ClassNode(ClassNode $class)
+    public function it_generates_empty_class_for_empty_ClassNode(ClassNode $class)
     {
         $class->getParentClass()->willReturn('stdClass');
-        $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
-        $class->getProperties()->willReturn(array());
-        $class->getMethods()->willReturn(array());
+        $class->getInterfaces()->willReturn(['Prophecy\Doubler\Generator\MirroredInterface']);
+        $class->getProperties()->willReturn([]);
+        $class->getMethods()->willReturn([]);
 
         $code = $this->generate('CustomClass', $class);
-        $expected =<<<'PHP'
+        $expected = <<<'PHP'
 namespace  {
 class CustomClass extends \stdClass implements \Prophecy\Doubler\Generator\MirroredInterface {
 
@@ -336,19 +334,19 @@ class CustomClass extends \stdClass implements \Prophecy\Doubler\Generator\Mirro
 }
 }
 PHP;
-        $expected = strtr($expected, array("\r\n" => "\n", "\r" => "\n"));
+        $expected = strtr($expected, ["\r\n" => "\n", "\r" => "\n"]);
         $code->shouldBe($expected);
     }
 
-    function it_wraps_class_in_namespace_if_it_is_namespaced(ClassNode $class)
+    public function it_wraps_class_in_namespace_if_it_is_namespaced(ClassNode $class)
     {
         $class->getParentClass()->willReturn('stdClass');
-        $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
-        $class->getProperties()->willReturn(array());
-        $class->getMethods()->willReturn(array());
+        $class->getInterfaces()->willReturn(['Prophecy\Doubler\Generator\MirroredInterface']);
+        $class->getProperties()->willReturn([]);
+        $class->getMethods()->willReturn([]);
 
         $code = $this->generate('My\Awesome\CustomClass', $class);
-        $expected =<<<'PHP'
+        $expected = <<<'PHP'
 namespace My\Awesome {
 class CustomClass extends \stdClass implements \Prophecy\Doubler\Generator\MirroredInterface {
 
@@ -356,7 +354,7 @@ class CustomClass extends \stdClass implements \Prophecy\Doubler\Generator\Mirro
 }
 }
 PHP;
-        $expected = strtr($expected, array("\r\n" => "\n", "\r" => "\n"));
+        $expected = strtr($expected, ["\r\n" => "\n", "\r" => "\n"]);
         $code->shouldBe($expected);
     }
 }

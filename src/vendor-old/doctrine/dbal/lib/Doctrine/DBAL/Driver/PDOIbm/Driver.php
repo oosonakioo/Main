@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Driver\PDOConnection;
  *
  * @link   www.doctrine-project.org
  * @since  1.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -37,7 +39,7 @@ class Driver extends AbstractDB2Driver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
     {
         $conn = new PDOConnection(
             $this->_constructPdoDsn($params),
@@ -52,7 +54,6 @@ class Driver extends AbstractDB2Driver
     /**
      * Constructs the IBM PDO DSN.
      *
-     * @param array $params
      *
      * @return string The DSN.
      */
@@ -60,14 +61,14 @@ class Driver extends AbstractDB2Driver
     {
         $dsn = 'ibm:';
         if (isset($params['host'])) {
-            $dsn .= 'HOSTNAME=' . $params['host'] . ';';
+            $dsn .= 'HOSTNAME='.$params['host'].';';
         }
         if (isset($params['port'])) {
-            $dsn .= 'PORT=' . $params['port'] . ';';
+            $dsn .= 'PORT='.$params['port'].';';
         }
         $dsn .= 'PROTOCOL=TCPIP;';
         if (isset($params['dbname'])) {
-            $dsn .= 'DATABASE=' . $params['dbname'] . ';';
+            $dsn .= 'DATABASE='.$params['dbname'].';';
         }
 
         return $dsn;

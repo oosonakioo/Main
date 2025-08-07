@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -44,21 +45,21 @@ class SQLAnywhere12Keywords extends SQLAnywhere11Keywords
         return array_merge(
             array_diff(
                 parent::getKeywords(),
-                array(
+                [
                     'INDEX_LPAREN',
                     'SYNTAX_ERROR',
                     'WITH_CUBE',
                     'WITH_LPAREN',
-                    'WITH_ROLLUP'
-                )
+                    'WITH_ROLLUP',
+                ]
             ),
-            array(
+            [
                 'DATETIMEOFFSET',
                 'LIMIT',
                 'OPENXML',
                 'SPATIAL',
-                'TREAT'
-            )
+                'TREAT',
+            ]
         );
     }
 }

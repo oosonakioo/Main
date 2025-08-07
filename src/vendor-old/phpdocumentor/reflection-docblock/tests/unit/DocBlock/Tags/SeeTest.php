@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +23,7 @@ use phpDocumentor\Reflection\Types\Context;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\See
+ *
  * @covers ::<private>
  */
 class SeeTest extends \PHPUnit_Framework_TestCase
@@ -28,9 +31,10 @@ class SeeTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\See::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned()
+    public function test_if_correct_tag_name_is_returned()
     {
         $fixture = new See(new Fqsen('\DateTime'), new Description('Description'));
 
@@ -42,10 +46,11 @@ class SeeTest extends \PHPUnit_Framework_TestCase
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\See::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    public function test_if_tag_can_be_rendered_using_default_formatter()
     {
         $fixture = new See(new Fqsen('\DateTime'), new Description('Description'));
 
@@ -55,9 +60,10 @@ class SeeTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\See::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    public function test_if_tag_can_be_rendered_using_specific_formatter()
     {
         $fixture = new See(new Fqsen('\DateTime'), new Description('Description'));
 
@@ -71,7 +77,7 @@ class SeeTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getReference
      */
-    public function testHasReferenceToFqsen()
+    public function test_has_reference_to_fqsen()
     {
         $expected = new Fqsen('\DateTime');
 
@@ -83,9 +89,10 @@ class SeeTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription()
+    public function test_has_description()
     {
         $expected = new Description('Description');
 
@@ -97,17 +104,19 @@ class SeeTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::__toString
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testStringRepresentationIsReturned()
+    public function test_string_representation_is_returned()
     {
         $fixture = new See(new Fqsen('\DateTime'), new Description('Description'));
 
-        $this->assertSame('\DateTime Description', (string)$fixture);
+        $this->assertSame('\DateTime Description', (string) $fixture);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\See::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\FqsenResolver
@@ -115,7 +124,7 @@ class SeeTest extends \PHPUnit_Framework_TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod()
+    public function test_factory_method()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $resolver = m::mock(FqsenResolver::class);
@@ -130,44 +139,48 @@ class SeeTest extends \PHPUnit_Framework_TestCase
 
         $fixture = See::create('DateTime My Description', $resolver, $descriptionFactory, $context);
 
-        $this->assertSame('\DateTime My Description', (string)$fixture);
+        $this->assertSame('\DateTime My Description', (string) $fixture);
         $this->assertSame($fqsen, $fixture->getReference());
         $this->assertSame($description, $fixture->getDescription());
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString()
+    public function test_factory_method_fails_if_body_is_not_string()
     {
         $this->assertNull(See::create([]));
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotEmpty()
+    public function test_factory_method_fails_if_body_is_not_empty()
     {
         $this->assertNull(See::create(''));
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull()
+    public function test_factory_method_fails_if_resolver_is_null()
     {
         See::create('body');
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    public function test_factory_method_fails_if_description_factory_is_null()
     {
-        See::create('body', new FqsenResolver());
+        See::create('body', new FqsenResolver);
     }
 }

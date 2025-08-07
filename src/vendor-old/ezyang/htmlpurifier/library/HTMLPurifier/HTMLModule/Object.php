@@ -2,6 +2,7 @@
 
 /**
  * XHTML 1.1 Object Module, defines elements for generic object inclusion
+ *
  * @warning Users will commonly use <embed> to cater to legacy browsers: this
  *      module does not allow this sort of behavior
  */
@@ -18,7 +19,7 @@ class HTMLPurifier_HTMLModule_Object extends HTMLPurifier_HTMLModule
     public $safe = false;
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -27,7 +28,7 @@ class HTMLPurifier_HTMLModule_Object extends HTMLPurifier_HTMLModule
             'Inline',
             'Optional: #PCDATA | Flow | param',
             'Common',
-            array(
+            [
                 'archive' => 'URI',
                 'classid' => 'URI',
                 'codebase' => 'URI',
@@ -39,8 +40,8 @@ class HTMLPurifier_HTMLModule_Object extends HTMLPurifier_HTMLModule
                 'standby' => 'Text',
                 'tabindex' => 'Number',
                 'type' => 'ContentType',
-                'width' => 'Length'
-            )
+                'width' => 'Length',
+            ]
         );
 
         $this->addElement(
@@ -48,13 +49,13 @@ class HTMLPurifier_HTMLModule_Object extends HTMLPurifier_HTMLModule
             false,
             'Empty',
             null,
-            array(
+            [
                 'id' => 'ID',
                 'name*' => 'Text',
                 'type' => 'Text',
                 'value' => 'Text',
-                'valuetype' => 'Enum#data,ref,object'
-            )
+                'valuetype' => 'Enum#data,ref,object',
+            ]
         );
     }
 }

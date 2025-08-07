@@ -22,14 +22,17 @@ use Prophecy\Exception\InvalidArgumentException;
 class ClassNode
 {
     private $parentClass = 'stdClass';
-    private $interfaces  = array();
-    private $properties  = array();
-    private $unextendableMethods = array();
+
+    private $interfaces = [];
+
+    private $properties = [];
+
+    private $unextendableMethods = [];
 
     /**
      * @var MethodNode[]
      */
-    private $methods     = array();
+    private $methods = [];
 
     public function getParentClass()
     {
@@ -37,7 +40,7 @@ class ClassNode
     }
 
     /**
-     * @param string $class
+     * @param  string  $class
      */
     public function setParentClass($class)
     {
@@ -53,7 +56,7 @@ class ClassNode
     }
 
     /**
-     * @param string $interface
+     * @param  string  $interface
      */
     public function addInterface($interface)
     {
@@ -65,8 +68,7 @@ class ClassNode
     }
 
     /**
-     * @param string $interface
-     *
+     * @param  string  $interface
      * @return bool
      */
     public function hasInterface($interface)
@@ -83,7 +85,7 @@ class ClassNode
     {
         $visibility = strtolower($visibility);
 
-        if (!in_array($visibility, array('public', 'private', 'protected'))) {
+        if (! in_array($visibility, ['public', 'private', 'protected'])) {
             throw new InvalidArgumentException(sprintf(
                 '`%s` property visibility is not supported.', $visibility
             ));
@@ -102,7 +104,7 @@ class ClassNode
 
     public function addMethod(MethodNode $method)
     {
-        if (!$this->isExtendable($method->getName())){
+        if (! $this->isExtendable($method->getName())) {
             $message = sprintf(
                 'Method `%s` is not extendable, so can not be added.', $method->getName()
             );
@@ -117,8 +119,7 @@ class ClassNode
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return MethodNode|null
      */
     public function getMethod($name)
@@ -127,8 +128,7 @@ class ClassNode
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     public function hasMethod($name)
@@ -145,22 +145,22 @@ class ClassNode
     }
 
     /**
-     * @param string $unextendableMethod
+     * @param  string  $unextendableMethod
      */
     public function addUnextendableMethod($unextendableMethod)
     {
-        if (!$this->isExtendable($unextendableMethod)){
+        if (! $this->isExtendable($unextendableMethod)) {
             return;
         }
         $this->unextendableMethods[] = $unextendableMethod;
     }
 
     /**
-     * @param string $method
+     * @param  string  $method
      * @return bool
      */
     public function isExtendable($method)
     {
-        return !in_array($method, $this->unextendableMethods);
+        return ! in_array($method, $this->unextendableMethods);
     }
 }

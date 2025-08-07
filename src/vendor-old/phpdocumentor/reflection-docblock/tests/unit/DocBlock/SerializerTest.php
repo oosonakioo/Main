@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,16 +8,17 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock;
 
-use Mockery as m;
 use phpDocumentor\Reflection\DocBlock;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Serializer
+ *
  * @covers ::<private>
  */
 class SerializerTest extends \PHPUnit_Framework_TestCase
@@ -24,13 +26,14 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::getDocComment
+     *
      * @uses phpDocumentor\Reflection\DocBlock\Description
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses phpDocumentor\Reflection\DocBlock
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testReconstructsADocCommentFromADocBlock()
+    public function test_reconstructs_a_doc_comment_from_a_doc_block()
     {
         $expected = <<<'DOCCOMMENT'
 /**
@@ -42,13 +45,13 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
  */
 DOCCOMMENT;
 
-        $fixture = new Serializer();
+        $fixture = new Serializer;
 
         $docBlock = new DocBlock(
             'This is a summary',
             new Description('This is a description'),
             [
-                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag')),
             ]
         );
 
@@ -58,13 +61,14 @@ DOCCOMMENT;
     /**
      * @covers ::__construct
      * @covers ::getDocComment
+     *
      * @uses phpDocumentor\Reflection\DocBlock\Description
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses phpDocumentor\Reflection\DocBlock
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testAddPrefixToDocBlock()
+    public function test_add_prefix_to_doc_block()
     {
         $expected = <<<'DOCCOMMENT'
 aa/**
@@ -82,7 +86,7 @@ DOCCOMMENT;
             'This is a summary',
             new Description('This is a description'),
             [
-                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag')),
             ]
         );
 
@@ -92,13 +96,14 @@ DOCCOMMENT;
     /**
      * @covers ::__construct
      * @covers ::getDocComment
+     *
      * @uses phpDocumentor\Reflection\DocBlock\Description
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses phpDocumentor\Reflection\DocBlock
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testAddPrefixToDocBlockExceptFirstLine()
+    public function test_add_prefix_to_doc_block_except_first_line()
     {
         $expected = <<<'DOCCOMMENT'
 /**
@@ -116,7 +121,7 @@ DOCCOMMENT;
             'This is a summary',
             new Description('This is a description'),
             [
-                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag')),
             ]
         );
 
@@ -126,13 +131,14 @@ DOCCOMMENT;
     /**
      * @covers ::__construct
      * @covers ::getDocComment
+     *
      * @uses phpDocumentor\Reflection\DocBlock\Description
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses phpDocumentor\Reflection\DocBlock
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testWordwrapsAroundTheGivenAmountOfCharacters()
+    public function test_wordwraps_around_the_given_amount_of_characters()
     {
         $expected = <<<'DOCCOMMENT'
 /**
@@ -156,7 +162,7 @@ DOCCOMMENT;
             'This is a summary',
             new Description('This is a description'),
             [
-                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag')),
             ]
         );
 
@@ -165,36 +171,40 @@ DOCCOMMENT;
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfIndentIsNotAnInteger()
+    public function test_initialization_fails_if_indent_is_not_an_integer()
     {
         new Serializer([]);
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfIndentStringIsNotAString()
+    public function test_initialization_fails_if_indent_string_is_not_a_string()
     {
         new Serializer(0, []);
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfIndentFirstLineIsNotABoolean()
+    public function test_initialization_fails_if_indent_first_line_is_not_a_boolean()
     {
         new Serializer(0, '', []);
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfLineLengthIsNotNullNorAnInteger()
+    public function test_initialization_fails_if_line_length_is_not_null_nor_an_integer()
     {
         new Serializer(0, '', false, []);
     }

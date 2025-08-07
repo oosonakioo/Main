@@ -11,9 +11,9 @@
 
 namespace Monolog\Handler;
 
-use RollbarNotifier;
 use Exception;
 use Monolog\Logger;
+use RollbarNotifier;
 
 /**
  * Sends errors to Rollbar
@@ -40,16 +40,16 @@ class RollbarHandler extends AbstractProcessingHandler
      */
     protected $rollbarNotifier;
 
-    protected $levelMap = array(
-        Logger::DEBUG     => 'debug',
-        Logger::INFO      => 'info',
-        Logger::NOTICE    => 'info',
-        Logger::WARNING   => 'warning',
-        Logger::ERROR     => 'error',
-        Logger::CRITICAL  => 'critical',
-        Logger::ALERT     => 'critical',
+    protected $levelMap = [
+        Logger::DEBUG => 'debug',
+        Logger::INFO => 'info',
+        Logger::NOTICE => 'info',
+        Logger::WARNING => 'warning',
+        Logger::ERROR => 'error',
+        Logger::CRITICAL => 'critical',
+        Logger::ALERT => 'critical',
         Logger::EMERGENCY => 'critical',
-    );
+    ];
 
     /**
      * Records whether any log records have been added since the last flush of the rollbar notifier
@@ -61,9 +61,9 @@ class RollbarHandler extends AbstractProcessingHandler
     protected $initialized = false;
 
     /**
-     * @param RollbarNotifier $rollbarNotifier RollbarNotifier object constructed with valid token
-     * @param int             $level           The minimum logging level at which this handler will be triggered
-     * @param bool            $bubble          Whether the messages that are handled can bubble up the stack or not
+     * @param  RollbarNotifier  $rollbarNotifier  RollbarNotifier object constructed with valid token
+     * @param  int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
      */
     public function __construct(RollbarNotifier $rollbarNotifier, $level = Logger::ERROR, $bubble = true)
     {
@@ -77,24 +77,24 @@ class RollbarHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        if (!$this->initialized) {
+        if (! $this->initialized) {
             // __destructor() doesn't get called on Fatal errors
-            register_shutdown_function(array($this, 'close'));
+            register_shutdown_function([$this, 'close']);
             $this->initialized = true;
         }
 
         $context = $record['context'];
-        $payload = array();
+        $payload = [];
         if (isset($context['payload'])) {
             $payload = $context['payload'];
             unset($context['payload']);
         }
-        $context = array_merge($context, $record['extra'], array(
+        $context = array_merge($context, $record['extra'], [
             'level' => $this->levelMap[$record['level']],
             'monolog_level' => $record['level_name'],
             'channel' => $record['channel'],
             'datetime' => $record['datetime']->format('U'),
-        ));
+        ]);
 
         if (isset($context['exception']) && $context['exception'] instanceof Exception) {
             $exception = $context['exception'];

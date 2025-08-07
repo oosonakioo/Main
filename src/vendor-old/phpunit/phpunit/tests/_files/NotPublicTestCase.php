@@ -1,11 +1,8 @@
 <?php
+
 class NotPublicTestCase extends PHPUnit_Framework_TestCase
 {
-    public function testPublic()
-    {
-    }
+    public function test_public() {}
 
-    protected function testNotPublic()
-    {
-    }
+    protected function test_not_public() {}
 }

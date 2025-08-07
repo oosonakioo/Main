@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Diff package.
  *
@@ -16,29 +17,28 @@ namespace SebastianBergmann\Diff;
 class Parser
 {
     /**
-     * @param string $string
-     *
+     * @param  string  $string
      * @return Diff[]
      */
     public function parse($string)
     {
-        $lines     = preg_split('(\r\n|\r|\n)', $string);
+        $lines = preg_split('(\r\n|\r|\n)', $string);
         $lineCount = count($lines);
-        $diffs     = array();
-        $diff      = null;
-        $collected = array();
+        $diffs = [];
+        $diff = null;
+        $collected = [];
 
-        for ($i = 0; $i < $lineCount; ++$i) {
+        for ($i = 0; $i < $lineCount; $i++) {
             if (preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) &&
                 preg_match('(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch)) {
                 if ($diff !== null) {
                     $this->parseFileDiff($diff, $collected);
-                    $diffs[]   = $diff;
-                    $collected = array();
+                    $diffs[] = $diff;
+                    $collected = [];
                 }
 
                 $diff = new Diff($fromMatch['file'], $toMatch['file']);
-                ++$i;
+                $i++;
             } else {
                 if (preg_match('/^(?:diff --git |index [\da-f\.]+|[+-]{3} [ab])/', $lines[$i])) {
                     continue;
@@ -55,13 +55,9 @@ class Parser
         return $diffs;
     }
 
-    /**
-     * @param Diff  $diff
-     * @param array $lines
-     */
     private function parseFileDiff(Diff $diff, array $lines)
     {
-        $chunks = array();
+        $chunks = [];
 
         foreach ($lines as $line) {
             if (preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {
@@ -72,8 +68,9 @@ class Parser
                     isset($match['endrange']) ? max(1, $match['endrange']) : 1
                 );
 
-                $chunks[]  = $chunk;
-                $diffLines = array();
+                $chunks[] = $chunk;
+                $diffLines = [];
+
                 continue;
             }
 

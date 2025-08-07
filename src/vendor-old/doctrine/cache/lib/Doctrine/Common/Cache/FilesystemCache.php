@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\Common\Cache;
  * Filesystem cache driver.
  *
  * @since  2.3
+ *
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class FilesystemCache extends FileCache
@@ -42,15 +44,15 @@ class FilesystemCache extends FileCache
      */
     protected function doFetch($id)
     {
-        $data     = '';
+        $data = '';
         $lifetime = -1;
         $filename = $this->getFilename($id);
 
-        if ( ! is_file($filename)) {
+        if (! is_file($filename)) {
             return false;
         }
 
-        $resource = fopen($filename, "r");
+        $resource = fopen($filename, 'r');
 
         if (false !== ($line = fgets($resource))) {
             $lifetime = (int) $line;
@@ -79,11 +81,11 @@ class FilesystemCache extends FileCache
         $lifetime = -1;
         $filename = $this->getFilename($id);
 
-        if ( ! is_file($filename)) {
+        if (! is_file($filename)) {
             return false;
         }
 
-        $resource = fopen($filename, "r");
+        $resource = fopen($filename, 'r');
 
         if (false !== ($line = fgets($resource))) {
             $lifetime = (int) $line;
@@ -103,9 +105,9 @@ class FilesystemCache extends FileCache
             $lifeTime = time() + $lifeTime;
         }
 
-        $data      = serialize($data);
-        $filename  = $this->getFilename($id);
+        $data = serialize($data);
+        $filename = $this->getFilename($id);
 
-        return $this->writeFile($filename, $lifeTime . PHP_EOL . $data);
+        return $this->writeFile($filename, $lifeTime.PHP_EOL.$data);
     }
 }

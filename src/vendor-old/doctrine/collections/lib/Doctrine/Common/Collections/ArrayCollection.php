@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,6 +33,7 @@ use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
  * manually.
  *
  * @since  2.0
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
@@ -47,10 +49,8 @@ class ArrayCollection implements Collection, Selectable
 
     /**
      * Initializes a new ArrayCollection.
-     *
-     * @param array $elements
      */
-    public function __construct(array $elements = array())
+    public function __construct(array $elements = [])
     {
         $this->elements = $elements;
     }
@@ -61,8 +61,7 @@ class ArrayCollection implements Collection, Selectable
      * This method is provided for derived classes to specify how a new
      * instance should be created when constructor semantics have changed.
      *
-     * @param array $elements Elements.
-     *
+     * @param  array  $elements  Elements.
      * @return static
      */
     protected function createFrom(array $elements)
@@ -123,7 +122,7 @@ class ArrayCollection implements Collection, Selectable
      */
     public function remove($key)
     {
-        if ( ! isset($this->elements[$key]) && ! array_key_exists($key, $this->elements)) {
+        if (! isset($this->elements[$key]) && ! array_key_exists($key, $this->elements)) {
             return null;
         }
 
@@ -176,7 +175,7 @@ class ArrayCollection implements Collection, Selectable
      */
     public function offsetSet($offset, $value)
     {
-        if ( ! isset($offset)) {
+        if (! isset($offset)) {
             return $this->add($value);
         }
 
@@ -321,7 +320,7 @@ class ArrayCollection implements Collection, Selectable
     public function forAll(Closure $p)
     {
         foreach ($this->elements as $key => $element) {
-            if ( ! $p($key, $element)) {
+            if (! $p($key, $element)) {
                 return false;
             }
         }
@@ -334,7 +333,7 @@ class ArrayCollection implements Collection, Selectable
      */
     public function partition(Closure $p)
     {
-        $matches = $noMatches = array();
+        $matches = $noMatches = [];
 
         foreach ($this->elements as $key => $element) {
             if ($p($key, $element)) {
@@ -344,7 +343,7 @@ class ArrayCollection implements Collection, Selectable
             }
         }
 
-        return array($this->createFrom($matches), $this->createFrom($noMatches));
+        return [$this->createFrom($matches), $this->createFrom($noMatches)];
     }
 
     /**
@@ -354,7 +353,7 @@ class ArrayCollection implements Collection, Selectable
      */
     public function __toString()
     {
-        return __CLASS__ . '@' . spl_object_hash($this);
+        return __CLASS__.'@'.spl_object_hash($this);
     }
 
     /**
@@ -362,7 +361,7 @@ class ArrayCollection implements Collection, Selectable
      */
     public function clear()
     {
-        $this->elements = array();
+        $this->elements = [];
     }
 
     /**
@@ -378,12 +377,12 @@ class ArrayCollection implements Collection, Selectable
      */
     public function matching(Criteria $criteria)
     {
-        $expr     = $criteria->getWhereExpression();
+        $expr = $criteria->getWhereExpression();
         $filtered = $this->elements;
 
         if ($expr) {
-            $visitor  = new ClosureExpressionVisitor();
-            $filter   = $visitor->dispatch($expr);
+            $visitor = new ClosureExpressionVisitor;
+            $filter = $visitor->dispatch($expr);
             $filtered = array_filter($filtered, $filter);
         }
 
@@ -400,7 +399,7 @@ class ArrayCollection implements Collection, Selectable
         $length = $criteria->getMaxResults();
 
         if ($offset || $length) {
-            $filtered = array_slice($filtered, (int)$offset, $length);
+            $filtered = array_slice($filtered, (int) $offset, $length);
         }
 
         return $this->createFrom($filtered);

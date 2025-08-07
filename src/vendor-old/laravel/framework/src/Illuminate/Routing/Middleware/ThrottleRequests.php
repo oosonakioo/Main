@@ -18,7 +18,6 @@ class ThrottleRequests
     /**
      * Create a new request throttler.
      *
-     * @param  \Illuminate\Cache\RateLimiter  $limiter
      * @return void
      */
     public function __construct(RateLimiter $limiter)
@@ -30,7 +29,6 @@ class ThrottleRequests
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @param  int  $maxAttempts
      * @param  int  $decayMinutes
      * @return mixed
@@ -87,7 +85,6 @@ class ThrottleRequests
     /**
      * Add the limit header information to the given response.
      *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
      * @param  int|null  $retryAfter

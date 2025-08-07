@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,8 +24,10 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  * Microsoft SQL Server 2008 reserved keyword dictionary.
  *
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
+ *
  * @link    www.doctrine-project.com
  * @since   2.3
+ *
  * @author  Steve Müller <st.mueller@dzh-online.de>
  */
 class SQLServer2008Keywords extends SQLServer2005Keywords
@@ -44,8 +47,8 @@ class SQLServer2008Keywords extends SQLServer2005Keywords
      */
     protected function getKeywords()
     {
-        return array_merge(parent::getKeywords(), array(
-            'MERGE'
-        ));
+        return array_merge(parent::getKeywords(), [
+            'MERGE',
+        ]);
     }
 }

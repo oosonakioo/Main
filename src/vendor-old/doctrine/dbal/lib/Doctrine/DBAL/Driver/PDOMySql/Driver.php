@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,7 +35,7 @@ class Driver extends AbstractMySQLDriver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
     {
         try {
             $conn = new PDOConnection(
@@ -53,7 +54,6 @@ class Driver extends AbstractMySQLDriver
     /**
      * Constructs the MySql PDO DSN.
      *
-     * @param array $params
      *
      * @return string The DSN.
      */
@@ -61,19 +61,19 @@ class Driver extends AbstractMySQLDriver
     {
         $dsn = 'mysql:';
         if (isset($params['host']) && $params['host'] != '') {
-            $dsn .= 'host=' . $params['host'] . ';';
+            $dsn .= 'host='.$params['host'].';';
         }
         if (isset($params['port'])) {
-            $dsn .= 'port=' . $params['port'] . ';';
+            $dsn .= 'port='.$params['port'].';';
         }
         if (isset($params['dbname'])) {
-            $dsn .= 'dbname=' . $params['dbname'] . ';';
+            $dsn .= 'dbname='.$params['dbname'].';';
         }
         if (isset($params['unix_socket'])) {
-            $dsn .= 'unix_socket=' . $params['unix_socket'] . ';';
+            $dsn .= 'unix_socket='.$params['unix_socket'].';';
         }
         if (isset($params['charset'])) {
-            $dsn .= 'charset=' . $params['charset'] . ';';
+            $dsn .= 'charset='.$params['charset'].';';
         }
 
         return $dsn;

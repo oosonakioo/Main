@@ -21,22 +21,19 @@ class IpUtils
     /**
      * This class should not be instantiated.
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Checks if an IPv4 or IPv6 address is contained in the list of given IPs or subnets.
      *
-     * @param string       $requestIp IP to check
-     * @param string|array $ips       List of IPs or subnets (can be a string if only a single one)
-     *
+     * @param  string  $requestIp  IP to check
+     * @param  string|array  $ips  List of IPs or subnets (can be a string if only a single one)
      * @return bool Whether the IP is valid
      */
     public static function checkIp($requestIp, $ips)
     {
-        if (!is_array($ips)) {
-            $ips = array($ips);
+        if (! is_array($ips)) {
+            $ips = [$ips];
         }
 
         $method = substr_count($requestIp, ':') > 1 ? 'checkIp6' : 'checkIp4';
@@ -54,15 +51,14 @@ class IpUtils
      * Compares two IPv4 addresses.
      * In case a subnet is given, it checks if it contains the request IP.
      *
-     * @param string $requestIp IPv4 address to check
-     * @param string $ip        IPv4 address or subnet in CIDR notation
-     *
+     * @param  string  $requestIp  IPv4 address to check
+     * @param  string  $ip  IPv4 address or subnet in CIDR notation
      * @return bool Whether the request IP matches the IP, or whether the request IP is within the CIDR subnet
      */
     public static function checkIp4($requestIp, $ip)
     {
-        if (false !== strpos($ip, '/')) {
-            list($address, $netmask) = explode('/', $ip, 2);
+        if (strpos($ip, '/') !== false) {
+            [$address, $netmask] = explode('/', $ip, 2);
 
             if ($netmask === '0') {
                 // Ensure IP is valid - using ip2long below implicitly validates, but we need to do it manually here
@@ -77,7 +73,7 @@ class IpUtils
             $netmask = 32;
         }
 
-        return 0 === substr_compare(sprintf('%032b', ip2long($requestIp)), sprintf('%032b', ip2long($address)), 0, $netmask);
+        return substr_compare(sprintf('%032b', ip2long($requestIp)), sprintf('%032b', ip2long($address)), 0, $netmask) === 0;
     }
 
     /**
@@ -88,21 +84,20 @@ class IpUtils
      *
      * @see https://github.com/dsp/v6tools
      *
-     * @param string $requestIp IPv6 address to check
-     * @param string $ip        IPv6 address or subnet in CIDR notation
-     *
+     * @param  string  $requestIp  IPv6 address to check
+     * @param  string  $ip  IPv6 address or subnet in CIDR notation
      * @return bool Whether the IP is valid
      *
      * @throws \RuntimeException When IPV6 support is not enabled
      */
     public static function checkIp6($requestIp, $ip)
     {
-        if (!((extension_loaded('sockets') && defined('AF_INET6')) || @inet_pton('::1'))) {
+        if (! ((extension_loaded('sockets') && defined('AF_INET6')) || @inet_pton('::1'))) {
             throw new \RuntimeException('Unable to check Ipv6. Check that PHP was not compiled with option "disable-ipv6".');
         }
 
-        if (false !== strpos($ip, '/')) {
-            list($address, $netmask) = explode('/', $ip, 2);
+        if (strpos($ip, '/') !== false) {
+            [$address, $netmask] = explode('/', $ip, 2);
 
             if ($netmask < 1 || $netmask > 128) {
                 return false;
@@ -115,14 +110,14 @@ class IpUtils
         $bytesAddr = unpack('n*', @inet_pton($address));
         $bytesTest = unpack('n*', @inet_pton($requestIp));
 
-        if (!$bytesAddr || !$bytesTest) {
+        if (! $bytesAddr || ! $bytesTest) {
             return false;
         }
 
-        for ($i = 1, $ceil = ceil($netmask / 16); $i <= $ceil; ++$i) {
+        for ($i = 1, $ceil = ceil($netmask / 16); $i <= $ceil; $i++) {
             $left = $netmask - 16 * ($i - 1);
             $left = ($left <= 16) ? $left : 16;
-            $mask = ~(0xffff >> $left) & 0xffff;
+            $mask = ~(0xFFFF >> $left) & 0xFFFF;
             if (($bytesAddr[$i] & $mask) != ($bytesTest[$i] & $mask)) {
                 return false;
             }

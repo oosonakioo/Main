@@ -11,13 +11,13 @@
 
 namespace Prophecy\Prediction;
 
-use Prophecy\Call\Call;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Argument\ArgumentsWildcard;
 use Prophecy\Argument\Token\AnyValuesToken;
-use Prophecy\Util\StringUtil;
+use Prophecy\Call\Call;
 use Prophecy\Exception\Prediction\UnexpectedCallsCountException;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Util\StringUtil;
 
 /**
  * Prediction interface.
@@ -28,26 +28,24 @@ use Prophecy\Exception\Prediction\UnexpectedCallsCountException;
 class CallTimesPrediction implements PredictionInterface
 {
     private $times;
+
     private $util;
 
     /**
      * Initializes prediction.
      *
-     * @param int        $times
-     * @param StringUtil $util
+     * @param  int  $times
      */
-    public function __construct($times, StringUtil $util = null)
+    public function __construct($times, ?StringUtil $util = null)
     {
         $this->times = intval($times);
-        $this->util  = $util ?: new StringUtil;
+        $this->util = $util ?: new StringUtil;
     }
 
     /**
      * Tests that there was exact amount of calls made.
      *
-     * @param Call[]         $calls
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
+     * @param  Call[]  $calls
      *
      * @throws \Prophecy\Exception\Prediction\UnexpectedCallsCountException
      */
@@ -59,7 +57,7 @@ class CallTimesPrediction implements PredictionInterface
 
         $methodCalls = $object->findProphecyMethodCalls(
             $method->getMethodName(),
-            new ArgumentsWildcard(array(new AnyValuesToken))
+            new ArgumentsWildcard([new AnyValuesToken])
         );
 
         if (count($calls)) {
@@ -93,7 +91,7 @@ class CallTimesPrediction implements PredictionInterface
             $message = sprintf(
                 "Expected exactly %d calls that match:\n".
                 "  %s->%s(%s)\n".
-                "but none were made.",
+                'but none were made.',
 
                 $this->times,
                 get_class($object->reveal()),

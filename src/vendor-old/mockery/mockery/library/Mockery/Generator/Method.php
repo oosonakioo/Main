@@ -13,7 +13,7 @@ class Method
 
     public function __call($method, $args)
     {
-        return call_user_func_array(array($this->method, $method), $args);
+        return call_user_func_array([$this->method, $method], $args);
     }
 
     public function getParameters()
@@ -28,8 +28,8 @@ class Method
         if (version_compare(PHP_VERSION, '7.0.0-dev') >= 0 && $this->method->hasReturnType()) {
             $returnType = (string) $this->method->getReturnType();
 
-            if ('self' === $returnType) {
-                $returnType = "\\".$this->method->getDeclaringClass()->getName();
+            if ($returnType === 'self') {
+                $returnType = '\\'.$this->method->getDeclaringClass()->getName();
             }
 
             if (version_compare(PHP_VERSION, '7.1.0-dev') >= 0 && $this->method->getReturnType()->allowsNull()) {
@@ -38,6 +38,7 @@ class Method
 
             return $returnType;
         }
+
         return '';
     }
 }

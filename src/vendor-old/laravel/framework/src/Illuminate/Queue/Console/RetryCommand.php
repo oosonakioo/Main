@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Console;
 
-use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Symfony\Component\Console\Input\InputArgument;
 
 class RetryCommand extends Command
@@ -56,7 +56,7 @@ class RetryCommand extends Command
             $failed->payload = $this->resetAttempts($failed->payload);
 
             $this->laravel['queue']->connection($failed->connection)
-                                ->pushRaw($failed->payload, $failed->queue);
+                ->pushRaw($failed->payload, $failed->queue);
 
             $this->laravel['queue.failer']->forget($failed->id);
 

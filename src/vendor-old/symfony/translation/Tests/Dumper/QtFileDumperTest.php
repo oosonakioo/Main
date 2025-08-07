@@ -11,17 +11,17 @@
 
 namespace Symfony\Component\Translation\Tests\Dumper;
 
-use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Dumper\QtFileDumper;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class QtFileDumperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFormatCatalogue()
+    public function test_format_catalogue()
     {
         $catalogue = new MessageCatalogue('en');
-        $catalogue->add(array('foo' => 'bar'), 'resources');
+        $catalogue->add(['foo' => 'bar'], 'resources');
 
-        $dumper = new QtFileDumper();
+        $dumper = new QtFileDumper;
 
         $this->assertStringEqualsFile(__DIR__.'/../fixtures/resources.ts', $dumper->formatCatalogue($catalogue, 'resources'));
     }

@@ -24,7 +24,7 @@ class ClassMethodsMatcher extends AbstractMatcher
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array())
+    public function getMatches(array $tokens, array $info = [])
     {
         $input = $this->getInput($tokens);
 
@@ -44,7 +44,7 @@ class ClassMethodsMatcher extends AbstractMatcher
 
         return array_map(
             function ($name) use ($class) {
-                return $class . '::' . $name;
+                return $class.'::'.$name;
             },
             array_filter($methods, function ($method) use ($input) {
                 return AbstractMatcher::startsWith($input, $method);

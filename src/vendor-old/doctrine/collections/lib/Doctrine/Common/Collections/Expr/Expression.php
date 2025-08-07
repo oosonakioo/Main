@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,8 +28,6 @@ namespace Doctrine\Common\Collections\Expr;
 interface Expression
 {
     /**
-     * @param ExpressionVisitor $visitor
-     *
      * @return mixed
      */
     public function visit(ExpressionVisitor $visitor);

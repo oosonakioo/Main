@@ -24,34 +24,36 @@ use Symfony\Component\Console\Output\StreamOutput;
 class ProcOutputPager extends StreamOutput implements OutputPager
 {
     private $proc;
+
     private $pipe;
+
     private $stream;
+
     private $cmd;
 
     /**
      * Constructor.
      *
-     * @param StreamOutput $output
-     * @param string       $cmd    Pager process command (default: 'less -R -S -F -X')
+     * @param  string  $cmd  Pager process command (default: 'less -R -S -F -X')
      */
     public function __construct(StreamOutput $output, $cmd = 'less -R -S -F -X')
     {
         $this->stream = $output->getStream();
-        $this->cmd    = $cmd;
+        $this->cmd = $cmd;
     }
 
     /**
      * Writes a message to the output.
      *
-     * @param string $message A message to write to the output
-     * @param bool   $newline Whether to add a newline or not
+     * @param  string  $message  A message to write to the output
+     * @param  bool  $newline  Whether to add a newline or not
      *
      * @throws \RuntimeException When unable to write output (should never happen)
      */
     public function doWrite($message, $newline)
     {
         $pipe = $this->getPipe();
-        if (false === @fwrite($pipe, $message . ($newline ? PHP_EOL : ''))) {
+        if (@fwrite($pipe, $message.($newline ? PHP_EOL : '')) === false) {
             // @codeCoverageIgnoreStart
             // should never happen
             throw new \RuntimeException('Unable to write output.');
@@ -87,11 +89,11 @@ class ProcOutputPager extends StreamOutput implements OutputPager
      */
     private function getPipe()
     {
-        if (!isset($this->pipe) || !isset($this->proc)) {
-            $desc = array(array('pipe', 'r'), $this->stream, fopen('php://stderr', 'w'));
+        if (! isset($this->pipe) || ! isset($this->proc)) {
+            $desc = [['pipe', 'r'], $this->stream, fopen('php://stderr', 'w')];
             $this->proc = proc_open($this->cmd, $desc, $pipes);
 
-            if (!is_resource($this->proc)) {
+            if (! is_resource($this->proc)) {
                 throw new \RuntimeException('Error opening output stream');
             }
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -47,25 +48,24 @@ interface ShardManager
      *
      * @return void
      */
-    function selectGlobal();
+    public function selectGlobal();
 
     /**
      * Selects the shard against which the queries after this statement will be issued.
      *
-     * @param string $distributionValue
-     *
+     * @param  string  $distributionValue
      * @return void
      *
      * @throws \Doctrine\DBAL\Sharding\ShardingException If no value is passed as shard identifier.
      */
-    function selectShard($distributionValue);
+    public function selectShard($distributionValue);
 
     /**
      * Gets the distribution value currently used for sharding.
      *
      * @return string
      */
-    function getCurrentDistributionValue();
+    public function getCurrentDistributionValue();
 
     /**
      * Gets information about the amount of shards and other details.
@@ -75,7 +75,7 @@ interface ShardManager
      *
      * @return array
      */
-    function getShards();
+    public function getShards();
 
     /**
      * Queries all shards in undefined order and return the results appended to
@@ -83,11 +83,8 @@ interface ShardManager
      *
      * Using {@link \Doctrine\DBAL\Connection::fetchAll} to retrieve rows internally.
      *
-     * @param string $sql
-     * @param array  $params
-     * @param array  $types
-     *
+     * @param  string  $sql
      * @return array
      */
-    function queryAll($sql, array $params, array $types);
+    public function queryAll($sql, array $params, array $types);
 }

@@ -21,17 +21,16 @@ class Revealer implements RevealerInterface
     /**
      * Unwraps value(s).
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return mixed
      */
     public function reveal($value)
     {
         if (is_array($value)) {
-            return array_map(array($this, __FUNCTION__), $value);
+            return array_map([$this, __FUNCTION__], $value);
         }
 
-        if (!is_object($value)) {
+        if (! is_object($value)) {
             return $value;
         }
 

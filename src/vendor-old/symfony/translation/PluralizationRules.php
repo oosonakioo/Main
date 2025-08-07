@@ -18,19 +18,18 @@ namespace Symfony\Component\Translation;
  */
 class PluralizationRules
 {
-    private static $rules = array();
+    private static $rules = [];
 
     /**
      * Returns the plural position to use for the given locale and number.
      *
-     * @param int    $number The number
-     * @param string $locale The locale
-     *
+     * @param  int  $number  The number
+     * @param  string  $locale  The locale
      * @return int The plural position
      */
     public static function get($number, $locale)
     {
-        if ('pt_BR' === $locale) {
+        if ($locale === 'pt_BR') {
             // temporary set a locale for brazilian
             $locale = 'xbr';
         }
@@ -42,7 +41,7 @@ class PluralizationRules
         if (isset(self::$rules[$locale])) {
             $return = call_user_func(self::$rules[$locale], $number);
 
-            if (!is_int($return) || $return < 0) {
+            if (! is_int($return) || $return < 0) {
                 return 0;
             }
 
@@ -190,12 +189,12 @@ class PluralizationRules
     /**
      * Overrides the default plural rule for a given locale.
      *
-     * @param callable $rule   A PHP callable
-     * @param string   $locale The locale
+     * @param  callable  $rule  A PHP callable
+     * @param  string  $locale  The locale
      */
     public static function set(callable $rule, $locale)
     {
-        if ('pt_BR' === $locale) {
+        if ($locale === 'pt_BR') {
             // temporary set a locale for brazilian
             $locale = 'xbr';
         }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,8 +24,10 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  * Microsoft SQL Server 2012 reserved keyword dictionary.
  *
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
+ *
  * @link    www.doctrine-project.com
  * @since   2.3
+ *
  * @author  Steve Müller <st.mueller@dzh-online.de>
  */
 class SQLServer2012Keywords extends SQLServer2008Keywords
@@ -44,12 +47,12 @@ class SQLServer2012Keywords extends SQLServer2008Keywords
      */
     protected function getKeywords()
     {
-        return array_merge(parent::getKeywords(), array(
+        return array_merge(parent::getKeywords(), [
             'SEMANTICKEYPHRASETABLE',
             'SEMANTICSIMILARITYDETAILSTABLE',
             'SEMANTICSIMILARITYTABLE',
             'TRY_CONVERT',
-            'WITHIN GROUP'
-        ));
+            'WITHIN GROUP',
+        ]);
     }
 }

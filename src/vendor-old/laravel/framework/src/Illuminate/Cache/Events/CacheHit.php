@@ -30,7 +30,6 @@ class CacheHit
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @param  array  $tags
      * @return void
      */
     public function __construct($key, $value, array $tags = [])

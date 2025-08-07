@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,7 +28,7 @@ class Value implements Expression
     private $value;
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function __construct($value)
     {

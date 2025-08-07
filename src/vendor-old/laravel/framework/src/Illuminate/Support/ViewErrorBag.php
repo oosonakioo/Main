@@ -50,7 +50,6 @@ class ViewErrorBag implements Countable
      * Add a new MessageBag instance to the bags.
      *
      * @param  string  $key
-     * @param  \Illuminate\Contracts\Support\MessageBag  $bag
      * @return $this
      */
     public function put($key, MessageBagContract $bag)

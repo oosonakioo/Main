@@ -13,9 +13,9 @@ namespace Symfony\Component\CssSelector\Parser\Handler;
 
 use Symfony\Component\CssSelector\Parser\Reader;
 use Symfony\Component\CssSelector\Parser\Token;
-use Symfony\Component\CssSelector\Parser\TokenStream;
 use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerEscaping;
 use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerPatterns;
+use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector comment handler.
@@ -39,10 +39,6 @@ class IdentifierHandler implements HandlerInterface
      */
     private $escaping;
 
-    /**
-     * @param TokenizerPatterns $patterns
-     * @param TokenizerEscaping $escaping
-     */
     public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
     {
         $this->patterns = $patterns;
@@ -56,7 +52,7 @@ class IdentifierHandler implements HandlerInterface
     {
         $match = $reader->findPattern($this->patterns->getIdentifierPattern());
 
-        if (!$match) {
+        if (! $match) {
             return false;
         }
 

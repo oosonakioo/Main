@@ -21,13 +21,21 @@ use Symfony\Component\Yaml\Exception\ParseException;
 class Yaml
 {
     const DUMP_OBJECT = 1;
+
     const PARSE_EXCEPTION_ON_INVALID_TYPE = 2;
+
     const PARSE_OBJECT = 4;
+
     const PARSE_OBJECT_FOR_MAP = 8;
+
     const DUMP_EXCEPTION_ON_INVALID_TYPE = 16;
+
     const PARSE_DATETIME = 32;
+
     const DUMP_OBJECT_AS_MAP = 64;
+
     const DUMP_MULTI_LINE_LITERAL_BLOCK = 128;
+
     const PARSE_CONSTANT = 256;
 
     /**
@@ -39,9 +47,8 @@ class Yaml
      *   print_r($array);
      *  </code>
      *
-     * @param string $input A string containing YAML
-     * @param int    $flags A bit field of PARSE_* constants to customize the YAML parser behavior
-     *
+     * @param  string  $input  A string containing YAML
+     * @param  int  $flags  A bit field of PARSE_* constants to customize the YAML parser behavior
      * @return mixed The YAML converted to a PHP value
      *
      * @throws ParseException If the YAML is not valid
@@ -74,7 +81,7 @@ class Yaml
             }
         }
 
-        $yaml = new Parser();
+        $yaml = new Parser;
 
         return $yaml->parse($input, $flags);
     }
@@ -85,11 +92,10 @@ class Yaml
      * The dump method, when supplied with an array, will do its best
      * to convert the array into friendly YAML.
      *
-     * @param mixed $input  The PHP value
-     * @param int   $inline The level where you switch to inline YAML
-     * @param int   $indent The amount of spaces to use for indentation of nested nodes
-     * @param int   $flags  A bit field of DUMP_* constants to customize the dumped YAML string
-     *
+     * @param  mixed  $input  The PHP value
+     * @param  int  $inline  The level where you switch to inline YAML
+     * @param  int  $indent  The amount of spaces to use for indentation of nested nodes
+     * @param  int  $flags  A bit field of DUMP_* constants to customize the dumped YAML string
      * @return string A YAML string representing the original PHP value
      */
     public static function dump($input, $inline = 2, $indent = 4, $flags = 0)

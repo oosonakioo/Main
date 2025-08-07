@@ -9,9 +9,8 @@ interface CacheInterface extends ReadInterface
     /**
      * Check whether the directory listing of a given directory is complete.
      *
-     * @param string $dirname
-     * @param bool   $recursive
-     *
+     * @param  string  $dirname
+     * @param  bool  $recursive
      * @return bool
      */
     public function isComplete($dirname, $recursive);
@@ -19,17 +18,16 @@ interface CacheInterface extends ReadInterface
     /**
      * Set a directory to completely listed.
      *
-     * @param string $dirname
-     * @param bool   $recursive
+     * @param  string  $dirname
+     * @param  bool  $recursive
      */
     public function setComplete($dirname, $recursive);
 
     /**
      * Store the contents of a directory.
      *
-     * @param string $directory
-     * @param array  $contents
-     * @param bool   $recursive
+     * @param  string  $directory
+     * @param  bool  $recursive
      */
     public function storeContents($directory, array $contents, $recursive);
 
@@ -56,46 +54,46 @@ interface CacheInterface extends ReadInterface
     /**
      * Rename a file.
      *
-     * @param string $path
-     * @param string $newpath
+     * @param  string  $path
+     * @param  string  $newpath
      */
     public function rename($path, $newpath);
 
     /**
      * Copy a file.
      *
-     * @param string $path
-     * @param string $newpath
+     * @param  string  $path
+     * @param  string  $newpath
      */
     public function copy($path, $newpath);
 
     /**
      * Delete an object from cache.
      *
-     * @param string $path object path
+     * @param  string  $path  object path
      */
     public function delete($path);
 
     /**
      * Delete all objects from from a directory.
      *
-     * @param string $dirname directory path
+     * @param  string  $dirname  directory path
      */
     public function deleteDir($dirname);
 
     /**
      * Update the metadata for an object.
      *
-     * @param string $path     object path
-     * @param array  $object   object metadata
-     * @param bool   $autosave whether to trigger the autosave routine
+     * @param  string  $path  object path
+     * @param  array  $object  object metadata
+     * @param  bool  $autosave  whether to trigger the autosave routine
      */
     public function updateObject($path, array $object, $autosave = false);
 
     /**
      * Store object hit miss.
      *
-     * @param string $path
+     * @param  string  $path
      */
     public function storeMiss($path);
 }

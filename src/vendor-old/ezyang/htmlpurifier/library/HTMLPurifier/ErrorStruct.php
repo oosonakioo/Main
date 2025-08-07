@@ -8,17 +8,19 @@
  */
 class HTMLPurifier_ErrorStruct
 {
-
     /**
      * Possible values for $children first-key. Note that top-level structures
      * are automatically token-level.
      */
-    const TOKEN     = 0;
-    const ATTR      = 1;
-    const CSSPROP   = 2;
+    const TOKEN = 0;
+
+    const ATTR = 1;
+
+    const CSSPROP = 2;
 
     /**
      * Type of this struct.
+     *
      * @type string
      */
     public $type;
@@ -29,45 +31,49 @@ class HTMLPurifier_ErrorStruct
      *  - TOKEN: Instance of HTMLPurifier_Token
      *  - ATTR: array('attr-name', 'value')
      *  - CSSPROP: array('prop-name', 'value')
+     *
      * @type mixed
      */
     public $value;
 
     /**
      * Errors registered for this structure.
+     *
      * @type array
      */
-    public $errors = array();
+    public $errors = [];
 
     /**
      * Child ErrorStructs that are from this structure. For example, a TOKEN
      * ErrorStruct would contain ATTR ErrorStructs. This is a multi-dimensional
      * array in structure: [TYPE]['identifier']
+     *
      * @type array
      */
-    public $children = array();
+    public $children = [];
 
     /**
-     * @param string $type
-     * @param string $id
+     * @param  string  $type
+     * @param  string  $id
      * @return mixed
      */
     public function getChild($type, $id)
     {
-        if (!isset($this->children[$type][$id])) {
-            $this->children[$type][$id] = new HTMLPurifier_ErrorStruct();
+        if (! isset($this->children[$type][$id])) {
+            $this->children[$type][$id] = new HTMLPurifier_ErrorStruct;
             $this->children[$type][$id]->type = $type;
         }
+
         return $this->children[$type][$id];
     }
 
     /**
-     * @param int $severity
-     * @param string $message
+     * @param  int  $severity
+     * @param  string  $message
      */
     public function addError($severity, $message)
     {
-        $this->errors[] = array($severity, $message);
+        $this->errors[] = [$severity, $message];
     }
 }
 

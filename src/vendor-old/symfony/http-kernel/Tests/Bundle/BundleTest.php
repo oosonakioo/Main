@@ -11,16 +11,16 @@
 
 namespace Symfony\Component\HttpKernel\Tests\Bundle;
 
-use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionNotValidBundle\ExtensionNotValidBundle;
-use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\ExtensionPresentBundle;
 use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionAbsentBundle\ExtensionAbsentBundle;
+use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionNotValidBundle\ExtensionNotValidBundle;
 use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\Command\FooCommand;
+use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\ExtensionPresentBundle;
 
 class BundleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetContainerExtension()
+    public function test_get_container_extension()
     {
-        $bundle = new ExtensionPresentBundle();
+        $bundle = new ExtensionPresentBundle;
 
         $this->assertInstanceOf(
             'Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\DependencyInjection\ExtensionPresentExtension',
@@ -28,27 +28,28 @@ class BundleTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testRegisterCommands()
+    public function test_register_commands()
     {
-        $cmd = new FooCommand();
+        $cmd = new FooCommand;
         $app = $this->getMock('Symfony\Component\Console\Application');
         $app->expects($this->once())->method('add')->with($this->equalTo($cmd));
 
-        $bundle = new ExtensionPresentBundle();
+        $bundle = new ExtensionPresentBundle;
         $bundle->registerCommands($app);
 
-        $bundle2 = new ExtensionAbsentBundle();
+        $bundle2 = new ExtensionAbsentBundle;
 
         $this->assertNull($bundle2->registerCommands($app));
     }
 
     /**
      * @expectedException \LogicException
+     *
      * @expectedExceptionMessage must implement Symfony\Component\DependencyInjection\Extension\ExtensionInterface
      */
-    public function testGetContainerExtensionWithInvalidClass()
+    public function test_get_container_extension_with_invalid_class()
     {
-        $bundle = new ExtensionNotValidBundle();
+        $bundle = new ExtensionNotValidBundle;
         $bundle->getContainerExtension();
     }
 }

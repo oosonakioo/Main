@@ -34,17 +34,15 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
      *
      * @var string[]
      */
-    private $_params = array();
+    private $_params = [];
 
     /**
      * Creates a new ParameterizedHeader with $name.
      *
-     * @param string                   $name
-     * @param Swift_Mime_HeaderEncoder $encoder
-     * @param Swift_Encoder            $paramEncoder, optional
-     * @param Swift_Mime_Grammar       $grammar
+     * @param  string  $name
+     * @param  Swift_Encoder  $paramEncoder,  optional
      */
-    public function __construct($name, Swift_Mime_HeaderEncoder $encoder, Swift_Encoder $paramEncoder = null, Swift_Mime_Grammar $grammar)
+    public function __construct($name, Swift_Mime_HeaderEncoder $encoder, ?Swift_Encoder $paramEncoder, Swift_Mime_Grammar $grammar)
     {
         parent::__construct($name, $encoder, $grammar);
         $this->_paramEncoder = $paramEncoder;
@@ -66,7 +64,7 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
     /**
      * Set the character set used in this Header.
      *
-     * @param string $charset
+     * @param  string  $charset
      */
     public function setCharset($charset)
     {
@@ -79,19 +77,18 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
     /**
      * Set the value of $parameter.
      *
-     * @param string $parameter
-     * @param string $value
+     * @param  string  $parameter
+     * @param  string  $value
      */
     public function setParameter($parameter, $value)
     {
-        $this->setParameters(array_merge($this->getParameters(), array($parameter => $value)));
+        $this->setParameters(array_merge($this->getParameters(), [$parameter => $value]));
     }
 
     /**
      * Get the value of $parameter.
      *
-     * @param string $parameter
-     *
+     * @param  string  $parameter
      * @return string
      */
     public function getParameter($parameter)
@@ -104,7 +101,7 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
     /**
      * Set an associative array of parameter names mapped to values.
      *
-     * @param string[] $parameters
+     * @param  string[]  $parameters
      */
     public function setParameters(array $parameters)
     {
@@ -127,11 +124,11 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
      *
      * @return string
      */
-    public function getFieldBody() //TODO: Check caching here
+    public function getFieldBody() // TODO: Check caching here
     {
         $body = parent::getFieldBody();
         foreach ($this->_params as $name => $value) {
-            if (null !== $value) {
+            if ($value !== null) {
                 // Add the parameter
                 $body .= '; '.$this->_createParameter($name, $value);
             }
@@ -146,8 +143,7 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
      * This doesn't need to be overridden in theory, but it is for implementation
      * reasons to prevent potential breakage of attributes.
      *
-     * @param string $string The string to tokenize
-     *
+     * @param  string  $string  The string to tokenize
      * @return array An array of tokens as strings
      */
     protected function toTokens($string = null)
@@ -156,12 +152,12 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
 
         // Try creating any parameters
         foreach ($this->_params as $name => $value) {
-            if (null !== $value) {
+            if ($value !== null) {
                 // Add the semi-colon separator
                 $tokens[count($tokens) - 1] .= ';';
                 $tokens = array_merge($tokens, $this->generateTokenLines(
                     ' '.$this->_createParameter($name, $value)
-                    ));
+                ));
             }
         }
 
@@ -171,9 +167,8 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
     /**
      * Render a RFC 2047 compliant header parameter from the $name and $value.
      *
-     * @param string $name
-     * @param string $value
-     *
+     * @param  string  $name
+     * @param  string  $value
      * @return string
      */
     private function _createParameter($name, $value)
@@ -186,16 +181,16 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
         $firstLineOffset = 0;
 
         // If it's not already a valid parameter value...
-        if (!preg_match('/^'.self::TOKEN_REGEX.'$/D', $value)) {
+        if (! preg_match('/^'.self::TOKEN_REGEX.'$/D', $value)) {
             // TODO: text, or something else??
             // ... and it's not ascii
-            if (!preg_match('/^'.$this->getGrammar()->getDefinition('text').'*$/D', $value)) {
+            if (! preg_match('/^'.$this->getGrammar()->getDefinition('text').'*$/D', $value)) {
                 $encoded = true;
                 // Allow space for the indices, charset and language
                 $maxValueLength = $this->getMaxLineLength() - strlen($name.'*N*="";') - 1;
                 $firstLineOffset = strlen(
                     $this->getCharset()."'".$this->getLanguage()."'"
-                    );
+                );
             }
         }
 
@@ -204,7 +199,7 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
             if (isset($this->_paramEncoder)) {
                 $value = $this->_paramEncoder->encodeString(
                     $origValue, $firstLineOffset, $maxValueLength, $this->getCharset()
-                    );
+                );
             } else {
                 // We have to go against RFC 2183/2231 in some areas for interoperability
                 $value = $this->getTokenAsEncodedWord($origValue);
@@ -212,11 +207,11 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
             }
         }
 
-        $valueLines = isset($this->_paramEncoder) ? explode("\r\n", $value) : array($value);
+        $valueLines = isset($this->_paramEncoder) ? explode("\r\n", $value) : [$value];
 
         // Need to add indices
         if (count($valueLines) > 1) {
-            $paramLines = array();
+            $paramLines = [];
             foreach ($valueLines as $i => $line) {
                 $paramLines[] = $name.'*'.$i.
                     $this->_getEndOfParameterValue($line, true, $i == 0);
@@ -226,22 +221,21 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
         } else {
             return $name.$this->_getEndOfParameterValue(
                 $valueLines[0], $encoded, true
-                );
+            );
         }
     }
 
     /**
      * Returns the parameter value from the "=" and beyond.
      *
-     * @param string $value     to append
-     * @param bool   $encoded
-     * @param bool   $firstLine
-     *
+     * @param  string  $value  to append
+     * @param  bool  $encoded
+     * @param  bool  $firstLine
      * @return string
      */
     private function _getEndOfParameterValue($value, $encoded = false, $firstLine = false)
     {
-        if (!preg_match('/^'.self::TOKEN_REGEX.'$/D', $value)) {
+        if (! preg_match('/^'.self::TOKEN_REGEX.'$/D', $value)) {
             $value = '"'.$value.'"';
         }
         $prepend = '=';

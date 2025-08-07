@@ -2,12 +2,12 @@
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class BelongsToMany extends Relation
 {
@@ -84,8 +84,6 @@ class BelongsToMany extends Relation
     /**
      * Create a new belongs to many relationship instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @param  string  $table
      * @param  string  $foreignKey
      * @param  string  $otherKey
@@ -117,7 +115,7 @@ class BelongsToMany extends Relation
      *
      * @param  string  $column
      * @param  string  $operator
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  string  $boolean
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -132,9 +130,9 @@ class BelongsToMany extends Relation
      * Set a "where in" clause for a pivot table column.
      *
      * @param  string  $column
-     * @param  mixed   $values
+     * @param  mixed  $values
      * @param  string  $boolean
-     * @param  bool    $not
+     * @param  bool  $not
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function wherePivotIn($column, $values, $boolean = 'and', $not = false)
@@ -149,7 +147,7 @@ class BelongsToMany extends Relation
      *
      * @param  string  $column
      * @param  string  $operator
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function orWherePivot($column, $operator = null, $value = null)
@@ -161,7 +159,7 @@ class BelongsToMany extends Relation
      * Set an "or where in" clause for a pivot table column.
      *
      * @param  string  $column
-     * @param  mixed   $values
+     * @param  mixed  $values
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function orWherePivotIn($column, $values)
@@ -172,7 +170,7 @@ class BelongsToMany extends Relation
     /**
      * Execute the query and get the first result.
      *
-     * @param  array   $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function first($columns = ['*'])
@@ -273,7 +271,6 @@ class BelongsToMany extends Relation
      * Chunk the results of the query.
      *
      * @param  int  $count
-     * @param  callable  $callback
      * @return bool
      */
     public function chunk($count, callable $callback)
@@ -290,7 +287,6 @@ class BelongsToMany extends Relation
     /**
      * Hydrate the pivot table relationship on the models.
      *
-     * @param  array  $models
      * @return void
      */
     protected function hydratePivotRelation(array $models)
@@ -308,7 +304,6 @@ class BelongsToMany extends Relation
     /**
      * Get the pivot attributes from a model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
      */
     protected function cleanPivotAttributes(Model $model)
@@ -346,8 +341,6 @@ class BelongsToMany extends Relation
     /**
      * Add the constraints for a relationship query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Builder  $parent
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -365,8 +358,6 @@ class BelongsToMany extends Relation
     /**
      * Add the constraints for a relationship query on the same table.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Builder  $parent
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -396,7 +387,6 @@ class BelongsToMany extends Relation
     /**
      * Set the select clause for the relation query.
      *
-     * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     protected function getSelectColumns(array $columns = ['*'])
@@ -479,7 +469,6 @@ class BelongsToMany extends Relation
     /**
      * Set the constraints for an eager load of the relation.
      *
-     * @param  array  $models
      * @return void
      */
     public function addEagerConstraints(array $models)
@@ -490,7 +479,6 @@ class BelongsToMany extends Relation
     /**
      * Initialize the relation on a set of models.
      *
-     * @param  array   $models
      * @param  string  $relation
      * @return array
      */
@@ -506,8 +494,6 @@ class BelongsToMany extends Relation
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param  array   $models
-     * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
      * @return array
      */
@@ -532,7 +518,6 @@ class BelongsToMany extends Relation
     /**
      * Build model dictionary keyed by the relation's foreign key.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @return array
      */
     protected function buildDictionary(Collection $results)
@@ -591,9 +576,7 @@ class BelongsToMany extends Relation
     /**
      * Save a new model and attach it to the parent model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function save(Model $model, array $joining = [], $touch = true)
@@ -609,7 +592,6 @@ class BelongsToMany extends Relation
      * Save an array of new models and attach them to the parent model.
      *
      * @param  \Illuminate\Support\Collection|array  $models
-     * @param  array  $joinings
      * @return array
      */
     public function saveMany($models, array $joinings = [])
@@ -702,7 +684,6 @@ class BelongsToMany extends Relation
     /**
      * Get the first related model record matching the attributes or instantiate it.
      *
-     * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrNew(array $attributes)
@@ -717,9 +698,7 @@ class BelongsToMany extends Relation
     /**
      * Get the first related record matching the attributes or create it.
      *
-     * @param  array  $attributes
-     * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(array $attributes, array $joining = [], $touch = true)
@@ -734,10 +713,7 @@ class BelongsToMany extends Relation
     /**
      * Create or update a related record matching the attributes, and fill it with values.
      *
-     * @param  array  $attributes
-     * @param  array  $values
-     * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function updateOrCreate(array $attributes, array $values = [], array $joining = [], $touch = true)
@@ -756,9 +732,7 @@ class BelongsToMany extends Relation
     /**
      * Create a new instance of the related model.
      *
-     * @param  array  $attributes
-     * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(array $attributes, array $joining = [], $touch = true)
@@ -778,8 +752,6 @@ class BelongsToMany extends Relation
     /**
      * Create an array of new instances of the related models.
      *
-     * @param  array  $records
-     * @param  array  $joinings
      * @return array
      */
     public function createMany(array $records, array $joinings = [])
@@ -810,7 +782,7 @@ class BelongsToMany extends Relation
      * Sync the intermediate tables with a list of IDs or collection of models.
      *
      * @param  \Illuminate\Database\Eloquent\Collection|array  $ids
-     * @param  bool   $detaching
+     * @param  bool  $detaching
      * @return array
      */
     public function sync($ids, $detaching = true)
@@ -860,7 +832,6 @@ class BelongsToMany extends Relation
     /**
      * Format the sync list so that it is keyed by ID.
      *
-     * @param  array  $records
      * @return array
      */
     protected function formatSyncList(array $records)
@@ -869,7 +840,7 @@ class BelongsToMany extends Relation
 
         foreach ($records as $id => $attributes) {
             if (! is_array($attributes)) {
-                list($id, $attributes) = [$attributes, []];
+                [$id, $attributes] = [$attributes, []];
             }
 
             $results[$id] = $attributes;
@@ -881,9 +852,7 @@ class BelongsToMany extends Relation
     /**
      * Attach all of the IDs that aren't in the current array.
      *
-     * @param  array  $records
-     * @param  array  $current
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return array
      */
     protected function attachNew(array $records, array $current, $touch = true)
@@ -916,8 +885,7 @@ class BelongsToMany extends Relation
      * Update an existing pivot record on the table.
      *
      * @param  mixed  $id
-     * @param  array  $attributes
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return int
      */
     public function updateExistingPivot($id, array $attributes, $touch = true)
@@ -939,8 +907,7 @@ class BelongsToMany extends Relation
      * Attach a model to the parent.
      *
      * @param  mixed  $id
-     * @param  array  $attributes
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return void
      */
     public function attach($id, array $attributes = [], $touch = true)
@@ -966,7 +933,6 @@ class BelongsToMany extends Relation
      * Create an array of records to insert into the pivot table.
      *
      * @param  array  $ids
-     * @param  array  $attributes
      * @return array
      */
     protected function createAttachRecords($ids, array $attributes)
@@ -989,15 +955,15 @@ class BelongsToMany extends Relation
     /**
      * Create a full attachment record payload.
      *
-     * @param  int    $key
+     * @param  int  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @param  bool   $timed
+     * @param  bool  $timed
      * @return array
      */
     protected function attacher($key, $value, $attributes, $timed)
     {
-        list($id, $extra) = $this->getAttachId($key, $value, $attributes);
+        [$id, $extra] = $this->getAttachId($key, $value, $attributes);
 
         // To create the attachment records, we will simply spin through the IDs given
         // and create a new record to insert for each ID. Each ID may actually be a
@@ -1012,7 +978,6 @@ class BelongsToMany extends Relation
      *
      * @param  mixed  $key
      * @param  mixed  $value
-     * @param  array  $attributes
      * @return array
      */
     protected function getAttachId($key, $value, array $attributes)
@@ -1027,7 +992,7 @@ class BelongsToMany extends Relation
     /**
      * Create a new pivot attachment record.
      *
-     * @param  int   $id
+     * @param  int  $id
      * @param  bool  $timed
      * @return array
      */
@@ -1050,8 +1015,7 @@ class BelongsToMany extends Relation
     /**
      * Set the creation and update timestamps on an attach record.
      *
-     * @param  array  $record
-     * @param  bool   $exists
+     * @param  bool  $exists
      * @return array
      */
     protected function setTimestampsOnAttach(array $record, $exists = false)
@@ -1189,8 +1153,7 @@ class BelongsToMany extends Relation
     /**
      * Create a new pivot model instance.
      *
-     * @param  array  $attributes
-     * @param  bool   $exists
+     * @param  bool  $exists
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
      */
     public function newPivot(array $attributes = [], $exists = false)
@@ -1203,7 +1166,6 @@ class BelongsToMany extends Relation
     /**
      * Create a new existing pivot model instance.
      *
-     * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
      */
     public function newExistingPivot(array $attributes = [])

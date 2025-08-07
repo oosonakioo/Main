@@ -37,7 +37,7 @@ class ExtensionGuesser implements ExtensionGuesserInterface
      *
      * @var array
      */
-    protected $guessers = array();
+    protected $guessers = [];
 
     /**
      * Returns the singleton instance.
@@ -46,8 +46,8 @@ class ExtensionGuesser implements ExtensionGuesserInterface
      */
     public static function getInstance()
     {
-        if (null === self::$instance) {
-            self::$instance = new self();
+        if (self::$instance === null) {
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -58,15 +58,13 @@ class ExtensionGuesser implements ExtensionGuesserInterface
      */
     private function __construct()
     {
-        $this->register(new MimeTypeExtensionGuesser());
+        $this->register(new MimeTypeExtensionGuesser);
     }
 
     /**
      * Registers a new extension guesser.
      *
      * When guessing, this guesser is preferred over previously registered ones.
-     *
-     * @param ExtensionGuesserInterface $guesser
      */
     public function register(ExtensionGuesserInterface $guesser)
     {
@@ -81,8 +79,7 @@ class ExtensionGuesser implements ExtensionGuesserInterface
      * returns a value that is not NULL, this method terminates and returns the
      * value.
      *
-     * @param string $mimeType The mime type
-     *
+     * @param  string  $mimeType  The mime type
      * @return string The guessed extension or NULL, if none could be guessed
      */
     public function guess($mimeType)

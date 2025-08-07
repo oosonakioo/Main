@@ -7,16 +7,18 @@ class ClassMethodTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideModifiers
      */
-    public function testModifiers($modifier) {
-        $node = new ClassMethod('foo', array(
-            'type' => constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier))
-        ));
+    public function test_modifiers($modifier)
+    {
+        $node = new ClassMethod('foo', [
+            'type' => constant('PhpParser\Node\Stmt\Class_::MODIFIER_'.strtoupper($modifier)),
+        ]);
 
-        $this->assertTrue($node->{'is' . $modifier}());
+        $this->assertTrue($node->{'is'.$modifier}());
     }
 
-    public function testNoModifiers() {
-        $node = new ClassMethod('foo', array('type' => 0));
+    public function test_no_modifiers()
+    {
+        $node = new ClassMethod('foo', ['type' => 0]);
 
         $this->assertTrue($node->isPublic());
         $this->assertFalse($node->isProtected());
@@ -26,15 +28,16 @@ class ClassMethodTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($node->isStatic());
     }
 
-    public function provideModifiers() {
-        return array(
-            array('public'),
-            array('protected'),
-            array('private'),
-            array('abstract'),
-            array('final'),
-            array('static'),
-        );
+    public function provideModifiers()
+    {
+        return [
+            ['public'],
+            ['protected'],
+            ['private'],
+            ['abstract'],
+            ['final'],
+            ['static'],
+        ];
     }
 
     /**
@@ -42,22 +45,23 @@ class ClassMethodTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider implicitPublicModifiers
      *
-     * @param integer $modifier Node type modifier
+     * @param  int  $modifier  Node type modifier
      */
-    public function testImplicitPublic($modifier)
+    public function test_implicit_public($modifier)
     {
-        $node = new ClassMethod('foo', array(
-            'type' => constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier))
-        ));
+        $node = new ClassMethod('foo', [
+            'type' => constant('PhpParser\Node\Stmt\Class_::MODIFIER_'.strtoupper($modifier)),
+        ]);
 
         $this->assertTrue($node->isPublic(), 'Node should be implicitly public');
     }
 
-    public function implicitPublicModifiers() {
-        return array(
-            array('abstract'),
-            array('final'),
-            array('static'),
-        );
+    public function implicitPublicModifiers()
+    {
+        return [
+            ['abstract'],
+            ['final'],
+            ['static'],
+        ];
     }
 }

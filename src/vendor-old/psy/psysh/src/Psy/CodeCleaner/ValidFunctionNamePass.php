@@ -28,8 +28,6 @@ class ValidFunctionNamePass extends NamespaceAwarePass
 {
     /**
      * Store newly defined function names on the way in, to allow recursion.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
@@ -51,19 +49,17 @@ class ValidFunctionNamePass extends NamespaceAwarePass
      *
      * @throws FatalErrorException if a function is redefined.
      * @throws FatalErrorException if the function name is a string (not an expression) and is not defined.
-     *
-     * @param Node $node
      */
     public function leaveNode(Node $node)
     {
         if ($node instanceof FuncCall) {
             // if function name is an expression or a variable, give it a pass for now.
             $name = $node->name;
-            if (!$name instanceof Expr && !$name instanceof Variable) {
+            if (! $name instanceof Expr && ! $name instanceof Variable) {
                 $shortName = implode('\\', $name->parts);
-                $fullName  = $this->getFullyQualifiedName($name);
+                $fullName = $this->getFullyQualifiedName($name);
                 $inScope = isset($this->currentScope[strtolower($fullName)]);
-                if (!$inScope && !function_exists($shortName) && !function_exists($fullName)) {
+                if (! $inScope && ! function_exists($shortName) && ! function_exists($fullName)) {
                     $message = sprintf('Call to undefined function %s()', $name);
                     throw new FatalErrorException($message, 0, 1, null, $node->getLine());
                 }

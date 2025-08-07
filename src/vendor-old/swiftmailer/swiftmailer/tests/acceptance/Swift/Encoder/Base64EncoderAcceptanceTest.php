@@ -3,15 +3,16 @@
 class Swift_Encoder_Base64EncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
 {
     private $_samplesDir;
+
     private $_encoder;
 
     protected function setUp()
     {
         $this->_samplesDir = realpath(__DIR__.'/../../../_samples/charsets');
-        $this->_encoder = new Swift_Encoder_Base64Encoder();
+        $this->_encoder = new Swift_Encoder_Base64Encoder;
     }
 
-    public function testEncodingAndDecodingSamples()
+    public function test_encoding_and_decoding_samples()
     {
         $sampleFp = opendir($this->_samplesDir);
         while (false !== $encodingDir = readdir($sampleFp)) {
@@ -35,7 +36,7 @@ class Swift_Encoder_Base64EncoderAcceptanceTest extends \PHPUnit_Framework_TestC
                         base64_decode($encodedText), $text,
                         '%s: Encoded string should decode back to original string for sample '.
                         $sampleDir.'/'.$sampleFile
-                        );
+                    );
                 }
                 closedir($fileFp);
             }

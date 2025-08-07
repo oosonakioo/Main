@@ -88,7 +88,6 @@ $this->ignore_invalid_utf8 = false;
 $this->text_input_as_HTML = false; // Converts all entities in Text inputs to UTF-8 before encoding
 $this->useGraphs = false;
 
-
 // When writing a block element with position:fixed and overflow:auto, mPDF scales it down to fit in the space
 // by repeatedly rewriting it and making adjustments. These values give the adjustments used, depending how far out
 // the previous guess was. The lower the number, the quicker it will finish, but the less accurate the fit may be.
@@ -143,10 +142,10 @@ $this->anchor2Bookmark = 0; // makes <a name=""> into a bookmark as well as inte
   2 => array('color'=> array(0,128,0), 'style'=>'I'),
   );
  */
-$this->bookmarkStyles = array();
+$this->bookmarkStyles = [];
 
 // Specify whether to automatically generate bookmarks from h1 - h6 tags
-$this->h2bookmarks = array();
+$this->h2bookmarks = [];
 /* Define arrays with e.g. the tag=>Bookmark-level
   Remember bookmark levels start at 0
   (does not work inside tables)
@@ -154,10 +153,9 @@ $this->h2bookmarks = array();
   $this->h2bookmarks = array('H1'=>0, 'H2'=>1, 'H3'=>2);
  */
 
-
 // TABLE OF CONTENTS
 // Specify whether to automatically generate ToC entries from h1 - h6 tags
-$this->h2toc = array();
+$this->h2toc = [];
 /* Define arrays with e.g. the tag=>ToC-level
   Remember ToC levels start at 0
   (does not work inside tables)
@@ -178,7 +176,6 @@ Mammal, dog
 Mammal, elephant
 */
 $this->indexUseSubentries = true;
-
 
 // CSS & STYLES
 $this->CSSselectMedia = 'print'; // screen, print, or any other CSS @media type (except "all")
@@ -225,8 +222,7 @@ $this->splitTableBorderWidth = 0; // Use table border (using this width in mm) w
 // // Allowed characters for text alignment on decimal marks. Additional codes must start with D
 // DM - middot U+00B7
 // DA - arabic decimal mark U+066B
-$this->decimal_align = array('DP' => '.', 'DC' => ',', 'DM' => "\xc2\xb7", 'DA' => "\xd9\xab", 'DD' => '-');
-
+$this->decimal_align = ['DP' => '.', 'DC' => ',', 'DM' => "\xc2\xb7", 'DA' => "\xd9\xab", 'DD' => '-'];
 
 // IMAGES
 $this->interpolateImages = false; // if image-rendering=='auto', this defines value for image-rendering
@@ -274,7 +270,7 @@ $this->allowCJKoverflow = false; // FALSE=squeeze; TRUE=overflow (only some char
 $this->CJKforceend = false; // Forces overflowng punctuation to hang outside right margin mPDF 5.6.40
 
 // HYPHENATION (using word dictionaries)
-$this->SHYlang = "en"; // Should be one of: 'en','de','es','fi','fr','it','nl','pl','ru','sv'
+$this->SHYlang = 'en'; // Should be one of: 'en','de','es','fi','fr','it','nl','pl','ru','sv'
 $this->SHYleftmin = 2;
 $this->SHYrightmin = 2;
 $this->SHYcharmin = 2;
@@ -284,7 +280,6 @@ $this->SHYcharmax = 10;
 $this->keepColumns = false; // Set to go to the second column only when the first is full of text etc.
 $this->max_colH_correction = 1.15; // Maximum ratio to adjust column height when justifying - too large a value can give ugly results
 $this->ColGap = 5;
-
 
 // LISTS
 // mPDF 6
@@ -298,8 +293,8 @@ $this->list_indent_first_level = 0;		// 1/0 yes/no to indent first level of list
 $this->list_number_suffix = '.';		// Content to follow a numbered list marker e.g. '.' gives 1. or IV.; ')' gives 1) or a)
 
 // To specify a bullet size and offset proportional to the list item's font size:
-//$this->list_marker_offset = '0.45em';	// Offset (CSS length) of list marker bullets (disc/circle/square)
-//$this->list_symbol_size = '0.31em';		// Size (CSS) of list marker bullets (disc/circle/square)
+// $this->list_marker_offset = '0.45em';	// Offset (CSS length) of list marker bullets (disc/circle/square)
+// $this->list_symbol_size = '0.31em';		// Size (CSS) of list marker bullets (disc/circle/square)
 // Browsers use a fixed bullet size and offset
 $this->list_marker_offset = '5.5pt'; // Offset (CSS length) of list marker bullets (disc/circle/square)
 $this->list_symbol_size = '3.6pt'; // Size (CSS) of list marker bullets (disc/circle/square)
@@ -324,236 +319,234 @@ $this->watermarkImgAlphaBlend = 'Normal';
 // BORDERS
 $this->autoPadding = false; // Automatically increases padding in block elements when border-radius set - if required
 
-
-//////////////////////////////////////////////
+// ////////////////////////////////////////////
 
 // Default values if no style sheet offered	(cf. http://www.w3.org/TR/CSS21/sample.html)
-$this->defaultCSS = array(
-	'BODY' => array(
-		'FONT-FAMILY' => 'serif',
-		'FONT-SIZE' => '11pt',
-		'TEXT-INDENT' => '0pt',
-		'LINE-HEIGHT' => 'normal',
-		'MARGIN-COLLAPSE' => 'collapse', /* Custom property to collapse top/bottom margins at top/bottom of page - ignored in tables/lists */
-		'HYPHENS' => 'manual', /* mPDF 5.6.08 */
-		'FONT-KERNING' => 'auto', /* mPDF 6 */
-	),
-	'P' => array(
-		'MARGIN' => '1.12em 0',
-	),
-	'H1' => array(
-		'FONT-SIZE' => '2em',
-		'FONT-WEIGHT' => 'bold',
-		'MARGIN' => '0.67em 0',
-		'PAGE-BREAK-AFTER' => 'avoid',
-	),
-	'H2' => array(
-		'FONT-SIZE' => '1.5em',
-		'FONT-WEIGHT' => 'bold',
-		'MARGIN' => '0.75em 0',
-		'PAGE-BREAK-AFTER' => 'avoid',
-	),
-	'H3' => array(
-		'FONT-SIZE' => '1.17em',
-		'FONT-WEIGHT' => 'bold',
-		'MARGIN' => '0.83em 0',
-		'PAGE-BREAK-AFTER' => 'avoid',
-	),
-	'H4' => array(
-		'FONT-WEIGHT' => 'bold',
-		'MARGIN' => '1.12em 0',
-		'PAGE-BREAK-AFTER' => 'avoid',
-	),
-	'H5' => array(
-		'FONT-SIZE' => '0.83em',
-		'FONT-WEIGHT' => 'bold',
-		'MARGIN' => '1.5em 0',
-		'PAGE-BREAK-AFTER' => 'avoid',
-	),
-	'H6' => array(
-		'FONT-SIZE' => '0.75em',
-		'FONT-WEIGHT' => 'bold',
-		'MARGIN' => '1.67em 0',
-		'PAGE-BREAK-AFTER' => 'avoid',
-	),
-	'HR' => array(
-		'COLOR' => '#888888',
-		'TEXT-ALIGN' => 'center',
-		'WIDTH' => '100%',
-		'HEIGHT' => '0.2mm',
-		'MARGIN-TOP' => '0.83em',
-		'MARGIN-BOTTOM' => '0.83em',
-	),
-	'PRE' => array(
-		'MARGIN' => '0.83em 0',
-		'FONT-FAMILY' => 'monospace',
-	),
-	'S' => array(
-		'TEXT-DECORATION' => 'line-through',
-	),
-	'STRIKE' => array(
-		'TEXT-DECORATION' => 'line-through',
-	),
-	'DEL' => array(
-		'TEXT-DECORATION' => 'line-through',
-	),
-	'SUB' => array(
-		'VERTICAL-ALIGN' => 'sub',
-		'FONT-SIZE' => '55%', /* Recommended 0.83em */
-	),
-	'SUP' => array(
-		'VERTICAL-ALIGN' => 'super',
-		'FONT-SIZE' => '55%', /* Recommended 0.83em */
-	),
-	'U' => array(
-		'TEXT-DECORATION' => 'underline',
-	),
-	'INS' => array(
-		'TEXT-DECORATION' => 'underline',
-	),
-	'B' => array(
-		'FONT-WEIGHT' => 'bold',
-	),
-	'STRONG' => array(
-		'FONT-WEIGHT' => 'bold',
-	),
-	'I' => array(
-		'FONT-STYLE' => 'italic',
-	),
-	'CITE' => array(
-		'FONT-STYLE' => 'italic',
-	),
-	'Q' => array(
-		'FONT-STYLE' => 'italic',
-	),
-	'EM' => array(
-		'FONT-STYLE' => 'italic',
-	),
-	'VAR' => array(
-		'FONT-STYLE' => 'italic',
-	),
-	'SAMP' => array(
-		'FONT-FAMILY' => 'monospace',
-	),
-	'CODE' => array(
-		'FONT-FAMILY' => 'monospace',
-	),
-	'KBD' => array(
-		'FONT-FAMILY' => 'monospace',
-	),
-	'TT' => array(
-		'FONT-FAMILY' => 'monospace',
-	),
-	'SMALL' => array(
-		'FONT-SIZE' => '83%',
-	),
-	'BIG' => array(
-		'FONT-SIZE' => '117%',
-	),
-	'ACRONYM' => array(
-		'FONT-SIZE' => '77%',
-		'FONT-WEIGHT' => 'bold',
-	),
-	'ADDRESS' => array(
-		'FONT-STYLE' => 'italic',
-	),
-	'BLOCKQUOTE' => array(
-		'MARGIN-LEFT' => '40px',
-		'MARGIN-RIGHT' => '40px',
-		'MARGIN-TOP' => '1.12em',
-		'MARGIN-BOTTOM' => '1.12em',
-	),
-	'A' => array(
-		'COLOR' => '#0000FF',
-		'TEXT-DECORATION' => 'underline',
-	),
-	'UL' => array(
-		'PADDING' => '0 auto', /* mPDF 6 */
-		'MARGIN-TOP' => '0.83em', /* mPDF 6 */
-		'MARGIN-BOTTOM' => '0.83em', /* mPDF 6 */
-	),
-	'OL' => array(
-		'PADDING' => '0 auto', /* mPDF 6 */
-		'MARGIN-TOP' => '0.83em', /* mPDF 6 */
-		'MARGIN-BOTTOM' => '0.83em', /* mPDF 6 */
-	),
-	'DL' => array(
-		'MARGIN' => '1.67em 0',
-	),
-	'DT' => array(
-	),
-	'DD' => array(
-		'PADDING-LEFT' => '40px',
-	),
-	'TABLE' => array(
-		'MARGIN' => '0',
-		'BORDER-COLLAPSE' => 'separate',
-		'BORDER-SPACING' => '2px',
-		'EMPTY-CELLS' => 'show',
-		'LINE-HEIGHT' => '1.2',
-		'VERTICAL-ALIGN' => 'middle',
-		'HYPHENS' => 'manual', /* mPDF 6 */
-		'FONT-KERNING' => 'auto', /* mPDF 6 */
-	),
-	'THEAD' => array(
-	),
-	'TFOOT' => array(
-	),
-	'TH' => array(
-		'FONT-WEIGHT' => 'bold',
-		'TEXT-ALIGN' => 'center',
-		'PADDING-LEFT' => '0.1em',
-		'PADDING-RIGHT' => '0.1em',
-		'PADDING-TOP' => '0.1em',
-		'PADDING-BOTTOM' => '0.1em',
-	),
-	'TD' => array(
-		'PADDING-LEFT' => '0.1em',
-		'PADDING-RIGHT' => '0.1em',
-		'PADDING-TOP' => '0.1em',
-		'PADDING-BOTTOM' => '0.1em',
-	),
-	'CAPTION' => array(
-		'TEXT-ALIGN' => 'center',
-	),
-	'IMG' => array(
-		'MARGIN' => '0',
-		'VERTICAL-ALIGN' => 'baseline',
-		'IMAGE-RENDERING' => 'auto',
-	),
-	'INPUT' => array(
-		'FONT-FAMILY' => 'sans-serif',
-		'VERTICAL-ALIGN' => 'middle',
-		'FONT-SIZE' => '0.9em',
-	),
-	'SELECT' => array(
-		'FONT-FAMILY' => 'sans-serif',
-		'FONT-SIZE' => '0.9em',
-		'VERTICAL-ALIGN' => 'middle',
-	),
-	'TEXTAREA' => array(
-		'FONT-FAMILY' => 'monospace',
-		'FONT-SIZE' => '0.9em',
-		'VERTICAL-ALIGN' => 'text-bottom',
-	),
-	'MARK' => array(/* mPDF 5.5.09 */
-		'BACKGROUND-COLOR' => 'yellow',
-	),
-);
+$this->defaultCSS = [
+    'BODY' => [
+        'FONT-FAMILY' => 'serif',
+        'FONT-SIZE' => '11pt',
+        'TEXT-INDENT' => '0pt',
+        'LINE-HEIGHT' => 'normal',
+        'MARGIN-COLLAPSE' => 'collapse', /* Custom property to collapse top/bottom margins at top/bottom of page - ignored in tables/lists */
+        'HYPHENS' => 'manual', /* mPDF 5.6.08 */
+        'FONT-KERNING' => 'auto', /* mPDF 6 */
+    ],
+    'P' => [
+        'MARGIN' => '1.12em 0',
+    ],
+    'H1' => [
+        'FONT-SIZE' => '2em',
+        'FONT-WEIGHT' => 'bold',
+        'MARGIN' => '0.67em 0',
+        'PAGE-BREAK-AFTER' => 'avoid',
+    ],
+    'H2' => [
+        'FONT-SIZE' => '1.5em',
+        'FONT-WEIGHT' => 'bold',
+        'MARGIN' => '0.75em 0',
+        'PAGE-BREAK-AFTER' => 'avoid',
+    ],
+    'H3' => [
+        'FONT-SIZE' => '1.17em',
+        'FONT-WEIGHT' => 'bold',
+        'MARGIN' => '0.83em 0',
+        'PAGE-BREAK-AFTER' => 'avoid',
+    ],
+    'H4' => [
+        'FONT-WEIGHT' => 'bold',
+        'MARGIN' => '1.12em 0',
+        'PAGE-BREAK-AFTER' => 'avoid',
+    ],
+    'H5' => [
+        'FONT-SIZE' => '0.83em',
+        'FONT-WEIGHT' => 'bold',
+        'MARGIN' => '1.5em 0',
+        'PAGE-BREAK-AFTER' => 'avoid',
+    ],
+    'H6' => [
+        'FONT-SIZE' => '0.75em',
+        'FONT-WEIGHT' => 'bold',
+        'MARGIN' => '1.67em 0',
+        'PAGE-BREAK-AFTER' => 'avoid',
+    ],
+    'HR' => [
+        'COLOR' => '#888888',
+        'TEXT-ALIGN' => 'center',
+        'WIDTH' => '100%',
+        'HEIGHT' => '0.2mm',
+        'MARGIN-TOP' => '0.83em',
+        'MARGIN-BOTTOM' => '0.83em',
+    ],
+    'PRE' => [
+        'MARGIN' => '0.83em 0',
+        'FONT-FAMILY' => 'monospace',
+    ],
+    'S' => [
+        'TEXT-DECORATION' => 'line-through',
+    ],
+    'STRIKE' => [
+        'TEXT-DECORATION' => 'line-through',
+    ],
+    'DEL' => [
+        'TEXT-DECORATION' => 'line-through',
+    ],
+    'SUB' => [
+        'VERTICAL-ALIGN' => 'sub',
+        'FONT-SIZE' => '55%', /* Recommended 0.83em */
+    ],
+    'SUP' => [
+        'VERTICAL-ALIGN' => 'super',
+        'FONT-SIZE' => '55%', /* Recommended 0.83em */
+    ],
+    'U' => [
+        'TEXT-DECORATION' => 'underline',
+    ],
+    'INS' => [
+        'TEXT-DECORATION' => 'underline',
+    ],
+    'B' => [
+        'FONT-WEIGHT' => 'bold',
+    ],
+    'STRONG' => [
+        'FONT-WEIGHT' => 'bold',
+    ],
+    'I' => [
+        'FONT-STYLE' => 'italic',
+    ],
+    'CITE' => [
+        'FONT-STYLE' => 'italic',
+    ],
+    'Q' => [
+        'FONT-STYLE' => 'italic',
+    ],
+    'EM' => [
+        'FONT-STYLE' => 'italic',
+    ],
+    'VAR' => [
+        'FONT-STYLE' => 'italic',
+    ],
+    'SAMP' => [
+        'FONT-FAMILY' => 'monospace',
+    ],
+    'CODE' => [
+        'FONT-FAMILY' => 'monospace',
+    ],
+    'KBD' => [
+        'FONT-FAMILY' => 'monospace',
+    ],
+    'TT' => [
+        'FONT-FAMILY' => 'monospace',
+    ],
+    'SMALL' => [
+        'FONT-SIZE' => '83%',
+    ],
+    'BIG' => [
+        'FONT-SIZE' => '117%',
+    ],
+    'ACRONYM' => [
+        'FONT-SIZE' => '77%',
+        'FONT-WEIGHT' => 'bold',
+    ],
+    'ADDRESS' => [
+        'FONT-STYLE' => 'italic',
+    ],
+    'BLOCKQUOTE' => [
+        'MARGIN-LEFT' => '40px',
+        'MARGIN-RIGHT' => '40px',
+        'MARGIN-TOP' => '1.12em',
+        'MARGIN-BOTTOM' => '1.12em',
+    ],
+    'A' => [
+        'COLOR' => '#0000FF',
+        'TEXT-DECORATION' => 'underline',
+    ],
+    'UL' => [
+        'PADDING' => '0 auto', /* mPDF 6 */
+        'MARGIN-TOP' => '0.83em', /* mPDF 6 */
+        'MARGIN-BOTTOM' => '0.83em', /* mPDF 6 */
+    ],
+    'OL' => [
+        'PADDING' => '0 auto', /* mPDF 6 */
+        'MARGIN-TOP' => '0.83em', /* mPDF 6 */
+        'MARGIN-BOTTOM' => '0.83em', /* mPDF 6 */
+    ],
+    'DL' => [
+        'MARGIN' => '1.67em 0',
+    ],
+    'DT' => [
+    ],
+    'DD' => [
+        'PADDING-LEFT' => '40px',
+    ],
+    'TABLE' => [
+        'MARGIN' => '0',
+        'BORDER-COLLAPSE' => 'separate',
+        'BORDER-SPACING' => '2px',
+        'EMPTY-CELLS' => 'show',
+        'LINE-HEIGHT' => '1.2',
+        'VERTICAL-ALIGN' => 'middle',
+        'HYPHENS' => 'manual', /* mPDF 6 */
+        'FONT-KERNING' => 'auto', /* mPDF 6 */
+    ],
+    'THEAD' => [
+    ],
+    'TFOOT' => [
+    ],
+    'TH' => [
+        'FONT-WEIGHT' => 'bold',
+        'TEXT-ALIGN' => 'center',
+        'PADDING-LEFT' => '0.1em',
+        'PADDING-RIGHT' => '0.1em',
+        'PADDING-TOP' => '0.1em',
+        'PADDING-BOTTOM' => '0.1em',
+    ],
+    'TD' => [
+        'PADDING-LEFT' => '0.1em',
+        'PADDING-RIGHT' => '0.1em',
+        'PADDING-TOP' => '0.1em',
+        'PADDING-BOTTOM' => '0.1em',
+    ],
+    'CAPTION' => [
+        'TEXT-ALIGN' => 'center',
+    ],
+    'IMG' => [
+        'MARGIN' => '0',
+        'VERTICAL-ALIGN' => 'baseline',
+        'IMAGE-RENDERING' => 'auto',
+    ],
+    'INPUT' => [
+        'FONT-FAMILY' => 'sans-serif',
+        'VERTICAL-ALIGN' => 'middle',
+        'FONT-SIZE' => '0.9em',
+    ],
+    'SELECT' => [
+        'FONT-FAMILY' => 'sans-serif',
+        'FONT-SIZE' => '0.9em',
+        'VERTICAL-ALIGN' => 'middle',
+    ],
+    'TEXTAREA' => [
+        'FONT-FAMILY' => 'monospace',
+        'FONT-SIZE' => '0.9em',
+        'VERTICAL-ALIGN' => 'text-bottom',
+    ],
+    'MARK' => [/* mPDF 5.5.09 */
+        'BACKGROUND-COLOR' => 'yellow',
+    ],
+];
 
-
-//////////////////////////////////////////////////
+// ////////////////////////////////////////////////
 // VALUES ONLY LIKELY TO BE CHANGED BY DEVELOPERS
-//////////////////////////////////////////////////
+// ////////////////////////////////////////////////
 $this->pdf_version = '1.4';
 
 // Hyphenation
-$this->SHYlanguages = array('en', 'de', 'es', 'fi', 'fr', 'it', 'nl', 'pl', 'ru', 'sv'); // existing defined patterns
+$this->SHYlanguages = ['en', 'de', 'es', 'fi', 'fr', 'it', 'nl', 'pl', 'ru', 'sv']; // existing defined patterns
 
 $this->default_lineheight_correction = 1.2; // Value 1 sets lineheight=fontsize height;
 // Value used if line-height not set by CSS (usually is)
 
-$this->fontsizes = array('XX-SMALL' => 0.7, 'X-SMALL' => 0.77, 'SMALL' => 0.86, 'MEDIUM' => 1, 'LARGE' => 1.2, 'X-LARGE' => 1.5, 'XX-LARGE' => 2);
+$this->fontsizes = ['XX-SMALL' => 0.7, 'X-SMALL' => 0.77, 'SMALL' => 0.86, 'MEDIUM' => 1, 'LARGE' => 1.2, 'X-LARGE' => 1.5, 'XX-LARGE' => 2];
 
 // CHARACTER PATTERN MATCHES TO DETECT LANGUAGES
 // pattern used to detect RTL characters -> force RTL
@@ -571,7 +564,7 @@ $this->pregCJKchars = "\x{1100}-\x{11FF}\x{2E80}-\x{A4CF}\x{A800}-\x{D7AF}\x{F90
 // ECMA-376 4th edition Part 1
 // http://www.ecma-international.org/publications/standards/Ecma-376.htm
 
-//Leading characters - Not allowed at end of line
+// Leading characters - Not allowed at end of line
 $this->CJKleading = "\$\(\*\[\{\x{00a3}\x{00a5}\x{00ab}\x{00b7}\x{2018}\x{201c}\x{2035}\x{3005}\x{3007}\x{3008}\x{300a}\x{300c}\x{300e}\x{3010}\x{3014}\x{3016}\x{3018}\x{301d}\x{fe34}\x{fe35}\x{fe37}\x{fe39}\x{fe3b}\x{fe3d}\x{fe3f}\x{fe41}\x{fe43}\x{fe57}\x{fe59}\x{fe5b}\x{fe5d}\x{ff04}\x{ff08}\x{ff0e}\x{ff3b}\x{ff5b}\x{ff5f}\x{ff62}\x{ffe1}\x{ffe5}\x{ffe6}";
 
 // Following characters - Not allowed at start
@@ -587,12 +580,11 @@ $this->CJKoverflow = "\.,\x{ff61}\x{ff64}\x{3001}\x{3002}\x{fe50}-\x{fe52}\x{ff0
 // Arabic, Syriac, Mandaic, Mongolian, N'Ko, Phags Pa
 $this->pregCURSchars = "\x{0590}-\x{083E}\x{0900}-\x{0DFF}\x{FB00}-\x{FDFD}\x{FE70}-\x{FEFF}";
 
-
 $this->allowedCSStags = 'DIV|P|H1|H2|H3|H4|H5|H6|FORM|IMG|A|BODY|TABLE|HR|THEAD|TFOOT|TBODY|TH|TR|TD|UL|OL|LI|PRE|BLOCKQUOTE|ADDRESS|DL|DT|DD';
 $this->allowedCSStags .= '|ARTICLE|ASIDE|FIGURE|FIGCAPTION|FOOTER|HEADER|HGROUP|NAV|SECTION|MAIN|MARK|DETAILS|SUMMARY|METER|PROGRESS|TIME';
 $this->allowedCSStags .= '|SPAN|TT|I|B|BIG|SMALL|EM|STRONG|DFN|CODE|SAMP|KBD|VAR|CITE|ABBR|ACRONYM|STRIKE|S|U|DEL|INS|Q|FONT';
 $this->allowedCSStags .= '|SELECT|INPUT|TEXTAREA|CAPTION|FIELDSET|LEGEND';
 $this->allowedCSStags .= '|TEXTCIRCLE|DOTTAB|BDO|BDI';
 
-$this->outerblocktags = array('DIV', 'FORM', 'CENTER', 'DL', 'FIELDSET', 'ARTICLE', 'ASIDE', 'FIGURE', 'FIGCAPTION', 'FOOTER', 'HEADER', 'HGROUP', 'MAIN', 'NAV', 'SECTION', 'DETAILS', 'SUMMARY', 'UL', 'OL', 'LI');
-$this->innerblocktags = array('P', 'BLOCKQUOTE', 'ADDRESS', 'PRE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'DT', 'DD', 'CAPTION');
+$this->outerblocktags = ['DIV', 'FORM', 'CENTER', 'DL', 'FIELDSET', 'ARTICLE', 'ASIDE', 'FIGURE', 'FIGCAPTION', 'FOOTER', 'HEADER', 'HGROUP', 'MAIN', 'NAV', 'SECTION', 'DETAILS', 'SUMMARY', 'UL', 'OL', 'LI'];
+$this->innerblocktags = ['P', 'BLOCKQUOTE', 'ADDRESS', 'PRE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'DT', 'DD', 'CAPTION'];

@@ -22,19 +22,26 @@ use Symfony\Component\Console\Exception\LogicException;
 class Question
 {
     private $question;
+
     private $attempts;
+
     private $hidden = false;
+
     private $hiddenFallback = true;
+
     private $autocompleterValues;
+
     private $validator;
+
     private $default;
+
     private $normalizer;
 
     /**
      * Constructor.
      *
-     * @param string $question The question to ask to the user
-     * @param mixed  $default  The default answer to return if the user enters nothing
+     * @param  string  $question  The question to ask to the user
+     * @param  mixed  $default  The default answer to return if the user enters nothing
      */
     public function __construct($question, $default = null)
     {
@@ -75,8 +82,7 @@ class Question
     /**
      * Sets whether the user response must be hidden or not.
      *
-     * @param bool $hidden
-     *
+     * @param  bool  $hidden
      * @return Question The current instance
      *
      * @throws LogicException In case the autocompleter is also used
@@ -105,8 +111,7 @@ class Question
     /**
      * Sets whether to fallback on non-hidden question if the response can not be hidden.
      *
-     * @param bool $fallback
-     *
+     * @param  bool  $fallback
      * @return Question The current instance
      */
     public function setHiddenFallback($fallback)
@@ -129,8 +134,7 @@ class Question
     /**
      * Sets values for the autocompleter.
      *
-     * @param null|array|\Traversable $values
-     *
+     * @param  null|array|\Traversable  $values
      * @return Question The current instance
      *
      * @throws InvalidArgumentException
@@ -142,8 +146,8 @@ class Question
             $values = $this->isAssoc($values) ? array_merge(array_keys($values), array_values($values)) : array_values($values);
         }
 
-        if (null !== $values && !is_array($values)) {
-            if (!$values instanceof \Traversable || !$values instanceof \Countable) {
+        if ($values !== null && ! is_array($values)) {
+            if (! $values instanceof \Traversable || ! $values instanceof \Countable) {
                 throw new InvalidArgumentException('Autocompleter values can be either an array, `null` or an object implementing both `Countable` and `Traversable` interfaces.');
             }
         }
@@ -160,11 +164,10 @@ class Question
     /**
      * Sets a validator for the question.
      *
-     * @param null|callable $validator
      *
      * @return Question The current instance
      */
-    public function setValidator(callable $validator = null)
+    public function setValidator(?callable $validator = null)
     {
         $this->validator = $validator;
 
@@ -186,15 +189,14 @@ class Question
      *
      * Null means an unlimited number of attempts.
      *
-     * @param null|int $attempts
-     *
+     * @param  null|int  $attempts
      * @return Question The current instance
      *
      * @throws InvalidArgumentException In case the number of attempts is invalid.
      */
     public function setMaxAttempts($attempts)
     {
-        if (null !== $attempts && $attempts < 1) {
+        if ($attempts !== null && $attempts < 1) {
             throw new InvalidArgumentException('Maximum number of attempts must be a positive value.');
         }
 
@@ -220,7 +222,6 @@ class Question
      *
      * The normalizer can be a callable (a string), a closure or a class implementing __invoke.
      *
-     * @param callable $normalizer
      *
      * @return Question The current instance
      */

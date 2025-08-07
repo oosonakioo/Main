@@ -1,43 +1,43 @@
 <?php
+
 namespace Hamcrest\Core;
 
 class IsCollectionContainingTest extends \Hamcrest\AbstractMatcherTest
 {
-
     protected function createMatcher()
     {
         return \Hamcrest\Core\IsCollectionContaining::hasItem(equalTo('irrelevant'));
     }
 
-    public function testMatchesACollectionThatContainsAnElementMatchingTheGivenMatcher()
+    public function test_matches_a_collection_that_contains_an_element_matching_the_given_matcher()
     {
         $itemMatcher = hasItem(equalTo('a'));
 
         $this->assertMatches(
             $itemMatcher,
-            array('a', 'b', 'c'),
+            ['a', 'b', 'c'],
             "should match list that contains 'a'"
         );
     }
 
-    public function testDoesNotMatchCollectionThatDoesntContainAnElementMatchingTheGivenMatcher()
+    public function test_does_not_match_collection_that_doesnt_contain_an_element_matching_the_given_matcher()
     {
         $matcher1 = hasItem(equalTo('a'));
         $this->assertDoesNotMatch(
             $matcher1,
-            array('b', 'c'),
+            ['b', 'c'],
             "should not match list that doesn't contain 'a'"
         );
 
         $matcher2 = hasItem(equalTo('a'));
         $this->assertDoesNotMatch(
             $matcher2,
-            array(),
+            [],
             'should not match the empty list'
         );
     }
 
-    public function testDoesNotMatchNull()
+    public function test_does_not_match_null()
     {
         $this->assertDoesNotMatch(
             hasItem(equalTo('a')),
@@ -46,45 +46,45 @@ class IsCollectionContainingTest extends \Hamcrest\AbstractMatcherTest
         );
     }
 
-    public function testHasAReadableDescription()
+    public function test_has_a_readable_description()
     {
         $this->assertDescription('a collection containing "a"', hasItem(equalTo('a')));
     }
 
-    public function testMatchesAllItemsInCollection()
+    public function test_matches_all_items_in_collection()
     {
         $matcher1 = hasItems(equalTo('a'), equalTo('b'), equalTo('c'));
         $this->assertMatches(
             $matcher1,
-            array('a', 'b', 'c'),
+            ['a', 'b', 'c'],
             'should match list containing all items'
         );
 
         $matcher2 = hasItems('a', 'b', 'c');
         $this->assertMatches(
             $matcher2,
-            array('a', 'b', 'c'),
+            ['a', 'b', 'c'],
             'should match list containing all items (without matchers)'
         );
 
         $matcher3 = hasItems(equalTo('a'), equalTo('b'), equalTo('c'));
         $this->assertMatches(
             $matcher3,
-            array('c', 'b', 'a'),
+            ['c', 'b', 'a'],
             'should match list containing all items in any order'
         );
 
         $matcher4 = hasItems(equalTo('a'), equalTo('b'), equalTo('c'));
         $this->assertMatches(
             $matcher4,
-            array('e', 'c', 'b', 'a', 'd'),
+            ['e', 'c', 'b', 'a', 'd'],
             'should match list containing all items plus others'
         );
 
         $matcher5 = hasItems(equalTo('a'), equalTo('b'), equalTo('c'));
         $this->assertDoesNotMatch(
             $matcher5,
-            array('e', 'c', 'b', 'd'), // 'a' missing
+            ['e', 'c', 'b', 'd'], // 'a' missing
             'should not match list unless it contains all items'
         );
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -31,13 +33,10 @@ final class Uses extends BaseTag implements Factory\StaticMethod
 
     /**
      * Initializes this tag.
-     *
-     * @param Fqsen       $refers
-     * @param Description $description
      */
-    public function __construct(Fqsen $refers, Description $description = null)
+    public function __construct(Fqsen $refers, ?Description $description = null)
     {
-        $this->refers      = $refers;
+        $this->refers = $refers;
         $this->description = $description;
     }
 
@@ -46,16 +45,16 @@ final class Uses extends BaseTag implements Factory\StaticMethod
      */
     public static function create(
         $body,
-        FqsenResolver $resolver = null,
-        DescriptionFactory $descriptionFactory = null,
-        TypeContext $context = null
+        ?FqsenResolver $resolver = null,
+        ?DescriptionFactory $descriptionFactory = null,
+        ?TypeContext $context = null
     ) {
         Assert::string($body);
         Assert::allNotNull([$resolver, $descriptionFactory]);
 
         $parts = preg_split('/\s+/Su', $body, 2);
 
-        return new static(
+        return new self(
             $resolver->resolve($parts[0], $context),
             $descriptionFactory->create(isset($parts[1]) ? $parts[1] : '', $context)
         );
@@ -78,6 +77,6 @@ final class Uses extends BaseTag implements Factory\StaticMethod
      */
     public function __toString()
     {
-        return $this->refers . ' ' . $this->description->render();
+        return $this->refers.' '.$this->description->render();
     }
 }

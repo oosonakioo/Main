@@ -25,9 +25,9 @@ class Adapter extends AbstractCache
     /**
      * Constructor.
      *
-     * @param AdapterInterface $adapter adapter
-     * @param string           $file    the file to cache to
-     * @param int|null         $expire  seconds until cache expiration
+     * @param  AdapterInterface  $adapter  adapter
+     * @param  string  $file  the file to cache to
+     * @param  int|null  $expire  seconds until cache expiration
      */
     public function __construct(AdapterInterface $adapter, $file, $expire = null)
     {
@@ -39,7 +39,7 @@ class Adapter extends AbstractCache
     /**
      * Set the expiration time in seconds.
      *
-     * @param int $expire relative expiration time
+     * @param  int  $expire  relative expiration time
      */
     protected function setExpire($expire)
     {
@@ -51,8 +51,7 @@ class Adapter extends AbstractCache
     /**
      * Get expiration time in seconds.
      *
-     * @param int $time relative expiration time
-     *
+     * @param  int  $time  relative expiration time
      * @return int actual expiration time
      */
     protected function getTime($time = 0)
@@ -65,7 +64,7 @@ class Adapter extends AbstractCache
      */
     public function setFromStorage($json)
     {
-        list($cache, $complete, $expire) = json_decode($json, true);
+        [$cache, $complete, $expire] = json_decode($json, true);
 
         if (! $expire || $expire > $this->getTime()) {
             $this->cache = $cache;
@@ -82,7 +81,7 @@ class Adapter extends AbstractCache
     {
         if ($this->adapter->has($this->file)) {
             $file = $this->adapter->read($this->file);
-            if ($file && !empty($file['contents'])) {
+            if ($file && ! empty($file['contents'])) {
                 $this->setFromStorage($file['contents']);
             }
         }
@@ -103,7 +102,7 @@ class Adapter extends AbstractCache
      */
     public function save()
     {
-        $config = new Config();
+        $config = new Config;
         $contents = $this->getForStorage();
 
         if ($this->adapter->has($this->file)) {

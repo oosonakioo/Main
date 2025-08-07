@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,4 @@ use Doctrine\Common\Inflector\Inflector as BaseInflector;
  *
  * Kept for backwards compatibility reasons, was moved to its own component.
  */
-class Inflector extends BaseInflector
-{
-}
+class Inflector extends BaseInflector {}

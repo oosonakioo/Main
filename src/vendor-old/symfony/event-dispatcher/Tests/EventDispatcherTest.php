@@ -17,6 +17,6 @@ class EventDispatcherTest extends AbstractEventDispatcherTest
 {
     protected function createEventDispatcher()
     {
-        return new EventDispatcher();
+        return new EventDispatcher;
     }
 }

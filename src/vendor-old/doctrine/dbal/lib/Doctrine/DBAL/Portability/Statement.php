@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,12 +27,13 @@ use PDO;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
+class Statement implements \Doctrine\DBAL\Driver\Statement, \IteratorAggregate
 {
     /**
-     * @var integer
+     * @var int
      */
     private $portability;
 
@@ -41,20 +43,19 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     private $stmt;
 
     /**
-     * @var integer
+     * @var int
      */
     private $case;
 
     /**
-     * @var integer
+     * @var int
      */
     private $defaultFetchMode = PDO::FETCH_BOTH;
 
     /**
      * Wraps <tt>Statement</tt> and applies portability measures.
      *
-     * @param \Doctrine\DBAL\Driver\Statement       $stmt
-     * @param \Doctrine\DBAL\Portability\Connection $conn
+     * @param  \Doctrine\DBAL\Driver\Statement  $stmt
      */
     public function __construct($stmt, Connection $conn)
     {
@@ -70,10 +71,10 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     {
         return $this->stmt->bindParam($column, $variable, $type, $length);
     }
+
     /**
      * {@inheritdoc}
      */
-
     public function bindValue($param, $value, $type = null)
     {
         return $this->stmt->bindValue($param, $value, $type);
@@ -149,8 +150,8 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
         $row = $this->stmt->fetch($fetchMode);
 
         $row = $this->fixRow($row,
-            $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM),
-            !is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE)
+            $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM),
+            ! is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE)
         );
 
         return $row;
@@ -169,9 +170,9 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
             $rows = $this->stmt->fetchAll($fetchMode);
         }
 
-        $iterateRow = $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM);
-        $fixCase = !is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE);
-        if ( ! $iterateRow && !$fixCase) {
+        $iterateRow = $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM);
+        $fixCase = ! is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE);
+        if (! $iterateRow && ! $fixCase) {
             return $rows;
         }
 
@@ -183,15 +184,14 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * @param mixed   $row
-     * @param integer $iterateRow
-     * @param boolean $fixCase
-     *
+     * @param  mixed  $row
+     * @param  int  $iterateRow
+     * @param  bool  $fixCase
      * @return array
      */
     protected function fixRow($row, $iterateRow, $fixCase)
     {
-        if ( ! $row) {
+        if (! $row) {
             return $row;
         }
 
@@ -219,7 +219,7 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     {
         $value = $this->stmt->fetchColumn($columnIndex);
 
-        if ($this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM)) {
+        if ($this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM)) {
             if (($this->portability & Connection::PORTABILITY_EMPTY_TO_NULL) && $value === '') {
                 $value = null;
             } elseif (($this->portability & Connection::PORTABILITY_RTRIM) && is_string($value)) {

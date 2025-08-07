@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -22,17 +23,18 @@ namespace Doctrine\DBAL\Platforms;
 use Doctrine\DBAL\LockMode;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
-use Doctrine\DBAL\Schema\Identifier;
-use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
+use Doctrine\DBAL\Schema\Identifier;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\TableDiff;
 
 /**
  * The SQLServerPlatform provides the behavior, features and SQL dialect of the
  * Microsoft SQL Server database platform.
  *
  * @since 2.0
+ *
  * @author Roman Borschel <roman@code-factory.org>
  * @author Jonathan H. Wage <jonwage@gmail.com>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -47,11 +49,11 @@ class SQLServerPlatform extends AbstractPlatform
     {
         $factorClause = '';
 
-        if ('-' === $operator) {
+        if ($operator === '-') {
             $factorClause = '-1 * ';
         }
 
-        return 'DATEADD(' . $unit . ', ' . $factorClause . $interval . ', ' . $date . ')';
+        return 'DATEADD('.$unit.', '.$factorClause.$interval.', '.$date.')';
     }
 
     /**
@@ -59,7 +61,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getDateDiffExpression($date1, $date2)
     {
-        return 'DATEDIFF(day, ' . $date2 . ',' . $date1 . ')';
+        return 'DATEDIFF(day, '.$date2.','.$date1.')';
     }
 
     /**
@@ -128,7 +130,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getCreateDatabaseSQL($name)
     {
-        return 'CREATE DATABASE ' . $name;
+        return 'CREATE DATABASE '.$name;
     }
 
     /**
@@ -136,7 +138,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getDropDatabaseSQL($name)
     {
-        return 'DROP DATABASE ' . $name;
+        return 'DROP DATABASE '.$name;
     }
 
     /**
@@ -152,7 +154,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getCreateSchemaSQL($schemaName)
     {
-        return 'CREATE SCHEMA ' . $schemaName;
+        return 'CREATE SCHEMA '.$schemaName;
     }
 
     /**
@@ -171,7 +173,7 @@ class SQLServerPlatform extends AbstractPlatform
         $foreignKey = $foreignKey->getQuotedName($this);
         $table = $table->getQuotedName($this);
 
-        return 'ALTER TABLE ' . $table . ' DROP CONSTRAINT ' . $foreignKey;
+        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey;
     }
 
     /**
@@ -181,12 +183,12 @@ class SQLServerPlatform extends AbstractPlatform
     {
         if ($index instanceof Index) {
             $index = $index->getQuotedName($this);
-        } elseif (!is_string($index)) {
+        } elseif (! is_string($index)) {
             throw new \InvalidArgumentException('AbstractPlatform::getDropIndexSQL() expects $index parameter to be string or \Doctrine\DBAL\Schema\Index.');
         }
 
-        if (!isset($table)) {
-            return 'DROP INDEX ' . $index;
+        if (! isset($table)) {
+            return 'DROP INDEX '.$index;
         }
 
         if ($table instanceof Table) {
@@ -194,18 +196,18 @@ class SQLServerPlatform extends AbstractPlatform
         }
 
         return "IF EXISTS (SELECT * FROM sysobjects WHERE name = '$index')
-                    ALTER TABLE " . $table . " DROP CONSTRAINT " . $index . "
+                    ALTER TABLE ".$table.' DROP CONSTRAINT '.$index.'
                 ELSE
-                    DROP INDEX " . $index . " ON " . $table;
+                    DROP INDEX '.$index.' ON '.$table;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function _getCreateTableSQL($tableName, array $columns, array $options = array())
+    protected function _getCreateTableSQL($tableName, array $columns, array $options = [])
     {
-        $defaultConstraintsSql = array();
-        $commentsSql           = array();
+        $defaultConstraintsSql = [];
+        $commentsSql = [];
 
         // @todo does other code breaks because of this?
         // force primary keys to be not null
@@ -216,42 +218,42 @@ class SQLServerPlatform extends AbstractPlatform
 
             // Build default constraints SQL statements.
             if (isset($column['default'])) {
-                $defaultConstraintsSql[] = 'ALTER TABLE ' . $tableName .
-                    ' ADD' . $this->getDefaultConstraintDeclarationSQL($tableName, $column);
+                $defaultConstraintsSql[] = 'ALTER TABLE '.$tableName.
+                    ' ADD'.$this->getDefaultConstraintDeclarationSQL($tableName, $column);
             }
 
-            if ( ! empty($column['comment']) || is_numeric($column['comment'])) {
+            if (! empty($column['comment']) || is_numeric($column['comment'])) {
                 $commentsSql[] = $this->getCreateColumnCommentSQL($tableName, $column['name'], $column['comment']);
             }
         }
 
         $columnListSql = $this->getColumnDeclarationListSQL($columns);
 
-        if (isset($options['uniqueConstraints']) && !empty($options['uniqueConstraints'])) {
+        if (isset($options['uniqueConstraints']) && ! empty($options['uniqueConstraints'])) {
             foreach ($options['uniqueConstraints'] as $name => $definition) {
-                $columnListSql .= ', ' . $this->getUniqueConstraintDeclarationSQL($name, $definition);
+                $columnListSql .= ', '.$this->getUniqueConstraintDeclarationSQL($name, $definition);
             }
         }
 
-        if (isset($options['primary']) && !empty($options['primary'])) {
+        if (isset($options['primary']) && ! empty($options['primary'])) {
             $flags = '';
             if (isset($options['primary_index']) && $options['primary_index']->hasFlag('nonclustered')) {
                 $flags = ' NONCLUSTERED';
             }
-            $columnListSql .= ', PRIMARY KEY' . $flags . ' (' . implode(', ', array_unique(array_values($options['primary']))) . ')';
+            $columnListSql .= ', PRIMARY KEY'.$flags.' ('.implode(', ', array_unique(array_values($options['primary']))).')';
         }
 
-        $query = 'CREATE TABLE ' . $tableName . ' (' . $columnListSql;
+        $query = 'CREATE TABLE '.$tableName.' ('.$columnListSql;
 
         $check = $this->getCheckDeclarationSQL($columns);
-        if (!empty($check)) {
-            $query .= ', ' . $check;
+        if (! empty($check)) {
+            $query .= ', '.$check;
         }
         $query .= ')';
 
         $sql[] = $query;
 
-        if (isset($options['indexes']) && !empty($options['indexes'])) {
+        if (isset($options['indexes']) && ! empty($options['indexes'])) {
             foreach ($options['indexes'] as $index) {
                 $sql[] = $this->getCreateIndexSQL($index, $tableName);
             }
@@ -276,7 +278,7 @@ class SQLServerPlatform extends AbstractPlatform
             $flags = ' NONCLUSTERED';
         }
 
-        return 'ALTER TABLE ' . $table . ' ADD PRIMARY KEY' . $flags . ' (' . $this->getIndexFieldDeclarationListSQL($index->getQuotedColumns($this)) . ')';
+        return 'ALTER TABLE '.$table.' ADD PRIMARY KEY'.$flags.' ('.$this->getIndexFieldDeclarationListSQL($index->getQuotedColumns($this)).')';
     }
 
     /**
@@ -290,10 +292,9 @@ class SQLServerPlatform extends AbstractPlatform
      * as column comments are stored in the same property there when
      * specifying a column's "Description" attribute.
      *
-     * @param string $tableName  The quoted table name to which the column belongs.
-     * @param string $columnName The quoted column name to create the comment for.
-     * @param string $comment    The column's comment.
-     *
+     * @param  string  $tableName  The quoted table name to which the column belongs.
+     * @param  string  $columnName  The quoted column name to create the comment for.
+     * @param  string  $comment  The column's comment.
      * @return string
      */
     protected function getCreateColumnCommentSQL($tableName, $columnName, $comment)
@@ -313,26 +314,25 @@ class SQLServerPlatform extends AbstractPlatform
     /**
      * Returns the SQL snippet for declaring a default constraint.
      *
-     * @param string $table  Name of the table to return the default constraint declaration for.
-     * @param array  $column Column definition.
-     *
+     * @param  string  $table  Name of the table to return the default constraint declaration for.
+     * @param  array  $column  Column definition.
      * @return string
      *
      * @throws \InvalidArgumentException
      */
     public function getDefaultConstraintDeclarationSQL($table, array $column)
     {
-        if ( ! isset($column['default'])) {
+        if (! isset($column['default'])) {
             throw new \InvalidArgumentException("Incomplete column definition. 'default' required.");
         }
 
         $columnName = new Identifier($column['name']);
 
         return
-            ' CONSTRAINT ' .
-            $this->generateDefaultConstraintName($table, $column['name']) .
-            $this->getDefaultValueDeclarationSQL($column) .
-            ' FOR ' . $columnName->getQuotedName($this);
+            ' CONSTRAINT '.
+            $this->generateDefaultConstraintName($table, $column['name']).
+            $this->getDefaultValueDeclarationSQL($column).
+            ' FOR '.$columnName->getQuotedName($this);
     }
 
     /**
@@ -354,7 +354,7 @@ class SQLServerPlatform extends AbstractPlatform
     {
         $constraint = parent::getCreateIndexSQL($index, $table);
 
-        if ($index->isUnique() && !$index->isPrimary()) {
+        if ($index->isUnique() && ! $index->isPrimary()) {
             $constraint = $this->_appendUniqueConstraintDefinition($constraint, $index);
         }
 
@@ -383,20 +383,18 @@ class SQLServerPlatform extends AbstractPlatform
     /**
      * Extend unique key constraint with required filters
      *
-     * @param string                      $sql
-     * @param \Doctrine\DBAL\Schema\Index $index
-     *
+     * @param  string  $sql
      * @return string
      */
     private function _appendUniqueConstraintDefinition($sql, Index $index)
     {
-        $fields = array();
+        $fields = [];
 
         foreach ($index->getQuotedColumns($this) as $field) {
-            $fields[] = $field . ' IS NOT NULL';
+            $fields[] = $field.' IS NOT NULL';
         }
 
-        return $sql . ' WHERE ' . implode(' AND ', $fields);
+        return $sql.' WHERE '.implode(' AND ', $fields);
     }
 
     /**
@@ -404,10 +402,10 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getAlterTableSQL(TableDiff $diff)
     {
-        $queryParts  = array();
-        $sql         = array();
-        $columnSql   = array();
-        $commentsSql = array();
+        $queryParts = [];
+        $sql = [];
+        $columnSql = [];
+        $commentsSql = [];
 
         /** @var \Doctrine\DBAL\Schema\Column $column */
         foreach ($diff->addedColumns as $column) {
@@ -416,7 +414,7 @@ class SQLServerPlatform extends AbstractPlatform
             }
 
             $columnDef = $column->toArray();
-            $queryParts[] = 'ADD ' . $this->getColumnDeclarationSQL($column->getQuotedName($this), $columnDef);
+            $queryParts[] = 'ADD '.$this->getColumnDeclarationSQL($column->getQuotedName($this), $columnDef);
 
             if (isset($columnDef['default'])) {
                 $queryParts[] = $this->getAlterTableAddDefaultConstraintClause($diff->name, $column);
@@ -424,7 +422,7 @@ class SQLServerPlatform extends AbstractPlatform
 
             $comment = $this->getColumnComment($column);
 
-            if ( ! empty($comment) || is_numeric($comment)) {
+            if (! empty($comment) || is_numeric($comment)) {
                 $commentsSql[] = $this->getCreateColumnCommentSQL(
                     $diff->name,
                     $column->getQuotedName($this),
@@ -438,7 +436,7 @@ class SQLServerPlatform extends AbstractPlatform
                 continue;
             }
 
-            $queryParts[] = 'DROP COLUMN ' . $column->getQuotedName($this);
+            $queryParts[] = 'DROP COLUMN '.$column->getQuotedName($this);
         }
 
         /* @var $columnDiff \Doctrine\DBAL\Schema\ColumnDiff */
@@ -447,13 +445,13 @@ class SQLServerPlatform extends AbstractPlatform
                 continue;
             }
 
-            $column     = $columnDiff->column;
-            $comment    = $this->getColumnComment($column);
-            $hasComment = ! empty ($comment) || is_numeric($comment);
+            $column = $columnDiff->column;
+            $comment = $this->getColumnComment($column);
+            $hasComment = ! empty($comment) || is_numeric($comment);
 
             if ($columnDiff->fromColumn instanceof Column) {
-                $fromComment    = $this->getColumnComment($columnDiff->fromColumn);
-                $hasFromComment = ! empty ($fromComment) || is_numeric($fromComment);
+                $fromComment = $this->getColumnComment($columnDiff->fromColumn);
+                $hasFromComment = ! empty($fromComment) || is_numeric($fromComment);
 
                 if ($hasFromComment && $hasComment && $fromComment != $comment) {
                     $commentsSql[] = $this->getAlterColumnCommentSQL(
@@ -490,7 +488,7 @@ class SQLServerPlatform extends AbstractPlatform
 
             $columnDef = $column->toArray();
 
-            $queryParts[] = 'ALTER COLUMN ' .
+            $queryParts[] = 'ALTER COLUMN '.
                     $this->getColumnDeclarationSQL($column->getQuotedName($this), $columnDef);
 
             if (isset($columnDef['default']) && ($requireDropDefaultConstraint || $columnDiff->hasChanged('default'))) {
@@ -505,9 +503,9 @@ class SQLServerPlatform extends AbstractPlatform
 
             $oldColumnName = new Identifier($oldColumnName);
 
-            $sql[] = "sp_RENAME '" .
-                $diff->getName($this)->getQuotedName($this) . "." . $oldColumnName->getQuotedName($this) .
-                "', '" . $column->getQuotedName($this) . "', 'COLUMN'";
+            $sql[] = "sp_RENAME '".
+                $diff->getName($this)->getQuotedName($this).'.'.$oldColumnName->getQuotedName($this).
+                "', '".$column->getQuotedName($this)."', 'COLUMN'";
 
             // Recreate default constraint with new column name if necessary (for future reference).
             if ($column->getDefault() !== null) {
@@ -519,20 +517,20 @@ class SQLServerPlatform extends AbstractPlatform
             }
         }
 
-        $tableSql = array();
+        $tableSql = [];
 
         if ($this->onSchemaAlterTable($diff, $tableSql)) {
             return array_merge($tableSql, $columnSql);
         }
 
         foreach ($queryParts as $query) {
-            $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' ' . $query;
+            $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).' '.$query;
         }
 
         $sql = array_merge($sql, $commentsSql);
 
         if ($diff->newName !== false) {
-            $sql[] = "sp_RENAME '" . $diff->getName($this)->getQuotedName($this) . "', '" . $diff->getNewName()->getName() . "'";
+            $sql[] = "sp_RENAME '".$diff->getName($this)->getQuotedName($this)."', '".$diff->getNewName()->getName()."'";
 
             /**
              * Rename table's default constraints names
@@ -542,14 +540,14 @@ class SQLServerPlatform extends AbstractPlatform
              * alterations as the table name is encoded in
              * default constraints' names.
              */
-            $sql[] = "DECLARE @sql NVARCHAR(MAX) = N''; " .
-                "SELECT @sql += N'EXEC sp_rename N''' + dc.name + ''', N''' " .
-                "+ REPLACE(dc.name, '" . $this->generateIdentifierName($diff->name) . "', " .
-                "'" . $this->generateIdentifierName($diff->newName) . "') + ''', ''OBJECT'';' " .
-                "FROM sys.default_constraints dc " .
-                "JOIN sys.tables tbl ON dc.parent_object_id = tbl.object_id " .
-                "WHERE tbl.name = '" . $diff->getNewName()->getName() . "';" .
-                "EXEC sp_executesql @sql";
+            $sql[] = "DECLARE @sql NVARCHAR(MAX) = N''; ".
+                "SELECT @sql += N'EXEC sp_rename N''' + dc.name + ''', N''' ".
+                "+ REPLACE(dc.name, '".$this->generateIdentifierName($diff->name)."', ".
+                "'".$this->generateIdentifierName($diff->newName)."') + ''', ''OBJECT'';' ".
+                'FROM sys.default_constraints dc '.
+                'JOIN sys.tables tbl ON dc.parent_object_id = tbl.object_id '.
+                "WHERE tbl.name = '".$diff->getNewName()->getName()."';".
+                'EXEC sp_executesql @sql';
         }
 
         $sql = array_merge(
@@ -564,9 +562,8 @@ class SQLServerPlatform extends AbstractPlatform
     /**
      * Returns the SQL clause for adding a default constraint in an ALTER TABLE statement.
      *
-     * @param string $tableName The name of the table to generate the clause for.
-     * @param Column $column    The column to generate the clause for.
-     *
+     * @param  string  $tableName  The name of the table to generate the clause for.
+     * @param  Column  $column  The column to generate the clause for.
      * @return string
      */
     private function getAlterTableAddDefaultConstraintClause($tableName, Column $column)
@@ -574,20 +571,19 @@ class SQLServerPlatform extends AbstractPlatform
         $columnDef = $column->toArray();
         $columnDef['name'] = $column->getQuotedName($this);
 
-        return 'ADD' . $this->getDefaultConstraintDeclarationSQL($tableName, $columnDef);
+        return 'ADD'.$this->getDefaultConstraintDeclarationSQL($tableName, $columnDef);
     }
 
     /**
      * Returns the SQL clause for dropping an existing default constraint in an ALTER TABLE statement.
      *
-     * @param string $tableName  The name of the table to generate the clause for.
-     * @param string $columnName The name of the column to generate the clause for.
-     *
+     * @param  string  $tableName  The name of the table to generate the clause for.
+     * @param  string  $columnName  The name of the column to generate the clause for.
      * @return string
      */
     private function getAlterTableDropDefaultConstraintClause($tableName, $columnName)
     {
-        return 'DROP CONSTRAINT ' . $this->generateDefaultConstraintName($tableName, $columnName);
+        return 'DROP CONSTRAINT '.$this->generateDefaultConstraintName($tableName, $columnName);
     }
 
     /**
@@ -598,15 +594,14 @@ class SQLServerPlatform extends AbstractPlatform
      * in a column's type require dropping the default constraint first before being to
      * alter the particular column to the new definition.
      *
-     * @param ColumnDiff $columnDiff The column diff to evaluate.
-     *
-     * @return boolean True if the column alteration requires dropping its default constraint first, false otherwise.
+     * @param  ColumnDiff  $columnDiff  The column diff to evaluate.
+     * @return bool True if the column alteration requires dropping its default constraint first, false otherwise.
      */
     private function alterColumnRequiresDropDefaultConstraint(ColumnDiff $columnDiff)
     {
         // We can only decide whether to drop an existing default constraint
         // if we know the original default value.
-        if ( ! $columnDiff->fromColumn instanceof Column) {
+        if (! $columnDiff->fromColumn instanceof Column) {
             return false;
         }
 
@@ -642,10 +637,9 @@ class SQLServerPlatform extends AbstractPlatform
      * as column comments are stored in the same property there when
      * specifying a column's "Description" attribute.
      *
-     * @param string $tableName  The quoted table name to which the column belongs.
-     * @param string $columnName The quoted column name to alter the comment for.
-     * @param string $comment    The column's comment.
-     *
+     * @param  string  $tableName  The quoted table name to which the column belongs.
+     * @param  string  $columnName  The quoted column name to alter the comment for.
+     * @param  string  $comment  The column's comment.
      * @return string
      */
     protected function getAlterColumnCommentSQL($tableName, $columnName, $comment)
@@ -673,9 +667,8 @@ class SQLServerPlatform extends AbstractPlatform
      * as column comments are stored in the same property there when
      * specifying a column's "Description" attribute.
      *
-     * @param string $tableName  The quoted table name to which the column belongs.
-     * @param string $columnName The quoted column name to drop the comment for.
-     *
+     * @param  string  $tableName  The quoted table name to which the column belongs.
+     * @param  string  $columnName  The quoted column name to drop the comment for.
      * @return string
      */
     protected function getDropColumnCommentSQL($tableName, $columnName)
@@ -696,28 +689,27 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getRenameIndexSQL($oldIndexName, Index $index, $tableName)
     {
-        return array(
+        return [
             sprintf(
                 "EXEC sp_RENAME N'%s.%s', N'%s', N'INDEX'",
                 $tableName,
                 $oldIndexName,
                 $index->getQuotedName($this)
-            )
-        );
+            ),
+        ];
     }
 
     /**
      * Returns the SQL statement for adding an extended property to a database object.
      *
-     * @param string      $name       The name of the property to add.
-     * @param string|null $value      The value of the property to add.
-     * @param string|null $level0Type The type of the object at level 0 the property belongs to.
-     * @param string|null $level0Name The name of the object at level 0 the property belongs to.
-     * @param string|null $level1Type The type of the object at level 1 the property belongs to.
-     * @param string|null $level1Name The name of the object at level 1 the property belongs to.
-     * @param string|null $level2Type The type of the object at level 2 the property belongs to.
-     * @param string|null $level2Name The name of the object at level 2 the property belongs to.
-     *
+     * @param  string  $name  The name of the property to add.
+     * @param  string|null  $value  The value of the property to add.
+     * @param  string|null  $level0Type  The type of the object at level 0 the property belongs to.
+     * @param  string|null  $level0Name  The name of the object at level 0 the property belongs to.
+     * @param  string|null  $level1Type  The type of the object at level 1 the property belongs to.
+     * @param  string|null  $level1Name  The name of the object at level 1 the property belongs to.
+     * @param  string|null  $level2Type  The type of the object at level 2 the property belongs to.
+     * @param  string|null  $level2Name  The name of the object at level 2 the property belongs to.
      * @return string
      *
      * @link http://msdn.microsoft.com/en-us/library/ms180047%28v=sql.90%29.aspx
@@ -732,24 +724,23 @@ class SQLServerPlatform extends AbstractPlatform
         $level2Type = null,
         $level2Name = null
     ) {
-        return "EXEC sp_addextendedproperty " .
-            "N" . $this->quoteStringLiteral($name) . ", N" . $this->quoteStringLiteral($value) . ", " .
-            "N" . $this->quoteStringLiteral($level0Type) . ", " . $level0Name . ', ' .
-            "N" . $this->quoteStringLiteral($level1Type) . ", " . $level1Name . ', ' .
-            "N" . $this->quoteStringLiteral($level2Type) . ", " . $level2Name;
+        return 'EXEC sp_addextendedproperty '.
+            'N'.$this->quoteStringLiteral($name).', N'.$this->quoteStringLiteral($value).', '.
+            'N'.$this->quoteStringLiteral($level0Type).', '.$level0Name.', '.
+            'N'.$this->quoteStringLiteral($level1Type).', '.$level1Name.', '.
+            'N'.$this->quoteStringLiteral($level2Type).', '.$level2Name;
     }
 
     /**
      * Returns the SQL statement for dropping an extended property from a database object.
      *
-     * @param string      $name       The name of the property to drop.
-     * @param string|null $level0Type The type of the object at level 0 the property belongs to.
-     * @param string|null $level0Name The name of the object at level 0 the property belongs to.
-     * @param string|null $level1Type The type of the object at level 1 the property belongs to.
-     * @param string|null $level1Name The name of the object at level 1 the property belongs to.
-     * @param string|null $level2Type The type of the object at level 2 the property belongs to.
-     * @param string|null $level2Name The name of the object at level 2 the property belongs to.
-     *
+     * @param  string  $name  The name of the property to drop.
+     * @param  string|null  $level0Type  The type of the object at level 0 the property belongs to.
+     * @param  string|null  $level0Name  The name of the object at level 0 the property belongs to.
+     * @param  string|null  $level1Type  The type of the object at level 1 the property belongs to.
+     * @param  string|null  $level1Name  The name of the object at level 1 the property belongs to.
+     * @param  string|null  $level2Type  The type of the object at level 2 the property belongs to.
+     * @param  string|null  $level2Name  The name of the object at level 2 the property belongs to.
      * @return string
      *
      * @link http://technet.microsoft.com/en-gb/library/ms178595%28v=sql.90%29.aspx
@@ -763,25 +754,24 @@ class SQLServerPlatform extends AbstractPlatform
         $level2Type = null,
         $level2Name = null
     ) {
-        return "EXEC sp_dropextendedproperty " .
-            "N" . $this->quoteStringLiteral($name) . ", " .
-            "N" . $this->quoteStringLiteral($level0Type) . ", " . $level0Name . ', ' .
-            "N" . $this->quoteStringLiteral($level1Type) . ", " . $level1Name . ', ' .
-            "N" . $this->quoteStringLiteral($level2Type) . ", " . $level2Name;
+        return 'EXEC sp_dropextendedproperty '.
+            'N'.$this->quoteStringLiteral($name).', '.
+            'N'.$this->quoteStringLiteral($level0Type).', '.$level0Name.', '.
+            'N'.$this->quoteStringLiteral($level1Type).', '.$level1Name.', '.
+            'N'.$this->quoteStringLiteral($level2Type).', '.$level2Name;
     }
 
     /**
      * Returns the SQL statement for updating an extended property of a database object.
      *
-     * @param string      $name       The name of the property to update.
-     * @param string|null $value      The value of the property to update.
-     * @param string|null $level0Type The type of the object at level 0 the property belongs to.
-     * @param string|null $level0Name The name of the object at level 0 the property belongs to.
-     * @param string|null $level1Type The type of the object at level 1 the property belongs to.
-     * @param string|null $level1Name The name of the object at level 1 the property belongs to.
-     * @param string|null $level2Type The type of the object at level 2 the property belongs to.
-     * @param string|null $level2Name The name of the object at level 2 the property belongs to.
-     *
+     * @param  string  $name  The name of the property to update.
+     * @param  string|null  $value  The value of the property to update.
+     * @param  string|null  $level0Type  The type of the object at level 0 the property belongs to.
+     * @param  string|null  $level0Name  The name of the object at level 0 the property belongs to.
+     * @param  string|null  $level1Type  The type of the object at level 1 the property belongs to.
+     * @param  string|null  $level1Name  The name of the object at level 1 the property belongs to.
+     * @param  string|null  $level2Type  The type of the object at level 2 the property belongs to.
+     * @param  string|null  $level2Name  The name of the object at level 2 the property belongs to.
      * @return string
      *
      * @link http://msdn.microsoft.com/en-us/library/ms186885%28v=sql.90%29.aspx
@@ -796,11 +786,11 @@ class SQLServerPlatform extends AbstractPlatform
         $level2Type = null,
         $level2Name = null
     ) {
-        return "EXEC sp_updateextendedproperty " .
-        "N" . $this->quoteStringLiteral($name) . ", N" . $this->quoteStringLiteral($value) . ", " .
-        "N" . $this->quoteStringLiteral($level0Type) . ", " . $level0Name . ', ' .
-        "N" . $this->quoteStringLiteral($level1Type) . ", " . $level1Name . ', ' .
-        "N" . $this->quoteStringLiteral($level2Type) . ", " . $level2Name;
+        return 'EXEC sp_updateextendedproperty '.
+        'N'.$this->quoteStringLiteral($name).', N'.$this->quoteStringLiteral($value).', '.
+        'N'.$this->quoteStringLiteral($level0Type).', '.$level0Name.', '.
+        'N'.$this->quoteStringLiteral($level1Type).', '.$level1Name.', '.
+        'N'.$this->quoteStringLiteral($level2Type).', '.$level2Name;
     }
 
     /**
@@ -808,7 +798,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getEmptyIdentityInsertSQL($quotedTableName, $quotedIdentifierColumnName)
     {
-        return 'INSERT INTO ' . $quotedTableName . ' DEFAULT VALUES';
+        return 'INSERT INTO '.$quotedTableName.' DEFAULT VALUES';
     }
 
     /**
@@ -851,7 +841,7 @@ class SQLServerPlatform extends AbstractPlatform
                 AND       col.column_id = prop.minor_id
                 AND       prop.name = 'MS_Description'
                 WHERE     obj.type = 'U'
-                AND       " . $this->getTableWhereClause($table, 'scm.name', 'obj.name');
+                AND       ".$this->getTableWhereClause($table, 'scm.name', 'obj.name');
     }
 
     /**
@@ -859,7 +849,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getListTableForeignKeysSQL($table, $database = null)
     {
-        return "SELECT f.name AS ForeignKey,
+        return 'SELECT f.name AS ForeignKey,
                 SCHEMA_NAME (f.SCHEMA_ID) AS SchemaName,
                 OBJECT_NAME (f.parent_object_id) AS TableName,
                 COL_NAME (fc.parent_object_id,fc.parent_column_id) AS ColumnName,
@@ -872,7 +862,7 @@ class SQLServerPlatform extends AbstractPlatform
                 INNER JOIN sys.foreign_key_columns AS fc
                 INNER JOIN sys.objects AS o ON o.OBJECT_ID = fc.referenced_object_id
                 ON f.OBJECT_ID = fc.constraint_object_id
-                WHERE " .
+                WHERE '.
                 $this->getTableWhereClause($table, 'SCHEMA_NAME (f.schema_id)', 'OBJECT_NAME (f.parent_object_id)');
     }
 
@@ -895,8 +885,8 @@ class SQLServerPlatform extends AbstractPlatform
                 JOIN sys.indexes AS idx ON tbl.object_id = idx.object_id
                 JOIN sys.index_columns AS idxcol ON idx.object_id = idxcol.object_id AND idx.index_id = idxcol.index_id
                 JOIN sys.columns AS col ON idxcol.object_id = col.object_id AND idxcol.column_id = col.column_id
-                WHERE " . $this->getTableWhereClause($table, 'scm.name', 'tbl.name') . "
-                ORDER BY idx.index_id ASC, idxcol.key_ordinal ASC";
+                WHERE ".$this->getTableWhereClause($table, 'scm.name', 'tbl.name').'
+                ORDER BY idx.index_id ASC, idxcol.key_ordinal ASC';
     }
 
     /**
@@ -904,7 +894,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getCreateViewSQL($name, $sql)
     {
-        return 'CREATE VIEW ' . $name . ' AS ' . $sql;
+        return 'CREATE VIEW '.$name.' AS '.$sql;
     }
 
     /**
@@ -918,20 +908,19 @@ class SQLServerPlatform extends AbstractPlatform
     /**
      * Returns the where clause to filter schema and table name in a query.
      *
-     * @param string $table        The full qualified name of the table.
-     * @param string $schemaColumn The name of the column to compare the schema to in the where clause.
-     * @param string $tableColumn  The name of the column to compare the table to in the where clause.
-     *
+     * @param  string  $table  The full qualified name of the table.
+     * @param  string  $schemaColumn  The name of the column to compare the schema to in the where clause.
+     * @param  string  $tableColumn  The name of the column to compare the table to in the where clause.
      * @return string
      */
     private function getTableWhereClause($table, $schemaColumn, $tableColumn)
     {
-        if (strpos($table, ".") !== false) {
-            list($schema, $table) = explode(".", $table);
+        if (strpos($table, '.') !== false) {
+            [$schema, $table] = explode('.', $table);
             $schema = $this->quoteStringLiteral($schema);
             $table = $this->quoteStringLiteral($table);
         } else {
-            $schema = "SCHEMA_NAME()";
+            $schema = 'SCHEMA_NAME()';
             $table = $this->quoteStringLiteral($table);
         }
 
@@ -943,7 +932,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getDropViewSQL($name)
     {
-        return 'DROP VIEW ' . $name;
+        return 'DROP VIEW '.$name;
     }
 
     /**
@@ -960,10 +949,10 @@ class SQLServerPlatform extends AbstractPlatform
     public function getLocateExpression($str, $substr, $startPos = false)
     {
         if ($startPos == false) {
-            return 'CHARINDEX(' . $substr . ', ' . $str . ')';
+            return 'CHARINDEX('.$substr.', '.$str.')';
         }
 
-        return 'CHARINDEX(' . $substr . ', ' . $str . ', ' . $startPos . ')';
+        return 'CHARINDEX('.$substr.', '.$str.', '.$startPos.')';
     }
 
     /**
@@ -971,7 +960,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getModExpression($expression1, $expression2)
     {
-        return $expression1 . ' % ' . $expression2;
+        return $expression1.' % '.$expression2;
     }
 
     /**
@@ -979,7 +968,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getTrimExpression($str, $pos = self::TRIM_UNSPECIFIED, $char = false)
     {
-        if ( ! $char) {
+        if (! $char) {
             switch ($pos) {
                 case self::TRIM_LEADING:
                     $trimFn = 'LTRIM';
@@ -990,10 +979,10 @@ class SQLServerPlatform extends AbstractPlatform
                     break;
 
                 default:
-                    return 'LTRIM(RTRIM(' . $str . '))';
+                    return 'LTRIM(RTRIM('.$str.'))';
             }
 
-            return $trimFn . '(' . $str . ')';
+            return $trimFn.'('.$str.')';
         }
 
         /** Original query used to get those expressions
@@ -1008,14 +997,14 @@ class SQLServerPlatform extends AbstractPlatform
         $pattern = "'%[^' + $char + ']%'";
 
         if ($pos == self::TRIM_LEADING) {
-            return 'stuff(' . $str . ', 1, patindex(' . $pattern . ', ' . $str . ') - 1, null)';
+            return 'stuff('.$str.', 1, patindex('.$pattern.', '.$str.') - 1, null)';
         }
 
         if ($pos == self::TRIM_TRAILING) {
-            return 'reverse(stuff(reverse(' . $str . '), 1, patindex(' . $pattern . ', reverse(' . $str . ')) - 1, null))';
+            return 'reverse(stuff(reverse('.$str.'), 1, patindex('.$pattern.', reverse('.$str.')) - 1, null))';
         }
 
-        return 'reverse(stuff(reverse(stuff(' . $str . ', 1, patindex(' . $pattern . ', ' . $str . ') - 1, null)), 1, patindex(' . $pattern . ', reverse(stuff(' . $str . ', 1, patindex(' . $pattern . ', ' . $str . ') - 1, null))) - 1, null))';
+        return 'reverse(stuff(reverse(stuff('.$str.', 1, patindex('.$pattern.', '.$str.') - 1, null)), 1, patindex('.$pattern.', reverse(stuff('.$str.', 1, patindex('.$pattern.', '.$str.') - 1, null))) - 1, null))';
     }
 
     /**
@@ -1025,7 +1014,7 @@ class SQLServerPlatform extends AbstractPlatform
     {
         $args = func_get_args();
 
-        return '(' . implode(' + ', $args) . ')';
+        return '('.implode(' + ', $args).')';
     }
 
     /**
@@ -1049,11 +1038,11 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getSubstringExpression($value, $from, $length = null)
     {
-        if (!is_null($length)) {
-            return 'SUBSTRING(' . $value . ', ' . $from . ', ' . $length . ')';
+        if (! is_null($length)) {
+            return 'SUBSTRING('.$value.', '.$from.', '.$length.')';
         }
 
-        return 'SUBSTRING(' . $value . ', ' . $from . ', LEN(' . $value . ') - ' . $from . ' + 1)';
+        return 'SUBSTRING('.$value.', '.$from.', LEN('.$value.') - '.$from.' + 1)';
     }
 
     /**
@@ -1061,7 +1050,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getLengthExpression($column)
     {
-        return 'LEN(' . $column . ')';
+        return 'LEN('.$column.')';
     }
 
     /**
@@ -1069,7 +1058,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getSetTransactionIsolationSQL($level)
     {
-        return 'SET TRANSACTION ISOLATION LEVEL ' . $this->_getTransactionIsolationLevelSQL($level);
+        return 'SET TRANSACTION ISOLATION LEVEL '.$this->_getTransactionIsolationLevelSQL($level);
     }
 
     /**
@@ -1077,7 +1066,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getIntegerTypeDeclarationSQL(array $field)
     {
-        return 'INT' . $this->_getCommonIntegerTypeDeclarationSQL($field);
+        return 'INT'.$this->_getCommonIntegerTypeDeclarationSQL($field);
     }
 
     /**
@@ -1085,7 +1074,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getBigIntTypeDeclarationSQL(array $field)
     {
-        return 'BIGINT' . $this->_getCommonIntegerTypeDeclarationSQL($field);
+        return 'BIGINT'.$this->_getCommonIntegerTypeDeclarationSQL($field);
     }
 
     /**
@@ -1093,7 +1082,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getSmallIntTypeDeclarationSQL(array $field)
     {
-        return 'SMALLINT' . $this->_getCommonIntegerTypeDeclarationSQL($field);
+        return 'SMALLINT'.$this->_getCommonIntegerTypeDeclarationSQL($field);
     }
 
     /**
@@ -1109,7 +1098,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? ($length ? 'NCHAR(' . $length . ')' : 'CHAR(255)') : ($length ? 'NVARCHAR(' . $length . ')' : 'NVARCHAR(255)');
+        return $fixed ? ($length ? 'NCHAR('.$length.')' : 'CHAR(255)') : ($length ? 'NVARCHAR('.$length.')' : 'NVARCHAR(255)');
     }
 
     /**
@@ -1117,7 +1106,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? 'BINARY(' . ($length ?: 255) . ')' : 'VARBINARY(' . ($length ?: 255) . ')';
+        return $fixed ? 'BINARY('.($length ?: 255).')' : 'VARBINARY('.($length ?: 255).')';
     }
 
     /**
@@ -1141,7 +1130,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
     {
-        return (!empty($columnDef['autoincrement'])) ? ' IDENTITY' : '';
+        return (! empty($columnDef['autoincrement'])) ? ' IDENTITY' : '';
     }
 
     /**
@@ -1185,8 +1174,8 @@ class SQLServerPlatform extends AbstractPlatform
             return $query;
         }
 
-        $start   = $offset + 1;
-        $end     = $offset + $limit;
+        $start = $offset + 1;
+        $end = $offset + $limit;
 
         // We'll find a SELECT or SELECT distinct and prepend TOP n to it
         // Even if the TOP n is very large, the use of a CTE will
@@ -1196,7 +1185,7 @@ class SQLServerPlatform extends AbstractPlatform
         $replacePattern = sprintf('$1%s $2', "TOP $end");
         $query = preg_replace($selectPattern, $replacePattern, $query);
 
-        if (stristr($query, "ORDER BY")) {
+        if (stristr($query, 'ORDER BY')) {
             // Inner order by is not valid in SQL Server for our purposes
             // unless it's in a TOP N subquery.
             $query = $this->scrubInnerOrderBy($query);
@@ -1204,11 +1193,11 @@ class SQLServerPlatform extends AbstractPlatform
 
         // Build a new limited query around the original, using a CTE
         return sprintf(
-            "WITH dctrn_cte AS (%s) "
-            . "SELECT * FROM ("
-            . "SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT 0)) AS doctrine_rownum FROM dctrn_cte"
-            . ") AS doctrine_tbl "
-            . "WHERE doctrine_rownum BETWEEN %d AND %d ORDER BY doctrine_rownum ASC",
+            'WITH dctrn_cte AS (%s) '
+            .'SELECT * FROM ('
+            .'SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT 0)) AS doctrine_rownum FROM dctrn_cte'
+            .') AS doctrine_tbl '
+            .'WHERE doctrine_rownum BETWEEN %d AND %d ORDER BY doctrine_rownum ASC',
             $query,
             $start,
             $end
@@ -1219,17 +1208,16 @@ class SQLServerPlatform extends AbstractPlatform
      * Remove ORDER BY clauses in subqueries - they're not supported by SQL Server.
      * Caveat: will leave ORDER BY in TOP N subqueries.
      *
-     * @param $query
      * @return string
      */
     private function scrubInnerOrderBy($query)
     {
-        $count = substr_count(strtoupper($query), "ORDER BY");
+        $count = substr_count(strtoupper($query), 'ORDER BY');
         $offset = 0;
 
         while ($count-- > 0) {
             $qLen = strlen($query);
-            $orderByPos = stripos($query, " ORDER BY", $offset);
+            $orderByPos = stripos($query, ' ORDER BY', $offset);
             $parenCount = 0;
             $currentPosition = $orderByPos;
 
@@ -1247,22 +1235,24 @@ class SQLServerPlatform extends AbstractPlatform
                 // If the order by clause is in a TOP N subquery, do not remove
                 // it and continue iteration from the current position.
                 $offset = $currentPosition;
+
                 continue;
             }
 
             if ($currentPosition < $qLen - 1) {
-                $query = substr($query, 0, $orderByPos) . substr($query, $currentPosition - 1);
+                $query = substr($query, 0, $orderByPos).substr($query, $currentPosition - 1);
                 $offset = $orderByPos;
             }
         }
+
         return $query;
     }
 
     /**
      * Check an ORDER BY clause to see if it is in a TOP N query or subquery.
      *
-     * @param string $query The query
-     * @param int $currentPosition Start position of ORDER BY clause
+     * @param  string  $query  The query
+     * @param  int  $currentPosition  Start position of ORDER BY clause
      * @return bool true if ORDER BY is in a TOP N query, false otherwise
      */
     private function isOrderByInTopNSubquery($query, $currentPosition)
@@ -1281,7 +1271,7 @@ class SQLServerPlatform extends AbstractPlatform
             }
 
             // Only yank query text on the same nesting level as the ORDER BY clause.
-            $subQueryBuffer = ($parenCount === 0 ? $query[$currentPosition] : " ") . $subQueryBuffer;
+            $subQueryBuffer = ($parenCount === 0 ? $query[$currentPosition] : ' ').$subQueryBuffer;
 
             $currentPosition--;
         }
@@ -1324,7 +1314,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getCreateTemporaryTableSnippetSQL()
     {
-        return "CREATE TABLE";
+        return 'CREATE TABLE';
     }
 
     /**
@@ -1332,7 +1322,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getTemporaryTableName($tableName)
     {
-        return '#' . $tableName;
+        return '#'.$tableName;
     }
 
     /**
@@ -1380,7 +1370,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function initializeDoctrineTypeMappings()
     {
-        $this->doctrineTypeMapping = array(
+        $this->doctrineTypeMapping = [
             'bigint' => 'bigint',
             'numeric' => 'decimal',
             'bit' => 'boolean',
@@ -1406,7 +1396,7 @@ class SQLServerPlatform extends AbstractPlatform
             'varbinary' => 'binary',
             'image' => 'blob',
             'uniqueidentifier' => 'guid',
-        );
+        ];
     }
 
     /**
@@ -1414,7 +1404,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function createSavePoint($savepoint)
     {
-        return 'SAVE TRANSACTION ' . $savepoint;
+        return 'SAVE TRANSACTION '.$savepoint;
     }
 
     /**
@@ -1430,7 +1420,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function rollbackSavePoint($savepoint)
     {
-        return 'ROLLBACK TRANSACTION ' . $savepoint;
+        return 'ROLLBACK TRANSACTION '.$savepoint;
     }
 
     /**
@@ -1452,14 +1442,14 @@ class SQLServerPlatform extends AbstractPlatform
     public function appendLockHint($fromClause, $lockMode)
     {
         switch (true) {
-            case LockMode::NONE === $lockMode:
-                return $fromClause . ' WITH (NOLOCK)';
+            case $lockMode === LockMode::NONE:
+                return $fromClause.' WITH (NOLOCK)';
 
-            case LockMode::PESSIMISTIC_READ === $lockMode:
-                return $fromClause . ' WITH (HOLDLOCK, ROWLOCK)';
+            case $lockMode === LockMode::PESSIMISTIC_READ:
+                return $fromClause.' WITH (HOLDLOCK, ROWLOCK)';
 
-            case LockMode::PESSIMISTIC_WRITE === $lockMode:
-                return $fromClause . ' WITH (UPDLOCK, ROWLOCK)';
+            case $lockMode === LockMode::PESSIMISTIC_WRITE:
+                return $fromClause.' WITH (UPDLOCK, ROWLOCK)';
 
             default:
                 return $fromClause;
@@ -1487,7 +1477,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function quoteSingleIdentifier($str)
     {
-        return "[" . str_replace("]", "][", $str) . "]";
+        return '['.str_replace(']', '][', $str).']';
     }
 
     /**
@@ -1497,7 +1487,7 @@ class SQLServerPlatform extends AbstractPlatform
     {
         $tableIdentifier = new Identifier($tableName);
 
-        return 'TRUNCATE TABLE ' . $tableIdentifier->getQuotedName($this);
+        return 'TRUNCATE TABLE '.$tableIdentifier->getQuotedName($this);
     }
 
     /**
@@ -1513,27 +1503,27 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getDefaultValueDeclarationSQL($field)
     {
-        if ( ! isset($field['default'])) {
+        if (! isset($field['default'])) {
             return empty($field['notnull']) ? ' NULL' : '';
         }
 
-        if ( ! isset($field['type'])) {
-            return " DEFAULT '" . $field['default'] . "'";
+        if (! isset($field['type'])) {
+            return " DEFAULT '".$field['default']."'";
         }
 
-        if (in_array((string) $field['type'], array('Integer', 'BigInt', 'SmallInt'))) {
-            return " DEFAULT " . $field['default'];
+        if (in_array((string) $field['type'], ['Integer', 'BigInt', 'SmallInt'])) {
+            return ' DEFAULT '.$field['default'];
         }
 
-        if (in_array((string) $field['type'], array('DateTime', 'DateTimeTz')) && $field['default'] == $this->getCurrentTimestampSQL()) {
-            return " DEFAULT " . $this->getCurrentTimestampSQL();
+        if (in_array((string) $field['type'], ['DateTime', 'DateTimeTz']) && $field['default'] == $this->getCurrentTimestampSQL()) {
+            return ' DEFAULT '.$this->getCurrentTimestampSQL();
         }
 
         if ((string) $field['type'] == 'Boolean') {
-            return " DEFAULT '" . $this->convertBooleans($field['default']) . "'";
+            return " DEFAULT '".$this->convertBooleans($field['default'])."'";
         }
 
-        return " DEFAULT '" . $field['default'] . "'";
+        return " DEFAULT '".$field['default']."'";
     }
 
     /**
@@ -1547,41 +1537,39 @@ class SQLServerPlatform extends AbstractPlatform
             $columnDef = $this->getCustomTypeDeclarationSQL($field);
         } else {
             $collation = (isset($field['collation']) && $field['collation']) ?
-                ' ' . $this->getColumnCollationDeclarationSQL($field['collation']) : '';
+                ' '.$this->getColumnCollationDeclarationSQL($field['collation']) : '';
 
             $notnull = (isset($field['notnull']) && $field['notnull']) ? ' NOT NULL' : '';
 
             $unique = (isset($field['unique']) && $field['unique']) ?
-                ' ' . $this->getUniqueFieldDeclarationSQL() : '';
+                ' '.$this->getUniqueFieldDeclarationSQL() : '';
 
             $check = (isset($field['check']) && $field['check']) ?
-                ' ' . $field['check'] : '';
+                ' '.$field['check'] : '';
 
             $typeDecl = $field['type']->getSqlDeclaration($field, $this);
-            $columnDef = $typeDecl . $collation . $notnull . $unique . $check;
+            $columnDef = $typeDecl.$collation.$notnull.$unique.$check;
         }
 
-        return $name . ' ' . $columnDef;
+        return $name.' '.$columnDef;
     }
 
     /**
      * Returns a unique default constraint name for a table and column.
      *
-     * @param string $table  Name of the table to generate the unique default constraint name for.
-     * @param string $column Name of the column in the table to generate the unique default constraint name for.
-     *
+     * @param  string  $table  Name of the table to generate the unique default constraint name for.
+     * @param  string  $column  Name of the column in the table to generate the unique default constraint name for.
      * @return string
      */
     private function generateDefaultConstraintName($table, $column)
     {
-        return 'DF_' . $this->generateIdentifierName($table) . '_' . $this->generateIdentifierName($column);
+        return 'DF_'.$this->generateIdentifierName($table).'_'.$this->generateIdentifierName($column);
     }
 
     /**
      * Returns a hash value for a given identifier.
      *
-     * @param string $identifier Identifier to generate a hash value for.
-     *
+     * @param  string  $identifier  Identifier to generate a hash value for.
      * @return string
      */
     private function generateIdentifierName($identifier)

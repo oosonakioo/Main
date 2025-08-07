@@ -9,7 +9,7 @@ class Swift_Bug71Test extends \PHPUnit_Framework_TestCase
         $this->_message = new Swift_Message('test');
     }
 
-    public function testCallingToStringAfterSettingNewBodyReflectsChanges()
+    public function test_calling_to_string_after_setting_new_body_reflects_changes()
     {
         $this->_message->setBody('BODY1');
         $this->assertRegExp('/BODY1/', $this->_message->toString());

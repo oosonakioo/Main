@@ -5,25 +5,25 @@ use League\Flysystem\Util;
 
 class MemoryCacheTests extends PHPUnit_Framework_TestCase
 {
-    public function testAutosave()
+    public function test_autosave()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->setAutosave(true);
         $this->assertTrue($cache->getAutosave());
         $cache->setAutosave(false);
         $this->assertFalse($cache->getAutosave());
     }
 
-    public function testCacheMiss()
+    public function test_cache_miss()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->storeMiss('path.txt');
         $this->assertFalse($cache->has('path.txt'));
     }
 
-    public function testIsComplete()
+    public function test_is_complete()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $this->assertFalse($cache->isComplete('dirname', false));
         $cache->setComplete('dirname', false);
         $this->assertFalse($cache->isComplete('dirname', true));
@@ -31,17 +31,17 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('dirname', true));
     }
 
-    public function testCleanContents()
+    public function test_clean_contents()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $input = [[
-            'path'       => 'path.txt',
+            'path' => 'path.txt',
             'visibility' => 'public',
-            'invalid'    => 'thing',
+            'invalid' => 'thing',
         ]];
 
         $expected = [[
-            'path'       => 'path.txt',
+            'path' => 'path.txt',
             'visibility' => 'public',
         ]];
 
@@ -49,9 +49,9 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $output);
     }
 
-    public function testGetForStorage()
+    public function test_get_for_storage()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $input = [[
             'path' => 'path.txt',
             'visibility' => 'public',
@@ -68,16 +68,16 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertEquals(json_encode([$cached, ['' => 'recursive']]), $cache->getForStorage());
     }
 
-    public function testParentCompleteIsUsedDuringHas()
+    public function test_parent_complete_is_used_during_has()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->setComplete('dirname', false);
         $this->assertFalse($cache->has('dirname/path.txt'));
     }
 
-    public function testFlush()
+    public function test_flush()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->setComplete('dirname', true);
         $cache->updateObject('path.txt', [
             'path' => 'path.txt',
@@ -88,9 +88,9 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertNull($cache->has('path.txt'));
     }
 
-    public function testSetFromStorage()
+    public function test_set_from_storage()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $json = [[
             'path.txt' => ['path' => 'path.txt', 'type' => 'file'],
         ], ['dirname' => 'recursive']];
@@ -100,9 +100,9 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('dirname', true));
     }
 
-    public function testGetMetadataFail()
+    public function test_get_metadata_fail()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $this->assertFalse($cache->getMetadata('path.txt'));
     }
 
@@ -119,14 +119,10 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider metaGetterProvider
-     *
-     * @param $method
-     * @param $key
-     * @param $value
      */
-    public function testMetaGetters($method, $key, $value)
+    public function test_meta_getters($method, $key, $value)
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $this->assertFalse($cache->{$method}('path.txt'));
         $cache->updateObject('path.txt', $object = [
             'path' => 'path.txt',
@@ -137,9 +133,9 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertEquals($object, $cache->getMetadata('path.txt'));
     }
 
-    public function testGetDerivedMimetype()
+    public function test_get_derived_mimetype()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->updateObject('path.txt', [
             'contents' => 'something',
         ]);
@@ -147,17 +143,17 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertEquals('text/plain', $response['mimetype']);
     }
 
-    public function testCopyFail()
+    public function test_copy_fail()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->copy('one', 'two');
         $this->assertNull($cache->has('two'));
         $this->assertNull($cache->load());
     }
 
-    public function testStoreContents()
+    public function test_store_contents()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->storeContents('dirname', [
             ['path' => 'dirname', 'type' => 'dir'],
             ['path' => 'dirname/nested', 'type' => 'dir'],
@@ -168,20 +164,20 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->isTrue($cache->isComplete('other/nested', true));
     }
 
-    public function testDelete()
+    public function test_delete()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->updateObject('path.txt', ['type' => 'file']);
         $this->assertTrue($cache->has('path.txt'));
         $cache->delete('path.txt');
         $this->assertFalse($cache->has('path.txt'));
     }
 
-    public function testDeleteDir()
+    public function test_delete_dir()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->storeContents('dirname', [
-            ['path' => 'dirname/path.txt', 'type' => 'file']
+            ['path' => 'dirname/path.txt', 'type' => 'file'],
         ]);
         $this->assertTrue($cache->isComplete('dirname', false));
         $this->assertTrue($cache->has('dirname/path.txt'));
@@ -190,31 +186,31 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertNull($cache->has('dirname/path.txt'));
     }
 
-    public function testReadStream()
+    public function test_read_stream()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $this->assertFalse($cache->readStream('path.txt'));
     }
 
-    public function testRename()
+    public function test_rename()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->updateObject('path.txt', ['type' => 'file']);
         $cache->rename('path.txt', 'newpath.txt');
         $this->assertTrue($cache->has('newpath.txt'));
     }
 
-    public function testCopy()
+    public function test_copy()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->updateObject('path.txt', ['type' => 'file']);
         $cache->copy('path.txt', 'newpath.txt');
         $this->assertTrue($cache->has('newpath.txt'));
     }
 
-    public function testComplextListContents()
+    public function test_complext_list_contents()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->storeContents('', [
             ['path' => 'dirname', 'type' => 'dir'],
             ['path' => 'dirname/file.txt', 'type' => 'file'],
@@ -226,9 +222,9 @@ class MemoryCacheTests extends PHPUnit_Framework_TestCase
         $this->assertCount(3, $cache->listContents('other', true));
     }
 
-    public function testCacheMissIfContentsIsFalse()
+    public function test_cache_miss_if_contents_is_false()
     {
-        $cache = new Memory();
+        $cache = new Memory;
         $cache->updateObject('path.txt', [
             'path' => 'path.txt',
             'contents' => false,

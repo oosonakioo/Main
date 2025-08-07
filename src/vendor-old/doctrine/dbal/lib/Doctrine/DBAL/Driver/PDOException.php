@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Driver;
  * Tiny wrapper for PDOException instances to implement the {@link DriverException} interface.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -31,7 +33,7 @@ class PDOException extends \PDOException implements DriverException
     /**
      * The driver specific error code.
      *
-     * @var integer|string|null
+     * @var int|string|null
      */
     private $errorCode;
 
@@ -45,16 +47,16 @@ class PDOException extends \PDOException implements DriverException
     /**
      * Constructor.
      *
-     * @param \PDOException $exception The PDO exception to wrap.
+     * @param  \PDOException  $exception  The PDO exception to wrap.
      */
     public function __construct(\PDOException $exception)
     {
         parent::__construct($exception->getMessage(), 0, $exception);
 
-        $this->code      = $exception->getCode();
+        $this->code = $exception->getCode();
         $this->errorInfo = $exception->errorInfo;
         $this->errorCode = isset($exception->errorInfo[1]) ? $exception->errorInfo[1] : $exception->getCode();
-        $this->sqlState  = isset($exception->errorInfo[0]) ? $exception->errorInfo[0] : $exception->getCode();
+        $this->sqlState = isset($exception->errorInfo[0]) ? $exception->errorInfo[0] : $exception->getCode();
     }
 
     /**

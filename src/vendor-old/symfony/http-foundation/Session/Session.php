@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\HttpFoundation\Session;
 
-use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 /**
  * Session.
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Drak <drak@zikula.org>
  */
-class Session implements SessionInterface, \IteratorAggregate, \Countable
+class Session implements \Countable, \IteratorAggregate, SessionInterface
 {
     /**
      * Storage driver.
@@ -46,19 +46,19 @@ class Session implements SessionInterface, \IteratorAggregate, \Countable
     /**
      * Constructor.
      *
-     * @param SessionStorageInterface $storage    A SessionStorageInterface instance
-     * @param AttributeBagInterface   $attributes An AttributeBagInterface instance, (defaults null for default AttributeBag)
-     * @param FlashBagInterface       $flashes    A FlashBagInterface instance (defaults null for default FlashBag)
+     * @param  SessionStorageInterface  $storage  A SessionStorageInterface instance
+     * @param  AttributeBagInterface  $attributes  An AttributeBagInterface instance, (defaults null for default AttributeBag)
+     * @param  FlashBagInterface  $flashes  A FlashBagInterface instance (defaults null for default FlashBag)
      */
-    public function __construct(SessionStorageInterface $storage = null, AttributeBagInterface $attributes = null, FlashBagInterface $flashes = null)
+    public function __construct(?SessionStorageInterface $storage = null, ?AttributeBagInterface $attributes = null, ?FlashBagInterface $flashes = null)
     {
-        $this->storage = $storage ?: new NativeSessionStorage();
+        $this->storage = $storage ?: new NativeSessionStorage;
 
-        $attributes = $attributes ?: new AttributeBag();
+        $attributes = $attributes ?: new AttributeBag;
         $this->attributeName = $attributes->getName();
         $this->registerBag($attributes);
 
-        $flashes = $flashes ?: new FlashBag();
+        $flashes = $flashes ?: new FlashBag;
         $this->flashName = $flashes->getName();
         $this->registerBag($flashes);
     }

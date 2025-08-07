@@ -7,8 +7,11 @@ use Cake\ORM\TableRegistry;
 class EntityPopulator
 {
     protected $class;
+
     protected $connectionName;
+
     protected $columnFormatters = [];
+
     protected $modifiers = [];
 
     public function __construct($class)
@@ -17,7 +20,7 @@ class EntityPopulator
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function __get($name)
     {
@@ -25,7 +28,7 @@ class EntityPopulator
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function __set($name, $value)
     {
@@ -59,9 +62,9 @@ class EntityPopulator
                     return true;
                 }
             }
+
             return false;
         };
-
 
         foreach ($schema->columns() as $column) {
             if ($column == $pk[0] || $isForeignKey($column)) {
@@ -89,20 +92,20 @@ class EntityPopulator
 
         $belongsTo = $table->associations()->type('BelongsTo');
         foreach ($belongsTo as $assoc) {
-            $modifiers['belongsTo' . $assoc->name()] = function ($data, $insertedEntities) use ($assoc) {
+            $modifiers['belongsTo'.$assoc->name()] = function ($data, $insertedEntities) use ($assoc) {
                 $table = $assoc->target();
                 $foreignModel = $table->alias();
 
                 $foreignKeys = [];
-                if (!empty($insertedEntities[$foreignModel])) {
+                if (! empty($insertedEntities[$foreignModel])) {
                     $foreignKeys = $insertedEntities[$foreignModel];
                 } else {
                     $foreignKeys = $table->find('all')
-                    ->select(['id'])
-                    ->map(function ($row) {
-                        return $row->id;
-                    })
-                    ->toArray();
+                        ->select(['id'])
+                        ->map(function ($row) {
+                            return $row->id;
+                        })
+                        ->toArray();
                 }
 
                 if (empty($foreignKeys)) {
@@ -111,6 +114,7 @@ class EntityPopulator
 
                 $foreignKey = $foreignKeys[array_rand($foreignKeys)];
                 $data[$assoc->foreignKey()] = $foreignKey;
+
                 return $data;
             };
         }
@@ -121,7 +125,7 @@ class EntityPopulator
     }
 
     /**
-     * @param array $options
+     * @param  array  $options
      */
     public function execute($class, $insertedEntities, $options = [])
     {
@@ -129,7 +133,7 @@ class EntityPopulator
         $entity = $table->newEntity();
 
         foreach ($this->columnFormatters as $column => $format) {
-            if (!is_null($format)) {
+            if (! is_null($format)) {
                 $entity->{$column} = is_callable($format) ? $format($insertedEntities, $table) : $format;
             }
         }
@@ -138,7 +142,7 @@ class EntityPopulator
             $entity = $modifier($entity, $insertedEntities);
         }
 
-        if (!$entity = $table->save($entity, $options)) {
+        if (! $entity = $table->save($entity, $options)) {
             throw new \RuntimeException("Failed saving $class record");
         }
 
@@ -158,9 +162,10 @@ class EntityPopulator
     protected function getTable($class)
     {
         $options = [];
-        if (!empty($this->connectionName)) {
+        if (! empty($this->connectionName)) {
             $options['connection'] = $this->connectionName;
         }
+
         return TableRegistry::get($class, $options);
     }
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => ':count leto|:count leti|:count leta|:count let',
     'y' => ':count leto|:count leti|:count leta|:count let',
     'month' => ':count mesec|:count meseca|:count mesece|:count mesecev',
@@ -35,4 +35,4 @@ return array(
     'from_now' => 'čez :time',
     'after' => 'čez :time',
     'before' => 'pred :time',
-);
+];

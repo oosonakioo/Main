@@ -9,14 +9,14 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
 {
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new PhoneNumber($faker));
         $this->faker = $faker;
     }
 
-    public function testPhoneNumber()
+    public function test_phone_number()
     {
         for ($i = 0; $i < 10; $i++) {
             $number = $this->faker->phoneNumber;
@@ -24,7 +24,7 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
             $digits = array_values(array_filter(str_split($number), 'ctype_digit'));
 
             // 10 digits
-            if($digits[0] = 2 && $digits[1] == 7) {
+            if ($digits[0] = 2 && $digits[1] == 7) {
                 $this->assertLessThanOrEqual(11, count($digits));
             } else {
                 $this->assertGreaterThanOrEqual(10, count($digits));
@@ -32,7 +32,7 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testTollFreePhoneNumber()
+    public function test_toll_free_phone_number()
     {
         for ($i = 0; $i < 10; $i++) {
             $number = $this->faker->tollFreeNumber;
@@ -42,18 +42,18 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals('0', $digits[0]);
             }
 
-            $areaCode = $digits[0] . $digits[1] . $digits[2] . $digits[3];
-            $this->assertContains($areaCode, array('0800', '0860', '0861', '0862'));
+            $areaCode = $digits[0].$digits[1].$digits[2].$digits[3];
+            $this->assertContains($areaCode, ['0800', '0860', '0861', '0862']);
         }
     }
 
-    public function testCellPhoneNumber()
+    public function test_cell_phone_number()
     {
         for ($i = 0; $i < 10; $i++) {
             $number = $this->faker->mobileNumber;
             $digits = array_values(array_filter(str_split($number), 'ctype_digit'));
 
-            if($digits[0] = 2 && $digits[1] == 7) {
+            if ($digits[0] = 2 && $digits[1] == 7) {
                 $this->assertLessThanOrEqual(11, count($digits));
             } else {
                 $this->assertGreaterThanOrEqual(10, count($digits));

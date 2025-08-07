@@ -28,15 +28,15 @@ class InputFormField extends FormField
      */
     protected function initialize()
     {
-        if ('input' !== $this->node->nodeName && 'button' !== $this->node->nodeName) {
+        if ($this->node->nodeName !== 'input' && $this->node->nodeName !== 'button') {
             throw new \LogicException(sprintf('An InputFormField can only be created from an input or button tag (%s given).', $this->node->nodeName));
         }
 
-        if ('checkbox' === strtolower($this->node->getAttribute('type'))) {
+        if (strtolower($this->node->getAttribute('type')) === 'checkbox') {
             throw new \LogicException('Checkboxes should be instances of ChoiceFormField.');
         }
 
-        if ('file' === strtolower($this->node->getAttribute('type'))) {
+        if (strtolower($this->node->getAttribute('type')) === 'file') {
             throw new \LogicException('File inputs should be instances of FileFormField.');
         }
 

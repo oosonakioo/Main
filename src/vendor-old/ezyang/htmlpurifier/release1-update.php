@@ -8,9 +8,8 @@ if (php_sapi_name() != 'cli') {
     exit;
 }
 
-if (!isset($argv[1])) {
-    echo
-'php release.php [version]
+if (! isset($argv[1])) {
+    echo 'php release.php [version]
     HTML Purifier release script
 ';
     exit;
@@ -25,21 +24,21 @@ file_put_contents('VERSION', $version);
 
 // ...in NEWS
 if ($is_dev = (strpos($version, 'dev') === false)) {
-  $date = date('Y-m-d');
-  $news_c = str_replace(
-      $l = "$version, unknown release date",
-      "$version, released $date",
-      file_get_contents('NEWS'),
-      $c
-  );
-  if (!$c) {
-      echo 'Could not update NEWS, missing ' . $l . PHP_EOL;
-      exit;
-  } elseif ($c > 1) {
-      echo 'More than one release declaration in NEWS replaced' . PHP_EOL;
-      exit;
-  }
-  file_put_contents('NEWS', $news_c);
+    $date = date('Y-m-d');
+    $news_c = str_replace(
+        $l = "$version, unknown release date",
+        "$version, released $date",
+        file_get_contents('NEWS'),
+        $c
+    );
+    if (! $c) {
+        echo 'Could not update NEWS, missing '.$l.PHP_EOL;
+        exit;
+    } elseif ($c > 1) {
+        echo 'More than one release declaration in NEWS replaced'.PHP_EOL;
+        exit;
+    }
+    file_put_contents('NEWS', $news_c);
 }
 
 // ...in Doxyfile
@@ -49,8 +48,8 @@ $doxyfile_c = preg_replace(
     file_get_contents('Doxyfile'),
     1, $c
 );
-if (!$c) {
-    echo 'Could not update Doxyfile, missing PROJECT_NUMBER.' . PHP_EOL;
+if (! $c) {
+    echo 'Could not update Doxyfile, missing PROJECT_NUMBER.'.PHP_EOL;
     exit;
 }
 file_put_contents('Doxyfile', $doxyfile_c);
@@ -63,8 +62,8 @@ $htmlpurifier_c = preg_replace(
     $htmlpurifier_c,
     1, $c
 );
-if (!$c) {
-    echo 'Could not update HTMLPurifier.php, missing HTML Purifier [version] header.' . PHP_EOL;
+if (! $c) {
+    echo 'Could not update HTMLPurifier.php, missing HTML Purifier [version] header.'.PHP_EOL;
     exit;
 }
 $htmlpurifier_c = preg_replace(
@@ -73,8 +72,8 @@ $htmlpurifier_c = preg_replace(
     $htmlpurifier_c,
     1, $c
 );
-if (!$c) {
-    echo 'Could not update HTMLPurifier.php, missing public $version.' . PHP_EOL;
+if (! $c) {
+    echo 'Could not update HTMLPurifier.php, missing public $version.'.PHP_EOL;
     exit;
 }
 $htmlpurifier_c = preg_replace(
@@ -83,8 +82,8 @@ $htmlpurifier_c = preg_replace(
     $htmlpurifier_c,
     1, $c
 );
-if (!$c) {
-    echo 'Could not update HTMLPurifier.php, missing const $version.' . PHP_EOL;
+if (! $c) {
+    echo 'Could not update HTMLPurifier.php, missing const $version.'.PHP_EOL;
     exit;
 }
 file_put_contents('library/HTMLPurifier.php', $htmlpurifier_c);
@@ -96,15 +95,18 @@ $config_c = preg_replace(
     $config_c,
     1, $c
 );
-if (!$c) {
-    echo 'Could not update Config.php, missing public $version.' . PHP_EOL;
+if (! $c) {
+    echo 'Could not update Config.php, missing public $version.'.PHP_EOL;
     exit;
 }
 file_put_contents('library/HTMLPurifier/Config.php', $config_c);
 
 passthru('php maintenance/flush.php');
 
-if ($is_dev) echo "Review changes, write something in WHATSNEW and FOCUS, and then commit with log 'Release $version.'" . PHP_EOL;
-else echo "Numbers updated to dev, no other modifications necessary!";
+if ($is_dev) {
+    echo "Review changes, write something in WHATSNEW and FOCUS, and then commit with log 'Release $version.'".PHP_EOL;
+} else {
+    echo 'Numbers updated to dev, no other modifications necessary!';
+}
 
 // vim: et sw=4 sts=4

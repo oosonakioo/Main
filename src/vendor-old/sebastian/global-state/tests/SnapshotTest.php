@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the GlobalState package.
  *
@@ -14,11 +15,9 @@ use ArrayObject;
 use PHPUnit_Framework_TestCase;
 use SebastianBergmann\GlobalState\TestFixture\SnapshotClass;
 
-/**
- */
 class SnapshotTest extends PHPUnit_Framework_TestCase
 {
-    public function testStaticAttributes()
+    public function test_static_attributes()
     {
         $blacklist = $this->getBlacklist();
         $blacklist->method('isStaticAttributeBlacklisted')->willReturnCallback(function ($class) {
@@ -28,22 +27,22 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
         SnapshotClass::init();
 
         $snapshot = new Snapshot($blacklist, false, true, false, false, false, false, false, false, false);
-        $expected = array('SebastianBergmann\GlobalState\TestFixture\SnapshotClass' => array(
+        $expected = ['SebastianBergmann\GlobalState\TestFixture\SnapshotClass' => [
             'string' => 'snapshot',
-            'arrayObject' => new ArrayObject(array(1, 2, 3)),
-            'stdClass' => new \stdClass(),
-        ));
+            'arrayObject' => new ArrayObject([1, 2, 3]),
+            'stdClass' => new \stdClass,
+        ]];
 
         $this->assertEquals($expected, $snapshot->staticAttributes());
     }
 
-    public function testConstants()
+    public function test_constants()
     {
         $snapshot = new Snapshot($this->getBlacklist(), false, false, true, false, false, false, false, false, false);
         $this->assertArrayHasKey('GLOBALSTATE_TESTSUITE', $snapshot->constants());
     }
 
-    public function testFunctions()
+    public function test_functions()
     {
         require_once __DIR__.'/_fixture/SnapshotFunctions.php';
 
@@ -63,7 +62,7 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
         $this->assertNotContains('assert', $functions);
     }
 
-    public function testClasses()
+    public function test_classes()
     {
         $snapshot = new Snapshot($this->getBlacklist(), false, false, false, false, true, false, false, false, false);
         $classes = $snapshot->classes();
@@ -72,7 +71,7 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
         $this->assertNotContains('Exception', $classes);
     }
 
-    public function testInterfaces()
+    public function test_interfaces()
     {
         $snapshot = new Snapshot($this->getBlacklist(), false, false, false, false, false, true, false, false, false);
         $interfaces = $snapshot->interfaces();
@@ -84,7 +83,7 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
     /**
      * @requires PHP 5.4
      */
-    public function testTraits()
+    public function test_traits()
     {
         spl_autoload_call('SebastianBergmann\GlobalState\TestFixture\SnapshotTrait');
 
@@ -92,7 +91,7 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
         $this->assertContains('SebastianBergmann\GlobalState\TestFixture\SnapshotTrait', $snapshot->traits());
     }
 
-    public function testIniSettings()
+    public function test_ini_settings()
     {
         $snapshot = new Snapshot($this->getBlacklist(), false, false, false, false, false, false, false, true, false);
         $iniSettings = $snapshot->iniSettings();
@@ -101,7 +100,7 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Etc/UTC', $iniSettings['date.timezone']);
     }
 
-    public function testIncludedFiles()
+    public function test_included_files()
     {
         $snapshot = new Snapshot($this->getBlacklist(), false, false, false, false, false, false, false, false, true);
         $this->assertContains(__FILE__, $snapshot->includedFiles());
@@ -113,7 +112,7 @@ class SnapshotTest extends PHPUnit_Framework_TestCase
     private function getBlacklist()
     {
         return $this->getMockBuilder('SebastianBergmann\GlobalState\Blacklist')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Comparator package.
  *
@@ -18,8 +19,8 @@ class ArrayComparator extends Comparator
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $expected The first value to compare
-     * @param  mixed $actual   The second value to compare
+     * @param  mixed  $expected  The first value to compare
+     * @param  mixed  $actual  The second value to compare
      * @return bool
      */
     public function accepts($expected, $actual)
@@ -30,16 +31,16 @@ class ArrayComparator extends Comparator
     /**
      * Asserts that two values are equal.
      *
-     * @param mixed $expected     First value to compare
-     * @param mixed $actual       Second value to compare
-     * @param float $delta        Allowed numerical distance between two values to consider them equal
-     * @param bool  $canonicalize Arrays are sorted before comparison when set to true
-     * @param bool  $ignoreCase   Case is ignored when set to true
-     * @param array $processed    List of already processed elements (used to prevent infinite recursion)
+     * @param  mixed  $expected  First value to compare
+     * @param  mixed  $actual  Second value to compare
+     * @param  float  $delta  Allowed numerical distance between two values to consider them equal
+     * @param  bool  $canonicalize  Arrays are sorted before comparison when set to true
+     * @param  bool  $ignoreCase  Case is ignored when set to true
+     * @param  array  $processed  List of already processed elements (used to prevent infinite recursion)
      *
      * @throws ComparisonFailure
      */
-    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = array())
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = [])
     {
         if ($canonicalize) {
             sort($expected);
@@ -48,12 +49,12 @@ class ArrayComparator extends Comparator
 
         $remaining = $actual;
         $expString = $actString = "Array (\n";
-        $equal     = true;
+        $equal = true;
 
         foreach ($expected as $key => $value) {
             unset($remaining[$key]);
 
-            if (!array_key_exists($key, $actual)) {
+            if (! array_key_exists($key, $actual)) {
                 $expString .= sprintf(
                     "    %s => %s\n",
                     $this->exporter->export($key),
@@ -113,7 +114,7 @@ class ArrayComparator extends Comparator
         $expString .= ')';
         $actString .= ')';
 
-        if (!$equal) {
+        if (! $equal) {
             throw new ComparisonFailure(
                 $expected,
                 $actual,

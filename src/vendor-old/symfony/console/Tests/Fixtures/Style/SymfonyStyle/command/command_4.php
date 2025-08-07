@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tests\Style\SymfonyStyleWithForcedLineLength;
 
-//Ensure has single blank line after any text and a title
+// Ensure has single blank line after any text and a title
 return function (InputInterface $input, OutputInterface $output) {
     $output = new SymfonyStyleWithForcedLineLength($input, $output);
 
@@ -18,17 +18,17 @@ return function (InputInterface $input, OutputInterface $output) {
     $output->write('');
     $output->title('Third title');
 
-    //Ensure edge case by appending empty strings to history:
+    // Ensure edge case by appending empty strings to history:
     $output->write('Lorem ipsum dolor sit amet');
-    $output->write(array('', '', ''));
+    $output->write(['', '', '']);
     $output->title('Fourth title');
 
-    //Ensure have manual control over number of blank lines:
+    // Ensure have manual control over number of blank lines:
     $output->writeln('Lorem ipsum dolor sit amet');
-    $output->writeln(array('', '')); //Should append an extra blank line
+    $output->writeln(['', '']); // Should append an extra blank line
     $output->title('Fifth title');
 
     $output->writeln('Lorem ipsum dolor sit amet');
-    $output->newLine(2); //Should append an extra blank line
+    $output->newLine(2); // Should append an extra blank line
     $output->title('Fifth title');
 };

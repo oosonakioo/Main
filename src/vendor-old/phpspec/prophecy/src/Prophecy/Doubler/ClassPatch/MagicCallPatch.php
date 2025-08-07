@@ -27,17 +27,16 @@ class MagicCallPatch implements ClassPatchInterface
 {
     private $tagRetriever;
 
-    public function __construct(MethodTagRetrieverInterface $tagRetriever = null)
+    public function __construct(?MethodTagRetrieverInterface $tagRetriever = null)
     {
-        $this->tagRetriever = null === $tagRetriever ? new ClassAndInterfaceTagRetriever() : $tagRetriever;
+        $this->tagRetriever = $tagRetriever === null ? new ClassAndInterfaceTagRetriever : $tagRetriever;
     }
 
     /**
      * Support any class
      *
-     * @param ClassNode $node
      *
-     * @return boolean
+     * @return bool
      */
     public function supports(ClassNode $node)
     {
@@ -46,13 +45,11 @@ class MagicCallPatch implements ClassPatchInterface
 
     /**
      * Discover Magical API
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {
         $types = array_filter($node->getInterfaces(), function ($interface) {
-            return 0 !== strpos($interface, 'Prophecy\\');
+            return strpos($interface, 'Prophecy\\') !== 0;
         });
         $types[] = $node->getParentClass();
 
@@ -60,14 +57,14 @@ class MagicCallPatch implements ClassPatchInterface
             $reflectionClass = new \ReflectionClass($type);
             $tagList = $this->tagRetriever->getTagList($reflectionClass);
 
-            foreach($tagList as $tag) {
+            foreach ($tagList as $tag) {
                 $methodName = $tag->getMethodName();
 
                 if (empty($methodName)) {
                     continue;
                 }
 
-                if (!$reflectionClass->hasMethod($methodName)) {
+                if (! $reflectionClass->hasMethod($methodName)) {
                     $methodNode = new MethodNode($methodName);
                     $methodNode->setStatic($tag->isStatic());
                     $node->addMethod($methodNode);
@@ -79,11 +76,10 @@ class MagicCallPatch implements ClassPatchInterface
     /**
      * Returns patch priority, which determines when patch will be applied.
      *
-     * @return integer Priority number (higher - earlier)
+     * @return int Priority number (higher - earlier)
      */
     public function getPriority()
     {
         return 50;
     }
 }
-

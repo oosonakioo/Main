@@ -1,7 +1,8 @@
 <?php
+
 class Issue1472Test extends PHPUnit_Framework_TestCase
 {
-    public function testAssertEqualXMLStructure()
+    public function test_assert_equal_xml_structure()
     {
         $doc = new DOMDocument;
         $doc->loadXML('<root><label>text content</label></root>');

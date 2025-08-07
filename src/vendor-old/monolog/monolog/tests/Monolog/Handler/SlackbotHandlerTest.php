@@ -11,12 +11,14 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @author Haralan Dobrev <hkdobrev@gmail.com>
+ *
  * @see    https://slack.com/apps/A0F81R8ET-slackbot
+ *
  * @coversDefaultClass Monolog\Handler\SlackbotHandler
  */
 class SlackbotHandlerTest extends TestCase
@@ -24,7 +26,7 @@ class SlackbotHandlerTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testConstructorMinimal()
+    public function test_constructor_minimal()
     {
         $handler = new SlackbotHandler('test-team', 'test-token', 'test-channel');
         $this->assertInstanceOf('Monolog\Handler\AbstractProcessingHandler', $handler);
@@ -33,7 +35,7 @@ class SlackbotHandlerTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testConstructorFull()
+    public function test_constructor_full()
     {
         $handler = new SlackbotHandler(
             'test-team',

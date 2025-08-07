@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\Common\Cache;
  * Base file cache driver.
  *
  * @since  2.3
+ *
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  * @author Tobias Schultze <http://tobion.de>
  */
@@ -65,15 +67,15 @@ abstract class FileCache extends CacheProvider
     /**
      * Constructor.
      *
-     * @param string $directory The cache directory.
-     * @param string $extension The cache file extension.
+     * @param  string  $directory  The cache directory.
+     * @param  string  $extension  The cache file extension.
      *
      * @throws \InvalidArgumentException
      */
     public function __construct($directory, $extension = '', $umask = 0002)
     {
         // YES, this needs to be *before* createPathIfNeeded()
-        if ( ! is_int($umask)) {
+        if (! is_int($umask)) {
             throw new \InvalidArgumentException(sprintf(
                 'The umask parameter is required to be integer, was: %s',
                 gettype($umask)
@@ -81,14 +83,14 @@ abstract class FileCache extends CacheProvider
         }
         $this->umask = $umask;
 
-        if ( ! $this->createPathIfNeeded($directory)) {
+        if (! $this->createPathIfNeeded($directory)) {
             throw new \InvalidArgumentException(sprintf(
                 'The directory "%s" does not exist and could not be created.',
                 $directory
             ));
         }
 
-        if ( ! is_writable($directory)) {
+        if (! is_writable($directory)) {
             throw new \InvalidArgumentException(sprintf(
                 'The directory "%s" is not writable.',
                 $directory
@@ -101,7 +103,7 @@ abstract class FileCache extends CacheProvider
 
         $this->directoryStringLength = strlen($this->directory);
         $this->extensionStringLength = strlen($this->extension);
-        $this->isRunningOnWindows    = defined('PHP_WINDOWS_VERSION_BUILD');
+        $this->isRunningOnWindows = defined('PHP_WINDOWS_VERSION_BUILD');
     }
 
     /**
@@ -125,8 +127,7 @@ abstract class FileCache extends CacheProvider
     }
 
     /**
-     * @param string $id
-     *
+     * @param  string  $id
      * @return string
      */
     protected function getFilename($id)
@@ -135,7 +136,7 @@ abstract class FileCache extends CacheProvider
 
         // This ensures that the filename is unique and that there are no invalid chars in it.
         if (
-            '' === $id
+            $id === ''
             || ((strlen($id) * 2 + $this->extensionStringLength) > 255)
             || ($this->isRunningOnWindows && ($this->directoryStringLength + 4 + strlen($id) * 2 + $this->extensionStringLength) > 258)
         ) {
@@ -144,17 +145,17 @@ abstract class FileCache extends CacheProvider
             // And there is a bug in PHP (https://bugs.php.net/bug.php?id=70943) with path lengths of 259.
             // So if the id in hex representation would surpass the limit, we use the hash instead. The prefix prevents
             // collisions between the hash and bin2hex.
-            $filename = '_' . $hash;
+            $filename = '_'.$hash;
         } else {
             $filename = bin2hex($id);
         }
 
         return $this->directory
-            . DIRECTORY_SEPARATOR
-            . substr($hash, 0, 2)
-            . DIRECTORY_SEPARATOR
-            . $filename
-            . $this->extension;
+            .DIRECTORY_SEPARATOR
+            .substr($hash, 0, 2)
+            .DIRECTORY_SEPARATOR
+            .$filename
+            .$this->extension;
     }
 
     /**
@@ -202,25 +203,25 @@ abstract class FileCache extends CacheProvider
 
         $free = disk_free_space($this->directory);
 
-        return array(
-            Cache::STATS_HITS               => null,
-            Cache::STATS_MISSES             => null,
-            Cache::STATS_UPTIME             => null,
-            Cache::STATS_MEMORY_USAGE       => $usage,
-            Cache::STATS_MEMORY_AVAILABLE   => $free,
-        );
+        return [
+            Cache::STATS_HITS => null,
+            Cache::STATS_MISSES => null,
+            Cache::STATS_UPTIME => null,
+            Cache::STATS_MEMORY_USAGE => $usage,
+            Cache::STATS_MEMORY_AVAILABLE => $free,
+        ];
     }
 
     /**
      * Create path if needed.
      *
-     * @param string $path
+     * @param  string  $path
      * @return bool TRUE on success or if path already exists, FALSE if path cannot be created.
      */
     private function createPathIfNeeded($path)
     {
-        if ( ! is_dir($path)) {
-            if (false === @mkdir($path, 0777 & (~$this->umask), true) && !is_dir($path)) {
+        if (! is_dir($path)) {
+            if (@mkdir($path, 0777 & (~$this->umask), true) === false && ! is_dir($path)) {
                 return false;
             }
         }
@@ -231,20 +232,19 @@ abstract class FileCache extends CacheProvider
     /**
      * Writes a string content to file in an atomic way.
      *
-     * @param string $filename Path to the file where to write the data.
-     * @param string $content  The content to write
-     *
+     * @param  string  $filename  Path to the file where to write the data.
+     * @param  string  $content  The content to write
      * @return bool TRUE on success, FALSE if path cannot be created, if path is not writable or an any other error.
      */
     protected function writeFile($filename, $content)
     {
         $filepath = pathinfo($filename, PATHINFO_DIRNAME);
 
-        if ( ! $this->createPathIfNeeded($filepath)) {
+        if (! $this->createPathIfNeeded($filepath)) {
             return false;
         }
 
-        if ( ! is_writable($filepath)) {
+        if (! is_writable($filepath)) {
             return false;
         }
 
@@ -274,13 +274,12 @@ abstract class FileCache extends CacheProvider
     }
 
     /**
-     * @param string $name The filename
-     *
+     * @param  string  $name  The filename
      * @return bool
      */
     private function isFilenameEndingWithExtension($name)
     {
-        return '' === $this->extension
+        return $this->extension === ''
             || strrpos($name, $this->extension) === (strlen($name) - $this->extensionStringLength);
     }
 }

@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\HttpKernel\Tests\EventListener;
 
-use Symfony\Component\HttpKernel\EventListener\AddRequestFormatsListener;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\EventListener\AddRequestFormatsListener;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -29,7 +29,7 @@ class AddRequestFormatsListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->listener = new AddRequestFormatsListener(array('csv' => array('text/csv', 'text/plain')));
+        $this->listener = new AddRequestFormatsListener(['csv' => ['text/csv', 'text/plain']]);
     }
 
     protected function tearDown()
@@ -37,27 +37,27 @@ class AddRequestFormatsListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener = null;
     }
 
-    public function testIsAnEventSubscriber()
+    public function test_is_an_event_subscriber()
     {
         $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->listener);
     }
 
-    public function testRegisteredEvent()
+    public function test_registered_event()
     {
         $this->assertEquals(
-            array(KernelEvents::REQUEST => 'onKernelRequest'),
+            [KernelEvents::REQUEST => 'onKernelRequest'],
             AddRequestFormatsListener::getSubscribedEvents()
         );
     }
 
-    public function testSetAdditionalFormats()
+    public function test_set_additional_formats()
     {
         $request = $this->getRequestMock();
         $event = $this->getGetResponseEventMock($request);
 
         $request->expects($this->once())
             ->method('setFormat')
-            ->with('csv', array('text/csv', 'text/plain'));
+            ->with('csv', ['text/csv', 'text/plain']);
 
         $this->listener->onKernelRequest($event);
     }

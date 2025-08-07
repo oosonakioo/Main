@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -21,10 +22,10 @@ class Framework_BaseTestListenerTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_TestResult
      */
-    public function testEndEventsAreCounted()
+    public function test_end_events_are_counted()
     {
         $this->result = new PHPUnit_Framework_TestResult;
-        $listener     = new BaseTestListenerSample();
+        $listener = new BaseTestListenerSample;
         $this->result->addListener($listener);
         $test = new Success;
         $test->run($this->result);

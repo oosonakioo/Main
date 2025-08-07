@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\EventDispatcher\Debug;
 
-use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Caster\ClassStub;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
@@ -23,17 +23,24 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 class WrappedListener
 {
     private $listener;
+
     private $name;
+
     private $called;
+
     private $stoppedPropagation;
+
     private $stopwatch;
+
     private $dispatcher;
+
     private $pretty;
+
     private $data;
 
     private static $cloner;
 
-    public function __construct($listener, $name, Stopwatch $stopwatch, EventDispatcherInterface $dispatcher = null)
+    public function __construct($listener, $name, Stopwatch $stopwatch, ?EventDispatcherInterface $dispatcher = null)
     {
         $this->listener = $listener;
         $this->name = $name;
@@ -54,12 +61,12 @@ class WrappedListener
             $this->pretty = $this->name.'::__invoke';
         }
 
-        if (null !== $name) {
+        if ($name !== null) {
             $this->name = $name;
         }
 
-        if (null === self::$cloner) {
-            self::$cloner = class_exists(ClassStub::class) ? new VarCloner() : false;
+        if (self::$cloner === null) {
+            self::$cloner = class_exists(ClassStub::class) ? new VarCloner : false;
         }
     }
 
@@ -85,16 +92,16 @@ class WrappedListener
 
     public function getInfo($eventName)
     {
-        if (null === $this->data) {
-            $this->data = false !== self::$cloner ? self::$cloner->cloneVar(array(new ClassStub($this->pretty.'()', $this->listener)))->seek(0) : $this->pretty;
+        if ($this->data === null) {
+            $this->data = self::$cloner !== false ? self::$cloner->cloneVar([new ClassStub($this->pretty.'()', $this->listener)])->seek(0) : $this->pretty;
         }
 
-        return array(
+        return [
             'event' => $eventName,
-            'priority' => null !== $this->dispatcher ? $this->dispatcher->getListenerPriority($eventName, $this->listener) : null,
+            'priority' => $this->dispatcher !== null ? $this->dispatcher->getListenerPriority($eventName, $this->listener) : null,
             'pretty' => $this->pretty,
             'data' => $this->data,
-        );
+        ];
     }
 
     public function __invoke(Event $event, $eventName, EventDispatcherInterface $dispatcher)

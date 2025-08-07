@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @covers Monolog\Handler\TestHandler
@@ -22,7 +22,7 @@ class TestHandlerTest extends TestCase
     /**
      * @dataProvider methodProvider
      */
-    public function testHandler($method, $level)
+    public function test_handler($method, $level)
     {
         $handler = new TestHandler;
         $record = $this->getRecord($level, 'test'.$method);
@@ -51,20 +51,20 @@ class TestHandlerTest extends TestCase
 
         $records = $handler->getRecords();
         unset($records[0]['formatted']);
-        $this->assertEquals(array($record), $records);
+        $this->assertEquals([$record], $records);
     }
 
     public function methodProvider()
     {
-        return array(
-            array('Emergency', Logger::EMERGENCY),
-            array('Alert'    , Logger::ALERT),
-            array('Critical' , Logger::CRITICAL),
-            array('Error'    , Logger::ERROR),
-            array('Warning'  , Logger::WARNING),
-            array('Info'     , Logger::INFO),
-            array('Notice'   , Logger::NOTICE),
-            array('Debug'    , Logger::DEBUG),
-        );
+        return [
+            ['Emergency', Logger::EMERGENCY],
+            ['Alert', Logger::ALERT],
+            ['Critical', Logger::CRITICAL],
+            ['Error', Logger::ERROR],
+            ['Warning', Logger::WARNING],
+            ['Info', Logger::INFO],
+            ['Notice', Logger::NOTICE],
+            ['Debug', Logger::DEBUG],
+        ];
     }
 }

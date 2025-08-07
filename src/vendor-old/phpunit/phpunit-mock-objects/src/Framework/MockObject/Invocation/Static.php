@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -20,27 +21,27 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     /**
      * @var array
      */
-    protected static $uncloneableExtensions = array(
-      'mysqli'    => true,
-      'SQLite'    => true,
-      'sqlite3'   => true,
-      'tidy'      => true,
-      'xmlwriter' => true,
-      'xsl'       => true
-    );
+    protected static $uncloneableExtensions = [
+        'mysqli' => true,
+        'SQLite' => true,
+        'sqlite3' => true,
+        'tidy' => true,
+        'xmlwriter' => true,
+        'xsl' => true,
+    ];
 
     /**
      * @var array
      */
-    protected static $uncloneableClasses = array(
-      'Closure',
-      'COMPersistHelper',
-      'IteratorIterator',
-      'RecursiveIteratorIterator',
-      'SplFileObject',
-      'PDORow',
-      'ZipArchive'
-    );
+    protected static $uncloneableClasses = [
+        'Closure',
+        'COMPersistHelper',
+        'IteratorIterator',
+        'RecursiveIteratorIterator',
+        'SplFileObject',
+        'PDORow',
+        'ZipArchive',
+    ];
 
     /**
      * @var string
@@ -58,18 +59,17 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     public $parameters;
 
     /**
-     * @param string $className
-     * @param string $methodname
-     * @param array  $parameters
-     * @param bool   $cloneObjects
+     * @param  string  $className
+     * @param  string  $methodname
+     * @param  bool  $cloneObjects
      */
     public function __construct($className, $methodName, array $parameters, $cloneObjects = false)
     {
-        $this->className  = $className;
+        $this->className = $className;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
 
-        if (!$cloneObjects) {
+        if (! $cloneObjects) {
             return;
         }
 
@@ -94,7 +94,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             implode(
                 ', ',
                 array_map(
-                    array($exporter, 'shortenedExport'),
+                    [$exporter, 'shortenedExport'],
                     $this->parameters
                 )
             )
@@ -102,13 +102,13 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     }
 
     /**
-     * @param  object $original
+     * @param  object  $original
      * @return object
      */
     protected function cloneObject($original)
     {
         $cloneable = null;
-        $object    = new ReflectionObject($original);
+        $object = new ReflectionObject($original);
 
         // Check the blacklist before asking PHP reflection to work around
         // https://bugs.php.net/bug.php?id=53967
@@ -131,7 +131,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         }
 
         if ($cloneable === null && $object->hasMethod('__clone')) {
-            $method    = $object->getMethod('__clone');
+            $method = $object->getMethod('__clone');
             $cloneable = $method->isPublic();
         }
 

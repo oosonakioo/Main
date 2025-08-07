@@ -31,7 +31,6 @@ class Builder
     /**
      * Create a new database Schema manager.
      *
-     * @param  \Illuminate\Database\Connection  $connection
      * @return void
      */
     public function __construct(Connection $connection)
@@ -73,7 +72,6 @@ class Builder
      * Determine if the given table has given columns.
      *
      * @param  string  $table
-     * @param  array   $columns
      * @return bool
      */
     public function hasColumns($table, array $columns)
@@ -121,8 +119,7 @@ class Builder
     /**
      * Modify a table on the schema.
      *
-     * @param  string    $table
-     * @param  \Closure  $callback
+     * @param  string  $table
      * @return \Illuminate\Database\Schema\Blueprint
      */
     public function table($table, Closure $callback)
@@ -133,8 +130,7 @@ class Builder
     /**
      * Create a new table on the schema.
      *
-     * @param  string    $table
-     * @param  \Closure  $callback
+     * @param  string  $table
      * @return \Illuminate\Database\Schema\Blueprint
      */
     public function create($table, Closure $callback)
@@ -221,7 +217,6 @@ class Builder
     /**
      * Execute the blueprint to build / modify the table.
      *
-     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @return void
      */
     protected function build(Blueprint $blueprint)
@@ -233,10 +228,9 @@ class Builder
      * Create a new command set with a Closure.
      *
      * @param  string  $table
-     * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Schema\Blueprint
      */
-    protected function createBlueprint($table, Closure $callback = null)
+    protected function createBlueprint($table, ?Closure $callback = null)
     {
         if (isset($this->resolver)) {
             return call_user_func($this->resolver, $table, $callback);
@@ -258,7 +252,6 @@ class Builder
     /**
      * Set the database connection instance.
      *
-     * @param  \Illuminate\Database\Connection  $connection
      * @return $this
      */
     public function setConnection(Connection $connection)
@@ -271,7 +264,6 @@ class Builder
     /**
      * Set the Schema Blueprint resolver callback.
      *
-     * @param  \Closure  $resolver
      * @return void
      */
     public function blueprintResolver(Closure $resolver)

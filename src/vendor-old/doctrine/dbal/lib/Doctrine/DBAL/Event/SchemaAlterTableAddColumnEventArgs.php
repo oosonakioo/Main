@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ use Doctrine\DBAL\Schema\TableDiff;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
@@ -50,18 +52,13 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
     /**
      * @var array
      */
-    private $_sql = array();
+    private $_sql = [];
 
-    /**
-     * @param \Doctrine\DBAL\Schema\Column              $column
-     * @param \Doctrine\DBAL\Schema\TableDiff           $tableDiff
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     */
     public function __construct(Column $column, TableDiff $tableDiff, AbstractPlatform $platform)
     {
-        $this->_column    = $column;
+        $this->_column = $column;
         $this->_tableDiff = $tableDiff;
-        $this->_platform  = $platform;
+        $this->_platform = $platform;
     }
 
     /**
@@ -89,8 +86,7 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
     }
 
     /**
-     * @param string|array $sql
-     *
+     * @param  string|array  $sql
      * @return \Doctrine\DBAL\Event\SchemaAlterTableAddColumnEventArgs
      */
     public function addSql($sql)

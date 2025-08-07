@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,8 +34,7 @@ interface FileLocator
     /**
      * Locates mapping file for the given class name.
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return string
      */
     public function findMappingFile($className);
@@ -42,8 +42,7 @@ interface FileLocator
     /**
      * Gets all class names that are found with this file locator.
      *
-     * @param string $globalBasename Passed to allow excluding the basename.
-     *
+     * @param  string  $globalBasename  Passed to allow excluding the basename.
      * @return array
      */
     public function getAllClassNames($globalBasename);
@@ -51,8 +50,7 @@ interface FileLocator
     /**
      * Checks if a file can be found for this class name.
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return bool
      */
     public function fileExists($className);

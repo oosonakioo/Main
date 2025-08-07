@@ -17,10 +17,11 @@ use Prophecy\Prophecy\ObjectProphecy;
 class UnexpectedCallException extends ObjectProphecyException
 {
     private $methodName;
+
     private $arguments;
 
     public function __construct($message, ObjectProphecy $objectProphecy,
-                                $methodName, array $arguments)
+        $methodName, array $arguments)
     {
         parent::__construct($message, $objectProphecy);
 

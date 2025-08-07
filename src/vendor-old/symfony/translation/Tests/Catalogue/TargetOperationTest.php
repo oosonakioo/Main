@@ -17,52 +17,52 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 class TargetOperationTest extends AbstractOperationTest
 {
-    public function testGetMessagesFromSingleDomain()
+    public function test_get_messages_from_single_domain()
     {
         $operation = $this->createOperation(
-            new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))),
-            new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))
+            new MessageCatalogue('en', ['messages' => ['a' => 'old_a', 'b' => 'old_b']]),
+            new MessageCatalogue('en', ['messages' => ['a' => 'new_a', 'c' => 'new_c']])
         );
 
         $this->assertEquals(
-            array('a' => 'old_a', 'c' => 'new_c'),
+            ['a' => 'old_a', 'c' => 'new_c'],
             $operation->getMessages('messages')
         );
 
         $this->assertEquals(
-            array('c' => 'new_c'),
+            ['c' => 'new_c'],
             $operation->getNewMessages('messages')
         );
 
         $this->assertEquals(
-            array('b' => 'old_b'),
+            ['b' => 'old_b'],
             $operation->getObsoleteMessages('messages')
         );
     }
 
-    public function testGetResultFromSingleDomain()
+    public function test_get_result_from_single_domain()
     {
         $this->assertEquals(
-            new MessageCatalogue('en', array(
-                'messages' => array('a' => 'old_a', 'c' => 'new_c'),
-            )),
+            new MessageCatalogue('en', [
+                'messages' => ['a' => 'old_a', 'c' => 'new_c'],
+            ]),
             $this->createOperation(
-                new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))),
-                new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))
+                new MessageCatalogue('en', ['messages' => ['a' => 'old_a', 'b' => 'old_b']]),
+                new MessageCatalogue('en', ['messages' => ['a' => 'new_a', 'c' => 'new_c']])
             )->getResult()
         );
     }
 
-    public function testGetResultWithMetadata()
+    public function test_get_result_with_metadata()
     {
-        $leftCatalogue = new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b')));
+        $leftCatalogue = new MessageCatalogue('en', ['messages' => ['a' => 'old_a', 'b' => 'old_b']]);
         $leftCatalogue->setMetadata('a', 'foo', 'messages');
         $leftCatalogue->setMetadata('b', 'bar', 'messages');
-        $rightCatalogue = new MessageCatalogue('en', array('messages' => array('b' => 'new_b', 'c' => 'new_c')));
+        $rightCatalogue = new MessageCatalogue('en', ['messages' => ['b' => 'new_b', 'c' => 'new_c']]);
         $rightCatalogue->setMetadata('b', 'baz', 'messages');
         $rightCatalogue->setMetadata('c', 'qux', 'messages');
 
-        $diffCatalogue = new MessageCatalogue('en', array('messages' => array('b' => 'old_b', 'c' => 'new_c')));
+        $diffCatalogue = new MessageCatalogue('en', ['messages' => ['b' => 'old_b', 'c' => 'new_c']]);
         $diffCatalogue->setMetadata('b', 'bar', 'messages');
         $diffCatalogue->setMetadata('c', 'qux', 'messages');
 

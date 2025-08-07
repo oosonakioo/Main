@@ -7,8 +7,8 @@ class BrightnessCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Changes image brightness
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

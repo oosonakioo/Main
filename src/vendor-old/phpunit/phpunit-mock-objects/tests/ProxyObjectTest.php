@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -13,24 +14,24 @@
  */
 class Framework_ProxyObjectTest extends PHPUnit_Framework_TestCase
 {
-    public function testMockedMethodIsProxiedToOriginalMethod()
+    public function test_mocked_method_is_proxied_to_original_method()
     {
         $proxy = $this->getMockBuilder('Bar')
-                      ->enableProxyingToOriginalMethods()
-                      ->getMock();
+            ->enableProxyingToOriginalMethods()
+            ->getMock();
 
         $proxy->expects($this->once())
-              ->method('doSomethingElse');
+            ->method('doSomethingElse');
 
         $foo = new Foo;
         $this->assertEquals('result', $foo->doSomething($proxy));
     }
 
-    public function testMockedMethodWithReferenceIsProxiedToOriginalMethod()
+    public function test_mocked_method_with_reference_is_proxied_to_original_method()
     {
         $proxy = $this->getMockBuilder('MethodCallbackByReference')
-                      ->enableProxyingToOriginalMethods()
-                      ->getMock();
+            ->enableProxyingToOriginalMethods()
+            ->getMock();
         $a = $b = $c = 0;
 
         $proxy->callback($a, $b, $c);

@@ -13,14 +13,20 @@ namespace Symfony\Component\Finder\Tests\Iterator;
 
 class MockSplFileInfo extends \SplFileInfo
 {
-    const   TYPE_DIRECTORY = 1;
-    const   TYPE_FILE = 2;
-    const   TYPE_UNKNOWN = 3;
+    const TYPE_DIRECTORY = 1;
+
+    const TYPE_FILE = 2;
+
+    const TYPE_UNKNOWN = 3;
 
     private $contents = null;
+
     private $mode = null;
+
     private $type = null;
+
     private $relativePath = null;
+
     private $relativePathname = null;
 
     public function __construct($param)
@@ -28,14 +34,14 @@ class MockSplFileInfo extends \SplFileInfo
         if (is_string($param)) {
             parent::__construct($param);
         } elseif (is_array($param)) {
-            $defaults = array(
-              'name' => 'file.txt',
-              'contents' => null,
-              'mode' => null,
-              'type' => null,
-              'relativePath' => null,
-              'relativePathname' => null,
-            );
+            $defaults = [
+                'name' => 'file.txt',
+                'contents' => null,
+                'mode' => null,
+                'type' => null,
+                'relativePath' => null,
+                'relativePathname' => null,
+            ];
             $defaults = array_merge($defaults, $param);
             parent::__construct($defaults['name']);
             $this->setContents($defaults['contents']);
@@ -50,25 +56,25 @@ class MockSplFileInfo extends \SplFileInfo
 
     public function isFile()
     {
-        if (null === $this->type) {
-            return false !== strpos($this->getFilename(), 'file');
+        if ($this->type === null) {
+            return strpos($this->getFilename(), 'file') !== false;
         }
 
-        return self::TYPE_FILE === $this->type;
+        return $this->type === self::TYPE_FILE;
     }
 
     public function isDir()
     {
-        if (null === $this->type) {
-            return false !== strpos($this->getFilename(), 'directory');
+        if ($this->type === null) {
+            return strpos($this->getFilename(), 'directory') !== false;
         }
 
-        return self::TYPE_DIRECTORY === $this->type;
+        return $this->type === self::TYPE_DIRECTORY;
     }
 
     public function isReadable()
     {
-        if (null === $this->mode) {
+        if ($this->mode === null) {
             return preg_match('/r\+/', $this->getFilename());
         }
 

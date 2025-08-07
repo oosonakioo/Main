@@ -1,11 +1,12 @@
-<?php namespace Maatwebsite\Excel\Files;
+<?php
+
+namespace Maatwebsite\Excel\Files;
 
 use Illuminate\Foundation\Application;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
-abstract class ExcelFile extends File {
-
+abstract class ExcelFile extends File
+{
     /**
      * @var bool|string
      */
@@ -21,10 +22,6 @@ abstract class ExcelFile extends File {
      */
     protected $encoding = null;
 
-    /**
-     * @param Application $app
-     * @param Excel       $excel
-     */
     public function __construct(Application $app, Excel $excel)
     {
         parent::__construct($app, $excel);
@@ -33,12 +30,14 @@ abstract class ExcelFile extends File {
 
     /**
      * Get file
+     *
      * @return string
      */
     abstract public function getFile();
 
     /**
      * Get delimiter
+     *
      * @return string
      */
     protected function getDelimiter()
@@ -48,6 +47,7 @@ abstract class ExcelFile extends File {
 
     /**
      * Get enclosure
+     *
      * @return string
      */
     protected function getEnclosure()
@@ -57,6 +57,7 @@ abstract class ExcelFile extends File {
 
     /**
      * Get filters
+     *
      * @return array
      */
     public function getFilters()
@@ -76,6 +77,7 @@ abstract class ExcelFile extends File {
 
     /**
      * Load the file
+     *
      * @return \Maatwebsite\Excel\Readers\LaravelExcelReader
      */
     public function loadFile()
@@ -98,6 +100,7 @@ abstract class ExcelFile extends File {
 
     /**
      * Load the filter
+     *
      * @return void
      */
     protected function loadFilters()
@@ -108,8 +111,7 @@ abstract class ExcelFile extends File {
         );
 
         // Loop through the filters
-        foreach($this->getFilters() as $filter)
-        {
+        foreach ($this->getFilters() as $filter) {
             // Enable the filter
             $this->excel->filter($filter);
         }
@@ -132,20 +134,23 @@ abstract class ExcelFile extends File {
         $delimiter = $this->getDelimiter();
 
         // Set it when given
-        if($delimiter)
+        if ($delimiter) {
             $this->excel->setDelimiter($delimiter);
+        }
 
         // Get user provided enclosure
         $enclosure = $this->getEnclosure();
 
         // Set it when given
-        if($enclosure)
+        if ($enclosure) {
             $this->excel->setEnclosure($enclosure);
+        }
     }
 
     /**
      * Dynamically call methods
-     * @param  string $method
+     *
+     * @param  string  $method
      * @param  array  $params
      * @return mixed
      */

@@ -50,7 +50,7 @@ class ScopesTest extends TestsBase
     {
         App::setLocale('de');
         $list = [[
-            'id'   => '1',
+            'id' => '1',
             'name' => 'Griechenland',
         ]];
         $this->assertEquals($list, Country::listsTranslations('name')->get()->toArray());
@@ -60,19 +60,19 @@ class ScopesTest extends TestsBase
     {
         App::make('config')->set('translatable.fallback_locale', 'en');
         App::setLocale('de');
-        $country = new Country();
+        $country = new Country;
         $country->useTranslationFallback = true;
         $list = [[
-            'id'   => '1',
+            'id' => '1',
             'name' => 'Griechenland',
         ], [
-            'id'   => '2',
+            'id' => '2',
             'name' => 'France',
         ]];
         $this->assertEquals($list, $country->listsTranslations('name')->get()->toArray());
     }
 
-    public function test_scope_withTranslation_without_fallback()
+    public function test_scope_with_translation_without_fallback()
     {
         $result = Country::withTranslation()->first();
         $loadedTranslations = $result->toArray()['translations'];
@@ -80,7 +80,7 @@ class ScopesTest extends TestsBase
         $this->assertSame('Greece', $loadedTranslations[0]['name']);
     }
 
-    public function test_scope_withTranslation_with_fallback()
+    public function test_scope_with_translation_with_fallback()
     {
         App::make('config')->set('translatable.fallback_locale', 'de');
         App::make('config')->set('translatable.use_fallback', true);
@@ -92,14 +92,14 @@ class ScopesTest extends TestsBase
         $this->assertSame('Griechenland', $loadedTranslations[1]['name']);
     }
 
-    public function test_whereTranslation_filters_by_translation()
+    public function test_where_translation_filters_by_translation()
     {
         /** @var Country $country */
         $country = Country::whereTranslation('name', 'Greece')->first();
         $this->assertSame('gr', $country->code);
     }
 
-    public function test_whereTranslation_filters_by_translation_and_locale()
+    public function test_where_translation_filters_by_translation_and_locale()
     {
         Country::create(['code' => 'some-code', 'name' => 'Griechenland']);
 
@@ -110,14 +110,14 @@ class ScopesTest extends TestsBase
         $this->assertSame('gr', $result->first()->code);
     }
 
-    public function test_whereTranslationLike_filters_by_translation()
+    public function test_where_translation_like_filters_by_translation()
     {
         /** @var Country $country */
         $country = Country::whereTranslationLike('name', '%Greec%')->first();
         $this->assertSame('gr', $country->code);
     }
 
-    public function test_whereTranslationLike_filters_by_translation_and_locale()
+    public function test_where_translation_like_filters_by_translation_and_locale()
     {
         Country::create(['code' => 'some-code', 'name' => 'Griechenland']);
 

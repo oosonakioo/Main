@@ -7,14 +7,14 @@ abstract class AbstractFont
     /**
      * Text to be written
      *
-     * @var String
+     * @var string
      */
     public $text;
 
     /**
      * Text size in pixels
      *
-     * @var integer
+     * @var int
      */
     public $size = 12;
 
@@ -28,21 +28,21 @@ abstract class AbstractFont
     /**
      * Rotation angle of the text
      *
-     * @var integer
+     * @var int
      */
     public $angle = 0;
 
     /**
      * Horizontal alignment of the text
      *
-     * @var String
+     * @var string
      */
     public $align;
 
     /**
      * Vertical alignment of the text
      *
-     * @var String
+     * @var string
      */
     public $valign;
 
@@ -56,17 +56,16 @@ abstract class AbstractFont
     /**
      * Draws font to given image on given position
      *
-     * @param  Image   $image
-     * @param  integer $posx
-     * @param  integer $posy
-     * @return boolean
+     * @param  int  $posx
+     * @param  int  $posy
+     * @return bool
      */
     abstract public function applyToImage(Image $image, $posx = 0, $posy = 0);
 
     /**
      * Create a new instance of Font
      *
-     * @param Strinf $text Text to be written
+     * @param  Strinf  $text  Text to be written
      */
     public function __construct($text = null)
     {
@@ -76,7 +75,7 @@ abstract class AbstractFont
     /**
      * Set text to be written
      *
-     * @param  String $text
+     * @param  string  $text
      * @return void
      */
     public function text($text)
@@ -89,7 +88,7 @@ abstract class AbstractFont
     /**
      * Get text to be written
      *
-     * @return String
+     * @return string
      */
     public function getText()
     {
@@ -99,7 +98,7 @@ abstract class AbstractFont
     /**
      * Set font size in pixels
      *
-     * @param  integer $size
+     * @param  int  $size
      * @return void
      */
     public function size($size)
@@ -112,7 +111,7 @@ abstract class AbstractFont
     /**
      * Get font size in pixels
      *
-     * @return integer
+     * @return int
      */
     public function getSize()
     {
@@ -122,7 +121,7 @@ abstract class AbstractFont
     /**
      * Set color of text to be written
      *
-     * @param  mixed $color
+     * @param  mixed  $color
      * @return void
      */
     public function color($color)
@@ -145,7 +144,7 @@ abstract class AbstractFont
     /**
      * Set rotation angle of text
      *
-     * @param  integer $angle
+     * @param  int  $angle
      * @return void
      */
     public function angle($angle)
@@ -158,7 +157,7 @@ abstract class AbstractFont
     /**
      * Get rotation angle of text
      *
-     * @return integer
+     * @return int
      */
     public function getAngle()
     {
@@ -168,7 +167,7 @@ abstract class AbstractFont
     /**
      * Set horizontal text alignment
      *
-     * @param  string $align
+     * @param  string  $align
      * @return void
      */
     public function align($align)
@@ -191,7 +190,7 @@ abstract class AbstractFont
     /**
      * Set vertical text alignment
      *
-     * @param  string $valign
+     * @param  string  $valign
      * @return void
      */
     public function valign($valign)
@@ -214,7 +213,7 @@ abstract class AbstractFont
     /**
      * Set path to font file
      *
-     * @param  string $file
+     * @param  string  $file
      * @return void
      */
     public function file($file)
@@ -237,7 +236,7 @@ abstract class AbstractFont
     /**
      * Checks if current font has access to an applicable font file
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasApplicableFontFile()
     {
@@ -251,7 +250,7 @@ abstract class AbstractFont
     /**
      * Counts lines of text to be written
      *
-     * @return integer
+     * @return int
      */
     public function countLines()
     {

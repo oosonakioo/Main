@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,9 +24,8 @@ namespace Doctrine\DBAL\Exception;
  * Exception for a write operation attempt on a read-only database element detected in the driver.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
-class ReadOnlyException extends ServerException
-{
-}
+class ReadOnlyException extends ServerException {}

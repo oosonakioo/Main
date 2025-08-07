@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,23 +23,23 @@ namespace Mockery\Matcher;
 
 class Subset extends MatcherAbstract
 {
-
     /**
      * Check if the actual value matches the expected.
      *
-     * @param mixed $actual
+     * @param  mixed  $actual
      * @return bool
      */
     public function match(&$actual)
     {
-        foreach ($this->_expected as $k=>$v) {
-            if (!array_key_exists($k, $actual)) {
+        foreach ($this->_expected as $k => $v) {
+            if (! array_key_exists($k, $actual)) {
                 return false;
             }
             if ($actual[$k] !== $v) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -50,11 +51,12 @@ class Subset extends MatcherAbstract
     public function __toString()
     {
         $return = '<Subset[';
-        $elements = array();
-        foreach ($this->_expected as $k=>$v) {
-            $elements[] = $k . '=' . (string) $v;
+        $elements = [];
+        foreach ($this->_expected as $k => $v) {
+            $elements[] = $k.'='.(string) $v;
         }
-        $return .= implode(', ', $elements) . ']>';
+        $return .= implode(', ', $elements).']>';
+
         return $return;
     }
 }

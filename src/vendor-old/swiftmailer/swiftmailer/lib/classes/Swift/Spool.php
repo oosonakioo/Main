@@ -35,8 +35,7 @@ interface Swift_Spool
     /**
      * Queues a message.
      *
-     * @param Swift_Mime_Message $message The message to store
-     *
+     * @param  Swift_Mime_Message  $message  The message to store
      * @return bool Whether the operation has succeeded
      */
     public function queueMessage(Swift_Mime_Message $message);
@@ -44,9 +43,8 @@ interface Swift_Spool
     /**
      * Sends messages using the given transport instance.
      *
-     * @param Swift_Transport $transport        A transport instance
-     * @param string[]        $failedRecipients An array of failures by-reference
-     *
+     * @param  Swift_Transport  $transport  A transport instance
+     * @param  string[]  $failedRecipients  An array of failures by-reference
      * @return int The number of sent emails
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null);

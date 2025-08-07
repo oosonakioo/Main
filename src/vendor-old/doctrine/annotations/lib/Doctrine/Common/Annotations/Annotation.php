@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -39,9 +40,9 @@ class Annotation
     /**
      * Constructor.
      *
-     * @param array $data Key-value for properties to be defined in this class.
+     * @param  array  $data  Key-value for properties to be defined in this class.
      */
-    public final function __construct(array $data)
+    final public function __construct(array $data)
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;
@@ -51,7 +52,7 @@ class Annotation
     /**
      * Error handler for unknown property accessor in Annotation class.
      *
-     * @param string $name Unknown property name.
+     * @param  string  $name  Unknown property name.
      *
      * @throws \BadMethodCallException
      */
@@ -65,8 +66,8 @@ class Annotation
     /**
      * Error handler for unknown property mutator in Annotation class.
      *
-     * @param string $name  Unknown property name.
-     * @param mixed  $value Property value.
+     * @param  string  $name  Unknown property name.
+     * @param  mixed  $value  Property value.
      *
      * @throws \BadMethodCallException
      */

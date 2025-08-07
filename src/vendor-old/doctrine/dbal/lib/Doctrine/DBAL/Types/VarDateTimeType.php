@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,6 +31,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -47,7 +49,7 @@ class VarDateTimeType extends DateTimeType
         }
 
         $val = date_create($value);
-        if ( ! $val) {
+        if (! $val) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
 

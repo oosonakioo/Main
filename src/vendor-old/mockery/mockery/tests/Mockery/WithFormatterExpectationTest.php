@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,18 +14,16 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
-
 class WithFormatterExpectationTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider formatObjectsDataProvider
      */
-    public function testFormatObjects($args, $expected)
+    public function test_format_objects($args, $expected)
     {
         $this->assertEquals(
             $expected,
@@ -38,7 +37,7 @@ class WithFormatterExpectationTest extends PHPUnit_Framework_TestCase
      * Note that without the patch checked in with this test, rather than throwing
      * an exception, the program will go into an infinite recursive loop
      */
-    public function testFormatObjectsWithMockCalledInGetterDoesNotLeadToRecursion()
+    public function test_format_objects_with_mock_called_in_getter_does_not_lead_to_recursion()
     {
         $mock = Mockery::mock('stdClass');
         $mock->shouldReceive('doBar')->with('foo');
@@ -48,39 +47,39 @@ class WithFormatterExpectationTest extends PHPUnit_Framework_TestCase
 
     public function formatObjectsDataProvider()
     {
-        return array(
-            array(
-                array(null),
-                ''
-            ),
-            array(
-                array('a string', 98768, array('a', 'nother', 'array')),
-                ''
-            ),
-        );
+        return [
+            [
+                [null],
+                '',
+            ],
+            [
+                ['a string', 98768, ['a', 'nother', 'array']],
+                '',
+            ],
+        ];
     }
 
     /** @test */
     public function format_objects_should_not_call_getters_with_params()
     {
-        $obj = new ClassWithGetterWithParam();
-        $string = Mockery::formatObjects(array($obj));
+        $obj = new ClassWithGetterWithParam;
+        $string = Mockery::formatObjects([$obj]);
 
         $this->assertNotContains('Missing argument 1 for', $string);
     }
 
-    public function testFormatObjectsExcludesStaticProperties()
+    public function test_format_objects_excludes_static_properties()
     {
-        $obj = new ClassWithPublicStaticProperty();
-        $string = Mockery::formatObjects(array($obj));
+        $obj = new ClassWithPublicStaticProperty;
+        $string = Mockery::formatObjects([$obj]);
 
         $this->assertNotContains('excludedProperty', $string);
     }
 
-    public function testFormatObjectsExcludesStaticGetters()
+    public function test_format_objects_excludes_static_getters()
     {
-        $obj = new ClassWithPublicStaticGetter();
-        $string = Mockery::formatObjects(array($obj));
+        $obj = new ClassWithPublicStaticGetter;
+        $string = Mockery::formatObjects([$obj]);
 
         $this->assertNotContains('getExcluded', $string);
     }
@@ -103,9 +102,7 @@ class ClassWithGetter
 
 class ClassWithGetterWithParam
 {
-    public function getBar($bar)
-    {
-    }
+    public function getBar($bar) {}
 }
 
 class ClassWithPublicStaticProperty
@@ -115,7 +112,5 @@ class ClassWithPublicStaticProperty
 
 class ClassWithPublicStaticGetter
 {
-    public static function getExcluded()
-    {
-    }
+    public static function getExcluded() {}
 }

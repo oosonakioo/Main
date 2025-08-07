@@ -6,22 +6,21 @@
  */
 class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
 {
-
     /**
      * @type string
      */
     public $name = 'Edit';
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
         $contents = 'Chameleon: #PCDATA | Inline ! #PCDATA | Flow';
-        $attr = array(
+        $attr = [
             'cite' => 'URI',
             // 'datetime' => 'Datetime', // not implemented
-        );
+        ];
         $this->addElement('del', 'Inline', $contents, 'Common', $attr);
         $this->addElement('ins', 'Inline', $contents, 'Common', $attr);
     }
@@ -39,7 +38,7 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
     public $defines_child_def = true;
 
     /**
-     * @param HTMLPurifier_ElementDef $def
+     * @param  HTMLPurifier_ElementDef  $def
      * @return HTMLPurifier_ChildDef_Chameleon
      */
     public function getChildDef($def)
@@ -48,6 +47,7 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
             return false;
         }
         $value = explode('!', $def->content_model);
+
         return new HTMLPurifier_ChildDef_Chameleon($value[0], $value[1]);
     }
 }

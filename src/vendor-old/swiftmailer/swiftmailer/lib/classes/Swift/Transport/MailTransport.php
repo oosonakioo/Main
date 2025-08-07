@@ -36,9 +36,6 @@ class Swift_Transport_MailTransport implements Swift_Transport
 
     /**
      * Create a new MailTransport with the $log.
-     *
-     * @param Swift_Transport_MailInvoker  $invoker
-     * @param Swift_Events_EventDispatcher $eventDispatcher
      */
     public function __construct(Swift_Transport_MailInvoker $invoker, Swift_Events_EventDispatcher $eventDispatcher)
     {
@@ -59,24 +56,19 @@ class Swift_Transport_MailTransport implements Swift_Transport
     /**
      * Not used.
      */
-    public function start()
-    {
-    }
+    public function start() {}
 
     /**
      * Not used.
      */
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     /**
      * Set the additional parameters used on the mail() function.
      *
      * This string is formatted for sprintf() where %s is the sender address.
      *
-     * @param string $params
-     *
+     * @param  string  $params
      * @return $this
      */
     public function setExtraParams($params)
@@ -104,9 +96,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
      * Recipient/sender data will be retrieved from the Message API.
      * The return value is the number of recipients who were accepted for delivery.
      *
-     * @param Swift_Mime_Message $message
-     * @param string[]           $failedRecipients An array of failures by-reference
-     *
+     * @param  string[]  $failedRecipients  An array of failures by-reference
      * @return int
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
@@ -124,12 +114,12 @@ class Swift_Transport_MailTransport implements Swift_Transport
             count((array) $message->getTo())
             + count((array) $message->getCc())
             + count((array) $message->getBcc())
-            );
+        );
 
         $toHeader = $message->getHeaders()->get('To');
         $subjectHeader = $message->getHeaders()->get('Subject');
 
-        if (0 === $count) {
+        if ($count === 0) {
             $this->_throwException(new Swift_TransportException('Cannot send message without a recipient'));
         }
         $to = $toHeader ? $toHeader->getFieldBody() : '';
@@ -150,7 +140,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
 
         // Separate headers from body
         if (false !== $endHeaders = strpos($messageStr, "\r\n\r\n")) {
-            $headers = substr($messageStr, 0, $endHeaders)."\r\n"; //Keep last EOL
+            $headers = substr($messageStr, 0, $endHeaders)."\r\n"; // Keep last EOL
             $body = substr($messageStr, $endHeaders + 4);
         } else {
             $headers = $messageStr."\r\n";
@@ -185,7 +175,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
                 array_keys((array) $message->getTo()),
                 array_keys((array) $message->getCc()),
                 array_keys((array) $message->getBcc())
-                );
+            );
 
             if ($evt) {
                 $evt->setResult(Swift_Events_SendEvent::RESULT_FAILED);
@@ -203,8 +193,6 @@ class Swift_Transport_MailTransport implements Swift_Transport
 
     /**
      * Register a plugin.
-     *
-     * @param Swift_Events_EventListener $plugin
      */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {
@@ -216,7 +204,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
     {
         if ($evt = $this->_eventDispatcher->createTransportExceptionEvent($this, $e)) {
             $this->_eventDispatcher->dispatchEvent($evt, 'exceptionThrown');
-            if (!$evt->bubbleCancelled()) {
+            if (! $evt->bubbleCancelled()) {
                 throw $e;
             }
         } else {
@@ -231,12 +219,12 @@ class Swift_Transport_MailTransport implements Swift_Transport
         $sender = $message->getSender();
         $from = $message->getFrom();
         $path = null;
-        if (!empty($return)) {
+        if (! empty($return)) {
             $path = $return;
-        } elseif (!empty($sender)) {
+        } elseif (! empty($sender)) {
             $keys = array_keys($sender);
             $path = array_shift($keys);
-        } elseif (!empty($from)) {
+        } elseif (! empty($from)) {
             $keys = array_keys($from);
             $path = array_shift($keys);
         }
@@ -249,24 +237,23 @@ class Swift_Transport_MailTransport implements Swift_Transport
      *
      * Note that escapeshellarg and escapeshellcmd are inadequate for our purposes, especially on Windows.
      *
-     * @param string $string The string to be validated
-     *
+     * @param  string  $string  The string to be validated
      * @return bool
      */
     private function _isShellSafe($string)
     {
         // Future-proof
-        if (escapeshellcmd($string) !== $string || !in_array(escapeshellarg($string), array("'$string'", "\"$string\""))) {
+        if (escapeshellcmd($string) !== $string || ! in_array(escapeshellarg($string), ["'$string'", "\"$string\""])) {
             return false;
         }
 
         $length = strlen($string);
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < $length; $i++) {
             $c = $string[$i];
             // All other characters have a special meaning in at least one common shell, including = and +.
             // Full stop (.) has a special meaning in cmd.exe, but its impact should be negligible here.
             // Note that this does permit non-Latin alphanumeric characters based on the current locale.
-            if (!ctype_alnum($c) && strpos('@_-.', $c) === false) {
+            if (! ctype_alnum($c) && strpos('@_-.', $c) === false) {
                 return false;
             }
         }
@@ -277,21 +264,19 @@ class Swift_Transport_MailTransport implements Swift_Transport
     /**
      * Return php mail extra params to use for invoker->mail.
      *
-     * @param $extraParams
-     * @param $reversePath
      *
      * @return string|null
      */
     private function _formatExtraParams($extraParams, $reversePath)
     {
-        if (false !== strpos($extraParams, '-f%s')) {
-            if (empty($reversePath) || false === $this->_isShellSafe($reversePath)) {
+        if (strpos($extraParams, '-f%s') !== false) {
+            if (empty($reversePath) || $this->_isShellSafe($reversePath) === false) {
                 $extraParams = str_replace('-f%s', '', $extraParams);
             } else {
                 $extraParams = sprintf($extraParams, $reversePath);
             }
         }
 
-        return !empty($extraParams) ? $extraParams : null;
+        return ! empty($extraParams) ? $extraParams : null;
     }
 }

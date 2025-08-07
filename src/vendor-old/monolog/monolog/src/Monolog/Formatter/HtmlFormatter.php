@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Monolog package.
  *
@@ -24,19 +25,19 @@ class HtmlFormatter extends NormalizerFormatter
     /**
      * Translates Monolog log levels to html color priorities.
      */
-    protected $logLevels = array(
-        Logger::DEBUG     => '#cccccc',
-        Logger::INFO      => '#468847',
-        Logger::NOTICE    => '#3a87ad',
-        Logger::WARNING   => '#c09853',
-        Logger::ERROR     => '#f0ad4e',
-        Logger::CRITICAL  => '#FF7708',
-        Logger::ALERT     => '#C12A19',
+    protected $logLevels = [
+        Logger::DEBUG => '#cccccc',
+        Logger::INFO => '#468847',
+        Logger::NOTICE => '#3a87ad',
+        Logger::WARNING => '#c09853',
+        Logger::ERROR => '#f0ad4e',
+        Logger::CRITICAL => '#FF7708',
+        Logger::ALERT => '#C12A19',
         Logger::EMERGENCY => '#000000',
-    );
+    ];
 
     /**
-     * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
+     * @param  string  $dateFormat  The format of the timestamp: one supported by DateTime::format
      */
     public function __construct($dateFormat = null)
     {
@@ -46,9 +47,9 @@ class HtmlFormatter extends NormalizerFormatter
     /**
      * Creates an HTML table row
      *
-     * @param  string $th       Row header content
-     * @param  string $td       Row standard cell content
-     * @param  bool   $escapeTd false if td content must not be html escaped
+     * @param  string  $th  Row header content
+     * @param  string  $td  Row standard cell content
+     * @param  bool  $escapeTd  false if td content must not be html escaped
      * @return string
      */
     protected function addRow($th, $td = ' ', $escapeTd = true)
@@ -64,8 +65,8 @@ class HtmlFormatter extends NormalizerFormatter
     /**
      * Create a HTML h1 tag
      *
-     * @param  string $title Text to be in the h1
-     * @param  int    $level Error level
+     * @param  string  $title  Text to be in the h1
+     * @param  int  $level  Error level
      * @return string
      */
     protected function addTitle($title, $level)
@@ -78,7 +79,7 @@ class HtmlFormatter extends NormalizerFormatter
     /**
      * Formats a log record.
      *
-     * @param  array $record A record to format
+     * @param  array  $record  A record to format
      * @return mixed The formatted record
      */
     public function format(array $record)
@@ -112,7 +113,7 @@ class HtmlFormatter extends NormalizerFormatter
     /**
      * Formats a set of log records.
      *
-     * @param  array $records A set of records to format
+     * @param  array  $records  A set of records to format
      * @return mixed The formatted set of records
      */
     public function formatBatch(array $records)
@@ -127,7 +128,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     protected function convertToString($data)
     {
-        if (null === $data || is_scalar($data)) {
+        if ($data === null || is_scalar($data)) {
             return (string) $data;
         }
 

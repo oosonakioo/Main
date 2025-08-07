@@ -29,8 +29,8 @@ class NamespacedAttributeBag extends AttributeBag
     /**
      * Constructor.
      *
-     * @param string $storageKey         Session storage key
-     * @param string $namespaceCharacter Namespace character to use in keys
+     * @param  string  $storageKey  Session storage key
+     * @param  string  $namespaceCharacter  Namespace character to use in keys
      */
     public function __construct($storageKey = '_sf2_attributes', $namespaceCharacter = '/')
     {
@@ -47,7 +47,7 @@ class NamespacedAttributeBag extends AttributeBag
         $attributes = $this->resolveAttributePath($name);
         $name = $this->resolveKey($name);
 
-        if (null === $attributes) {
+        if ($attributes === null) {
             return false;
         }
 
@@ -63,7 +63,7 @@ class NamespacedAttributeBag extends AttributeBag
         $attributes = $this->resolveAttributePath($name);
         $name = $this->resolveKey($name);
 
-        if (null === $attributes) {
+        if ($attributes === null) {
             return $default;
         }
 
@@ -88,7 +88,7 @@ class NamespacedAttributeBag extends AttributeBag
         $retval = null;
         $attributes = &$this->resolveAttributePath($name);
         $name = $this->resolveKey($name);
-        if (null !== $attributes && array_key_exists($name, $attributes)) {
+        if ($attributes !== null && array_key_exists($name, $attributes)) {
             $retval = $attributes[$name];
             unset($attributes[$name]);
         }
@@ -101,9 +101,8 @@ class NamespacedAttributeBag extends AttributeBag
      *
      * This method allows structured namespacing of session attributes.
      *
-     * @param string $name         Key name
-     * @param bool   $writeContext Write context, default false
-     *
+     * @param  string  $name  Key name
+     * @param  bool  $writeContext  Write context, default false
      * @return array
      */
     protected function &resolveAttributePath($name, $writeContext = false)
@@ -112,17 +111,17 @@ class NamespacedAttributeBag extends AttributeBag
         $name = (strpos($name, $this->namespaceCharacter) === 0) ? substr($name, 1) : $name;
 
         // Check if there is anything to do, else return
-        if (!$name) {
+        if (! $name) {
             return $array;
         }
 
         $parts = explode($this->namespaceCharacter, $name);
         if (count($parts) < 2) {
-            if (!$writeContext) {
+            if (! $writeContext) {
                 return $array;
             }
 
-            $array[$parts[0]] = array();
+            $array[$parts[0]] = [];
 
             return $array;
         }
@@ -130,8 +129,8 @@ class NamespacedAttributeBag extends AttributeBag
         unset($parts[count($parts) - 1]);
 
         foreach ($parts as $part) {
-            if (null !== $array && !array_key_exists($part, $array)) {
-                $array[$part] = $writeContext ? array() : null;
+            if ($array !== null && ! array_key_exists($part, $array)) {
+                $array[$part] = $writeContext ? [] : null;
             }
 
             $array = &$array[$part];
@@ -145,8 +144,7 @@ class NamespacedAttributeBag extends AttributeBag
      *
      * This is the last part in a dot separated string.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function resolveKey($name)

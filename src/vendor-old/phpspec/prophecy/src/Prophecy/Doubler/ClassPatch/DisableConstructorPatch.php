@@ -25,7 +25,6 @@ class DisableConstructorPatch implements ClassPatchInterface
     /**
      * Checks if class has `__construct` method.
      *
-     * @param ClassNode $node
      *
      * @return bool
      */
@@ -36,12 +35,10 @@ class DisableConstructorPatch implements ClassPatchInterface
 
     /**
      * Makes all class constructor arguments optional.
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {
-        if (!$node->hasMethod('__construct')) {
+        if (! $node->hasMethod('__construct')) {
             $node->addMethod(new MethodNode('__construct', ''));
 
             return;
@@ -52,7 +49,7 @@ class DisableConstructorPatch implements ClassPatchInterface
             $argument->setDefault(null);
         }
 
-        $constructor->setCode(<<<PHP
+        $constructor->setCode(<<<'PHP'
 if (0 < func_num_args()) {
     call_user_func_array(array('parent', '__construct'), func_get_args());
 }

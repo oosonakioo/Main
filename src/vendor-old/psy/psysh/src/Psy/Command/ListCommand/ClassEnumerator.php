@@ -21,7 +21,7 @@ class ClassEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list classes when no Reflector is present.
         //
@@ -36,7 +36,7 @@ class ClassEnumerator extends Enumerator
         }
 
         // only list classes if we are specifically asked
-        if (!$input->getOption('classes')) {
+        if (! $input->getOption('classes')) {
             return;
         }
 
@@ -46,16 +46,15 @@ class ClassEnumerator extends Enumerator
             return;
         }
 
-        return array(
+        return [
             'Classes' => $classes,
-        );
+        ];
     }
 
     /**
      * Prepare formatted class array.
      *
-     * @param array $class
-     *
+     * @param  array  $class
      * @return array
      */
     protected function prepareClasses(array $classes)
@@ -63,15 +62,15 @@ class ClassEnumerator extends Enumerator
         natcasesort($classes);
 
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         foreach ($classes as $name) {
             if ($this->showItem($name)) {
-                $ret[$name] = array(
-                    'name'  => $name,
+                $ret[$name] = [
+                    'name' => $name,
                     'style' => self::IS_CLASS,
                     'value' => $this->presentSignature($name),
-                );
+                ];
             }
         }
 

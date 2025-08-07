@@ -1,14 +1,15 @@
 <?php
-$loader = require_once __DIR__ . '/vendor/autoload.php';
 
-$consoleColor = new JakubOnderka\PhpConsoleColor\ConsoleColor();
+$loader = require_once __DIR__.'/vendor/autoload.php';
 
-echo "Colors are supported: " . ($consoleColor->isSupported() ? 'Yes' : 'No') . "\n";
-echo "256 colors are supported: " . ($consoleColor->are256ColorsSupported() ? 'Yes' : 'No') . "\n\n";
+$consoleColor = new JakubOnderka\PhpConsoleColor\ConsoleColor;
+
+echo 'Colors are supported: '.($consoleColor->isSupported() ? 'Yes' : 'No')."\n";
+echo '256 colors are supported: '.($consoleColor->are256ColorsSupported() ? 'Yes' : 'No')."\n\n";
 
 if ($consoleColor->isSupported()) {
     foreach ($consoleColor->getPossibleStyles() as $style) {
-        echo $consoleColor->apply($style, $style) . "\n";
+        echo $consoleColor->apply($style, $style)."\n";
     }
 }
 

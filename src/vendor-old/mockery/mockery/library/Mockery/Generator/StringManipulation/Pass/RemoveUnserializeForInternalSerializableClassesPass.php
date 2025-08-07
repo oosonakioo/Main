@@ -18,11 +18,11 @@ class RemoveUnserializeForInternalSerializableClassesPass
     {
         $target = $config->getTargetClass();
 
-        if (!$target) {
+        if (! $target) {
             return $code;
         }
 
-        if (!$target->hasInternalAncestor() || !$target->implementsInterface("Serializable")) {
+        if (! $target->hasInternalAncestor() || ! $target->implementsInterface('Serializable')) {
             return $code;
         }
 
@@ -33,8 +33,9 @@ class RemoveUnserializeForInternalSerializableClassesPass
 
     protected function appendToClass($class, $code)
     {
-        $lastBrace = strrpos($class, "}");
-        $class = substr($class, 0, $lastBrace) . $code . "\n    }\n";
+        $lastBrace = strrpos($class, '}');
+        $class = substr($class, 0, $lastBrace).$code."\n    }\n";
+
         return $class;
     }
 }

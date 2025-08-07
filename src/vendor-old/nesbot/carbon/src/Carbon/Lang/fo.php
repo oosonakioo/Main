@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '1 ár|:count ár',
     'y' => '1 ár|:count ár',
     'month' => '1 mánaður|:count mánaðir',
@@ -28,4 +28,4 @@ return array(
     'from_now' => 'um :time',
     'after' => ':time aftaná',
     'before' => ':time áðrenn',
-);
+];

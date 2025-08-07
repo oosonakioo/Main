@@ -1,16 +1,15 @@
 <?php
 
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Debug\Dumper;
-use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Str;
 
 if (! function_exists('append_config')) {
     /**
      * Assign high numeric IDs to a config item to force appending.
      *
-     * @param  array  $array
      * @return array
      */
     function append_config(array $array)
@@ -33,9 +32,9 @@ if (! function_exists('array_add')) {
     /**
      * Add an element to an array using "dot" notation if it doesn't exist.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return array
      */
     function array_add($array, $key, $value)
@@ -49,7 +48,6 @@ if (! function_exists('array_build')) {
      * Build a new array using a callback.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      *
      * @deprecated since version 5.2.
@@ -90,7 +88,7 @@ if (! function_exists('array_dot')) {
     /**
      * Flatten a multi-dimensional associative array with dots.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $prepend
      * @return array
      */
@@ -119,11 +117,10 @@ if (! function_exists('array_first')) {
      * Return the first element in an array passing a given truth test.
      *
      * @param  array  $array
-     * @param  callable|null  $callback
      * @param  mixed  $default
      * @return mixed
      */
-    function array_first($array, callable $callback = null, $default = null)
+    function array_first($array, ?callable $callback = null, $default = null)
     {
         return Arr::first($array, $callback, $default);
     }
@@ -163,7 +160,7 @@ if (! function_exists('array_get')) {
      *
      * @param  \ArrayAccess|array  $array
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     function array_get($array, $key, $default = null)
@@ -191,11 +188,10 @@ if (! function_exists('array_last')) {
      * Return the last element in an array passing a given truth test.
      *
      * @param  array  $array
-     * @param  callable|null  $callback
      * @param  mixed  $default
      * @return mixed
      */
-    function array_last($array, callable $callback = null, $default = null)
+    function array_last($array, ?callable $callback = null, $default = null)
     {
         return Arr::last($array, $callback, $default);
     }
@@ -219,7 +215,7 @@ if (! function_exists('array_pluck')) {
     /**
      * Pluck an array of values from an array.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string|array  $value
      * @param  string|array|null  $key
      * @return array
@@ -249,9 +245,9 @@ if (! function_exists('array_pull')) {
     /**
      * Get a value from the array, and remove it.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     function array_pull(&$array, $key, $default = null)
@@ -266,9 +262,9 @@ if (! function_exists('array_set')) {
      *
      * If no key is given to the method, the entire array will be replaced.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return array
      */
     function array_set(&$array, $key, $value)
@@ -282,7 +278,6 @@ if (! function_exists('array_sort')) {
      * Sort the array using the given callback.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      */
     function array_sort($array, callable $callback)
@@ -309,7 +304,6 @@ if (! function_exists('array_where')) {
      * Filter the array using the given callback.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      */
     function array_where($array, callable $callback)
@@ -382,7 +376,7 @@ if (! function_exists('data_fill')) {
     /**
      * Fill in data where it's missing.
      *
-     * @param  mixed   $target
+     * @param  mixed  $target
      * @param  string|array  $key
      * @param  mixed  $value
      * @return mixed
@@ -397,9 +391,9 @@ if (! function_exists('data_get')) {
     /**
      * Get an item from an array or object using "dot" notation.
      *
-     * @param  mixed   $target
+     * @param  mixed  $target
      * @param  string|array  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     function data_get($target, $key, $default = null)
@@ -511,7 +505,7 @@ if (! function_exists('dd')) {
             (new Dumper)->dump($x);
         }, func_get_args());
 
-        die(1);
+        exit(1);
     }
 }
 
@@ -578,7 +572,7 @@ if (! function_exists('object_get')) {
      *
      * @param  object  $object
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     function object_get($object, $key, $default = null)
@@ -604,7 +598,7 @@ if (! function_exists('preg_replace_sub')) {
      * Replace a given pattern with each value in the array in sequentially.
      *
      * @param  string  $pattern
-     * @param  array   $replacements
+     * @param  array  $replacements
      * @param  string  $subject
      * @return string
      */
@@ -693,7 +687,7 @@ if (! function_exists('str_limit')) {
      * Limit the number of characters in a string.
      *
      * @param  string  $value
-     * @param  int     $limit
+     * @param  int  $limit
      * @param  string  $end
      * @return string
      */
@@ -708,7 +702,7 @@ if (! function_exists('str_plural')) {
      * Get the plural form of an English word.
      *
      * @param  string  $value
-     * @param  int     $count
+     * @param  int  $count
      * @return string
      */
     function str_plural($value, $count = 2)
@@ -737,7 +731,6 @@ if (! function_exists('str_replace_array')) {
      * Replace a given value in the string sequentially with an array.
      *
      * @param  string  $search
-     * @param  array   $replace
      * @param  string  $subject
      * @return string
      */

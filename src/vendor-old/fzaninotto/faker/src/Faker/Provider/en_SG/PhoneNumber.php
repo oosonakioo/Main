@@ -2,20 +2,18 @@
 
 namespace Faker\Provider\en_SG;
 
-use Faker\Factory;
-
 class PhoneNumber extends \Faker\Provider\PhoneNumber
 {
-    protected static $internationalCodePrefix = array(
+    protected static $internationalCodePrefix = [
         '+65',
         '65',
-    );
+    ];
 
-    protected static $zeroToEight = array(0, 1, 2, 3, 4, 5, 6, 7, 8);
+    protected static $zeroToEight = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-    protected static $oneToNine = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    protected static $oneToNine = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-    protected static $mobileNumberFormats = array(
+    protected static $mobileNumberFormats = [
         '{{internationalCodePrefix}}9{{zeroToEight}}## ####',
         '{{internationalCodePrefix}} 9{{zeroToEight}}## ####',
         '9{{zeroToEight}}## ####',
@@ -25,37 +23,37 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
         '{{internationalCodePrefix}}7{{oneToNine}}## ####',
         '{{internationalCodePrefix}} 7{{oneToNine}}## ####',
         '7{{oneToNine}}## ####',
-    );
+    ];
 
-    protected static $fixedLineNumberFormats = array(
+    protected static $fixedLineNumberFormats = [
         '{{internationalCodePrefix}}6### ####',
         '{{internationalCodePrefix}} 6### ####',
         '6### ####',
-    );
+    ];
 
     // http://en.wikipedia.org/wiki/Telephone_numbers_in_Singapore#Numbering_plan
-    protected static $formats = array(
+    protected static $formats = [
         '{{mobileNumber}}',
         '{{fixedLineNumber}}',
-    );
+    ];
 
-    protected static $voipNumber = array(
+    protected static $voipNumber = [
         '{{internationalCodePrefix}}3### ####',
         '{{internationalCodePrefix}} 3### ####',
         '3### ####',
-    );
+    ];
 
-    protected static $tollFreeInternationalNumber = array(
-        '800 ### ####'
-    );
+    protected static $tollFreeInternationalNumber = [
+        '800 ### ####',
+    ];
 
-    protected static $tollFreeLineNumber = array(
-        '1800 ### ####'
-    );
+    protected static $tollFreeLineNumber = [
+        '1800 ### ####',
+    ];
 
-    protected static $premiumPhoneNumber = array(
-        '1900 ### ####'
-    );
+    protected static $premiumPhoneNumber = [
+        '1900 ### ####',
+    ];
 
     public function tollFreeInternationalNumber()
     {

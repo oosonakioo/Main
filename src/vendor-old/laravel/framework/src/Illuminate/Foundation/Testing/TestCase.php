@@ -7,13 +7,13 @@ use PHPUnit_Framework_TestCase;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-    use Concerns\InteractsWithContainer,
-        Concerns\MakesHttpRequests,
-        Concerns\ImpersonatesUsers,
+    use Concerns\ImpersonatesUsers,
         Concerns\InteractsWithAuthentication,
         Concerns\InteractsWithConsole,
+        Concerns\InteractsWithContainer,
         Concerns\InteractsWithDatabase,
         Concerns\InteractsWithSession,
+        Concerns\MakesHttpRequests,
         Concerns\MocksApplicationServices;
 
     /**
@@ -145,7 +145,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     /**
      * Register a callback to be run after the application is created.
      *
-     * @param  callable  $callback
      * @return void
      */
     protected function afterApplicationCreated(callable $callback)
@@ -160,7 +159,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     /**
      * Register a callback to be run before the application is destroyed.
      *
-     * @param  callable  $callback
      * @return void
      */
     protected function beforeApplicationDestroyed(callable $callback)

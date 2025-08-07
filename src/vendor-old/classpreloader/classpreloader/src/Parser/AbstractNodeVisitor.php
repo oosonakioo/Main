@@ -31,8 +31,7 @@ abstract class AbstractNodeVisitor extends NodeVisitorAbstract
     /**
      * Set the full path to the current file being parsed.
      *
-     * @param string $filename
-     *
+     * @param  string  $filename
      * @return \ClassPreloader\Parser\AbstractNodeVisitor
      */
     public function setFilename($filename)

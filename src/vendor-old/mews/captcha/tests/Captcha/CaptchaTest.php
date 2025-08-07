@@ -2,11 +2,9 @@
 
 namespace Mews\Tests\Captcha;
 
-use Mockery;
-
 class CaptchaTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstructor()
+    public function test_constructor()
     {
         $this->assertTrue(true);
     }

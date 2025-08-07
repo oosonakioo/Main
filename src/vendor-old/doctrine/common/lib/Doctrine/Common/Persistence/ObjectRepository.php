@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Persistence;
  *
  * @link   www.doctrine-project.org
  * @since  2.1
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Jonathan Wage <jonwage@gmail.com>
  */
@@ -32,8 +34,7 @@ interface ObjectRepository
     /**
      * Finds an object by its primary key / identifier.
      *
-     * @param mixed $id The identifier.
-     *
+     * @param  mixed  $id  The identifier.
      * @return object The object.
      */
     public function find($id);
@@ -52,22 +53,18 @@ interface ObjectRepository
      * an UnexpectedValueException if certain values of the sorting or limiting details are
      * not supported.
      *
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     *
+     * @param  int|null  $limit
+     * @param  int|null  $offset
      * @return array The objects.
      *
      * @throws \UnexpectedValueException
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null);
 
     /**
      * Finds a single object by a set of criteria.
      *
-     * @param array $criteria The criteria.
-     *
+     * @param  array  $criteria  The criteria.
      * @return object The object.
      */
     public function findOneBy(array $criteria);

@@ -13,18 +13,16 @@ class ExifCommand extends BaseCommand
      */
     private $preferExtension = true;
 
-    /**
-     *
-     */
-    public function dontPreferExtension() {
+    public function dontPreferExtension()
+    {
         $this->preferExtension = false;
     }
 
     /**
      * Read Exif data from the given image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -34,15 +32,16 @@ class ExifCommand extends BaseCommand
 
         $core = $image->getCore();
 
-        if ( ! method_exists($core, 'getImageProperties')) {
+        if (! method_exists($core, 'getImageProperties')) {
             throw new \Intervention\Image\Exception\NotSupportedException(
-                "Reading Exif data is not supported by this PHP installation."
+                'Reading Exif data is not supported by this PHP installation.'
             );
         }
 
         $requestedKey = $this->argument(0)->value();
         if ($requestedKey !== null) {
-            $this->setOutput($core->getImageProperty('exif:' . $requestedKey));
+            $this->setOutput($core->getImageProperty('exif:'.$requestedKey));
+
             return true;
         }
 
@@ -57,6 +56,7 @@ class ExifCommand extends BaseCommand
         }
 
         $this->setOutput($exif);
+
         return true;
     }
 }

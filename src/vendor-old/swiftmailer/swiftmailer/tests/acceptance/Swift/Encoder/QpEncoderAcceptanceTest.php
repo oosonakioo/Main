@@ -3,15 +3,16 @@
 class Swift_Encoder_QpEncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
 {
     private $_samplesDir;
+
     private $_factory;
 
     protected function setUp()
     {
         $this->_samplesDir = realpath(__DIR__.'/../../../_samples/charsets');
-        $this->_factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory();
+        $this->_factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory;
     }
 
-    public function testEncodingAndDecodingSamples()
+    public function test_encoding_and_decoding_samples()
     {
         $sampleFp = opendir($this->_samplesDir);
         while (false !== $encodingDir = readdir($sampleFp)) {
@@ -44,7 +45,7 @@ class Swift_Encoder_QpEncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
                         quoted_printable_decode($encodedText), $text,
                         '%s: Encoded string should decode back to original string for sample '.
                         $sampleDir.'/'.$sampleFile
-                        );
+                    );
                 }
                 closedir($fileFp);
             }

@@ -4,8 +4,8 @@ namespace Illuminate\Console;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class Parser
 {
@@ -45,7 +45,6 @@ class Parser
     /**
      * Extract all of the parameters from the tokens.
      *
-     * @param  array  $tokens
      * @return array
      */
     protected static function parameters(array $tokens)
@@ -76,7 +75,7 @@ class Parser
         $description = null;
 
         if (Str::contains($token, ' : ')) {
-            list($token, $description) = explode(' : ', $token, 2);
+            [$token, $description] = explode(' : ', $token, 2);
 
             $token = trim($token);
 
@@ -108,7 +107,7 @@ class Parser
         $description = null;
 
         if (Str::contains($token, ' : ')) {
-            list($token, $description) = explode(' : ', $token);
+            [$token, $description] = explode(' : ', $token);
             $token = trim($token);
             $description = trim($description);
         }

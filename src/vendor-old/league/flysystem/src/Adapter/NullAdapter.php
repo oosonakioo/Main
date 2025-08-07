@@ -8,14 +8,13 @@ use League\Flysystem\Config;
 
 class NullAdapter extends AbstractAdapter
 {
-    use StreamedTrait;
     use StreamedCopyTrait;
+    use StreamedTrait;
 
     /**
      * Check whether a file is present.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return bool
      */
     public function has($path)
@@ -24,7 +23,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write($path, $contents, Config $config)
     {
@@ -39,7 +38,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function update($path, $contents, Config $config)
     {
@@ -47,7 +46,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function read($path)
     {
@@ -55,7 +54,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rename($path, $newpath)
     {
@@ -63,7 +62,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function delete($path)
     {
@@ -71,7 +70,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function listContents($directory = '', $recursive = false)
     {
@@ -79,7 +78,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMetadata($path)
     {
@@ -87,7 +86,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSize($path)
     {
@@ -95,7 +94,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMimetype($path)
     {
@@ -103,7 +102,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTimestamp($path)
     {
@@ -111,7 +110,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVisibility($path)
     {
@@ -119,7 +118,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setVisibility($path, $visibility)
     {
@@ -127,7 +126,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createDir($dirname, Config $config)
     {
@@ -135,7 +134,7 @@ class NullAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteDir($dirname)
     {

@@ -25,16 +25,13 @@ class SqsJob extends Job implements JobContract
     /**
      * Create a new job instance.
      *
-     * @param  \Illuminate\Container\Container  $container
-     * @param  \Aws\Sqs\SqsClient  $sqs
      * @param  string  $queue
-     * @param  array   $job
      * @return void
      */
     public function __construct(Container $container,
-                                SqsClient $sqs,
-                                $queue,
-                                array $job)
+        SqsClient $sqs,
+        $queue,
+        array $job)
     {
         $this->sqs = $sqs;
         $this->job = $job;
@@ -81,7 +78,7 @@ class SqsJob extends Job implements JobContract
     /**
      * Release the job back into the queue.
      *
-     * @param  int   $delay
+     * @param  int  $delay
      * @return void
      */
     public function release($delay = 0)

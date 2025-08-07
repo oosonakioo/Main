@@ -1,4 +1,5 @@
 <?php
+
 namespace Hamcrest;
 
 /*
@@ -13,12 +14,10 @@ namespace Hamcrest;
  */
 interface Description
 {
-
     /**
      * Appends some plain text to the description.
      *
-     * @param string $text
-     *
+     * @param  string  $text
      * @return \Hamcrest\Description
      */
     public function appendText($text);
@@ -27,7 +26,6 @@ interface Description
      * Appends the description of a {@link Hamcrest\SelfDescribing} value to
      * this description.
      *
-     * @param \Hamcrest\SelfDescribing $value
      *
      * @return \Hamcrest\Description
      */
@@ -36,8 +34,7 @@ interface Description
     /**
      * Appends an arbitary value to the description.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return \Hamcrest\Description
      */
     public function appendValue($value);
@@ -45,11 +42,10 @@ interface Description
     /**
      * Appends a list of values to the description.
      *
-     * @param string $start
-     * @param string $separator
-     * @param string $end
-     * @param array|\IteratorAggregate|\Iterator $values
-     *
+     * @param  string  $start
+     * @param  string  $separator
+     * @param  string  $end
+     * @param  array|\IteratorAggregate|\Iterator  $values
      * @return \Hamcrest\Description
      */
     public function appendValueList($start, $separator, $end, $values);
@@ -58,12 +54,11 @@ interface Description
      * Appends a list of {@link Hamcrest\SelfDescribing} objects to the
      * description.
      *
-     * @param string $start
-     * @param string $separator
-     * @param string $end
+     * @param  string  $start
+     * @param  string  $separator
+     * @param  string  $end
      * @param array|\\IteratorAggregate|\\Iterator $values
      *   must be instances of {@link Hamcrest\SelfDescribing}
-     *
      * @return \Hamcrest\Description
      */
     public function appendList($start, $separator, $end, $values);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -14,6 +15,4 @@
  *
  * @since Class available since Release 4.0.0
  */
-class PHPUnit_Framework_InvalidCoversTargetError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest
-{
-}
+class PHPUnit_Framework_InvalidCoversTargetError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest {}

@@ -21,8 +21,8 @@ class TypeErrorException extends \Exception implements Exception
     /**
      * Constructor!
      *
-     * @param string $message (default: "")
-     * @param int    $code    (default: 0)
+     * @param  string  $message  (default: "")
+     * @param  int  $code  (default: 0)
      */
     public function __construct($message = '', $code = 0)
     {
@@ -44,7 +44,6 @@ class TypeErrorException extends \Exception implements Exception
     /**
      * Create a TypeErrorException from a TypeError.
      *
-     * @param \TypeError $e
      *
      * @return TypeErrorException
      */

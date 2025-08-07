@@ -11,21 +11,24 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * Almost all examples (expected header, titles, messages) taken from
  * https://www.pushover.net/api
+ *
  * @author Sebastian Göttschkes <sebastian.goettschkes@googlemail.com>
+ *
  * @see https://www.pushover.net/api
  */
 class PushoverHandlerTest extends TestCase
 {
     private $res;
+
     private $handler;
 
-    public function testWriteHeader()
+    public function test_write_header()
     {
         $this->createHandler();
         $this->handler->setHighPriorityLevel(Logger::EMERGENCY); // skip priority notifications
@@ -39,14 +42,14 @@ class PushoverHandlerTest extends TestCase
     }
 
     /**
-     * @depends testWriteHeader
+     * @depends test_write_header
      */
-    public function testWriteContent($content)
+    public function test_write_content($content)
     {
         $this->assertRegexp('/token=myToken&user=myUser&message=test1&title=Monolog&timestamp=\d{10}$/', $content);
     }
 
-    public function testWriteWithComplexTitle()
+    public function test_write_with_complex_title()
     {
         $this->createHandler('myToken', 'myUser', 'Backup finished - SQL1');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -56,7 +59,7 @@ class PushoverHandlerTest extends TestCase
         $this->assertRegexp('/title=Backup\+finished\+-\+SQL1/', $content);
     }
 
-    public function testWriteWithComplexMessage()
+    public function test_write_with_complex_message()
     {
         $this->createHandler();
         $this->handler->setHighPriorityLevel(Logger::EMERGENCY); // skip priority notifications
@@ -67,7 +70,7 @@ class PushoverHandlerTest extends TestCase
         $this->assertRegexp('/message=Backup\+of\+database\+%22example%22\+finished\+in\+16\+minutes\./', $content);
     }
 
-    public function testWriteWithTooLongMessage()
+    public function test_write_with_too_long_message()
     {
         $message = str_pad('test', 520, 'a');
         $this->createHandler();
@@ -78,10 +81,10 @@ class PushoverHandlerTest extends TestCase
 
         $expectedMessage = substr($message, 0, 505);
 
-        $this->assertRegexp('/message=' . $expectedMessage . '&title/', $content);
+        $this->assertRegexp('/message='.$expectedMessage.'&title/', $content);
     }
 
-    public function testWriteWithHighPriority()
+    public function test_write_with_high_priority()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -91,7 +94,7 @@ class PushoverHandlerTest extends TestCase
         $this->assertRegexp('/token=myToken&user=myUser&message=test1&title=Monolog&timestamp=\d{10}&priority=1$/', $content);
     }
 
-    public function testWriteWithEmergencyPriority()
+    public function test_write_with_emergency_priority()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::EMERGENCY, 'test1'));
@@ -101,9 +104,9 @@ class PushoverHandlerTest extends TestCase
         $this->assertRegexp('/token=myToken&user=myUser&message=test1&title=Monolog&timestamp=\d{10}&priority=2&retry=30&expire=25200$/', $content);
     }
 
-    public function testWriteToMultipleUsers()
+    public function test_write_to_multiple_users()
     {
-        $this->createHandler('myToken', array('userA', 'userB'));
+        $this->createHandler('myToken', ['userA', 'userB']);
         $this->handler->handle($this->getRecord(Logger::EMERGENCY, 'test1'));
         fseek($this->res, 0);
         $content = fread($this->res, 1024);
@@ -114,11 +117,11 @@ class PushoverHandlerTest extends TestCase
 
     private function createHandler($token = 'myToken', $user = 'myUser', $title = 'Monolog')
     {
-        $constructorArgs = array($token, $user, $title);
+        $constructorArgs = [$token, $user, $title];
         $this->res = fopen('php://memory', 'a');
         $this->handler = $this->getMock(
             '\Monolog\Handler\PushoverHandler',
-            array('fsockopen', 'streamSetTimeout', 'closeSocket'),
+            ['fsockopen', 'streamSetTimeout', 'closeSocket'],
             $constructorArgs
         );
 

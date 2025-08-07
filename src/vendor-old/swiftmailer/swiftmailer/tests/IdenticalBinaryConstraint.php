@@ -18,8 +18,7 @@ class IdenticalBinaryConstraint extends \PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     *
+     * @param  mixed  $other  Value or object to evaluate.
      * @return bool
      */
     public function matches($other)
@@ -43,8 +42,7 @@ class IdenticalBinaryConstraint extends \PHPUnit_Framework_Constraint
     /**
      * Get the given string of bytes as a stirng of Hexadecimal sequences.
      *
-     * @param string $binary
-     *
+     * @param  string  $binary
      * @return string
      */
     private function asHexString($binary)

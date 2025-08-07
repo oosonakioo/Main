@@ -10,7 +10,7 @@ class ClassPass implements Pass
     {
         $target = $config->getTargetClass();
 
-        if (!$target) {
+        if (! $target) {
             return $code;
         }
 
@@ -18,30 +18,30 @@ class ClassPass implements Pass
             return $code;
         }
 
-        $className = ltrim($target->getName(), "\\");
-        if (!class_exists($className)) {
+        $className = ltrim($target->getName(), '\\');
+        if (! class_exists($className)) {
             $targetCode = '<?php ';
 
             if ($target->inNamespace()) {
-                $targetCode.= 'namespace ' . $target->getNamespaceName(). '; ';
+                $targetCode .= 'namespace '.$target->getNamespaceName().'; ';
             }
 
-            $targetCode.= 'class ' . $target->getShortName() . ' {} ';
+            $targetCode .= 'class '.$target->getShortName().' {} ';
 
             /*
              * We could eval here, but it doesn't play well with the way
              * PHPUnit tries to backup global state and the require definition
              * loader
              */
-            $tmpfname = tempnam(sys_get_temp_dir(), "Mockery");
+            $tmpfname = tempnam(sys_get_temp_dir(), 'Mockery');
             file_put_contents($tmpfname, $targetCode);
             require $tmpfname;
             \Mockery::registerFileForCleanUp($tmpfname);
         }
 
         $code = str_replace(
-            "implements MockInterface",
-            "extends \\" . $className . " implements MockInterface",
+            'implements MockInterface',
+            'extends \\'.$className.' implements MockInterface',
             $code
         );
 

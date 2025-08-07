@@ -2,10 +2,10 @@
 
 namespace Illuminate\Auth;
 
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Support\Str;
 
 class EloquentUserProvider implements UserProvider
 {
@@ -26,7 +26,6 @@ class EloquentUserProvider implements UserProvider
     /**
      * Create a new database user provider.
      *
-     * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
      * @param  string  $model
      * @return void
      */
@@ -67,7 +66,6 @@ class EloquentUserProvider implements UserProvider
     /**
      * Update the "remember me" token for the given user in storage.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $token
      * @return void
      */
@@ -81,7 +79,6 @@ class EloquentUserProvider implements UserProvider
     /**
      * Retrieve a user by the given credentials.
      *
-     * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByCredentials(array $credentials)
@@ -107,8 +104,6 @@ class EloquentUserProvider implements UserProvider
     /**
      * Validate a user against the given credentials.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  array  $credentials
      * @return bool
      */
     public function validateCredentials(UserContract $user, array $credentials)
@@ -143,7 +138,6 @@ class EloquentUserProvider implements UserProvider
     /**
      * Sets the hasher implementation.
      *
-     * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
      * @return $this
      */
     public function setHasher(HasherContract $hasher)

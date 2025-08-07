@@ -23,22 +23,21 @@ class StringUtil
     /**
      * Stringifies any provided value.
      *
-     * @param mixed   $value
-     * @param boolean $exportObject
-     *
+     * @param  mixed  $value
+     * @param  bool  $exportObject
      * @return string
      */
     public function stringify($value, $exportObject = true)
     {
         if (is_array($value)) {
             if (range(0, count($value) - 1) === array_keys($value)) {
-                return '['.implode(', ', array_map(array($this, __FUNCTION__), $value)).']';
+                return '['.implode(', ', array_map([$this, __FUNCTION__], $value)).']';
             }
 
-            $stringify = array($this, __FUNCTION__);
+            $stringify = [$this, __FUNCTION__];
 
             return '['.implode(', ', array_map(function ($item, $key) use ($stringify) {
-                return (is_integer($key) ? $key : '"'.$key.'"').
+                return (is_int($key) ? $key : '"'.$key.'"').
                     ' => '.call_user_func($stringify, $item);
             }, $value, array_keys($value))).']';
         }
@@ -48,19 +47,19 @@ class StringUtil
         if (is_object($value)) {
             return $exportObject ? ExportUtil::export($value) : sprintf('%s:%s', get_class($value), spl_object_hash($value));
         }
-        if (true === $value || false === $value) {
+        if ($value === true || $value === false) {
             return $value ? 'true' : 'false';
         }
         if (is_string($value)) {
             $str = sprintf('"%s"', str_replace("\n", '\\n', $value));
 
-            if (50 <= strlen($str)) {
+            if (strlen($str) >= 50) {
                 return substr($str, 0, 50).'"...';
             }
 
             return $str;
         }
-        if (null === $value) {
+        if ($value === null) {
             return 'null';
         }
 
@@ -70,8 +69,7 @@ class StringUtil
     /**
      * Stringifies provided array of calls.
      *
-     * @param Call[] $calls Array of Call instances
-     *
+     * @param  Call[]  $calls  Array of Call instances
      * @return string
      */
     public function stringifyCalls(array $calls)
@@ -81,8 +79,8 @@ class StringUtil
         return implode(PHP_EOL, array_map(function (Call $call) use ($self) {
             return sprintf('  - %s(%s) @ %s',
                 $call->getMethodName(),
-                implode(', ', array_map(array($self, 'stringify'), $call->getArguments())),
-                str_replace(GETCWD().DIRECTORY_SEPARATOR, '', $call->getCallPlace())
+                implode(', ', array_map([$self, 'stringify'], $call->getArguments())),
+                str_replace(getcwd().DIRECTORY_SEPARATOR, '', $call->getCallPlace())
             );
         }, $calls));
     }

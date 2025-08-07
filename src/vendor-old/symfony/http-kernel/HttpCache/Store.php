@@ -25,24 +25,26 @@ use Symfony\Component\HttpFoundation\Response;
 class Store implements StoreInterface
 {
     protected $root;
+
     private $keyCache;
+
     private $locks;
 
     /**
      * Constructor.
      *
-     * @param string $root The path to the cache directory
+     * @param  string  $root  The path to the cache directory
      *
      * @throws \RuntimeException
      */
     public function __construct($root)
     {
         $this->root = $root;
-        if (!file_exists($this->root) && !@mkdir($this->root, 0777, true) && !is_dir($this->root)) {
+        if (! file_exists($this->root) && ! @mkdir($this->root, 0777, true) && ! is_dir($this->root)) {
             throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
         }
-        $this->keyCache = new \SplObjectStorage();
-        $this->locks = array();
+        $this->keyCache = new \SplObjectStorage;
+        $this->locks = [];
     }
 
     /**
@@ -56,27 +58,26 @@ class Store implements StoreInterface
             fclose($lock);
         }
 
-        $this->locks = array();
+        $this->locks = [];
     }
 
     /**
      * Tries to lock the cache for a given Request, without blocking.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
     public function lock(Request $request)
     {
         $key = $this->getCacheKey($request);
 
-        if (!isset($this->locks[$key])) {
+        if (! isset($this->locks[$key])) {
             $path = $this->getPath($key);
-            if (!file_exists(dirname($path)) && false === @mkdir(dirname($path), 0777, true) && !is_dir(dirname($path))) {
+            if (! file_exists(dirname($path)) && @mkdir(dirname($path), 0777, true) === false && ! is_dir(dirname($path))) {
                 return $path;
             }
             $h = fopen($path, 'cb');
-            if (!flock($h, LOCK_EX | LOCK_NB)) {
+            if (! flock($h, LOCK_EX | LOCK_NB)) {
                 fclose($h);
 
                 return $path;
@@ -91,8 +92,7 @@ class Store implements StoreInterface
     /**
      * Releases the lock for the given Request.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
     public function unlock(Request $request)
@@ -118,7 +118,7 @@ class Store implements StoreInterface
             return true; // shortcut if lock held by this process
         }
 
-        if (!file_exists($path = $this->getPath($key))) {
+        if (! file_exists($path = $this->getPath($key))) {
             return false;
         }
 
@@ -133,15 +133,14 @@ class Store implements StoreInterface
     /**
      * Locates a cached Response for the Request provided.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return Response|null A Response instance, or null if no cache entry was found
      */
     public function lookup(Request $request)
     {
         $key = $this->getCacheKey($request);
 
-        if (!$entries = $this->getMetadata($key)) {
+        if (! $entries = $this->getMetadata($key)) {
             return;
         }
 
@@ -155,11 +154,11 @@ class Store implements StoreInterface
             }
         }
 
-        if (null === $match) {
+        if ($match === null) {
             return;
         }
 
-        list($req, $headers) = $match;
+        [$req, $headers] = $match;
         if (file_exists($body = $this->getPath($headers['x-content-digest'][0]))) {
             return $this->restoreResponse($headers, $body);
         }
@@ -175,9 +174,8 @@ class Store implements StoreInterface
      * Existing entries are read and any that match the response are removed. This
      * method calls write with the new list of cache entries.
      *
-     * @param Request  $request  A Request instance
-     * @param Response $response A Response instance
-     *
+     * @param  Request  $request  A Request instance
+     * @param  Response  $response  A Response instance
      * @return string The key under which the response is stored
      *
      * @throws \RuntimeException
@@ -188,29 +186,29 @@ class Store implements StoreInterface
         $storedEnv = $this->persistRequest($request);
 
         // write the response body to the entity store if this is the original response
-        if (!$response->headers->has('X-Content-Digest')) {
+        if (! $response->headers->has('X-Content-Digest')) {
             $digest = $this->generateContentDigest($response);
 
-            if (false === $this->save($digest, $response->getContent())) {
+            if ($this->save($digest, $response->getContent()) === false) {
                 throw new \RuntimeException('Unable to store the entity.');
             }
 
             $response->headers->set('X-Content-Digest', $digest);
 
-            if (!$response->headers->has('Transfer-Encoding')) {
+            if (! $response->headers->has('Transfer-Encoding')) {
                 $response->headers->set('Content-Length', strlen($response->getContent()));
             }
         }
 
         // read existing cache entries, remove non-varying, and add this one to the list
-        $entries = array();
+        $entries = [];
         $vary = $response->headers->get('vary');
         foreach ($this->getMetadata($key) as $entry) {
-            if (!isset($entry[1]['vary'][0])) {
-                $entry[1]['vary'] = array('');
+            if (! isset($entry[1]['vary'][0])) {
+                $entry[1]['vary'] = [''];
             }
 
-            if ($vary != $entry[1]['vary'][0] || !$this->requestsMatch($vary, $entry[0], $storedEnv)) {
+            if ($vary != $entry[1]['vary'][0] || ! $this->requestsMatch($vary, $entry[0], $storedEnv)) {
                 $entries[] = $entry;
             }
         }
@@ -218,9 +216,9 @@ class Store implements StoreInterface
         $headers = $this->persistResponse($response);
         unset($headers['age']);
 
-        array_unshift($entries, array($storedEnv, $headers));
+        array_unshift($entries, [$storedEnv, $headers]);
 
-        if (false === $this->save($key, serialize($entries))) {
+        if ($this->save($key, serialize($entries)) === false) {
             throw new \RuntimeException('Unable to store the metadata.');
         }
 
@@ -230,7 +228,6 @@ class Store implements StoreInterface
     /**
      * Returns content digest for $response.
      *
-     * @param Response $response
      *
      * @return string
      */
@@ -242,7 +239,7 @@ class Store implements StoreInterface
     /**
      * Invalidates all cache entries that match the request.
      *
-     * @param Request $request A Request instance
+     * @param  Request  $request  A Request instance
      *
      * @throws \RuntimeException
      */
@@ -251,19 +248,19 @@ class Store implements StoreInterface
         $modified = false;
         $key = $this->getCacheKey($request);
 
-        $entries = array();
+        $entries = [];
         foreach ($this->getMetadata($key) as $entry) {
             $response = $this->restoreResponse($entry[1]);
             if ($response->isFresh()) {
                 $response->expire();
                 $modified = true;
-                $entries[] = array($entry[0], $this->persistResponse($response));
+                $entries[] = [$entry[0], $this->persistResponse($response)];
             } else {
                 $entries[] = $entry;
             }
         }
 
-        if ($modified && false === $this->save($key, serialize($entries))) {
+        if ($modified && $this->save($key, serialize($entries)) === false) {
             throw new \RuntimeException('Unable to store the metadata.');
         }
     }
@@ -272,10 +269,9 @@ class Store implements StoreInterface
      * Determines whether two Request HTTP header sets are non-varying based on
      * the vary response header value provided.
      *
-     * @param string $vary A Response vary header
-     * @param array  $env1 A Request HTTP header array
-     * @param array  $env2 A Request HTTP header array
-     *
+     * @param  string  $vary  A Response vary header
+     * @param  array  $env1  A Request HTTP header array
+     * @param  array  $env2  A Request HTTP header array
      * @return bool true if the two environments match, false otherwise
      */
     private function requestsMatch($vary, $env1, $env2)
@@ -301,14 +297,13 @@ class Store implements StoreInterface
      *
      * Use this method only if you know what you are doing.
      *
-     * @param string $key The store key
-     *
+     * @param  string  $key  The store key
      * @return array An array of data associated with the key
      */
     private function getMetadata($key)
     {
-        if (!$entries = $this->load($key)) {
-            return array();
+        if (! $entries = $this->load($key)) {
+            return [];
         }
 
         return unserialize($entries);
@@ -317,8 +312,7 @@ class Store implements StoreInterface
     /**
      * Purges data for the given URL.
      *
-     * @param string $url A URL
-     *
+     * @param  string  $url  A URL
      * @return bool true if the URL exists and has been purged, false otherwise
      */
     public function purge($url)
@@ -343,8 +337,7 @@ class Store implements StoreInterface
     /**
      * Loads data for the given key.
      *
-     * @param string $key The store key
-     *
+     * @param  string  $key  The store key
      * @return string The data associated with the key
      */
     private function load($key)
@@ -357,9 +350,8 @@ class Store implements StoreInterface
     /**
      * Save data for the given key.
      *
-     * @param string $key  The store key
-     * @param string $data The data to store
-     *
+     * @param  string  $key  The store key
+     * @param  string  $data  The data to store
      * @return bool
      */
     private function save($key, $data)
@@ -377,7 +369,7 @@ class Store implements StoreInterface
                 return false;
             }
         } else {
-            if (!file_exists(dirname($path)) && false === @mkdir(dirname($path), 0777, true) && !is_dir(dirname($path))) {
+            if (! file_exists(dirname($path)) && @mkdir(dirname($path), 0777, true) === false && ! is_dir(dirname($path))) {
                 return false;
             }
 
@@ -392,7 +384,7 @@ class Store implements StoreInterface
                 return false;
             }
 
-            if (false === @rename($tmpFile, $path)) {
+            if (@rename($tmpFile, $path) === false) {
                 return false;
             }
         }
@@ -415,8 +407,7 @@ class Store implements StoreInterface
      * headers, use a Vary header to indicate them, and each representation will
      * be stored independently under the same cache key.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return string A key for the given Request
      */
     protected function generateCacheKey(Request $request)
@@ -427,8 +418,7 @@ class Store implements StoreInterface
     /**
      * Returns a cache key for the given Request.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return string A key for the given Request
      */
     private function getCacheKey(Request $request)
@@ -443,8 +433,7 @@ class Store implements StoreInterface
     /**
      * Persists the Request HTTP headers.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return array An array of HTTP headers
      */
     private function persistRequest(Request $request)
@@ -455,14 +444,13 @@ class Store implements StoreInterface
     /**
      * Persists the Response HTTP headers.
      *
-     * @param Response $response A Response instance
-     *
+     * @param  Response  $response  A Response instance
      * @return array An array of HTTP headers
      */
     private function persistResponse(Response $response)
     {
         $headers = $response->headers->all();
-        $headers['X-Status'] = array($response->getStatusCode());
+        $headers['X-Status'] = [$response->getStatusCode()];
 
         return $headers;
     }
@@ -470,9 +458,8 @@ class Store implements StoreInterface
     /**
      * Restores a Response from the HTTP headers and body.
      *
-     * @param array  $headers An array of HTTP headers for the Response
-     * @param string $body    The Response body
-     *
+     * @param  array  $headers  An array of HTTP headers for the Response
+     * @param  string  $body  The Response body
      * @return Response
      */
     private function restoreResponse($headers, $body = null)
@@ -480,8 +467,8 @@ class Store implements StoreInterface
         $status = $headers['X-Status'][0];
         unset($headers['X-Status']);
 
-        if (null !== $body) {
-            $headers['X-Body-File'] = array($body);
+        if ($body !== null) {
+            $headers['X-Body-File'] = [$body];
         }
 
         return new Response($body, $status, $headers);

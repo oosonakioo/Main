@@ -13,7 +13,7 @@ class HTMLPurifier_URIFilter_DisableExternal extends HTMLPurifier_URIFilter
     protected $ourHostParts = false;
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      * @return void
      */
     public function prepare($config)
@@ -25,9 +25,9 @@ class HTMLPurifier_URIFilter_DisableExternal extends HTMLPurifier_URIFilter
     }
 
     /**
-     * @param HTMLPurifier_URI $uri Reference
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_URI  $uri  Reference
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool
      */
     public function filter(&$uri, $config, $context)
@@ -40,13 +40,14 @@ class HTMLPurifier_URIFilter_DisableExternal extends HTMLPurifier_URIFilter
         }
         $host_parts = array_reverse(explode('.', $uri->host));
         foreach ($this->ourHostParts as $i => $x) {
-            if (!isset($host_parts[$i])) {
+            if (! isset($host_parts[$i])) {
                 return false;
             }
             if ($host_parts[$i] != $this->ourHostParts[$i]) {
                 return false;
             }
         }
+
         return true;
     }
 }

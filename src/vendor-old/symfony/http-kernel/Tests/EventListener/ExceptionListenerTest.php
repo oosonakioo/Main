@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\HttpKernel\Tests\EventListener;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
-use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\HttpKernel\Tests\Logger;
 
 /**
@@ -28,9 +28,9 @@ use Symfony\Component\HttpKernel\Tests\Logger;
  */
 class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstruct()
+    public function test_construct()
     {
-        $logger = new TestLogger();
+        $logger = new TestLogger;
         $l = new ExceptionListener('foo', $logger);
 
         $_logger = new \ReflectionProperty(get_class($l), 'logger');
@@ -45,7 +45,7 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provider
      */
-    public function testHandleWithoutLogger($event, $event2)
+    public function test_handle_without_logger($event, $event2)
     {
         $this->iniSet('error_log', file_exists('/dev/null') ? '/dev/null' : 'nul');
 
@@ -66,9 +66,9 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provider
      */
-    public function testHandleWithLogger($event, $event2)
+    public function test_handle_with_logger($event, $event2)
     {
-        $logger = new TestLogger();
+        $logger = new TestLogger;
 
         $l = new ExceptionListener('foo', $logger);
         $l->onKernelException($event);
@@ -89,21 +89,21 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
 
     public function provider()
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\Request')) {
-            return array(array(null, null));
+        if (! class_exists('Symfony\Component\HttpFoundation\Request')) {
+            return [[null, null]];
         }
 
-        $request = new Request();
+        $request = new Request;
         $exception = new \Exception('foo');
-        $event = new GetResponseForExceptionEvent(new TestKernel(), $request, 'foo', $exception);
-        $event2 = new GetResponseForExceptionEvent(new TestKernelThatThrowsException(), $request, 'foo', $exception);
+        $event = new GetResponseForExceptionEvent(new TestKernel, $request, 'foo', $exception);
+        $event2 = new GetResponseForExceptionEvent(new TestKernelThatThrowsException, $request, 'foo', $exception);
 
-        return array(
-            array($event, $event2),
-        );
+        return [
+            [$event, $event2],
+        ];
     }
 
-    public function testSubRequestFormat()
+    public function test_sub_request_format()
     {
         $listener = new ExceptionListener('foo', $this->getMock('Psr\Log\LoggerInterface'));
 

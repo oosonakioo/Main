@@ -45,7 +45,6 @@ abstract class FormFieldConstraint extends PageConstraint
     /**
      * Get the form field.
      *
-     * @param  \Symfony\Component\DomCrawler\Crawler  $crawler
      * @return \Symfony\Component\DomCrawler\Crawler
      *
      * @throws \PHPUnit_Framework_ExpectationFailedException

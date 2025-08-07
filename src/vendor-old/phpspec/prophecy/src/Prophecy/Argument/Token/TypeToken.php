@@ -23,12 +23,12 @@ class TypeToken implements TokenInterface
     private $type;
 
     /**
-     * @param string $type
+     * @param  string  $type
      */
     public function __construct($type)
     {
         $checker = "is_{$type}";
-        if (!function_exists($checker) && !interface_exists($type) && !class_exists($type)) {
+        if (! function_exists($checker) && ! interface_exists($type) && ! class_exists($type)) {
             throw new InvalidArgumentException(sprintf(
                 'Type or class name expected as an argument to TypeToken, but got %s.', $type
             ));
@@ -40,7 +40,6 @@ class TypeToken implements TokenInterface
     /**
      * Scores 5 if argument has the same type this token was constructed with.
      *
-     * @param $argument
      *
      * @return bool|int
      */

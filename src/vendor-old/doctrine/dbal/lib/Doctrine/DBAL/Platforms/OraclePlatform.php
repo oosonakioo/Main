@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,19 +20,20 @@
 
 namespace Doctrine\DBAL\Platforms;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Identifier;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\BinaryType;
 
 /**
  * OraclePlatform.
  *
  * @since 2.0
+ *
  * @author Roman Borschel <roman@code-factory.org>
  * @author Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -43,14 +45,14 @@ class OraclePlatform extends AbstractPlatform
      *
      * @link http://docs.oracle.com/cd/B19306_01/server.102/b14200/sql_elements008.htm
      *
-     * @param string $identifier
+     * @param  string  $identifier
      *
      * @throws DBALException
      */
-    static public function assertValidIdentifier($identifier)
+    public static function assertValidIdentifier($identifier)
     {
-        if ( ! preg_match('(^(([a-zA-Z]{1}[a-zA-Z0-9_$#]{0,})|("[^"]+"))$)', $identifier)) {
-            throw new DBALException("Invalid Oracle identifier");
+        if (! preg_match('(^(([a-zA-Z]{1}[a-zA-Z0-9_$#]{0,})|("[^"]+"))$)', $identifier)) {
+            throw new DBALException('Invalid Oracle identifier');
         }
     }
 
@@ -119,7 +121,7 @@ class OraclePlatform extends AbstractPlatform
                         break;
                 }
 
-                return 'ADD_MONTHS(' . $date . ', ' . $operator . $interval . ')';
+                return 'ADD_MONTHS('.$date.', '.$operator.$interval.')';
 
             default:
                 $calculationClause = '';
@@ -142,7 +144,7 @@ class OraclePlatform extends AbstractPlatform
                         break;
                 }
 
-                return '(' . $date . $operator . $interval . $calculationClause . ')';
+                return '('.$date.$operator.$interval.$calculationClause.')';
         }
     }
 
@@ -155,7 +157,7 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getDateDiffExpression($date1, $date2)
     {
-        return "TRUNC(TO_NUMBER(SUBSTR((" . $date1 . "-" . $date2 . "), 1, INSTR(" . $date1 . "-" . $date2 .", ' '))))";
+        return 'TRUNC(TO_NUMBER(SUBSTR(('.$date1.'-'.$date2.'), 1, INSTR('.$date1.'-'.$date2.", ' '))))";
     }
 
     /**
@@ -163,7 +165,7 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getBitAndComparisonExpression($value1, $value2)
     {
-        return 'BITAND('.$value1 . ', ' . $value2 . ')';
+        return 'BITAND('.$value1.', '.$value2.')';
     }
 
     /**
@@ -171,9 +173,9 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getBitOrComparisonExpression($value1, $value2)
     {
-        return '(' . $value1 . '-' .
+        return '('.$value1.'-'.
                 $this->getBitAndComparisonExpression($value1, $value2)
-                . '+' . $value2 . ')';
+                .'+'.$value2.')';
     }
 
     /**
@@ -185,10 +187,10 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getCreateSequenceSQL(Sequence $sequence)
     {
-        return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) .
-               ' START WITH ' . $sequence->getInitialValue() .
-               ' MINVALUE ' . $sequence->getInitialValue() .
-               ' INCREMENT BY ' . $sequence->getAllocationSize() .
+        return 'CREATE SEQUENCE '.$sequence->getQuotedName($this).
+               ' START WITH '.$sequence->getInitialValue().
+               ' MINVALUE '.$sequence->getInitialValue().
+               ' INCREMENT BY '.$sequence->getAllocationSize().
                $this->getSequenceCacheSQL($sequence);
     }
 
@@ -197,15 +199,14 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getAlterSequenceSQL(Sequence $sequence)
     {
-        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) .
-               ' INCREMENT BY ' . $sequence->getAllocationSize()
-               . $this->getSequenceCacheSQL($sequence);
+        return 'ALTER SEQUENCE '.$sequence->getQuotedName($this).
+               ' INCREMENT BY '.$sequence->getAllocationSize()
+               .$this->getSequenceCacheSQL($sequence);
     }
 
     /**
      * Cache definition for sequences
      *
-     * @param Sequence $sequence
      *
      * @return string
      */
@@ -213,10 +214,10 @@ class OraclePlatform extends AbstractPlatform
     {
         if ($sequence->getCache() === 0) {
             return ' NOCACHE';
-        } else if ($sequence->getCache() === 1) {
+        } elseif ($sequence->getCache() === 1) {
             return ' NOCACHE';
-        } else if ($sequence->getCache() > 1) {
-            return ' CACHE ' . $sequence->getCache();
+        } elseif ($sequence->getCache() > 1) {
+            return ' CACHE '.$sequence->getCache();
         }
 
         return '';
@@ -227,7 +228,7 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getSequenceNextValSQL($sequenceName)
     {
-        return 'SELECT ' . $sequenceName . '.nextval FROM DUAL';
+        return 'SELECT '.$sequenceName.'.nextval FROM DUAL';
     }
 
     /**
@@ -235,7 +236,7 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getSetTransactionIsolationSQL($level)
     {
-        return 'SET TRANSACTION ISOLATION LEVEL ' . $this->_getTransactionIsolationLevelSQL($level);
+        return 'SET TRANSACTION ISOLATION LEVEL '.$this->_getTransactionIsolationLevelSQL($level);
     }
 
     /**
@@ -333,8 +334,8 @@ class OraclePlatform extends AbstractPlatform
      */
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(2000)')
-                : ($length ? 'VARCHAR2(' . $length . ')' : 'VARCHAR2(4000)');
+        return $fixed ? ($length ? 'CHAR('.$length.')' : 'CHAR(2000)')
+                : ($length ? 'VARCHAR2('.$length.')' : 'VARCHAR2(4000)');
     }
 
     /**
@@ -342,7 +343,7 @@ class OraclePlatform extends AbstractPlatform
      */
     protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return 'RAW(' . ($length ?: $this->getBinaryMaxLength()) . ')';
+        return 'RAW('.($length ?: $this->getBinaryMaxLength()).')';
     }
 
     /**
@@ -377,17 +378,17 @@ class OraclePlatform extends AbstractPlatform
         $database = $this->normalizeIdentifier($database);
         $database = $this->quoteStringLiteral($database->getName());
 
-        return "SELECT sequence_name, min_value, increment_by FROM sys.all_sequences ".
-               "WHERE SEQUENCE_OWNER = " . $database;
+        return 'SELECT sequence_name, min_value, increment_by FROM sys.all_sequences '.
+               'WHERE SEQUENCE_OWNER = '.$database;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function _getCreateTableSQL($table, array $columns, array $options = array())
+    protected function _getCreateTableSQL($table, array $columns, array $options = [])
     {
-        $indexes = isset($options['indexes']) ? $options['indexes'] : array();
-        $options['indexes'] = array();
+        $indexes = isset($options['indexes']) ? $options['indexes'] : [];
+        $options['indexes'] = [];
         $sql = parent::_getCreateTableSQL($table, $columns, $options);
 
         foreach ($columns as $name => $column) {
@@ -414,6 +415,7 @@ class OraclePlatform extends AbstractPlatform
      * {@inheritDoc}
      *
      * @license New BSD License
+     *
      * @link http://ezcomponents.org/docs/api/trunk/DatabaseSchema/ezcDbSchemaOracleReader.html
      */
     public function getListTableIndexesSQL($table, $currentDatabase = null)
@@ -446,8 +448,8 @@ class OraclePlatform extends AbstractPlatform
                            WHERE  ucon.constraint_name = uind_col.index_name
                        ) AS is_primary
              FROM      user_ind_columns uind_col
-             WHERE     uind_col.table_name = " . $table . "
-             ORDER BY  uind_col.column_position ASC";
+             WHERE     uind_col.table_name = ".$table.'
+             ORDER BY  uind_col.column_position ASC';
     }
 
     /**
@@ -471,7 +473,7 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getCreateViewSQL($name, $sql)
     {
-        return 'CREATE VIEW ' . $name . ' AS ' . $sql;
+        return 'CREATE VIEW '.$name.' AS '.$sql;
     }
 
     /**
@@ -479,14 +481,13 @@ class OraclePlatform extends AbstractPlatform
      */
     public function getDropViewSQL($name)
     {
-        return 'DROP VIEW '. $name;
+        return 'DROP VIEW '.$name;
     }
 
     /**
-     * @param string  $name
-     * @param string  $table
-     * @param integer $start
-     *
+     * @param  string  $name
+     * @param  string  $table
+     * @param  int  $start
      * @return array
      */
     public function getCreateAutoincrementSql($name, $table, $start = 1)
@@ -499,16 +500,16 @@ class OraclePlatform extends AbstractPlatform
         $quotedName = $nameIdentifier->getQuotedName($this);
         $unquotedName = $nameIdentifier->getName();
 
-        $sql = array();
+        $sql = [];
 
         $autoincrementIdentifierName = $this->getAutoincrementIdentifierName($tableIdentifier);
 
-        $idx = new Index($autoincrementIdentifierName, array($quotedName), true, true);
+        $idx = new Index($autoincrementIdentifierName, [$quotedName], true, true);
 
         $sql[] = 'DECLARE
   constraints_Count NUMBER;
 BEGIN
-  SELECT COUNT(CONSTRAINT_NAME) INTO constraints_Count FROM USER_CONSTRAINTS WHERE TABLE_NAME = \'' . $unquotedTableName . '\' AND CONSTRAINT_TYPE = \'P\';
+  SELECT COUNT(CONSTRAINT_NAME) INTO constraints_Count FROM USER_CONSTRAINTS WHERE TABLE_NAME = \''.$unquotedTableName.'\' AND CONSTRAINT_TYPE = \'P\';
   IF constraints_Count = 0 OR constraints_Count = \'\' THEN
     EXECUTE IMMEDIATE \''.$this->getCreateConstraintSQL($idx, $quotedTableName).'\';
   END IF;
@@ -521,24 +522,24 @@ END;';
         $sequence = new Sequence($sequenceName, $start);
         $sql[] = $this->getCreateSequenceSQL($sequence);
 
-        $sql[] = 'CREATE TRIGGER ' . $autoincrementIdentifierName . '
+        $sql[] = 'CREATE TRIGGER '.$autoincrementIdentifierName.'
    BEFORE INSERT
-   ON ' . $quotedTableName . '
+   ON '.$quotedTableName.'
    FOR EACH ROW
 DECLARE
    last_Sequence NUMBER;
    last_InsertID NUMBER;
 BEGIN
-   SELECT ' . $sequenceName . '.NEXTVAL INTO :NEW.' . $quotedName . ' FROM DUAL;
-   IF (:NEW.' . $quotedName . ' IS NULL OR :NEW.'.$quotedName.' = 0) THEN
-      SELECT ' . $sequenceName . '.NEXTVAL INTO :NEW.' . $quotedName . ' FROM DUAL;
+   SELECT '.$sequenceName.'.NEXTVAL INTO :NEW.'.$quotedName.' FROM DUAL;
+   IF (:NEW.'.$quotedName.' IS NULL OR :NEW.'.$quotedName.' = 0) THEN
+      SELECT '.$sequenceName.'.NEXTVAL INTO :NEW.'.$quotedName.' FROM DUAL;
    ELSE
       SELECT NVL(Last_Number, 0) INTO last_Sequence
         FROM User_Sequences
-       WHERE Sequence_Name = \'' . $sequence->getName() . '\';
-      SELECT :NEW.' . $quotedName . ' INTO last_InsertID FROM DUAL;
+       WHERE Sequence_Name = \''.$sequence->getName().'\';
+      SELECT :NEW.'.$quotedName.' INTO last_InsertID FROM DUAL;
       WHILE (last_InsertID > last_Sequence) LOOP
-         SELECT ' . $sequenceName . '.NEXTVAL INTO last_Sequence FROM DUAL;
+         SELECT '.$sequenceName.'.NEXTVAL INTO last_Sequence FROM DUAL;
       END LOOP;
    END IF;
 END;';
@@ -549,8 +550,7 @@ END;';
     /**
      * Returns the SQL statements to drop the autoincrement for the given table name.
      *
-     * @param string $table The table name to drop the autoincrement for.
-     *
+     * @param  string  $table  The table name to drop the autoincrement for.
      * @return array
      */
     public function getDropAutoincrementSql($table)
@@ -562,11 +562,11 @@ END;';
             ''
         );
 
-        return array(
-            'DROP TRIGGER ' . $autoincrementIdentifierName,
+        return [
+            'DROP TRIGGER '.$autoincrementIdentifierName,
             $this->getDropSequenceSQL($identitySequenceName),
             $this->getDropConstraintSQL($autoincrementIdentifierName, $table->getQuotedName($this)),
-        );
+        ];
     }
 
     /**
@@ -575,8 +575,7 @@ END;';
      * Uppercases the given identifier if it is not quoted by intention
      * to reflect Oracle's internal auto uppercasing strategy of unquoted identifiers.
      *
-     * @param string $name The identifier to normalize.
-     *
+     * @param  string  $name  The identifier to normalize.
      * @return Identifier The normalized identifier.
      */
     private function normalizeIdentifier($name)
@@ -592,13 +591,12 @@ END;';
      * Quotes the autoincrement primary key identifier name
      * if the given table name is quoted by intention.
      *
-     * @param Identifier $table The table identifier to return the autoincrement primary key identifier name for.
-     *
+     * @param  Identifier  $table  The table identifier to return the autoincrement primary key identifier name for.
      * @return string
      */
     private function getAutoincrementIdentifierName(Identifier $table)
     {
-        $identifierName = $table->getName() . '_AI_PK';
+        $identifierName = $table->getName().'_AI_PK';
 
         return $table->isQuoted()
             ? $this->quoteSingleIdentifier($identifierName)
@@ -630,8 +628,8 @@ LEFT JOIN user_cons_columns r_cols
       AND cols.position = r_cols.position
     WHERE alc.constraint_name = cols.constraint_name
       AND alc.constraint_type = 'R'
-      AND alc.table_name = " . $table . "
-    ORDER BY cols.constraint_name ASC, cols.position ASC";
+      AND alc.table_name = ".$table.'
+    ORDER BY cols.constraint_name ASC, cols.position ASC';
     }
 
     /**
@@ -642,7 +640,7 @@ LEFT JOIN user_cons_columns r_cols
         $table = $this->normalizeIdentifier($table);
         $table = $this->quoteStringLiteral($table->getName());
 
-        return "SELECT * FROM user_constraints WHERE table_name = " . $table;
+        return 'SELECT * FROM user_constraints WHERE table_name = '.$table;
     }
 
     /**
@@ -653,16 +651,16 @@ LEFT JOIN user_cons_columns r_cols
         $table = $this->normalizeIdentifier($table);
         $table = $this->quoteStringLiteral($table->getName());
 
-        $tabColumnsTableName = "user_tab_columns";
-        $colCommentsTableName = "user_col_comments";
+        $tabColumnsTableName = 'user_tab_columns';
+        $colCommentsTableName = 'user_col_comments';
         $ownerCondition = '';
 
-        if (null !== $database && '/' !== $database) {
+        if ($database !== null && $database !== '/') {
             $database = $this->normalizeIdentifier($database);
             $database = $this->quoteStringLiteral($database->getName());
-            $tabColumnsTableName = "all_tab_columns";
-            $colCommentsTableName = "all_col_comments";
-            $ownerCondition = "AND c.owner = " . $database;
+            $tabColumnsTableName = 'all_tab_columns';
+            $colCommentsTableName = 'all_col_comments';
+            $ownerCondition = 'AND c.owner = '.$database;
         }
 
         return "SELECT   c.*,
@@ -673,7 +671,7 @@ LEFT JOIN user_cons_columns r_cols
                              AND    d.COLUMN_NAME = c.COLUMN_NAME
                          ) AS comments
                 FROM     $tabColumnsTableName c
-                WHERE    c.table_name = " . $table . " $ownerCondition
+                WHERE    c.table_name = ".$table." $ownerCondition
                 ORDER BY c.column_name";
     }
 
@@ -686,7 +684,7 @@ LEFT JOIN user_cons_columns r_cols
             $sequence = $sequence->getQuotedName($this);
         }
 
-        return 'DROP SEQUENCE ' . $sequence;
+        return 'DROP SEQUENCE '.$sequence;
     }
 
     /**
@@ -705,7 +703,7 @@ LEFT JOIN user_cons_columns r_cols
         $foreignKey = $foreignKey->getQuotedName($this);
         $table = $table->getQuotedName($this);
 
-        return 'ALTER TABLE ' . $table . ' DROP CONSTRAINT ' . $foreignKey;
+        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey;
     }
 
     /**
@@ -719,7 +717,7 @@ LEFT JOIN user_cons_columns r_cols
             $referentialAction = $this->getForeignKeyReferentialActionSQL($foreignKey->getOption('onDelete'));
         }
 
-        return $referentialAction ? ' ON DELETE ' . $referentialAction : '';
+        return $referentialAction ? ' ON DELETE '.$referentialAction : '';
     }
 
     /**
@@ -742,7 +740,7 @@ LEFT JOIN user_cons_columns r_cols
 
             default:
                 // SET DEFAULT is not supported, throw exception instead.
-                throw new \InvalidArgumentException('Invalid foreign key action: ' . $action);
+                throw new \InvalidArgumentException('Invalid foreign key action: '.$action);
         }
     }
 
@@ -751,7 +749,7 @@ LEFT JOIN user_cons_columns r_cols
      */
     public function getDropDatabaseSQL($database)
     {
-        return 'DROP USER ' . $database . ' CASCADE';
+        return 'DROP USER '.$database.' CASCADE';
     }
 
     /**
@@ -759,11 +757,11 @@ LEFT JOIN user_cons_columns r_cols
      */
     public function getAlterTableSQL(TableDiff $diff)
     {
-        $sql = array();
-        $commentsSQL = array();
-        $columnSql = array();
+        $sql = [];
+        $commentsSQL = [];
+        $columnSql = [];
 
-        $fields = array();
+        $fields = [];
 
         foreach ($diff->addedColumns as $column) {
             if ($this->onSchemaAlterTableAddColumn($column, $diff, $columnSql)) {
@@ -781,10 +779,10 @@ LEFT JOIN user_cons_columns r_cols
         }
 
         if (count($fields)) {
-            $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' ADD (' . implode(', ', $fields) . ')';
+            $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).' ADD ('.implode(', ', $fields).')';
         }
 
-        $fields = array();
+        $fields = [];
         foreach ($diff->changedColumns as $columnDiff) {
             if ($this->onSchemaAlterTableChangeColumn($columnDiff, $diff, $columnSql)) {
                 continue;
@@ -808,14 +806,14 @@ LEFT JOIN user_cons_columns r_cols
             /**
              * Do not add query part if only comment has changed
              */
-            if ( ! ($columnHasChangedComment && count($columnDiff->changedProperties) === 1)) {
+            if (! ($columnHasChangedComment && count($columnDiff->changedProperties) === 1)) {
                 $columnInfo = $column->toArray();
 
-                if ( ! $columnDiff->hasChanged('notnull')) {
+                if (! $columnDiff->hasChanged('notnull')) {
                     unset($columnInfo['notnull']);
                 }
 
-                $fields[] = $column->getQuotedName($this) . $this->getColumnDeclarationSQL('', $columnInfo);
+                $fields[] = $column->getQuotedName($this).$this->getColumnDeclarationSQL('', $columnInfo);
             }
 
             if ($columnHasChangedComment) {
@@ -828,7 +826,7 @@ LEFT JOIN user_cons_columns r_cols
         }
 
         if (count($fields)) {
-            $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' MODIFY (' . implode(', ', $fields) . ')';
+            $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).' MODIFY ('.implode(', ', $fields).')';
         }
 
         foreach ($diff->renamedColumns as $oldColumnName => $column) {
@@ -838,11 +836,11 @@ LEFT JOIN user_cons_columns r_cols
 
             $oldColumnName = new Identifier($oldColumnName);
 
-            $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) .
-                ' RENAME COLUMN ' . $oldColumnName->getQuotedName($this) .' TO ' . $column->getQuotedName($this);
+            $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).
+                ' RENAME COLUMN '.$oldColumnName->getQuotedName($this).' TO '.$column->getQuotedName($this);
         }
 
-        $fields = array();
+        $fields = [];
         foreach ($diff->removedColumns as $column) {
             if ($this->onSchemaAlterTableRemoveColumn($column, $diff, $columnSql)) {
                 continue;
@@ -852,16 +850,16 @@ LEFT JOIN user_cons_columns r_cols
         }
 
         if (count($fields)) {
-            $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' DROP (' . implode(', ', $fields).')';
+            $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).' DROP ('.implode(', ', $fields).')';
         }
 
-        $tableSql = array();
+        $tableSql = [];
 
-        if ( ! $this->onSchemaAlterTable($diff, $tableSql)) {
+        if (! $this->onSchemaAlterTable($diff, $tableSql)) {
             $sql = array_merge($sql, $commentsSQL);
 
             if ($diff->newName !== false) {
-                $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' RENAME TO ' . $diff->getNewName()->getQuotedName($this);
+                $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).' RENAME TO '.$diff->getNewName()->getQuotedName($this);
             }
 
             $sql = array_merge(
@@ -891,16 +889,16 @@ LEFT JOIN user_cons_columns r_cols
             }
 
             $unique = (isset($field['unique']) && $field['unique']) ?
-                ' ' . $this->getUniqueFieldDeclarationSQL() : '';
+                ' '.$this->getUniqueFieldDeclarationSQL() : '';
 
             $check = (isset($field['check']) && $field['check']) ?
-                ' ' . $field['check'] : '';
+                ' '.$field['check'] : '';
 
             $typeDecl = $field['type']->getSqlDeclaration($field, $this);
-            $columnDef = $typeDecl . $default . $notnull . $unique . $check;
+            $columnDef = $typeDecl.$default.$notnull.$unique.$check;
         }
 
-        return $name . ' ' . $columnDef;
+        return $name.' '.$columnDef;
     }
 
     /**
@@ -909,11 +907,11 @@ LEFT JOIN user_cons_columns r_cols
     protected function getRenameIndexSQL($oldIndexName, Index $index, $tableName)
     {
         if (strpos($tableName, '.') !== false) {
-            list($schema) = explode('.', $tableName);
-            $oldIndexName = $schema . '.' . $oldIndexName;
+            [$schema] = explode('.', $tableName);
+            $oldIndexName = $schema.'.'.$oldIndexName;
         }
 
-        return array('ALTER INDEX ' . $oldIndexName . ' RENAME TO ' . $index->getQuotedName($this));
+        return ['ALTER INDEX '.$oldIndexName.' RENAME TO '.$index->getQuotedName($this)];
     }
 
     /**
@@ -940,10 +938,10 @@ LEFT JOIN user_cons_columns r_cols
         $table = new Identifier($tableName);
 
         // No usage of column name to preserve BC compatibility with <2.5
-        $identitySequenceName = $table->getName() . '_SEQ';
+        $identitySequenceName = $table->getName().'_SEQ';
 
         if ($table->isQuoted()) {
-            $identitySequenceName = '"' . $identitySequenceName . '"';
+            $identitySequenceName = '"'.$identitySequenceName.'"';
         }
 
         $identitySequenceIdentifier = $this->normalizeIdentifier($identitySequenceName);
@@ -976,19 +974,19 @@ LEFT JOIN user_cons_columns r_cols
         $offset = (int) $offset;
 
         if (preg_match('/^\s*SELECT/i', $query)) {
-            if (!preg_match('/\sFROM\s/i', $query)) {
-                $query .= " FROM dual";
+            if (! preg_match('/\sFROM\s/i', $query)) {
+                $query .= ' FROM dual';
             }
             if ($limit > 0) {
                 $max = $offset + $limit;
                 $column = '*';
                 if ($offset > 0) {
                     $min = $offset + 1;
-                    $query = 'SELECT * FROM (SELECT a.' . $column . ', rownum AS doctrine_rownum FROM (' .
-                            $query .
-                            ') a WHERE rownum <= ' . $max . ') WHERE doctrine_rownum >= ' . $min;
+                    $query = 'SELECT * FROM (SELECT a.'.$column.', rownum AS doctrine_rownum FROM ('.
+                            $query.
+                            ') a WHERE rownum <= '.$max.') WHERE doctrine_rownum >= '.$min;
                 } else {
-                    $query = 'SELECT a.' . $column . ' FROM (' . $query . ') a WHERE ROWNUM <= ' . $max;
+                    $query = 'SELECT a.'.$column.' FROM ('.$query.') a WHERE ROWNUM <= '.$max;
                 }
             }
         }
@@ -1011,7 +1009,7 @@ LEFT JOIN user_cons_columns r_cols
      */
     public function getCreateTemporaryTableSnippetSQL()
     {
-        return "CREATE GLOBAL TEMPORARY TABLE";
+        return 'CREATE GLOBAL TEMPORARY TABLE';
     }
 
     /**
@@ -1090,7 +1088,7 @@ LEFT JOIN user_cons_columns r_cols
     {
         $tableIdentifier = new Identifier($tableName);
 
-        return 'TRUNCATE TABLE ' . $tableIdentifier->getQuotedName($this);
+        return 'TRUNCATE TABLE '.$tableIdentifier->getQuotedName($this);
     }
 
     /**
@@ -1106,31 +1104,31 @@ LEFT JOIN user_cons_columns r_cols
      */
     protected function initializeDoctrineTypeMappings()
     {
-        $this->doctrineTypeMapping = array(
-            'integer'           => 'integer',
-            'number'            => 'integer',
-            'pls_integer'       => 'boolean',
-            'binary_integer'    => 'boolean',
-            'varchar'           => 'string',
-            'varchar2'          => 'string',
-            'nvarchar2'         => 'string',
-            'char'              => 'string',
-            'nchar'             => 'string',
-            'date'              => 'datetime',
-            'timestamp'         => 'datetime',
-            'timestamptz'       => 'datetimetz',
-            'float'             => 'float',
-            'binary_float'      => 'float',
-            'binary_double'     => 'float',
-            'long'              => 'string',
-            'clob'              => 'text',
-            'nclob'             => 'text',
-            'raw'               => 'binary',
-            'long raw'          => 'blob',
-            'rowid'             => 'string',
-            'urowid'            => 'string',
-            'blob'              => 'blob',
-        );
+        $this->doctrineTypeMapping = [
+            'integer' => 'integer',
+            'number' => 'integer',
+            'pls_integer' => 'boolean',
+            'binary_integer' => 'boolean',
+            'varchar' => 'string',
+            'varchar2' => 'string',
+            'nvarchar2' => 'string',
+            'char' => 'string',
+            'nchar' => 'string',
+            'date' => 'datetime',
+            'timestamp' => 'datetime',
+            'timestamptz' => 'datetimetz',
+            'float' => 'float',
+            'binary_float' => 'float',
+            'binary_double' => 'float',
+            'long' => 'string',
+            'clob' => 'text',
+            'nclob' => 'text',
+            'raw' => 'binary',
+            'long raw' => 'blob',
+            'rowid' => 'string',
+            'urowid' => 'string',
+            'blob' => 'blob',
+        ];
     }
 
     /**

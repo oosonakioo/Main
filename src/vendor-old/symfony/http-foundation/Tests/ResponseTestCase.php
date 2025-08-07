@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class ResponseTestCase extends \PHPUnit_Framework_TestCase
 {
-    public function testNoCacheControlHeaderOnAttachmentUsingHTTPSAndMSIE()
+    public function test_no_cache_control_header_on_attachment_using_https_and_msie()
     {
         // Check for HTTPS and IE 8
-        $request = new Request();
+        $request = new Request;
         $request->server->set('HTTPS', true);
         $request->server->set('HTTP_USER_AGENT', 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)');
 

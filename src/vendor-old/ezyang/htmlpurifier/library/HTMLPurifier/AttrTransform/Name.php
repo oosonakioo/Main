@@ -5,11 +5,10 @@
  */
 class HTMLPurifier_AttrTransform_Name extends HTMLPurifier_AttrTransform
 {
-
     /**
-     * @param array $attr
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $attr
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function transform($attr, $config, $context)
@@ -18,7 +17,7 @@ class HTMLPurifier_AttrTransform_Name extends HTMLPurifier_AttrTransform
         if ($config->get('HTML.Attr.Name.UseCDATA')) {
             return $attr;
         }
-        if (!isset($attr['name'])) {
+        if (! isset($attr['name'])) {
             return $attr;
         }
         $id = $this->confiscateAttr($attr, 'name');
@@ -26,6 +25,7 @@ class HTMLPurifier_AttrTransform_Name extends HTMLPurifier_AttrTransform
             return $attr;
         }
         $attr['id'] = $id;
+
         return $attr;
     }
 }

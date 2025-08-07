@@ -15,12 +15,10 @@ trait LoggerTrait
     /**
      * System is unusable.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message, array $context = [])
     {
         $this->log(LogLevel::EMERGENCY, $message, $context);
     }
@@ -31,12 +29,10 @@ trait LoggerTrait
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function alert($message, array $context = array())
+    public function alert($message, array $context = [])
     {
         $this->log(LogLevel::ALERT, $message, $context);
     }
@@ -46,12 +42,10 @@ trait LoggerTrait
      *
      * Example: Application component unavailable, unexpected exception.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function critical($message, array $context = array())
+    public function critical($message, array $context = [])
     {
         $this->log(LogLevel::CRITICAL, $message, $context);
     }
@@ -60,12 +54,10 @@ trait LoggerTrait
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = [])
     {
         $this->log(LogLevel::ERROR, $message, $context);
     }
@@ -76,12 +68,10 @@ trait LoggerTrait
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function warning($message, array $context = array())
+    public function warning($message, array $context = [])
     {
         $this->log(LogLevel::WARNING, $message, $context);
     }
@@ -89,12 +79,10 @@ trait LoggerTrait
     /**
      * Normal but significant events.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = [])
     {
         $this->log(LogLevel::NOTICE, $message, $context);
     }
@@ -104,12 +92,10 @@ trait LoggerTrait
      *
      * Example: User logs in, SQL logs.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = [])
     {
         $this->log(LogLevel::INFO, $message, $context);
     }
@@ -117,12 +103,10 @@ trait LoggerTrait
     /**
      * Detailed debug information.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
      * @return void
      */
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
         $this->log(LogLevel::DEBUG, $message, $context);
     }
@@ -130,11 +114,9 @@ trait LoggerTrait
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  mixed  $level
+     * @param  string  $message
      * @return void
      */
-    abstract public function log($level, $message, array $context = array());
+    abstract public function log($level, $message, array $context = []);
 }

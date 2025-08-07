@@ -13,13 +13,13 @@ namespace Symfony\Component\HttpKernel\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FlattenException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 
 /**
  * ExceptionListener.
@@ -29,9 +29,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ExceptionListener implements EventSubscriberInterface
 {
     protected $controller;
+
     protected $logger;
 
-    public function __construct($controller, LoggerInterface $logger = null)
+    public function __construct($controller, ?LoggerInterface $logger = null)
     {
         $this->controller = $controller;
         $this->logger = $logger;
@@ -71,24 +72,24 @@ class ExceptionListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::EXCEPTION => array('onKernelException', -128),
-        );
+        return [
+            KernelEvents::EXCEPTION => ['onKernelException', -128],
+        ];
     }
 
     /**
      * Logs an exception.
      *
-     * @param \Exception $exception The \Exception instance
-     * @param string     $message   The error message to log
+     * @param  \Exception  $exception  The \Exception instance
+     * @param  string  $message  The error message to log
      */
     protected function logException(\Exception $exception, $message)
     {
-        if (null !== $this->logger) {
-            if (!$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500) {
-                $this->logger->critical($message, array('exception' => $exception));
+        if ($this->logger !== null) {
+            if (! $exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500) {
+                $this->logger->critical($message, ['exception' => $exception]);
             } else {
-                $this->logger->error($message, array('exception' => $exception));
+                $this->logger->error($message, ['exception' => $exception]);
             }
         }
     }
@@ -96,18 +97,17 @@ class ExceptionListener implements EventSubscriberInterface
     /**
      * Clones the request for the exception.
      *
-     * @param \Exception $exception The thrown exception
-     * @param Request    $request   The original request
-     *
+     * @param  \Exception  $exception  The thrown exception
+     * @param  Request  $request  The original request
      * @return Request $request The cloned request
      */
     protected function duplicateRequest(\Exception $exception, Request $request)
     {
-        $attributes = array(
+        $attributes = [
             '_controller' => $this->controller,
             'exception' => FlattenException::create($exception),
             'logger' => $this->logger instanceof DebugLoggerInterface ? $this->logger : null,
-        );
+        ];
         $request = $request->duplicate(null, null, $attributes);
         $request->setMethod('GET');
 

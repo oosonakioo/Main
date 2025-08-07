@@ -25,23 +25,30 @@ use Monolog\Logger;
 class RotatingFileHandler extends StreamHandler
 {
     const FILE_PER_DAY = 'Y-m-d';
+
     const FILE_PER_MONTH = 'Y-m';
+
     const FILE_PER_YEAR = 'Y';
 
     protected $filename;
+
     protected $maxFiles;
+
     protected $mustRotate;
+
     protected $nextRotation;
+
     protected $filenameFormat;
+
     protected $dateFormat;
 
     /**
-     * @param string   $filename
-     * @param int      $maxFiles       The maximal amount of files to keep (0 means unlimited)
-     * @param int      $level          The minimum logging level at which this handler will be triggered
-     * @param Boolean  $bubble         Whether the messages that are handled can bubble up the stack or not
-     * @param int|null $filePermission Optional file permissions (default (0644) are only for owner read/write)
-     * @param Boolean  $useLocking     Try to lock log file before doing any writes
+     * @param  string  $filename
+     * @param  int  $maxFiles  The maximal amount of files to keep (0 means unlimited)
+     * @param  int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
+     * @param  int|null  $filePermission  Optional file permissions (default (0644) are only for owner read/write)
+     * @param  bool  $useLocking  Try to lock log file before doing any writes
      */
     public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = true, $filePermission = null, $useLocking = false)
     {
@@ -61,14 +68,14 @@ class RotatingFileHandler extends StreamHandler
     {
         parent::close();
 
-        if (true === $this->mustRotate) {
+        if ($this->mustRotate === true) {
             $this->rotate();
         }
     }
 
     public function setFilenameFormat($filenameFormat, $dateFormat)
     {
-        if (!preg_match('{^Y(([/_.-]?m)([/_.-]?d)?)?$}', $dateFormat)) {
+        if (! preg_match('{^Y(([/_.-]?m)([/_.-]?d)?)?$}', $dateFormat)) {
             trigger_error(
                 'Invalid date format - format must be one of '.
                 'RotatingFileHandler::FILE_PER_DAY ("Y-m-d"), RotatingFileHandler::FILE_PER_MONTH ("Y-m") '.
@@ -95,8 +102,8 @@ class RotatingFileHandler extends StreamHandler
     protected function write(array $record)
     {
         // on the first record written, if the log is new, we should rotate (once per day)
-        if (null === $this->mustRotate) {
-            $this->mustRotate = !file_exists($this->url);
+        if ($this->mustRotate === null) {
+            $this->mustRotate = ! file_exists($this->url);
         }
 
         if ($this->nextRotation < $record['datetime']) {
@@ -117,7 +124,7 @@ class RotatingFileHandler extends StreamHandler
         $this->nextRotation = new \DateTime('tomorrow');
 
         // skip GC of old logs if files are unlimited
-        if (0 === $this->maxFiles) {
+        if ($this->maxFiles === 0) {
             return;
         }
 
@@ -149,12 +156,12 @@ class RotatingFileHandler extends StreamHandler
     {
         $fileInfo = pathinfo($this->filename);
         $timedFilename = str_replace(
-            array('{filename}', '{date}'),
-            array($fileInfo['filename'], date($this->dateFormat)),
-            $fileInfo['dirname'] . '/' . $this->filenameFormat
+            ['{filename}', '{date}'],
+            [$fileInfo['filename'], date($this->dateFormat)],
+            $fileInfo['dirname'].'/'.$this->filenameFormat
         );
 
-        if (!empty($fileInfo['extension'])) {
+        if (! empty($fileInfo['extension'])) {
             $timedFilename .= '.'.$fileInfo['extension'];
         }
 
@@ -165,11 +172,11 @@ class RotatingFileHandler extends StreamHandler
     {
         $fileInfo = pathinfo($this->filename);
         $glob = str_replace(
-            array('{filename}', '{date}'),
-            array($fileInfo['filename'], '*'),
-            $fileInfo['dirname'] . '/' . $this->filenameFormat
+            ['{filename}', '{date}'],
+            [$fileInfo['filename'], '*'],
+            $fileInfo['dirname'].'/'.$this->filenameFormat
         );
-        if (!empty($fileInfo['extension'])) {
+        if (! empty($fileInfo['extension'])) {
             $glob .= '.'.$fileInfo['extension'];
         }
 

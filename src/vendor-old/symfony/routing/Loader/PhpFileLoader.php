@@ -27,9 +27,8 @@ class PhpFileLoader extends FileLoader
     /**
      * Loads a PHP file.
      *
-     * @param string      $file A PHP file path
-     * @param string|null $type The resource type
-     *
+     * @param  string  $file  A PHP file path
+     * @param  string|null  $type  The resource type
      * @return RouteCollection A RouteCollection instance
      */
     public function load($file, $type = null)
@@ -48,15 +47,14 @@ class PhpFileLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'php' === $type);
+        return is_string($resource) && pathinfo($resource, PATHINFO_EXTENSION) === 'php' && (! $type || $type === 'php');
     }
 
     /**
      * Safe include. Used for scope isolation.
      *
-     * @param string        $file   File to include
-     * @param PhpFileLoader $loader the loader variable is exposed to the included file below
-     *
+     * @param  string  $file  File to include
+     * @param  PhpFileLoader  $loader  the loader variable is exposed to the included file below
      * @return RouteCollection
      */
     private static function includeFile($file, PhpFileLoader $loader)

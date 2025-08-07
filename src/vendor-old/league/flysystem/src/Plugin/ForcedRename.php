@@ -7,7 +7,7 @@ use League\Flysystem\FileNotFoundException;
 class ForcedRename extends AbstractPlugin
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMethod()
     {
@@ -17,12 +17,11 @@ class ForcedRename extends AbstractPlugin
     /**
      * Renames a file, overwriting the destination if it exists.
      *
-     * @param string $path    Path to the existing file.
-     * @param string $newpath The new path of the file.
+     * @param  string  $path  Path to the existing file.
+     * @param  string  $newpath  The new path of the file.
+     * @return bool True on success, false on failure.
      *
      * @throws FileNotFoundException Thrown if $path does not exist.
-     *
-     * @return bool True on success, false on failure.
      */
     public function handle($path, $newpath)
     {

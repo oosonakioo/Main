@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +14,4 @@
  *
  * @since      Interface available since Release 4.0.0
  */
-interface PHPUnit_Exception
-{
-}
+interface PHPUnit_Exception {}

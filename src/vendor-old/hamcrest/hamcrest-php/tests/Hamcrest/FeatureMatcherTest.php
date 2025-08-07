@@ -1,13 +1,16 @@
 <?php
+
 namespace Hamcrest;
 
 class Thingy
 {
     private $_result;
+
     public function __construct($result)
     {
         $this->_result = $result;
     }
+
     public function getResult()
     {
         return $this->_result;
@@ -21,6 +24,7 @@ class ResultMatcher extends \Hamcrest\FeatureMatcher
     {
         parent::__construct(self::TYPE_ANY, null, equalTo('bar'), 'Thingy with result', 'result');
     }
+
     public function featureValueOf($actual)
     {
         if ($actual instanceof \Hamcrest\Thingy) {
@@ -31,10 +35,9 @@ class ResultMatcher extends \Hamcrest\FeatureMatcher
 
 class FeatureMatcherTest extends \Hamcrest\AbstractMatcherTest
 {
-
     private $_resultMatcher;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->_resultMatcher = $this->_resultMatcher();
     }
@@ -44,13 +47,13 @@ class FeatureMatcherTest extends \Hamcrest\AbstractMatcherTest
         return $this->_resultMatcher();
     }
 
-    public function testMatchesPartOfAnObject()
+    public function test_matches_part_of_an_object()
     {
         $this->assertMatches($this->_resultMatcher, new \Hamcrest\Thingy('bar'), 'feature');
         $this->assertDescription('Thingy with result "bar"', $this->_resultMatcher);
     }
 
-    public function testMismatchesPartOfAnObject()
+    public function test_mismatches_part_of_an_object()
     {
         $this->assertMismatchDescription(
             'result was "foo"',
@@ -59,7 +62,7 @@ class FeatureMatcherTest extends \Hamcrest\AbstractMatcherTest
         );
     }
 
-    public function testDoesNotGenerateNoticesForNull()
+    public function test_does_not_generate_notices_for_null()
     {
         $this->assertMismatchDescription('result was null', $this->_resultMatcher, null);
     }
@@ -68,6 +71,6 @@ class FeatureMatcherTest extends \Hamcrest\AbstractMatcherTest
 
     private function _resultMatcher()
     {
-        return new \Hamcrest\ResultMatcher();
+        return new \Hamcrest\ResultMatcher;
     }
 }

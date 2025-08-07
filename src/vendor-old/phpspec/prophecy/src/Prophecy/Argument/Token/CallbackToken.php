@@ -25,13 +25,13 @@ class CallbackToken implements TokenInterface
     /**
      * Initializes token.
      *
-     * @param callable $callback
+     * @param  callable  $callback
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
     public function __construct($callback)
     {
-        if (!is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw new InvalidArgumentException(sprintf(
                 'Callable expected as an argument to CallbackToken, but got %s.',
                 gettype($callback)
@@ -44,7 +44,6 @@ class CallbackToken implements TokenInterface
     /**
      * Scores 7 if callback returns true, false otherwise.
      *
-     * @param $argument
      *
      * @return bool|int
      */

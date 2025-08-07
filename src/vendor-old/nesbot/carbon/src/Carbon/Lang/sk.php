@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => 'rok|:count roky|:count rokov',
     'y' => 'rok|:count roky|:count rokov',
     'month' => 'mesiac|:count mesiace|:count mesiacov',
@@ -28,4 +28,4 @@ return array(
     'from_now' => 'za :time',
     'after' => ':time neskôr',
     'before' => ':time predtým',
-);
+];

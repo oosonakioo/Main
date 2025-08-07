@@ -6,14 +6,16 @@
  */
 class HTMLPurifier_ErrorCollector
 {
-
     /**
      * Identifiers for the returned error array. These are purposely numeric
      * so list() can be used.
      */
-    const LINENO   = 0;
+    const LINENO = 0;
+
     const SEVERITY = 1;
-    const MESSAGE  = 2;
+
+    const MESSAGE = 2;
+
     const CHILDREN = 3;
 
     /**
@@ -29,7 +31,7 @@ class HTMLPurifier_ErrorCollector
     /**
      * @type array
      */
-    protected $_stacks = array(array());
+    protected $_stacks = [[]];
 
     /**
      * @type HTMLPurifier_Language
@@ -49,27 +51,28 @@ class HTMLPurifier_ErrorCollector
     /**
      * @type array
      */
-    protected $lines = array();
+    protected $lines = [];
 
     /**
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_Context  $context
      */
     public function __construct($context)
     {
-        $this->locale    =& $context->get('Locale');
-        $this->context   = $context;
-        $this->_current  =& $this->_stacks[0];
-        $this->errors    =& $this->_stacks[0];
+        $this->locale = &$context->get('Locale');
+        $this->context = $context;
+        $this->_current = &$this->_stacks[0];
+        $this->errors = &$this->_stacks[0];
     }
 
     /**
      * Sends an error message to the collector for later use
-     * @param int $severity Error severity, PHP error style (don't use E_USER_)
-     * @param string $msg Error message text
+     *
+     * @param  int  $severity  Error severity, PHP error style (don't use E_USER_)
+     * @param  string  $msg  Error message text
      */
     public function send($severity, $msg)
     {
-        $args = array();
+        $args = [];
         if (func_num_args() > 2) {
             $args = func_get_args();
             array_shift($args);
@@ -77,16 +80,16 @@ class HTMLPurifier_ErrorCollector
         }
 
         $token = $this->context->get('CurrentToken', true);
-        $line  = $token ? $token->line : $this->context->get('CurrentLine', true);
-        $col   = $token ? $token->col  : $this->context->get('CurrentCol', true);
-        $attr  = $this->context->get('CurrentAttr', true);
+        $line = $token ? $token->line : $this->context->get('CurrentLine', true);
+        $col = $token ? $token->col : $this->context->get('CurrentCol', true);
+        $attr = $this->context->get('CurrentAttr', true);
 
         // perform special substitutions, also add custom parameters
-        $subst = array();
-        if (!is_null($token)) {
+        $subst = [];
+        if (! is_null($token)) {
             $args['CurrentToken'] = $token;
         }
-        if (!is_null($attr)) {
+        if (! is_null($attr)) {
             $subst['$CurrentAttr.Name'] = $attr;
             if (isset($token->attr[$attr])) {
                 $subst['$CurrentAttr.Value'] = $token->attr[$attr];
@@ -99,24 +102,24 @@ class HTMLPurifier_ErrorCollector
             $msg = $this->locale->formatMessage($msg, $args);
         }
 
-        if (!empty($subst)) {
+        if (! empty($subst)) {
             $msg = strtr($msg, $subst);
         }
 
         // (numerically indexed)
-        $error = array(
-            self::LINENO   => $line,
+        $error = [
+            self::LINENO => $line,
             self::SEVERITY => $severity,
-            self::MESSAGE  => $msg,
-            self::CHILDREN => array()
-        );
+            self::MESSAGE => $msg,
+            self::CHILDREN => [],
+        ];
         $this->_current[] = $error;
 
         // NEW CODE BELOW ...
         // Top-level errors are either:
         //  TOKEN type, if $value is set appropriately, or
         //  "syntax" type, if $value is null
-        $new_struct = new HTMLPurifier_ErrorStruct();
+        $new_struct = new HTMLPurifier_ErrorStruct;
         $new_struct->type = HTMLPurifier_ErrorStruct::TOKEN;
         if ($token) {
             $new_struct->value = clone $token;
@@ -139,17 +142,17 @@ class HTMLPurifier_ErrorCollector
         ksort($this->lines, SORT_NUMERIC);
 
         // Now, check if we need to operate on a lower structure
-        if (!empty($attr)) {
+        if (! empty($attr)) {
             $struct = $struct->getChild(HTMLPurifier_ErrorStruct::ATTR, $attr);
-            if (!$struct->value) {
-                $struct->value = array($attr, 'PUT VALUE HERE');
+            if (! $struct->value) {
+                $struct->value = [$attr, 'PUT VALUE HERE'];
             }
         }
-        if (!empty($cssprop)) {
+        if (! empty($cssprop)) {
             $struct = $struct->getChild(HTMLPurifier_ErrorStruct::CSSPROP, $cssprop);
-            if (!$struct->value) {
+            if (! $struct->value) {
                 // if we tokenize CSS this might be a little more difficult to do
-                $struct->value = array($cssprop, 'PUT VALUE HERE');
+                $struct->value = [$cssprop, 'PUT VALUE HERE'];
             }
         }
 
@@ -167,13 +170,14 @@ class HTMLPurifier_ErrorCollector
 
     /**
      * Default HTML formatting implementation for error messages
-     * @param HTMLPurifier_Config $config Configuration, vital for HTML output nature
-     * @param array $errors Errors array to display; used for recursion.
+     *
+     * @param  HTMLPurifier_Config  $config  Configuration, vital for HTML output nature
+     * @param  array  $errors  Errors array to display; used for recursion.
      * @return string
      */
     public function getHTMLFormatted($config, $errors = null)
     {
-        $ret = array();
+        $ret = [];
 
         $this->generator = new HTMLPurifier_Generator($config, $this->context);
         if ($errors === null) {
@@ -196,38 +200,38 @@ class HTMLPurifier_ErrorCollector
         }
 
         if (empty($errors)) {
-            return '<p>' . $this->locale->getMessage('ErrorCollector: No errors') . '</p>';
+            return '<p>'.$this->locale->getMessage('ErrorCollector: No errors').'</p>';
         } else {
-            return '<ul><li>' . implode('</li><li>', $ret) . '</li></ul>';
+            return '<ul><li>'.implode('</li><li>', $ret).'</li></ul>';
         }
 
     }
 
     private function _renderStruct(&$ret, $struct, $line = null, $col = null)
     {
-        $stack = array($struct);
-        $context_stack = array(array());
+        $stack = [$struct];
+        $context_stack = [[]];
         while ($current = array_pop($stack)) {
             $context = array_pop($context_stack);
             foreach ($current->errors as $error) {
-                list($severity, $msg) = $error;
+                [$severity, $msg] = $error;
                 $string = '';
                 $string .= '<div>';
                 // W3C uses an icon to indicate the severity of the error.
                 $error = $this->locale->getErrorName($severity);
                 $string .= "<span class=\"error e$severity\"><strong>$error</strong></span> ";
-                if (!is_null($line) && !is_null($col)) {
+                if (! is_null($line) && ! is_null($col)) {
                     $string .= "<em class=\"location\">Line $line, Column $col: </em> ";
                 } else {
                     $string .= '<em class="location">End of Document: </em> ';
                 }
-                $string .= '<strong class="description">' . $this->generator->escape($msg) . '</strong> ';
+                $string .= '<strong class="description">'.$this->generator->escape($msg).'</strong> ';
                 $string .= '</div>';
                 // Here, have a marker for the character on the column appropriate.
                 // Be sure to clip extremely long lines.
-                //$string .= '<pre>';
-                //$string .= '';
-                //$string .= '</pre>';
+                // $string .= '<pre>';
+                // $string .= '';
+                // $string .= '</pre>';
                 $ret[] = $string;
             }
             foreach ($current->children as $array) {

@@ -34,8 +34,7 @@ class PseudoNode extends AbstractNode
     private $identifier;
 
     /**
-     * @param NodeInterface $selector
-     * @param string        $identifier
+     * @param  string  $identifier
      */
     public function __construct(NodeInterface $selector, $identifier)
     {

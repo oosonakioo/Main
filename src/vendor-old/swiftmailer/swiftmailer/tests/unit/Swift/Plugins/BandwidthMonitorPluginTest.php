@@ -8,10 +8,10 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
 
     protected function setUp()
     {
-        $this->_monitor = new Swift_Plugins_BandwidthMonitorPlugin();
+        $this->_monitor = new Swift_Plugins_BandwidthMonitorPlugin;
     }
 
-    public function testBytesOutIncreasesWhenCommandsSent()
+    public function test_bytes_out_increases_when_commands_sent()
     {
         $evt = $this->_createCommandEvent("RCPT TO:<foo@bar.com>\r\n");
 
@@ -22,7 +22,7 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
         $this->assertEquals(46, $this->_monitor->getBytesOut());
     }
 
-    public function testBytesInIncreasesWhenResponsesReceived()
+    public function test_bytes_in_increases_when_responses_received()
     {
         $evt = $this->_createResponseEvent("250 Ok\r\n");
 
@@ -33,7 +33,7 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
         $this->assertEquals(16, $this->_monitor->getBytesIn());
     }
 
-    public function testCountersCanBeReset()
+    public function test_counters_can_be_reset()
     {
         $evt = $this->_createResponseEvent("250 Ok\r\n");
 
@@ -57,7 +57,7 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
         $this->assertEquals(0, $this->_monitor->getBytesIn());
     }
 
-    public function testBytesOutIncreasesAccordingToMessageLength()
+    public function test_bytes_out_increases_according_to_message_length()
     {
         $message = $this->_createMessageWithByteCount(6);
         $evt = $this->_createSendEvent($message);
@@ -72,8 +72,8 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
     private function _createSendEvent($message)
     {
         $evt = $this->getMockBuilder('Swift_Events_SendEvent')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $evt->expects($this->any())
             ->method('getMessage')
             ->will($this->returnValue($message));
@@ -84,8 +84,8 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
     private function _createCommandEvent($command)
     {
         $evt = $this->getMockBuilder('Swift_Events_CommandEvent')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $evt->expects($this->any())
             ->method('getCommand')
             ->will($this->returnValue($command));
@@ -96,8 +96,8 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
     private function _createResponseEvent($response)
     {
         $evt = $this->getMockBuilder('Swift_Events_ResponseEvent')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $evt->expects($this->any())
             ->method('getResponse')
             ->will($this->returnValue($response));
@@ -111,17 +111,17 @@ class Swift_Plugins_BandwidthMonitorPluginTest extends \PHPUnit_Framework_TestCa
         $msg = $this->getMockBuilder('Swift_Mime_Message')->getMock();
         $msg->expects($this->any())
             ->method('toByteStream')
-            ->will($this->returnCallback(array($this, '_write')));
-      /*  $this->_checking(Expectations::create()
-            -> ignoring($msg)->toByteStream(any()) -> calls(array($this, '_write'))
-        ); */
+            ->will($this->returnCallback([$this, '_write']));
+        /*  $this->_checking(Expectations::create()
+              -> ignoring($msg)->toByteStream(any()) -> calls(array($this, '_write'))
+          ); */
 
         return $msg;
     }
 
     public function _write($is)
     {
-        for ($i = 0; $i < $this->_bytes; ++$i) {
+        for ($i = 0; $i < $this->_bytes; $i++) {
             $is->write('x');
         }
     }

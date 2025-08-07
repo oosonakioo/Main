@@ -22,6 +22,7 @@ class SymfonyStyleTest extends PHPUnit_Framework_TestCase
 {
     /** @var Command */
     protected $command;
+
     /** @var CommandTester */
     protected $tester;
 
@@ -40,11 +41,11 @@ class SymfonyStyleTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider inputCommandToOutputFilesProvider
      */
-    public function testOutputs($inputCommandFilepath, $outputFilepath)
+    public function test_outputs($inputCommandFilepath, $outputFilepath)
     {
         $code = require $inputCommandFilepath;
         $this->command->setCode($code);
-        $this->tester->execute(array(), array('interactive' => false, 'decorated' => false));
+        $this->tester->execute([], ['interactive' => false, 'decorated' => false]);
         $this->assertStringEqualsFile($outputFilepath, $this->tester->getDisplay(true));
     }
 

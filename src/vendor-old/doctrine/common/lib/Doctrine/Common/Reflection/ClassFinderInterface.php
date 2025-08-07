@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,8 +30,7 @@ interface ClassFinderInterface
     /**
      * Finds a class.
      *
-     * @param string $class The name of the class.
-     *
+     * @param  string  $class  The name of the class.
      * @return string|null The name of the class or NULL if not found.
      */
     public function findFile($class);

@@ -11,8 +11,8 @@
 
 namespace Prophecy\Promise;
 
-use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Return promise.
@@ -21,12 +21,12 @@ use Prophecy\Prophecy\MethodProphecy;
  */
 class ReturnPromise implements PromiseInterface
 {
-    private $returnValues = array();
+    private $returnValues = [];
 
     /**
      * Initializes promise.
      *
-     * @param array $returnValues Array of values
+     * @param  array  $returnValues  Array of values
      */
     public function __construct(array $returnValues)
     {
@@ -36,9 +36,6 @@ class ReturnPromise implements PromiseInterface
     /**
      * Returns saved values one by one until last one, then continuously returns last value.
      *
-     * @param array          $args
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
      *
      * @return mixed
      */
@@ -46,7 +43,7 @@ class ReturnPromise implements PromiseInterface
     {
         $value = array_shift($this->returnValues);
 
-        if (!count($this->returnValues)) {
+        if (! count($this->returnValues)) {
             $this->returnValues[] = $value;
         }
 

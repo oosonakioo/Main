@@ -2,17 +2,17 @@
 
 class Swift_Mime_MimePartTest extends Swift_Mime_AbstractMimeEntityTest
 {
-    public function testNestingLevelIsSubpart()
+    public function test_nesting_level_is_subpart()
     {
         $part = $this->_createMimePart($this->_createHeaderSet(),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $this->assertEquals(
             Swift_Mime_MimeEntity::LEVEL_ALTERNATIVE, $part->getNestingLevel()
-            );
+        );
     }
 
-    public function testCharsetIsReturnedFromHeader()
+    public function test_charset_is_returned_from_header()
     {
         /* -- RFC 2046, 4.1.2.
         A critical parameter that may be specified in the Content-Type field
@@ -27,198 +27,198 @@ class Swift_Mime_MimePartTest extends Swift_Mime_AbstractMimeEntityTest
         */
 
         $cType = $this->_createHeader('Content-Type', 'text/plain',
-            array('charset' => 'iso-8859-1')
-            );
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+            ['charset' => 'iso-8859-1']
+        );
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $this->assertEquals('iso-8859-1', $part->getCharset());
     }
 
-    public function testCharsetIsSetInHeader()
+    public function test_charset_is_set_in_header()
     {
         $cType = $this->_createHeader('Content-Type', 'text/plain',
-            array('charset' => 'iso-8859-1'), false
-            );
+            ['charset' => 'iso-8859-1'], false
+        );
         $cType->shouldReceive('setParameter')->once()->with('charset', 'utf-8');
 
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $part->setCharset('utf-8');
     }
 
-    public function testCharsetIsSetInHeaderIfPassedToSetBody()
+    public function test_charset_is_set_in_header_if_passed_to_set_body()
     {
         $cType = $this->_createHeader('Content-Type', 'text/plain',
-            array('charset' => 'iso-8859-1'), false
-            );
+            ['charset' => 'iso-8859-1'], false
+        );
         $cType->shouldReceive('setParameter')->once()->with('charset', 'utf-8');
 
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $part->setBody('', 'text/plian', 'utf-8');
     }
 
-    public function testSettingCharsetNotifiesEncoder()
+    public function test_setting_charset_notifies_encoder()
     {
         $encoder = $this->_createEncoder('quoted-printable', false);
         $encoder->expects($this->once())
-                ->method('charsetChanged')
-                ->with('utf-8');
+            ->method('charsetChanged')
+            ->with('utf-8');
 
         $part = $this->_createMimePart($this->_createHeaderSet(),
             $encoder, $this->_createCache()
-            );
+        );
         $part->setCharset('utf-8');
     }
 
-    public function testSettingCharsetNotifiesHeaders()
+    public function test_setting_charset_notifies_headers()
     {
-        $headers = $this->_createHeaderSet(array(), false);
+        $headers = $this->_createHeaderSet([], false);
         $headers->shouldReceive('charsetChanged')
-                ->zeroOrMoreTimes()
-                ->with('utf-8');
+            ->zeroOrMoreTimes()
+            ->with('utf-8');
 
         $part = $this->_createMimePart($headers, $this->_createEncoder(),
             $this->_createCache()
-            );
+        );
         $part->setCharset('utf-8');
     }
 
-    public function testSettingCharsetNotifiesChildren()
+    public function test_setting_charset_notifies_children()
     {
         $child = $this->_createChild(0, '', false);
         $child->shouldReceive('charsetChanged')
-              ->once()
-              ->with('windows-874');
+            ->once()
+            ->with('windows-874');
 
         $part = $this->_createMimePart($this->_createHeaderSet(),
             $this->_createEncoder(), $this->_createCache()
-            );
-        $part->setChildren(array($child));
+        );
+        $part->setChildren([$child]);
         $part->setCharset('windows-874');
     }
 
-    public function testCharsetChangeUpdatesCharset()
+    public function test_charset_change_updates_charset()
     {
         $cType = $this->_createHeader('Content-Type', 'text/plain',
-            array('charset' => 'iso-8859-1'), false
-            );
+            ['charset' => 'iso-8859-1'], false
+        );
         $cType->shouldReceive('setParameter')->once()->with('charset', 'utf-8');
 
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $part->charsetChanged('utf-8');
     }
 
-    public function testSettingCharsetClearsCache()
+    public function test_setting_charset_clears_cache()
     {
-        $headers = $this->_createHeaderSet(array(), false);
+        $headers = $this->_createHeaderSet([], false);
         $headers->shouldReceive('toString')
-                ->zeroOrMoreTimes()
-                ->andReturn("Content-Type: text/plain; charset=utf-8\r\n");
+            ->zeroOrMoreTimes()
+            ->andReturn("Content-Type: text/plain; charset=utf-8\r\n");
 
         $cache = $this->_createCache(false);
 
         $entity = $this->_createEntity($headers, $this->_createEncoder(),
             $cache
-            );
+        );
 
         $entity->setBody("blah\r\nblah!");
         $entity->toString();
 
         // Initialize the expectation here because we only care about what happens in setCharset()
         $cache->shouldReceive('clearKey')
-                ->once()
-                ->with(\Mockery::any(), 'body');
+            ->once()
+            ->with(\Mockery::any(), 'body');
 
         $entity->setCharset('iso-2022');
     }
 
-    public function testFormatIsReturnedFromHeader()
+    public function test_format_is_returned_from_header()
     {
         /* -- RFC 3676.
      */
 
         $cType = $this->_createHeader('Content-Type', 'text/plain',
-            array('format' => 'flowed')
-            );
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+            ['format' => 'flowed']
+        );
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $this->assertEquals('flowed', $part->getFormat());
     }
 
-    public function testFormatIsSetInHeader()
+    public function test_format_is_set_in_header()
     {
-        $cType = $this->_createHeader('Content-Type', 'text/plain', array(), false);
+        $cType = $this->_createHeader('Content-Type', 'text/plain', [], false);
         $cType->shouldReceive('setParameter')->once()->with('format', 'fixed');
 
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $part->setFormat('fixed');
     }
 
-    public function testDelSpIsReturnedFromHeader()
+    public function test_del_sp_is_returned_from_header()
     {
         /* -- RFC 3676.
      */
 
         $cType = $this->_createHeader('Content-Type', 'text/plain',
-            array('delsp' => 'no')
-            );
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+            ['delsp' => 'no']
+        );
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $this->assertFalse($part->getDelSp());
     }
 
-    public function testDelSpIsSetInHeader()
+    public function test_del_sp_is_set_in_header()
     {
-        $cType = $this->_createHeader('Content-Type', 'text/plain', array(), false);
+        $cType = $this->_createHeader('Content-Type', 'text/plain', [], false);
         $cType->shouldReceive('setParameter')->once()->with('delsp', 'yes');
 
-        $part = $this->_createMimePart($this->_createHeaderSet(array(
-            'Content-Type' => $cType, )),
+        $part = $this->_createMimePart($this->_createHeaderSet([
+            'Content-Type' => $cType, ]),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
         $part->setDelSp(true);
     }
 
-    public function testFluidInterface()
+    public function test_fluid_interface()
     {
         $part = $this->_createMimePart($this->_createHeaderSet(),
             $this->_createEncoder(), $this->_createCache()
-            );
+        );
 
         $this->assertSame($part,
             $part
-            ->setContentType('text/plain')
-            ->setEncoder($this->_createEncoder())
-            ->setId('foo@bar')
-            ->setDescription('my description')
-            ->setMaxLineLength(998)
-            ->setBody('xx')
-            ->setBoundary('xyz')
-            ->setChildren(array())
-            ->setCharset('utf-8')
-            ->setFormat('flowed')
-            ->setDelSp(true)
-            );
+                ->setContentType('text/plain')
+                ->setEncoder($this->_createEncoder())
+                ->setId('foo@bar')
+                ->setDescription('my description')
+                ->setMaxLineLength(998)
+                ->setBody('xx')
+                ->setBoundary('xyz')
+                ->setChildren([])
+                ->setCharset('utf-8')
+                ->setFormat('flowed')
+                ->setDelSp(true)
+        );
     }
 
-    //abstract
+    // abstract
     protected function _createEntity($headers, $encoder, $cache)
     {
         return $this->_createMimePart($headers, $encoder, $cache);
@@ -226,6 +226,6 @@ class Swift_Mime_MimePartTest extends Swift_Mime_AbstractMimeEntityTest
 
     protected function _createMimePart($headers, $encoder, $cache)
     {
-        return new Swift_Mime_MimePart($headers, $encoder, $cache, new Swift_Mime_Grammar());
+        return new Swift_Mime_MimePart($headers, $encoder, $cache, new Swift_Mime_Grammar);
     }
 }

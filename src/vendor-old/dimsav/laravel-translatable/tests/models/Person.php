@@ -30,8 +30,6 @@ class Person extends Eloquent
     /**
      * This is the foreign key used to define the translation relationship.
      * Set this if you want to overwrite the laravel default for foreign keys.
-     *
-     * @var
      */
     public $translationForeignKey;
 
@@ -54,7 +52,6 @@ class Person extends Eloquent
     /**
      * Mutate name attribute into upper-case.
      *
-     * @param $value
      *
      * @return string
      */

@@ -19,14 +19,15 @@ namespace Symfony\Component\Finder;
 class SplFileInfo extends \SplFileInfo
 {
     private $relativePath;
+
     private $relativePathname;
 
     /**
      * Constructor.
      *
-     * @param string $file             The file name
-     * @param string $relativePath     The relative path
-     * @param string $relativePathname The relative path name
+     * @param  string  $file  The file name
+     * @param  string  $relativePath  The relative path
+     * @param  string  $relativePathname  The relative path name
      */
     public function __construct($file, $relativePath, $relativePathname)
     {
@@ -71,7 +72,7 @@ class SplFileInfo extends \SplFileInfo
         $level = error_reporting(0);
         $content = file_get_contents($this->getPathname());
         error_reporting($level);
-        if (false === $content) {
+        if ($content === false) {
             $error = error_get_last();
             throw new \RuntimeException($error['message']);
         }

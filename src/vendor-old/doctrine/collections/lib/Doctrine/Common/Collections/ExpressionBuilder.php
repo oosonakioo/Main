@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,13 +32,13 @@ use Doctrine\Common\Collections\Expr\Value;
  * may be different between implementations (Array vs ORM vs ODM).
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 class ExpressionBuilder
 {
     /**
-     * @param mixed $x
-     *
+     * @param  mixed  $x
      * @return CompositeExpression
      */
     public function andX($x = null)
@@ -46,8 +47,7 @@ class ExpressionBuilder
     }
 
     /**
-     * @param mixed $x
-     *
+     * @param  mixed  $x
      * @return CompositeExpression
      */
     public function orX($x = null)
@@ -56,9 +56,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function eq($field, $value)
@@ -67,9 +66,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function gt($field, $value)
@@ -78,9 +76,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function lt($field, $value)
@@ -89,9 +86,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function gte($field, $value)
@@ -100,9 +96,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function lte($field, $value)
@@ -111,9 +106,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function neq($field, $value)
@@ -122,8 +116,7 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     *
+     * @param  string  $field
      * @return Comparison
      */
     public function isNull($field)
@@ -132,9 +125,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $values
-     *
+     * @param  string  $field
+     * @param  mixed  $values
      * @return Comparison
      */
     public function in($field, array $values)
@@ -143,9 +135,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $values
-     *
+     * @param  string  $field
+     * @param  mixed  $values
      * @return Comparison
      */
     public function notIn($field, array $values)
@@ -154,9 +145,8 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function contains($field, $value)
@@ -165,20 +155,18 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
-    public function memberOf ($field, $value)
+    public function memberOf($field, $value)
     {
         return new Comparison($field, Comparison::MEMBER_OF, new Value($value));
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function startsWith($field, $value)
@@ -187,14 +175,12 @@ class ExpressionBuilder
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
-     *
+     * @param  string  $field
+     * @param  mixed  $value
      * @return Comparison
      */
     public function endsWith($field, $value)
     {
         return new Comparison($field, Comparison::ENDS_WITH, new Value($value));
-    }    
-
+    }
 }

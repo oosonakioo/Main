@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Logging;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -36,12 +38,12 @@ class DebugStack implements SQLLogger
      *
      * @var array
      */
-    public $queries = array();
+    public $queries = [];
 
     /**
      * If Debug Stack is enabled (log queries) or not.
      *
-     * @var boolean
+     * @var bool
      */
     public $enabled = true;
 
@@ -51,18 +53,18 @@ class DebugStack implements SQLLogger
     public $start = null;
 
     /**
-     * @var integer
+     * @var int
      */
     public $currentQuery = 0;
 
     /**
      * {@inheritdoc}
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, ?array $params = null, ?array $types = null)
     {
         if ($this->enabled) {
             $this->start = microtime(true);
-            $this->queries[++$this->currentQuery] = array('sql' => $sql, 'params' => $params, 'types' => $types, 'executionMS' => 0);
+            $this->queries[++$this->currentQuery] = ['sql' => $sql, 'params' => $params, 'types' => $types, 'executionMS' => 0];
         }
     }
 

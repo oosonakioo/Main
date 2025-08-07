@@ -10,6 +10,7 @@ class RedisTaggedCache extends TaggedCache
      * @var string
      */
     const REFERENCE_KEY_FOREVER = 'forever_ref';
+
     /**
      * Standard reference key.
      *
@@ -21,7 +22,7 @@ class RedisTaggedCache extends TaggedCache
      * Store an item in the cache.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  \DateTime|int  $minutes
      * @return void
      */
@@ -36,7 +37,7 @@ class RedisTaggedCache extends TaggedCache
      * Store an item in the cache indefinitely.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function forever($key, $value)

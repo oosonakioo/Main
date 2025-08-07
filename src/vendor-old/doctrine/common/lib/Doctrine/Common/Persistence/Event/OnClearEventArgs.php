@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Roman Borschel <roman@code-factory.de>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -45,8 +47,8 @@ class OnClearEventArgs extends EventArgs
     /**
      * Constructor.
      *
-     * @param ObjectManager $objectManager The object manager.
-     * @param string|null   $entityClass   The optional entity class.
+     * @param  ObjectManager  $objectManager  The object manager.
+     * @param  string|null  $entityClass  The optional entity class.
      */
     public function __construct($objectManager, $entityClass = null)
     {
@@ -81,6 +83,6 @@ class OnClearEventArgs extends EventArgs
      */
     public function clearsAllEntities()
     {
-        return ($this->entityClass === null);
+        return $this->entityClass === null;
     }
 }

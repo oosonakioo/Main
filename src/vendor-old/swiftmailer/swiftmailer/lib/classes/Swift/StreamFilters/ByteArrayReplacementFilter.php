@@ -27,7 +27,7 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
     private $_index;
 
     /** The Search Tree */
-    private $_tree = array();
+    private $_tree = [];
 
     /**  Gives the size of the largest search */
     private $_treeMaxLen = 0;
@@ -37,16 +37,16 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
     /**
      * Create a new ByteArrayReplacementFilter with $search and $replace.
      *
-     * @param array $search
-     * @param array $replace
+     * @param  array  $search
+     * @param  array  $replace
      */
     public function __construct($search, $replace)
     {
         $this->_search = $search;
-        $this->_index = array();
-        $this->_tree = array();
-        $this->_replace = array();
-        $this->_repSize = array();
+        $this->_index = [];
+        $this->_tree = [];
+        $this->_replace = [];
+        $this->_repSize = [];
 
         $tree = null;
         $i = null;
@@ -60,8 +60,8 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
             if (is_array($search_element)) {
                 foreach ($search_element as $k => $char) {
                     $this->_index[$char] = true;
-                    if (!isset($tree[$char])) {
-                        $tree[$char] = array();
+                    if (! isset($tree[$char])) {
+                        $tree[$char] = [];
                     }
                     $tree = &$tree[$char];
                 }
@@ -69,8 +69,8 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
                 $size = max($size, $last_size);
             } else {
                 $last_size = 1;
-                if (!isset($tree[$search_element])) {
-                    $tree[$search_element] = array();
+                if (! isset($tree[$search_element])) {
+                    $tree[$search_element] = [];
                 }
                 $tree = &$tree[$search_element];
                 $size = max($last_size, $size);
@@ -83,12 +83,12 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
             $this->_treeMaxLen = $size;
         }
         foreach ($replace as $rep) {
-            if (!is_array($rep)) {
-                $rep = array($rep);
+            if (! is_array($rep)) {
+                $rep = [$rep];
             }
             $this->_replace[] = $rep;
         }
-        for ($i = count($this->_replace) - 1; $i >= 0; --$i) {
+        for ($i = count($this->_replace) - 1; $i >= 0; $i--) {
             $this->_replace[$i] = $rep = $this->filter($this->_replace[$i], $i);
             $this->_repSize[$i] = count($rep);
         }
@@ -97,8 +97,7 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
     /**
      * Returns true if based on the buffer passed more bytes should be buffered.
      *
-     * @param array $buffer
-     *
+     * @param  array  $buffer
      * @return bool
      */
     public function shouldBuffer($buffer)
@@ -111,9 +110,8 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
     /**
      * Perform the actual replacements on $buffer and return the result.
      *
-     * @param array $buffer
-     * @param int   $_minReplaces
-     *
+     * @param  array  $buffer
+     * @param  int  $_minReplaces
      * @return array
      */
     public function filter($buffer, $_minReplaces = -1)
@@ -122,14 +120,14 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
             return $buffer;
         }
 
-        $newBuffer = array();
+        $newBuffer = [];
         $buf_size = count($buffer);
         $last_size = 0;
-        for ($i = 0; $i < $buf_size; ++$i) {
+        for ($i = 0; $i < $buf_size; $i++) {
             $search_pos = $this->_tree;
             $last_found = PHP_INT_MAX;
             // We try to find if the next byte is part of a search pattern
-            for ($j = 0; $j <= $this->_treeMaxLen; ++$j) {
+            for ($j = 0; $j <= $this->_treeMaxLen; $j++) {
                 // We have a new byte for a search pattern
                 if (isset($buffer[$p = $i + $j]) && isset($search_pos[$buffer[$p]])) {
                     $search_pos = $search_pos[$buffer[$p]];
@@ -144,7 +142,7 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
                 elseif ($last_found !== PHP_INT_MAX) {
                     // Adding replacement datas to output buffer
                     $rep_size = $this->_repSize[$last_found];
-                    for ($j = 0; $j < $rep_size; ++$j) {
+                    for ($j = 0; $j < $rep_size; $j++) {
                         $newBuffer[] = $this->_replace[$last_found][$j];
                     }
                     // We Move cursor forward

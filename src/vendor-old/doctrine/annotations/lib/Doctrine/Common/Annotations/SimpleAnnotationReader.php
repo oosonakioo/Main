@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ namespace Doctrine\Common\Annotations;
  * full-control over all annotations that are available.
  *
  * @since  2.2
+ *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
@@ -43,15 +45,14 @@ class SimpleAnnotationReader implements Reader
      */
     public function __construct()
     {
-        $this->parser = new DocParser();
+        $this->parser = new DocParser;
         $this->parser->setIgnoreNotImportedAnnotations(true);
     }
 
     /**
      * Adds a namespace in which we will look for annotations.
      *
-     * @param string $namespace
-     *
+     * @param  string  $namespace
      * @return void
      */
     public function addNamespace($namespace)

@@ -21,16 +21,19 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 class ChoiceQuestion extends Question
 {
     private $choices;
+
     private $multiselect = false;
+
     private $prompt = ' > ';
+
     private $errorMessage = 'Value "%s" is invalid';
 
     /**
      * Constructor.
      *
-     * @param string $question The question to ask to the user
-     * @param array  $choices  The list of available choices
-     * @param mixed  $default  The default answer to return
+     * @param  string  $question  The question to ask to the user
+     * @param  array  $choices  The list of available choices
+     * @param  mixed  $default  The default answer to return
      */
     public function __construct($question, array $choices, $default = null)
     {
@@ -56,8 +59,7 @@ class ChoiceQuestion extends Question
      *
      * When multiselect is set to true, multiple choices can be answered.
      *
-     * @param bool $multiselect
-     *
+     * @param  bool  $multiselect
      * @return ChoiceQuestion The current instance
      */
     public function setMultiselect($multiselect)
@@ -91,8 +93,7 @@ class ChoiceQuestion extends Question
     /**
      * Sets the prompt for choices.
      *
-     * @param string $prompt
-     *
+     * @param  string  $prompt
      * @return ChoiceQuestion The current instance
      */
     public function setPrompt($prompt)
@@ -107,8 +108,7 @@ class ChoiceQuestion extends Question
      *
      * The error message has a string placeholder (%s) for the invalid value.
      *
-     * @param string $errorMessage
-     *
+     * @param  string  $errorMessage
      * @return ChoiceQuestion The current instance
      */
     public function setErrorMessage($errorMessage)
@@ -137,17 +137,17 @@ class ChoiceQuestion extends Question
 
             if ($multiselect) {
                 // Check for a separated comma values
-                if (!preg_match('/^[a-zA-Z0-9_-]+(?:,[a-zA-Z0-9_-]+)*$/', $selectedChoices, $matches)) {
+                if (! preg_match('/^[a-zA-Z0-9_-]+(?:,[a-zA-Z0-9_-]+)*$/', $selectedChoices, $matches)) {
                     throw new InvalidArgumentException(sprintf($errorMessage, $selected));
                 }
                 $selectedChoices = explode(',', $selectedChoices);
             } else {
-                $selectedChoices = array($selected);
+                $selectedChoices = [$selected];
             }
 
-            $multiselectChoices = array();
+            $multiselectChoices = [];
             foreach ($selectedChoices as $value) {
-                $results = array();
+                $results = [];
                 foreach ($choices as $key => $choice) {
                     if ($choice === $value) {
                         $results[] = $key;
@@ -160,17 +160,17 @@ class ChoiceQuestion extends Question
 
                 $result = array_search($value, $choices);
 
-                if (!$isAssoc) {
-                    if (false !== $result) {
+                if (! $isAssoc) {
+                    if ($result !== false) {
                         $result = $choices[$result];
                     } elseif (isset($choices[$value])) {
                         $result = $choices[$value];
                     }
-                } elseif (false === $result && isset($choices[$value])) {
+                } elseif ($result === false && isset($choices[$value])) {
                     $result = $value;
                 }
 
-                if (false === $result) {
+                if ($result === false) {
                     throw new InvalidArgumentException(sprintf($errorMessage, $value));
                 }
 

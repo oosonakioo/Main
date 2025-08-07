@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -49,7 +50,7 @@ class TokenParser
     private $pointer = 0;
 
     /**
-     * @param string $contents
+     * @param  string  $contents
      */
     public function __construct($contents)
     {
@@ -70,12 +71,11 @@ class TokenParser
     /**
      * Gets the next non whitespace and non comment token.
      *
-     * @param boolean $docCommentIsComment If TRUE then a doc comment is considered a comment and skipped.
+     * @param  bool  $docCommentIsComment  If TRUE then a doc comment is considered a comment and skipped.
      *                                     If FALSE then only whitespace and normal comments are skipped.
-     *
      * @return array|null The token if exists, null otherwise.
      */
-    public function next($docCommentIsComment = TRUE)
+    public function next($docCommentIsComment = true)
     {
         for ($i = $this->pointer; $i < $this->numTokens; $i++) {
             $this->pointer++;
@@ -103,30 +103,30 @@ class TokenParser
         $groupRoot = '';
         $class = '';
         $alias = '';
-        $statements = array();
+        $statements = [];
         $explicitAlias = false;
         while (($token = $this->next())) {
             $isNameToken = $token[0] === T_STRING || $token[0] === T_NS_SEPARATOR;
-            if (!$explicitAlias && $isNameToken) {
+            if (! $explicitAlias && $isNameToken) {
                 $class .= $token[1];
                 $alias = $token[1];
-            } else if ($explicitAlias && $isNameToken) {
+            } elseif ($explicitAlias && $isNameToken) {
                 $alias .= $token[1];
-            } else if ($token[0] === T_AS) {
+            } elseif ($token[0] === T_AS) {
                 $explicitAlias = true;
                 $alias = '';
-            } else if ($token === ',') {
-                $statements[strtolower($alias)] = $groupRoot . $class;
+            } elseif ($token === ',') {
+                $statements[strtolower($alias)] = $groupRoot.$class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
-            } else if ($token === ';') {
-                $statements[strtolower($alias)] = $groupRoot . $class;
+            } elseif ($token === ';') {
+                $statements[strtolower($alias)] = $groupRoot.$class;
                 break;
-            } else if ($token === '{' ) {
+            } elseif ($token === '{') {
                 $groupRoot = $class;
                 $class = '';
-            } else if ($token === '}' ) {
+            } elseif ($token === '}') {
                 continue;
             } else {
                 break;
@@ -139,16 +139,16 @@ class TokenParser
     /**
      * Gets all use statements.
      *
-     * @param string $namespaceName The namespace name of the reflected class.
-     *
+     * @param  string  $namespaceName  The namespace name of the reflected class.
      * @return array A list with all found use statements.
      */
     public function parseUseStatements($namespaceName)
     {
-        $statements = array();
+        $statements = [];
         while (($token = $this->next())) {
             if ($token[0] === T_USE) {
                 $statements = array_merge($statements, $this->parseUseStatement());
+
                 continue;
             }
             if ($token[0] !== T_NAMESPACE || $this->parseNamespace() != $namespaceName) {
@@ -158,7 +158,7 @@ class TokenParser
             // Get fresh array for new namespace. This is to prevent the parser to collect the use statements
             // for a previous namespace with the same name. This is the case if a namespace is defined twice
             // or if a namespace with the same name is commented out.
-            $statements = array();
+            $statements = [];
         }
 
         return $statements;

@@ -43,7 +43,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_BackgroundPosition extends HTMLPurifier_AttrDef
 {
-
     /**
      * @type HTMLPurifier_AttrDef_CSS_Length
      */
@@ -56,14 +55,14 @@ class HTMLPurifier_AttrDef_CSS_BackgroundPosition extends HTMLPurifier_AttrDef
 
     public function __construct()
     {
-        $this->length = new HTMLPurifier_AttrDef_CSS_Length();
-        $this->percentage = new HTMLPurifier_AttrDef_CSS_Percentage();
+        $this->length = new HTMLPurifier_AttrDef_CSS_Length;
+        $this->percentage = new HTMLPurifier_AttrDef_CSS_Percentage;
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -71,22 +70,22 @@ class HTMLPurifier_AttrDef_CSS_BackgroundPosition extends HTMLPurifier_AttrDef
         $string = $this->parseCDATA($string);
         $bits = explode(' ', $string);
 
-        $keywords = array();
+        $keywords = [];
         $keywords['h'] = false; // left, right
         $keywords['v'] = false; // top, bottom
         $keywords['ch'] = false; // center (first word)
         $keywords['cv'] = false; // center (second word)
-        $measures = array();
+        $measures = [];
 
         $i = 0;
 
-        $lookup = array(
+        $lookup = [
             'top' => 'v',
             'bottom' => 'v',
             'left' => 'h',
             'right' => 'h',
-            'center' => 'c'
-        );
+            'center' => 'c',
+        ];
 
         foreach ($bits as $bit) {
             if ($bit === '') {
@@ -123,11 +122,11 @@ class HTMLPurifier_AttrDef_CSS_BackgroundPosition extends HTMLPurifier_AttrDef
             }
         }
 
-        if (!$i) {
+        if (! $i) {
             return false;
         } // no valid values were caught
 
-        $ret = array();
+        $ret = [];
 
         // first keyword
         if ($keywords['h']) {
@@ -150,6 +149,7 @@ class HTMLPurifier_AttrDef_CSS_BackgroundPosition extends HTMLPurifier_AttrDef
         if (empty($ret)) {
             return false;
         }
+
         return implode(' ', $ret);
     }
 }

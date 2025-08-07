@@ -4,7 +4,5 @@ namespace Fixtures\Prophecy;
 
 class WithVariadicArgument
 {
-    function methodWithArgs(...$args)
-    {
-    }
+    public function methodWithArgs(...$args) {}
 }

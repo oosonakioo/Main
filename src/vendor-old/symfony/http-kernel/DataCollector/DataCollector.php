@@ -21,9 +21,9 @@ use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@symfony.com>
  */
-abstract class DataCollector implements DataCollectorInterface, \Serializable
+abstract class DataCollector implements \Serializable, DataCollectorInterface
 {
-    protected $data = array();
+    protected $data = [];
 
     /**
      * @var ValueExporter
@@ -43,14 +43,13 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable
     /**
      * Converts a PHP variable to a string.
      *
-     * @param mixed $var A PHP variable
-     *
+     * @param  mixed  $var  A PHP variable
      * @return string The string representation of the variable
      */
     protected function varToString($var)
     {
-        if (null === $this->valueExporter) {
-            $this->valueExporter = new ValueExporter();
+        if ($this->valueExporter === null) {
+            $this->valueExporter = new ValueExporter;
         }
 
         return $this->valueExporter->exportValue($var);

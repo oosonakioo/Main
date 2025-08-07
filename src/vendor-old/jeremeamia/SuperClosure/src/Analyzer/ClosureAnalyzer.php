@@ -1,4 +1,6 @@
-<?php namespace SuperClosure\Analyzer;
+<?php
+
+namespace SuperClosure\Analyzer;
 
 use SuperClosure\Exception\ClosureAnalysisException;
 
@@ -7,23 +9,22 @@ abstract class ClosureAnalyzer
     /**
      * Analyzer a given closure.
      *
-     * @param \Closure $closure
-     *
-     * @throws ClosureAnalysisException
      *
      * @return array
+     *
+     * @throws ClosureAnalysisException
      */
     public function analyze(\Closure $closure)
     {
         $data = [
             'reflection' => new \ReflectionFunction($closure),
-            'code'       => null,
-            'hasThis'    => false,
-            'context'    => [],
-            'hasRefs'    => false,
-            'binding'    => null,
-            'scope'      => null,
-            'isStatic'   => $this->isClosureStatic($closure),
+            'code' => null,
+            'hasThis' => false,
+            'context' => [],
+            'hasRefs' => false,
+            'binding' => null,
+            'scope' => null,
+            'isStatic' => $this->isClosureStatic($closure),
         ];
 
         $this->determineCode($data);
@@ -40,8 +41,6 @@ abstract class ClosureAnalyzer
      *
      * These variables are referred to as the "used variables", "static
      * variables", "closed upon variables", or "context" of the closure.
-     *
-     * @param array $data
      */
     abstract protected function determineContext(array &$data);
 

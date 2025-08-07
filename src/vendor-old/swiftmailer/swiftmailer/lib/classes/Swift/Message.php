@@ -18,37 +18,37 @@ class Swift_Message extends Swift_Mime_SimpleMessage
     /**
      * @var Swift_Signers_HeaderSigner[]
      */
-    private $headerSigners = array();
+    private $headerSigners = [];
 
     /**
      * @var Swift_Signers_BodySigner[]
      */
-    private $bodySigners = array();
+    private $bodySigners = [];
 
     /**
      * @var array
      */
-    private $savedMessage = array();
+    private $savedMessage = [];
 
     /**
      * Create a new Message.
      *
      * Details may be optionally passed into the constructor.
      *
-     * @param string $subject
-     * @param string $body
-     * @param string $contentType
-     * @param string $charset
+     * @param  string  $subject
+     * @param  string  $body
+     * @param  string  $contentType
+     * @param  string  $charset
      */
     public function __construct($subject = null, $body = null, $contentType = null, $charset = null)
     {
         call_user_func_array(
-            array($this, 'Swift_Mime_SimpleMessage::__construct'),
+            [$this, 'Swift_Mime_SimpleMessage::__construct'],
             Swift_DependencyContainer::getInstance()
                 ->createDependenciesFor('mime.message')
-            );
+        );
 
-        if (!isset($charset)) {
+        if (! isset($charset)) {
             $charset = Swift_DependencyContainer::getInstance()
                 ->lookup('properties.charset');
         }
@@ -63,11 +63,10 @@ class Swift_Message extends Swift_Mime_SimpleMessage
     /**
      * Create a new Message.
      *
-     * @param string $subject
-     * @param string $body
-     * @param string $contentType
-     * @param string $charset
-     *
+     * @param  string  $subject
+     * @param  string  $body
+     * @param  string  $contentType
+     * @param  string  $charset
      * @return $this
      */
     public static function newInstance($subject = null, $body = null, $contentType = null, $charset = null)
@@ -78,23 +77,21 @@ class Swift_Message extends Swift_Mime_SimpleMessage
     /**
      * Add a MimePart to this Message.
      *
-     * @param string|Swift_OutputByteStream $body
-     * @param string                        $contentType
-     * @param string                        $charset
-     *
+     * @param  string|Swift_OutputByteStream  $body
+     * @param  string  $contentType
+     * @param  string  $charset
      * @return $this
      */
     public function addPart($body, $contentType = null, $charset = null)
     {
         return $this->attach(Swift_MimePart::newInstance(
             $body, $contentType, $charset
-            ));
+        ));
     }
 
     /**
      * Detach a signature handler from a message.
      *
-     * @param Swift_Signer $signer
      *
      * @return $this
      */
@@ -112,7 +109,6 @@ class Swift_Message extends Swift_Mime_SimpleMessage
     /**
      * Attach a new signature handler to the message.
      *
-     * @param Swift_Signer $signer
      *
      * @return $this
      */
@@ -163,8 +159,6 @@ class Swift_Message extends Swift_Mime_SimpleMessage
 
     /**
      * Write this message to a {@link Swift_InputByteStream}.
-     *
-     * @param Swift_InputByteStream $is
      */
     public function toByteStream(Swift_InputByteStream $is)
     {
@@ -219,26 +213,24 @@ class Swift_Message extends Swift_Mime_SimpleMessage
      */
     protected function saveMessage()
     {
-        $this->savedMessage = array('headers' => array());
+        $this->savedMessage = ['headers' => []];
         $this->savedMessage['body'] = $this->getBody();
         $this->savedMessage['children'] = $this->getChildren();
         if (count($this->savedMessage['children']) > 0 && $this->getBody() != '') {
-            $this->setChildren(array_merge(array($this->_becomeMimePart()), $this->savedMessage['children']));
+            $this->setChildren(array_merge([$this->_becomeMimePart()], $this->savedMessage['children']));
             $this->setBody('');
         }
     }
 
     /**
      * save the original headers.
-     *
-     * @param array $altered
      */
     protected function saveHeaders(array $altered)
     {
         foreach ($altered as $head) {
             $lc = strtolower($head);
 
-            if (!isset($this->savedMessage['headers'][$lc])) {
+            if (! isset($this->savedMessage['headers'][$lc])) {
                 $this->savedMessage['headers'][$lc] = $this->getHeaders()->getAll($head);
             }
         }
@@ -253,7 +245,7 @@ class Swift_Message extends Swift_Mime_SimpleMessage
             $headers = $this->getHeaders()->getAll($name);
 
             foreach ($headers as $key => $value) {
-                if (!isset($savedValue[$key])) {
+                if (! isset($savedValue[$key])) {
                     $this->getHeaders()->remove($name, $key);
                 }
             }
@@ -269,7 +261,7 @@ class Swift_Message extends Swift_Mime_SimpleMessage
         $this->setChildren($this->savedMessage['children']);
 
         $this->restoreHeaders();
-        $this->savedMessage = array();
+        $this->savedMessage = [];
     }
 
     /**

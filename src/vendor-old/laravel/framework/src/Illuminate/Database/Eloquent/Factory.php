@@ -18,7 +18,6 @@ class Factory implements ArrayAccess
     /**
      * Create a new factory instance.
      *
-     * @param  \Faker\Generator  $faker
      * @return void
      */
     public function __construct(Faker $faker)
@@ -36,7 +35,6 @@ class Factory implements ArrayAccess
     /**
      * Create a new factory container.
      *
-     * @param  \Faker\Generator  $faker
      * @param  string|null  $pathToFactories
      * @return static
      */
@@ -52,7 +50,6 @@ class Factory implements ArrayAccess
      *
      * @param  string  $class
      * @param  string  $name
-     * @param  callable  $attributes
      * @return void
      */
     public function defineAs($class, $name, callable $attributes)
@@ -64,7 +61,6 @@ class Factory implements ArrayAccess
      * Define a class with a given set of attributes.
      *
      * @param  string  $class
-     * @param  callable  $attributes
      * @param  string  $name
      * @return void
      */
@@ -77,7 +73,6 @@ class Factory implements ArrayAccess
      * Create an instance of the given model and persist it to the database.
      *
      * @param  string  $class
-     * @param  array  $attributes
      * @return mixed
      */
     public function create($class, array $attributes = [])
@@ -90,7 +85,6 @@ class Factory implements ArrayAccess
      *
      * @param  string  $class
      * @param  string  $name
-     * @param  array  $attributes
      * @return mixed
      */
     public function createAs($class, $name, array $attributes = [])
@@ -121,7 +115,6 @@ class Factory implements ArrayAccess
      * Create an instance of the given model.
      *
      * @param  string  $class
-     * @param  array  $attributes
      * @return mixed
      */
     public function make($class, array $attributes = [])
@@ -134,7 +127,6 @@ class Factory implements ArrayAccess
      *
      * @param  string  $class
      * @param  string  $name
-     * @param  array  $attributes
      * @return mixed
      */
     public function makeAs($class, $name, array $attributes = [])
@@ -147,7 +139,6 @@ class Factory implements ArrayAccess
      *
      * @param  string  $class
      * @param  string  $name
-     * @param  array  $attributes
      * @return array
      */
     public function rawOf($class, $name, array $attributes = [])
@@ -159,7 +150,6 @@ class Factory implements ArrayAccess
      * Get the raw attribute array for a given model.
      *
      * @param  string  $class
-     * @param  array  $attributes
      * @param  string  $name
      * @return array
      */

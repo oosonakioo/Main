@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,11 +24,13 @@ namespace Doctrine\Common\Collections\Expr;
  * Expression of Expressions combined by AND or OR operation.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 class CompositeExpression implements Expression
 {
     const TYPE_AND = 'AND';
+
     const TYPE_OR = 'OR';
 
     /**
@@ -38,11 +41,10 @@ class CompositeExpression implements Expression
     /**
      * @var Expression[]
      */
-    private $expressions = array();
+    private $expressions = [];
 
     /**
-     * @param string $type
-     * @param array  $expressions
+     * @param  string  $type
      *
      * @throws \RuntimeException
      */
@@ -52,10 +54,10 @@ class CompositeExpression implements Expression
 
         foreach ($expressions as $expr) {
             if ($expr instanceof Value) {
-                throw new \RuntimeException("Values are not supported expressions as children of and/or expressions.");
+                throw new \RuntimeException('Values are not supported expressions as children of and/or expressions.');
             }
-            if ( ! ($expr instanceof Expression)) {
-                throw new \RuntimeException("No expression given to CompositeExpression.");
+            if (! ($expr instanceof Expression)) {
+                throw new \RuntimeException('No expression given to CompositeExpression.');
             }
 
             $this->expressions[] = $expr;

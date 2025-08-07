@@ -13,14 +13,14 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
  */
 class SymfonyQuestionHelperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAskChoice()
+    public function test_ask_choice()
     {
-        $questionHelper = new SymfonyQuestionHelper();
+        $questionHelper = new SymfonyQuestionHelper;
 
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $questionHelper->setHelperSet($helperSet);
 
-        $heroes = array('Superman', 'Batman', 'Spiderman');
+        $heroes = ['Superman', 'Batman', 'Spiderman'];
 
         $questionHelper->setInputStream($this->getInputStream("\n1\n  1  \nFabien\n1\nFabien\n1\n0,2\n 0 , 2  \n\n\n"));
 
@@ -54,22 +54,22 @@ class SymfonyQuestionHelperTest extends \PHPUnit_Framework_TestCase
         $question->setMaxAttempts(1);
         $question->setMultiselect(true);
 
-        $this->assertEquals(array('Batman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
-        $this->assertEquals(array('Superman', 'Spiderman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
-        $this->assertEquals(array('Superman', 'Spiderman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Batman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Spiderman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Spiderman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
 
         $question = new ChoiceQuestion('What is your favorite superhero?', $heroes, '0,1');
         $question->setMaxAttempts(1);
         $question->setMultiselect(true);
 
-        $this->assertEquals(array('Superman', 'Batman'), $questionHelper->ask($this->createInputInterfaceMock(), $output = $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Batman'], $questionHelper->ask($this->createInputInterfaceMock(), $output = $this->createOutputInterface(), $question));
         $this->assertOutputContains('What is your favorite superhero? [Superman, Batman]', $output);
 
         $question = new ChoiceQuestion('What is your favorite superhero?', $heroes, ' 0 , 1 ');
         $question->setMaxAttempts(1);
         $question->setMultiselect(true);
 
-        $this->assertEquals(array('Superman', 'Batman'), $questionHelper->ask($this->createInputInterfaceMock(), $output = $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Batman'], $questionHelper->ask($this->createInputInterfaceMock(), $output = $this->createOutputInterface(), $question));
         $this->assertOutputContains('What is your favorite superhero? [Superman, Batman]', $output);
     }
 

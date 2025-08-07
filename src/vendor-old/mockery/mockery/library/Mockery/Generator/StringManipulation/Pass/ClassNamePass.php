@@ -10,19 +10,19 @@ class ClassNamePass implements Pass
     {
         $namespace = $config->getNamespaceName();
 
-        $namespace = ltrim($namespace, "\\");
+        $namespace = ltrim($namespace, '\\');
 
         $className = $config->getShortName();
 
         $code = str_replace(
             'namespace Mockery;',
-            $namespace ? 'namespace ' . $namespace . ';' : '',
+            $namespace ? 'namespace '.$namespace.';' : '',
             $code
         );
 
         $code = str_replace(
             'class Mock',
-            'class ' . $className,
+            'class '.$className,
             $code
         );
 

@@ -1,4 +1,6 @@
-<?php namespace SuperClosure\Analyzer;
+<?php
+
+namespace SuperClosure\Analyzer;
 
 use SuperClosure\Exception\ClosureAnalysisException;
 
@@ -34,7 +36,7 @@ class TokenAnalyzer extends ClosureAnalyzer
                         $step++;
                     }
                     break;
-                // Handle tokens inside the function signature.
+                    // Handle tokens inside the function signature.
                 case 1:
                     $data['tokens'][] = $token;
                     if ($insideUse) {
@@ -52,7 +54,7 @@ class TokenAnalyzer extends ClosureAnalyzer
                         $braceLevel++;
                     }
                     break;
-                // Handle tokens inside the function body.
+                    // Handle tokens inside the function body.
                 case 2:
                     $data['tokens'][] = $token;
                     if ($token->is('{')) {
@@ -64,12 +66,12 @@ class TokenAnalyzer extends ClosureAnalyzer
                         }
                     }
                     break;
-                // Handle tokens after the function declaration.
+                    // Handle tokens after the function declaration.
                 case 3:
                     if ($token->is(T_FUNCTION)) {
                         throw new ClosureAnalysisException('Multiple closures '
-                            . 'were declared on the same line of code. Could not '
-                            . 'determine which closure was the intended target.'
+                            .'were declared on the same line of code. Could not '
+                            .'determine which closure was the intended target.'
                         );
                     }
                     break;
@@ -81,7 +83,7 @@ class TokenAnalyzer extends ClosureAnalyzer
     {
         // Load the file containing the code for the function.
         $fileName = $reflection->getFileName();
-        if (!is_readable($fileName)) {
+        if (! is_readable($fileName)) {
             throw new ClosureAnalysisException(
                 "Cannot read the file containing the closure: \"{$fileName}\"."
             );
@@ -97,7 +99,7 @@ class TokenAnalyzer extends ClosureAnalyzer
 
         $code = trim($code);
         if (strpos($code, '<?php') !== 0) {
-            $code = "<?php\n" . $code;
+            $code = "<?php\n".$code;
         }
 
         return token_get_all($code);

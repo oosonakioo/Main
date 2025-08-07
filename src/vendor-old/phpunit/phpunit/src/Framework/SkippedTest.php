@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +14,4 @@
  *
  * @since Interface available since Release 3.0.0
  */
-interface PHPUnit_Framework_SkippedTest
-{
-}
+interface PHPUnit_Framework_SkippedTest {}

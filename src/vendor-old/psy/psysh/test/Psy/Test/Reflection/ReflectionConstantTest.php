@@ -17,9 +17,9 @@ class ReflectionConstantTest extends \PHPUnit_Framework_TestCase
 {
     const CONSTANT_ONE = 'one';
 
-    public function testConstruction()
+    public function test_construction()
     {
-        $refl  = new ReflectionConstant($this, 'CONSTANT_ONE');
+        $refl = new ReflectionConstant($this, 'CONSTANT_ONE');
         $class = $refl->getDeclaringClass();
 
         $this->assertTrue($class instanceof \ReflectionClass);
@@ -34,16 +34,17 @@ class ReflectionConstantTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testUnknownConstantThrowsException()
+    public function test_unknown_constant_throws_exception()
     {
         new ReflectionConstant($this, 'UNKNOWN_CONSTANT');
     }
 
     /**
      * @expectedException \RuntimeException
+     *
      * @dataProvider notYetImplemented
      */
-    public function testNotYetImplemented($method)
+    public function test_not_yet_implemented($method)
     {
         $refl = new ReflectionConstant($this, 'CONSTANT_ONE');
         $refl->$method();
@@ -51,10 +52,10 @@ class ReflectionConstantTest extends \PHPUnit_Framework_TestCase
 
     public function notYetImplemented()
     {
-        return array(
-            array('getStartLine'),
-            array('getEndLine'),
-            array('export'),
-        );
+        return [
+            ['getStartLine'],
+            ['getEndLine'],
+            ['export'],
+        ];
     }
 }

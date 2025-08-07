@@ -15,35 +15,21 @@ use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 
 // Note until PHPUnit_Mock_Objects 1.2 is released you cannot mock abstracts due to
 // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/73
-class ConcreteProxy extends AbstractProxy
-{
-}
+class ConcreteProxy extends AbstractProxy {}
 
 class ConcreteSessionHandlerInterfaceProxy extends AbstractProxy implements \SessionHandlerInterface
 {
-    public function open($savePath, $sessionName)
-    {
-    }
+    public function open($savePath, $sessionName) {}
 
-    public function close()
-    {
-    }
+    public function close() {}
 
-    public function read($id)
-    {
-    }
+    public function read($id) {}
 
-    public function write($id, $data)
-    {
-    }
+    public function write($id, $data) {}
 
-    public function destroy($id)
-    {
-    }
+    public function destroy($id) {}
 
-    public function gc($maxlifetime)
-    {
-    }
+    public function gc($maxlifetime) {}
 }
 
 /**
@@ -60,7 +46,7 @@ class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->proxy = new ConcreteProxy();
+        $this->proxy = new ConcreteProxy;
     }
 
     protected function tearDown()
@@ -68,28 +54,29 @@ class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->proxy = null;
     }
 
-    public function testGetSaveHandlerName()
+    public function test_get_save_handler_name()
     {
         $this->assertNull($this->proxy->getSaveHandlerName());
     }
 
-    public function testIsSessionHandlerInterface()
+    public function test_is_session_handler_interface()
     {
         $this->assertFalse($this->proxy->isSessionHandlerInterface());
-        $sh = new ConcreteSessionHandlerInterfaceProxy();
+        $sh = new ConcreteSessionHandlerInterfaceProxy;
         $this->assertTrue($sh->isSessionHandlerInterface());
     }
 
-    public function testIsWrapper()
+    public function test_is_wrapper()
     {
         $this->assertFalse($this->proxy->isWrapper());
     }
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
-    public function testIsActive()
+    public function test_is_active()
     {
         $this->assertFalse($this->proxy->isActive());
         session_start();
@@ -98,9 +85,10 @@ class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
-    public function testName()
+    public function test_name()
     {
         $this->assertEquals(session_name(), $this->proxy->getName());
         $this->proxy->setName('foo');
@@ -110,10 +98,12 @@ class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
+     *
      * @expectedException \LogicException
      */
-    public function testNameException()
+    public function test_name_exception()
     {
         session_start();
         $this->proxy->setName('foo');
@@ -121,9 +111,10 @@ class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
-    public function testId()
+    public function test_id()
     {
         $this->assertEquals(session_id(), $this->proxy->getId());
         $this->proxy->setId('foo');
@@ -133,10 +124,12 @@ class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
+     *
      * @expectedException \LogicException
      */
-    public function testIdException()
+    public function test_id_exception()
     {
         session_start();
         $this->proxy->setId('foo');

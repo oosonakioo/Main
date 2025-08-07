@@ -18,7 +18,7 @@ interface Swift_Plugins_Logger
     /**
      * Add a log entry.
      *
-     * @param string $entry
+     * @param  string  $entry
      */
     public function add($entry);
 

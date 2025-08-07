@@ -21,7 +21,7 @@ class Compiler
     /**
      * Compiles psysh into a single phar file.
      *
-     * @param string $pharFile The full path to the file to create
+     * @param  string  $pharFile  The full path to the file to create
      */
     public function compile($pharFile = 'psysh.phar')
     {
@@ -42,7 +42,7 @@ class Compiler
             ->name('*.php')
             ->notName('Compiler.php')
             ->notName('Autoloader.php')
-            ->in(__DIR__ . '/..');
+            ->in(__DIR__.'/..');
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
@@ -53,7 +53,7 @@ class Compiler
             ->ignoreVCS(true)
             ->name('*.php')
             ->exclude('Tests')
-            ->in(__DIR__ . '/../../build-vendor');
+            ->in(__DIR__.'/../../build-vendor');
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
@@ -70,19 +70,19 @@ class Compiler
     /**
      * Add a file to the psysh Phar.
      *
-     * @param Phar        $phar
-     * @param SplFileInfo $file
-     * @param bool        $strip (default: true)
+     * @param  Phar  $phar
+     * @param  SplFileInfo  $file
+     * @param  bool  $strip  (default: true)
      */
     private function addFile($phar, $file, $strip = true)
     {
-        $path = str_replace(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR, '', $file->getRealPath());
+        $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
 
         $content = file_get_contents($file);
         if ($strip) {
             $content = $this->stripWhitespace($content);
-        } elseif ('LICENSE' === basename($file)) {
-            $content = "\n" . $content . "\n";
+        } elseif (basename($file) === 'LICENSE') {
+            $content = "\n".$content."\n";
         }
 
         $phar->addFromString($path, $content);
@@ -91,13 +91,12 @@ class Compiler
     /**
      * Removes whitespace from a PHP source string while preserving line numbers.
      *
-     * @param string $source A PHP string
-     *
+     * @param  string  $source  A PHP string
      * @return string The PHP string with the whitespace removed
      */
     private function stripWhitespace($source)
     {
-        if (!function_exists('token_get_all')) {
+        if (! function_exists('token_get_all')) {
             return $source;
         }
 
@@ -105,9 +104,9 @@ class Compiler
         foreach (token_get_all($source) as $token) {
             if (is_string($token)) {
                 $output .= $token;
-            } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
+            } elseif (in_array($token[0], [T_COMMENT, T_DOC_COMMENT])) {
                 $output .= str_repeat("\n", substr_count($token[1], "\n"));
-            } elseif (T_WHITESPACE === $token[0]) {
+            } elseif ($token[0] === T_WHITESPACE) {
                 // reduce wide spaces
                 $whitespace = preg_replace('{[ \t]+}', ' ', $token[1]);
                 // normalize newlines to \n
@@ -125,7 +124,7 @@ class Compiler
 
     private static function getStubLicense()
     {
-        $license = file_get_contents(__DIR__ . '/../../LICENSE');
+        $license = file_get_contents(__DIR__.'/../../LICENSE');
         $license = str_replace('The MIT License (MIT)', '', $license);
         $license = str_replace("\n", "\n * ", trim($license));
 
@@ -146,7 +145,7 @@ EOS;
      */
     private function getStub()
     {
-        $content = file_get_contents(__DIR__ . '/../../bin/psysh');
+        $content = file_get_contents(__DIR__.'/../../bin/psysh');
         $content = preg_replace('{/\* <<<.*?>>> \*/}sm', self::STUB_AUTOLOAD, $content);
         $content = preg_replace('/\\(c\\) .*?with this source code./sm', self::getStubLicense(), $content);
 

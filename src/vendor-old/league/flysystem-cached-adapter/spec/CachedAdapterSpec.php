@@ -46,7 +46,7 @@ class CachedAdapterSpec extends ObjectBehavior
         $type = 'file';
         $path = 'path.txt';
         $contents = 'contents';
-        $config = new Config();
+        $config = new Config;
         $response = compact('path', 'contents', 'type');
         $this->adapter->write($path, $contents, $config)->willReturn($response);
         $this->cache->updateObject($path, $response, true)->shouldBeCalled();
@@ -58,7 +58,7 @@ class CachedAdapterSpec extends ObjectBehavior
         $type = 'file';
         $path = 'path.txt';
         $stream = tmpfile();
-        $config = new Config();
+        $config = new Config;
         $response = compact('path', 'stream', 'type');
         $this->adapter->writeStream($path, $stream, $config)->willReturn($response);
         $this->cache->updateObject($path, ['contents' => false] + $response, true)->shouldBeCalled();
@@ -71,7 +71,7 @@ class CachedAdapterSpec extends ObjectBehavior
         $type = 'file';
         $path = 'path.txt';
         $stream = tmpfile();
-        $config = new Config();
+        $config = new Config;
         $response = compact('path', 'stream', 'type');
         $this->adapter->updateStream($path, $stream, $config)->willReturn($response);
         $this->cache->updateObject($path, ['contents' => false] + $response, true)->shouldBeCalled();
@@ -83,7 +83,7 @@ class CachedAdapterSpec extends ObjectBehavior
     {
         $path = 'path.txt';
         $contents = 'contents';
-        $config = new Config();
+        $config = new Config;
         $this->adapter->write($path, $contents, $config)->willReturn(false);
         $this->write($path, $contents, $config)->shouldBe(false);
     }
@@ -92,7 +92,7 @@ class CachedAdapterSpec extends ObjectBehavior
     {
         $path = 'path.txt';
         $contents = tmpfile();
-        $config = new Config();
+        $config = new Config;
         $this->adapter->writeStream($path, $contents, $config)->willReturn(false);
         $this->writeStream($path, $contents, $config)->shouldBe(false);
         fclose($contents);
@@ -103,7 +103,7 @@ class CachedAdapterSpec extends ObjectBehavior
         $type = 'file';
         $path = 'path.txt';
         $contents = 'contents';
-        $config = new Config();
+        $config = new Config;
         $response = compact('path', 'contents', 'type');
         $this->adapter->update($path, $contents, $config)->willReturn($response);
         $this->cache->updateObject($path, $response, true)->shouldBeCalled();
@@ -114,7 +114,7 @@ class CachedAdapterSpec extends ObjectBehavior
     {
         $path = 'path.txt';
         $contents = 'contents';
-        $config = new Config();
+        $config = new Config;
         $this->adapter->update($path, $contents, $config)->willReturn(false);
         $this->update($path, $contents, $config)->shouldBe(false);
     }
@@ -123,7 +123,7 @@ class CachedAdapterSpec extends ObjectBehavior
     {
         $path = 'path.txt';
         $contents = tmpfile();
-        $config = new Config();
+        $config = new Config;
         $this->adapter->updateStream($path, $contents, $config)->willReturn(false);
         $this->updateStream($path, $contents, $config)->shouldBe(false);
         fclose($contents);
@@ -196,7 +196,7 @@ class CachedAdapterSpec extends ObjectBehavior
     public function it_should_cache_dir_creates()
     {
         $dirname = 'dirname';
-        $config = new Config();
+        $config = new Config;
         $response = ['path' => $dirname, 'type' => 'dir'];
         $this->adapter->createDir($dirname, $config)->willReturn($response);
         $this->cache->updateObject($dirname, $response, true)->shouldBeCalled();
@@ -206,7 +206,7 @@ class CachedAdapterSpec extends ObjectBehavior
     public function it_should_ignore_create_dir_fails()
     {
         $dirname = 'dirname';
-        $config = new Config();
+        $config = new Config;
         $this->adapter->createDir($dirname, $config)->willReturn(false);
         $this->createDir($dirname, $config)->shouldBe(false);
     }
@@ -393,7 +393,7 @@ class CachedAdapterSpec extends ObjectBehavior
     {
         $this->make_it_use_getter_cache('read', 'path.txt', [
             'path' => 'path.txt',
-            'contents' => 'contents'
+            'contents' => 'contents',
         ]);
     }
 

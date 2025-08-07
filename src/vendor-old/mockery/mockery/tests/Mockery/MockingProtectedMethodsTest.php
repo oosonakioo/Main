@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -25,13 +25,12 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class MockingProtectedMethodsTest extends MockeryTestCase
 {
-
-    public function setup()
+    protected function setup()
     {
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown()
+    protected function teardown()
     {
         $this->container->mockery_close();
     }
@@ -42,10 +41,10 @@ class MockingProtectedMethodsTest extends MockeryTestCase
      * This is a regression test, basically we don't want the mock handling
      * interfering with calling protected methods partials
      */
-    public function shouldAutomaticallyDeferCallsToProtectedMethodsForPartials()
+    public function should_automatically_defer_calls_to_protected_methods_for_partials()
     {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods[foo]");
-        $this->assertEquals("bar", $mock->bar());
+        $this->assertEquals('bar', $mock->bar());
     }
 
     /**
@@ -54,52 +53,51 @@ class MockingProtectedMethodsTest extends MockeryTestCase
      * This is a regression test, basically we don't want the mock handling
      * interfering with calling protected methods partials
      */
-    public function shouldAutomaticallyDeferCallsToProtectedMethodsForRuntimePartials()
+    public function should_automatically_defer_calls_to_protected_methods_for_runtime_partials()
     {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")->shouldDeferMissing();
-        $this->assertEquals("bar", $mock->bar());
+        $this->assertEquals('bar', $mock->bar());
     }
 
     /** @test */
-    public function shouldAutomaticallyIgnoreAbstractProtectedMethods()
+    public function should_automatically_ignore_abstract_protected_methods()
     {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")->shouldDeferMissing();
         $this->assertEquals(null, $mock->foo());
     }
 
     /** @test */
-    public function shouldAllowMockingProtectedMethods()
+    public function should_allow_mocking_protected_methods()
     {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")
             ->shouldDeferMissing()
             ->shouldAllowMockingProtectedMethods();
 
-        $mock->shouldReceive("protectedBar")->andReturn("notbar");
-        $this->assertEquals("notbar", $mock->bar());
+        $mock->shouldReceive('protectedBar')->andReturn('notbar');
+        $this->assertEquals('notbar', $mock->bar());
     }
 
     /** @test */
-    public function shouldAllowMockingProtectedMethodOnDefinitionTimePartial()
+    public function should_allow_mocking_protected_method_on_definition_time_partial()
     {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods[protectedBar]")
             ->shouldAllowMockingProtectedMethods();
 
-        $mock->shouldReceive("protectedBar")->andReturn("notbar");
-        $this->assertEquals("notbar", $mock->bar());
+        $mock->shouldReceive('protectedBar')->andReturn('notbar');
+        $this->assertEquals('notbar', $mock->bar());
     }
 
     /** @test */
-    public function shouldAllowMockingAbstractProtectedMethods()
+    public function should_allow_mocking_abstract_protected_methods()
     {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")
             ->shouldDeferMissing()
             ->shouldAllowMockingProtectedMethods();
 
-        $mock->shouldReceive("abstractProtected")->andReturn("abstractProtected");
-        $this->assertEquals("abstractProtected", $mock->foo());
+        $mock->shouldReceive('abstractProtected')->andReturn('abstractProtected');
+        $this->assertEquals('abstractProtected', $mock->foo());
     }
 }
-
 
 abstract class TestWithProtectedMethods
 {

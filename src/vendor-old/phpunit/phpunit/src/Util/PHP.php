@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -32,9 +33,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * Runs a single test in a separate PHP process.
      *
-     * @param string                       $job
-     * @param PHPUnit_Framework_Test       $test
-     * @param PHPUnit_Framework_TestResult $result
+     * @param  string  $job
      *
      * @throws PHPUnit_Framework_Exception
      */
@@ -55,18 +54,14 @@ abstract class PHPUnit_Util_PHP
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
-     * @param string $job
-     * @param array  $settings
-     *
+     * @param  string  $job
      * @return array
      *
      * @throws PHPUnit_Framework_Exception
      */
-    abstract public function runJob($job, array $settings = array());
+    abstract public function runJob($job, array $settings = []);
 
     /**
-     * @param array $settings
-     *
      * @return string
      *
      * @since Method available since Release 4.0.0
@@ -76,7 +71,7 @@ abstract class PHPUnit_Util_PHP
         $buffer = '';
 
         foreach ($settings as $setting) {
-            $buffer .= ' -d ' . $setting;
+            $buffer .= ' -d '.$setting;
         }
 
         return $buffer;
@@ -85,10 +80,8 @@ abstract class PHPUnit_Util_PHP
     /**
      * Processes the TestResult object from an isolated process.
      *
-     * @param PHPUnit_Framework_Test       $test
-     * @param PHPUnit_Framework_TestResult $result
-     * @param string                       $stdout
-     * @param string                       $stderr
+     * @param  string  $stdout
+     * @param  string  $stderr
      *
      * @since Method available since Release 3.5.0
      */
@@ -96,7 +89,7 @@ abstract class PHPUnit_Util_PHP
     {
         $time = 0;
 
-        if (!empty($stderr)) {
+        if (! empty($stderr)) {
             $result->addError(
                 $test,
                 new PHPUnit_Framework_Exception(trim($stderr)),
@@ -125,7 +118,7 @@ abstract class PHPUnit_Util_PHP
             }
 
             if ($childResult !== false) {
-                if (!empty($childResult['output'])) {
+                if (! empty($childResult['output'])) {
                     $output = $childResult['output'];
                 }
 
@@ -140,38 +133,38 @@ abstract class PHPUnit_Util_PHP
                     );
                 }
 
-                $time           = $childResult->time();
+                $time = $childResult->time();
                 $notImplemented = $childResult->notImplemented();
-                $risky          = $childResult->risky();
-                $skipped        = $childResult->skipped();
-                $errors         = $childResult->errors();
-                $failures       = $childResult->failures();
+                $risky = $childResult->risky();
+                $skipped = $childResult->skipped();
+                $errors = $childResult->errors();
+                $failures = $childResult->failures();
 
-                if (!empty($notImplemented)) {
+                if (! empty($notImplemented)) {
                     $result->addError(
                         $test,
                         $this->getException($notImplemented[0]),
                         $time
                     );
-                } elseif (!empty($risky)) {
+                } elseif (! empty($risky)) {
                     $result->addError(
                         $test,
                         $this->getException($risky[0]),
                         $time
                     );
-                } elseif (!empty($skipped)) {
+                } elseif (! empty($skipped)) {
                     $result->addError(
                         $test,
                         $this->getException($skipped[0]),
                         $time
                     );
-                } elseif (!empty($errors)) {
+                } elseif (! empty($errors)) {
                     $result->addError(
                         $test,
                         $this->getException($errors[0]),
                         $time
                     );
-                } elseif (!empty($failures)) {
+                } elseif (! empty($failures)) {
                     $result->addFailure(
                         $test,
                         $this->getException($failures[0]),
@@ -183,15 +176,14 @@ abstract class PHPUnit_Util_PHP
 
         $result->endTest($test, $time);
 
-        if (!empty($output)) {
-            print $output;
+        if (! empty($output)) {
+            echo $output;
         }
     }
 
     /**
      * Gets the thrown exception from a PHPUnit_Framework_TestFailure.
      *
-     * @param PHPUnit_Framework_TestFailure $error
      *
      * @return Exception
      *
@@ -203,9 +195,9 @@ abstract class PHPUnit_Util_PHP
         $exception = $error->thrownException();
 
         if ($exception instanceof __PHP_Incomplete_Class) {
-            $exceptionArray = array();
+            $exceptionArray = [];
             foreach ((array) $exception as $key => $value) {
-                $key                  = substr($key, strrpos($key, "\0") + 1);
+                $key = substr($key, strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
             }
 

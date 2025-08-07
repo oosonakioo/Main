@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -50,8 +51,8 @@ class DefaultFileLocator implements FileLocator
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param string|array $paths         One or multiple paths where mapping documents can be found.
-     * @param string|null  $fileExtension The file extension of mapping documents, usually prefixed with a dot.
+     * @param  string|array  $paths  One or multiple paths where mapping documents can be found.
+     * @param  string|null  $fileExtension  The file extension of mapping documents, usually prefixed with a dot.
      */
     public function __construct($paths, $fileExtension = null)
     {
@@ -62,7 +63,6 @@ class DefaultFileLocator implements FileLocator
     /**
      * Appends lookup paths to metadata driver.
      *
-     * @param array $paths
      *
      * @return void
      */
@@ -94,8 +94,7 @@ class DefaultFileLocator implements FileLocator
     /**
      * Sets the file extension used to look for mapping files under.
      *
-     * @param string|null $fileExtension The file extension to set.
-     *
+     * @param  string|null  $fileExtension  The file extension to set.
      * @return void
      */
     public function setFileExtension($fileExtension)
@@ -108,12 +107,12 @@ class DefaultFileLocator implements FileLocator
      */
     public function findMappingFile($className)
     {
-        $fileName = str_replace('\\', '.', $className) . $this->fileExtension;
+        $fileName = str_replace('\\', '.', $className).$this->fileExtension;
 
         // Check whether file exists
         foreach ($this->paths as $path) {
-            if (is_file($path . DIRECTORY_SEPARATOR . $fileName)) {
-                return $path . DIRECTORY_SEPARATOR . $fileName;
+            if (is_file($path.DIRECTORY_SEPARATOR.$fileName)) {
+                return $path.DIRECTORY_SEPARATOR.$fileName;
             }
         }
 
@@ -129,7 +128,7 @@ class DefaultFileLocator implements FileLocator
 
         if ($this->paths) {
             foreach ($this->paths as $path) {
-                if ( ! is_dir($path)) {
+                if (! is_dir($path)) {
                     throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
                 }
 
@@ -159,11 +158,11 @@ class DefaultFileLocator implements FileLocator
      */
     public function fileExists($className)
     {
-        $fileName = str_replace('\\', '.', $className) . $this->fileExtension;
+        $fileName = str_replace('\\', '.', $className).$this->fileExtension;
 
         // Check whether file exists
         foreach ((array) $this->paths as $path) {
-            if (is_file($path . DIRECTORY_SEPARATOR . $fileName)) {
+            if (is_file($path.DIRECTORY_SEPARATOR.$fileName)) {
                 return true;
             }
         }

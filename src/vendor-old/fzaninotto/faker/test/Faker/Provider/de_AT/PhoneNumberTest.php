@@ -7,20 +7,19 @@ use Faker\Provider\de_AT\PhoneNumber;
 
 class PhoneNumberTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Generator
      */
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new PhoneNumber($faker));
         $this->faker = $faker;
     }
 
-    public function testPhoneNumberFormat()
+    public function test_phone_number_format()
     {
         $number = $this->faker->phoneNumber;
         $this->assertRegExp('/^06\d{2} \d{7}|\+43 \d{4} \d{4}(-\d{2})?$/', $number);

@@ -1,16 +1,17 @@
-<?php namespace Maatwebsite\Excel\Classes;
+<?php
 
-use PHPExcel_IOFactory;
+namespace Maatwebsite\Excel\Classes;
+
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use PHPExcel_IOFactory;
 
-class FormatIdentifier {
-
+class FormatIdentifier
+{
     /**
      * Available formats
      *
      * @var array
-     * @access  protected
      */
     protected $formats = [
         'Excel2007',
@@ -21,12 +22,11 @@ class FormatIdentifier {
         'Gnumeric',
         'CSV',
         'HTML',
-        'PDF'
+        'PDF',
     ];
 
     /**
      * Construct new format identifier
-     * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
     {
@@ -35,9 +35,10 @@ class FormatIdentifier {
 
     /**
      * Get the file format by file
-     * @param $file
-     * @throws LaravelExcelException
+     *
      * @return string $format
+     *
+     * @throws LaravelExcelException
      */
     public function getFormatByFile($file)
     {
@@ -48,8 +49,9 @@ class FormatIdentifier {
         $format = $this->getFormatByExtension($ext);
 
         // Check if the file can be read
-        if ($this->canRead($format, $file))
+        if ($this->canRead($format, $file)) {
             return $format;
+        }
 
         // Do a last try to init the file with all available readers
         return $this->lastResort($file, $format, $ext);
@@ -57,13 +59,12 @@ class FormatIdentifier {
 
     /**
      * Identify file format
-     * @param $ext
-     * @return  string $format
+     *
+     * @return string $format
      */
     public function getFormatByExtension($ext)
     {
-        switch ($ext)
-        {
+        switch ($ext) {
 
             /*
             |--------------------------------------------------------------------------
@@ -77,93 +78,93 @@ class FormatIdentifier {
                 return 'Excel2007';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Excel5
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | Excel5
+                |--------------------------------------------------------------------------
+                */
             case 'xls':
             case 'xlt':
                 return 'Excel5';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | OOCalc
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | OOCalc
+                |--------------------------------------------------------------------------
+                */
             case 'ods':
             case 'ots':
                 return 'OOCalc';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | SYLK
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | SYLK
+                |--------------------------------------------------------------------------
+                */
             case 'slk':
                 return 'SYLK';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Excel2003XML
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | Excel2003XML
+                |--------------------------------------------------------------------------
+                */
             case 'xml':
                 return 'Excel2003XML';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Gnumeric
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | Gnumeric
+                |--------------------------------------------------------------------------
+                */
             case 'gnumeric':
                 return 'Gnumeric';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | HTML
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | HTML
+                |--------------------------------------------------------------------------
+                */
             case 'htm':
             case 'html':
                 return 'HTML';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | CSV
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | CSV
+                |--------------------------------------------------------------------------
+                */
             case 'csv':
             case 'txt':
                 return 'CSV';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | PDF
-            |--------------------------------------------------------------------------
-            */
-             case 'pdf':
-                 return 'PDF';
-                 break;
+                /*
+                |--------------------------------------------------------------------------
+                | PDF
+                |--------------------------------------------------------------------------
+                */
+            case 'pdf':
+                return 'PDF';
+                break;
         }
     }
 
     /**
      * Get the content type by file format
-     * @param  string $format
+     *
+     * @param  string  $format
      * @return string $contentType
      */
     public function getContentTypeByFormat($format)
     {
-        switch ($format)
-        {
+        switch ($format) {
 
             /*
             |--------------------------------------------------------------------------
@@ -174,76 +175,75 @@ class FormatIdentifier {
                 return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Excel5
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | Excel5
+                |--------------------------------------------------------------------------
+                */
             case 'Excel5':
                 return 'application/vnd.ms-excel; charset=UTF-8';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | HTML
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | HTML
+                |--------------------------------------------------------------------------
+                */
             case 'HTML':
                 return 'HTML';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | CSV
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | CSV
+                |--------------------------------------------------------------------------
+                */
             case 'CSV':
                 return 'application/csv; charset=UTF-8';
                 break;
 
-            /*
-            |--------------------------------------------------------------------------
-            | PDF
-            |--------------------------------------------------------------------------
-            */
-             case 'PDF':
-                 return'application/pdf; charset=UTF-8';
-                 break;
+                /*
+                |--------------------------------------------------------------------------
+                | PDF
+                |--------------------------------------------------------------------------
+                */
+            case 'PDF':
+                return 'application/pdf; charset=UTF-8';
+                break;
         }
     }
 
     /**
      * Try every reader we have
-     * @param        $file
-     * @param bool   $wrongFormat
-     * @param string $ext
-     * @throws LaravelExcelException
+     *
+     * @param  bool  $wrongFormat
+     * @param  string  $ext
      * @return string $format
+     *
+     * @throws LaravelExcelException
      */
     protected function lastResort($file, $wrongFormat = false, $ext = 'xls')
     {
         // Loop through all available formats
-        foreach ($this->formats as $format)
-        {
+        foreach ($this->formats as $format) {
             // Check if the file could be read
-            if ($wrongFormat != $format && $this->canRead($format, $file))
+            if ($wrongFormat != $format && $this->canRead($format, $file)) {
                 return $format;
+            }
         }
 
         // Give up searching and throw an exception
-        throw new LaravelExcelException('[ERROR] Reader could not identify file format for file [' . $file . '] with extension [' . $ext . ']');
+        throw new LaravelExcelException('[ERROR] Reader could not identify file format for file ['.$file.'] with extension ['.$ext.']');
     }
 
     /**
      * Check if we can read the file
-     * @param $format
-     * @param $file
-     * @return boolean
+     *
+     * @return bool
      */
     protected function canRead($format, $file)
     {
-        if ($format)
-        {
+        if ($format) {
             $reader = $this->initReader($format);
 
             return $reader && $reader->canRead($file);
@@ -254,7 +254,8 @@ class FormatIdentifier {
 
     /**
      * Init the reader based on the format
-     * @param  string $format
+     *
+     * @param  string  $format
      * @return \PHPExcel_Reader_IReader
      */
     protected function initReader($format)
@@ -264,7 +265,8 @@ class FormatIdentifier {
 
     /**
      * Get the file extension
-     * @param  string $file
+     *
+     * @param  string  $file
      * @return string
      */
     protected function getExtension($file)

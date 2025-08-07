@@ -3,9 +3,9 @@
 namespace Illuminate\Foundation\Console;
 
 use Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Collection;
 use Symfony\Component\VarDumper\Caster\Caster;
 
 class IlluminateCaster
@@ -36,7 +36,6 @@ class IlluminateCaster
     /**
      * Get an array representing the properties of an application.
      *
-     * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
     public static function castApplication(Application $app)
@@ -61,7 +60,6 @@ class IlluminateCaster
     /**
      * Get an array representing the properties of a collection.
      *
-     * @param  \Illuminate\Support\Collection  $collection
      * @return array
      */
     public static function castCollection(Collection $collection)
@@ -74,7 +72,6 @@ class IlluminateCaster
     /**
      * Get an array representing the properties of a model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
      */
     public static function castModel(Model $model)

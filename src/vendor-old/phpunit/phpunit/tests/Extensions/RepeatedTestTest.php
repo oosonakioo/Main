@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +11,7 @@
 
 /**
  * @since      Class available since Release 2.0.0
+ *
  * @covers     PHPUnit_Extensions_RepeatedTest
  */
 class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
@@ -24,7 +26,7 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
         $this->suite->addTest(new Success);
     }
 
-    public function testRepeatedOnce()
+    public function test_repeated_once()
     {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 1);
         $this->assertEquals(2, count($test));
@@ -33,7 +35,7 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($result));
     }
 
-    public function testRepeatedMoreThanOnce()
+    public function test_repeated_more_than_once()
     {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 3);
         $this->assertEquals(6, count($test));
@@ -42,7 +44,7 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(6, count($result));
     }
 
-    public function testRepeatedZero()
+    public function test_repeated_zero()
     {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 0);
         $this->assertEquals(0, count($test));
@@ -51,7 +53,7 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($result));
     }
 
-    public function testRepeatedNegative()
+    public function test_repeated_negative()
     {
         try {
             $test = new PHPUnit_Extensions_RepeatedTest($this->suite, -1);

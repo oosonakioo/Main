@@ -13,7 +13,7 @@
  *
  * @author Chris Corbyn
  */
-abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_InputByteStream, Swift_Filterable
+abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_Filterable, Swift_InputByteStream
 {
     /**
      * Write sequence.
@@ -25,7 +25,7 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
      *
      * @var Swift_StreamFilter[]
      */
-    private $_filters = array();
+    private $_filters = [];
 
     /**
      * A buffer for writing.
@@ -37,12 +37,12 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
      *
      * @var Swift_InputByteStream[]
      */
-    private $_mirrors = array();
+    private $_mirrors = [];
 
     /**
      * Commit the given bytes to the storage medium immediately.
      *
-     * @param string $bytes
+     * @param  string  $bytes
      */
     abstract protected function _commit($bytes);
 
@@ -54,8 +54,7 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
     /**
      * Add a StreamFilter to this InputByteStream.
      *
-     * @param Swift_StreamFilter $filter
-     * @param string             $key
+     * @param  string  $key
      */
     public function addFilter(Swift_StreamFilter $filter, $key)
     {
@@ -65,7 +64,7 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
     /**
      * Remove an already present StreamFilter based on its $key.
      *
-     * @param string $key
+     * @param  string  $key
      */
     public function removeFilter($key)
     {
@@ -75,11 +74,10 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
     /**
      * Writes $bytes to the end of the stream.
      *
-     * @param string $bytes
+     * @param  string  $bytes
+     * @return int
      *
      * @throws Swift_IoException
-     *
-     * @return int
      */
     public function write($bytes)
     {
@@ -110,8 +108,6 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
      *
      * The stream acts as an observer, receiving all data that is written.
      * All {@link write()} and {@link flushBuffers()} operations will be mirrored.
-     *
-     * @param Swift_InputByteStream $is
      */
     public function bind(Swift_InputByteStream $is)
     {
@@ -124,8 +120,6 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
      * If $is is not bound, no errors will be raised.
      * If the stream currently has any buffered data it will be written to $is
      * before unbinding occurs.
-     *
-     * @param Swift_InputByteStream $is
      */
     public function unbind(Swift_InputByteStream $is)
     {

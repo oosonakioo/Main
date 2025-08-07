@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -33,7 +34,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
     protected $currentIndex = -1;
 
     /**
-     * @param int $sequenceIndex
+     * @param  int  $sequenceIndex
      */
     public function __construct($sequenceIndex)
     {
@@ -45,11 +46,10 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
      */
     public function toString()
     {
-        return 'invoked at sequence index ' . $this->sequenceIndex;
+        return 'invoked at sequence index '.$this->sequenceIndex;
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
@@ -59,12 +59,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
         return $this->currentIndex == $this->sequenceIndex;
     }
 
-    /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
-     */
-    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
-    {
-    }
+    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation) {}
 
     /**
      * Verifies that the current expectation is valid. If everything is OK the

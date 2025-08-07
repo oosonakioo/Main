@@ -7,24 +7,27 @@ class HTMLPurifier_PropertyList
 {
     /**
      * Internal data-structure for properties.
+     *
      * @type array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Parent plist.
+     *
      * @type HTMLPurifier_PropertyList
      */
     protected $parent;
 
     /**
      * Cache.
+     *
      * @type array
      */
     protected $cache;
 
     /**
-     * @param HTMLPurifier_PropertyList $parent Parent plist
+     * @param  HTMLPurifier_PropertyList  $parent  Parent plist
      */
     public function __construct($parent = null)
     {
@@ -33,7 +36,9 @@ class HTMLPurifier_PropertyList
 
     /**
      * Recursively retrieves the value for a key
-     * @param string $name
+     *
+     * @param  string  $name
+     *
      * @throws HTMLPurifier_Exception
      */
     public function get($name)
@@ -50,8 +55,9 @@ class HTMLPurifier_PropertyList
 
     /**
      * Sets the value of a key, for this plist
-     * @param string $name
-     * @param mixed $value
+     *
+     * @param  string  $name
+     * @param  mixed  $value
      */
     public function set($name, $value)
     {
@@ -60,7 +66,8 @@ class HTMLPurifier_PropertyList
 
     /**
      * Returns true if a given key exists
-     * @param string $name
+     *
+     * @param  string  $name
      * @return bool
      */
     public function has($name)
@@ -71,12 +78,13 @@ class HTMLPurifier_PropertyList
     /**
      * Resets a value to the value of it's parent, usually the default. If
      * no value is specified, the entire plist is reset.
-     * @param string $name
+     *
+     * @param  string  $name
      */
     public function reset($name = null)
     {
         if ($name == null) {
-            $this->data = array();
+            $this->data = [];
         } else {
             unset($this->data[$name]);
         }
@@ -85,12 +93,13 @@ class HTMLPurifier_PropertyList
     /**
      * Squashes this property list and all of its property lists into a single
      * array, and returns the array. This value is cached by default.
-     * @param bool $force If true, ignores the cache and regenerates the array.
+     *
+     * @param  bool  $force  If true, ignores the cache and regenerates the array.
      * @return array
      */
     public function squash($force = false)
     {
-        if ($this->cache !== null && !$force) {
+        if ($this->cache !== null && ! $force) {
             return $this->cache;
         }
         if ($this->parent) {
@@ -102,6 +111,7 @@ class HTMLPurifier_PropertyList
 
     /**
      * Returns the parent plist.
+     *
      * @return HTMLPurifier_PropertyList
      */
     public function getParent()
@@ -111,7 +121,8 @@ class HTMLPurifier_PropertyList
 
     /**
      * Sets the parent plist.
-     * @param HTMLPurifier_PropertyList $plist Parent plist
+     *
+     * @param  HTMLPurifier_PropertyList  $plist  Parent plist
      */
     public function setParent($plist)
     {

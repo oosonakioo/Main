@@ -9,8 +9,8 @@ class FitCommand extends ResizeCommand
     /**
      * Crops and resized an image at the same time
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

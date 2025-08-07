@@ -29,8 +29,10 @@ use PhpParser\Node\Stmt\Use_ as UseStmt;
  */
 class UseStatementPass extends NamespaceAwarePass
 {
-    private $aliases       = array();
-    private $lastAliases   = array();
+    private $aliases = [];
+
+    private $lastAliases = [];
+
     private $lastNamespace = null;
 
     /**
@@ -39,8 +41,6 @@ class UseStatementPass extends NamespaceAwarePass
      * This isn't how namespaces normally work, but because PsySH has to spin
      * up a new namespace for every line of code, we do this to make things
      * work like you'd expect.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
@@ -58,8 +58,6 @@ class UseStatementPass extends NamespaceAwarePass
      *
      * If it's a use statement, remember the alias for later. Otherwise, apply
      * remembered aliases to the code.
-     *
-     * @param Node $node
      */
     public function leaveNode(Node $node)
     {
@@ -74,8 +72,8 @@ class UseStatementPass extends NamespaceAwarePass
         } elseif ($node instanceof NamespaceStmt) {
             // Start fresh, since we're done with this namespace.
             $this->lastNamespace = $node->name;
-            $this->lastAliases   = $this->aliases;
-            $this->aliases       = array();
+            $this->lastAliases = $this->aliases;
+            $this->aliases = [];
         } else {
             foreach ($node as $name => $subNode) {
                 if ($subNode instanceof Name) {
@@ -93,7 +91,6 @@ class UseStatementPass extends NamespaceAwarePass
     /**
      * Find class/namespace aliases.
      *
-     * @param Name $name
      *
      * @return FullyQualifiedName|null
      */
@@ -103,8 +100,8 @@ class UseStatementPass extends NamespaceAwarePass
         foreach ($this->aliases as $alias => $prefix) {
             if ($that === $alias) {
                 return new FullyQualifiedName($prefix->toString());
-            } elseif (substr($that, 0, strlen($alias) + 1) === $alias . '\\') {
-                return new FullyQualifiedName($prefix->toString() . substr($name, strlen($alias)));
+            } elseif (substr($that, 0, strlen($alias) + 1) === $alias.'\\') {
+                return new FullyQualifiedName($prefix->toString().substr($name, strlen($alias)));
             }
         }
     }

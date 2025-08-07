@@ -27,15 +27,15 @@ class PhpProcess extends Process
     /**
      * Constructor.
      *
-     * @param string      $script  The PHP script to run (as a string)
-     * @param string|null $cwd     The working directory or null to use the working dir of the current PHP process
-     * @param array|null  $env     The environment variables or null to use the same environment as the current PHP process
-     * @param int         $timeout The timeout in seconds
-     * @param array       $options An array of options for proc_open
+     * @param  string  $script  The PHP script to run (as a string)
+     * @param  string|null  $cwd  The working directory or null to use the working dir of the current PHP process
+     * @param  array|null  $env  The environment variables or null to use the same environment as the current PHP process
+     * @param  int  $timeout  The timeout in seconds
+     * @param  array  $options  An array of options for proc_open
      */
-    public function __construct($script, $cwd = null, array $env = null, $timeout = 60, array $options = array())
+    public function __construct($script, $cwd = null, ?array $env = null, $timeout = 60, array $options = [])
     {
-        $executableFinder = new PhpExecutableFinder();
+        $executableFinder = new PhpExecutableFinder;
         if (false === $php = $executableFinder->find()) {
             $php = null;
         }
@@ -46,7 +46,7 @@ class PhpProcess extends Process
             $php .= ' '.ProcessUtils::escapeArgument($file);
             $script = null;
         }
-        if ('\\' !== DIRECTORY_SEPARATOR && null !== $php) {
+        if ('\\' !== DIRECTORY_SEPARATOR && $php !== null) {
             // exec is mandatory to deal with sending a signal to the process
             // see https://github.com/symfony/symfony/issues/5030 about prepending
             // command with exec
@@ -67,9 +67,9 @@ class PhpProcess extends Process
     /**
      * {@inheritdoc}
      */
-    public function start(callable $callback = null)
+    public function start(?callable $callback = null)
     {
-        if (null === $this->getCommandLine()) {
+        if ($this->getCommandLine() === null) {
             throw new RuntimeException('Unable to find the PHP executable.');
         }
 

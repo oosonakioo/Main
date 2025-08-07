@@ -14,7 +14,7 @@ class HTMLPurifier_HTMLModule_SafeObject extends HTMLPurifier_HTMLModule
     public $name = 'SafeObject';
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -27,34 +27,34 @@ class HTMLPurifier_HTMLModule_SafeObject extends HTMLPurifier_HTMLModule
             'Inline',
             'Optional: param | Flow | #PCDATA',
             'Common',
-            array(
+            [
                 // While technically not required by the spec, we're forcing
                 // it to this value.
                 'type' => 'Enum#application/x-shockwave-flash',
-                'width' => 'Pixels#' . $max,
-                'height' => 'Pixels#' . $max,
+                'width' => 'Pixels#'.$max,
+                'height' => 'Pixels#'.$max,
                 'data' => 'URI#embedded',
                 'codebase' => new HTMLPurifier_AttrDef_Enum(
-                    array(
-                        'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0'
-                    )
+                    [
+                        'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0',
+                    ]
                 ),
-            )
+            ]
         );
-        $object->attr_transform_post[] = new HTMLPurifier_AttrTransform_SafeObject();
+        $object->attr_transform_post[] = new HTMLPurifier_AttrTransform_SafeObject;
 
         $param = $this->addElement(
             'param',
             false,
             'Empty',
             false,
-            array(
+            [
                 'id' => 'ID',
                 'name*' => 'Text',
-                'value' => 'Text'
-            )
+                'value' => 'Text',
+            ]
         );
-        $param->attr_transform_post[] = new HTMLPurifier_AttrTransform_SafeParam();
+        $param->attr_transform_post[] = new HTMLPurifier_AttrTransform_SafeParam;
         $this->info_injector[] = 'SafeObject';
     }
 }

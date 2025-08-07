@@ -24,9 +24,7 @@ use Symfony\Component\CssSelector\Parser\Token;
 class SyntaxErrorException extends ParseException
 {
     /**
-     * @param string $expectedValue
-     * @param Token  $foundToken
-     *
+     * @param  string  $expectedValue
      * @return SyntaxErrorException
      */
     public static function unexpectedToken($expectedValue, Token $foundToken)
@@ -35,9 +33,8 @@ class SyntaxErrorException extends ParseException
     }
 
     /**
-     * @param string $pseudoElement
-     * @param string $unexpectedLocation
-     *
+     * @param  string  $pseudoElement
+     * @param  string  $unexpectedLocation
      * @return SyntaxErrorException
      */
     public static function pseudoElementFound($pseudoElement, $unexpectedLocation)
@@ -46,8 +43,7 @@ class SyntaxErrorException extends ParseException
     }
 
     /**
-     * @param int $position
-     *
+     * @param  int  $position
      * @return SyntaxErrorException
      */
     public static function unclosedString($position)

@@ -33,8 +33,6 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
 
     /**
      * ContextAware interface.
-     *
-     * @param Context $context
      */
     public function setContext(Context $context)
     {
@@ -44,8 +42,7 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
     /**
      * Get a Context variable by name.
      *
-     * @param $var Variable name
-     *
+     * @param  $var  Variable name
      * @return mixed
      */
     protected function getVariable($var)

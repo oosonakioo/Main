@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\HttpFoundation\Tests\Session\Storage;
 
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 /**
  * Test class for MockFileSessionStorage.
@@ -48,7 +48,7 @@ class MockFileSessionStorageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testStart()
+    public function test_start()
     {
         $this->assertEquals('', $this->storage->getId());
         $this->assertTrue($this->storage->start());
@@ -58,7 +58,7 @@ class MockFileSessionStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($id, $this->storage->getId());
     }
 
-    public function testRegenerate()
+    public function test_regenerate()
     {
         $this->storage->start();
         $this->storage->getBag('attributes')->set('regenerate', 1234);
@@ -68,14 +68,14 @@ class MockFileSessionStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1234, $this->storage->getBag('attributes')->get('regenerate'));
     }
 
-    public function testGetId()
+    public function test_get_id()
     {
         $this->assertEquals('', $this->storage->getId());
         $this->storage->start();
         $this->assertNotEquals('', $this->storage->getId());
     }
 
-    public function testSave()
+    public function test_save()
     {
         $this->storage->start();
         $id = $this->storage->getId();
@@ -90,10 +90,10 @@ class MockFileSessionStorageTest extends \PHPUnit_Framework_TestCase
         $storage->start();
         $this->assertEquals('108', $storage->getBag('attributes')->get('new'));
         $this->assertTrue($storage->getBag('flashes')->has('newkey'));
-        $this->assertEquals(array('test'), $storage->getBag('flashes')->peek('newkey'));
+        $this->assertEquals(['test'], $storage->getBag('flashes')->peek('newkey'));
     }
 
-    public function testMultipleInstances()
+    public function test_multiple_instances()
     {
         $storage1 = $this->getStorage();
         $storage1->start();
@@ -109,7 +109,7 @@ class MockFileSessionStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testSaveWithoutStart()
+    public function test_save_without_start()
     {
         $storage1 = $this->getStorage();
         $storage1->save();
@@ -118,8 +118,8 @@ class MockFileSessionStorageTest extends \PHPUnit_Framework_TestCase
     private function getStorage()
     {
         $storage = new MockFileSessionStorage($this->sessionDir);
-        $storage->registerBag(new FlashBag());
-        $storage->registerBag(new AttributeBag());
+        $storage->registerBag(new FlashBag);
+        $storage->registerBag(new AttributeBag);
 
         return $storage;
     }

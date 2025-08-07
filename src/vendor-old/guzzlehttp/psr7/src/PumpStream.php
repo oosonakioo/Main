@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -31,21 +32,21 @@ class PumpStream implements StreamInterface
     private $buffer;
 
     /**
-     * @param callable $source Source of the stream data. The callable MAY
-     *                         accept an integer argument used to control the
-     *                         amount of data to return. The callable MUST
-     *                         return a string when called, or false on error
-     *                         or EOF.
-     * @param array $options   Stream options:
-     *                         - metadata: Hash of metadata to use with stream.
-     *                         - size: Size of the stream, if known.
+     * @param  callable  $source  Source of the stream data. The callable MAY
+     *                            accept an integer argument used to control the
+     *                            amount of data to return. The callable MUST
+     *                            return a string when called, or false on error
+     *                            or EOF.
+     * @param  array  $options  Stream options:
+     *                          - metadata: Hash of metadata to use with stream.
+     *                          - size: Size of the stream, if known.
      */
     public function __construct(callable $source, array $options = [])
     {
         $this->source = $source;
         $this->size = isset($options['size']) ? $options['size'] : null;
         $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
-        $this->buffer = new BufferStream();
+        $this->buffer = new BufferStream;
     }
 
     public function __toString()
@@ -80,7 +81,7 @@ class PumpStream implements StreamInterface
 
     public function eof()
     {
-        return !$this->source;
+        return ! $this->source;
     }
 
     public function isSeekable()
@@ -132,7 +133,7 @@ class PumpStream implements StreamInterface
     public function getContents()
     {
         $result = '';
-        while (!$this->eof()) {
+        while (! $this->eof()) {
             $result .= $this->read(1000000);
         }
 
@@ -141,7 +142,7 @@ class PumpStream implements StreamInterface
 
     public function getMetadata($key = null)
     {
-        if (!$key) {
+        if (! $key) {
             return $this->metadata;
         }
 
@@ -155,6 +156,7 @@ class PumpStream implements StreamInterface
                 $data = call_user_func($this->source, $length);
                 if ($data === false || $data === null) {
                     $this->source = null;
+
                     return;
                 }
                 $this->buffer->write($data);

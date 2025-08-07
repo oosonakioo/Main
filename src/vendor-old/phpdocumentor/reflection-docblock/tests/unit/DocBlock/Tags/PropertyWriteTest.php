@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +23,7 @@ use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite
+ *
  * @covers ::<private>
  */
 class PropertyWriteTest extends \PHPUnit_Framework_TestCase
@@ -28,9 +31,10 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned()
+    public function test_if_correct_tag_name_is_returned()
     {
         $fixture = new PropertyWrite('myProperty', null, new Description('Description'));
 
@@ -42,12 +46,13 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    public function test_if_tag_can_be_rendered_using_default_formatter()
     {
-        $fixture = new PropertyWrite('myProperty', new String_(), new Description('Description'));
+        $fixture = new PropertyWrite('myProperty', new String_, new Description('Description'));
         $this->assertSame('@property-write string $myProperty Description', $fixture->render());
 
         $fixture = new PropertyWrite('myProperty', null, new Description('Description'));
@@ -59,9 +64,10 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite::__construct
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    public function test_if_tag_can_be_rendered_using_specific_formatter()
     {
         $fixture = new PropertyWrite('myProperty');
 
@@ -75,7 +81,7 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getVariableName
      */
-    public function testHasVariableName()
+    public function test_has_variable_name()
     {
         $expected = 'myProperty';
 
@@ -88,9 +94,9 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getType
      */
-    public function testHasType()
+    public function test_has_type()
     {
-        $expected = new String_();
+        $expected = new String_;
 
         $fixture = new PropertyWrite('myProperty', $expected);
 
@@ -100,9 +106,10 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription()
+    public function test_has_description()
     {
         $expected = new Description('Description');
 
@@ -114,26 +121,28 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::__toString
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\Types\String_
      */
-    public function testStringRepresentationIsReturned()
+    public function test_string_representation_is_returned()
     {
-        $fixture = new PropertyWrite('myProperty', new String_(), new Description('Description'));
+        $fixture = new PropertyWrite('myProperty', new String_, new Description('Description'));
 
-        $this->assertSame('string $myProperty Description', (string)$fixture);
+        $this->assertSame('string $myProperty Description', (string) $fixture);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod()
+    public function test_factory_method()
     {
-        $typeResolver = new TypeResolver();
+        $typeResolver = new TypeResolver;
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $context = new Context('');
 
@@ -143,7 +152,7 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
         $fixture = PropertyWrite::create('string $myProperty My Description', $typeResolver, $descriptionFactory,
             $context);
 
-        $this->assertSame('string $myProperty My Description', (string)$fixture);
+        $this->assertSame('string $myProperty My Description', (string) $fixture);
         $this->assertSame('myProperty', $fixture->getVariableName());
         $this->assertInstanceOf(String_::class, $fixture->getType());
         $this->assertSame($description, $fixture->getDescription());
@@ -151,50 +160,57 @@ class PropertyWriteTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite::<public>
      * @uses \phpDocumentor\Reflection\TypeResolver
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfEmptyBodyIsGiven()
+    public function test_factory_method_fails_if_empty_body_is_given()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        PropertyWrite::create('', new TypeResolver(), $descriptionFactory);
+        PropertyWrite::create('', new TypeResolver, $descriptionFactory);
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString()
+    public function test_factory_method_fails_if_body_is_not_string()
     {
         PropertyWrite::create([]);
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull()
+    public function test_factory_method_fails_if_resolver_is_null()
     {
         PropertyWrite::create('body');
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\TypeResolver
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    public function test_factory_method_fails_if_description_factory_is_null()
     {
-        PropertyWrite::create('body', new TypeResolver());
+        PropertyWrite::create('body', new TypeResolver);
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfVariableNameIsNotString()
+    public function test_exception_is_thrown_if_variable_name_is_not_string()
     {
         new PropertyWrite([]);
     }

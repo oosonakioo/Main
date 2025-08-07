@@ -8,23 +8,26 @@ class Switch_ extends Node\Stmt
 {
     /** @var Node\Expr Condition */
     public $cond;
+
     /** @var Case_[] Case list */
     public $cases;
 
     /**
      * Constructs a case node.
      *
-     * @param Node\Expr $cond       Condition
-     * @param Case_[]   $cases      Case list
-     * @param array     $attributes Additional attributes
+     * @param  Node\Expr  $cond  Condition
+     * @param  Case_[]  $cases  Case list
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct(Node\Expr $cond, array $cases, array $attributes = array()) {
+    public function __construct(Node\Expr $cond, array $cases, array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->cond = $cond;
         $this->cases = $cases;
     }
 
-    public function getSubNodeNames() {
-        return array('cond', 'cases');
+    public function getSubNodeNames()
+    {
+        return ['cond', 'cases'];
     }
 }

@@ -23,9 +23,8 @@ class LanguageNegotiator
     private $request;
 
     /**
-     * @param string  $defaultLocale
-     * @param array   $supportedLanguages
-     * @param Request $request
+     * @param  string  $defaultLocale
+     * @param  array  $supportedLanguages
      */
     public function __construct($defaultLocale, $supportedLanguages, Request $request)
     {
@@ -54,13 +53,13 @@ class LanguageNegotiator
     {
         $matches = $this->getMatchesFromAcceptedLanguages();
         foreach ($matches as $key => $q) {
-            if (!empty($this->supportedLanguages[$key])) {
+            if (! empty($this->supportedLanguages[$key])) {
                 return $key;
             }
-                    
+
             // Search for acceptable locale by 'regional' => 'af_ZA' or 'lang' => 'af-ZA' match.
-            foreach ( $this->supportedLanguages as $key_supported => $locale ) {
-                if ( (isset($locale['regional']) && $locale['regional'] == $key) || (isset($locale['lang']) && $locale['lang'] == $key) ) {
+            foreach ($this->supportedLanguages as $key_supported => $locale) {
+                if ((isset($locale['regional']) && $locale['regional'] == $key) || (isset($locale['lang']) && $locale['lang'] == $key)) {
                     return $key_supported;
                 }
             }
@@ -72,10 +71,10 @@ class LanguageNegotiator
             return key($this->supportedLanguages);
         }
 
-        if (class_exists('Locale') && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        if (class_exists('Locale') && ! empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $http_accept_language = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
-            if (!empty($this->supportedLanguages[$http_accept_language])) {
+            if (! empty($this->supportedLanguages[$http_accept_language])) {
                 return $http_accept_language;
             }
         }
@@ -84,7 +83,7 @@ class LanguageNegotiator
             $remote_host = explode('.', $this->request->server('REMOTE_HOST'));
             $lang = strtolower(end($remote_host));
 
-            if (!empty($this->supportedLanguages[$lang])) {
+            if (! empty($this->supportedLanguages[$lang])) {
                 return $lang;
             }
         }
@@ -124,13 +123,13 @@ class LanguageNegotiator
                 $q = isset($q) ? $q : 1000 - count($matches);
                 $matches[$l] = $q;
 
-                //If for some reason the Accept-Language header only sends language with country
-                //we should make the language without country an accepted option, with a value
-                //less than it's parent.
+                // If for some reason the Accept-Language header only sends language with country
+                // we should make the language without country an accepted option, with a value
+                // less than it's parent.
                 $l_ops = explode('-', $l);
                 array_pop($l_ops);
-                while (!empty($l_ops)) {
-                    //The new generic option needs to be slightly less important than it's base
+                while (! empty($l_ops)) {
+                    // The new generic option needs to be slightly less important than it's base
                     $q -= 0.001;
                     $op = implode('-', $l_ops);
                     if (empty($generic_matches[$op]) || $generic_matches[$op] > $q) {

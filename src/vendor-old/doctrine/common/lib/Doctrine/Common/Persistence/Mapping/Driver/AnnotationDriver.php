@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use Doctrine\Common\Persistence\Mapping\MappingException;
  * The AnnotationDriver reads the mapping metadata from docblock annotations.
  *
  * @since  2.2
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
@@ -79,8 +81,8 @@ abstract class AnnotationDriver implements MappingDriver
      * Initializes a new AnnotationDriver that uses the given AnnotationReader for reading
      * docblock annotations.
      *
-     * @param AnnotationReader  $reader The AnnotationReader to use, duck-typed.
-     * @param string|array|null $paths  One or multiple paths where mapping classes can be found.
+     * @param  AnnotationReader  $reader  The AnnotationReader to use, duck-typed.
+     * @param  string|array|null  $paths  One or multiple paths where mapping classes can be found.
      */
     public function __construct($reader, $paths = null)
     {
@@ -93,7 +95,6 @@ abstract class AnnotationDriver implements MappingDriver
     /**
      * Appends lookup paths to metadata driver.
      *
-     * @param array $paths
      *
      * @return void
      */
@@ -114,8 +115,6 @@ abstract class AnnotationDriver implements MappingDriver
 
     /**
      * Append exclude lookup paths to metadata driver.
-     *
-     * @param array $paths
      */
     public function addExcludePaths(array $paths)
     {
@@ -155,8 +154,7 @@ abstract class AnnotationDriver implements MappingDriver
     /**
      * Sets the file extension used to look for mapping files under.
      *
-     * @param string $fileExtension The file extension to set.
-     *
+     * @param  string  $fileExtension  The file extension to set.
      * @return void
      */
     public function setFileExtension($fileExtension)
@@ -171,9 +169,8 @@ abstract class AnnotationDriver implements MappingDriver
      * A class is non-transient if it is annotated with an annotation
      * from the {@see AnnotationDriver::entityAnnotationClasses}.
      *
-     * @param string $className
-     *
-     * @return boolean
+     * @param  string  $className
+     * @return bool
      */
     public function isTransient($className)
     {
@@ -184,6 +181,7 @@ abstract class AnnotationDriver implements MappingDriver
                 return false;
             }
         }
+
         return true;
     }
 
@@ -196,7 +194,7 @@ abstract class AnnotationDriver implements MappingDriver
             return $this->classNames;
         }
 
-        if (!$this->paths) {
+        if (! $this->paths) {
             throw MappingException::pathRequired();
         }
 
@@ -204,7 +202,7 @@ abstract class AnnotationDriver implements MappingDriver
         $includedFiles = [];
 
         foreach ($this->paths as $path) {
-            if ( ! is_dir($path)) {
+            if (! is_dir($path)) {
                 throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
             }
 
@@ -213,14 +211,14 @@ abstract class AnnotationDriver implements MappingDriver
                     new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::LEAVES_ONLY
                 ),
-                '/^.+' . preg_quote($this->fileExtension) . '$/i',
+                '/^.+'.preg_quote($this->fileExtension).'$/i',
                 \RecursiveRegexIterator::GET_MATCH
             );
 
             foreach ($iterator as $file) {
                 $sourceFile = $file[0];
 
-                if ( ! preg_match('(^phar:)i', $sourceFile)) {
+                if (! preg_match('(^phar:)i', $sourceFile)) {
                     $sourceFile = realpath($sourceFile);
                 }
 

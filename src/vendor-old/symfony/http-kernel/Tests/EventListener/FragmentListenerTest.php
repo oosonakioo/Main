@@ -11,15 +11,15 @@
 
 namespace Symfony\Component\HttpKernel\Tests\EventListener;
 
-use Symfony\Component\HttpKernel\EventListener\FragmentListener;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\FragmentListener;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\UriSigner;
 
 class FragmentListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testOnlyTriggeredOnFragmentRoute()
+    public function test_only_triggered_on_fragment_route()
     {
         $request = Request::create('http://example.com/foo?_path=foo%3Dbar%26_controller%3Dfoo');
 
@@ -34,7 +34,7 @@ class FragmentListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($request->query->has('_path'));
     }
 
-    public function testOnlyTriggeredIfControllerWasNotDefinedYet()
+    public function test_only_triggered_if_controller_was_not_defined_yet()
     {
         $request = Request::create('http://example.com/_fragment?_path=foo%3Dbar%26_controller%3Dfoo');
         $request->attributes->set('_controller', 'bar');
@@ -52,7 +52,7 @@ class FragmentListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
-    public function testAccessDeniedWithNonSafeMethods()
+    public function test_access_denied_with_non_safe_methods()
     {
         $request = Request::create('http://example.com/_fragment', 'POST');
 
@@ -65,9 +65,9 @@ class FragmentListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
-    public function testAccessDeniedWithWrongSignature()
+    public function test_access_denied_with_wrong_signature()
     {
-        $request = Request::create('http://example.com/_fragment', 'GET', array(), array(), array(), array('REMOTE_ADDR' => '10.0.0.1'));
+        $request = Request::create('http://example.com/_fragment', 'GET', [], [], [], ['REMOTE_ADDR' => '10.0.0.1']);
 
         $listener = new FragmentListener(new UriSigner('foo'));
         $event = $this->createGetResponseEvent($request);
@@ -75,21 +75,21 @@ class FragmentListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onKernelRequest($event);
     }
 
-    public function testWithSignature()
+    public function test_with_signature()
     {
         $signer = new UriSigner('foo');
-        $request = Request::create($signer->sign('http://example.com/_fragment?_path=foo%3Dbar%26_controller%3Dfoo'), 'GET', array(), array(), array(), array('REMOTE_ADDR' => '10.0.0.1'));
+        $request = Request::create($signer->sign('http://example.com/_fragment?_path=foo%3Dbar%26_controller%3Dfoo'), 'GET', [], [], [], ['REMOTE_ADDR' => '10.0.0.1']);
 
         $listener = new FragmentListener($signer);
         $event = $this->createGetResponseEvent($request);
 
         $listener->onKernelRequest($event);
 
-        $this->assertEquals(array('foo' => 'bar', '_controller' => 'foo'), $request->attributes->get('_route_params'));
+        $this->assertEquals(['foo' => 'bar', '_controller' => 'foo'], $request->attributes->get('_route_params'));
         $this->assertFalse($request->query->has('_path'));
     }
 
-    public function testRemovesPathWithControllerDefined()
+    public function test_removes_path_with_controller_defined()
     {
         $request = Request::create('http://example.com/_fragment?_path=foo%3Dbar%26_controller%3Dfoo');
 
@@ -101,10 +101,10 @@ class FragmentListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($request->query->has('_path'));
     }
 
-    public function testRemovesPathWithControllerNotDefined()
+    public function test_removes_path_with_controller_not_defined()
     {
         $signer = new UriSigner('foo');
-        $request = Request::create($signer->sign('http://example.com/_fragment?_path=foo%3Dbar'), 'GET', array(), array(), array(), array('REMOTE_ADDR' => '10.0.0.1'));
+        $request = Request::create($signer->sign('http://example.com/_fragment?_path=foo%3Dbar'), 'GET', [], [], [], ['REMOTE_ADDR' => '10.0.0.1']);
 
         $listener = new FragmentListener($signer);
         $event = $this->createGetResponseEvent($request);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,8 +32,7 @@ interface ReflectionProviderInterface
     /**
      * Gets the ReflectionMethod equivalent for this class.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return \ReflectionMethod
      */
     public function getReflectionMethod($name);
@@ -40,8 +40,7 @@ interface ReflectionProviderInterface
     /**
      * Gets the ReflectionProperty equivalent for this class.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return \ReflectionProperty
      */
     public function getReflectionProperty($name);

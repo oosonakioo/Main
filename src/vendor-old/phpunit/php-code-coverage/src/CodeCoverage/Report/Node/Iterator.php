@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -27,8 +28,6 @@ class PHP_CodeCoverage_Report_Node_Iterator implements RecursiveIterator
 
     /**
      * Constructor.
-     *
-     * @param PHP_CodeCoverage_Report_Node_Directory $node
      */
     public function __construct(PHP_CodeCoverage_Report_Node_Directory $node)
     {

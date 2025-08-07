@@ -9,7 +9,6 @@
  */
 class FSTools
 {
-
     private static $singleton;
 
     /**
@@ -17,7 +16,10 @@ class FSTools
      */
     public static function singleton()
     {
-        if (empty(FSTools::$singleton)) FSTools::$singleton = new FSTools();
+        if (empty(FSTools::$singleton)) {
+            FSTools::$singleton = new FSTools;
+        }
+
         return FSTools::$singleton;
     }
 
@@ -32,23 +34,26 @@ class FSTools
 
     /**
      * Recursively creates a directory
-     * @param string $folder Name of folder to create
+     *
+     * @param  string  $folder  Name of folder to create
+     *
      * @note Adapted from the PHP manual comment 76612
      */
     public function mkdirr($folder)
     {
-        $folders = preg_split("#[\\\\/]#", $folder);
+        $folders = preg_split('#[\\\\/]#', $folder);
         $base = '';
-        for($i = 0, $c = count($folders); $i < $c; $i++) {
-            if(empty($folders[$i])) {
-                if (!$i) {
+        for ($i = 0, $c = count($folders); $i < $c; $i++) {
+            if (empty($folders[$i])) {
+                if (! $i) {
                     // special case for root level
                     $base .= DIRECTORY_SEPARATOR;
                 }
+
                 continue;
             }
             $base .= $folders[$i];
-            if(!is_dir($base)){
+            if (! is_dir($base)) {
                 $this->mkdir($base);
             }
             $base .= DIRECTORY_SEPARATOR;
@@ -58,6 +63,7 @@ class FSTools
     /**
      * Copy a file, or recursively copy a folder and its contents; modified
      * so that copied files, if PHP, have includes removed
+     *
      * @note Adapted from http://aidanlister.com/repos/v/function.copyr.php
      */
     public function copyr($source, $dest)
@@ -67,17 +73,17 @@ class FSTools
             return $this->copy($source, $dest);
         }
         // Make destination directory
-        if (!is_dir($dest)) {
+        if (! is_dir($dest)) {
             $this->mkdir($dest);
         }
         // Loop through the folder
         $dir = $this->dir($source);
-        while ( false !== ($entry = $dir->read()) ) {
+        while (false !== ($entry = $dir->read())) {
             // Skip pointers
             if ($entry == '.' || $entry == '..') {
                 continue;
             }
-            if (!$this->copyable($entry)) {
+            if (! $this->copyable($entry)) {
                 continue;
             }
             // Deep copy directories
@@ -87,6 +93,7 @@ class FSTools
         }
         // Clean up
         $dir->close();
+
         return true;
     }
 
@@ -103,12 +110,13 @@ class FSTools
 
     /**
      * Delete a file, or a folder and its contents
+     *
      * @note Adapted from http://aidanlister.com/repos/v/function.rmdirr.php
      */
     public function rmdirr($dirname)
     {
         // Sanity check
-        if (!$this->file_exists($dirname)) {
+        if (! $this->file_exists($dirname)) {
             return false;
         }
 
@@ -125,32 +133,39 @@ class FSTools
                 continue;
             }
             // Recurse
-            $this->rmdirr($dirname . DIRECTORY_SEPARATOR . $entry);
+            $this->rmdirr($dirname.DIRECTORY_SEPARATOR.$entry);
         }
 
         // Clean up
         $dir->close();
+
         return $this->rmdir($dirname);
     }
 
     /**
      * Recursively globs a directory.
      */
-    public function globr($dir, $pattern, $flags = NULL)
+    public function globr($dir, $pattern, $flags = null)
     {
         $files = $this->glob("$dir/$pattern", $flags);
-        if ($files === false) $files = array();
+        if ($files === false) {
+            $files = [];
+        }
         $sub_dirs = $this->glob("$dir/*", GLOB_ONLYDIR);
-        if ($sub_dirs === false) $sub_dirs = array();
+        if ($sub_dirs === false) {
+            $sub_dirs = [];
+        }
         foreach ($sub_dirs as $sub_dir) {
             $sub_files = $this->globr($sub_dir, $pattern, $flags);
             $files = array_merge($files, $sub_files);
         }
+
         return $files;
     }
 
     /**
      * Allows for PHP functions to be called and be stubbed.
+     *
      * @warning This function will not work for functions that need
      *      to pass references; manually define a stub function for those.
      */
@@ -158,7 +173,6 @@ class FSTools
     {
         return call_user_func_array($name, $args);
     }
-
 }
 
 // vim: et sw=4 sts=4

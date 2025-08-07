@@ -9,11 +9,7 @@ class WithVirtuallyPrivateMethod
         return '';
     }
 
-    public function _getName()
-    {
-    }
+    public function _getName() {}
 
-    public function isAbstract()
-    {
-    }
+    public function isAbstract() {}
 }

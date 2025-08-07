@@ -1,4 +1,5 @@
 <?php
+
 /**
  * elFinder driver for Flysytem (https://github.com/thephpleague/flysystem)
  *

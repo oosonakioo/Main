@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Schema\Index;
  * SAP Sybase SQL Anywhere 16 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -43,8 +45,8 @@ class SQLAnywhere16Platform extends SQLAnywhere12Platform
             );
         }
 
-        if ( ! $index->isPrimary() && $index->isUnique() && $index->hasFlag('with_nulls_distinct')) {
-            return ' WITH NULLS DISTINCT' . parent::getAdvancedIndexOptionsSQL($index);
+        if (! $index->isPrimary() && $index->isUnique() && $index->hasFlag('with_nulls_distinct')) {
+            return ' WITH NULLS DISTINCT'.parent::getAdvancedIndexOptionsSQL($index);
         }
 
         return parent::getAdvancedIndexOptionsSQL($index);

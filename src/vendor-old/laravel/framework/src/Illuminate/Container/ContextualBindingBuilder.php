@@ -30,7 +30,6 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
     /**
      * Create a new contextual binding builder.
      *
-     * @param  \Illuminate\Container\Container  $container
      * @param  string  $concrete
      * @return void
      */

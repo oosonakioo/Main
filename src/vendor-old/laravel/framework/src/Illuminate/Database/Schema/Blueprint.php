@@ -3,9 +3,9 @@
 namespace Illuminate\Database\Schema;
 
 use Closure;
-use Illuminate\Support\Fluent;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Grammars\Grammar;
+use Illuminate\Support\Fluent;
 
 class Blueprint
 {
@@ -58,10 +58,9 @@ class Blueprint
      * Create a new schema blueprint.
      *
      * @param  string  $table
-     * @param  \Closure|null  $callback
      * @return void
      */
-    public function __construct($table, Closure $callback = null)
+    public function __construct($table, ?Closure $callback = null)
     {
         $this->table = $table;
 
@@ -73,8 +72,6 @@ class Blueprint
     /**
      * Execute the blueprint against the database.
      *
-     * @param  \Illuminate\Database\Connection  $connection
-     * @param  \Illuminate\Database\Schema\Grammars\Grammar $grammar
      * @return void
      */
     public function build(Connection $connection, Grammar $grammar)
@@ -87,8 +84,6 @@ class Blueprint
     /**
      * Get the raw SQL statements for the blueprint.
      *
-     * @param  \Illuminate\Database\Connection  $connection
-     * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @return array
      */
     public function toSql(Connection $connection, Grammar $grammar)
@@ -615,8 +610,8 @@ class Blueprint
      * Create a new float column on the table.
      *
      * @param  string  $column
-     * @param  int     $total
-     * @param  int     $places
+     * @param  int  $total
+     * @param  int  $places
      * @return \Illuminate\Support\Fluent
      */
     public function float($column, $total = 8, $places = 2)
@@ -627,9 +622,9 @@ class Blueprint
     /**
      * Create a new double column on the table.
      *
-     * @param  string   $column
-     * @param  int|null    $total
-     * @param  int|null $places
+     * @param  string  $column
+     * @param  int|null  $total
+     * @param  int|null  $places
      * @return \Illuminate\Support\Fluent
      */
     public function double($column, $total = null, $places = null)
@@ -641,8 +636,8 @@ class Blueprint
      * Create a new decimal column on the table.
      *
      * @param  string  $column
-     * @param  int     $total
-     * @param  int     $places
+     * @param  int  $total
+     * @param  int  $places
      * @return \Illuminate\Support\Fluent
      */
     public function decimal($column, $total = 8, $places = 2)
@@ -665,7 +660,6 @@ class Blueprint
      * Create a new enum column on the table.
      *
      * @param  string  $column
-     * @param  array   $allowed
      * @return \Illuminate\Support\Fluent
      */
     public function enum($column, array $allowed)
@@ -915,9 +909,9 @@ class Blueprint
     /**
      * Add a new index command to the blueprint.
      *
-     * @param  string        $type
+     * @param  string  $type
      * @param  string|array  $columns
-     * @param  string        $index
+     * @param  string  $index
      * @return \Illuminate\Support\Fluent
      */
     protected function indexCommand($type, $columns, $index)
@@ -938,7 +932,6 @@ class Blueprint
      * Create a default index name for the table.
      *
      * @param  string  $type
-     * @param  array   $columns
      * @return string
      */
     protected function createIndexName($type, array $columns)
@@ -953,7 +946,6 @@ class Blueprint
      *
      * @param  string  $type
      * @param  string  $name
-     * @param  array   $parameters
      * @return \Illuminate\Support\Fluent
      */
     public function addColumn($type, $name, array $parameters = [])
@@ -984,7 +976,6 @@ class Blueprint
      * Add a new command to the blueprint.
      *
      * @param  string  $name
-     * @param  array  $parameters
      * @return \Illuminate\Support\Fluent
      */
     protected function addCommand($name, array $parameters = [])
@@ -998,7 +989,6 @@ class Blueprint
      * Create a new Fluent command.
      *
      * @param  string  $name
-     * @param  array   $parameters
      * @return \Illuminate\Support\Fluent
      */
     protected function createCommand($name, array $parameters = [])

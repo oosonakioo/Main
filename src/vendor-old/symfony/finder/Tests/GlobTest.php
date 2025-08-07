@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Glob;
 
 class GlobTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGlobToRegexDelimiters()
+    public function test_glob_to_regex_delimiters()
     {
         $this->assertEquals('#^(?=[^\.])\#$#', Glob::toRegex('#'));
         $this->assertEquals('#^\.[^/]*$#', Glob::toRegex('.*'));

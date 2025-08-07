@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,16 +34,16 @@ class SQLAzurePlatform extends SQLServer2008Platform
     /**
      * {@inheritDoc}
      */
-    public function getCreateTableSQL(Table $table, $createFlags=self::CREATE_INDEXES)
+    public function getCreateTableSQL(Table $table, $createFlags = self::CREATE_INDEXES)
     {
         $sql = parent::getCreateTableSQL($table, $createFlags);
 
         if ($table->hasOption('azure.federatedOnColumnName')) {
             $distributionName = $table->getOption('azure.federatedOnDistributionName');
-            $columnName       = $table->getOption('azure.federatedOnColumnName');
-            $stmt             = ' FEDERATED ON (' . $distributionName . ' = ' . $columnName . ')';
+            $columnName = $table->getOption('azure.federatedOnColumnName');
+            $stmt = ' FEDERATED ON ('.$distributionName.' = '.$columnName.')';
 
-            $sql[0] = $sql[0] . $stmt;
+            $sql[0] = $sql[0].$stmt;
         }
 
         return $sql;

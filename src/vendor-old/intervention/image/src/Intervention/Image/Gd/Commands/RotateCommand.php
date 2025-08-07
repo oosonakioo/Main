@@ -9,8 +9,8 @@ class RotateCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Rotates image counter clockwise
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

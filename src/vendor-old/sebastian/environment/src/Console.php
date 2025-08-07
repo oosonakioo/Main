@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Environment package.
  *
@@ -10,12 +11,12 @@
 
 namespace SebastianBergmann\Environment;
 
-/**
- */
 class Console
 {
-    const STDIN  = 0;
+    const STDIN = 0;
+
     const STDOUT = 1;
+
     const STDERR = 2;
 
     /**
@@ -29,10 +30,10 @@ class Console
     public function hasColorSupport()
     {
         if (DIRECTORY_SEPARATOR == '\\') {
-            return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI') || 'xterm' === getenv('TERM');
+            return getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON' || getenv('TERM') === 'xterm';
         }
 
-        if (!defined('STDOUT')) {
+        if (! defined('STDOUT')) {
             return false;
         }
 
@@ -54,14 +55,14 @@ class Console
             } elseif (function_exists('proc_open')) {
                 $process = proc_open(
                     'mode CON',
-                    array(
-                        1 => array('pipe', 'w'),
-                        2 => array('pipe', 'w')
-                    ),
+                    [
+                        1 => ['pipe', 'w'],
+                        2 => ['pipe', 'w'],
+                    ],
                     $pipes,
                     null,
                     null,
-                    array('suppress_errors' => true)
+                    ['suppress_errors' => true]
                 );
 
                 if (is_resource($process)) {
@@ -80,7 +81,7 @@ class Console
             return $columns - 1;
         }
 
-        if (!$this->isInteractive(self::STDIN)) {
+        if (! $this->isInteractive(self::STDIN)) {
             return 80;
         }
 
@@ -102,8 +103,7 @@ class Console
     /**
      * Returns if the file descriptor is an interactive terminal or not.
      *
-     * @param int|resource $fileDescriptor
-     *
+     * @param  int|resource  $fileDescriptor
      * @return bool
      */
     public function isInteractive($fileDescriptor = self::STDOUT)

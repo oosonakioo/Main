@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -49,7 +50,7 @@ class PHP_CodeCoverage_Report_XML_File_Unit
             'package'
         )->item(0);
 
-        if (!$node) {
+        if (! $node) {
             $node = $this->contextNode->appendChild(
                 $this->contextNode->ownerDocument->createElementNS(
                     'http://schema.phpunit.de/coverage/1.0',
@@ -71,7 +72,7 @@ class PHP_CodeCoverage_Report_XML_File_Unit
             'namespace'
         )->item(0);
 
-        if (!$node) {
+        if (! $node) {
             $node = $this->contextNode->appendChild(
                 $this->contextNode->ownerDocument->createElementNS(
                     'http://schema.phpunit.de/coverage/1.0',

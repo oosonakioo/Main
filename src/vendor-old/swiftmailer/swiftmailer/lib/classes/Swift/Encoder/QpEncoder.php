@@ -36,7 +36,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
      *
      * @var string[]
      */
-    protected static $_qpMap = array(
+    protected static $_qpMap = [
         0 => '=00', 1 => '=01', 2 => '=02', 3 => '=03', 4 => '=04',
         5 => '=05', 6 => '=06', 7 => '=07', 8 => '=08', 9 => '=09',
         10 => '=0A', 11 => '=0B', 12 => '=0C', 13 => '=0D', 14 => '=0E',
@@ -89,27 +89,27 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
         245 => '=F5', 246 => '=F6', 247 => '=F7', 248 => '=F8', 249 => '=F9',
         250 => '=FA', 251 => '=FB', 252 => '=FC', 253 => '=FD', 254 => '=FE',
         255 => '=FF',
-        );
+    ];
 
-    protected static $_safeMapShare = array();
+    protected static $_safeMapShare = [];
 
     /**
      * A map of non-encoded ascii characters.
      *
      * @var string[]
      */
-    protected $_safeMap = array();
+    protected $_safeMap = [];
 
     /**
      * Creates a new QpEncoder for the given CharacterStream.
      *
-     * @param Swift_CharacterStream $charStream to use for reading characters
-     * @param Swift_StreamFilter    $filter     if input should be canonicalized
+     * @param  Swift_CharacterStream  $charStream  to use for reading characters
+     * @param  Swift_StreamFilter  $filter  if input should be canonicalized
      */
-    public function __construct(Swift_CharacterStream $charStream, Swift_StreamFilter $filter = null)
+    public function __construct(Swift_CharacterStream $charStream, ?Swift_StreamFilter $filter = null)
     {
         $this->_charStream = $charStream;
-        if (!isset(self::$_safeMapShare[$this->getSafeMapShareId()])) {
+        if (! isset(self::$_safeMapShare[$this->getSafeMapShareId()])) {
             $this->initSafeMap();
             self::$_safeMapShare[$this->getSafeMapShareId()] = $this->_safeMap;
         } else {
@@ -120,12 +120,12 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
 
     public function __sleep()
     {
-        return array('_charStream', '_filter');
+        return ['_charStream', '_filter'];
     }
 
     public function __wakeup()
     {
-        if (!isset(self::$_safeMapShare[$this->getSafeMapShareId()])) {
+        if (! isset(self::$_safeMapShare[$this->getSafeMapShareId()])) {
             $this->initSafeMap();
             self::$_safeMapShare[$this->getSafeMapShareId()] = $this->_safeMap;
         } else {
@@ -141,7 +141,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
     protected function initSafeMap()
     {
         foreach (array_merge(
-            array(0x09, 0x20), range(0x21, 0x3C), range(0x3E, 0x7E)) as $byte) {
+            [0x09, 0x20], range(0x21, 0x3C), range(0x3E, 0x7E)) as $byte) {
             $this->_safeMap[$byte] = chr($byte);
         }
     }
@@ -153,10 +153,9 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
      * If the first line needs to be shorter, indicate the difference with
      * $firstLineOffset.
      *
-     * @param string $string           to encode
-     * @param int    $firstLineOffset, optional
-     * @param int    $maxLineLength,   optional 0 indicates the default of 76 chars
-     *
+     * @param  string  $string  to encode
+     * @param  int  $firstLineOffset,  optional
+     * @param  int  $maxLineLength,  optional 0 indicates the default of 76 chars
      * @return string
      */
     public function encodeString($string, $firstLineOffset = 0, $maxLineLength = 0)
@@ -167,7 +166,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
 
         $thisLineLength = $maxLineLength - $firstLineOffset;
 
-        $lines = array();
+        $lines = [];
         $lNo = 0;
         $lines[$lNo] = '';
         $currentLine = &$lines[$lNo++];
@@ -225,7 +224,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
     /**
      * Updates the charset used.
      *
-     * @param string $charset
+     * @param  string  $charset
      */
     public function charsetChanged($charset)
     {
@@ -235,9 +234,8 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
     /**
      * Encode the given byte array into a verbatim QP form.
      *
-     * @param int[] $bytes
-     * @param int   $size
-     *
+     * @param  int[]  $bytes
+     * @param  int  $size
      * @return string
      */
     protected function _encodeByteSequence(array $bytes, &$size)
@@ -247,7 +245,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
         foreach ($bytes as $b) {
             if (isset($this->_safeMap[$b])) {
                 $ret .= $this->_safeMap[$b];
-                ++$size;
+                $size++;
             } else {
                 $ret .= self::$_qpMap[$b];
                 $size += 3;
@@ -260,8 +258,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
     /**
      * Get the next sequence of bytes to read from the char stream.
      *
-     * @param int $size number of bytes to read
-     *
+     * @param  int  $size  number of bytes to read
      * @return int[]
      */
     protected function _nextSequence($size = 4)
@@ -272,15 +269,14 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
     /**
      * Make sure CRLF is correct and HT/SPACE are in valid places.
      *
-     * @param string $string
-     *
+     * @param  string  $string
      * @return string
      */
     protected function _standardize($string)
     {
-        $string = str_replace(array("\t=0D=0A", ' =0D=0A', '=0D=0A'),
-            array("=09\r\n", "=20\r\n", "\r\n"), $string
-            );
+        $string = str_replace(["\t=0D=0A", ' =0D=0A', '=0D=0A'],
+            ["=09\r\n", "=20\r\n", "\r\n"], $string
+        );
         switch ($end = ord(substr($string, -1))) {
             case 0x09:
             case 0x20:

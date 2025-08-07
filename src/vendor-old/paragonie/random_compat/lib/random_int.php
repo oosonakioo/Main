@@ -1,6 +1,6 @@
 <?php
 
-if (!is_callable('random_int')) {
+if (! is_callable('random_int')) {
     /**
      * Random_* Compatibility Library
      * for using the new PHP 7 random_* API in PHP 5 projects
@@ -31,12 +31,11 @@ if (!is_callable('random_int')) {
     /**
      * Fetch a random integer between $min and $max inclusive
      *
-     * @param int $min
-     * @param int $max
+     * @param  int  $min
+     * @param  int  $max
+     * @return int
      *
      * @throws Exception
-     *
-     * @return int
      */
     function random_int($min, $max)
     {
@@ -49,7 +48,6 @@ if (!is_callable('random_int')) {
          * lose precision, so the <= and => operators might accidentally let a float
          * through.
          */
-
         try {
             $min = RandomCompat_intval($min);
         } catch (TypeError $ex) {
@@ -101,7 +99,7 @@ if (!is_callable('random_int')) {
         /**
          * Test for integer overflow:
          */
-        if (!is_int($range)) {
+        if (! is_int($range)) {
 
             /**
              * Still safely calculate wider ranges.
@@ -110,7 +108,6 @@ if (!is_callable('random_int')) {
              * @ref https://gist.github.com/CodesInChaos/03f9ea0b58e8b2b8d435
              *
              * We use ~0 as a mask in this case because it generates all 1s
-             *
              * @ref https://eval.in/400356 (32-bit)
              * @ref http://3v4l.org/XX9r5  (64-bit)
              */
@@ -125,9 +122,9 @@ if (!is_callable('random_int')) {
              */
             while ($range > 0) {
                 if ($bits % 8 === 0) {
-                    ++$bytes;
+                    $bytes++;
                 }
-                ++$bits;
+                $bits++;
                 $range >>= 1;
                 $mask = $mask << 1 | 1;
             }
@@ -166,7 +163,7 @@ if (!is_callable('random_int')) {
              *   204631455
              */
             $val &= 0;
-            for ($i = 0; $i < $bytes; ++$i) {
+            for ($i = 0; $i < $bytes; $i++) {
                 $val |= ord($randomByteString[$i]) << ($i * 8);
             }
 
@@ -176,15 +173,15 @@ if (!is_callable('random_int')) {
             $val &= $mask;
             $val += $valueShift;
 
-            ++$attempts;
+            $attempts++;
             /**
              * If $val overflows to a floating point number,
              * ... or is larger than $max,
              * ... or smaller than $min,
              * then try again.
              */
-        } while (!is_int($val) || $val > $max || $val < $min);
+        } while (! is_int($val) || $val > $max || $val < $min);
 
-        return (int)$val;
+        return (int) $val;
     }
 }

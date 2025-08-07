@@ -17,9 +17,9 @@ use Symfony\Component\HttpKernel\HttpCache\Ssi;
 
 class SsiTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHasSurrogateSsiCapability()
+    public function test_has_surrogate_ssi_capability()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
         $request->headers->set('Surrogate-Capability', 'abc="SSI/1.0"');
@@ -33,9 +33,9 @@ class SsiTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($ssi->hasSurrogateCapability($request));
     }
 
-    public function testAddSurrogateSsiCapability()
+    public function test_add_surrogate_ssi_capability()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
         $ssi->addSurrogateCapability($request);
@@ -45,9 +45,9 @@ class SsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('symfony2="SSI/1.0", symfony2="SSI/1.0"', $request->headers->get('Surrogate-Capability'));
     }
 
-    public function testAddSurrogateControl()
+    public function test_add_surrogate_control()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $response = new Response('foo <!--#include virtual="" -->');
         $ssi->addSurrogateControl($response);
@@ -58,42 +58,42 @@ class SsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $response->headers->get('Surrogate-Control'));
     }
 
-    public function testNeedsSsiParsing()
+    public function test_needs_ssi_parsing()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
-        $response = new Response();
+        $response = new Response;
         $response->headers->set('Surrogate-Control', 'content="SSI/1.0"');
         $this->assertTrue($ssi->needsParsing($response));
 
-        $response = new Response();
+        $response = new Response;
         $this->assertFalse($ssi->needsParsing($response));
     }
 
-    public function testRenderIncludeTag()
+    public function test_render_include_tag()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $this->assertEquals('<!--#include virtual="/" -->', $ssi->renderIncludeTag('/', '/alt', true));
         $this->assertEquals('<!--#include virtual="/" -->', $ssi->renderIncludeTag('/', '/alt', false));
         $this->assertEquals('<!--#include virtual="/" -->', $ssi->renderIncludeTag('/'));
     }
 
-    public function testProcessDoesNothingIfContentTypeIsNotHtml()
+    public function test_process_does_nothing_if_content_type_is_not_html()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
-        $response = new Response();
+        $response = new Response;
         $response->headers->set('Content-Type', 'text/plain');
         $ssi->process($request, $response);
 
         $this->assertFalse($response->headers->has('x-body-eval'));
     }
 
-    public function testProcess()
+    public function test_process()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
         $response = new Response('foo <!--#include virtual="..." -->');
@@ -108,9 +108,9 @@ class SsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("foo <?php echo \$this->surrogate->handle(\$this, 'foo\\'', '', false) ?>"."\n", $response->getContent());
     }
 
-    public function testProcessEscapesPhpTags()
+    public function test_process_escapes_php_tags()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
         $response = new Response('<?php <? <% <script language=php>');
@@ -122,18 +122,18 @@ class SsiTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testProcessWhenNoSrcInAnSsi()
+    public function test_process_when_no_src_in_an_ssi()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
         $response = new Response('foo <!--#include -->');
         $ssi->process($request, $response);
     }
 
-    public function testProcessRemoveSurrogateControlHeader()
+    public function test_process_remove_surrogate_control_header()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
 
         $request = Request::create('/');
         $response = new Response('foo <!--#include virtual="..." -->');
@@ -152,9 +152,9 @@ class SsiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('no-store', $response->headers->get('surrogate-control'));
     }
 
-    public function testHandle()
+    public function test_handle()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
         $cache = $this->getCache(Request::create('/'), new Response('foo'));
         $this->assertEquals('foo', $ssi->handle($cache, '/', '/alt', true));
     }
@@ -162,51 +162,48 @@ class SsiTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testHandleWhenResponseIsNot200()
+    public function test_handle_when_response_is_not200()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
         $response = new Response('foo');
         $response->setStatusCode(404);
         $cache = $this->getCache(Request::create('/'), $response);
         $ssi->handle($cache, '/', '/alt', false);
     }
 
-    public function testHandleWhenResponseIsNot200AndErrorsAreIgnored()
+    public function test_handle_when_response_is_not200_and_errors_are_ignored()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
         $response = new Response('foo');
         $response->setStatusCode(404);
         $cache = $this->getCache(Request::create('/'), $response);
         $this->assertEquals('', $ssi->handle($cache, '/', '/alt', true));
     }
 
-    public function testHandleWhenResponseIsNot200AndAltIsPresent()
+    public function test_handle_when_response_is_not200_and_alt_is_present()
     {
-        $ssi = new Ssi();
+        $ssi = new Ssi;
         $response1 = new Response('foo');
         $response1->setStatusCode(404);
         $response2 = new Response('bar');
-        $cache = $this->getCache(Request::create('/'), array($response1, $response2));
+        $cache = $this->getCache(Request::create('/'), [$response1, $response2]);
         $this->assertEquals('bar', $ssi->handle($cache, '/', '/alt', false));
     }
 
     protected function getCache($request, $response)
     {
-        $cache = $this->getMock('Symfony\Component\HttpKernel\HttpCache\HttpCache', array('getRequest', 'handle'), array(), '', false);
+        $cache = $this->getMock('Symfony\Component\HttpKernel\HttpCache\HttpCache', ['getRequest', 'handle'], [], '', false);
         $cache->expects($this->any())
-              ->method('getRequest')
-              ->will($this->returnValue($request))
-        ;
+            ->method('getRequest')
+            ->will($this->returnValue($request));
         if (is_array($response)) {
             $cache->expects($this->any())
-                  ->method('handle')
-                  ->will(call_user_func_array(array($this, 'onConsecutiveCalls'), $response))
-            ;
+                ->method('handle')
+                ->will(call_user_func_array([$this, 'onConsecutiveCalls'], $response));
         } else {
             $cache->expects($this->any())
-                  ->method('handle')
-                  ->will($this->returnValue($response))
-            ;
+                ->method('handle')
+                ->will($this->returnValue($response));
         }
 
         return $cache;

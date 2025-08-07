@@ -19,19 +19,22 @@ namespace Psy;
  */
 class Context
 {
-    private static $specialVars = array('_', '_e', '__psysh__');
-    private $scopeVariables = array();
+    private static $specialVars = ['_', '_e', '__psysh__'];
+
+    private $scopeVariables = [];
+
     private $lastException;
+
     private $returnValue;
 
     /**
      * Get a context variable.
      *
-     * @throws InvalidArgumentException If the variable is not found in the current context.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return mixed
+     *
+     * @throws InvalidArgumentException If the variable is not found in the current context.
      */
     public function get($name)
     {
@@ -40,15 +43,15 @@ class Context
                 return $this->returnValue;
 
             case '_e':
-                if (!isset($this->lastException)) {
-                    throw new \InvalidArgumentException('Unknown variable: $' . $name);
+                if (! isset($this->lastException)) {
+                    throw new \InvalidArgumentException('Unknown variable: $'.$name);
                 }
 
                 return $this->lastException;
 
             default:
-                if (!array_key_exists($name, $this->scopeVariables)) {
-                    throw new \InvalidArgumentException('Unknown variable: $' . $name);
+                if (! array_key_exists($name, $this->scopeVariables)) {
+                    throw new \InvalidArgumentException('Unknown variable: $'.$name);
                 }
 
                 return $this->scopeVariables[$name];
@@ -76,8 +79,6 @@ class Context
      * Set all scope variables.
      *
      * This method does *not* set the magic $_ and $_e variables.
-     *
-     * @param array $vars
      */
     public function setAll(array $vars)
     {
@@ -91,7 +92,7 @@ class Context
     /**
      * Set the most recent return value.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function setReturnValue($value)
     {
@@ -110,8 +111,6 @@ class Context
 
     /**
      * Set the most recent Exception.
-     *
-     * @param \Exception $e
      */
     public function setLastException(\Exception $e)
     {
@@ -121,13 +120,13 @@ class Context
     /**
      * Get the most recent Exception.
      *
-     * @throws InvalidArgumentException If no Exception has been caught.
-     *
      * @return null|Exception
+     *
+     * @throws InvalidArgumentException If no Exception has been caught.
      */
     public function getLastException()
     {
-        if (!isset($this->lastException)) {
+        if (! isset($this->lastException)) {
             throw new \InvalidArgumentException('No most-recent exception');
         }
 

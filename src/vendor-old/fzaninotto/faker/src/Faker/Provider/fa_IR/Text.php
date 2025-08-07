@@ -8,9 +8,11 @@ class Text extends \Faker\Provider\Text
      * generates text string in arabic
      *
      * @example 'از تاریخ‌الشعرا را بکوبند روی نبش دیوار کوچه‌شان. تابلوی مدرسه.'
-     * @param  integer                   $maxNbChars
-     * @param  integer                   $indexSize
+     *
+     * @param  int  $maxNbChars
+     * @param  int  $indexSize
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function realText($maxNbChars = 200, $indexSize = 2)
@@ -28,7 +30,7 @@ class Text extends \Faker\Provider\Text
         }
 
         $words = $this->getConsecutiveWords($indexSize);
-        $result = array();
+        $result = [];
         $resultLength = 0;
         // take a random starting point
         $next = static::randomKey($words);
@@ -43,7 +45,7 @@ class Text extends \Faker\Provider\Text
             array_shift($currentWords);
             $next = implode(' ', $currentWords);
 
-            if ($resultLength == 0 && !preg_match('/^[\x{0600}-\x{06FF}]/u', $word)) {
+            if ($resultLength == 0 && ! preg_match('/^[\x{0600}-\x{06FF}]/u', $word)) {
                 continue;
             }
             // append the element
@@ -68,6 +70,7 @@ class Text extends \Faker\Provider\Text
      * Language: Persian
      *
      * @see http://fa.wikisource.org/wiki/%D9%85%D8%AF%DB%8C%D8%B1_%D9%85%D8%AF%D8%B1%D8%B3%D9%87
+     *
      * @var string
      */
     protected static $baseText = <<<'EOT'

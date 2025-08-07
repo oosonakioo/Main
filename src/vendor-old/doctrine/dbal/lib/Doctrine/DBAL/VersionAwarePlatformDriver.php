@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ namespace Doctrine\DBAL;
  * distinction.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -36,9 +38,8 @@ interface VersionAwarePlatformDriver
     /**
      * Factory method for creating the appropriate platform instance for the given version.
      *
-     * @param string $version The platform/server version string to evaluate. This should be given in the notation
-     *                        the underlying database vendor uses.
-     *
+     * @param  string  $version  The platform/server version string to evaluate. This should be given in the notation
+     *                           the underlying database vendor uses.
      * @return \Doctrine\DBAL\Platforms\AbstractPlatform
      *
      * @throws DBALException if the given version string could not be evaluated.

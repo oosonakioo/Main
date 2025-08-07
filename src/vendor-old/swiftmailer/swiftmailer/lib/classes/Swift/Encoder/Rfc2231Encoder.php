@@ -36,20 +36,19 @@ class Swift_Encoder_Rfc2231Encoder implements Swift_Encoder
      * Takes an unencoded string and produces a string encoded according to
      * RFC 2231 from it.
      *
-     * @param string $string
-     * @param int    $firstLineOffset
-     * @param int    $maxLineLength   optional, 0 indicates the default of 75 bytes
-     *
+     * @param  string  $string
+     * @param  int  $firstLineOffset
+     * @param  int  $maxLineLength  optional, 0 indicates the default of 75 bytes
      * @return string
      */
     public function encodeString($string, $firstLineOffset = 0, $maxLineLength = 0)
     {
-        $lines = array();
+        $lines = [];
         $lineCount = 0;
         $lines[] = '';
         $currentLine = &$lines[$lineCount++];
 
-        if (0 >= $maxLineLength) {
+        if ($maxLineLength <= 0) {
             $maxLineLength = 75;
         }
 
@@ -60,7 +59,7 @@ class Swift_Encoder_Rfc2231Encoder implements Swift_Encoder
 
         while (false !== $char = $this->_charStream->read(4)) {
             $encodedChar = rawurlencode($char);
-            if (0 != strlen($currentLine)
+            if (strlen($currentLine) != 0
                 && strlen($currentLine.$encodedChar) > $thisLineLength) {
                 $lines[] = '';
                 $currentLine = &$lines[$lineCount++];
@@ -75,7 +74,7 @@ class Swift_Encoder_Rfc2231Encoder implements Swift_Encoder
     /**
      * Updates the charset used.
      *
-     * @param string $charset
+     * @param  string  $charset
      */
     public function charsetChanged($charset)
     {

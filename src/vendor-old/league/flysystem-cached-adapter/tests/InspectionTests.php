@@ -2,9 +2,9 @@
 
 use League\Flysystem\Cached\CachedAdapter;
 
-class InspectionTests extends PHPUnit_Framework_TestCase {
-
-    public function testGetAdapter()
+class InspectionTests extends PHPUnit_Framework_TestCase
+{
+    public function test_get_adapter()
     {
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
         $cache = Mockery::mock('League\Flysystem\Cached\CacheInterface');

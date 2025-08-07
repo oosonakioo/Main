@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,17 +24,18 @@ namespace Doctrine\DBAL\Driver\SQLSrv;
  * Last Id Data Container.
  *
  * @since 2.3
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class LastInsertId
 {
     /**
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
-     * @param integer $id
+     * @param  int  $id
      */
     public function setId($id)
     {
@@ -41,7 +43,7 @@ class LastInsertId
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {

@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\Debug\Tests;
 
-use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\Debug\Exception\OutOfMemoryException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require_once __DIR__.'/HeaderMock.php';
 
@@ -30,7 +30,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         testHeader();
     }
 
-    public function testDebug()
+    public function test_debug()
     {
         $handler = new ExceptionHandler(false);
 
@@ -51,7 +51,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<h2 class="block_exception clear_fix">', $response);
     }
 
-    public function testStatusCode()
+    public function test_status_code()
     {
         $handler = new ExceptionHandler(false, 'iso8859-1');
 
@@ -61,32 +61,32 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('Sorry, the page you are looking for could not be found.', $response);
 
-        $expectedHeaders = array(
-            array('HTTP/1.0 404', true, null),
-            array('Content-Type: text/html; charset=iso8859-1', true, null),
-        );
+        $expectedHeaders = [
+            ['HTTP/1.0 404', true, null],
+            ['Content-Type: text/html; charset=iso8859-1', true, null],
+        ];
 
         $this->assertSame($expectedHeaders, testHeader());
     }
 
-    public function testHeaders()
+    public function test_headers()
     {
         $handler = new ExceptionHandler(false, 'iso8859-1');
 
         ob_start();
-        $handler->sendPhpResponse(new MethodNotAllowedHttpException(array('POST')));
+        $handler->sendPhpResponse(new MethodNotAllowedHttpException(['POST']));
         $response = ob_get_clean();
 
-        $expectedHeaders = array(
-            array('HTTP/1.0 405', true, null),
-            array('Allow: POST', false, null),
-            array('Content-Type: text/html; charset=iso8859-1', true, null),
-        );
+        $expectedHeaders = [
+            ['HTTP/1.0 405', true, null],
+            ['Allow: POST', false, null],
+            ['Content-Type: text/html; charset=iso8859-1', true, null],
+        ];
 
         $this->assertSame($expectedHeaders, testHeader());
     }
 
-    public function testNestedExceptions()
+    public function test_nested_exceptions()
     {
         $handler = new ExceptionHandler(true);
         ob_start();
@@ -96,11 +96,11 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertStringMatchesFormat('%A<span class="exception_message">Foo</span>%A<span class="exception_message">Bar</span>%A', $response);
     }
 
-    public function testHandle()
+    public function test_handle()
     {
         $exception = new \Exception('foo');
 
-        $handler = $this->getMock('Symfony\Component\Debug\ExceptionHandler', array('sendPhpResponse'));
+        $handler = $this->getMock('Symfony\Component\Debug\ExceptionHandler', ['sendPhpResponse']);
         $handler
             ->expects($this->exactly(2))
             ->method('sendPhpResponse');
@@ -114,11 +114,11 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $handler->handle($exception);
     }
 
-    public function testHandleOutOfMemoryException()
+    public function test_handle_out_of_memory_exception()
     {
         $exception = new OutOfMemoryException('foo', 0, E_ERROR, __FILE__, __LINE__);
 
-        $handler = $this->getMock('Symfony\Component\Debug\ExceptionHandler', array('sendPhpResponse'));
+        $handler = $this->getMock('Symfony\Component\Debug\ExceptionHandler', ['sendPhpResponse']);
         $handler
             ->expects($this->once())
             ->method('sendPhpResponse');

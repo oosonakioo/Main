@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -63,7 +64,7 @@ class DateType extends Type
         }
 
         $val = \DateTime::createFromFormat('!'.$platform->getDateFormatString(), $value);
-        if ( ! $val) {
+        if (! $val) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateFormatString());
         }
 

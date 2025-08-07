@@ -6,10 +6,10 @@ class Swift_Bug118Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->_message = new Swift_Message();
+        $this->_message = new Swift_Message;
     }
 
-    public function testCallingGenerateIdChangesTheMessageId()
+    public function test_calling_generate_id_changes_the_message_id()
     {
         $currentId = $this->_message->getId();
         $this->_message->generateId();

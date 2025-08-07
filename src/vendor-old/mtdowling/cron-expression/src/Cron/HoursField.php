@@ -1,9 +1,9 @@
 <?php
 
 namespace Cron;
+
 use DateTime;
 use DateTimeZone;
-
 
 /**
  * Hours field.  Allows: * , / -
@@ -31,11 +31,12 @@ class HoursField extends AbstractField
             $date->setTimezone($timezone);
 
             $date->setTime($date->format('H'), $invert ? 59 : 0);
+
             return $this;
         }
 
-        $parts = strpos($parts, ',') !== false ? explode(',', $parts) : array($parts);
-        $hours = array();
+        $parts = strpos($parts, ',') !== false ? explode(',', $parts) : [$parts];
+        $hours = [];
         foreach ($parts as $part) {
             $hours = array_merge($hours, $this->getRangeForExpression($part, 23));
         }
@@ -44,7 +45,7 @@ class HoursField extends AbstractField
         $position = $invert ? count($hours) - 1 : 0;
         if (count($hours) > 1) {
             for ($i = 0; $i < count($hours) - 1; $i++) {
-                if ((!$invert && $current_hour >= $hours[$i] && $current_hour < $hours[$i + 1]) ||
+                if ((! $invert && $current_hour >= $hours[$i] && $current_hour < $hours[$i + 1]) ||
                     ($invert && $current_hour > $hours[$i] && $current_hour <= $hours[$i + 1])) {
                     $position = $invert ? $i : $i + 1;
                     break;
@@ -53,11 +54,10 @@ class HoursField extends AbstractField
         }
 
         $hour = $hours[$position];
-        if ((!$invert && $date->format('H') >= $hour) || ($invert && $date->format('H') <= $hour)) {
-            $date->modify(($invert ? '-' : '+') . '1 day');
+        if ((! $invert && $date->format('H') >= $hour) || ($invert && $date->format('H') <= $hour)) {
+            $date->modify(($invert ? '-' : '+').'1 day');
             $date->setTime($invert ? 23 : 0, $invert ? 59 : 0);
-        }
-        else {
+        } else {
             $date->setTime($hour, $invert ? 59 : 0);
         }
 

@@ -14,9 +14,9 @@ class YearFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\YearField::validate
      */
-    public function testValidatesField()
+    public function test_validates_field()
     {
-        $f = new YearField();
+        $f = new YearField;
         $this->assertTrue($f->validate('2011'));
         $this->assertTrue($f->validate('*'));
         $this->assertTrue($f->validate('*/10,2012,1-12'));
@@ -25,10 +25,10 @@ class YearFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\YearField::increment
      */
-    public function testIncrementsDate()
+    public function test_increments_date()
     {
         $d = new DateTime('2011-03-15 11:15:00');
-        $f = new YearField();
+        $f = new YearField;
         $f->increment($d);
         $this->assertEquals('2012-01-01 00:00:00', $d->format('Y-m-d H:i:s'));
         $f->increment($d, true);

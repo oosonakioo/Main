@@ -23,8 +23,7 @@ class Argument
     /**
      * Checks that argument is exact value or object.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return Token\ExactValueToken
      */
     public static function exact($value)
@@ -35,8 +34,7 @@ class Argument
     /**
      * Checks that argument is of specific type or instance of specific class.
      *
-     * @param string $type Type name (`integer`, `string`) or full class name
-     *
+     * @param  string  $type  Type name (`integer`, `string`) or full class name
      * @return Token\TypeToken
      */
     public static function type($type)
@@ -47,9 +45,8 @@ class Argument
     /**
      * Checks that argument object has specific state.
      *
-     * @param string $methodName
-     * @param mixed  $value
-     *
+     * @param  string  $methodName
+     * @param  mixed  $value
      * @return Token\ObjectStateToken
      */
     public static function which($methodName, $value)
@@ -60,8 +57,7 @@ class Argument
     /**
      * Checks that argument matches provided callback.
      *
-     * @param callable $callback
-     *
+     * @param  callable  $callback
      * @return Token\CallbackToken
      */
     public static function that($callback)
@@ -93,7 +89,6 @@ class Argument
      * Checks that argument matches all tokens
      *
      * @param mixed ... a list of tokens
-     *
      * @return Token\LogicalAndToken
      */
     public static function allOf()
@@ -104,8 +99,7 @@ class Argument
     /**
      * Checks that argument array or countable object has exact number of elements.
      *
-     * @param integer $value array elements count
-     *
+     * @param  int  $value  array elements count
      * @return Token\ArrayCountToken
      */
     public static function size($value)
@@ -116,9 +110,8 @@ class Argument
     /**
      * Checks that argument array contains (key, value) pair
      *
-     * @param mixed $key   exact value or token
-     * @param mixed $value exact value or token
-     *
+     * @param  mixed  $key  exact value or token
+     * @param  mixed  $value  exact value or token
      * @return Token\ArrayEntryToken
      */
     public static function withEntry($key, $value)
@@ -129,8 +122,7 @@ class Argument
     /**
      * Checks that arguments array entries all match value
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return Token\ArrayEveryEntryToken
      */
     public static function withEveryEntry($value)
@@ -141,8 +133,7 @@ class Argument
     /**
      * Checks that argument array contains value
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return Token\ArrayEntryToken
      */
     public static function containing($value)
@@ -153,8 +144,7 @@ class Argument
     /**
      * Checks that argument array has key
      *
-     * @param mixed $key exact value or token
-     *
+     * @param  mixed  $key  exact value or token
      * @return Token\ArrayEntryToken
      */
     public static function withKey($key)
@@ -165,8 +155,7 @@ class Argument
     /**
      * Checks that argument does not match the value|token.
      *
-     * @param mixed $value either exact value or argument token
-     *
+     * @param  mixed  $value  either exact value or argument token
      * @return Token\LogicalNotToken
      */
     public static function not($value)
@@ -175,8 +164,7 @@ class Argument
     }
 
     /**
-     * @param string $value
-     *
+     * @param  string  $value
      * @return Token\StringContainsToken
      */
     public static function containingString($value)
@@ -187,8 +175,7 @@ class Argument
     /**
      * Checks that argument is identical value.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return Token\IdenticalValueToken
      */
     public static function is($value)
@@ -200,9 +187,8 @@ class Argument
      * Check that argument is same value when rounding to the
      * given precision.
      *
-     * @param float $value
-     * @param float $precision
-     *
+     * @param  float  $value
+     * @param  float  $precision
      * @return Token\ApproximateValueToken
      */
     public static function approximate($value, $precision = 0)

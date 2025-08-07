@@ -5,6 +5,7 @@ namespace Mockery;
 class MethodCall
 {
     private $method;
+
     private $args;
 
     public function __construct($method, $args)

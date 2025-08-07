@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -24,7 +25,6 @@ use Mockery;
 
 class InvalidOrderException extends Mockery\Exception
 {
-
     protected $method = null;
 
     protected $expected = 0;
@@ -36,24 +36,28 @@ class InvalidOrderException extends Mockery\Exception
     public function setMock(Mockery\MockInterface $mock)
     {
         $this->mockObject = $mock;
+
         return $this;
     }
 
     public function setMethodName($name)
     {
         $this->method = $name;
+
         return $this;
     }
 
     public function setActualOrder($count)
     {
         $this->actual = $count;
+
         return $this;
     }
 
     public function setExpectedOrder($count)
     {
         $this->expected = $count;
+
         return $this;
     }
 

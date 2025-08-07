@@ -24,13 +24,20 @@ class HtmlDumper extends CliDumper
     public static $defaultOutput = 'php://output';
 
     protected $dumpHeader;
+
     protected $dumpPrefix = '<pre class=sf-dump id=%s data-indent-pad="%s">';
+
     protected $dumpSuffix = '</pre><script>Sfdump("%s")</script>';
+
     protected $dumpId = 'sf-dump';
+
     protected $colors = true;
+
     protected $headerIsDumped = false;
+
     protected $lastDepth = -1;
-    protected $styles = array(
+
+    protected $styles = [
         'default' => 'background-color:#18171B; color:#FF8400; line-height:1.2em; font:12px Menlo, Monaco, Consolas, monospace; word-wrap: break-word; white-space: pre-wrap; position:relative; z-index:99999; word-break: normal',
         'num' => 'font-weight:bold; color:#1299DA',
         'const' => 'font-weight:bold',
@@ -43,7 +50,7 @@ class HtmlDumper extends CliDumper
         'meta' => 'color:#B729D9',
         'key' => 'color:#56DB3A',
         'index' => 'color:#1299DA',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -78,7 +85,7 @@ class HtmlDumper extends CliDumper
     /**
      * Sets an HTML header that will be dumped once in the output stream.
      *
-     * @param string $header An HTML string
+     * @param  string  $header  An HTML string
      */
     public function setDumpHeader($header)
     {
@@ -88,8 +95,8 @@ class HtmlDumper extends CliDumper
     /**
      * Sets an HTML prefix and suffix that will encapse every single dump.
      *
-     * @param string $prefix The prepended HTML string
-     * @param string $suffix The appended HTML string
+     * @param  string  $prefix  The prepended HTML string
+     * @param  string  $suffix  The appended HTML string
      */
     public function setDumpBoundaries($prefix, $suffix)
     {
@@ -113,7 +120,7 @@ class HtmlDumper extends CliDumper
     {
         $this->headerIsDumped = true;
 
-        if (null !== $this->dumpHeader) {
+        if ($this->dumpHeader !== null) {
             return $this->dumpHeader;
         }
 
@@ -327,7 +334,7 @@ pre.sf-dump a {
 EOHTML;
 
         foreach ($this->styles as $class => $style) {
-            $line .= 'pre.sf-dump'.('default' !== $class ? ' .sf-dump-'.$class : '').'{'.$style.'}';
+            $line .= 'pre.sf-dump'.($class !== 'default' ? ' .sf-dump-'.$class : '').'{'.$style.'}';
         }
 
         return $this->dumpHeader = preg_replace('/\s+/', ' ', $line).'</style>'.$this->dumpHeader;
@@ -342,8 +349,8 @@ EOHTML;
 
         if ($hasChild) {
             if ($cursor->refIndex) {
-                $r = Cursor::HASH_OBJECT !== $type ? 1 - (Cursor::HASH_RESOURCE !== $type) : 2;
-                $r .= $r && 0 < $cursor->softRefHandle ? $cursor->softRefHandle : $cursor->refIndex;
+                $r = $type !== Cursor::HASH_OBJECT ? 1 - ($type !== Cursor::HASH_RESOURCE) : 2;
+                $r .= $r && $cursor->softRefHandle > 0 ? $cursor->softRefHandle : $cursor->refIndex;
 
                 $this->line .= sprintf('<samp id=%s-ref%s>', $this->dumpId, $r);
             } else {
@@ -368,34 +375,34 @@ EOHTML;
     /**
      * {@inheritdoc}
      */
-    protected function style($style, $value, $attr = array())
+    protected function style($style, $value, $attr = [])
     {
-        if ('' === $value) {
+        if ($value === '') {
             return '';
         }
 
         $v = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 
-        if ('ref' === $style) {
+        if ($style === 'ref') {
             if (empty($attr['count'])) {
                 return sprintf('<a class=sf-dump-ref>%s</a>', $v);
             }
-            $r = ('#' !== $v[0] ? 1 - ('@' !== $v[0]) : 2).substr($value, 1);
+            $r = ($v[0] !== '#' ? 1 - ($v[0] !== '@') : 2).substr($value, 1);
 
             return sprintf('<a class=sf-dump-ref href=#%s-ref%s title="%d occurrences">%s</a>', $this->dumpId, $r, 1 + $attr['count'], $v);
         }
 
-        if ('const' === $style && array_key_exists('value', $attr)) {
+        if ($style === 'const' && array_key_exists('value', $attr)) {
             $style .= sprintf(' title="%s"', htmlspecialchars(json_encode($attr['value']), ENT_QUOTES, 'UTF-8'));
-        } elseif ('public' === $style) {
+        } elseif ($style === 'public') {
             $style .= sprintf(' title="%s"', empty($attr['dynamic']) ? 'Public property' : 'Runtime added dynamic property');
-        } elseif ('str' === $style && 1 < $attr['length']) {
+        } elseif ($style === 'str' && $attr['length'] > 1) {
             $style .= sprintf(' title="%s%s characters"', $attr['length'], $attr['binary'] ? ' binary or non-UTF-8' : '');
-        } elseif ('note' === $style && false !== $c = strrpos($v, '\\')) {
+        } elseif ($style === 'note' && false !== $c = strrpos($v, '\\')) {
             return sprintf('<abbr title="%s" class=sf-dump-%s>%s</abbr>', $v, $style, substr($v, $c + 1));
-        } elseif ('protected' === $style) {
+        } elseif ($style === 'protected') {
             $style .= ' title="Protected property"';
-        } elseif ('private' === $style) {
+        } elseif ($style === 'private') {
             $style .= sprintf(' title="Private property defined in class:&#10;`%s`"', $attr['class']);
         }
 
@@ -411,12 +418,12 @@ EOHTML;
             return $s.$style;
         }, $v, -1, $cchrCount);
 
-        if ($cchrCount && '<' === $v[0]) {
+        if ($cchrCount && $v[0] === '<') {
             $v = substr($v, 7);
         } else {
             $v = $style.$v;
         }
-        if ($cchrCount && '>' === substr($v, -1)) {
+        if ($cchrCount && substr($v, -1) === '>') {
             $v = substr($v, 0, -strlen($style));
         } else {
             $v .= '</span>';
@@ -430,21 +437,21 @@ EOHTML;
      */
     protected function dumpLine($depth, $endOfValue = false)
     {
-        if (-1 === $this->lastDepth) {
+        if ($this->lastDepth === -1) {
             $this->line = sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad).$this->line;
         }
-        if (!$this->headerIsDumped) {
+        if (! $this->headerIsDumped) {
             $this->line = $this->getDumpHeader().$this->line;
         }
 
-        if (-1 === $depth) {
+        if ($depth === -1) {
             $this->line .= sprintf($this->dumpSuffix, $this->dumpId);
         }
         $this->lastDepth = $depth;
 
         $this->line = mb_convert_encoding($this->line, 'HTML-ENTITIES', 'UTF-8');
 
-        if (-1 === $depth) {
+        if ($depth === -1) {
             AbstractDumper::dumpLine(0);
         }
         AbstractDumper::dumpLine($depth);

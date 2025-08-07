@@ -13,13 +13,13 @@ abstract class BaseFileCacheTest extends CacheTest
     protected function setUp()
     {
         do {
-            $this->directory = sys_get_temp_dir() . '/doctrine_cache_'. uniqid();
+            $this->directory = sys_get_temp_dir().'/doctrine_cache_'.uniqid();
         } while (file_exists($this->directory));
     }
 
     protected function tearDown()
     {
-        if ( ! is_dir($this->directory)) {
+        if (! is_dir($this->directory)) {
             return;
         }
 
@@ -36,7 +36,7 @@ abstract class BaseFileCacheTest extends CacheTest
         @rmdir($this->directory);
     }
 
-    public function testFlushAllRemovesBalancingDirectories()
+    public function test_flush_all_removes_balancing_directories()
     {
         $cache = $this->_getCacheDriver();
 
@@ -61,12 +61,12 @@ abstract class BaseFileCacheTest extends CacheTest
         // Windows officially supports 260 bytes including null terminator
         // 259 characters is too large due to PHP bug (https://bugs.php.net/bug.php?id=70943)
         // 260 characters is too large - null terminator is included in allowable length
-        return array(
-            array(257, false),
-            array(258, false),
-            array(259, true),
-            array(260, true)
-        );
+        return [
+            [257, false],
+            [258, false],
+            [259, true],
+            [260, true],
+        ];
     }
 
     private static function getBasePathForWindowsPathLengthTests($pathLength)
@@ -75,17 +75,16 @@ abstract class BaseFileCacheTest extends CacheTest
     }
 
     /**
-     * @param int    $length
-     * @param string $basePath
-     *
+     * @param  int  $length
+     * @param  string  $basePath
      * @return array
      */
     private static function getKeyAndPathFittingLength($length, $basePath)
     {
         $baseDirLength = strlen($basePath);
         $extensionLength = strlen('.doctrine.cache');
-        $directoryLength = strlen(DIRECTORY_SEPARATOR . 'aa' . DIRECTORY_SEPARATOR);
-        $namespaceAndBracketLength = strlen(bin2hex("[][1]"));
+        $directoryLength = strlen(DIRECTORY_SEPARATOR.'aa'.DIRECTORY_SEPARATOR);
+        $namespaceAndBracketLength = strlen(bin2hex('[][1]'));
         $keyLength = $length
             - ($baseDirLength
                 + $extensionLength
@@ -93,38 +92,38 @@ abstract class BaseFileCacheTest extends CacheTest
                 + $namespaceAndBracketLength);
 
         $key = str_repeat('a', floor($keyLength / 2));
-        $namespacedKey = '[' . $key . '][1]';
+        $namespacedKey = '['.$key.'][1]';
 
         $keyHash = hash('sha256', $namespacedKey);
 
         $keyPath = $basePath
-            . DIRECTORY_SEPARATOR
-            . substr($keyHash, 0, 2)
-            . DIRECTORY_SEPARATOR
-            . bin2hex($namespacedKey)
-            . '.doctrine.cache';
+            .DIRECTORY_SEPARATOR
+            .substr($keyHash, 0, 2)
+            .DIRECTORY_SEPARATOR
+            .bin2hex($namespacedKey)
+            .'.doctrine.cache';
 
         $hashedKeyPath = $basePath
-            . DIRECTORY_SEPARATOR
-            . substr($keyHash, 0, 2)
-            . DIRECTORY_SEPARATOR
-            . '_' . $keyHash
-            . '.doctrine.cache';
+            .DIRECTORY_SEPARATOR
+            .substr($keyHash, 0, 2)
+            .DIRECTORY_SEPARATOR
+            .'_'.$keyHash
+            .'.doctrine.cache';
 
-        return array($key, $keyPath, $hashedKeyPath);
+        return [$key, $keyPath, $hashedKeyPath];
     }
 
     /**
      * @dataProvider getPathLengthsToTest
      *
-     * @param int  $length
-     * @param bool $pathShouldBeHashed
+     * @param  int  $length
+     * @param  bool  $pathShouldBeHashed
      */
-    public function testWindowsPathLengthLimitIsCorrectlyHandled($length, $pathShouldBeHashed)
+    public function test_windows_path_length_limit_is_correctly_handled($length, $pathShouldBeHashed)
     {
         $this->directory = self::getBasePathForWindowsPathLengthTests($length);
 
-        list($key, $keyPath, $hashedKeyPath) = self::getKeyAndPathFittingLength($length, $this->directory);
+        [$key, $keyPath, $hashedKeyPath] = self::getKeyAndPathFittingLength($length, $this->directory);
 
         $this->assertEquals($length, strlen($keyPath), 'Unhashed path should be of correct length.');
 

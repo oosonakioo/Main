@@ -2,11 +2,11 @@
 
 namespace Illuminate\Pagination;
 
-use Closure;
 use ArrayIterator;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
+use Closure;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 abstract class AbstractPaginator implements Htmlable
 {
@@ -184,7 +184,6 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Add an array of query string values.
      *
-     * @param  array  $keys
      * @return $this
      */
     protected function appendArray(array $keys)
@@ -308,7 +307,6 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Set the current request path resolver callback.
      *
-     * @param  \Closure  $resolver
      * @return void
      */
     public static function currentPathResolver(Closure $resolver)
@@ -335,7 +333,6 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Set the current page resolver callback.
      *
-     * @param  \Closure  $resolver
      * @return void
      */
     public static function currentPageResolver(Closure $resolver)
@@ -346,7 +343,6 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Set the default Presenter resolver.
      *
-     * @param  \Closure  $resolver
      * @return void
      */
     public static function presenter(Closure $resolver)
@@ -433,7 +429,6 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Set the paginator's underlying collection.
      *
-     * @param  \Illuminate\Support\Collection  $collection
      * @return $this
      */
     public function setCollection(Collection $collection)

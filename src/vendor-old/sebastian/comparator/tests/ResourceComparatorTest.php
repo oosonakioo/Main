@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Comparator package.
  *
@@ -12,7 +13,6 @@ namespace SebastianBergmann\Comparator;
 
 /**
  * @coversDefaultClass SebastianBergmann\Comparator\ResourceComparator
- *
  */
 class ResourceComparatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,22 +28,22 @@ class ResourceComparatorTest extends \PHPUnit_Framework_TestCase
         $tmpfile1 = tmpfile();
         $tmpfile2 = tmpfile();
 
-        return array(
-          array($tmpfile1, $tmpfile1),
-          array($tmpfile2, $tmpfile2),
-          array($tmpfile1, $tmpfile2)
-        );
+        return [
+            [$tmpfile1, $tmpfile1],
+            [$tmpfile2, $tmpfile2],
+            [$tmpfile1, $tmpfile2],
+        ];
     }
 
     public function acceptsFailsProvider()
     {
         $tmpfile1 = tmpfile();
 
-        return array(
-          array($tmpfile1, null),
-          array(null, $tmpfile1),
-          array(null, null)
-        );
+        return [
+            [$tmpfile1, null],
+            [null, $tmpfile1],
+            [null, null],
+        ];
     }
 
     public function assertEqualsSucceedsProvider()
@@ -51,10 +51,10 @@ class ResourceComparatorTest extends \PHPUnit_Framework_TestCase
         $tmpfile1 = tmpfile();
         $tmpfile2 = tmpfile();
 
-        return array(
-          array($tmpfile1, $tmpfile1),
-          array($tmpfile2, $tmpfile2)
-        );
+        return [
+            [$tmpfile1, $tmpfile1],
+            [$tmpfile2, $tmpfile2],
+        ];
     }
 
     public function assertEqualsFailsProvider()
@@ -62,47 +62,48 @@ class ResourceComparatorTest extends \PHPUnit_Framework_TestCase
         $tmpfile1 = tmpfile();
         $tmpfile2 = tmpfile();
 
-        return array(
-          array($tmpfile1, $tmpfile2),
-          array($tmpfile2, $tmpfile1)
-        );
+        return [
+            [$tmpfile1, $tmpfile2],
+            [$tmpfile2, $tmpfile1],
+        ];
     }
 
     /**
      * @covers       ::accepts
+     *
      * @dataProvider acceptsSucceedsProvider
      */
-    public function testAcceptsSucceeds($expected, $actual)
+    public function test_accepts_succeeds($expected, $actual)
     {
         $this->assertTrue(
-          $this->comparator->accepts($expected, $actual)
+            $this->comparator->accepts($expected, $actual)
         );
     }
 
     /**
      * @covers       ::accepts
+     *
      * @dataProvider acceptsFailsProvider
      */
-    public function testAcceptsFails($expected, $actual)
+    public function test_accepts_fails($expected, $actual)
     {
         $this->assertFalse(
-          $this->comparator->accepts($expected, $actual)
+            $this->comparator->accepts($expected, $actual)
         );
     }
 
     /**
      * @covers       ::assertEquals
+     *
      * @dataProvider assertEqualsSucceedsProvider
      */
-    public function testAssertEqualsSucceeds($expected, $actual)
+    public function test_assert_equals_succeeds($expected, $actual)
     {
         $exception = null;
 
         try {
             $this->comparator->assertEquals($expected, $actual);
-        }
-
-        catch (ComparisonFailure $exception) {
+        } catch (ComparisonFailure $exception) {
         }
 
         $this->assertNull($exception, 'Unexpected ComparisonFailure');
@@ -110,9 +111,10 @@ class ResourceComparatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers       ::assertEquals
+     *
      * @dataProvider assertEqualsFailsProvider
      */
-    public function testAssertEqualsFails($expected, $actual)
+    public function test_assert_equals_fails($expected, $actual)
     {
         $this->setExpectedException('SebastianBergmann\\Comparator\\ComparisonFailure');
         $this->comparator->assertEquals($expected, $actual);

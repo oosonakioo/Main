@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Schema;
  *
  * @link   www.doctrine-project.org
  * @since  1.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class View extends AbstractAsset
@@ -34,8 +36,8 @@ class View extends AbstractAsset
     private $_sql;
 
     /**
-     * @param string $name
-     * @param string $sql
+     * @param  string  $name
+     * @param  string  $sql
      */
     public function __construct($name, $sql)
     {

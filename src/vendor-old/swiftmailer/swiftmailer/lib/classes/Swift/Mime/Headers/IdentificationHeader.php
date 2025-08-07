@@ -22,13 +22,12 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
      *
      * @var string[]
      */
-    private $_ids = array();
+    private $_ids = [];
 
     /**
      * Creates a new IdentificationHeader with the given $name and $id.
      *
-     * @param string             $name
-     * @param Swift_Mime_Grammar $grammar
+     * @param  string  $name
      */
     public function __construct($name, Swift_Mime_Grammar $grammar)
     {
@@ -54,7 +53,7 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
      *
      * This method takes a string ID, or an array of IDs.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      *
      * @throws Swift_RfcComplianceException
      */
@@ -78,13 +77,13 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
     /**
      * Set the ID used in the value of this header.
      *
-     * @param string|array $id
+     * @param  string|array  $id
      *
      * @throws Swift_RfcComplianceException
      */
     public function setId($id)
     {
-        $this->setIds(is_array($id) ? $id : array($id));
+        $this->setIds(is_array($id) ? $id : [$id]);
     }
 
     /**
@@ -104,13 +103,13 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
     /**
      * Set a collection of IDs to use in the value of this Header.
      *
-     * @param string[] $ids
+     * @param  string[]  $ids
      *
      * @throws Swift_RfcComplianceException
      */
     public function setIds(array $ids)
     {
-        $actualIds = array();
+        $actualIds = [];
 
         foreach ($ids as $id) {
             $this->_assertValidId($id);
@@ -139,14 +138,14 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
      *
      * @see toString()
      *
-     * @throws Swift_RfcComplianceException
-     *
      * @return string
+     *
+     * @throws Swift_RfcComplianceException
      */
     public function getFieldBody()
     {
-        if (!$this->getCachedValue()) {
-            $angleAddrs = array();
+        if (! $this->getCachedValue()) {
+            $angleAddrs = [];
 
             foreach ($this->_ids as $id) {
                 $angleAddrs[] = '<'.$id.'>';
@@ -161,20 +160,20 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
     /**
      * Throws an Exception if the id passed does not comply with RFC 2822.
      *
-     * @param string $id
+     * @param  string  $id
      *
      * @throws Swift_RfcComplianceException
      */
     private function _assertValidId($id)
     {
-        if (!preg_match(
+        if (! preg_match(
             '/^'.$this->getGrammar()->getDefinition('id-left').'@'.
             $this->getGrammar()->getDefinition('id-right').'$/D',
             $id
-            )) {
+        )) {
             throw new Swift_RfcComplianceException(
                 'Invalid ID given <'.$id.'>'
-                );
+            );
         }
     }
 }

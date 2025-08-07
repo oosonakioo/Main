@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\Models\Regions;
 use App\Models\Lists;
+use App\Models\Regions;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -12,161 +12,170 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RegionController extends AdminController
 {
-	public function index()
-	{
-		$menu = $this->getCategoryURL();
+    public function index()
+    {
+        $menu = $this->getCategoryURL();
 
-		$regions = Regions::where('menu', $menu)
-			->orderBy('sort', 'asc')
-			->orderBy('updated_at', 'desc')
-			->get();
-		return view('admin.regions', [
-			'menu'			=> $menu,
-			'regions' 	=> $regions,
-		]);
-	}
+        $regions = Regions::where('menu', $menu)
+            ->orderBy('sort', 'asc')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-	public function create()
-	{
-		$menu = $this->getCategoryURL();
-		$regions = new Regions();
-		return $this->returnView($menu, $regions);
-	}
+        return view('admin.regions', [
+            'menu' => $menu,
+            'regions' => $regions,
+        ]);
+    }
 
-	public function store(Request $request)
-	{
-		$menu = $this->getCategoryURL();
-		$redirect = 'admin/'. $menu. '/regions';
+    public function create()
+    {
+        $menu = $this->getCategoryURL();
+        $regions = new Regions;
 
-		$this->doValidate($request);
-		$regions = new Regions();
-		$this->doSave($request, $regions, 'create');
-		return Helper::redirect($redirect);
-	}
+        return $this->returnView($menu, $regions);
+    }
 
-	public function edit($id)
-	{
-		$menu = $this->getCategoryURL();
-		$regions = Regions::find($id);
-		return $this->returnView($menu, $regions);
-	}
+    public function store(Request $request)
+    {
+        $menu = $this->getCategoryURL();
+        $redirect = 'admin/'.$menu.'/regions';
 
-	public function update(Request $request, $id)
-	{
-		$menu = $this->getCategoryURL();
-		$redirect = 'admin/'. $menu. '/regions';
+        $this->doValidate($request);
+        $regions = new Regions;
+        $this->doSave($request, $regions, 'create');
 
-		$this->doValidate($request);
-		$regions = Regions::find($id);
-		$this->doSave($request, $regions, 'update');
-		return Helper::redirect($redirect);
-	}
+        return Helper::redirect($redirect);
+    }
 
-	public function destroy($id)
-	{
-		$count = Regions::destroy($id);
-		return $count == 1 ? $id : -1;
-	}
+    public function edit($id)
+    {
+        $menu = $this->getCategoryURL();
+        $regions = Regions::find($id);
 
-	private function doValidate(Request $request)
-	{
-		$validate = [];
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			$title = 'title_' . $locale;
-			//$detail = 'detail_' . $locale;
+        return $this->returnView($menu, $regions);
+    }
 
-			$validate[$title] = 'required';
-			//$validate[$detail] = 'required';
-		}
-		$this->validate($request, $validate);
-	}
+    public function update(Request $request, $id)
+    {
+        $menu = $this->getCategoryURL();
+        $redirect = 'admin/'.$menu.'/regions';
 
-	private function doSave(Request $request, $regions, $mode)
-	{
-		if ($mode == 'create') {
-			$regions_id = Regions::orderBy('main_id', 'desc')
-				->first();
-			if($regions_id === NULL) {
-				$regions->main_id = 0;
-			} else {
-				$max_id = $regions_id->main_id + 1;
-				$regions->main_id = $max_id;
-			}
-		}
+        $this->doValidate($request);
+        $regions = Regions::find($id);
+        $this->doSave($request, $regions, 'update');
 
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			$title = 'title_' . $locale;
-			$detail = 'detail_' . $locale;
+        return Helper::redirect($redirect);
+    }
 
-			$regions->translateOrNew($locale)->title = $request[$title];
-			$regions->translateOrNew($locale)->detail = $request[$detail];
-		}
+    public function destroy($id)
+    {
+        $count = Regions::destroy($id);
 
-		if(isset($request->parents)) {
-			$regions->parent_regions_id = $request->parents;
-		}
+        return $count == 1 ? $id : -1;
+    }
 
-		$regions->group_id = $request->group_id;
-		$regions->menu = $request->menu;
-		$regions->image = $request->image;
-		$regions->sort = $request->sort;
-		$regions->active = ($request->active === 'active');
-		$regions->save();
-	}
+    private function doValidate(Request $request)
+    {
+        $validate = [];
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            $title = 'title_'.$locale;
+            // $detail = 'detail_' . $locale;
 
-	private function returnView($menu, $regions)
-	{
-		$args = array();
-		$args['menu'] = $menu;
-		$args['regions'] = $regions;
-		$args['groups'] = $this->getGroup('group');
+            $validate[$title] = 'required';
+            // $validate[$detail] = 'required';
+        }
+        $this->validate($request, $validate);
+    }
 
-		switch ($menu) {
-			case 'province':
-				$args['parentText'] = trans('admin.categories-region');
-				$args['parents'] = $this->getCategory('region');
-				break;
+    private function doSave(Request $request, $regions, $mode)
+    {
+        if ($mode == 'create') {
+            $regions_id = Regions::orderBy('main_id', 'desc')
+                ->first();
+            if ($regions_id === null) {
+                $regions->main_id = 0;
+            } else {
+                $max_id = $regions_id->main_id + 1;
+                $regions->main_id = $max_id;
+            }
+        }
 
-			/*case 'district':
-				$args['parentText'] = trans('admin.categories-province');
-				$args['parents'] = $this->getCategory('province');
-				break;
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
 
-			case 'subdistrict':
-				$args['parentText'] = trans('admin.categories-district');
-			 	$args['parents'] = $this->getCategory('district');
-				break;*/
-		}
+            $regions->translateOrNew($locale)->title = $request[$title];
+            $regions->translateOrNew($locale)->detail = $request[$detail];
+        }
 
-		return view('admin.regions-create', $args);
-	}
+        if (isset($request->parents)) {
+            $regions->parent_regions_id = $request->parents;
+        }
 
-	private function getCategory($menu) {
-		return Regions::where('menu', $menu)
-			->where('active', true)
-			->orderBy('sort', 'asc')
-			->orderBy('updated_at', 'desc')
-			->get();
-	}
+        $regions->group_id = $request->group_id;
+        $regions->menu = $request->menu;
+        $regions->image = $request->image;
+        $regions->sort = $request->sort;
+        $regions->active = ($request->active === 'active');
+        $regions->save();
+    }
 
-	private function getGroup($menu) {
-		return Lists::where('menu', $menu)
-			->where('active', true)
-			->orderBy('sort', 'asc')
-			->orderBy('updated_at', 'desc')
-			->get();
-	}
+    private function returnView($menu, $regions)
+    {
+        $args = [];
+        $args['menu'] = $menu;
+        $args['regions'] = $regions;
+        $args['groups'] = $this->getGroup('group');
 
-	private static function getCategoryURL()
-	{
-		$arr_menu = Config::get('setting.catcontents');
-		$currenturl = $_SERVER['REQUEST_URI'];
-		$return = '';
-		foreach ($arr_menu as $value) {
-			if (strpos($currenturl, $value) !== false) {
-				$return = $value;
-			}
-		}
-		return $return;
-	}
+        switch ($menu) {
+            case 'province':
+                $args['parentText'] = trans('admin.categories-region');
+                $args['parents'] = $this->getCategory('region');
+                break;
+
+                /*case 'district':
+                    $args['parentText'] = trans('admin.categories-province');
+                    $args['parents'] = $this->getCategory('province');
+                    break;
+
+                case 'subdistrict':
+                    $args['parentText'] = trans('admin.categories-district');
+                     $args['parents'] = $this->getCategory('district');
+                    break;*/
+        }
+
+        return view('admin.regions-create', $args);
+    }
+
+    private function getCategory($menu)
+    {
+        return Regions::where('menu', $menu)
+            ->where('active', true)
+            ->orderBy('sort', 'asc')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    }
+
+    private function getGroup($menu)
+    {
+        return Lists::where('menu', $menu)
+            ->where('active', true)
+            ->orderBy('sort', 'asc')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    }
+
+    private static function getCategoryURL()
+    {
+        $arr_menu = Config::get('setting.catcontents');
+        $currenturl = $_SERVER['REQUEST_URI'];
+        $return = '';
+        foreach ($arr_menu as $value) {
+            if (strpos($currenturl, $value) !== false) {
+                $return = $value;
+            }
+        }
+
+        return $return;
+    }
 }

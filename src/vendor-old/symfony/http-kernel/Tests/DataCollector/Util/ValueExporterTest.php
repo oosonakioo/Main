@@ -22,24 +22,24 @@ class ValueExporterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->valueExporter = new ValueExporter();
+        $this->valueExporter = new ValueExporter;
     }
 
-    public function testDateTime()
+    public function test_date_time()
     {
         $dateTime = new \DateTime('2014-06-10 07:35:40', new \DateTimeZone('UTC'));
         $this->assertSame('Object(DateTime) - 2014-06-10T07:35:40+0000', $this->valueExporter->exportValue($dateTime));
     }
 
-    public function testDateTimeImmutable()
+    public function test_date_time_immutable()
     {
         $dateTime = new \DateTimeImmutable('2014-06-10 07:35:40', new \DateTimeZone('UTC'));
         $this->assertSame('Object(DateTimeImmutable) - 2014-06-10T07:35:40+0000', $this->valueExporter->exportValue($dateTime));
     }
 
-    public function testIncompleteClass()
+    public function test_incomplete_class()
     {
-        $foo = new \__PHP_Incomplete_Class();
+        $foo = new \__PHP_Incomplete_Class;
         $array = new \ArrayObject($foo);
         $array['__PHP_Incomplete_Class_Name'] = 'AppBundle/Foo';
         $this->assertSame('__PHP_Incomplete_Class(AppBundle/Foo)', $this->valueExporter->exportValue($foo));

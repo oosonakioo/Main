@@ -3,12 +3,12 @@
 namespace Illuminate\Session;
 
 use Carbon\Carbon;
-use SessionHandlerInterface;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Database\ConnectionInterface;
+use SessionHandlerInterface;
 
-class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareInterface
+class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerInterface
 {
     /**
      * The database connection instance.
@@ -48,13 +48,11 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
     /**
      * Create a new database session handler instance.
      *
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
      * @param  string  $minutes
-     * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
      */
-    public function __construct(ConnectionInterface $connection, $table, $minutes, Container $container = null)
+    public function __construct(ConnectionInterface $connection, $table, $minutes, ?Container $container = null)
     {
         $this->table = $table;
         $this->minutes = $minutes;

@@ -17,9 +17,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSupports()
+    public function test_supports()
     {
-        $loader = new ClosureLoader();
+        $loader = new ClosureLoader;
 
         $closure = function () {};
 
@@ -30,13 +30,13 @@ class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->supports($closure, 'foo'), '->supports() checks the resource type if specified');
     }
 
-    public function testLoad()
+    public function test_load()
     {
-        $loader = new ClosureLoader();
+        $loader = new ClosureLoader;
 
         $route = new Route('/');
         $routes = $loader->load(function () use ($route) {
-            $routes = new RouteCollection();
+            $routes = new RouteCollection;
 
             $routes->add('foo', $route);
 

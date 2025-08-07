@@ -18,32 +18,32 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \BadMethodCallException
      */
-    public function testInvalidRouteParameter()
+    public function test_invalid_route_parameter()
     {
-        $route = new Route(array('foo' => 'bar'));
+        $route = new Route(['foo' => 'bar']);
     }
 
     /**
      * @dataProvider getValidParameters
      */
-    public function testRouteParameters($parameter, $value, $getter)
+    public function test_route_parameters($parameter, $value, $getter)
     {
-        $route = new Route(array($parameter => $value));
+        $route = new Route([$parameter => $value]);
         $this->assertEquals($route->$getter(), $value);
     }
 
     public function getValidParameters()
     {
-        return array(
-            array('value', '/Blog', 'getPath'),
-            array('requirements', array('locale' => 'en'), 'getRequirements'),
-            array('options', array('compiler_class' => 'RouteCompiler'), 'getOptions'),
-            array('name', 'blog_index', 'getName'),
-            array('defaults', array('_controller' => 'MyBlogBundle:Blog:index'), 'getDefaults'),
-            array('schemes', array('https'), 'getSchemes'),
-            array('methods', array('GET', 'POST'), 'getMethods'),
-            array('host', '{locale}.example.com', 'getHost'),
-            array('condition', 'context.getMethod() == "GET"', 'getCondition'),
-        );
+        return [
+            ['value', '/Blog', 'getPath'],
+            ['requirements', ['locale' => 'en'], 'getRequirements'],
+            ['options', ['compiler_class' => 'RouteCompiler'], 'getOptions'],
+            ['name', 'blog_index', 'getName'],
+            ['defaults', ['_controller' => 'MyBlogBundle:Blog:index'], 'getDefaults'],
+            ['schemes', ['https'], 'getSchemes'],
+            ['methods', ['GET', 'POST'], 'getMethods'],
+            ['host', '{locale}.example.com', 'getHost'],
+            ['condition', 'context.getMethod() == "GET"', 'getCondition'],
+        ];
     }
 }

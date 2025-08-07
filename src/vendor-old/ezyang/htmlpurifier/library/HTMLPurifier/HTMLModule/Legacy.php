@@ -15,7 +15,6 @@
  * as well as transform elements that don't have an implementation.
  * See docs/ref-strictness.txt for more details.
  */
-
 class HTMLPurifier_HTMLModule_Legacy extends HTMLPurifier_HTMLModule
 {
     /**
@@ -24,7 +23,7 @@ class HTMLPurifier_HTMLModule_Legacy extends HTMLPurifier_HTMLModule
     public $name = 'Legacy';
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -33,12 +32,12 @@ class HTMLPurifier_HTMLModule_Legacy extends HTMLPurifier_HTMLModule
             'Inline',
             'Empty',
             null,
-            array(
+            [
                 'color' => 'Color',
                 'face' => 'Text', // extremely broad, we should
                 'size' => 'Text', // tighten it
-                'id' => 'ID'
-            )
+                'id' => 'ID',
+            ]
         );
         $this->addElement('center', 'Block', 'Flow', 'Common');
         $this->addElement(
@@ -46,29 +45,29 @@ class HTMLPurifier_HTMLModule_Legacy extends HTMLPurifier_HTMLModule
             'Block',
             'Required: li',
             'Common',
-            array(
-                'compact' => 'Bool#compact'
-            )
+            [
+                'compact' => 'Bool#compact',
+            ]
         );
         $this->addElement(
             'font',
             'Inline',
             'Inline',
-            array('Core', 'I18N'),
-            array(
+            ['Core', 'I18N'],
+            [
                 'color' => 'Color',
                 'face' => 'Text', // extremely broad, we should
                 'size' => 'Text', // tighten it
-            )
+            ]
         );
         $this->addElement(
             'menu',
             'Block',
             'Required: li',
             'Common',
-            array(
-                'compact' => 'Bool#compact'
-            )
+            [
+                'compact' => 'Bool#compact',
+            ]
         );
 
         $s = $this->addElement('s', 'Inline', 'Inline', 'Common');
@@ -126,12 +125,12 @@ class HTMLPurifier_HTMLModule_Legacy extends HTMLPurifier_HTMLModule
         // figure out this integer business
 
         $li = $this->addBlankElement('li');
-        $li->attr['value'] = new HTMLPurifier_AttrDef_Integer();
+        $li->attr['value'] = new HTMLPurifier_AttrDef_Integer;
         $li->attr['type'] = 'Enum#s:1,i,I,a,A,disc,square,circle';
 
         $ol = $this->addBlankElement('ol');
         $ol->attr['compact'] = 'Bool#compact';
-        $ol->attr['start'] = new HTMLPurifier_AttrDef_Integer();
+        $ol->attr['start'] = new HTMLPurifier_AttrDef_Integer;
         $ol->attr['type'] = 'Enum#s:1,i,I,a,A';
 
         $p = $this->addBlankElement('p');

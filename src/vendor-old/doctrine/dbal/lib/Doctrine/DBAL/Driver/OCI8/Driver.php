@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use Doctrine\DBAL\Driver\AbstractOracleDriver;
  * A Doctrine DBAL driver for the Oracle OCI8 PHP extensions.
  *
  * @author Roman Borschel <roman@code-factory.org>
+ *
  * @since 2.0
  */
 class Driver extends AbstractOracleDriver
@@ -33,7 +35,7 @@ class Driver extends AbstractOracleDriver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
     {
         try {
             return new OCI8Connection(
@@ -52,7 +54,6 @@ class Driver extends AbstractOracleDriver
     /**
      * Constructs the Oracle DSN.
      *
-     * @param array $params
      *
      * @return string The DSN.
      */

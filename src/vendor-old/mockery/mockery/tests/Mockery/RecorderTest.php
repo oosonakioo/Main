@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -23,18 +23,17 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class RecorderTest extends MockeryTestCase
 {
-
-    public function setup()
+    protected function setup()
     {
         $this->container = new \Mockery\Container(\Mockery::getDefaultGenerator(), \Mockery::getDefaultLoader());
     }
 
-    public function teardown()
+    protected function teardown()
     {
         $this->container->mockery_close();
     }
 
-    public function testRecorderWithSimpleObject()
+    public function test_recorder_with_simple_object()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -46,7 +45,7 @@ class RecorderTest extends MockeryTestCase
         $mock->mockery_verify();
     }
 
-    public function testArgumentsArePassedAsMethodExpectations()
+    public function test_arguments_are_passed_as_method_expectations()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -58,7 +57,7 @@ class RecorderTest extends MockeryTestCase
         $mock->mockery_verify();
     }
 
-    public function testArgumentsLooselyMatchedByDefault()
+    public function test_arguments_loosely_matched_by_default()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -70,7 +69,7 @@ class RecorderTest extends MockeryTestCase
         $mock->mockery_verify();
     }
 
-    public function testMultipleMethodExpectations()
+    public function test_multiple_method_expectations()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -84,7 +83,7 @@ class RecorderTest extends MockeryTestCase
         $mock->mockery_verify();
     }
 
-    public function testRecordingDoesNotSpecifyExactOrderByDefault()
+    public function test_recording_does_not_specify_exact_order_by_default()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -101,7 +100,7 @@ class RecorderTest extends MockeryTestCase
     /**
      * @expectedException \Mockery\Exception
      */
-    public function testRecordingDoesSpecifyExactOrderInStrictMode()
+    public function test_recording_does_specify_exact_order_in_strict_mode()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -119,7 +118,7 @@ class RecorderTest extends MockeryTestCase
     /**
      * @expectedException \Mockery\Exception
      */
-    public function testArgumentsAreMatchedExactlyUnderStrictMode()
+    public function test_arguments_are_matched_exactly_under_strict_mode()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -134,7 +133,7 @@ class RecorderTest extends MockeryTestCase
     /**
      * @expectedException \Mockery\Exception
      */
-    public function testThrowsExceptionWhenArgumentsNotExpected()
+    public function test_throws_exception_when_arguments_not_expected()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -145,7 +144,7 @@ class RecorderTest extends MockeryTestCase
         $mock->bar(4);
     }
 
-    public function testCallCountUnconstrainedByDefault()
+    public function test_call_count_unconstrained_by_default()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -161,7 +160,7 @@ class RecorderTest extends MockeryTestCase
     /**
      * @expectedException \Mockery\CountValidator\Exception
      */
-    public function testCallCountConstrainedInStrictMode()
+    public function test_call_count_constrained_in_strict_mode()
     {
         $mock = $this->container->mock(new MockeryTestSubject);
         $mock->shouldExpect(function ($subject) {
@@ -182,6 +181,7 @@ class MockeryTestSubject
     {
         return 1;
     }
+
     public function bar($i)
     {
         return $i * 2;
@@ -191,14 +191,17 @@ class MockeryTestSubject
 class MockeryTestSubjectUser
 {
     public $subject = null;
+
     public function __construct($subject)
     {
         $this->subject = $subject;
     }
+
     public function doFoo()
     {
         return $this->subject->foo();
     }
+
     public function doBar()
     {
         return $this->subject->bar(2);

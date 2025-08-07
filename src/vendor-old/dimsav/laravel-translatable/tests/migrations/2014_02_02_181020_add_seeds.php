@@ -51,7 +51,7 @@ class AddSeeds extends Migration
     private function createCountries($countries)
     {
         foreach ($countries as $data) {
-            $country = new Country();
+            $country = new Country;
             $country->id = $data['id'];
             $country->code = $data['code'];
             $country->save();
@@ -61,7 +61,7 @@ class AddSeeds extends Migration
     private function createCountryTranslations($translations)
     {
         foreach ($translations as $data) {
-            $translation = new CountryTranslation();
+            $translation = new CountryTranslation;
             $translation->country_id = $data['country_id'];
             $translation->locale = $data['locale'];
             $translation->name = $data['name'];
@@ -72,7 +72,7 @@ class AddSeeds extends Migration
     private function createCities($cities)
     {
         foreach ($cities as $data) {
-            $city = new City();
+            $city = new City;
             $city->id = $data['id'];
             $city->country_id = $data['country_id'];
             $city->save();
@@ -82,7 +82,7 @@ class AddSeeds extends Migration
     private function createCityTranslations($translations)
     {
         foreach ($translations as $data) {
-            $translation = new CityTranslation();
+            $translation = new CityTranslation;
             $translation->city_id = $data['city_id'];
             $translation->locale = $data['locale'];
             $translation->name = $data['name'];
@@ -93,7 +93,5 @@ class AddSeeds extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
-    }
+    public function down() {}
 }

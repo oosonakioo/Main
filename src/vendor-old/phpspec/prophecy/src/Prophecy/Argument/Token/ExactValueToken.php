@@ -11,9 +11,9 @@
 
 namespace Prophecy\Argument\Token;
 
-use SebastianBergmann\Comparator\ComparisonFailure;
 use Prophecy\Comparator\Factory as ComparatorFactory;
 use Prophecy\Util\StringUtil;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Exact value token.
@@ -23,21 +23,22 @@ use Prophecy\Util\StringUtil;
 class ExactValueToken implements TokenInterface
 {
     private $value;
+
     private $string;
+
     private $util;
+
     private $comparatorFactory;
 
     /**
      * Initializes token.
      *
-     * @param mixed             $value
-     * @param StringUtil        $util
-     * @param ComparatorFactory $comparatorFactory
+     * @param  mixed  $value
      */
-    public function __construct($value, StringUtil $util = null, ComparatorFactory $comparatorFactory = null)
+    public function __construct($value, ?StringUtil $util = null, ?ComparatorFactory $comparatorFactory = null)
     {
         $this->value = $value;
-        $this->util  = $util ?: new StringUtil();
+        $this->util = $util ?: new StringUtil;
 
         $this->comparatorFactory = $comparatorFactory ?: ComparatorFactory::getInstance();
     }
@@ -45,7 +46,6 @@ class ExactValueToken implements TokenInterface
     /**
      * Scores 10 if argument matches preset value.
      *
-     * @param $argument
      *
      * @return bool|int
      */
@@ -58,17 +58,19 @@ class ExactValueToken implements TokenInterface
 
             try {
                 $comparator->assertEquals($argument, $this->value);
+
                 return 10;
-            } catch (ComparisonFailure $failure) {}
+            } catch (ComparisonFailure $failure) {
+            }
         }
 
         // If either one is an object it should be castable to a string
         if (is_object($argument) xor is_object($this->value)) {
-            if (is_object($argument) && !method_exists($argument, '__toString')) {
+            if (is_object($argument) && ! method_exists($argument, '__toString')) {
                 return false;
             }
 
-            if (is_object($this->value) && !method_exists($this->value, '__toString')) {
+            if (is_object($this->value) && ! method_exists($this->value, '__toString')) {
                 return false;
             }
         } elseif (is_numeric($argument) && is_numeric($this->value)) {
@@ -107,7 +109,7 @@ class ExactValueToken implements TokenInterface
      */
     public function __toString()
     {
-        if (null === $this->string) {
+        if ($this->string === null) {
             $this->string = sprintf('exact(%s)', $this->util->stringify($this->value));
         }
 

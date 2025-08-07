@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '{2,3,4,22,23,24,32,33,34,42,43,44,52,53,54}:count године|[0,Inf[ :count година',
     'y' => ':count г.',
     'month' => '{1} :count мјесец|{2,3,4}:count мјесеца|[5,Inf[ :count мјесеци',
@@ -35,4 +35,4 @@ return array(
     'week_from_now' => '{1} :count недјељу|{2,3,4} :count недјеље|[5,Inf[ :count недјеља',
     'week_ago' => '{1} :count недјељу|{2,3,4} :count недјеље|[5,Inf[ :count недјеља',
 
-);
+];

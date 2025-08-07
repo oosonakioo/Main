@@ -4,13 +4,12 @@ require_once 'testDataFileIterator.php';
 
 class CalculationTest extends PHPUnit_Framework_TestCase
 {
-
-    public function setUp()
+    protected function setUp()
     {
-        if (!defined('PHPEXCEL_ROOT')) {
-            define('PHPEXCEL_ROOT', APPLICATION_PATH . '/');
+        if (! defined('PHPEXCEL_ROOT')) {
+            define('PHPEXCEL_ROOT', APPLICATION_PATH.'/');
         }
-        require_once(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+        require_once PHPEXCEL_ROOT.'PHPExcel/Autoloader.php';
 
         PHPExcel_Calculation_Functions::setCompatibilityMode(PHPExcel_Calculation_Functions::COMPATIBILITY_EXCEL);
     }
@@ -18,7 +17,7 @@ class CalculationTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerBinaryComparisonOperation
      */
-    public function testBinaryComparisonOperation($formula, $expectedResultExcel, $expectedResultOpenOffice)
+    public function test_binary_comparison_operation($formula, $expectedResultExcel, $expectedResultOpenOffice)
     {
         PHPExcel_Calculation_Functions::setCompatibilityMode(PHPExcel_Calculation_Functions::COMPATIBILITY_EXCEL);
         $resultExcel = \PHPExcel_Calculation::getInstance()->_calculateFormulaValue($formula);
@@ -33,5 +32,4 @@ class CalculationTest extends PHPUnit_Framework_TestCase
     {
         return new testDataFileIterator('rawTestData/CalculationBinaryComparisonOperation.data');
     }
-
 }

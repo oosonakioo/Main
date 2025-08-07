@@ -3,8 +3,8 @@
 namespace Illuminate\Queue;
 
 use Aws\Sqs\SqsClient;
-use Illuminate\Queue\Jobs\SqsJob;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
+use Illuminate\Queue\Jobs\SqsJob;
 
 class SqsQueue extends Queue implements QueueContract
 {
@@ -39,7 +39,6 @@ class SqsQueue extends Queue implements QueueContract
     /**
      * Create a new Amazon SQS queue instance.
      *
-     * @param  \Aws\Sqs\SqsClient  $sqs
      * @param  string  $default
      * @param  string  $prefix
      * @return void
@@ -55,7 +54,7 @@ class SqsQueue extends Queue implements QueueContract
      * Push a new job onto the queue.
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -69,7 +68,6 @@ class SqsQueue extends Queue implements QueueContract
      *
      * @param  string  $payload
      * @param  string  $queue
-     * @param  array   $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = [])
@@ -84,7 +82,7 @@ class SqsQueue extends Queue implements QueueContract
      *
      * @param  \DateTime|int  $delay
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -126,7 +124,6 @@ class SqsQueue extends Queue implements QueueContract
     /**
      * Define the job creator callback for the connection.
      *
-     * @param  callable  $callback
      * @return $this
      */
     public function createJobsUsing(callable $callback)

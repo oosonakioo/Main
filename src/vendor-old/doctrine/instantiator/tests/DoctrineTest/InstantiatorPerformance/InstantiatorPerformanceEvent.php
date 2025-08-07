@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -39,7 +40,7 @@ class InstantiatorPerformanceEvent extends AthleticEvent
      */
     protected function setUp()
     {
-        $this->instantiator = new Instantiator();
+        $this->instantiator = new Instantiator;
 
         $this->instantiator->instantiate(__CLASS__);
         $this->instantiator->instantiate('ArrayObject');
@@ -50,7 +51,9 @@ class InstantiatorPerformanceEvent extends AthleticEvent
 
     /**
      * @iterations 20000
+     *
      * @baseline
+     *
      * @group instantiation
      */
     public function testInstantiateSelf()
@@ -60,6 +63,7 @@ class InstantiatorPerformanceEvent extends AthleticEvent
 
     /**
      * @iterations 20000
+     *
      * @group instantiation
      */
     public function testInstantiateInternalClass()
@@ -69,6 +73,7 @@ class InstantiatorPerformanceEvent extends AthleticEvent
 
     /**
      * @iterations 20000
+     *
      * @group instantiation
      */
     public function testInstantiateSimpleSerializableAssetClass()
@@ -78,6 +83,7 @@ class InstantiatorPerformanceEvent extends AthleticEvent
 
     /**
      * @iterations 20000
+     *
      * @group instantiation
      */
     public function testInstantiateSerializableArrayObjectAsset()
@@ -87,6 +93,7 @@ class InstantiatorPerformanceEvent extends AthleticEvent
 
     /**
      * @iterations 20000
+     *
      * @group instantiation
      */
     public function testInstantiateUnCloneableAsset()

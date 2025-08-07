@@ -4,20 +4,22 @@ namespace PhpParser\NodeVisitor;
 
 use PhpParser;
 use PhpParser\Node;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
-use PhpParser\Node\Expr;
 
 class NameResolverTest extends \PHPUnit_Framework_TestCase
 {
-    private function canonicalize($string) {
+    private function canonicalize($string)
+    {
         return str_replace("\r\n", "\n", $string);
     }
 
     /**
      * @covers PhpParser\NodeVisitor\NameResolver
      */
-    public function testResolveNames() {
+    public function test_resolve_names()
+    {
         $code = <<<'EOC'
 <?php
 
@@ -165,9 +167,9 @@ namespace Baz {
 }
 EOC;
 
-        $parser        = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
+        $parser = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
         $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-        $traverser     = new PhpParser\NodeTraverser;
+        $traverser = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
 
         $stmts = $parser->parse($code);
@@ -182,7 +184,8 @@ EOC;
     /**
      * @covers PhpParser\NodeVisitor\NameResolver
      */
-    public function testResolveLocations() {
+    public function test_resolve_locations()
+    {
         $code = <<<'EOC'
 <?php
 namespace NS;
@@ -255,9 +258,9 @@ try {
 }
 EOC;
 
-        $parser        = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
+        $parser = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
         $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-        $traverser     = new PhpParser\NodeTraverser;
+        $traverser = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
 
         $stmts = $parser->parse($code);
@@ -269,8 +272,9 @@ EOC;
         );
     }
 
-    public function testNoResolveSpecialName() {
-        $stmts = array(new Node\Expr\New_(new Name('self')));
+    public function test_no_resolve_special_name()
+    {
+        $stmts = [new Node\Expr\New_(new Name('self'))];
 
         $traverser = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
@@ -278,17 +282,18 @@ EOC;
         $this->assertEquals($stmts, $traverser->traverse($stmts));
     }
 
-    public function testAddNamespacedName() {
-        $nsStmts = array(
+    public function test_add_namespaced_name()
+    {
+        $nsStmts = [
             new Stmt\Class_('A'),
             new Stmt\Interface_('B'),
             new Stmt\Function_('C'),
-            new Stmt\Const_(array(
-                new Node\Const_('D', new Node\Scalar\LNumber(42))
-            )),
+            new Stmt\Const_([
+                new Node\Const_('D', new Node\Scalar\LNumber(42)),
+            ]),
             new Stmt\Trait_('E'),
             new Expr\New_(new Stmt\Class_(null)),
-        );
+        ];
 
         $traverser = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
@@ -302,68 +307,70 @@ EOC;
         $this->assertObjectNotHasAttribute('namespacedName', $stmts[0]->stmts[5]->class);
 
         $stmts = $traverser->traverse([new Stmt\Namespace_(null, $nsStmts)]);
-        $this->assertSame('A',     (string) $stmts[0]->stmts[0]->namespacedName);
-        $this->assertSame('B',     (string) $stmts[0]->stmts[1]->namespacedName);
-        $this->assertSame('C',     (string) $stmts[0]->stmts[2]->namespacedName);
-        $this->assertSame('D',     (string) $stmts[0]->stmts[3]->consts[0]->namespacedName);
-        $this->assertSame('E',     (string) $stmts[0]->stmts[4]->namespacedName);
+        $this->assertSame('A', (string) $stmts[0]->stmts[0]->namespacedName);
+        $this->assertSame('B', (string) $stmts[0]->stmts[1]->namespacedName);
+        $this->assertSame('C', (string) $stmts[0]->stmts[2]->namespacedName);
+        $this->assertSame('D', (string) $stmts[0]->stmts[3]->consts[0]->namespacedName);
+        $this->assertSame('E', (string) $stmts[0]->stmts[4]->namespacedName);
         $this->assertObjectNotHasAttribute('namespacedName', $stmts[0]->stmts[5]->class);
     }
 
     /**
      * @dataProvider provideTestError
      */
-    public function testError(Node $stmt, $errorMsg) {
+    public function test_error(Node $stmt, $errorMsg)
+    {
         $this->setExpectedException('PhpParser\Error', $errorMsg);
 
         $traverser = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
-        $traverser->traverse(array($stmt));
+        $traverser->traverse([$stmt]);
     }
 
-    public function provideTestError() {
-        return array(
-            array(
-                new Stmt\Use_(array(
-                    new Stmt\UseUse(new Name('A\B'), 'B', 0, array('startLine' => 1)),
-                    new Stmt\UseUse(new Name('C\D'), 'B', 0, array('startLine' => 2)),
-                ), Stmt\Use_::TYPE_NORMAL),
-                'Cannot use C\D as B because the name is already in use on line 2'
-            ),
-            array(
-                new Stmt\Use_(array(
-                    new Stmt\UseUse(new Name('a\b'), 'b', 0, array('startLine' => 1)),
-                    new Stmt\UseUse(new Name('c\d'), 'B', 0, array('startLine' => 2)),
-                ), Stmt\Use_::TYPE_FUNCTION),
-                'Cannot use function c\d as B because the name is already in use on line 2'
-            ),
-            array(
-                new Stmt\Use_(array(
-                    new Stmt\UseUse(new Name('A\B'), 'B', 0, array('startLine' => 1)),
-                    new Stmt\UseUse(new Name('C\D'), 'B', 0, array('startLine' => 2)),
-                ), Stmt\Use_::TYPE_CONSTANT),
-                'Cannot use const C\D as B because the name is already in use on line 2'
-            ),
-            array(
-                new Expr\New_(new Name\FullyQualified('self', array('startLine' => 3))),
-                "'\\self' is an invalid class name on line 3"
-            ),
-            array(
-                new Expr\New_(new Name\Relative('self', array('startLine' => 3))),
-                "'\\self' is an invalid class name on line 3"
-            ),
-            array(
-                new Expr\New_(new Name\FullyQualified('PARENT', array('startLine' => 3))),
-                "'\\PARENT' is an invalid class name on line 3"
-            ),
-            array(
-                new Expr\New_(new Name\Relative('STATIC', array('startLine' => 3))),
-                "'\\STATIC' is an invalid class name on line 3"
-            ),
-        );
+    public function provideTestError()
+    {
+        return [
+            [
+                new Stmt\Use_([
+                    new Stmt\UseUse(new Name('A\B'), 'B', 0, ['startLine' => 1]),
+                    new Stmt\UseUse(new Name('C\D'), 'B', 0, ['startLine' => 2]),
+                ], Stmt\Use_::TYPE_NORMAL),
+                'Cannot use C\D as B because the name is already in use on line 2',
+            ],
+            [
+                new Stmt\Use_([
+                    new Stmt\UseUse(new Name('a\b'), 'b', 0, ['startLine' => 1]),
+                    new Stmt\UseUse(new Name('c\d'), 'B', 0, ['startLine' => 2]),
+                ], Stmt\Use_::TYPE_FUNCTION),
+                'Cannot use function c\d as B because the name is already in use on line 2',
+            ],
+            [
+                new Stmt\Use_([
+                    new Stmt\UseUse(new Name('A\B'), 'B', 0, ['startLine' => 1]),
+                    new Stmt\UseUse(new Name('C\D'), 'B', 0, ['startLine' => 2]),
+                ], Stmt\Use_::TYPE_CONSTANT),
+                'Cannot use const C\D as B because the name is already in use on line 2',
+            ],
+            [
+                new Expr\New_(new Name\FullyQualified('self', ['startLine' => 3])),
+                "'\\self' is an invalid class name on line 3",
+            ],
+            [
+                new Expr\New_(new Name\Relative('self', ['startLine' => 3])),
+                "'\\self' is an invalid class name on line 3",
+            ],
+            [
+                new Expr\New_(new Name\FullyQualified('PARENT', ['startLine' => 3])),
+                "'\\PARENT' is an invalid class name on line 3",
+            ],
+            [
+                new Expr\New_(new Name\Relative('STATIC', ['startLine' => 3])),
+                "'\\STATIC' is an invalid class name on line 3",
+            ],
+        ];
     }
 
-    public function testClassNameIsCaseInsensitive()
+    public function test_class_name_is_case_insensitive()
     {
         $source = <<<'EOC'
 <?php
@@ -381,10 +388,11 @@ EOC;
         $stmts = $traverser->traverse($stmts);
         $stmt = $stmts[0];
 
-        $this->assertSame(array('Bar', 'Baz'), $stmt->stmts[1]->expr->class->parts);
+        $this->assertSame(['Bar', 'Baz'], $stmt->stmts[1]->expr->class->parts);
     }
 
-    public function testSpecialClassNamesAreCaseInsensitive() {
+    public function test_special_class_names_are_case_insensitive()
+    {
         $source = <<<'EOC'
 <?php
 namespace Foo;
@@ -410,8 +418,8 @@ EOC;
         $classStmt = $stmts[0];
         $methodStmt = $classStmt->stmts[0]->stmts[0];
 
-        $this->assertSame('SELF', (string)$methodStmt->stmts[0]->class);
-        $this->assertSame('PARENT', (string)$methodStmt->stmts[1]->class);
-        $this->assertSame('STATIC', (string)$methodStmt->stmts[2]->class);
+        $this->assertSame('SELF', (string) $methodStmt->stmts[0]->class);
+        $this->assertSame('PARENT', (string) $methodStmt->stmts[1]->class);
+        $this->assertSame('STATIC', (string) $methodStmt->stmts[2]->class);
     }
 }

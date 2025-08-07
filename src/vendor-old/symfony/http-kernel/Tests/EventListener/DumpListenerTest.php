@@ -25,21 +25,21 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class DumpListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSubscribedEvents()
+    public function test_subscribed_events()
     {
         $this->assertSame(
-            array(KernelEvents::REQUEST => array('configure', 1024)),
+            [KernelEvents::REQUEST => ['configure', 1024]],
             DumpListener::getSubscribedEvents()
         );
     }
 
-    public function testConfigure()
+    public function test_configure()
     {
         $prevDumper = VarDumper::setHandler('var_dump');
         VarDumper::setHandler($prevDumper);
 
-        $cloner = new MockCloner();
-        $dumper = new MockDumper();
+        $cloner = new MockCloner;
+        $dumper = new MockDumper;
 
         ob_start();
         $exception = null;
@@ -57,7 +57,7 @@ class DumpListenerTest extends \PHPUnit_Framework_TestCase
 
         VarDumper::setHandler($prevDumper);
 
-        if (null !== $exception) {
+        if ($exception !== null) {
             throw $exception;
         }
     }
@@ -67,7 +67,7 @@ class MockCloner implements ClonerInterface
 {
     public function cloneVar($var)
     {
-        return new Data(array($var.'-'));
+        return new Data([$var.'-']);
     }
 }
 

@@ -18,9 +18,9 @@ use Monolog\TestCase;
  */
 class SamplingHandlerTest extends TestCase
 {
-    public function testHandle()
+    public function test_handle()
     {
-        $testHandler = new TestHandler();
+        $testHandler = new TestHandler;
         $handler = new SamplingHandler($testHandler, 2);
         for ($i = 0; $i < 10000; $i++) {
             $handler->handle($this->getRecord());

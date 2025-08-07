@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,18 +38,19 @@ final class Instantiator implements InstantiatorInterface
      * the method {@see \Serializable::unserialize()} when dealing with classes implementing
      * the {@see \Serializable} interface.
      */
-    const SERIALIZATION_FORMAT_USE_UNSERIALIZER   = 'C';
+    const SERIALIZATION_FORMAT_USE_UNSERIALIZER = 'C';
+
     const SERIALIZATION_FORMAT_AVOID_UNSERIALIZER = 'O';
 
     /**
      * @var \Closure[] of {@see \Closure} instances used to instantiate specific classes
      */
-    private static $cachedInstantiators = array();
+    private static $cachedInstantiators = [];
 
     /**
      * @var object[] of objects that can directly be cloned
      */
-    private static $cachedCloneables = array();
+    private static $cachedCloneables = [];
 
     /**
      * {@inheritDoc}
@@ -71,13 +73,12 @@ final class Instantiator implements InstantiatorInterface
     /**
      * Builds the requested object and caches it in static properties for performance
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return object
      */
     private function buildAndCacheFromFactory($className)
     {
-        $factory  = self::$cachedInstantiators[$className] = $this->buildFactory($className);
+        $factory = self::$cachedInstantiators[$className] = $this->buildFactory($className);
         $instance = $factory();
 
         if ($this->isSafeToClone(new ReflectionClass($instance))) {
@@ -91,8 +92,7 @@ final class Instantiator implements InstantiatorInterface
      * Builds a {@see \Closure} capable of instantiating the given $className without
      * invoking its constructor.
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return Closure
      */
     private function buildFactory($className)
@@ -120,8 +120,7 @@ final class Instantiator implements InstantiatorInterface
     }
 
     /**
-     * @param string $className
-     *
+     * @param  string  $className
      * @return ReflectionClass
      *
      * @throws InvalidArgumentException
@@ -142,16 +141,14 @@ final class Instantiator implements InstantiatorInterface
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param string          $serializedString
+     * @param  string  $serializedString
+     * @return void
      *
      * @throws UnexpectedValueException
-     *
-     * @return void
      */
     private function checkIfUnSerializationIsSupported(ReflectionClass $reflectionClass, $serializedString)
     {
-        set_error_handler(function ($code, $message, $file, $line) use ($reflectionClass, & $error) {
+        set_error_handler(function ($code, $message, $file, $line) use ($reflectionClass, &$error) {
             $error = UnexpectedValueException::fromUncleanUnSerialization(
                 $reflectionClass,
                 $message,
@@ -171,12 +168,10 @@ final class Instantiator implements InstantiatorInterface
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param string          $serializedString
+     * @param  string  $serializedString
+     * @return void
      *
      * @throws UnexpectedValueException
-     *
-     * @return void
      */
     private function attemptInstantiationViaUnSerialization(ReflectionClass $reflectionClass, $serializedString)
     {
@@ -190,8 +185,6 @@ final class Instantiator implements InstantiatorInterface
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     *
      * @return bool
      */
     private function isInstantiableViaReflection(ReflectionClass $reflectionClass)
@@ -206,7 +199,6 @@ final class Instantiator implements InstantiatorInterface
     /**
      * Verifies whether the given class is to be considered internal
      *
-     * @param ReflectionClass $reflectionClass
      *
      * @return bool
      */
@@ -227,8 +219,6 @@ final class Instantiator implements InstantiatorInterface
      * "C" instead of "O".
      *
      * @link http://news.php.net/php.internals/74654
-     *
-     * @param ReflectionClass $reflectionClass
      *
      * @return string the serialization format marker, either self::SERIALIZATION_FORMAT_USE_UNSERIALIZER
      *                or self::SERIALIZATION_FORMAT_AVOID_UNSERIALIZER
@@ -257,7 +247,6 @@ final class Instantiator implements InstantiatorInterface
     /**
      * Checks if a class is cloneable
      *
-     * @param ReflectionClass $reflection
      *
      * @return bool
      */

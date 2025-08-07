@@ -28,13 +28,13 @@ class AutoExpireFlashBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $array = array();
+    protected $array = [];
 
     protected function setUp()
     {
         parent::setUp();
-        $this->bag = new FlashBag();
-        $this->array = array('new' => array('notice' => array('A previous flash message')));
+        $this->bag = new FlashBag;
+        $this->array = ['new' => ['notice' => ['A previous flash message']]];
         $this->bag->initialize($this->array);
     }
 
@@ -44,112 +44,112 @@ class AutoExpireFlashBagTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
-    public function testInitialize()
+    public function test_initialize()
     {
-        $bag = new FlashBag();
-        $array = array('new' => array('notice' => array('A previous flash message')));
+        $bag = new FlashBag;
+        $array = ['new' => ['notice' => ['A previous flash message']]];
         $bag->initialize($array);
-        $this->assertEquals(array('A previous flash message'), $bag->peek('notice'));
-        $array = array('new' => array(
-                'notice' => array('Something else'),
-                'error' => array('a'),
-            ));
+        $this->assertEquals(['A previous flash message'], $bag->peek('notice'));
+        $array = ['new' => [
+            'notice' => ['Something else'],
+            'error' => ['a'],
+        ]];
         $bag->initialize($array);
-        $this->assertEquals(array('Something else'), $bag->peek('notice'));
-        $this->assertEquals(array('a'), $bag->peek('error'));
+        $this->assertEquals(['Something else'], $bag->peek('notice'));
+        $this->assertEquals(['a'], $bag->peek('error'));
     }
 
-    public function testGetStorageKey()
+    public function test_get_storage_key()
     {
         $this->assertEquals('_sf2_flashes', $this->bag->getStorageKey());
         $attributeBag = new FlashBag('test');
         $this->assertEquals('test', $attributeBag->getStorageKey());
     }
 
-    public function testGetSetName()
+    public function test_get_set_name()
     {
         $this->assertEquals('flashes', $this->bag->getName());
         $this->bag->setName('foo');
         $this->assertEquals('foo', $this->bag->getName());
     }
 
-    public function testPeek()
+    public function test_peek()
     {
-        $this->assertEquals(array(), $this->bag->peek('non_existing'));
-        $this->assertEquals(array('default'), $this->bag->peek('non_existing', array('default')));
-        $this->assertEquals(array('A previous flash message'), $this->bag->peek('notice'));
-        $this->assertEquals(array('A previous flash message'), $this->bag->peek('notice'));
+        $this->assertEquals([], $this->bag->peek('non_existing'));
+        $this->assertEquals(['default'], $this->bag->peek('non_existing', ['default']));
+        $this->assertEquals(['A previous flash message'], $this->bag->peek('notice'));
+        $this->assertEquals(['A previous flash message'], $this->bag->peek('notice'));
     }
 
-    public function testSet()
+    public function test_set()
     {
         $this->bag->set('notice', 'Foo');
-        $this->assertEquals(array('A previous flash message'), $this->bag->peek('notice'));
+        $this->assertEquals(['A previous flash message'], $this->bag->peek('notice'));
     }
 
-    public function testHas()
+    public function test_has()
     {
         $this->assertFalse($this->bag->has('nothing'));
         $this->assertTrue($this->bag->has('notice'));
     }
 
-    public function testKeys()
+    public function test_keys()
     {
-        $this->assertEquals(array('notice'), $this->bag->keys());
+        $this->assertEquals(['notice'], $this->bag->keys());
     }
 
-    public function testPeekAll()
+    public function test_peek_all()
     {
-        $array = array(
-            'new' => array(
+        $array = [
+            'new' => [
                 'notice' => 'Foo',
                 'error' => 'Bar',
-            ),
-        );
+            ],
+        ];
 
         $this->bag->initialize($array);
-        $this->assertEquals(array(
+        $this->assertEquals([
             'notice' => 'Foo',
             'error' => 'Bar',
-            ), $this->bag->peekAll()
+        ], $this->bag->peekAll()
         );
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'notice' => 'Foo',
             'error' => 'Bar',
-            ), $this->bag->peekAll()
+        ], $this->bag->peekAll()
         );
     }
 
-    public function testGet()
+    public function test_get()
     {
-        $this->assertEquals(array(), $this->bag->get('non_existing'));
-        $this->assertEquals(array('default'), $this->bag->get('non_existing', array('default')));
-        $this->assertEquals(array('A previous flash message'), $this->bag->get('notice'));
-        $this->assertEquals(array(), $this->bag->get('notice'));
+        $this->assertEquals([], $this->bag->get('non_existing'));
+        $this->assertEquals(['default'], $this->bag->get('non_existing', ['default']));
+        $this->assertEquals(['A previous flash message'], $this->bag->get('notice'));
+        $this->assertEquals([], $this->bag->get('notice'));
     }
 
-    public function testSetAll()
+    public function test_set_all()
     {
-        $this->bag->setAll(array('a' => 'first', 'b' => 'second'));
+        $this->bag->setAll(['a' => 'first', 'b' => 'second']);
         $this->assertFalse($this->bag->has('a'));
         $this->assertFalse($this->bag->has('b'));
     }
 
-    public function testAll()
+    public function test_all()
     {
         $this->bag->set('notice', 'Foo');
         $this->bag->set('error', 'Bar');
-        $this->assertEquals(array(
-            'notice' => array('A previous flash message'),
-            ), $this->bag->all()
+        $this->assertEquals([
+            'notice' => ['A previous flash message'],
+        ], $this->bag->all()
         );
 
-        $this->assertEquals(array(), $this->bag->all());
+        $this->assertEquals([], $this->bag->all());
     }
 
-    public function testClear()
+    public function test_clear()
     {
-        $this->assertEquals(array('notice' => array('A previous flash message')), $this->bag->clear());
+        $this->assertEquals(['notice' => ['A previous flash message']], $this->bag->clear());
     }
 }

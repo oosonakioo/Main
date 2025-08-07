@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Recursion Context package.
  *
@@ -31,15 +32,14 @@ final class Context
      */
     public function __construct()
     {
-        $this->arrays  = array();
+        $this->arrays = [];
         $this->objects = new \SplObjectStorage;
     }
 
     /**
      * Adds a value to the context.
      *
-     * @param array|object $value The value to add.
-     *
+     * @param  array|object  $value  The value to add.
      * @return int|string The ID of the stored value, either as a string or integer.
      *
      * @throws InvalidArgumentException Thrown if $value is not an array or object
@@ -60,8 +60,7 @@ final class Context
     /**
      * Checks if the given value exists within the context.
      *
-     * @param array|object $value The value to check.
-     *
+     * @param  array|object  $value  The value to check.
      * @return int|string|false The string or integer ID of the stored value if it has already been seen, or false if the value is not stored.
      *
      * @throws InvalidArgumentException Thrown if $value is not an array or object
@@ -80,8 +79,6 @@ final class Context
     }
 
     /**
-     * @param array $array
-     *
      * @return bool|int
      */
     private function addArray(array &$array)
@@ -98,13 +95,12 @@ final class Context
     }
 
     /**
-     * @param object $object
-     *
+     * @param  object  $object
      * @return string
      */
     private function addObject($object)
     {
-        if (!$this->objects->contains($object)) {
+        if (! $this->objects->contains($object)) {
             $this->objects->attach($object);
         }
 
@@ -112,14 +108,12 @@ final class Context
     }
 
     /**
-     * @param array $array
-     *
      * @return int|false
      */
     private function containsArray(array &$array)
     {
         $keys = array_keys($this->arrays, $array, true);
-        $hash = '_Key_' . microtime(true);
+        $hash = '_Key_'.microtime(true);
 
         foreach ($keys as $key) {
             $this->arrays[$key][$hash] = $hash;
@@ -137,8 +131,7 @@ final class Context
     }
 
     /**
-     * @param object $value
-     *
+     * @param  object  $value
      * @return string|false
      */
     private function containsObject($value)

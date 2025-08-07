@@ -14,9 +14,9 @@ class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\DayOfMonthField::validate
      */
-    public function testValidatesField()
+    public function test_validates_field()
     {
-        $f = new DayOfMonthField();
+        $f = new DayOfMonthField;
         $this->assertTrue($f->validate('1'));
         $this->assertTrue($f->validate('*'));
         $this->assertTrue($f->validate('5W,L'));
@@ -26,19 +26,19 @@ class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\DayOfMonthField::isSatisfiedBy
      */
-    public function testChecksIfSatisfied()
+    public function test_checks_if_satisfied()
     {
-        $f = new DayOfMonthField();
-        $this->assertTrue($f->isSatisfiedBy(new DateTime(), '?'));
+        $f = new DayOfMonthField;
+        $this->assertTrue($f->isSatisfiedBy(new DateTime, '?'));
     }
 
     /**
      * @covers Cron\DayOfMonthField::increment
      */
-    public function testIncrementsDate()
+    public function test_increments_date()
     {
         $d = new DateTime('2011-03-15 11:15:00');
-        $f = new DayOfMonthField();
+        $f = new DayOfMonthField;
         $f->increment($d);
         $this->assertEquals('2011-03-16 00:00:00', $d->format('Y-m-d H:i:s'));
 
@@ -53,9 +53,9 @@ class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase
      *
      * @since 2017-01-22
      */
-    public function testDoesNotAccept0Date()
+    public function test_does_not_accept0_date()
     {
-        $f = new DayOfMonthField();
+        $f = new DayOfMonthField;
         $this->assertFalse($f->validate(0));
     }
 }

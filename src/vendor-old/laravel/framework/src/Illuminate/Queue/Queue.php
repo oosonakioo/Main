@@ -5,11 +5,11 @@ namespace Illuminate\Queue;
 use Closure;
 use DateTime;
 use Exception;
-use Illuminate\Support\Arr;
-use SuperClosure\Serializer;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Contracts\Queue\QueueableEntity;
+use Illuminate\Support\Arr;
+use SuperClosure\Serializer;
 
 abstract class Queue
 {
@@ -32,7 +32,7 @@ abstract class Queue
      *
      * @param  string  $queue
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @return mixed
      */
     public function pushOn($queue, $job, $data = '')
@@ -46,7 +46,7 @@ abstract class Queue
      * @param  string  $queue
      * @param  \DateTime|int  $delay
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @return mixed
      */
     public function laterOn($queue, $delay, $job, $data = '')
@@ -57,8 +57,8 @@ abstract class Queue
     /**
      * Push an array of jobs onto the queue.
      *
-     * @param  array   $jobs
-     * @param  mixed   $data
+     * @param  array  $jobs
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -73,7 +73,7 @@ abstract class Queue
      * Create a payload string from the given job and data.
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return string
      */
@@ -149,7 +149,7 @@ abstract class Queue
      * Create a payload string for the given Closure job.
      *
      * @param  \Closure  $job
-     * @param  mixed     $data
+     * @param  mixed  $data
      * @return array
      */
     protected function createClosurePayload($job, $data)
@@ -202,7 +202,6 @@ abstract class Queue
     /**
      * Set the IoC container instance.
      *
-     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function setContainer(Container $container)
@@ -213,7 +212,7 @@ abstract class Queue
     /**
      * Get the encrypter implementation.
      *
-     * @return  \Illuminate\Contracts\Encryption\Encrypter
+     * @return \Illuminate\Contracts\Encryption\Encrypter
      *
      * @throws \Exception
      */
@@ -229,7 +228,6 @@ abstract class Queue
     /**
      * Set the encrypter implementation.
      *
-     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
      */
     public function setEncrypter(Encrypter $encrypter)

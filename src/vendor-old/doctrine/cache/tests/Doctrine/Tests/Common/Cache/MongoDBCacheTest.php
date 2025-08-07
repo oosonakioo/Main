@@ -19,11 +19,11 @@ class MongoDBCacheTest extends CacheTest
 
     protected function setUp()
     {
-        if ( ! version_compare(phpversion('mongo'), '1.3.0', '>=')) {
+        if (! version_compare(phpversion('mongo'), '1.3.0', '>=')) {
             $this->markTestSkipped('Mongo >= 1.3.0 is required.');
         }
 
-        $mongo = new MongoClient();
+        $mongo = new MongoClient;
         $this->collection = $mongo->selectCollection('doctrine_common_cache', 'test');
     }
 
@@ -34,7 +34,7 @@ class MongoDBCacheTest extends CacheTest
         }
     }
 
-    public function testGetStats()
+    public function test_get_stats()
     {
         $cache = $this->_getCacheDriver();
         $stats = $cache->getStats();
@@ -49,12 +49,12 @@ class MongoDBCacheTest extends CacheTest
     /**
      * @group 108
      */
-    public function testMongoCursorExceptionsDoNotBubbleUp()
+    public function test_mongo_cursor_exceptions_do_not_bubble_up()
     {
         /* @var $collection \MongoCollection|\PHPUnit_Framework_MockObject_MockObject */
-        $collection = $this->getMock('MongoCollection', array(), array(), '', false);
+        $collection = $this->getMock('MongoCollection', [], [], '', false);
 
-        $collection->expects(self::once())->method('update')->willThrowException(new \MongoCursorException());
+        $collection->expects(self::once())->method('update')->willThrowException(new \MongoCursorException);
 
         $cache = new MongoDBCache($collection);
 

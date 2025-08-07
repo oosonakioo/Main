@@ -15,10 +15,11 @@ assertCli();
 /**
  * Global hash that tracks already loaded includes
  */
-$GLOBALS['loaded'] = array();
+$GLOBALS['loaded'] = [];
 
 /**
  * Custom FSTools for this script that overloads some behavior
+ *
  * @warning The overloading of copy() is not necessarily global for
  *          this script. Watch out!
  */
@@ -30,19 +31,22 @@ class MergeLibraryFSTools extends FSTools
         if ($entry[0] == '.') {
             return false;
         }
+
         return true;
     }
+
     public function copy($source, $dest)
     {
         copy_and_remove_includes($source, $dest);
     }
 }
-$FS = new MergeLibraryFSTools();
+$FS = new MergeLibraryFSTools;
 
 /**
  * Replaces the includes inside PHP source code with the corresponding
  * source.
- * @param string $text PHP source code to replace includes from
+ *
+ * @param  string  $text  PHP source code to replace includes from
  */
 function replace_includes($text)
 {
@@ -57,66 +61,80 @@ function replace_includes($text)
 /**
  * Removes leading PHP tags from included files. Assumes that there is
  * no trailing tag. Also removes vim modelines.
+ *
  * @note This is safe for files that have internal <?php
- * @param string $text Text to have leading PHP tag from
+ *
+ * @param  string  $text  Text to have leading PHP tag from
  */
 function remove_php_tags($text)
 {
     $text = preg_replace('#// vim:.+#', '', $text);
+
     return substr($text, 5);
 }
 
 /**
  * Copies the contents of a directory to the standalone directory
- * @param string $dir Directory to copy
+ *
+ * @param  string  $dir  Directory to copy
  */
 function make_dir_standalone($dir)
 {
     global $FS;
-    return $FS->copyr($dir, 'standalone/' . $dir);
+
+    return $FS->copyr($dir, 'standalone/'.$dir);
 }
 
 /**
  * Copies the contents of a file to the standalone directory
- * @param string $file File to copy
+ *
+ * @param  string  $file  File to copy
  */
 function make_file_standalone($file)
 {
     global $FS;
-    $FS->mkdirr('standalone/' . dirname($file));
-    copy_and_remove_includes($file, 'standalone/' . $file);
+    $FS->mkdirr('standalone/'.dirname($file));
+    copy_and_remove_includes($file, 'standalone/'.$file);
+
     return true;
 }
 
 /**
  * Copies a file to another location recursively, if it is a PHP file
  * remove includes
- * @param string $file Original file
- * @param string $sfile New location of file
+ *
+ * @param  string  $file  Original file
+ * @param  string  $sfile  New location of file
  */
 function copy_and_remove_includes($file, $sfile)
 {
     $contents = file_get_contents($file);
-    if (strrchr($file, '.') === '.php') $contents = replace_includes($contents);
+    if (strrchr($file, '.') === '.php') {
+        $contents = replace_includes($contents);
+    }
+
     return file_put_contents($sfile, $contents);
 }
 
 /**
- * @param $matches preg_replace_callback matches array, where index 1
- *        is the filename to include
+ * @param  $matches  preg_replace_callback matches array, where index 1
+ *                  is the filename to include
  */
 function replace_includes_callback($matches)
 {
     $file = $matches[1];
-    $preserve = array(
-      // PEAR (external)
-      'XML/HTMLSax3.php' => 1
-    );
+    $preserve = [
+        // PEAR (external)
+        'XML/HTMLSax3.php' => 1,
+    ];
     if (isset($preserve[$file])) {
         return $matches[0];
     }
-    if (isset($GLOBALS['loaded'][$file])) return '';
+    if (isset($GLOBALS['loaded'][$file])) {
+        return '';
+    }
     $GLOBALS['loaded'][$file] = true;
+
     return replace_includes(remove_php_tags(file_get_contents($file)));
 }
 
@@ -124,7 +142,7 @@ echo 'Generating includes file... ';
 shell_exec('php generate-includes.php');
 echo "done!\n";
 
-chdir(dirname(__FILE__) . '/../library/');
+chdir(dirname(__FILE__).'/../library/');
 
 echo 'Creating full file...';
 $contents = replace_includes(file_get_contents('HTMLPurifier.includes.php'));
@@ -136,7 +154,7 @@ $contents = str_replace(
     $contents
 );
 file_put_contents('HTMLPurifier.standalone.php', $contents);
-echo ' done!' . PHP_EOL;
+echo ' done!'.PHP_EOL;
 
 echo 'Creating standalone directory...';
 $FS->rmdirr('standalone'); // ensure a clean copy
@@ -154,6 +172,6 @@ make_dir_standalone('HTMLPurifier/Printer');
 make_file_standalone('HTMLPurifier/Printer.php');
 make_file_standalone('HTMLPurifier/Lexer/PH5P.php');
 
-echo ' done!' . PHP_EOL;
+echo ' done!'.PHP_EOL;
 
 // vim: et sw=4 sts=4

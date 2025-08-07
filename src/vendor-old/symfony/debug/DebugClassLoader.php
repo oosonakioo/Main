@@ -25,23 +25,28 @@ namespace Symfony\Component\Debug;
 class DebugClassLoader
 {
     private $classLoader;
+
     private $isFinder;
+
     private static $caseCheck;
-    private static $deprecated = array();
-    private static $php7Reserved = array('int', 'float', 'bool', 'string', 'true', 'false', 'null');
-    private static $darwinCache = array('/' => array('/', array()));
+
+    private static $deprecated = [];
+
+    private static $php7Reserved = ['int', 'float', 'bool', 'string', 'true', 'false', 'null'];
+
+    private static $darwinCache = ['/' => ['/', []]];
 
     /**
      * Constructor.
      *
-     * @param callable $classLoader A class loader
+     * @param  callable  $classLoader  A class loader
      */
     public function __construct(callable $classLoader)
     {
         $this->classLoader = $classLoader;
         $this->isFinder = is_array($classLoader) && method_exists($classLoader[0], 'findFile');
 
-        if (!isset(self::$caseCheck)) {
+        if (! isset(self::$caseCheck)) {
             $file = file_exists(__FILE__) ? __FILE__ : rtrim(realpath('.'), DIRECTORY_SEPARATOR);
             $i = strrpos($file, DIRECTORY_SEPARATOR);
             $dir = substr($file, 0, 1 + $i);
@@ -49,13 +54,13 @@ class DebugClassLoader
             $test = strtoupper($file) === $file ? strtolower($file) : strtoupper($file);
             $test = realpath($dir.$test);
 
-            if (false === $test || false === $i) {
+            if ($test === false || $i === false) {
                 // filesystem is case sensitive
                 self::$caseCheck = 0;
             } elseif (substr($test, -strlen($file)) === $file) {
                 // filesystem is case insensitive and realpath() normalizes the case of characters
                 self::$caseCheck = 1;
-            } elseif (false !== stripos(PHP_OS, 'darwin')) {
+            } elseif (stripos(PHP_OS, 'darwin') !== false) {
                 // on MacOSX, HFS+ is case insensitive but realpath() doesn't normalize the case of characters
                 self::$caseCheck = 2;
             } else {
@@ -84,7 +89,7 @@ class DebugClassLoader
         class_exists('Symfony\Component\Debug\ErrorHandler');
         class_exists('Psr\Log\LogLevel');
 
-        if (!is_array($functions = spl_autoload_functions())) {
+        if (! is_array($functions = spl_autoload_functions())) {
             return;
         }
 
@@ -93,8 +98,8 @@ class DebugClassLoader
         }
 
         foreach ($functions as $function) {
-            if (!is_array($function) || !$function[0] instanceof self) {
-                $function = array(new static($function), 'loadClass');
+            if (! is_array($function) || ! $function[0] instanceof self) {
+                $function = [new static($function), 'loadClass'];
             }
 
             spl_autoload_register($function);
@@ -106,7 +111,7 @@ class DebugClassLoader
      */
     public static function disable()
     {
-        if (!is_array($functions = spl_autoload_functions())) {
+        if (! is_array($functions = spl_autoload_functions())) {
             return;
         }
 
@@ -126,8 +131,7 @@ class DebugClassLoader
     /**
      * Loads the given class or interface.
      *
-     * @param string $class The name of the class
-     *
+     * @param  string  $class  The name of the class
      * @return bool|null True, if loaded
      *
      * @throws \RuntimeException
@@ -151,7 +155,7 @@ class DebugClassLoader
 
         $exists = class_exists($class, false) || interface_exists($class, false) || trait_exists($class, false);
 
-        if ('\\' === $class[0]) {
+        if ($class[0] === '\\') {
             $class = substr($class, 1);
         }
 
@@ -159,7 +163,7 @@ class DebugClassLoader
             $refl = new \ReflectionClass($class);
             $name = $refl->getName();
 
-            if ($name !== $class && 0 === strcasecmp($name, $class)) {
+            if ($name !== $class && strcasecmp($name, $class) === 0) {
                 throw new \RuntimeException(sprintf('Case mismatch between loaded and declared class names: %s vs %s', $class, $name));
             }
 
@@ -183,13 +187,13 @@ class DebugClassLoader
                 }
                 $parent = get_parent_class($class);
 
-                if (!$parent || strncmp($ns, $parent, $len)) {
+                if (! $parent || strncmp($ns, $parent, $len)) {
                     if ($parent && isset(self::$deprecated[$parent]) && strncmp($ns, $parent, $len)) {
                         @trigger_error(sprintf('The %s class extends %s that is deprecated %s', $name, $parent, self::$deprecated[$parent]), E_USER_DEPRECATED);
                     }
 
-                    $parentInterfaces = array();
-                    $deprecatedInterfaces = array();
+                    $parentInterfaces = [];
+                    $deprecatedInterfaces = [];
                     if ($parent) {
                         foreach (class_implements($parent) as $interface) {
                             $parentInterfaces[$interface] = 1;
@@ -206,7 +210,7 @@ class DebugClassLoader
                     }
 
                     foreach ($deprecatedInterfaces as $interface) {
-                        if (!isset($parentInterfaces[$interface])) {
+                        if (! isset($parentInterfaces[$interface])) {
                             @trigger_error(sprintf('The %s %s %s that is deprecated %s', $name, $refl->isInterface() ? 'interface extends' : 'class implements', $interface, self::$deprecated[$interface]), E_USER_DEPRECATED);
                         }
                     }
@@ -215,8 +219,8 @@ class DebugClassLoader
         }
 
         if ($file) {
-            if (!$exists) {
-                if (false !== strpos($class, '/')) {
+            if (! $exists) {
+                if (strpos($class, '/') !== false) {
                     throw new \RuntimeException(sprintf('Trying to autoload a class with an invalid name "%s". Be careful that the namespace separator is "\" in PHP, not "/".', $class));
                 }
 
@@ -230,8 +234,8 @@ class DebugClassLoader
                 $j = count($real) - 1;
 
                 while (isset($tail[$i], $real[$j]) && $tail[$i] === $real[$j]) {
-                    --$i;
-                    --$j;
+                    $i--;
+                    $j--;
                 }
 
                 array_splice($tail, 0, $i + 1);
@@ -241,7 +245,7 @@ class DebugClassLoader
                 $tailLen = strlen($tail);
                 $real = $refl->getFileName();
 
-                if (2 === self::$caseCheck) {
+                if (self::$caseCheck === 2) {
                     // realpath() on MacOSX doesn't normalize the case of characters
 
                     $i = 1 + strrpos($real, '/');
@@ -264,11 +268,11 @@ class DebugClassLoader
                             $dir = $real;
                             $k = $kDir;
                             $i = strlen($dir) - 1;
-                            while (!isset(self::$darwinCache[$k])) {
-                                self::$darwinCache[$k] = array($dir, array());
+                            while (! isset(self::$darwinCache[$k])) {
+                                self::$darwinCache[$k] = [$dir, []];
                                 self::$darwinCache[$dir] = &self::$darwinCache[$k];
 
-                                while ('/' !== $dir[--$i]) {
+                                while ($dir[--$i] !== '/') {
                                 }
                                 $k = substr($k, 0, ++$i);
                                 $dir = substr($dir, 0, $i--);
@@ -283,9 +287,9 @@ class DebugClassLoader
                     } else {
                         $kFile = strtolower($file);
 
-                        if (!isset($dirFiles[$kFile])) {
+                        if (! isset($dirFiles[$kFile])) {
                             foreach (scandir($real, 2) as $f) {
-                                if ('.' !== $f[0]) {
+                                if ($f[0] !== '.') {
                                     $dirFiles[$f] = $f;
                                     if ($f === $file) {
                                         $kFile = $k = $file;
@@ -301,8 +305,8 @@ class DebugClassLoader
                     $real .= $dirFiles[$kFile];
                 }
 
-                if (0 === substr_compare($real, $tail, -$tailLen, $tailLen, true)
-                  && 0 !== substr_compare($real, $tail, -$tailLen, $tailLen, false)
+                if (substr_compare($real, $tail, -$tailLen, $tailLen, true) === 0
+                  && substr_compare($real, $tail, -$tailLen, $tailLen, false) !== 0
                 ) {
                     throw new \RuntimeException(sprintf('Case mismatch between class and real file names: %s vs %s in %s', substr($tail, -$tailLen + 1), substr($real, -$tailLen + 1), substr($real, 0, -$tailLen + 1)));
                 }

@@ -11,9 +11,9 @@ assertCli();
  * Renames a configuration directive.  This involves renaming the file,
  * adding an alias, and then regenerating the cache.  You still have to
  * manually go through and fix any calls to the directive.
+ *
  * @warning This script doesn't handle multi-stringhash files.
  */
-
 $argv = $_SERVER['argv'];
 if (count($argv) < 3) {
     echo "Usage: {$argv[0]} OldName NewName\n";
@@ -25,7 +25,7 @@ chdir('../library/HTMLPurifier/ConfigSchema/schema');
 $old = $argv[1];
 $new = $argv[2];
 
-if (!file_exists("$old.txt")) {
+if (! file_exists("$old.txt")) {
     echo "Cannot move undefined configuration directive $old\n";
     exit(1);
 }
@@ -41,8 +41,8 @@ if (file_exists("$new.txt")) {
 }
 
 $file = "$old.txt";
-$builder = new HTMLPurifier_ConfigSchema_InterchangeBuilder();
-$interchange = new HTMLPurifier_ConfigSchema_Interchange();
+$builder = new HTMLPurifier_ConfigSchema_InterchangeBuilder;
+$interchange = new HTMLPurifier_ConfigSchema_Interchange;
 $builder->buildFile($interchange, $file);
 $contents = file_get_contents($file);
 
@@ -60,9 +60,11 @@ $contents = str_replace($old, $new, $contents);
 if ($interchange->directives[$old]->aliases) {
     $pos_alias = strpos($contents, 'ALIASES:');
     $pos_ins = strpos($contents, $nl, $pos_alias);
-    if ($pos_ins === false) $pos_ins = strlen($contents);
+    if ($pos_ins === false) {
+        $pos_ins = strlen($contents);
+    }
     $contents =
-        substr($contents, 0, $pos_ins) . ", $old" . substr($contents, $pos_ins);
+        substr($contents, 0, $pos_ins).", $old".substr($contents, $pos_ins);
     file_put_contents($file, $contents);
 } else {
     $lines = explode($nl, $contents);
@@ -73,7 +75,7 @@ if ($interchange->directives[$old]->aliases) {
             break;
         }
     }
-    if (!$insert) {
+    if (! $insert) {
         $lines[] = "ALIASES: $old";
     } else {
         array_splice($lines, $insert, 0, "ALIASES: $old");

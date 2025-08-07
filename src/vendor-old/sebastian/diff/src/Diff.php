@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Diff package.
  *
@@ -10,8 +11,6 @@
 
 namespace SebastianBergmann\Diff;
 
-/**
- */
 class Diff
 {
     /**
@@ -30,14 +29,14 @@ class Diff
     private $chunks;
 
     /**
-     * @param string  $from
-     * @param string  $to
-     * @param Chunk[] $chunks
+     * @param  string  $from
+     * @param  string  $to
+     * @param  Chunk[]  $chunks
      */
-    public function __construct($from, $to, array $chunks = array())
+    public function __construct($from, $to, array $chunks = [])
     {
-        $this->from   = $from;
-        $this->to     = $to;
+        $this->from = $from;
+        $this->to = $to;
         $this->chunks = $chunks;
     }
 
@@ -66,7 +65,7 @@ class Diff
     }
 
     /**
-     * @param Chunk[] $chunks
+     * @param  Chunk[]  $chunks
      */
     public function setChunks(array $chunks)
     {

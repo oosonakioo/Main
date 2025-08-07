@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Schema\Table;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaDropTableEventArgs extends SchemaEventArgs
@@ -47,18 +49,17 @@ class SchemaDropTableEventArgs extends SchemaEventArgs
     private $_sql = null;
 
     /**
-     * @param string|\Doctrine\DBAL\Schema\Table        $table
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param  string|\Doctrine\DBAL\Schema\Table  $table
      *
      * @throws \InvalidArgumentException
      */
     public function __construct($table, AbstractPlatform $platform)
     {
-        if ( ! $table instanceof Table && !is_string($table)) {
+        if (! $table instanceof Table && ! is_string($table)) {
             throw new \InvalidArgumentException('SchemaDropTableEventArgs expects $table parameter to be string or \Doctrine\DBAL\Schema\Table.');
         }
 
-        $this->_table    = $table;
+        $this->_table = $table;
         $this->_platform = $platform;
     }
 
@@ -79,8 +80,7 @@ class SchemaDropTableEventArgs extends SchemaEventArgs
     }
 
     /**
-     * @param string $sql
-     *
+     * @param  string  $sql
      * @return \Doctrine\DBAL\Event\SchemaDropTableEventArgs
      */
     public function setSql($sql)

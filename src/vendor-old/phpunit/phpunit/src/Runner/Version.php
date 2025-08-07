@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -18,6 +19,7 @@ use SebastianBergmann\Version;
 class PHPUnit_Runner_Version
 {
     private static $pharVersion;
+
     private static $version;
 
     /**
@@ -32,7 +34,7 @@ class PHPUnit_Runner_Version
         }
 
         if (self::$version === null) {
-            $version       = new Version('4.8.35', dirname(dirname(__DIR__)));
+            $version = new Version('4.8.35', dirname(dirname(__DIR__)));
             self::$version = $version->getVersion();
         }
 
@@ -47,7 +49,7 @@ class PHPUnit_Runner_Version
     public static function series()
     {
         if (strpos(self::id(), '-')) {
-            $tmp     = explode('-', self::id());
+            $tmp = explode('-', self::id());
             $version = $tmp[0];
         } else {
             $version = self::id();
@@ -61,7 +63,7 @@ class PHPUnit_Runner_Version
      */
     public static function getVersionString()
     {
-        return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
+        return 'PHPUnit '.self::id().' by Sebastian Bergmann and contributors.';
     }
 
     /**

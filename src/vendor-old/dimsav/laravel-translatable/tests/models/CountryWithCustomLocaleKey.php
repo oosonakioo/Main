@@ -10,7 +10,9 @@ class CountryWithCustomLocaleKey extends Eloquent
     use Translatable;
 
     public $table = 'countries';
+
     public $translatedAttributes = ['name'];
+
     public $translationModel = 'Dimsav\Translatable\Test\Model\CountryTranslation';
 
     /*

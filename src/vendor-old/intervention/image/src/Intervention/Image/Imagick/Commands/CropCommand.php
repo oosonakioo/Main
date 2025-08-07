@@ -10,8 +10,8 @@ class CropCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Crop an image instance
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -22,7 +22,7 @@ class CropCommand extends \Intervention\Image\Commands\AbstractCommand
 
         if (is_null($width) || is_null($height)) {
             throw new \Intervention\Image\Exception\InvalidArgumentException(
-                "Width and height of cutout needs to be defined."
+                'Width and height of cutout needs to be defined.'
             );
         }
 
@@ -36,7 +36,7 @@ class CropCommand extends \Intervention\Image\Commands\AbstractCommand
 
         // crop image core
         $image->getCore()->cropImage($cropped->width, $cropped->height, $position->x, $position->y);
-        $image->getCore()->setImagePage(0,0,0,0);
+        $image->getCore()->setImagePage(0, 0, 0, 0);
 
         return true;
     }

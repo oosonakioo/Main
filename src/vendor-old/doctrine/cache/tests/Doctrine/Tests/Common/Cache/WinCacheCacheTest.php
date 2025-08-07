@@ -11,6 +11,6 @@ class WincacheCacheTest extends CacheTest
 {
     protected function _getCacheDriver()
     {
-        return new WincacheCache();
+        return new WincacheCache;
     }
 }

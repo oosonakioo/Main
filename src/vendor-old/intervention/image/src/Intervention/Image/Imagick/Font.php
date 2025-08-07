@@ -9,15 +9,14 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Draws font to given image at given position
      *
-     * @param  Image   $image
-     * @param  integer $posx
-     * @param  integer $posy
+     * @param  int  $posx
+     * @param  int  $posy
      * @return void
      */
     public function applyToImage(Image $image, $posx = 0, $posy = 0)
     {
         // build draw object
-        $draw = new \ImagickDraw();
+        $draw = new \ImagickDraw;
         $draw->setStrokeAntialias(true);
         $draw->setTextAntialias(true);
 
@@ -26,7 +25,7 @@ class Font extends \Intervention\Image\AbstractFont
             $draw->setFont($this->file);
         } else {
             throw new \Intervention\Image\Exception\RuntimeException(
-                "Font file must be provided to apply text to image."
+                'Font file must be provided to apply text to image.'
             );
         }
 
@@ -63,12 +62,12 @@ class Font extends \Intervention\Image\AbstractFont
             switch (strtolower($this->valign)) {
                 case 'center':
                 case 'middle':
-                $posy = $posy + $dimensions['textHeight'] * 0.65 / 2;
-                break;
+                    $posy = $posy + $dimensions['textHeight'] * 0.65 / 2;
+                    break;
 
                 case 'top':
-                $posy = $posy + $dimensions['textHeight'] * 0.65;
-                break;
+                    $posy = $posy + $dimensions['textHeight'] * 0.65;
+                    break;
             }
         }
 

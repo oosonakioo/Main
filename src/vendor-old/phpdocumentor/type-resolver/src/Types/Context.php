@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -38,13 +40,13 @@ final class Context
      * Initializes the new context and normalizes all passed namespaces to be in Qualified Namespace Name (QNN)
      * format (without a preceding `\`).
      *
-     * @param string $namespace The namespace where this DocBlock resides in.
-     * @param array $namespaceAliases List of namespace aliases => Fully Qualified Namespace.
+     * @param  string  $namespace  The namespace where this DocBlock resides in.
+     * @param  array  $namespaceAliases  List of namespace aliases => Fully Qualified Namespace.
      */
     public function __construct($namespace, array $namespaceAliases = [])
     {
-        $this->namespace = ('global' !== $namespace && 'default' !== $namespace)
-            ? trim((string)$namespace, '\\')
+        $this->namespace = ($namespace !== 'global' && $namespace !== 'default')
+            ? trim((string) $namespace, '\\')
             : '';
 
         foreach ($namespaceAliases as $alias => $fqnn) {

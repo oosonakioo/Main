@@ -30,11 +30,11 @@ class FleepHookHandlerTest extends TestCase
      */
     private $handler;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
-        if (!extension_loaded('openssl')) {
+        if (! extension_loaded('openssl')) {
             $this->markTestSkipped('This test requires openssl extension to run');
         }
 
@@ -45,7 +45,7 @@ class FleepHookHandlerTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testConstructorSetsExpectedDefaults()
+    public function test_constructor_sets_expected_defaults()
     {
         $this->assertEquals(Logger::DEBUG, $this->handler->getLevel());
         $this->assertEquals(true, $this->handler->getBubble());
@@ -54,17 +54,17 @@ class FleepHookHandlerTest extends TestCase
     /**
      * @covers ::getDefaultFormatter
      */
-    public function testHandlerUsesLineFormatterWhichIgnoresEmptyArrays()
+    public function test_handler_uses_line_formatter_which_ignores_empty_arrays()
     {
-        $record = array(
+        $record = [
             'message' => 'msg',
-            'context' => array(),
+            'context' => [],
             'level' => Logger::DEBUG,
             'level_name' => Logger::getLevelName(Logger::DEBUG),
             'channel' => 'channel',
-            'datetime' => new \DateTime(),
-            'extra' => array(),
-        );
+            'datetime' => new \DateTime,
+            'extra' => [],
+        ];
 
         $expectedFormatter = new LineFormatter(null, null, true, true);
         $expected = $expectedFormatter->format($record);
@@ -78,8 +78,8 @@ class FleepHookHandlerTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testConnectionStringisConstructedCorrectly()
+    public function test_connection_stringis_constructed_correctly()
     {
-        $this->assertEquals('ssl://' . FleepHookHandler::FLEEP_HOST . ':443', $this->handler->getConnectionString());
+        $this->assertEquals('ssl://'.FleepHookHandler::FLEEP_HOST.':443', $this->handler->getConnectionString());
     }
 }

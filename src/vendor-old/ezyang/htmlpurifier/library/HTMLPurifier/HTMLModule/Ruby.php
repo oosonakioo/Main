@@ -6,14 +6,13 @@
  */
 class HTMLPurifier_HTMLModule_Ruby extends HTMLPurifier_HTMLModule
 {
-
     /**
      * @type string
      */
     public $name = 'Ruby';
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -26,9 +25,9 @@ class HTMLPurifier_HTMLModule_Ruby extends HTMLPurifier_HTMLModule
         $this->addElement('rbc', false, 'Required: rb', 'Common');
         $this->addElement('rtc', false, 'Required: rt', 'Common');
         $rb = $this->addElement('rb', false, 'Inline', 'Common');
-        $rb->excludes = array('ruby' => true);
-        $rt = $this->addElement('rt', false, 'Inline', 'Common', array('rbspan' => 'Number'));
-        $rt->excludes = array('ruby' => true);
+        $rb->excludes = ['ruby' => true];
+        $rt = $this->addElement('rt', false, 'Inline', 'Common', ['rbspan' => 'Number']);
+        $rt->excludes = ['ruby' => true];
         $this->addElement('rp', false, 'Optional: #PCDATA', 'Common');
     }
 }

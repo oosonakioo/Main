@@ -24,7 +24,7 @@ class ClassAttributesMatcher extends AbstractMatcher
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array())
+    public function getMatches(array $tokens, array $info = [])
     {
         $input = $this->getInput($tokens);
 
@@ -40,7 +40,7 @@ class ClassAttributesMatcher extends AbstractMatcher
         $vars = array_merge(
             array_map(
                 function ($var) {
-                    return '$' . $var;
+                    return '$'.$var;
                 },
                 array_keys($reflection->getStaticProperties())
             ),
@@ -49,7 +49,7 @@ class ClassAttributesMatcher extends AbstractMatcher
 
         return array_map(
             function ($name) use ($class) {
-                return $class . '::' . $name;
+                return $class.'::'.$name;
             },
             array_filter(
                 $vars,

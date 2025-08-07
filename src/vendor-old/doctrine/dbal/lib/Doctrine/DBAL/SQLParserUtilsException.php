@@ -1,4 +1,5 @@
 <?php
+
 /*
  *  $Id: $
  *
@@ -25,15 +26,16 @@ namespace Doctrine\DBAL;
  * Doctrine\DBAL\ConnectionException
  *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link    www.doctrine-project.org
  * @since   2.4
+ *
  * @author  Lars Strojny <lars@strojny.net>
  */
 class SQLParserUtilsException extends DBALException
 {
     /**
-     * @param string $paramName
-     *
+     * @param  string  $paramName
      * @return \Doctrine\DBAL\SQLParserUtilsException
      */
     public static function missingParam($paramName)
@@ -42,8 +44,7 @@ class SQLParserUtilsException extends DBALException
     }
 
     /**
-     * @param string $typeName
-     *
+     * @param  string  $typeName
      * @return \Doctrine\DBAL\SQLParserUtilsException
      */
     public static function missingType($typeName)

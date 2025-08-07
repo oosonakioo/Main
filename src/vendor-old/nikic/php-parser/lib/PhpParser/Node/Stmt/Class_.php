@@ -2,53 +2,61 @@
 
 namespace PhpParser\Node\Stmt;
 
-use PhpParser\Node;
 use PhpParser\Error;
+use PhpParser\Node;
 
 class Class_ extends ClassLike
 {
-    const MODIFIER_PUBLIC    =  1;
-    const MODIFIER_PROTECTED =  2;
-    const MODIFIER_PRIVATE   =  4;
-    const MODIFIER_STATIC    =  8;
-    const MODIFIER_ABSTRACT  = 16;
-    const MODIFIER_FINAL     = 32;
+    const MODIFIER_PUBLIC = 1;
+
+    const MODIFIER_PROTECTED = 2;
+
+    const MODIFIER_PRIVATE = 4;
+
+    const MODIFIER_STATIC = 8;
+
+    const MODIFIER_ABSTRACT = 16;
+
+    const MODIFIER_FINAL = 32;
 
     const VISIBILITY_MODIFER_MASK = 7; // 1 | 2 | 4
 
     /** @var int Type */
     public $type;
+
     /** @var null|Node\Name Name of extended class */
     public $extends;
+
     /** @var Node\Name[] Names of implemented interfaces */
     public $implements;
 
-    protected static $specialNames = array(
-        'self'   => true,
+    protected static $specialNames = [
+        'self' => true,
         'parent' => true,
         'static' => true,
-    );
+    ];
 
     /**
      * Constructs a class node.
      *
-     * @param string|null $name       Name
-     * @param array       $subNodes   Array of the following optional subnodes:
-     *                                'type'       => 0      : Type
-     *                                'extends'    => null   : Name of extended class
-     *                                'implements' => array(): Names of implemented interfaces
-     *                                'stmts'      => array(): Statements
-     * @param array       $attributes Additional attributes
+     * @param  string|null  $name  Name
+     * @param  array  $subNodes  Array of the following optional subnodes:
+     *                           'type'       => 0      : Type
+     *                           'extends'    => null   : Name of extended class
+     *                           'implements' => array(): Names of implemented interfaces
+     *                           'stmts'      => array(): Statements
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct($name, array $subNodes = array(), array $attributes = array()) {
+    public function __construct($name, array $subNodes = [], array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->type = isset($subNodes['type']) ? $subNodes['type'] : 0;
         $this->name = $name;
         $this->extends = isset($subNodes['extends']) ? $subNodes['extends'] : null;
-        $this->implements = isset($subNodes['implements']) ? $subNodes['implements'] : array();
-        $this->stmts = isset($subNodes['stmts']) ? $subNodes['stmts'] : array();
+        $this->implements = isset($subNodes['implements']) ? $subNodes['implements'] : [];
+        $this->stmts = isset($subNodes['stmts']) ? $subNodes['stmts'] : [];
 
-        if (null !== $this->name && isset(self::$specialNames[strtolower($this->name)])) {
+        if ($this->name !== null && isset(self::$specialNames[strtolower($this->name)])) {
             throw new Error(sprintf('Cannot use \'%s\' as class name as it is reserved', $this->name));
         }
 
@@ -69,26 +77,31 @@ class Class_ extends ClassLike
         }
     }
 
-    public function getSubNodeNames() {
-        return array('type', 'name', 'extends', 'implements', 'stmts');
+    public function getSubNodeNames()
+    {
+        return ['type', 'name', 'extends', 'implements', 'stmts'];
     }
 
-    public function isAbstract() {
+    public function isAbstract()
+    {
         return (bool) ($this->type & self::MODIFIER_ABSTRACT);
     }
 
-    public function isFinal() {
+    public function isFinal()
+    {
         return (bool) ($this->type & self::MODIFIER_FINAL);
     }
 
-    public function isAnonymous() {
-        return null === $this->name;
+    public function isAnonymous()
+    {
+        return $this->name === null;
     }
 
     /**
      * @internal
      */
-    public static function verifyModifier($a, $b) {
+    public static function verifyModifier($a, $b)
+    {
         if ($a & self::VISIBILITY_MODIFER_MASK && $b & self::VISIBILITY_MODIFER_MASK) {
             throw new Error('Multiple access type modifiers are not allowed');
         }

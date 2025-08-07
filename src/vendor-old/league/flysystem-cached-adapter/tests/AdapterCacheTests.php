@@ -4,7 +4,7 @@ use League\Flysystem\Cached\Storage\Adapter;
 
 class AdapterCacheTests extends PHPUnit_Framework_TestCase
 {
-    public function testLoadFail()
+    public function test_load_fail()
     {
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
         $adapter->shouldReceive('has')->once()->with('file.json')->andReturn(false);
@@ -13,7 +13,7 @@ class AdapterCacheTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('', false));
     }
 
-    public function testLoadExpired()
+    public function test_load_expired()
     {
         $response = ['contents' => json_encode([[], ['' => true], 1234567890]), 'path' => 'file.json'];
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
@@ -25,7 +25,7 @@ class AdapterCacheTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('', false));
     }
 
-    public function testLoadSuccess()
+    public function test_load_success()
     {
         $response = ['contents' => json_encode([[], ['' => true], 9876543210]), 'path' => 'file.json'];
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
@@ -36,7 +36,7 @@ class AdapterCacheTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('', false));
     }
 
-    public function testSaveExists()
+    public function test_save_exists()
     {
         $response = json_encode([[], [], null]);
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
@@ -46,7 +46,7 @@ class AdapterCacheTests extends PHPUnit_Framework_TestCase
         $cache->save();
     }
 
-    public function testSaveNew()
+    public function test_save_new()
     {
         $response = json_encode([[], [], null]);
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
@@ -56,7 +56,7 @@ class AdapterCacheTests extends PHPUnit_Framework_TestCase
         $cache->save();
     }
 
-    public function testStoreContentsRecursive()
+    public function test_store_contents_recursive()
     {
         $adapter = Mockery::mock('League\Flysystem\AdapterInterface');
         $adapter->shouldReceive('has')->once()->with('file.json')->andReturn(false);
@@ -75,7 +75,7 @@ class AdapterCacheTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('afoo', true));
     }
 
-    public function testDeleteDir()
+    public function test_delete_dir()
     {
         $cache_data = [
             'foo' => ['path' => 'foo', 'type' => 'dir', 'dirname' => ''],

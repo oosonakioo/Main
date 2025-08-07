@@ -11,27 +11,28 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 class GroupHandlerTest extends TestCase
 {
     /**
      * @covers Monolog\Handler\GroupHandler::__construct
+     *
      * @expectedException InvalidArgumentException
      */
-    public function testConstructorOnlyTakesHandler()
+    public function test_constructor_only_takes_handler()
     {
-        new GroupHandler(array(new TestHandler(), "foo"));
+        new GroupHandler([new TestHandler, 'foo']);
     }
 
     /**
      * @covers Monolog\Handler\GroupHandler::__construct
      * @covers Monolog\Handler\GroupHandler::handle
      */
-    public function testHandle()
+    public function test_handle()
     {
-        $testHandlers = array(new TestHandler(), new TestHandler());
+        $testHandlers = [new TestHandler, new TestHandler];
         $handler = new GroupHandler($testHandlers);
         $handler->handle($this->getRecord(Logger::DEBUG));
         $handler->handle($this->getRecord(Logger::INFO));
@@ -45,11 +46,11 @@ class GroupHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\GroupHandler::handleBatch
      */
-    public function testHandleBatch()
+    public function test_handle_batch()
     {
-        $testHandlers = array(new TestHandler(), new TestHandler());
+        $testHandlers = [new TestHandler, new TestHandler];
         $handler = new GroupHandler($testHandlers);
-        $handler->handleBatch(array($this->getRecord(Logger::DEBUG), $this->getRecord(Logger::INFO)));
+        $handler->handleBatch([$this->getRecord(Logger::DEBUG), $this->getRecord(Logger::INFO)]);
         foreach ($testHandlers as $test) {
             $this->assertTrue($test->hasDebugRecords());
             $this->assertTrue($test->hasInfoRecords());
@@ -60,9 +61,9 @@ class GroupHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\GroupHandler::isHandling
      */
-    public function testIsHandling()
+    public function test_is_handling()
     {
-        $testHandlers = array(new TestHandler(Logger::ERROR), new TestHandler(Logger::WARNING));
+        $testHandlers = [new TestHandler(Logger::ERROR), new TestHandler(Logger::WARNING)];
         $handler = new GroupHandler($testHandlers);
         $this->assertTrue($handler->isHandling($this->getRecord(Logger::ERROR)));
         $this->assertTrue($handler->isHandling($this->getRecord(Logger::WARNING)));
@@ -72,10 +73,10 @@ class GroupHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\GroupHandler::handle
      */
-    public function testHandleUsesProcessors()
+    public function test_handle_uses_processors()
     {
-        $test = new TestHandler();
-        $handler = new GroupHandler(array($test));
+        $test = new TestHandler;
+        $handler = new GroupHandler([$test]);
         $handler->pushProcessor(function ($record) {
             $record['extra']['foo'] = true;
 
@@ -90,16 +91,16 @@ class GroupHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\GroupHandler::handle
      */
-    public function testHandleBatchUsesProcessors()
+    public function test_handle_batch_uses_processors()
     {
-        $testHandlers = array(new TestHandler(), new TestHandler());
+        $testHandlers = [new TestHandler, new TestHandler];
         $handler = new GroupHandler($testHandlers);
         $handler->pushProcessor(function ($record) {
             $record['extra']['foo'] = true;
 
             return $record;
         });
-        $handler->handleBatch(array($this->getRecord(Logger::DEBUG), $this->getRecord(Logger::INFO)));
+        $handler->handleBatch([$this->getRecord(Logger::DEBUG), $this->getRecord(Logger::INFO)]);
         foreach ($testHandlers as $test) {
             $this->assertTrue($test->hasDebugRecords());
             $this->assertTrue($test->hasInfoRecords());

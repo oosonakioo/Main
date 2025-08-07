@@ -24,15 +24,15 @@ interface ExtractorInterface
     /**
      * Extracts translation messages from files, a file or a directory to the catalogue.
      *
-     * @param string|array     $resource  files, a file or a directory
-     * @param MessageCatalogue $catalogue The catalogue
+     * @param  string|array  $resource  files, a file or a directory
+     * @param  MessageCatalogue  $catalogue  The catalogue
      */
     public function extract($resource, MessageCatalogue $catalogue);
 
     /**
      * Sets the prefix that should be used for new found messages.
      *
-     * @param string $prefix The prefix
+     * @param  string  $prefix  The prefix
      */
     public function setPrefix($prefix);
 }

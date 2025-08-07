@@ -9,8 +9,8 @@ class CircleCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Draw a circle centered on given image
      *
-     * @param  \Intervention\Image\image $image
-     * @return boolean
+     * @param  \Intervention\Image\image  $image
+     * @return bool
      */
     public function execute($image)
     {

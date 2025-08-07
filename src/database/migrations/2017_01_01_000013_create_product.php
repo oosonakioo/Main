@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateProduct extends Migration
 {
@@ -17,8 +17,8 @@ class CreateProduct extends Migration
             $table->integer('categories_id')->unsigned();
             $table->string('menu', 50);
             $table->string('value', 250)->nullable();
-      			$table->text('option')->nullable();
-      			$table->string('image', 250)->nullable();
+            $table->text('option')->nullable();
+            $table->string('image', 250)->nullable();
             $table->integer('sort');
             $table->boolean('active')->default(false);
             $table->timestamps();

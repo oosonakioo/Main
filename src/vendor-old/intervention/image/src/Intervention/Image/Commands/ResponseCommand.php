@@ -9,8 +9,8 @@ class ResponseCommand extends AbstractCommand
     /**
      * Builds HTTP response from given image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

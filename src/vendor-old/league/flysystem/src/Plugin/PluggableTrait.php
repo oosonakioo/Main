@@ -17,16 +17,15 @@ trait PluggableTrait
     /**
      * Register a plugin.
      *
-     * @param PluginInterface $plugin
-     *
-     * @throws LogicException
      *
      * @return $this
+     *
+     * @throws LogicException
      */
     public function addPlugin(PluginInterface $plugin)
     {
-        if ( ! method_exists($plugin, 'handle')) {
-            throw new LogicException(get_class($plugin) . ' does not have a handle method.');
+        if (! method_exists($plugin, 'handle')) {
+            throw new LogicException(get_class($plugin).' does not have a handle method.');
         }
 
         $this->plugins[$plugin->getMethod()] = $plugin;
@@ -37,16 +36,15 @@ trait PluggableTrait
     /**
      * Find a specific plugin.
      *
-     * @param string $method
+     * @param  string  $method
+     * @return PluginInterface
      *
      * @throws PluginNotFoundException
-     *
-     * @return PluginInterface
      */
     protected function findPlugin($method)
     {
-        if ( ! isset($this->plugins[$method])) {
-            throw new PluginNotFoundException('Plugin not found for method: ' . $method);
+        if (! isset($this->plugins[$method])) {
+            throw new PluginNotFoundException('Plugin not found for method: '.$method);
         }
 
         return $this->plugins[$method];
@@ -55,13 +53,10 @@ trait PluggableTrait
     /**
      * Invoke a plugin by method name.
      *
-     * @param string              $method
-     * @param array               $arguments
-     * @param FilesystemInterface $filesystem
+     * @param  string  $method
+     * @return mixed
      *
      * @throws PluginNotFoundException
-     *
-     * @return mixed
      */
     protected function invokePlugin($method, array $arguments, FilesystemInterface $filesystem)
     {
@@ -75,12 +70,10 @@ trait PluggableTrait
     /**
      * Plugins pass-through.
      *
-     * @param string $method
-     * @param array  $arguments
+     * @param  string  $method
+     * @return mixed
      *
      * @throws BadMethodCallException
-     *
-     * @return mixed
      */
     public function __call($method, array $arguments)
     {
@@ -89,8 +82,8 @@ trait PluggableTrait
         } catch (PluginNotFoundException $e) {
             throw new BadMethodCallException(
                 'Call to undefined method '
-                . get_class($this)
-                . '::' . $method
+                .get_class($this)
+                .'::'.$method
             );
         }
     }

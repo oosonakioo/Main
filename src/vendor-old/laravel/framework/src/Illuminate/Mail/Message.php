@@ -2,8 +2,8 @@
 
 namespace Illuminate\Mail;
 
-use Swift_Image;
 use Swift_Attachment;
+use Swift_Image;
 
 class Message
 {
@@ -170,7 +170,6 @@ class Message
      * Attach a file to the message.
      *
      * @param  string  $file
-     * @param  array  $options
      * @return $this
      */
     public function attach($file, array $options = [])
@@ -196,7 +195,6 @@ class Message
      *
      * @param  string  $data
      * @param  string  $name
-     * @param  array  $options
      * @return $this
      */
     public function attachData($data, $name, array $options = [])

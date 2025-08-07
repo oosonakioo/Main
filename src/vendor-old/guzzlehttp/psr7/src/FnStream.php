@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -20,7 +21,7 @@ class FnStream implements StreamInterface
         'isReadable', 'read', 'getContents', 'getMetadata'];
 
     /**
-     * @param array $methods Hash of method name to a callable.
+     * @param  array  $methods  Hash of method name to a callable.
      */
     public function __construct(array $methods)
     {
@@ -28,18 +29,19 @@ class FnStream implements StreamInterface
 
         // Create the functions on the class
         foreach ($methods as $name => $fn) {
-            $this->{'_fn_' . $name} = $fn;
+            $this->{'_fn_'.$name} = $fn;
         }
     }
 
     /**
      * Lazily determine which methods are not implemented.
+     *
      * @throws \BadMethodCallException
      */
     public function __get($name)
     {
         throw new \BadMethodCallException(str_replace('_fn_', '', $name)
-            . '() is not implemented in the FnStream');
+            .'() is not implemented in the FnStream');
     }
 
     /**
@@ -56,9 +58,8 @@ class FnStream implements StreamInterface
      * Adds custom functionality to an underlying stream by intercepting
      * specific method calls.
      *
-     * @param StreamInterface $stream  Stream to decorate
-     * @param array           $methods Hash of method name to a closure
-     *
+     * @param  StreamInterface  $stream  Stream to decorate
+     * @param  array  $methods  Hash of method name to a closure
      * @return FnStream
      */
     public static function decorate(StreamInterface $stream, array $methods)

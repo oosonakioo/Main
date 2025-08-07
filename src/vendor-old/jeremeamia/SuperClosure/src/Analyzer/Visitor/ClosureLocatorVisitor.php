@@ -1,12 +1,14 @@
-<?php namespace SuperClosure\Analyzer\Visitor;
+<?php
 
-use SuperClosure\Exception\ClosureAnalysisException;
+namespace SuperClosure\Analyzer\Visitor;
+
+use PhpParser\Node as AstNode;
+use PhpParser\Node\Expr\Closure as ClosureNode;
+use PhpParser\Node\Stmt\Class_ as ClassNode;
 use PhpParser\Node\Stmt\Namespace_ as NamespaceNode;
 use PhpParser\Node\Stmt\Trait_ as TraitNode;
-use PhpParser\Node\Stmt\Class_ as ClassNode;
-use PhpParser\Node\Expr\Closure as ClosureNode;
-use PhpParser\Node as AstNode;
 use PhpParser\NodeVisitorAbstract as NodeVisitor;
+use SuperClosure\Exception\ClosureAnalysisException;
 
 /**
  * This is a visitor that extends the nikic/php-parser library and looks for a
@@ -32,27 +34,27 @@ final class ClosureLocatorVisitor extends NodeVisitor
     public $location;
 
     /**
-     * @param \ReflectionFunction $reflection
+     * @param  \ReflectionFunction  $reflection
      */
     public function __construct($reflection)
     {
         $this->reflection = $reflection;
         $this->location = [
-            'class'     => null,
+            'class' => null,
             'directory' => dirname($this->reflection->getFileName()),
-            'file'      => $this->reflection->getFileName(),
-            'function'  => $this->reflection->getName(),
-            'line'      => $this->reflection->getStartLine(),
-            'method'    => null,
+            'file' => $this->reflection->getFileName(),
+            'function' => $this->reflection->getName(),
+            'line' => $this->reflection->getStartLine(),
+            'method' => null,
             'namespace' => null,
-            'trait'     => null,
+            'trait' => null,
         ];
     }
 
     public function enterNode(AstNode $node)
     {
         // Determine information about the closure's location
-        if (!$this->closureNode) {
+        if (! $this->closureNode) {
             if ($node instanceof NamespaceNode) {
                 $namespace = ($node->name && is_array($node->name->parts))
                     ? implode('\\', $node->name->parts)
@@ -72,10 +74,10 @@ final class ClosureLocatorVisitor extends NodeVisitor
         if ($node instanceof ClosureNode) {
             if ($node->getAttribute('startLine') == $this->location['line']) {
                 if ($this->closureNode) {
-                    $line = $this->location['file'] . ':' . $node->getAttribute('startLine');
-                    throw new ClosureAnalysisException("Two closures were "
-                        . "declared on the same line ({$line}) of code. Cannot "
-                        . "determine which closure was the intended target.");
+                    $line = $this->location['file'].':'.$node->getAttribute('startLine');
+                    throw new ClosureAnalysisException('Two closures were '
+                        ."declared on the same line ({$line}) of code. Cannot "
+                        .'determine which closure was the intended target.');
                 } else {
                     $this->closureNode = $node;
                 }
@@ -86,7 +88,7 @@ final class ClosureLocatorVisitor extends NodeVisitor
     public function leaveNode(AstNode $node)
     {
         // Determine information about the closure's location
-        if (!$this->closureNode) {
+        if (! $this->closureNode) {
             if ($node instanceof NamespaceNode) {
                 $this->location['namespace'] = null;
             }
@@ -101,10 +103,10 @@ final class ClosureLocatorVisitor extends NodeVisitor
     public function afterTraverse(array $nodes)
     {
         if ($this->location['class']) {
-            $this->location['class'] = $this->location['namespace'] . '\\' . $this->location['class'];
+            $this->location['class'] = $this->location['namespace'].'\\'.$this->location['class'];
             $this->location['method'] = "{$this->location['class']}::{$this->location['function']}";
         } elseif ($this->location['trait']) {
-            $this->location['trait'] = $this->location['namespace'] . '\\' . $this->location['trait'];
+            $this->location['trait'] = $this->location['namespace'].'\\'.$this->location['trait'];
             $this->location['method'] = "{$this->location['trait']}::{$this->location['function']}";
 
             // If the closure was declared in a trait, then we will do a best

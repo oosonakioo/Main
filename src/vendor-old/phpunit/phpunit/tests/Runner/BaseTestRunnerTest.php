@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,11 +11,12 @@
 
 /**
  * @since      Class available since Release 2.0.0
+ *
  * @covers     PHPUnit_Runner_BaseTestRunner
  */
 class Runner_BaseTestRunnerTest extends PHPUnit_Framework_TestCase
 {
-    public function testInvokeNonStaticSuite()
+    public function test_invoke_non_static_suite()
     {
         $runner = new MockRunner;
         $runner->getTest('NonStatic');

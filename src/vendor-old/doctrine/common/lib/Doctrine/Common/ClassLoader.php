@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,8 +30,8 @@ namespace Doctrine\Common;
  * relies on the PHP <code>include_path</code>.
  *
  * @author Roman Borschel <roman@code-factory.org>
- * @since 2.0
  *
+ * @since 2.0
  * @deprecated the ClassLoader is deprecated and will be removed in version 3.0 of doctrine/common.
  */
 class ClassLoader
@@ -71,8 +72,8 @@ class ClassLoader
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
      *
-     * @param string|null $ns          The namespace of the classes to load.
-     * @param string|null $includePath The base include path to use.
+     * @param  string|null  $ns  The namespace of the classes to load.
+     * @param  string|null  $includePath  The base include path to use.
      */
     public function __construct($ns = null, $includePath = null)
     {
@@ -83,8 +84,7 @@ class ClassLoader
     /**
      * Sets the namespace separator used by classes in the namespace of this ClassLoader.
      *
-     * @param string $sep The separator to use.
-     *
+     * @param  string  $sep  The separator to use.
      * @return void
      */
     public function setNamespaceSeparator($sep)
@@ -105,8 +105,7 @@ class ClassLoader
     /**
      * Sets the base include path for all class files in the namespace of this ClassLoader.
      *
-     * @param string|null $includePath
-     *
+     * @param  string|null  $includePath
      * @return void
      */
     public function setIncludePath($includePath)
@@ -127,8 +126,7 @@ class ClassLoader
     /**
      * Sets the file extension of class files in the namespace of this ClassLoader.
      *
-     * @param string $fileExtension
-     *
+     * @param  string  $fileExtension
      * @return void
      */
     public function setFileExtension($fileExtension)
@@ -169,9 +167,8 @@ class ClassLoader
     /**
      * Loads the given class or interface.
      *
-     * @param string $className The name of the class to load.
-     *
-     * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
+     * @param  string  $className  The name of the class to load.
+     * @return bool TRUE if the class has been successfully loaded, FALSE otherwise.
      */
     public function loadClass($className)
     {
@@ -183,9 +180,9 @@ class ClassLoader
             return false;
         }
 
-        require ($this->includePath !== null ? $this->includePath . DIRECTORY_SEPARATOR : '')
-               . str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className)
-               . $this->fileExtension;
+        require ($this->includePath !== null ? $this->includePath.DIRECTORY_SEPARATOR : '')
+               .str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className)
+               .$this->fileExtension;
 
         return self::typeExists($className);
     }
@@ -194,9 +191,8 @@ class ClassLoader
      * Asks this ClassLoader whether it can potentially load the class (file) with
      * the given name.
      *
-     * @param string $className The fully-qualified name of the class.
-     *
-     * @return boolean TRUE if this ClassLoader can load the class, FALSE otherwise.
+     * @param  string  $className  The fully-qualified name of the class.
+     * @return bool TRUE if this ClassLoader can load the class, FALSE otherwise.
      */
     public function canLoadClass($className)
     {
@@ -204,13 +200,13 @@ class ClassLoader
             return false;
         }
 
-        $file = str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className) . $this->fileExtension;
+        $file = str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className).$this->fileExtension;
 
         if ($this->includePath !== null) {
-            return is_file($this->includePath . DIRECTORY_SEPARATOR . $file);
+            return is_file($this->includePath.DIRECTORY_SEPARATOR.$file);
         }
 
-        return (false !== stream_resolve_include_path($file));
+        return stream_resolve_include_path($file) !== false;
     }
 
     /**
@@ -231,9 +227,8 @@ class ClassLoader
      * for its existence. This is not the case with a <tt>ClassLoader</tt>, who separates
      * these responsibilities.
      *
-     * @param string $className The fully-qualified name of the class.
-     *
-     * @return boolean TRUE if the class exists as per the definition given above, FALSE otherwise.
+     * @param  string  $className  The fully-qualified name of the class.
+     * @return bool TRUE if the class exists as per the definition given above, FALSE otherwise.
      */
     public static function classExists($className)
     {
@@ -244,13 +239,12 @@ class ClassLoader
      * Gets the <tt>ClassLoader</tt> from the SPL autoload stack that is responsible
      * for (and is able to load) the class with the given name.
      *
-     * @param string $className The name of the class.
-     *
+     * @param  string  $className  The name of the class.
      * @return ClassLoader The <tt>ClassLoader</tt> for the class or NULL if no such <tt>ClassLoader</tt> exists.
      */
     public static function getClassLoader($className)
     {
-         foreach (spl_autoload_functions() as $loader) {
+        foreach (spl_autoload_functions() as $loader) {
             if (is_array($loader)
                 && ($classLoader = reset($loader))
                 && $classLoader instanceof ClassLoader
@@ -266,9 +260,8 @@ class ClassLoader
     /**
      * Checks whether a given type exists
      *
-     * @param string $type
-     * @param bool   $autoload
-     *
+     * @param  string  $type
+     * @param  bool  $autoload
      * @return bool
      */
     private static function typeExists($type, $autoload = false)

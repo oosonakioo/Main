@@ -21,7 +21,9 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 class CsvFileLoader extends FileLoader
 {
     private $delimiter = ';';
+
     private $enclosure = '"';
+
     private $escape = '\\';
 
     /**
@@ -29,7 +31,7 @@ class CsvFileLoader extends FileLoader
      */
     protected function loadResource($resource)
     {
-        $messages = array();
+        $messages = [];
 
         try {
             $file = new \SplFileObject($resource, 'rb');
@@ -41,7 +43,7 @@ class CsvFileLoader extends FileLoader
         $file->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
 
         foreach ($file as $data) {
-            if ('#' !== substr($data[0], 0, 1) && isset($data[1]) && 2 === count($data)) {
+            if (substr($data[0], 0, 1) !== '#' && isset($data[1]) && count($data) === 2) {
                 $messages[$data[0]] = $data[1];
             }
         }
@@ -52,9 +54,9 @@ class CsvFileLoader extends FileLoader
     /**
      * Sets the delimiter, enclosure, and escape character for CSV.
      *
-     * @param string $delimiter delimiter character
-     * @param string $enclosure enclosure character
-     * @param string $escape    escape character
+     * @param  string  $delimiter  delimiter character
+     * @param  string  $enclosure  enclosure character
+     * @param  string  $escape  escape character
      */
     public function setCsvControl($delimiter = ';', $enclosure = '"', $escape = '\\')
     {

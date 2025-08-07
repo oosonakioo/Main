@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Cache;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -33,7 +35,7 @@ namespace Doctrine\Common\Cache;
 class ArrayCache extends CacheProvider
 {
     /**
-     * @var array[] $data each element being a tuple of [$data, $expiration], where the expiration is int|bool
+     * @var array[] each element being a tuple of [$data,], where the expiration is int|bool
      */
     private $data = [];
 
@@ -132,10 +134,10 @@ class ArrayCache extends CacheProvider
     protected function doGetStats()
     {
         return [
-            Cache::STATS_HITS             => $this->hitsCount,
-            Cache::STATS_MISSES           => $this->missesCount,
-            Cache::STATS_UPTIME           => $this->upTime,
-            Cache::STATS_MEMORY_USAGE     => null,
+            Cache::STATS_HITS => $this->hitsCount,
+            Cache::STATS_MISSES => $this->missesCount,
+            Cache::STATS_UPTIME => $this->upTime,
+            Cache::STATS_MEMORY_USAGE => null,
             Cache::STATS_MEMORY_AVAILABLE => null,
         ];
     }

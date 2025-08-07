@@ -8,7 +8,7 @@ class FacebookHideLogin extends LocalPath
 {
     public function __construct()
     {
-        $path = __DIR__ . '/../../../scripts/facebook-hide-login.js';
+        $path = __DIR__.'/../../../scripts/facebook-hide-login.js';
 
         parent::__construct($path);
     }

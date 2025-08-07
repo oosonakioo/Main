@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
 {
     protected $loader;
+
     private $reader;
 
     protected function setUp()
@@ -29,7 +30,7 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testLoadMissingClass()
+    public function test_load_missing_class()
     {
         $this->loader->load('MissingClass');
     }
@@ -37,7 +38,7 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testLoadAbstractClass()
+    public function test_load_abstract_class()
     {
         $this->loader->load('Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\AbstractClass');
     }
@@ -45,25 +46,25 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
     /**
      * @dataProvider provideTestSupportsChecksResource
      */
-    public function testSupportsChecksResource($resource, $expectedSupports)
+    public function test_supports_checks_resource($resource, $expectedSupports)
     {
         $this->assertSame($expectedSupports, $this->loader->supports($resource), '->supports() returns true if the resource is loadable');
     }
 
     public function provideTestSupportsChecksResource()
     {
-        return array(
-            array('class', true),
-            array('\fully\qualified\class\name', true),
-            array('namespaced\class\without\leading\slash', true),
-            array('ÿClassWithLegalSpecialCharacters', true),
-            array('5', false),
-            array('foo.foo', false),
-            array(null, false),
-        );
+        return [
+            ['class', true],
+            ['\fully\qualified\class\name', true],
+            ['namespaced\class\without\leading\slash', true],
+            ['ÿClassWithLegalSpecialCharacters', true],
+            ['5', false],
+            ['foo.foo', false],
+            [null, false],
+        ];
     }
 
-    public function testSupportsChecksTypeIfSpecified()
+    public function test_supports_checks_type_if_specified()
     {
         $this->assertTrue($this->loader->supports('class', 'annotation'), '->supports() checks the resource type if specified');
         $this->assertFalse($this->loader->supports('class', 'foo'), '->supports() checks the resource type if specified');
@@ -71,56 +72,55 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
 
     public function getLoadTests()
     {
-        return array(
-            array(
+        return [
+            [
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
-                array('name' => 'route1', 'path' => '/path'),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
-            ),
-            array(
+                ['name' => 'route1', 'path' => '/path'],
+                ['arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'],
+            ],
+            [
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
-                array('defaults' => array('arg2' => 'foo'), 'requirements' => array('arg3' => '\w+')),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
-            ),
-            array(
+                ['defaults' => ['arg2' => 'foo'], 'requirements' => ['arg3' => '\w+']],
+                ['arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'],
+            ],
+            [
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
-                array('options' => array('foo' => 'bar')),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
-            ),
-            array(
+                ['options' => ['foo' => 'bar']],
+                ['arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'],
+            ],
+            [
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
-                array('schemes' => array('https'), 'methods' => array('GET')),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
-            ),
-            array(
+                ['schemes' => ['https'], 'methods' => ['GET']],
+                ['arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'],
+            ],
+            [
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
-                array('condition' => 'context.getMethod() == "GET"'),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
-            ),
-        );
+                ['condition' => 'context.getMethod() == "GET"'],
+                ['arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'],
+            ],
+        ];
     }
 
     /**
      * @dataProvider getLoadTests
      */
-    public function testLoad($className, $routeData = array(), $methodArgs = array())
+    public function test_load($className, $routeData = [], $methodArgs = [])
     {
-        $routeData = array_replace(array(
+        $routeData = array_replace([
             'name' => 'route',
             'path' => '/',
-            'requirements' => array(),
-            'options' => array(),
-            'defaults' => array(),
-            'schemes' => array(),
-            'methods' => array(),
+            'requirements' => [],
+            'options' => [],
+            'defaults' => [],
+            'schemes' => [],
+            'methods' => [],
             'condition' => '',
-        ), $routeData);
+        ], $routeData);
 
         $this->reader
             ->expects($this->once())
             ->method('getMethodAnnotations')
-            ->will($this->returnValue(array($this->getAnnotatedRoute($routeData))))
-        ;
+            ->will($this->returnValue([$this->getAnnotatedRoute($routeData)]));
 
         $routeCollection = $this->loader->load($className);
         $route = $routeCollection->get($routeData['name']);
@@ -147,31 +147,29 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
         $this->assertSame($routeData['condition'], $route->getCondition(), '->load preserves condition annotation');
     }
 
-    public function testClassRouteLoad()
+    public function test_class_route_load()
     {
-        $classRouteData = array(
+        $classRouteData = [
             'path' => '/prefix',
-            'schemes' => array('https'),
-            'methods' => array('GET'),
-        );
+            'schemes' => ['https'],
+            'methods' => ['GET'],
+        ];
 
-        $methodRouteData = array(
+        $methodRouteData = [
             'name' => 'route1',
             'path' => '/path',
-            'schemes' => array('http'),
-            'methods' => array('POST', 'PUT'),
-        );
+            'schemes' => ['http'],
+            'methods' => ['POST', 'PUT'],
+        ];
 
         $this->reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue($this->getAnnotatedRoute($classRouteData)))
-        ;
+            ->will($this->returnValue($this->getAnnotatedRoute($classRouteData)));
         $this->reader
             ->expects($this->once())
             ->method('getMethodAnnotations')
-            ->will($this->returnValue(array($this->getAnnotatedRoute($methodRouteData))))
-        ;
+            ->will($this->returnValue([$this->getAnnotatedRoute($methodRouteData)]));
 
         $routeCollection = $this->loader->load('Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass');
         $route = $routeCollection->get($methodRouteData['name']);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -25,8 +26,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-if (!is_callable('RandomCompat_strlen')) {
+if (! is_callable('RandomCompat_strlen')) {
     if (
         defined('MB_OVERLOAD_STRING') &&
         ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING
@@ -37,15 +37,14 @@ if (!is_callable('RandomCompat_strlen')) {
          * This version uses mb_strlen() in '8bit' mode to treat strings as raw
          * binary rather than UTF-8, ISO-8859-1, etc
          *
-         * @param string $binary_string
+         * @param  string  $binary_string
+         * @return int
          *
          * @throws TypeError
-         *
-         * @return int
          */
         function RandomCompat_strlen($binary_string)
         {
-            if (!is_string($binary_string)) {
+            if (! is_string($binary_string)) {
                 throw new TypeError(
                     'RandomCompat_strlen() expects a string'
                 );
@@ -60,25 +59,25 @@ if (!is_callable('RandomCompat_strlen')) {
          *
          * This version just used the default strlen()
          *
-         * @param string $binary_string
+         * @param  string  $binary_string
+         * @return int
          *
          * @throws TypeError
-         *
-         * @return int
          */
         function RandomCompat_strlen($binary_string)
         {
-            if (!is_string($binary_string)) {
+            if (! is_string($binary_string)) {
                 throw new TypeError(
                     'RandomCompat_strlen() expects a string'
                 );
             }
+
             return (int) strlen($binary_string);
         }
     }
 }
 
-if (!is_callable('RandomCompat_substr')) {
+if (! is_callable('RandomCompat_substr')) {
 
     if (
         defined('MB_OVERLOAD_STRING')
@@ -91,23 +90,22 @@ if (!is_callable('RandomCompat_substr')) {
          * This version uses mb_substr() in '8bit' mode to treat strings as raw
          * binary rather than UTF-8, ISO-8859-1, etc
          *
-         * @param string $binary_string
-         * @param int $start
-         * @param int $length (optional)
+         * @param  string  $binary_string
+         * @param  int  $start
+         * @param  int  $length  (optional)
+         * @return string
          *
          * @throws TypeError
-         *
-         * @return string
          */
         function RandomCompat_substr($binary_string, $start, $length = null)
         {
-            if (!is_string($binary_string)) {
+            if (! is_string($binary_string)) {
                 throw new TypeError(
                     'RandomCompat_substr(): First argument should be a string'
                 );
             }
 
-            if (!is_int($start)) {
+            if (! is_int($start)) {
                 throw new TypeError(
                     'RandomCompat_substr(): Second argument should be an integer'
                 );
@@ -119,7 +117,7 @@ if (!is_callable('RandomCompat_substr')) {
                  * PHP 5.3, so we have to find the length ourselves.
                  */
                 $length = RandomCompat_strlen($binary_string) - $start;
-            } elseif (!is_int($length)) {
+            } elseif (! is_int($length)) {
                 throw new TypeError(
                     'RandomCompat_substr(): Third argument should be an integer, or omitted'
                 );
@@ -143,30 +141,29 @@ if (!is_callable('RandomCompat_substr')) {
          *
          * This version just uses the default substr()
          *
-         * @param string $binary_string
-         * @param int $start
-         * @param int $length (optional)
+         * @param  string  $binary_string
+         * @param  int  $start
+         * @param  int  $length  (optional)
+         * @return string
          *
          * @throws TypeError
-         *
-         * @return string
          */
         function RandomCompat_substr($binary_string, $start, $length = null)
         {
-            if (!is_string($binary_string)) {
+            if (! is_string($binary_string)) {
                 throw new TypeError(
                     'RandomCompat_substr(): First argument should be a string'
                 );
             }
 
-            if (!is_int($start)) {
+            if (! is_int($start)) {
                 throw new TypeError(
                     'RandomCompat_substr(): Second argument should be an integer'
                 );
             }
 
             if ($length !== null) {
-                if (!is_int($length)) {
+                if (! is_int($length)) {
                     throw new TypeError(
                         'RandomCompat_substr(): Third argument should be an integer, or omitted'
                     );

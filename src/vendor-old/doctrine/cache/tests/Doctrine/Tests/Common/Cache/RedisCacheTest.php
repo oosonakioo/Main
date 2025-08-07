@@ -2,8 +2,8 @@
 
 namespace Doctrine\Tests\Common\Cache;
 
-use Doctrine\Common\Cache\RedisCache;
 use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\RedisCache;
 
 /**
  * @requires extension redis
@@ -14,14 +14,14 @@ class RedisCacheTest extends CacheTest
 
     protected function setUp()
     {
-        $this->_redis = new \Redis();
+        $this->_redis = new \Redis;
         $ok = @$this->_redis->connect('127.0.0.1');
-        if (!$ok) {
+        if (! $ok) {
             $this->markTestSkipped('Cannot connect to Redis.');
         }
     }
 
-    public function testHitMissesStatsAreProvided()
+    public function test_hit_misses_stats_are_provided()
     {
         $cache = $this->_getCacheDriver();
         $stats = $cache->getStats();
@@ -30,12 +30,12 @@ class RedisCacheTest extends CacheTest
         $this->assertNotNull($stats[Cache::STATS_MISSES]);
     }
 
-    public function testGetRedisReturnsInstanceOfRedis()
+    public function test_get_redis_returns_instance_of_redis()
     {
         $this->assertInstanceOf('Redis', $this->_getCacheDriver()->getRedis());
     }
 
-    public function testSerializerOptionWithOutIgbinaryExtension()
+    public function test_serializer_option_with_out_igbinary_extension()
     {
         if (defined('Redis::SERIALIZER_IGBINARY') && extension_loaded('igbinary')) {
             $this->markTestSkipped('Extension igbinary is loaded.');
@@ -52,8 +52,9 @@ class RedisCacheTest extends CacheTest
      */
     protected function _getCacheDriver()
     {
-        $driver = new RedisCache();
+        $driver = new RedisCache;
         $driver->setRedis($this->_redis);
+
         return $driver;
     }
 }

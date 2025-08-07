@@ -14,15 +14,14 @@ class Argument
     /**
      * Key of argument in array
      *
-     * @var integer
+     * @var int
      */
     public $key;
 
     /**
      * Creates new instance from given command and key
      *
-     * @param AbstractCommand $command
-     * @param integer         $key
+     * @param  int  $key
      */
     public function __construct(AbstractCommand $command, $key = 0)
     {
@@ -38,13 +37,14 @@ class Argument
     public function getCommandName()
     {
         preg_match("/\\\\([\w]+)Command$/", get_class($this->command), $matches);
+
         return isset($matches[1]) ? lcfirst($matches[1]).'()' : 'Method';
     }
 
     /**
      * Returns value of current argument
      *
-     * @param  mixed $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function value($default = null)
@@ -65,9 +65,9 @@ class Argument
      */
     public function required()
     {
-        if ( ! array_key_exists($this->key, $this->command->arguments)) {
+        if (! array_key_exists($this->key, $this->command->arguments)) {
             throw new \Intervention\Image\Exception\InvalidArgumentException(
-                sprintf("Missing argument %d for %s", $this->key + 1, $this->getCommandName())
+                sprintf('Missing argument %d for %s', $this->key + 1, $this->getCommandName())
             );
         }
 
@@ -93,35 +93,35 @@ class Argument
 
             case 'bool':
             case 'boolean':
-                $fail =  ! is_bool($value);
+                $fail = ! is_bool($value);
                 $message = sprintf('%s accepts only boolean values as argument %d.', $this->getCommandName(), $this->key + 1);
                 break;
 
             case 'int':
             case 'integer':
-                $fail =  ! is_integer($value);
+                $fail = ! is_int($value);
                 $message = sprintf('%s accepts only integer values as argument %d.', $this->getCommandName(), $this->key + 1);
                 break;
 
             case 'num':
             case 'numeric':
-                $fail =  ! is_numeric($value);
+                $fail = ! is_numeric($value);
                 $message = sprintf('%s accepts only numeric values as argument %d.', $this->getCommandName(), $this->key + 1);
                 break;
 
             case 'str':
             case 'string':
-                $fail =  ! is_string($value);
+                $fail = ! is_string($value);
                 $message = sprintf('%s accepts only string values as argument %d.', $this->getCommandName(), $this->key + 1);
                 break;
 
             case 'array':
-                $fail =  ! is_array($value);
+                $fail = ! is_array($value);
                 $message = sprintf('%s accepts only array as argument %d.', $this->getCommandName(), $this->key + 1);
                 break;
 
             case 'closure':
-                $fail =  ! is_a($value, '\Closure');
+                $fail = ! is_a($value, '\Closure');
                 $message = sprintf('%s accepts only Closure as argument %d.', $this->getCommandName(), $this->key + 1);
                 break;
 
@@ -133,7 +133,7 @@ class Argument
 
         if ($fail) {
 
-            $message = isset($message) ? $message : sprintf("Missing argument for %d.", $this->key);
+            $message = isset($message) ? $message : sprintf('Missing argument for %d.', $this->key);
 
             throw new \Intervention\Image\Exception\InvalidArgumentException(
                 $message
@@ -215,8 +215,8 @@ class Argument
     /**
      * Checks if value is "PHP" integer (120 but also 120.0)
      *
-     * @param  mixed $value
-     * @return boolean
+     * @param  mixed  $value
+     * @return bool
      */
     private function isDigit($value)
     {

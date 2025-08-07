@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,9 +32,6 @@ use UnexpectedValueException as BaseUnexpectedValueException;
 class UnexpectedValueException extends BaseUnexpectedValueException implements ExceptionInterface
 {
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param Exception       $exception
-     *
      * @return self
      */
     public static function fromSerializationTriggeredException(ReflectionClass $reflectionClass, Exception $exception)
@@ -49,12 +47,10 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements E
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param string          $errorString
-     * @param int             $errorCode
-     * @param string          $errorFile
-     * @param int             $errorLine
-     *
+     * @param  string  $errorString
+     * @param  int  $errorCode
+     * @param  string  $errorFile
+     * @param  int  $errorLine
      * @return UnexpectedValueException
      */
     public static function fromUncleanUnSerialization(
@@ -67,7 +63,7 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements E
         return new self(
             sprintf(
                 'Could not produce an instance of "%s" via un-serialization, since an error was triggered '
-                . 'in file "%s" at line "%d"',
+                .'in file "%s" at line "%d"',
                 $reflectionClass->getName(),
                 $errorFile,
                 $errorLine

@@ -1,9 +1,7 @@
 <?php
+
 namespace Foo\BarScoped {
 
-    class TestClass {
-
-    }
+    class TestClass {}
 
 }
-

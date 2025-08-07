@@ -18,7 +18,7 @@ class LoggerDataCollectorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getCollectTestData
      */
-    public function testCollect($nb, $logs, $expectedLogs, $expectedDeprecationCount, $expectedScreamCount, $expectedPriorities = null)
+    public function test_collect($nb, $logs, $expectedLogs, $expectedDeprecationCount, $expectedScreamCount, $expectedPriorities = null)
     {
         $logger = $this->getMock('Symfony\Component\HttpKernel\Log\DebugLoggerInterface');
         $logger->expects($this->once())->method('countErrors')->will($this->returnValue($nb));
@@ -40,56 +40,56 @@ class LoggerDataCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function getCollectTestData()
     {
-        return array(
-            array(
+        return [
+            [
                 1,
-                array(array('message' => 'foo', 'context' => array(), 'priority' => 100, 'priorityName' => 'DEBUG')),
+                [['message' => 'foo', 'context' => [], 'priority' => 100, 'priorityName' => 'DEBUG']],
                 null,
                 0,
                 0,
-            ),
-            array(
+            ],
+            [
                 1,
-                array(array('message' => 'foo', 'context' => array('foo' => fopen(__FILE__, 'r')), 'priority' => 100, 'priorityName' => 'DEBUG')),
-                array(array('message' => 'foo', 'context' => array('foo' => 'Resource(stream)'), 'priority' => 100, 'priorityName' => 'DEBUG')),
+                [['message' => 'foo', 'context' => ['foo' => fopen(__FILE__, 'r')], 'priority' => 100, 'priorityName' => 'DEBUG']],
+                [['message' => 'foo', 'context' => ['foo' => 'Resource(stream)'], 'priority' => 100, 'priorityName' => 'DEBUG']],
                 0,
                 0,
-            ),
-            array(
+            ],
+            [
                 1,
-                array(array('message' => 'foo', 'context' => array('foo' => new \stdClass()), 'priority' => 100, 'priorityName' => 'DEBUG')),
-                array(array('message' => 'foo', 'context' => array('foo' => 'Object(stdClass)'), 'priority' => 100, 'priorityName' => 'DEBUG')),
+                [['message' => 'foo', 'context' => ['foo' => new \stdClass], 'priority' => 100, 'priorityName' => 'DEBUG']],
+                [['message' => 'foo', 'context' => ['foo' => 'Object(stdClass)'], 'priority' => 100, 'priorityName' => 'DEBUG']],
                 0,
                 0,
-            ),
-            array(
+            ],
+            [
                 1,
-                array(
-                    array('message' => 'foo', 'context' => array('type' => E_DEPRECATED, 'level' => E_ALL), 'priority' => 100, 'priorityName' => 'DEBUG'),
-                    array('message' => 'foo2', 'context' => array('type' => E_USER_DEPRECATED, 'level' => E_ALL), 'priority' => 100, 'priorityName' => 'DEBUG'),
-                ),
+                [
+                    ['message' => 'foo', 'context' => ['type' => E_DEPRECATED, 'level' => E_ALL], 'priority' => 100, 'priorityName' => 'DEBUG'],
+                    ['message' => 'foo2', 'context' => ['type' => E_USER_DEPRECATED, 'level' => E_ALL], 'priority' => 100, 'priorityName' => 'DEBUG'],
+                ],
                 null,
                 2,
                 0,
-                array(100 => array('count' => 2, 'name' => 'DEBUG')),
-            ),
-            array(
+                [100 => ['count' => 2, 'name' => 'DEBUG']],
+            ],
+            [
                 1,
-                array(array('message' => 'foo3', 'context' => array('name' => 'E_USER_WARNING', 'type' => E_USER_WARNING, 'level' => 0, 'file' => __FILE__, 'line' => 123), 'priority' => 100, 'priorityName' => 'DEBUG')),
-                array(array('message' => 'foo3', 'context' => array('name' => 'E_USER_WARNING', 'type' => E_USER_WARNING, 'level' => 0, 'file' => __FILE__, 'line' => 123, 'scream' => true), 'priority' => 100, 'priorityName' => 'DEBUG')),
+                [['message' => 'foo3', 'context' => ['name' => 'E_USER_WARNING', 'type' => E_USER_WARNING, 'level' => 0, 'file' => __FILE__, 'line' => 123], 'priority' => 100, 'priorityName' => 'DEBUG']],
+                [['message' => 'foo3', 'context' => ['name' => 'E_USER_WARNING', 'type' => E_USER_WARNING, 'level' => 0, 'file' => __FILE__, 'line' => 123, 'scream' => true], 'priority' => 100, 'priorityName' => 'DEBUG']],
                 0,
                 1,
-            ),
-            array(
+            ],
+            [
                 1,
-                array(
-                    array('message' => 'foo3', 'context' => array('type' => E_USER_WARNING, 'level' => 0, 'file' => __FILE__, 'line' => 123), 'priority' => 100, 'priorityName' => 'DEBUG'),
-                    array('message' => 'foo3', 'context' => array('type' => E_USER_WARNING, 'level' => -1, 'file' => __FILE__, 'line' => 123), 'priority' => 100, 'priorityName' => 'DEBUG'),
-                ),
-                array(array('message' => 'foo3', 'context' => array('name' => 'E_USER_WARNING', 'type' => E_USER_WARNING, 'level' => -1, 'file' => __FILE__, 'line' => 123, 'errorCount' => 2), 'priority' => 100, 'priorityName' => 'DEBUG')),
+                [
+                    ['message' => 'foo3', 'context' => ['type' => E_USER_WARNING, 'level' => 0, 'file' => __FILE__, 'line' => 123], 'priority' => 100, 'priorityName' => 'DEBUG'],
+                    ['message' => 'foo3', 'context' => ['type' => E_USER_WARNING, 'level' => -1, 'file' => __FILE__, 'line' => 123], 'priority' => 100, 'priorityName' => 'DEBUG'],
+                ],
+                [['message' => 'foo3', 'context' => ['name' => 'E_USER_WARNING', 'type' => E_USER_WARNING, 'level' => -1, 'file' => __FILE__, 'line' => 123, 'errorCount' => 2], 'priority' => 100, 'priorityName' => 'DEBUG']],
                 0,
                 1,
-            ),
-        );
+            ],
+        ];
     }
 }

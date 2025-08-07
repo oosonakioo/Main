@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -22,20 +23,17 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     /**
      * @var PHPUnit_Framework_Constraint[]
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * @var PHPUnit_Framework_MockObject_Invocation
      */
     protected $invocation;
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters)
     {
         foreach ($parameters as $parameter) {
-            if (!($parameter instanceof PHPUnit_Framework_Constraint)) {
+            if (! ($parameter instanceof PHPUnit_Framework_Constraint)) {
                 $parameter = new PHPUnit_Framework_Constraint_IsEqual(
                     $parameter
                 );
@@ -57,14 +55,13 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
                 $text .= ' and';
             }
 
-            $text .= ' ' . $index . ' ' . $parameter->toString();
+            $text .= ' '.$index.' '.$parameter->toString();
         }
 
         return $text;
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
@@ -79,10 +76,11 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
      * does the matcher will get the invoked() method called which should check
      * if an expectation is met.
      *
-     * @param  PHPUnit_Framework_MockObject_Invocation      $invocation
-     *                                                                  Object containing information on a mocked or stubbed method which
-     *                                                                  was invoked.
+     * @param  PHPUnit_Framework_MockObject_Invocation  $invocation
+     *                                                               Object containing information on a mocked or stubbed method which
+     *                                                               was invoked.
      * @return bool
+     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function verify()
@@ -114,7 +112,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
             $parameter->evaluate(
                 $this->invocation->parameters[$i],
                 sprintf(
-                    'Parameter %s for invocation %s does not match expected ' .
+                    'Parameter %s for invocation %s does not match expected '.
                     'value.',
                     $i,
                     $this->invocation->toString()

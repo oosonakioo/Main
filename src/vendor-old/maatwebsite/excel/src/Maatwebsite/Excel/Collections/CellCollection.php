@@ -1,20 +1,21 @@
-<?php namespace Maatwebsite\Excel\Collections;
+<?php
+
+namespace Maatwebsite\Excel\Collections;
 
 /**
- *
  * LaravelExcel CellCollection
  *
  * @category   Laravel Excel
- * @package    maatwebsite/excel
+ *
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class CellCollection extends ExcelCollection {
-
+class CellCollection extends ExcelCollection
+{
     /**
      * Create a new collection.
-     * @param  array $items
+     *
      * @return \Maatwebsite\Excel\Collections\CellCollection
      */
     public function __construct(array $items = [])
@@ -24,21 +25,23 @@ class CellCollection extends ExcelCollection {
 
     /**
      * Set the items
-     * @param array $items
+     *
+     * @param  array  $items
      * @return void
      */
     public function setItems($items)
     {
         foreach ($items as $name => $value) {
-            $name = trim($name) !== '' && !empty($name) ? $name : null;
-            $value = !empty($value) || is_numeric($value) || is_bool($value) ? $value : null;
+            $name = trim($name) !== '' && ! empty($name) ? $name : null;
+            $value = ! empty($value) || is_numeric($value) || is_bool($value) ? $value : null;
             $this->put($name, $value);
         }
     }
 
     /**
      * Dynamically get values
-     * @param  string $key
+     *
+     * @param  string  $key
      * @return string|null
      */
     public function __get($key)

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -27,11 +28,11 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
 {
     public function __construct(PHPUnit_Framework_TestSuite $suite, array $groups)
     {
-        $groupSuites = array();
-        $name        = $suite->getName();
+        $groupSuites = [];
+        $name = $suite->getName();
 
         foreach ($groups as $group) {
-            $groupSuites[$group] = new PHPUnit_Framework_TestSuite($name . ' - ' . $group);
+            $groupSuites[$group] = new PHPUnit_Framework_TestSuite($name.' - '.$group);
             $this->addTest($groupSuites[$group]);
         }
 

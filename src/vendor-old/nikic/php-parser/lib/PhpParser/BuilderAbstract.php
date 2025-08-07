@@ -2,21 +2,21 @@
 
 namespace PhpParser;
 
-use PhpParser\Node\Name;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Stmt;
+use PhpParser\Node\Name;
 use PhpParser\Node\Scalar;
-use PhpParser\Comment;
+use PhpParser\Node\Stmt;
 
-abstract class BuilderAbstract implements Builder {
+abstract class BuilderAbstract implements Builder
+{
     /**
      * Normalizes a node: Converts builder objects to nodes.
      *
-     * @param Node|Builder $node The node to normalize
-     *
+     * @param  Node|Builder  $node  The node to normalize
      * @return Node The normalized node
      */
-    protected function normalizeNode($node) {
+    protected function normalizeNode($node)
+    {
         if ($node instanceof Builder) {
             return $node->getNode();
         } elseif ($node instanceof Node) {
@@ -29,21 +29,21 @@ abstract class BuilderAbstract implements Builder {
     /**
      * Normalizes a name: Converts plain string names to PhpParser\Node\Name.
      *
-     * @param Name|string $name The name to normalize
-     *
+     * @param  Name|string  $name  The name to normalize
      * @return Name The normalized name
      */
-    protected function normalizeName($name) {
+    protected function normalizeName($name)
+    {
         if ($name instanceof Name) {
             return $name;
         } elseif (is_string($name)) {
-            if (!$name) {
+            if (! $name) {
                 throw new \LogicException('Name cannot be empty');
             }
 
             if ($name[0] == '\\') {
                 return new Name\FullyQualified(substr($name, 1));
-            } elseif (0 === strpos($name, 'namespace\\')) {
+            } elseif (strpos($name, 'namespace\\') === 0) {
                 return new Name\Relative(substr($name, strlen('namespace\\')));
             } else {
                 return new Name($name);
@@ -57,11 +57,11 @@ abstract class BuilderAbstract implements Builder {
      * Normalizes a value: Converts nulls, booleans, integers,
      * floats, strings and arrays into their respective nodes
      *
-     * @param mixed $value The value to normalize
-     *
+     * @param  mixed  $value  The value to normalize
      * @return Expr The normalized value
      */
-    protected function normalizeValue($value) {
+    protected function normalizeValue($value)
+    {
         if ($value instanceof Node) {
             return $value;
         } elseif (is_null($value)) {
@@ -79,11 +79,11 @@ abstract class BuilderAbstract implements Builder {
         } elseif (is_string($value)) {
             return new Scalar\String_($value);
         } elseif (is_array($value)) {
-            $items = array();
+            $items = [];
             $lastKey = -1;
             foreach ($value as $itemKey => $itemValue) {
                 // for consecutive, numeric keys don't generate keys
-                if (null !== $lastKey && ++$lastKey === $itemKey) {
+                if ($lastKey !== null && ++$lastKey === $itemKey) {
                     $items[] = new Expr\ArrayItem(
                         $this->normalizeValue($itemValue)
                     );
@@ -105,14 +105,14 @@ abstract class BuilderAbstract implements Builder {
     /**
      * Normalizes a doc comment: Converts plain strings to PhpParser\Comment\Doc.
      *
-     * @param Comment\Doc|string $docComment The doc comment to normalize
-     *
+     * @param  Comment\Doc|string  $docComment  The doc comment to normalize
      * @return Comment\Doc The normalized doc comment
      */
-    protected function normalizeDocComment($docComment) {
+    protected function normalizeDocComment($docComment)
+    {
         if ($docComment instanceof Comment\Doc) {
             return $docComment;
-        } else if (is_string($docComment)) {
+        } elseif (is_string($docComment)) {
             return new Comment\Doc($docComment);
         } else {
             throw new \LogicException('Doc comment must be a string or an instance of PhpParser\Comment\Doc');
@@ -122,9 +122,10 @@ abstract class BuilderAbstract implements Builder {
     /**
      * Sets a modifier in the $this->type property.
      *
-     * @param int $modifier Modifier to set
+     * @param  int  $modifier  Modifier to set
      */
-    protected function setModifier($modifier) {
+    protected function setModifier($modifier)
+    {
         Stmt\Class_::verifyModifier($this->type, $modifier);
         $this->type |= $modifier;
     }

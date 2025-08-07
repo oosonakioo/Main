@@ -33,12 +33,12 @@ class SymfonyQuestionHelper extends QuestionHelper
     {
         $validator = $question->getValidator();
         $question->setValidator(function ($value) use ($validator) {
-            if (null !== $validator) {
+            if ($validator !== null) {
                 $value = $validator($value);
             }
 
             // make required
-            if (!is_array($value) && !is_bool($value) && 0 === strlen($value)) {
+            if (! is_array($value) && ! is_bool($value) && strlen($value) === 0) {
                 throw new LogicException('A value is required.');
             }
 
@@ -57,7 +57,7 @@ class SymfonyQuestionHelper extends QuestionHelper
         $default = $question->getDefault();
 
         switch (true) {
-            case null === $default:
+            case $default === null:
                 $text = sprintf(' <info>%s</info>:', $text);
 
                 break;

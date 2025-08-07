@@ -16,7 +16,7 @@ use Psy\ConsoleColorFactory;
 
 class ConsoleColorFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetConsoleColorAuto()
+    public function test_get_console_color_auto()
     {
         $colorMode = Configuration::COLOR_MODE_AUTO;
         $factory = new ConsoleColorFactory($colorMode);
@@ -24,10 +24,10 @@ class ConsoleColorFactoryTest extends \PHPUnit_Framework_TestCase
         $themes = $colors->getThemes();
 
         $this->assertFalse($colors->isStyleForced());
-        $this->assertEquals(array('blue'), $themes['line_number']);
+        $this->assertEquals(['blue'], $themes['line_number']);
     }
 
-    public function testGetConsoleColorForced()
+    public function test_get_console_color_forced()
     {
         $colorMode = Configuration::COLOR_MODE_FORCED;
         $factory = new ConsoleColorFactory($colorMode);
@@ -35,10 +35,10 @@ class ConsoleColorFactoryTest extends \PHPUnit_Framework_TestCase
         $themes = $colors->getThemes();
 
         $this->assertTrue($colors->isStyleForced());
-        $this->assertEquals(array('blue'), $themes['line_number']);
+        $this->assertEquals(['blue'], $themes['line_number']);
     }
 
-    public function testGetConsoleColorDisabled()
+    public function test_get_console_color_disabled()
     {
         $colorMode = Configuration::COLOR_MODE_DISABLED;
         $factory = new ConsoleColorFactory($colorMode);
@@ -46,6 +46,6 @@ class ConsoleColorFactoryTest extends \PHPUnit_Framework_TestCase
         $themes = $colors->getThemes();
 
         $this->assertFalse($colors->isStyleForced());
-        $this->assertEquals(array('none'), $themes['line_number']);
+        $this->assertEquals(['none'], $themes['line_number']);
     }
 }

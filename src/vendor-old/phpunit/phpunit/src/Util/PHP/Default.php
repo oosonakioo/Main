@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -20,33 +21,31 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
-     * @param string $job
-     * @param array  $settings
-     *
+     * @param  string  $job
      * @return array
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job, array $settings = array())
+    public function runJob($job, array $settings = [])
     {
         $runtime = new Runtime;
-        $runtime = $runtime->getBinary() . $this->settingsToParameters($settings);
+        $runtime = $runtime->getBinary().$this->settingsToParameters($settings);
 
         if ('phpdbg' === PHP_SAPI) {
-            $runtime .= ' -qrr ' . escapeshellarg(__DIR__ . '/eval-stdin.php');
+            $runtime .= ' -qrr '.escapeshellarg(__DIR__.'/eval-stdin.php');
         }
 
         $process = proc_open(
             $runtime,
-            array(
-            0 => array('pipe', 'r'),
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w')
-            ),
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
             $pipes
         );
 
-        if (!is_resource($process)) {
+        if (! is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
                 'Unable to spawn worker process'
             );
@@ -64,12 +63,12 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
         proc_close($process);
         $this->cleanup();
 
-        return array('stdout' => $stdout, 'stderr' => $stderr);
+        return ['stdout' => $stdout, 'stderr' => $stderr];
     }
 
     /**
-     * @param resource $pipe
-     * @param string   $job
+     * @param  resource  $pipe
+     * @param  string  $job
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -83,7 +82,5 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     /**
      * @since Method available since Release 3.5.12
      */
-    protected function cleanup()
-    {
-    }
+    protected function cleanup() {}
 }

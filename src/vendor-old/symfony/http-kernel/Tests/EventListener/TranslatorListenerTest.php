@@ -20,7 +20,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
 {
     private $listener;
+
     private $translator;
+
     private $requestStack;
 
     protected function setUp()
@@ -30,7 +32,7 @@ class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener = new TranslatorListener($this->translator, $this->requestStack);
     }
 
-    public function testLocaleIsSetInOnKernelRequest()
+    public function test_locale_is_set_in_on_kernel_request()
     {
         $this->translator
             ->expects($this->once())
@@ -41,12 +43,12 @@ class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onKernelRequest($event);
     }
 
-    public function testDefaultLocaleIsUsedOnExceptionsInOnKernelRequest()
+    public function test_default_locale_is_used_on_exceptions_in_on_kernel_request()
     {
         $this->translator
             ->expects($this->at(0))
             ->method('setLocale')
-            ->will($this->throwException(new \InvalidArgumentException()));
+            ->will($this->throwException(new \InvalidArgumentException));
         $this->translator
             ->expects($this->at(1))
             ->method('setLocale')
@@ -56,7 +58,7 @@ class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onKernelRequest($event);
     }
 
-    public function testLocaleIsSetInOnKernelFinishRequestWhenParentRequestExists()
+    public function test_locale_is_set_in_on_kernel_finish_request_when_parent_request_exists()
     {
         $this->translator
             ->expects($this->once())
@@ -68,7 +70,7 @@ class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onKernelFinishRequest($event);
     }
 
-    public function testLocaleIsNotSetInOnKernelFinishRequestWhenParentRequestDoesNotExist()
+    public function test_locale_is_not_set_in_on_kernel_finish_request_when_parent_request_does_not_exist()
     {
         $this->translator
             ->expects($this->never())
@@ -78,12 +80,12 @@ class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onKernelFinishRequest($event);
     }
 
-    public function testDefaultLocaleIsUsedOnExceptionsInOnKernelFinishRequest()
+    public function test_default_locale_is_used_on_exceptions_in_on_kernel_finish_request()
     {
         $this->translator
             ->expects($this->at(0))
             ->method('setLocale')
-            ->will($this->throwException(new \InvalidArgumentException()));
+            ->will($this->throwException(new \InvalidArgumentException));
         $this->translator
             ->expects($this->at(1))
             ->method('setLocale')
@@ -101,7 +103,7 @@ class TranslatorListenerTest extends \PHPUnit_Framework_TestCase
 
     private function createRequest($locale)
     {
-        $request = new Request();
+        $request = new Request;
         $request->setLocale($locale);
 
         return $request;

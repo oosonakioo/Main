@@ -11,40 +11,40 @@
 
 namespace Symfony\Component\Routing\Tests;
 
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteCollectionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRoute()
+    public function test_route()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $route = new Route('/foo');
         $collection->add('foo', $route);
-        $this->assertEquals(array('foo' => $route), $collection->all(), '->add() adds a route');
+        $this->assertEquals(['foo' => $route], $collection->all(), '->add() adds a route');
         $this->assertEquals($route, $collection->get('foo'), '->get() returns a route by name');
         $this->assertNull($collection->get('bar'), '->get() returns null if a route does not exist');
     }
 
-    public function testOverriddenRoute()
+    public function test_overridden_route()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', new Route('/foo'));
         $collection->add('foo', new Route('/foo1'));
 
         $this->assertEquals('/foo1', $collection->get('foo')->getPath());
     }
 
-    public function testDeepOverriddenRoute()
+    public function test_deep_overridden_route()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', new Route('/foo'));
 
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('foo', new Route('/foo1'));
 
-        $collection2 = new RouteCollection();
+        $collection2 = new RouteCollection;
         $collection2->add('foo', new Route('/foo2'));
 
         $collection1->addCollection($collection2);
@@ -54,106 +54,106 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/foo2', $collection->get('foo')->getPath());
     }
 
-    public function testIterator()
+    public function test_iterator()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', new Route('/foo'));
 
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('bar', $bar = new Route('/bar'));
         $collection1->add('foo', $foo = new Route('/foo-new'));
         $collection->addCollection($collection1);
         $collection->add('last', $last = new Route('/last'));
 
         $this->assertInstanceOf('\ArrayIterator', $collection->getIterator());
-        $this->assertSame(array('bar' => $bar, 'foo' => $foo, 'last' => $last), $collection->getIterator()->getArrayCopy());
+        $this->assertSame(['bar' => $bar, 'foo' => $foo, 'last' => $last], $collection->getIterator()->getArrayCopy());
     }
 
-    public function testCount()
+    public function test_count()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', new Route('/foo'));
 
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('bar', new Route('/bar'));
         $collection->addCollection($collection1);
 
         $this->assertCount(2, $collection);
     }
 
-    public function testAddCollection()
+    public function test_add_collection()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', new Route('/foo'));
 
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('bar', $bar = new Route('/bar'));
         $collection1->add('foo', $foo = new Route('/foo-new'));
 
-        $collection2 = new RouteCollection();
+        $collection2 = new RouteCollection;
         $collection2->add('grandchild', $grandchild = new Route('/grandchild'));
 
         $collection1->addCollection($collection2);
         $collection->addCollection($collection1);
         $collection->add('last', $last = new Route('/last'));
 
-        $this->assertSame(array('bar' => $bar, 'foo' => $foo, 'grandchild' => $grandchild, 'last' => $last), $collection->all(),
+        $this->assertSame(['bar' => $bar, 'foo' => $foo, 'grandchild' => $grandchild, 'last' => $last], $collection->all(),
             '->addCollection() imports routes of another collection, overrides if necessary and adds them at the end');
     }
 
-    public function testAddCollectionWithResources()
+    public function test_add_collection_with_resources()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->addResource($foo = new FileResource(__DIR__.'/Fixtures/foo.xml'));
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->addResource($foo1 = new FileResource(__DIR__.'/Fixtures/foo1.xml'));
         $collection->addCollection($collection1);
-        $this->assertEquals(array($foo, $foo1), $collection->getResources(), '->addCollection() merges resources');
+        $this->assertEquals([$foo, $foo1], $collection->getResources(), '->addCollection() merges resources');
     }
 
-    public function testAddDefaultsAndRequirementsAndOptions()
+    public function test_add_defaults_and_requirements_and_options()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', new Route('/{placeholder}'));
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('bar', new Route('/{placeholder}',
-            array('_controller' => 'fixed', 'placeholder' => 'default'), array('placeholder' => '.+'), array('option' => 'value'))
+            ['_controller' => 'fixed', 'placeholder' => 'default'], ['placeholder' => '.+'], ['option' => 'value'])
         );
         $collection->addCollection($collection1);
 
-        $collection->addDefaults(array('placeholder' => 'new-default'));
-        $this->assertEquals(array('placeholder' => 'new-default'), $collection->get('foo')->getDefaults(), '->addDefaults() adds defaults to all routes');
-        $this->assertEquals(array('_controller' => 'fixed', 'placeholder' => 'new-default'), $collection->get('bar')->getDefaults(),
+        $collection->addDefaults(['placeholder' => 'new-default']);
+        $this->assertEquals(['placeholder' => 'new-default'], $collection->get('foo')->getDefaults(), '->addDefaults() adds defaults to all routes');
+        $this->assertEquals(['_controller' => 'fixed', 'placeholder' => 'new-default'], $collection->get('bar')->getDefaults(),
             '->addDefaults() adds defaults to all routes and overwrites existing ones');
 
-        $collection->addRequirements(array('placeholder' => '\d+'));
-        $this->assertEquals(array('placeholder' => '\d+'), $collection->get('foo')->getRequirements(), '->addRequirements() adds requirements to all routes');
-        $this->assertEquals(array('placeholder' => '\d+'), $collection->get('bar')->getRequirements(),
+        $collection->addRequirements(['placeholder' => '\d+']);
+        $this->assertEquals(['placeholder' => '\d+'], $collection->get('foo')->getRequirements(), '->addRequirements() adds requirements to all routes');
+        $this->assertEquals(['placeholder' => '\d+'], $collection->get('bar')->getRequirements(),
             '->addRequirements() adds requirements to all routes and overwrites existing ones');
 
-        $collection->addOptions(array('option' => 'new-value'));
+        $collection->addOptions(['option' => 'new-value']);
         $this->assertEquals(
-            array('option' => 'new-value', 'compiler_class' => 'Symfony\\Component\\Routing\\RouteCompiler'),
+            ['option' => 'new-value', 'compiler_class' => 'Symfony\\Component\\Routing\\RouteCompiler'],
             $collection->get('bar')->getOptions(), '->addOptions() adds options to all routes and overwrites existing ones'
         );
     }
 
-    public function testAddPrefix()
+    public function test_add_prefix()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', $foo = new Route('/foo'));
-        $collection2 = new RouteCollection();
+        $collection2 = new RouteCollection;
         $collection2->add('bar', $bar = new Route('/bar'));
         $collection->addCollection($collection2);
         $collection->addPrefix(' / ');
         $this->assertSame('/foo', $collection->get('foo')->getPath(), '->addPrefix() trims the prefix and a single slash has no effect');
-        $collection->addPrefix('/{admin}', array('admin' => 'admin'), array('admin' => '\d+'));
+        $collection->addPrefix('/{admin}', ['admin' => 'admin'], ['admin' => '\d+']);
         $this->assertEquals('/{admin}/foo', $collection->get('foo')->getPath(), '->addPrefix() adds a prefix to all routes');
         $this->assertEquals('/{admin}/bar', $collection->get('bar')->getPath(), '->addPrefix() adds a prefix to all routes');
-        $this->assertEquals(array('admin' => 'admin'), $collection->get('foo')->getDefaults(), '->addPrefix() adds defaults to all routes');
-        $this->assertEquals(array('admin' => 'admin'), $collection->get('bar')->getDefaults(), '->addPrefix() adds defaults to all routes');
-        $this->assertEquals(array('admin' => '\d+'), $collection->get('foo')->getRequirements(), '->addPrefix() adds requirements to all routes');
-        $this->assertEquals(array('admin' => '\d+'), $collection->get('bar')->getRequirements(), '->addPrefix() adds requirements to all routes');
+        $this->assertEquals(['admin' => 'admin'], $collection->get('foo')->getDefaults(), '->addPrefix() adds defaults to all routes');
+        $this->assertEquals(['admin' => 'admin'], $collection->get('bar')->getDefaults(), '->addPrefix() adds defaults to all routes');
+        $this->assertEquals(['admin' => '\d+'], $collection->get('foo')->getRequirements(), '->addPrefix() adds requirements to all routes');
+        $this->assertEquals(['admin' => '\d+'], $collection->get('bar')->getRequirements(), '->addPrefix() adds requirements to all routes');
         $collection->addPrefix('0');
         $this->assertEquals('/0/{admin}/foo', $collection->get('foo')->getPath(), '->addPrefix() ensures a prefix must start with a slash and must not end with a slash');
         $collection->addPrefix('/ /');
@@ -161,34 +161,34 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/ /0/{admin}/bar', $collection->get('bar')->getPath(), 'the route pattern of an added collection is in synch with the added prefix');
     }
 
-    public function testAddPrefixOverridesDefaultsAndRequirements()
+    public function test_add_prefix_overrides_defaults_and_requirements()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', $foo = new Route('/foo.{_format}'));
-        $collection->add('bar', $bar = new Route('/bar.{_format}', array(), array('_format' => 'json')));
-        $collection->addPrefix('/admin', array(), array('_format' => 'html'));
+        $collection->add('bar', $bar = new Route('/bar.{_format}', [], ['_format' => 'json']));
+        $collection->addPrefix('/admin', [], ['_format' => 'html']);
 
         $this->assertEquals('html', $collection->get('foo')->getRequirement('_format'), '->addPrefix() overrides existing requirements');
         $this->assertEquals('html', $collection->get('bar')->getRequirement('_format'), '->addPrefix() overrides existing requirements');
     }
 
-    public function testResource()
+    public function test_resource()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->addResource($foo = new FileResource(__DIR__.'/Fixtures/foo.xml'));
         $collection->addResource($bar = new FileResource(__DIR__.'/Fixtures/bar.xml'));
         $collection->addResource(new FileResource(__DIR__.'/Fixtures/foo.xml'));
 
-        $this->assertEquals(array($foo, $bar), $collection->getResources(),
+        $this->assertEquals([$foo, $bar], $collection->getResources(),
             '->addResource() adds a resource and getResources() only returns unique ones by comparing the string representation');
     }
 
-    public function testUniqueRouteWithGivenName()
+    public function test_unique_route_with_given_name()
     {
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('foo', new Route('/old'));
-        $collection2 = new RouteCollection();
-        $collection3 = new RouteCollection();
+        $collection2 = new RouteCollection;
+        $collection3 = new RouteCollection;
         $collection3->add('foo', $new = new Route('/new'));
 
         $collection2->addCollection($collection3);
@@ -199,11 +199,11 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $collection1->getIterator(), '->addCollection() removes previous routes when adding new routes with the same name');
     }
 
-    public function testGet()
+    public function test_get()
     {
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('a', $a = new Route('/a'));
-        $collection2 = new RouteCollection();
+        $collection2 = new RouteCollection;
         $collection2->add('b', $b = new Route('/b'));
         $collection1->addCollection($collection2);
         $collection1->add('$péß^a|', $c = new Route('/special'));
@@ -215,27 +215,27 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($collection1->get(0), '->get() does not disclose internal child RouteCollection');
     }
 
-    public function testRemove()
+    public function test_remove()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('foo', $foo = new Route('/foo'));
 
-        $collection1 = new RouteCollection();
+        $collection1 = new RouteCollection;
         $collection1->add('bar', $bar = new Route('/bar'));
         $collection->addCollection($collection1);
         $collection->add('last', $last = new Route('/last'));
 
         $collection->remove('foo');
-        $this->assertSame(array('bar' => $bar, 'last' => $last), $collection->all(), '->remove() can remove a single route');
-        $collection->remove(array('bar', 'last'));
-        $this->assertSame(array(), $collection->all(), '->remove() accepts an array and can remove multiple routes at once');
+        $this->assertSame(['bar' => $bar, 'last' => $last], $collection->all(), '->remove() can remove a single route');
+        $collection->remove(['bar', 'last']);
+        $this->assertSame([], $collection->all(), '->remove() accepts an array and can remove multiple routes at once');
     }
 
-    public function testSetHost()
+    public function test_set_host()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $routea = new Route('/a');
-        $routeb = new Route('/b', array(), array(), array(), '{locale}.example.net');
+        $routeb = new Route('/b', [], [], [], '{locale}.example.net');
         $collection->add('a', $routea);
         $collection->add('b', $routeb);
 
@@ -245,11 +245,11 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{locale}.example.com', $routeb->getHost());
     }
 
-    public function testSetCondition()
+    public function test_set_condition()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $routea = new Route('/a');
-        $routeb = new Route('/b', array(), array(), array(), '{locale}.example.net', array(), array(), 'context.getMethod() == "GET"');
+        $routeb = new Route('/b', [], [], [], '{locale}.example.net', [], [], 'context.getMethod() == "GET"');
         $collection->add('a', $routea);
         $collection->add('b', $routeb);
 
@@ -259,11 +259,11 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('context.getMethod() == "POST"', $routeb->getCondition());
     }
 
-    public function testClone()
+    public function test_clone()
     {
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->add('a', new Route('/a'));
-        $collection->add('b', new Route('/b', array('placeholder' => 'default'), array('placeholder' => '.+')));
+        $collection->add('b', new Route('/b', ['placeholder' => 'default'], ['placeholder' => '.+']));
 
         $clonedCollection = clone $collection;
 
@@ -274,31 +274,31 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame($collection->get('b'), $clonedCollection->get('b'));
     }
 
-    public function testSetSchemes()
+    public function test_set_schemes()
     {
-        $collection = new RouteCollection();
-        $routea = new Route('/a', array(), array(), array(), '', 'http');
+        $collection = new RouteCollection;
+        $routea = new Route('/a', [], [], [], '', 'http');
         $routeb = new Route('/b');
         $collection->add('a', $routea);
         $collection->add('b', $routeb);
 
-        $collection->setSchemes(array('http', 'https'));
+        $collection->setSchemes(['http', 'https']);
 
-        $this->assertEquals(array('http', 'https'), $routea->getSchemes());
-        $this->assertEquals(array('http', 'https'), $routeb->getSchemes());
+        $this->assertEquals(['http', 'https'], $routea->getSchemes());
+        $this->assertEquals(['http', 'https'], $routeb->getSchemes());
     }
 
-    public function testSetMethods()
+    public function test_set_methods()
     {
-        $collection = new RouteCollection();
-        $routea = new Route('/a', array(), array(), array(), '', array(), array('GET', 'POST'));
+        $collection = new RouteCollection;
+        $routea = new Route('/a', [], [], [], '', [], ['GET', 'POST']);
         $routeb = new Route('/b');
         $collection->add('a', $routea);
         $collection->add('b', $routeb);
 
         $collection->setMethods('PUT');
 
-        $this->assertEquals(array('PUT'), $routea->getMethods());
-        $this->assertEquals(array('PUT'), $routeb->getMethods());
+        $this->assertEquals(['PUT'], $routea->getMethods());
+        $this->assertEquals(['PUT'], $routeb->getMethods());
     }
 }

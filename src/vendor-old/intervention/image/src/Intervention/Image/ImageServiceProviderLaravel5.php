@@ -9,7 +9,7 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
     /**
      * Determines if Intervention Imagecache is installed
      *
-     * @return boolean
+     * @return bool
      */
     private function cacheIsInstalled()
     {
@@ -23,9 +23,9 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes(array(
-            __DIR__.'/../../config/config.php' => config_path('image.php')
-        ));
+        $this->publishes([
+            __DIR__.'/../../config/config.php' => config_path('image.php'),
+        ]);
 
         // setup intervention/imagecache if package is installed
         $this->cacheIsInstalled() ? $this->bootstrapImageCache() : null;
@@ -64,9 +64,9 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
         $app = $this->app;
         $config = __DIR__.'/../../../../imagecache/src/config/config.php';
 
-        $this->publishes(array(
-            $config => config_path('imagecache.php')
-        ));
+        $this->publishes([
+            $config => config_path('imagecache.php'),
+        ]);
 
         // merge default config
         $this->mergeConfigFrom(
@@ -80,10 +80,10 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
             $filename_pattern = '[ \w\\.\\/\\-\\@]+';
 
             // route to access template applied image file
-            $app['router']->get(config('imagecache.route').'/{template}/{filename}', array(
+            $app['router']->get(config('imagecache.route').'/{template}/{filename}', [
                 'uses' => 'Intervention\Image\ImageCacheController@getResponse',
-                'as' => 'imagecache'
-            ))->where(array('filename' => $filename_pattern));
+                'as' => 'imagecache',
+            ])->where(['filename' => $filename_pattern]);
         }
     }
 }

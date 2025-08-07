@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Query\Expression;
  *
  * @link   www.doctrine-project.org
  * @since  2.1
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -37,7 +39,7 @@ class CompositeExpression implements \Countable
     /**
      * Constant that represents an OR composite expression.
      */
-    const TYPE_OR  = 'OR';
+    const TYPE_OR = 'OR';
 
     /**
      * The instance type of composite expression.
@@ -51,15 +53,15 @@ class CompositeExpression implements \Countable
      *
      * @var array
      */
-    private $parts = array();
+    private $parts = [];
 
     /**
      * Constructor.
      *
-     * @param string $type  Instance type of composite expression.
-     * @param array  $parts Composition of expressions to be joined on composite expression.
+     * @param  string  $type  Instance type of composite expression.
+     * @param  array  $parts  Composition of expressions to be joined on composite expression.
      */
-    public function __construct($type, array $parts = array())
+    public function __construct($type, array $parts = [])
     {
         $this->type = $type;
 
@@ -69,11 +71,10 @@ class CompositeExpression implements \Countable
     /**
      * Adds multiple parts to composite expression.
      *
-     * @param array $parts
      *
      * @return \Doctrine\DBAL\Query\Expression\CompositeExpression
      */
-    public function addMultiple(array $parts = array())
+    public function addMultiple(array $parts = [])
     {
         foreach ((array) $parts as $part) {
             $this->add($part);
@@ -85,13 +86,12 @@ class CompositeExpression implements \Countable
     /**
      * Adds an expression to composite expression.
      *
-     * @param mixed $part
-     *
+     * @param  mixed  $part
      * @return \Doctrine\DBAL\Query\Expression\CompositeExpression
      */
     public function add($part)
     {
-        if ( ! empty($part) || ($part instanceof self && $part->count() > 0)) {
+        if (! empty($part) || ($part instanceof self && $part->count() > 0)) {
             $this->parts[] = $part;
         }
 
@@ -101,7 +101,7 @@ class CompositeExpression implements \Countable
     /**
      * Retrieves the amount of expressions on composite expression.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -119,7 +119,7 @@ class CompositeExpression implements \Countable
             return (string) $this->parts[0];
         }
 
-        return '(' . implode(') ' . $this->type . ' (', $this->parts) . ')';
+        return '('.implode(') '.$this->type.' (', $this->parts).')';
     }
 
     /**

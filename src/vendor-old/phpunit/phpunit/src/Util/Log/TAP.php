@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -34,7 +35,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Constructor.
      *
-     * @param mixed $out
+     * @param  mixed  $out
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -49,9 +50,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * An error occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -61,9 +60,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param  float  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -74,19 +71,19 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             PHPUnit_Framework_TestFailure::exceptionToString($e)
         );
 
-        $diagnostic = array(
-          'message'  => $message[0],
-          'severity' => 'fail'
-        );
+        $diagnostic = [
+            'message' => $message[0],
+            'severity' => 'fail',
+        ];
 
         if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
             $cf = $e->getComparisonFailure();
 
             if ($cf !== null) {
-                $diagnostic['data'] = array(
-                  'got'      => $cf->getActual(),
-                  'expected' => $cf->getExpected()
-                );
+                $diagnostic['data'] = [
+                    'got' => $cf->getActual(),
+                    'expected' => $cf->getExpected(),
+                ];
             }
         }
 
@@ -103,9 +100,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Incomplete test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -115,9 +110,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Risky test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      *
      * @since  Method available since Release 4.0.0
      */
@@ -127,7 +120,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             sprintf(
                 "ok %d - # RISKY%s\n",
                 $this->testNumber,
-                $e->getMessage() != '' ? ' ' . $e->getMessage() : ''
+                $e->getMessage() != '' ? ' '.$e->getMessage() : ''
             )
         );
 
@@ -137,9 +130,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Skipped test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      *
      * @since  Method available since Release 3.0.0
      */
@@ -149,7 +140,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             sprintf(
                 "ok %d - # SKIP%s\n",
                 $this->testNumber,
-                $e->getMessage() != '' ? ' ' . $e->getMessage() : ''
+                $e->getMessage() != '' ? ' '.$e->getMessage() : ''
             )
         );
 
@@ -158,8 +149,6 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
     /**
      * A testsuite started.
-     *
-     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -168,8 +157,6 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
     /**
      * A testsuite ended.
-     *
-     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -182,8 +169,6 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
     /**
      * A test started.
-     *
-     * @param PHPUnit_Framework_Test $test
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -194,8 +179,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * A test ended.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param float                  $time
+     * @param  float  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -213,9 +197,8 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     }
 
     /**
-     * @param PHPUnit_Framework_Test $test
-     * @param string                 $prefix
-     * @param string                 $directive
+     * @param  string  $prefix
+     * @param  string  $directive
      */
     protected function writeNotOk(PHPUnit_Framework_Test $test, $prefix = '', $directive = '')
     {
@@ -223,25 +206,22 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             sprintf(
                 "not ok %d - %s%s%s\n",
                 $this->testNumber,
-                $prefix != '' ? $prefix . ': ' : '',
+                $prefix != '' ? $prefix.': ' : '',
                 PHPUnit_Util_Test::describe($test),
-                $directive != '' ? ' # ' . $directive : ''
+                $directive != '' ? ' # '.$directive : ''
             )
         );
 
         $this->testSuccessful = false;
     }
 
-    /**
-     * @param PHPUnit_Framework_Test $test
-     */
     private function writeDiagnostics(PHPUnit_Framework_Test $test)
     {
-        if (!$test instanceof PHPUnit_Framework_TestCase) {
+        if (! $test instanceof PHPUnit_Framework_TestCase) {
             return;
         }
 
-        if (!$test->hasOutput()) {
+        if (! $test->hasOutput()) {
             return;
         }
 

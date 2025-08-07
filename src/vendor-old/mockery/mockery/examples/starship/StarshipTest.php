@@ -1,12 +1,12 @@
 <?php
 
-use \Mockery as M;
+use Mockery as M;
 
 require_once 'Starship.php';
 
 class StarshipTest extends PHPUnit_Framework_TestCase
 {
-    public function testEngineeringResponseToEnteringOrbit()
+    public function test_engineering_response_to_entering_orbit()
     {
         $mock = M::mock('Engineering');
         $mock->shouldReceive('disengageWarp')->once()->ordered();

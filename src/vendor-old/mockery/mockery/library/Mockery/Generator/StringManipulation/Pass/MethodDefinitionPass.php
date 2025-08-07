@@ -42,21 +42,21 @@ class MethodDefinitionPass implements Pass
             $overrides = $config->getParameterOverrides();
 
             if (isset($overrides[strtolower($class->getName())][$method->getName()])) {
-                return '(' . implode(',', $overrides[strtolower($class->getName())][$method->getName()]) . ')';
+                return '('.implode(',', $overrides[strtolower($class->getName())][$method->getName()]).')';
             }
         }
 
-        $methodParams = array();
+        $methodParams = [];
         $params = $method->getParameters();
         foreach ($params as $param) {
             $paramDef = $param->getTypeHintAsString();
             $paramDef .= $param->isPassedByReference() ? '&' : '';
             $paramDef .= $param->isVariadic() ? '...' : '';
-            $paramDef .= '$' . $param->getName();
+            $paramDef .= '$'.$param->getName();
 
-            if (!$param->isVariadic()) {
-                if (false !== $param->isDefaultValueAvailable()) {
-                    $paramDef .= ' = ' . var_export($param->getDefaultValue(), true);
+            if (! $param->isVariadic()) {
+                if ($param->isDefaultValueAvailable() !== false) {
+                    $paramDef .= ' = '.var_export($param->getDefaultValue(), true);
                 } elseif ($param->isOptional()) {
                     $paramDef .= ' = null';
                 }
@@ -64,29 +64,32 @@ class MethodDefinitionPass implements Pass
 
             $methodParams[] = $paramDef;
         }
-        return '(' . implode(', ', $methodParams) . ')';
+
+        return '('.implode(', ', $methodParams).')';
     }
 
     protected function renderReturnType(Method $method)
     {
         $type = $method->getReturnType();
+
         return $type ? sprintf(': %s', $type) : '';
     }
 
     protected function appendToClass($class, $code)
     {
-        $lastBrace = strrpos($class, "}");
-        $class = substr($class, 0, $lastBrace) . $code . "\n    }\n";
+        $lastBrace = strrpos($class, '}');
+        $class = substr($class, 0, $lastBrace).$code."\n    }\n";
+
         return $class;
     }
 
     private function renderMethodBody($method, $config)
     {
         $invoke = $method->isStatic() ? 'static::_mockery_handleStaticMethodCall' : '$this->_mockery_handleMethodCall';
-        $body = <<<BODY
+        $body = <<<'BODY'
 {
-\$argc = func_num_args();
-\$argv = func_get_args();
+$argc = func_num_args();
+$argv = func_get_args();
 
 BODY;
 
@@ -99,7 +102,7 @@ BODY;
         if (isset($overrides[$class_name][$method->getName()])) {
             $params = array_values($overrides[$class_name][$method->getName()]);
             $paramCount = count($params);
-            for ($i = 0; $i < $paramCount; ++$i) {
+            for ($i = 0; $i < $paramCount; $i++) {
                 $param = $params[$i];
                 if (strpos($param, '&') !== false) {
                     $body .= <<<BODY
@@ -113,9 +116,9 @@ BODY;
         } else {
             $params = array_values($method->getParameters());
             $paramCount = count($params);
-            for ($i = 0; $i < $paramCount; ++$i) {
+            for ($i = 0; $i < $paramCount; $i++) {
                 $param = $params[$i];
-                if (!$param->isPassedByReference()) {
+                if (! $param->isPassedByReference()) {
                     continue;
                 }
                 $body .= <<<BODY

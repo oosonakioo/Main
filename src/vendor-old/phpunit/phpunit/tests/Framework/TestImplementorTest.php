@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,7 +17,7 @@ class Framework_TestImplementorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_TestCase
      */
-    public function testSuccessfulRun()
+    public function test_successful_run()
     {
         $result = new PHPUnit_Framework_TestResult;
 

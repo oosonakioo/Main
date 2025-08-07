@@ -11,54 +11,54 @@
 
 namespace Symfony\Component\HttpKernel\Tests\EventListener;
 
-use Symfony\Component\HttpKernel\HttpCache\Esi;
-use Symfony\Component\HttpKernel\EventListener\SurrogateListener;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\SurrogateListener;
+use Symfony\Component\HttpKernel\HttpCache\Esi;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class SurrogateListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFilterDoesNothingForSubRequests()
+    public function test_filter_does_nothing_for_sub_requests()
     {
-        $dispatcher = new EventDispatcher();
+        $dispatcher = new EventDispatcher;
         $kernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $response = new Response('foo <esi:include src="" />');
-        $listener = new SurrogateListener(new Esi());
+        $listener = new SurrogateListener(new Esi);
 
-        $dispatcher->addListener(KernelEvents::RESPONSE, array($listener, 'onKernelResponse'));
-        $event = new FilterResponseEvent($kernel, new Request(), HttpKernelInterface::SUB_REQUEST, $response);
+        $dispatcher->addListener(KernelEvents::RESPONSE, [$listener, 'onKernelResponse']);
+        $event = new FilterResponseEvent($kernel, new Request, HttpKernelInterface::SUB_REQUEST, $response);
         $dispatcher->dispatch(KernelEvents::RESPONSE, $event);
 
         $this->assertEquals('', $event->getResponse()->headers->get('Surrogate-Control'));
     }
 
-    public function testFilterWhenThereIsSomeEsiIncludes()
+    public function test_filter_when_there_is_some_esi_includes()
     {
-        $dispatcher = new EventDispatcher();
+        $dispatcher = new EventDispatcher;
         $kernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $response = new Response('foo <esi:include src="" />');
-        $listener = new SurrogateListener(new Esi());
+        $listener = new SurrogateListener(new Esi);
 
-        $dispatcher->addListener(KernelEvents::RESPONSE, array($listener, 'onKernelResponse'));
-        $event = new FilterResponseEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $response);
+        $dispatcher->addListener(KernelEvents::RESPONSE, [$listener, 'onKernelResponse']);
+        $event = new FilterResponseEvent($kernel, new Request, HttpKernelInterface::MASTER_REQUEST, $response);
         $dispatcher->dispatch(KernelEvents::RESPONSE, $event);
 
         $this->assertEquals('content="ESI/1.0"', $event->getResponse()->headers->get('Surrogate-Control'));
     }
 
-    public function testFilterWhenThereIsNoEsiIncludes()
+    public function test_filter_when_there_is_no_esi_includes()
     {
-        $dispatcher = new EventDispatcher();
+        $dispatcher = new EventDispatcher;
         $kernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $response = new Response('foo');
-        $listener = new SurrogateListener(new Esi());
+        $listener = new SurrogateListener(new Esi);
 
-        $dispatcher->addListener(KernelEvents::RESPONSE, array($listener, 'onKernelResponse'));
-        $event = new FilterResponseEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $response);
+        $dispatcher->addListener(KernelEvents::RESPONSE, [$listener, 'onKernelResponse']);
+        $event = new FilterResponseEvent($kernel, new Request, HttpKernelInterface::MASTER_REQUEST, $response);
         $dispatcher->dispatch(KernelEvents::RESPONSE, $event);
 
         $this->assertEquals('', $event->getResponse()->headers->get('Surrogate-Control'));

@@ -28,11 +28,10 @@ interface Swift_InputByteStream
      * This method returns the sequence ID of the write (i.e. 1 for first, 2 for
      * second, etc etc).
      *
-     * @param string $bytes
+     * @param  string  $bytes
+     * @return int
      *
      * @throws Swift_IoException
-     *
-     * @return int
      */
     public function write($bytes);
 
@@ -49,8 +48,6 @@ interface Swift_InputByteStream
      *
      * The stream acts as an observer, receiving all data that is written.
      * All {@link write()} and {@link flushBuffers()} operations will be mirrored.
-     *
-     * @param Swift_InputByteStream $is
      */
     public function bind(Swift_InputByteStream $is);
 
@@ -60,8 +57,6 @@ interface Swift_InputByteStream
      * If $is is not bound, no errors will be raised.
      * If the stream currently has any buffered data it will be written to $is
      * before unbinding occurs.
-     *
-     * @param Swift_InputByteStream $is
      */
     public function unbind(Swift_InputByteStream $is);
 

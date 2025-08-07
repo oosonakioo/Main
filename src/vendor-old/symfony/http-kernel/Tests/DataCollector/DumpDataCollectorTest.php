@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\HttpKernel\Tests\DataCollector;
 
-use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
 use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
@@ -21,11 +21,11 @@ use Symfony\Component\VarDumper\Cloner\Data;
  */
 class DumpDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDump()
+    public function test_dump()
     {
-        $data = new Data(array(array(123)));
+        $data = new Data([[123]]);
 
-        $collector = new DumpDataCollector();
+        $collector = new DumpDataCollector;
 
         $this->assertSame('dump', $collector->getName());
 
@@ -38,15 +38,15 @@ class DumpDataCollectorTest extends \PHPUnit_Framework_TestCase
         $dump[0]['data'] = preg_replace('/^.*?<pre/', '<pre', $dump[0]['data']);
         $dump[0]['data'] = preg_replace('/sf-dump-\d+/', 'sf-dump', $dump[0]['data']);
 
-        $xDump = array(
-            array(
+        $xDump = [
+            [
                 'data' => "<pre class=sf-dump id=sf-dump data-indent-pad=\"  \"><span class=sf-dump-num>123</span>\n</pre><script>Sfdump(\"sf-dump\")</script>\n",
                 'name' => 'DumpDataCollectorTest.php',
                 'file' => __FILE__,
                 'line' => $line,
                 'fileExcerpt' => false,
-            ),
-        );
+            ],
+        ];
         $this->assertEquals($xDump, $dump);
 
         $this->assertStringMatchesFormat(
@@ -58,17 +58,17 @@ class DumpDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('a:0:{}', $collector->serialize());
     }
 
-    public function testCollectDefault()
+    public function test_collect_default()
     {
-        $data = new Data(array(array(123)));
+        $data = new Data([[123]]);
 
-        $collector = new DumpDataCollector();
+        $collector = new DumpDataCollector;
 
         $collector->dump($data);
         $line = __LINE__ - 1;
 
         ob_start();
-        $collector->collect(new Request(), new Response());
+        $collector->collect(new Request, new Response);
         $output = ob_get_clean();
 
         $this->assertSame("DumpDataCollectorTest.php on line {$line}:\n123\n", $output);
@@ -76,9 +76,9 @@ class DumpDataCollectorTest extends \PHPUnit_Framework_TestCase
         $collector->serialize();
     }
 
-    public function testCollectHtml()
+    public function test_collect_html()
     {
-        $data = new Data(array(array(123)));
+        $data = new Data([[123]]);
 
         $collector = new DumpDataCollector(null, 'test://%f:%l');
 
@@ -93,9 +93,9 @@ class DumpDataCollectorTest extends \PHPUnit_Framework_TestCase
 EOTXT;
 
         ob_start();
-        $response = new Response();
+        $response = new Response;
         $response->headers->set('Content-Type', 'text/html');
-        $collector->collect(new Request(), $response);
+        $collector->collect(new Request, $response);
         $output = ob_get_clean();
         $output = preg_replace('#<(script|style).*?</\1>#s', '', $output);
         $output = preg_replace('/sf-dump-\d+/', 'sf-dump', $output);
@@ -105,10 +105,10 @@ EOTXT;
         $collector->serialize();
     }
 
-    public function testFlush()
+    public function test_flush()
     {
-        $data = new Data(array(array(456)));
-        $collector = new DumpDataCollector();
+        $data = new Data([[456]]);
+        $collector = new DumpDataCollector;
         $collector->dump($data);
         $line = __LINE__ - 1;
 

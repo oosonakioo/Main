@@ -7,23 +7,23 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 class ImageServiceProviderLeague extends AbstractServiceProvider
 {
     /**
-     * @var array $config
+     * @var array
      */
     protected $config;
 
     /**
-     * @var array $provides
+     * @var array
      */
     protected $provides = [
-        'Intervention\Image\ImageManager'
+        'Intervention\Image\ImageManager',
     ];
 
     /**
      * Constructor.
      *
-     * @param array $config
+     * @param  array  $config
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->config = $config;
     }

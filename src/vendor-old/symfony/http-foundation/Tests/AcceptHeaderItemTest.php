@@ -18,7 +18,7 @@ class AcceptHeaderItemTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideFromStringData
      */
-    public function testFromString($string, $value, array $attributes)
+    public function test_from_string($string, $value, array $attributes)
     {
         $item = AcceptHeaderItem::fromString($string);
         $this->assertEquals($value, $item->getValue());
@@ -27,30 +27,30 @@ class AcceptHeaderItemTest extends \PHPUnit_Framework_TestCase
 
     public function provideFromStringData()
     {
-        return array(
-            array(
+        return [
+            [
                 'text/html',
-                'text/html', array(),
-            ),
-            array(
+                'text/html', [],
+            ],
+            [
                 '"this;should,not=matter"',
-                'this;should,not=matter', array(),
-            ),
-            array(
+                'this;should,not=matter', [],
+            ],
+            [
                 "text/plain; charset=utf-8;param=\"this;should,not=matter\";\tfootnotes=true",
-                'text/plain', array('charset' => 'utf-8', 'param' => 'this;should,not=matter', 'footnotes' => 'true'),
-            ),
-            array(
+                'text/plain', ['charset' => 'utf-8', 'param' => 'this;should,not=matter', 'footnotes' => 'true'],
+            ],
+            [
                 '"this;should,not=matter";charset=utf-8',
-                'this;should,not=matter', array('charset' => 'utf-8'),
-            ),
-        );
+                'this;should,not=matter', ['charset' => 'utf-8'],
+            ],
+        ];
     }
 
     /**
      * @dataProvider provideToStringData
      */
-    public function testToString($value, array $attributes, $string)
+    public function test_to_string($value, array $attributes, $string)
     {
         $item = new AcceptHeaderItem($value, $attributes);
         $this->assertEquals($string, (string) $item);
@@ -58,21 +58,21 @@ class AcceptHeaderItemTest extends \PHPUnit_Framework_TestCase
 
     public function provideToStringData()
     {
-        return array(
-            array(
-                'text/html', array(),
+        return [
+            [
+                'text/html', [],
                 'text/html',
-            ),
-            array(
-                'text/plain', array('charset' => 'utf-8', 'param' => 'this;should,not=matter', 'footnotes' => 'true'),
+            ],
+            [
+                'text/plain', ['charset' => 'utf-8', 'param' => 'this;should,not=matter', 'footnotes' => 'true'],
                 'text/plain;charset=utf-8;param="this;should,not=matter";footnotes=true',
-            ),
-        );
+            ],
+        ];
     }
 
-    public function testValue()
+    public function test_value()
     {
-        $item = new AcceptHeaderItem('value', array());
+        $item = new AcceptHeaderItem('value', []);
         $this->assertEquals('value', $item->getValue());
 
         $item->setValue('new value');
@@ -82,9 +82,9 @@ class AcceptHeaderItemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1', $item->getValue());
     }
 
-    public function testQuality()
+    public function test_quality()
     {
-        $item = new AcceptHeaderItem('value', array());
+        $item = new AcceptHeaderItem('value', []);
         $this->assertEquals(1.0, $item->getQuality());
 
         $item->setQuality(0.5);
@@ -95,16 +95,16 @@ class AcceptHeaderItemTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($item->hasAttribute('q'));
     }
 
-    public function testAttribute()
+    public function test_attribute()
     {
-        $item = new AcceptHeaderItem('value', array());
-        $this->assertEquals(array(), $item->getAttributes());
+        $item = new AcceptHeaderItem('value', []);
+        $this->assertEquals([], $item->getAttributes());
         $this->assertFalse($item->hasAttribute('test'));
         $this->assertNull($item->getAttribute('test'));
         $this->assertEquals('default', $item->getAttribute('test', 'default'));
 
         $item->setAttribute('test', 'value');
-        $this->assertEquals(array('test' => 'value'), $item->getAttributes());
+        $this->assertEquals(['test' => 'value'], $item->getAttributes());
         $this->assertTrue($item->hasAttribute('test'));
         $this->assertEquals('value', $item->getAttribute('test'));
         $this->assertEquals('value', $item->getAttribute('test', 'default'));

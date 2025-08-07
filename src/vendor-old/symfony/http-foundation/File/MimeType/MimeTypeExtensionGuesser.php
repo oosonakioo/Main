@@ -26,7 +26,7 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
      *
      * @var array
      */
-    protected $defaultExtensions = array(
+    protected $defaultExtensions = [
         'application/andrew-inset' => 'ez',
         'application/applixware' => 'aw',
         'application/atom+xml' => 'atom',
@@ -796,7 +796,7 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
         'video/x-sgi-movie' => 'movie',
         'video/x-smv' => 'smv',
         'x-conference/x-cooltalk' => 'ice',
-    );
+    ];
 
     /**
      * {@inheritdoc}

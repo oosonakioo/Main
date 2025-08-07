@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ namespace Doctrine\Common;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
@@ -51,14 +53,13 @@ class EventArgs
      * (otherwise there would be instances for every dispatched in the abovementioned form).
      *
      * @see EventManager::dispatchEvent
-     *
      * @link http://msdn.microsoft.com/en-us/library/system.eventargs.aspx
      *
      * @return EventArgs
      */
     public static function getEmptyInstance()
     {
-        if ( ! self::$_emptyEventArgsInstance) {
+        if (! self::$_emptyEventArgsInstance) {
             self::$_emptyEventArgsInstance = new EventArgs;
         }
 

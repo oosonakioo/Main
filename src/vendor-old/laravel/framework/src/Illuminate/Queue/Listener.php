@@ -3,9 +3,9 @@
 namespace Illuminate\Queue;
 
 use Closure;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 class Listener
 {
@@ -94,7 +94,7 @@ class Listener
      * @param  string  $queue
      * @param  string  $delay
      * @param  string  $memory
-     * @param  int     $timeout
+     * @param  int  $timeout
      * @return void
      */
     public function listen($connection, $queue, $delay, $memory, $timeout = 60)
@@ -109,7 +109,6 @@ class Listener
     /**
      * Run the given process.
      *
-     * @param  \Symfony\Component\Process\Process  $process
      * @param  int  $memory
      * @return void
      */
@@ -132,9 +131,9 @@ class Listener
      *
      * @param  string  $connection
      * @param  string  $queue
-     * @param  int     $delay
-     * @param  int     $memory
-     * @param  int     $timeout
+     * @param  int  $delay
+     * @param  int  $memory
+     * @param  int  $timeout
      * @return \Symfony\Component\Process\Process
      */
     public function makeProcess($connection, $queue, $delay, $memory, $timeout)
@@ -196,13 +195,12 @@ class Listener
      */
     public function stop()
     {
-        die;
+        exit;
     }
 
     /**
      * Set the output handler callback.
      *
-     * @param  \Closure  $outputHandler
      * @return void
      */
     public function setOutputHandler(Closure $outputHandler)

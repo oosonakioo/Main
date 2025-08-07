@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -36,7 +37,7 @@ class QueryCacheProfile
     private $resultCacheDriver;
 
     /**
-     * @var integer
+     * @var int
      */
     private $lifetime = 0;
 
@@ -46,11 +47,10 @@ class QueryCacheProfile
     private $cacheKey;
 
     /**
-     * @param integer                           $lifetime
-     * @param string|null                       $cacheKey
-     * @param \Doctrine\Common\Cache\Cache|null $resultCache
+     * @param  int  $lifetime
+     * @param  string|null  $cacheKey
      */
-    public function __construct($lifetime = 0, $cacheKey = null, Cache $resultCache = null)
+    public function __construct($lifetime = 0, $cacheKey = null, ?Cache $resultCache = null)
     {
         $this->lifetime = $lifetime;
         $this->cacheKey = $cacheKey;
@@ -66,7 +66,7 @@ class QueryCacheProfile
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLifetime()
     {
@@ -90,15 +90,14 @@ class QueryCacheProfile
     /**
      * Generates the real cache key from query, params and types.
      *
-     * @param string $query
-     * @param array  $params
-     * @param array  $types
-     *
+     * @param  string  $query
+     * @param  array  $params
+     * @param  array  $types
      * @return array
      */
     public function generateCacheKeys($query, $params, $types)
     {
-        $realCacheKey = $query . "-" . serialize($params) . "-" . serialize($types);
+        $realCacheKey = $query.'-'.serialize($params).'-'.serialize($types);
         // should the key be automatically generated using the inputs or is the cache key set?
         if ($this->cacheKey === null) {
             $cacheKey = sha1($realCacheKey);
@@ -106,12 +105,10 @@ class QueryCacheProfile
             $cacheKey = $this->cacheKey;
         }
 
-        return array($cacheKey, $realCacheKey);
+        return [$cacheKey, $realCacheKey];
     }
 
     /**
-     * @param \Doctrine\Common\Cache\Cache $cache
-     *
      * @return \Doctrine\DBAL\Cache\QueryCacheProfile
      */
     public function setResultCacheDriver(Cache $cache)
@@ -120,8 +117,7 @@ class QueryCacheProfile
     }
 
     /**
-     * @param string|null $cacheKey
-     *
+     * @param  string|null  $cacheKey
      * @return \Doctrine\DBAL\Cache\QueryCacheProfile
      */
     public function setCacheKey($cacheKey)
@@ -130,8 +126,7 @@ class QueryCacheProfile
     }
 
     /**
-     * @param integer $lifetime
-     *
+     * @param  int  $lifetime
      * @return \Doctrine\DBAL\Cache\QueryCacheProfile
      */
     public function setLifetime($lifetime)

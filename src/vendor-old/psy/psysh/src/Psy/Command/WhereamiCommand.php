@@ -27,7 +27,7 @@ class WhereamiCommand extends Command
     private $colorMode;
 
     /**
-     * @param null|string $colorMode (default: null)
+     * @param  null|string  $colorMode  (default: null)
      */
     public function __construct($colorMode = null)
     {
@@ -49,9 +49,9 @@ class WhereamiCommand extends Command
     {
         $this
             ->setName('whereami')
-            ->setDefinition(array(
+            ->setDefinition([
                 new InputOption('num', 'n', InputOption::VALUE_OPTIONAL, 'Number of lines before and after.', '5'),
-            ))
+            ])
             ->setDescription('Show where you are in the code.')
             ->setHelp(
                 <<<'HELP'
@@ -74,7 +74,7 @@ HELP
     protected function trace()
     {
         foreach ($this->backtrace as $i => $backtrace) {
-            if (!isset($backtrace['class'], $backtrace['function'])) {
+            if (! isset($backtrace['class'], $backtrace['function'])) {
                 continue;
             }
             $correctClass = $backtrace['class'] === 'Psy\Shell';

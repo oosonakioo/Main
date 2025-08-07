@@ -67,7 +67,7 @@ abstract class AbstractProxy
      */
     public function isActive()
     {
-        return \PHP_SESSION_ACTIVE === session_status();
+        return session_status() === \PHP_SESSION_ACTIVE;
     }
 
     /**
@@ -83,7 +83,7 @@ abstract class AbstractProxy
     /**
      * Sets the session ID.
      *
-     * @param string $id
+     * @param  string  $id
      *
      * @throws \LogicException
      */
@@ -109,7 +109,7 @@ abstract class AbstractProxy
     /**
      * Sets the session name.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @throws \LogicException
      */

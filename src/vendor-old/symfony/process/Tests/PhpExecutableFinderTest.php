@@ -21,13 +21,13 @@ class PhpExecutableFinderTest extends \PHPUnit_Framework_TestCase
     /**
      * tests find() with the constant PHP_BINARY.
      */
-    public function testFind()
+    public function test_find()
     {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('Should not be executed in HHVM context.');
         }
 
-        $f = new PhpExecutableFinder();
+        $f = new PhpExecutableFinder;
 
         $current = PHP_BINARY;
         $args = 'phpdbg' === PHP_SAPI ? ' -qrr' : '';
@@ -39,13 +39,13 @@ class PhpExecutableFinderTest extends \PHPUnit_Framework_TestCase
     /**
      * tests find() with the env var / constant PHP_BINARY with HHVM.
      */
-    public function testFindWithHHVM()
+    public function test_find_with_hhvm()
     {
-        if (!defined('HHVM_VERSION')) {
+        if (! defined('HHVM_VERSION')) {
             $this->markTestSkipped('Should be executed in HHVM context.');
         }
 
-        $f = new PhpExecutableFinder();
+        $f = new PhpExecutableFinder;
 
         $current = getenv('PHP_BINARY') ?: PHP_BINARY;
 
@@ -56,16 +56,16 @@ class PhpExecutableFinderTest extends \PHPUnit_Framework_TestCase
     /**
      * tests find() with the env var PHP_PATH.
      */
-    public function testFindArguments()
+    public function test_find_arguments()
     {
-        $f = new PhpExecutableFinder();
+        $f = new PhpExecutableFinder;
 
         if (defined('HHVM_VERSION')) {
-            $this->assertEquals($f->findArguments(), array('--php'), '::findArguments() returns HHVM arguments');
+            $this->assertEquals($f->findArguments(), ['--php'], '::findArguments() returns HHVM arguments');
         } elseif ('phpdbg' === PHP_SAPI) {
-            $this->assertEquals($f->findArguments(), array('-qrr'), '::findArguments() returns phpdbg arguments');
+            $this->assertEquals($f->findArguments(), ['-qrr'], '::findArguments() returns phpdbg arguments');
         } else {
-            $this->assertEquals($f->findArguments(), array(), '::findArguments() returns no arguments');
+            $this->assertEquals($f->findArguments(), [], '::findArguments() returns no arguments');
         }
     }
 }

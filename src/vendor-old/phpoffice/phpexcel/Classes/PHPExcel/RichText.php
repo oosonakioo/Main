@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHPExcel
  *
@@ -19,18 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   PHPExcel
- * @package    PHPExcel_RichText
+ *
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ *
  * @version    ##VERSION##, ##DATE##
  */
-
 
 /**
  * PHPExcel_RichText
  *
  * @category   PHPExcel
- * @package    PHPExcel_RichText
+ *
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_RichText implements PHPExcel_IComparable
@@ -45,18 +46,17 @@ class PHPExcel_RichText implements PHPExcel_IComparable
     /**
      * Create a new PHPExcel_RichText instance
      *
-     * @param PHPExcel_Cell $pCell
      * @throws PHPExcel_Exception
      */
-    public function __construct(PHPExcel_Cell $pCell = null)
+    public function __construct(?PHPExcel_Cell $pCell = null)
     {
         // Initialise variables
-        $this->_richTextElements = array();
+        $this->_richTextElements = [];
 
         // Rich-Text string attached to cell?
-        if ($pCell !== NULL) {
+        if ($pCell !== null) {
             // Add cell text and style
-            if ($pCell->getValue() != "") {
+            if ($pCell->getValue() != '') {
                 $objRun = new PHPExcel_RichText_Run($pCell->getValue());
                 $objRun->setFont(clone $pCell->getParent()->getStyle($pCell->getCoordinate())->getFont());
                 $this->addText($objRun);
@@ -70,41 +70,47 @@ class PHPExcel_RichText implements PHPExcel_IComparable
     /**
      * Add text
      *
-     * @param PHPExcel_RichText_ITextElement $pText Rich text element
-     * @throws PHPExcel_Exception
+     * @param  PHPExcel_RichText_ITextElement  $pText  Rich text element
      * @return PHPExcel_RichText
+     *
+     * @throws PHPExcel_Exception
      */
-    public function addText(PHPExcel_RichText_ITextElement $pText = null)
+    public function addText(?PHPExcel_RichText_ITextElement $pText = null)
     {
         $this->_richTextElements[] = $pText;
+
         return $this;
     }
 
     /**
      * Create text
      *
-     * @param string $pText Text
+     * @param  string  $pText  Text
      * @return PHPExcel_RichText_TextElement
+     *
      * @throws PHPExcel_Exception
      */
     public function createText($pText = '')
     {
         $objText = new PHPExcel_RichText_TextElement($pText);
         $this->addText($objText);
+
         return $objText;
     }
 
     /**
      * Create text run
      *
-     * @param string $pText Text
+     * @param  string  $pText  Text
      * @return PHPExcel_RichText_Run
+     *
      * @throws PHPExcel_Exception
      */
     public function createTextRun($pText = '')
     {
         $objText = new PHPExcel_RichText_Run($pText);
         $this->addText($objText);
+
         return $objText;
     }
 
@@ -150,24 +156,26 @@ class PHPExcel_RichText implements PHPExcel_IComparable
     /**
      * Set Rich Text elements
      *
-     * @param PHPExcel_RichText_ITextElement[] $pElements Array of elements
-     * @throws PHPExcel_Exception
+     * @param  PHPExcel_RichText_ITextElement[]  $pElements  Array of elements
      * @return PHPExcel_RichText
+     *
+     * @throws PHPExcel_Exception
      */
     public function setRichTextElements($pElements = null)
     {
         if (is_array($pElements)) {
             $this->_richTextElements = $pElements;
         } else {
-            throw new PHPExcel_Exception("Invalid PHPExcel_RichText_ITextElement[] array passed.");
+            throw new PHPExcel_Exception('Invalid PHPExcel_RichText_ITextElement[] array passed.');
         }
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string    Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -177,8 +185,8 @@ class PHPExcel_RichText implements PHPExcel_IComparable
         }
 
         return md5(
-              $hashElements
-            . __CLASS__
+            $hashElements
+            .__CLASS__
         );
     }
 

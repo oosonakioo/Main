@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Persistence\Mapping;
  *
  * @link   www.doctrine-project.org
  * @since  2.1
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Jonathan Wage <jonwage@gmail.com>
  */
@@ -55,45 +57,40 @@ interface ClassMetadata
     /**
      * Checks if the given field name is a mapped identifier for this class.
      *
-     * @param string $fieldName
-     *
-     * @return boolean
+     * @param  string  $fieldName
+     * @return bool
      */
     public function isIdentifier($fieldName);
 
     /**
      * Checks if the given field is a mapped property for this class.
      *
-     * @param string $fieldName
-     *
-     * @return boolean
+     * @param  string  $fieldName
+     * @return bool
      */
     public function hasField($fieldName);
 
     /**
      * Checks if the given field is a mapped association for this class.
      *
-     * @param string $fieldName
-     *
-     * @return boolean
+     * @param  string  $fieldName
+     * @return bool
      */
     public function hasAssociation($fieldName);
 
     /**
      * Checks if the given field is a mapped single valued association for this class.
      *
-     * @param string $fieldName
-     *
-     * @return boolean
+     * @param  string  $fieldName
+     * @return bool
      */
     public function isSingleValuedAssociation($fieldName);
 
     /**
      * Checks if the given field is a mapped collection valued association for this class.
      *
-     * @param string $fieldName
-     *
-     * @return boolean
+     * @param  string  $fieldName
+     * @return bool
      */
     public function isCollectionValuedAssociation($fieldName);
 
@@ -128,8 +125,7 @@ interface ClassMetadata
      * This type names can be implementation specific but should at least include the php types:
      * integer, string, boolean, float/double, datetime.
      *
-     * @param string $fieldName
-     *
+     * @param  string  $fieldName
      * @return string
      */
     public function getTypeOfField($fieldName);
@@ -137,8 +133,7 @@ interface ClassMetadata
     /**
      * Returns the target class name of the given association.
      *
-     * @param string $assocName
-     *
+     * @param  string  $assocName
      * @return string
      */
     public function getAssociationTargetClass($assocName);
@@ -146,17 +141,15 @@ interface ClassMetadata
     /**
      * Checks if the association is the inverse side of a bidirectional association.
      *
-     * @param string $assocName
-     *
-     * @return boolean
+     * @param  string  $assocName
+     * @return bool
      */
     public function isAssociationInverseSide($assocName);
 
     /**
      * Returns the target field of the owning side of the association.
      *
-     * @param string $assocName
-     *
+     * @param  string  $assocName
      * @return string
      */
     public function getAssociationMappedByTargetField($assocName);
@@ -166,8 +159,7 @@ interface ClassMetadata
      *
      * Has to return an empty array if no identifier isset.
      *
-     * @param object $object
-     *
+     * @param  object  $object
      * @return array
      */
     public function getIdentifierValues($object);

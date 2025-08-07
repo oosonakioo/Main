@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,17 +32,11 @@ abstract class AbstractSchemaSynchronizer implements SchemaSynchronizer
      */
     protected $conn;
 
-    /**
-     * @param \Doctrine\DBAL\Connection $conn
-     */
     public function __construct(Connection $conn)
     {
         $this->conn = $conn;
     }
 
-    /**
-     * @param array $sql
-     */
     protected function processSqlSafely(array $sql)
     {
         foreach ($sql as $s) {
@@ -53,9 +48,6 @@ abstract class AbstractSchemaSynchronizer implements SchemaSynchronizer
         }
     }
 
-    /**
-     * @param array $sql
-     */
     protected function processSql(array $sql)
     {
         foreach ($sql as $s) {

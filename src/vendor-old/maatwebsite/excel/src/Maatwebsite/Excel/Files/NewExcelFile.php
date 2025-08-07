@@ -1,14 +1,12 @@
-<?php namespace Maatwebsite\Excel\Files;
+<?php
+
+namespace Maatwebsite\Excel\Files;
 
 use Illuminate\Foundation\Application;
 use Maatwebsite\Excel\Excel;
 
-abstract class NewExcelFile extends File {
-
-    /**
-     * @param Application $app
-     * @param Excel       $excel
-     */
+abstract class NewExcelFile extends File
+{
     public function __construct(Application $app, Excel $excel)
     {
         parent::__construct($app, $excel);
@@ -17,6 +15,7 @@ abstract class NewExcelFile extends File {
 
     /**
      * Get file
+     *
      * @return string
      */
     abstract public function getFilename();
@@ -26,14 +25,14 @@ abstract class NewExcelFile extends File {
      */
     public function handleExport()
     {
-        return $this->handle( 
-            get_class($this) 
+        return $this->handle(
+            get_class($this)
         );
     }
 
-
     /**
      * Load the file
+     *
      * @return \Maatwebsite\Excel\Readers\LaravelExcelReader
      */
     public function createNewFile()
@@ -48,7 +47,8 @@ abstract class NewExcelFile extends File {
 
     /**
      * Dynamically call methods
-     * @param  string $method
+     *
+     * @param  string  $method
      * @param  array  $params
      * @return mixed
      */
@@ -56,5 +56,4 @@ abstract class NewExcelFile extends File {
     {
         return call_user_func_array([$this->file, $method], $params);
     }
-
 }

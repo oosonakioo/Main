@@ -19,30 +19,29 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 class DocblockFormatter implements Formatter
 {
-    private static $vectorParamTemplates = array(
+    private static $vectorParamTemplates = [
         'type' => 'info',
-        'var'  => 'strong',
-    );
+        'var' => 'strong',
+    ];
 
     /**
      * Format a docblock.
      *
-     * @param \Reflector $reflector
      *
      * @return string Formatted docblock
      */
     public static function format(\Reflector $reflector)
     {
         $docblock = new Docblock($reflector);
-        $chunks   = array();
+        $chunks = [];
 
-        if (!empty($docblock->desc)) {
+        if (! empty($docblock->desc)) {
             $chunks[] = '<comment>Description:</comment>';
             $chunks[] = self::indent(OutputFormatter::escape($docblock->desc), '  ');
             $chunks[] = '';
         }
 
-        if (!empty($docblock->tags)) {
+        if (! empty($docblock->tags)) {
             foreach ($docblock::$vectors as $name => $vector) {
                 if (isset($docblock->tags[$name])) {
                     $chunks[] = sprintf('<comment>%s:</comment>', self::inflect($name));
@@ -52,7 +51,7 @@ class DocblockFormatter implements Formatter
             }
 
             $tags = self::formatTags(array_keys($docblock::$vectors), $docblock->tags);
-            if (!empty($tags)) {
+            if (! empty($tags)) {
                 $chunks[] = $tags;
                 $chunks[] = '';
             }
@@ -66,14 +65,11 @@ class DocblockFormatter implements Formatter
      *
      * @see DocBlock::$vectors
      *
-     * @param array $vector
-     * @param array $lines
-     *
      * @return string
      */
     private static function formatVector(array $vector, array $lines)
     {
-        $template = array(' ');
+        $template = [' '];
         foreach ($vector as $type) {
             $max = 0;
             foreach ($lines as $line) {
@@ -89,7 +85,7 @@ class DocblockFormatter implements Formatter
         $template = implode(' ', $template);
 
         return implode("\n", array_map(function ($line) use ($template) {
-            $escaped = array_map(array('Symfony\Component\Console\Formatter\OutputFormatter', 'escape'), $line);
+            $escaped = array_map(['Symfony\Component\Console\Formatter\OutputFormatter', 'escape'], $line);
 
             return rtrim(vsprintf($template, $escaped));
         }, $lines));
@@ -98,14 +94,13 @@ class DocblockFormatter implements Formatter
     /**
      * Format docblock tags.
      *
-     * @param array $skip Tags to exclude
-     * @param array $tags Tags to format
-     *
+     * @param  array  $skip  Tags to exclude
+     * @param  array  $tags  Tags to format
      * @return string formatted tags
      */
     private static function formatTags(array $skip, array $tags)
     {
-        $chunks = array();
+        $chunks = [];
 
         foreach ($tags as $name => $values) {
             if (in_array($name, $skip)) {
@@ -125,14 +120,13 @@ class DocblockFormatter implements Formatter
     /**
      * Get a docblock vector template.
      *
-     * @param string $type Vector type
-     * @param int    $max  Pad width
-     *
+     * @param  string  $type  Vector type
+     * @param  int  $max  Pad width
      * @return string
      */
     private static function getVectorParamTemplate($type, $max)
     {
-        if (!isset(self::$vectorParamTemplates[$type])) {
+        if (! isset(self::$vectorParamTemplates[$type])) {
             return sprintf('%%-%ds', $max);
         }
 
@@ -142,21 +136,19 @@ class DocblockFormatter implements Formatter
     /**
      * Indent a string.
      *
-     * @param string $text   String to indent
-     * @param string $indent (default: '  ')
-     *
+     * @param  string  $text  String to indent
+     * @param  string  $indent  (default: '  ')
      * @return string
      */
     private static function indent($text, $indent = '  ')
     {
-        return $indent . str_replace("\n", "\n" . $indent, $text);
+        return $indent.str_replace("\n", "\n".$indent, $text);
     }
 
     /**
      * Convert underscored or whitespace separated words into sentence case.
      *
-     * @param string $text
-     *
+     * @param  string  $text
      * @return string
      */
     private static function inflect($text)

@@ -18,7 +18,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 {
     protected $file;
 
-    public function testGetMimeTypeUsesMimeTypeGuessers()
+    public function test_get_mime_type_uses_mime_type_guessers()
     {
         $file = new File(__DIR__.'/Fixtures/test.gif');
         $guesser = $this->createMockGuesser($file->getPathname(), 'image/gif');
@@ -28,14 +28,14 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('image/gif', $file->getMimeType());
     }
 
-    public function testGuessExtensionWithoutGuesser()
+    public function test_guess_extension_without_guesser()
     {
         $file = new File(__DIR__.'/Fixtures/directory/.empty');
 
         $this->assertNull($file->guessExtension());
     }
 
-    public function testGuessExtensionIsBasedOnMimeType()
+    public function test_guess_extension_is_based_on_mime_type()
     {
         $file = new File(__DIR__.'/Fixtures/test');
         $guesser = $this->createMockGuesser($file->getPathname(), 'image/gif');
@@ -48,7 +48,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     /**
      * @requires extension fileinfo
      */
-    public function testGuessExtensionWithReset()
+    public function test_guess_extension_with_reset()
     {
         $file = new File(__DIR__.'/Fixtures/other-file.example');
         $guesser = $this->createMockGuesser($file->getPathname(), 'image/gif');
@@ -61,14 +61,14 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($file->guessExtension());
     }
 
-    public function testConstructWhenFileNotExists()
+    public function test_construct_when_file_not_exists()
     {
         $this->setExpectedException('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
 
         new File(__DIR__.'/Fixtures/not_here');
     }
 
-    public function testMove()
+    public function test_move()
     {
         $path = __DIR__.'/Fixtures/test.copy.gif';
         $targetDir = __DIR__.'/Fixtures/directory';
@@ -88,7 +88,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
         @unlink($targetPath);
     }
 
-    public function testMoveWithNewName()
+    public function test_move_with_new_name()
     {
         $path = __DIR__.'/Fixtures/test.copy.gif';
         $targetDir = __DIR__.'/Fixtures/directory';
@@ -109,20 +109,20 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
     public function getFilenameFixtures()
     {
-        return array(
-            array('original.gif', 'original.gif'),
-            array('..\\..\\original.gif', 'original.gif'),
-            array('../../original.gif', 'original.gif'),
-            array('файлfile.gif', 'файлfile.gif'),
-            array('..\\..\\файлfile.gif', 'файлfile.gif'),
-            array('../../файлfile.gif', 'файлfile.gif'),
-        );
+        return [
+            ['original.gif', 'original.gif'],
+            ['..\\..\\original.gif', 'original.gif'],
+            ['../../original.gif', 'original.gif'],
+            ['файлfile.gif', 'файлfile.gif'],
+            ['..\\..\\файлfile.gif', 'файлfile.gif'],
+            ['../../файлfile.gif', 'файлfile.gif'],
+        ];
     }
 
     /**
      * @dataProvider getFilenameFixtures
      */
-    public function testMoveWithNonLatinName($filename, $sanitizedFilename)
+    public function test_move_with_non_latin_name($filename, $sanitizedFilename)
     {
         $path = __DIR__.'/Fixtures/'.$sanitizedFilename;
         $targetDir = __DIR__.'/Fixtures/directory/';
@@ -142,7 +142,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
         @unlink($targetPath);
     }
 
-    public function testMoveToAnUnexistentDirectory()
+    public function test_move_to_an_unexistent_directory()
     {
         $sourcePath = __DIR__.'/Fixtures/test.copy.gif';
         $targetDir = __DIR__.'/Fixtures/directory/sub';
@@ -171,8 +171,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('guess')
             ->with($this->equalTo($path))
-            ->will($this->returnValue($mimeType))
-        ;
+            ->will($this->returnValue($mimeType));
 
         return $guesser;
     }

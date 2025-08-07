@@ -29,8 +29,6 @@ class Validator
     /**
      * Create a new validator instance.
      *
-     * @param array          $variables
-     * @param \Dotenv\Loader $loader
      *
      * @return void
      */
@@ -80,8 +78,7 @@ class Validator
     /**
      * Assert that each variable is amongst the given choices.
      *
-     * @param string[] $choices
-     *
+     * @param  string[]  $choices
      * @return \Dotenv\Validator
      */
     public function allowedValues(array $choices)
@@ -97,20 +94,19 @@ class Validator
     /**
      * Assert that the callback returns true for each variable.
      *
-     * @param callable $callback
-     * @param string   $message
+     * @param  callable  $callback
+     * @param  string  $message
+     * @return \Dotenv\Validator
      *
      * @throws \Dotenv\Exception\InvalidCallbackException|\Dotenv\Exception\ValidationException
-     *
-     * @return \Dotenv\Validator
      */
     protected function assertCallback($callback, $message = 'failed callback assertion')
     {
-        if (!is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw new InvalidCallbackException('The provided callback must be callable.');
         }
 
-        $variablesFailingAssertion = array();
+        $variablesFailingAssertion = [];
         foreach ($this->variables as $variableName) {
             $variableValue = $this->loader->getEnvironmentVariable($variableName);
             if (call_user_func($callback, $variableValue) === false) {

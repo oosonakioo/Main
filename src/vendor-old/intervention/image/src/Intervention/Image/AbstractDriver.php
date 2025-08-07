@@ -21,8 +21,8 @@ abstract class AbstractDriver
     /**
      * Creates new image instance
      *
-     * @param  integer $width
-     * @param  integer $height
+     * @param  int  $width
+     * @param  int  $height
      * @param  string  $background
      * @return \Intervention\Image\Image
      */
@@ -31,7 +31,7 @@ abstract class AbstractDriver
     /**
      * Reads given string into color object
      *
-     * @param  string $value
+     * @param  string  $value
      * @return AbstractColor
      */
     abstract public function parseColor($value);
@@ -39,7 +39,7 @@ abstract class AbstractDriver
     /**
      * Checks if core module installation is available
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function coreAvailable();
 
@@ -56,7 +56,7 @@ abstract class AbstractDriver
     /**
      * Initiates new image from given input
      *
-     * @param  mixed $data
+     * @param  mixed  $data
      * @return \Intervention\Image\Image
      */
     public function init($data)
@@ -67,9 +67,9 @@ abstract class AbstractDriver
     /**
      * Encodes given image
      *
-     * @param  Image   $image
+     * @param  Image  $image
      * @param  string  $format
-     * @param  integer $quality
+     * @param  int  $quality
      * @return \Intervention\Image\Image
      */
     public function encode($image, $format, $quality)
@@ -81,8 +81,8 @@ abstract class AbstractDriver
      * Executes named command on given image
      *
      * @param  Image  $image
-     * @param  string $name
-     * @param  array $arguments
+     * @param  string  $name
+     * @param  array  $arguments
      * @return \Intervention\Image\Commands\AbstractCommand
      */
     public function executeCommand($image, $name, $arguments)
@@ -97,7 +97,7 @@ abstract class AbstractDriver
     /**
      * Returns classname of given command name
      *
-     * @param  string $name
+     * @param  string  $name
      * @return string
      */
     private function getCommandClassName($name)
@@ -127,6 +127,6 @@ abstract class AbstractDriver
         $reflect = new \ReflectionClass($this);
         $namespace = $reflect->getNamespaceName();
 
-        return substr(strrchr($namespace, "\\"), 1);
+        return substr(strrchr($namespace, '\\'), 1);
     }
 }

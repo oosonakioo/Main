@@ -15,7 +15,7 @@ class Parameter
 
     public function __call($method, array $args)
     {
-        return call_user_func_array(array($this->rfp, $method), $args);
+        return call_user_func_array([$this->rfp, $method], $args);
     }
 
     public function getClass()
@@ -30,7 +30,7 @@ class Parameter
             $typehint = $this->rfp->getTypehintText();
 
             // not exhaustive, but will do for now
-            if (in_array($typehint, array('int', 'integer', 'float', 'string', 'bool', 'boolean'))) {
+            if (in_array($typehint, ['int', 'integer', 'float', 'string', 'bool', 'boolean'])) {
                 return '';
             }
 
@@ -48,7 +48,7 @@ class Parameter
         if ((version_compare(PHP_VERSION, '5.4.1') >= 0)) {
             try {
                 if ($this->rfp->getClass()) {
-                    return $this->getOptionalSign() . $this->rfp->getClass()->getName();
+                    return $this->getOptionalSign().$this->rfp->getClass()->getName();
                 }
             } catch (\ReflectionException $re) {
                 // noop
@@ -56,11 +56,11 @@ class Parameter
         }
 
         if (version_compare(PHP_VERSION, '7.0.0-dev') >= 0 && $this->rfp->hasType()) {
-            return $this->getOptionalSign() . $this->rfp->getType();
+            return $this->getOptionalSign().$this->rfp->getType();
         }
 
-        if (preg_match('/^Parameter #[0-9]+ \[ \<(required|optional)\> (?<typehint>\S+ )?.*\$' . $this->rfp->getName() . ' .*\]$/', $this->rfp->__toString(), $typehintMatch)) {
-            if (!empty($typehintMatch['typehint'])) {
+        if (preg_match('/^Parameter #[0-9]+ \[ \<(required|optional)\> (?<typehint>\S+ )?.*\$'.$this->rfp->getName().' .*\]$/', $this->rfp->__toString(), $typehintMatch)) {
+            if (! empty($typehintMatch['typehint'])) {
                 return $typehintMatch['typehint'];
             }
         }
@@ -70,7 +70,7 @@ class Parameter
 
     private function getOptionalSign()
     {
-        if (version_compare(PHP_VERSION, '7.1.0-dev', '>=') && $this->rfp->allowsNull() && !$this->rfp->isVariadic()) {
+        if (version_compare(PHP_VERSION, '7.1.0-dev', '>=') && $this->rfp->allowsNull() && ! $this->rfp->isVariadic()) {
             return '?';
         }
 
@@ -83,13 +83,12 @@ class Parameter
     public function getName()
     {
         $name = $this->rfp->getName();
-        if (!$name || $name == '...') {
-            $name = 'arg' . static::$parameterCounter++;
+        if (! $name || $name == '...') {
+            $name = 'arg'.static::$parameterCounter++;
         }
 
         return $name;
     }
-
 
     /**
      * Variadics only introduced in 5.6

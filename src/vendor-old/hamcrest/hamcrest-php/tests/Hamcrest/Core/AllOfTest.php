@@ -1,15 +1,15 @@
 <?php
+
 namespace Hamcrest\Core;
 
 class AllOfTest extends \Hamcrest\AbstractMatcherTest
 {
-
     protected function createMatcher()
     {
         return \Hamcrest\Core\AllOf::allOf('irrelevant');
     }
 
-    public function testEvaluatesToTheLogicalConjunctionOfTwoOtherMatchers()
+    public function test_evaluates_to_the_logical_conjunction_of_two_other_matchers()
     {
         assertThat('good', allOf('good', 'good'));
 
@@ -18,13 +18,13 @@ class AllOfTest extends \Hamcrest\AbstractMatcherTest
         assertThat('good', not(allOf('bad', 'bad')));
     }
 
-    public function testEvaluatesToTheLogicalConjunctionOfManyOtherMatchers()
+    public function test_evaluates_to_the_logical_conjunction_of_many_other_matchers()
     {
         assertThat('good', allOf('good', 'good', 'good', 'good', 'good'));
         assertThat('good', not(allOf('good', endsWith('d'), 'bad', 'good', 'good')));
     }
 
-    public function testSupportsMixedTypes()
+    public function test_supports_mixed_types()
     {
         $all = allOf(
             equalTo(new \Hamcrest\Core\SampleBaseClass('good')),
@@ -37,7 +37,7 @@ class AllOfTest extends \Hamcrest\AbstractMatcherTest
         assertThat(new \Hamcrest\Core\SampleSubClass('good'), $negated);
     }
 
-    public function testHasAReadableDescription()
+    public function test_has_a_readable_description()
     {
         $this->assertDescription(
             '("good" and "bad" and "ugly")',
@@ -45,7 +45,7 @@ class AllOfTest extends \Hamcrest\AbstractMatcherTest
         );
     }
 
-    public function testMismatchDescriptionDescribesFirstFailingMatch()
+    public function test_mismatch_description_describes_first_failing_match()
     {
         $this->assertMismatchDescription(
             '"good" was "bad"',

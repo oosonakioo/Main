@@ -19,10 +19,10 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 class CommentHandlerTest extends AbstractHandlerTest
 {
     /** @dataProvider getHandleValueTestData */
-    public function testHandleValue($value, Token $unusedArgument, $remainingContent)
+    public function test_handle_value($value, Token $unusedArgument, $remainingContent)
     {
         $reader = new Reader($value);
-        $stream = new TokenStream();
+        $stream = new TokenStream;
 
         $this->assertTrue($this->generateHandler()->handle($reader, $stream));
         // comments are ignored (not pushed as token in stream)
@@ -32,24 +32,24 @@ class CommentHandlerTest extends AbstractHandlerTest
 
     public function getHandleValueTestData()
     {
-        return array(
+        return [
             // 2nd argument only exists for inherited method compatibility
-            array('/* comment */', new Token(null, null, null), ''),
-            array('/* comment */foo', new Token(null, null, null), 'foo'),
-        );
+            ['/* comment */', new Token(null, null, null), ''],
+            ['/* comment */foo', new Token(null, null, null), 'foo'],
+        ];
     }
 
     public function getDontHandleValueTestData()
     {
-        return array(
-            array('>'),
-            array('+'),
-            array(' '),
-        );
+        return [
+            ['>'],
+            ['+'],
+            [' '],
+        ];
     }
 
     protected function generateHandler()
     {
-        return new CommentHandler();
+        return new CommentHandler;
     }
 }

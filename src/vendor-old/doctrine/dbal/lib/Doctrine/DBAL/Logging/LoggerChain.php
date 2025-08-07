@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Logging;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Christophe Coevoet <stof@notk.org>
  */
 class LoggerChain implements SQLLogger
@@ -31,12 +33,11 @@ class LoggerChain implements SQLLogger
     /**
      * @var \Doctrine\DBAL\Logging\SQLLogger[]
      */
-    private $loggers = array();
+    private $loggers = [];
 
     /**
      * Adds a logger in the chain.
      *
-     * @param \Doctrine\DBAL\Logging\SQLLogger $logger
      *
      * @return void
      */
@@ -48,7 +49,7 @@ class LoggerChain implements SQLLogger
     /**
      * {@inheritdoc}
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, ?array $params = null, ?array $types = null)
     {
         foreach ($this->loggers as $logger) {
             $logger->startQuery($sql, $params, $types);

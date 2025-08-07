@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\Logger;
 use Monolog\Formatter\NormalizerFormatter;
+use Monolog\Logger;
 
 /**
  * Class to record a log on a NewRelic application.
@@ -48,9 +48,9 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * {@inheritDoc}
      *
-     * @param string $appName
-     * @param bool   $explodeArrays
-     * @param string $transactionName
+     * @param  string  $appName
+     * @param  bool  $explodeArrays
+     * @param  string  $transactionName
      */
     public function __construct(
         $level = Logger::ERROR,
@@ -61,7 +61,7 @@ class NewRelicHandler extends AbstractProcessingHandler
     ) {
         parent::__construct($level, $bubble);
 
-        $this->appName       = $appName;
+        $this->appName = $appName;
         $this->explodeArrays = $explodeArrays;
         $this->transactionName = $transactionName;
     }
@@ -71,7 +71,7 @@ class NewRelicHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        if (!$this->isNewRelicEnabled()) {
+        if (! $this->isNewRelicEnabled()) {
             throw new MissingExtensionException('The newrelic PHP extension is required to use the NewRelicHandler');
         }
 
@@ -95,10 +95,10 @@ class NewRelicHandler extends AbstractProcessingHandler
             foreach ($record['formatted']['context'] as $key => $parameter) {
                 if (is_array($parameter) && $this->explodeArrays) {
                     foreach ($parameter as $paramKey => $paramValue) {
-                        $this->setNewRelicParameter('context_' . $key . '_' . $paramKey, $paramValue);
+                        $this->setNewRelicParameter('context_'.$key.'_'.$paramKey, $paramValue);
                     }
                 } else {
-                    $this->setNewRelicParameter('context_' . $key, $parameter);
+                    $this->setNewRelicParameter('context_'.$key, $parameter);
                 }
             }
         }
@@ -107,10 +107,10 @@ class NewRelicHandler extends AbstractProcessingHandler
             foreach ($record['formatted']['extra'] as $key => $parameter) {
                 if (is_array($parameter) && $this->explodeArrays) {
                     foreach ($parameter as $paramKey => $paramValue) {
-                        $this->setNewRelicParameter('extra_' . $key . '_' . $paramKey, $paramValue);
+                        $this->setNewRelicParameter('extra_'.$key.'_'.$paramKey, $paramValue);
                     }
                 } else {
-                    $this->setNewRelicParameter('extra_' . $key, $parameter);
+                    $this->setNewRelicParameter('extra_'.$key, $parameter);
                 }
             }
         }
@@ -130,7 +130,6 @@ class NewRelicHandler extends AbstractProcessingHandler
      * Returns the appname where this log should be sent. Each log can override the default appname, set in this
      * handler's constructor, by providing the appname in it's context.
      *
-     * @param  array       $context
      * @return null|string
      */
     protected function getAppName(array $context)
@@ -146,7 +145,6 @@ class NewRelicHandler extends AbstractProcessingHandler
      * Returns the name of the current transaction. Each log can override the default transaction name, set in this
      * handler's constructor, by providing the transaction_name in it's context
      *
-     * @param array $context
      *
      * @return null|string
      */
@@ -162,7 +160,7 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * Sets the NewRelic application that should receive this log.
      *
-     * @param string $appName
+     * @param  string  $appName
      */
     protected function setNewRelicAppName($appName)
     {
@@ -172,7 +170,7 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * Overwrites the name of the current transaction
      *
-     * @param string $transactionName
+     * @param  string  $transactionName
      */
     protected function setNewRelicTransactionName($transactionName)
     {
@@ -180,12 +178,12 @@ class NewRelicHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param string $key
-     * @param mixed  $value
+     * @param  string  $key
+     * @param  mixed  $value
      */
     protected function setNewRelicParameter($key, $value)
     {
-        if (null === $value || is_scalar($value)) {
+        if ($value === null || is_scalar($value)) {
             newrelic_add_custom_parameter($key, $value);
         } else {
             newrelic_add_custom_parameter($key, @json_encode($value));
@@ -197,6 +195,6 @@ class NewRelicHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter()
     {
-        return new NormalizerFormatter();
+        return new NormalizerFormatter;
     }
 }

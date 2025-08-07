@@ -48,7 +48,6 @@ class ClassFinder
      * Find the namespace in the tokens starting at a given key.
      *
      * @param  int  $key
-     * @param  array  $tokens
      * @return string|null
      */
     protected function getNamespace($key, array $tokens)
@@ -70,7 +69,6 @@ class ClassFinder
      * Find the class in the tokens starting at a given key.
      *
      * @param  int  $key
-     * @param  array  $tokens
      * @return string|null
      */
     protected function getClass($key, array $tokens)

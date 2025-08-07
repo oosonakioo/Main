@@ -4,9 +4,9 @@ namespace Illuminate\Filesystem;
 
 use ErrorException;
 use FilesystemIterator;
-use Symfony\Component\Finder\Finder;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Traits\Macroable;
+use Symfony\Component\Finder\Finder;
 
 class Filesystem
 {
@@ -313,7 +313,7 @@ class Filesystem
      * Find path names matching a given pattern.
      *
      * @param  string  $pattern
-     * @param  int     $flags
+     * @param  int  $flags
      * @return array
      */
     public function glob($pattern, $flags = 0)
@@ -376,9 +376,9 @@ class Filesystem
      * Create a directory.
      *
      * @param  string  $path
-     * @param  int     $mode
-     * @param  bool    $recursive
-     * @param  bool    $force
+     * @param  int  $mode
+     * @param  bool  $recursive
+     * @param  bool  $force
      * @return bool
      */
     public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
@@ -414,7 +414,7 @@ class Filesystem
      *
      * @param  string  $directory
      * @param  string  $destination
-     * @param  int     $options
+     * @param  int  $options
      * @return bool
      */
     public function copyDirectory($directory, $destination, $options = null)
@@ -467,7 +467,7 @@ class Filesystem
      * The directory itself may be optionally preserved.
      *
      * @param  string  $directory
-     * @param  bool    $preserve
+     * @param  bool  $preserve
      * @return bool
      */
     public function deleteDirectory($directory, $preserve = false)

@@ -16,16 +16,16 @@ class Url
     public function __construct($url)
     {
         // Prepend http:// if the url doesn't contain it
-        if (!stristr($url, 'http://') && !stristr($url, 'https://')) {
-            $url = 'http://' . $url;
+        if (! stristr($url, 'http://') && ! stristr($url, 'https://')) {
+            $url = 'http://'.$url;
         }
 
-        if (!$url || !filter_var($url, FILTER_VALIDATE_URL)) {
+        if (! $url || ! filter_var($url, FILTER_VALIDATE_URL)) {
             throw new InvalidUrlException($url);
         }
 
-        $url = str_replace(array(';', '"', '<?'), '', strip_tags($url));
-        $url = str_replace(array('\077', '\''), array(' ', '/'), $url);
+        $url = str_replace([';', '"', '<?'], '', strip_tags($url));
+        $url = str_replace(['\077', '\''], [' ', '/'], $url);
 
         $this->src = $url;
     }

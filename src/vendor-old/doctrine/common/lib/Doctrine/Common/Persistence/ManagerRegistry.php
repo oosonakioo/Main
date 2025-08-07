@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Persistence;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -40,8 +42,7 @@ interface ManagerRegistry extends ConnectionRegistry
     /**
      * Gets a named object manager.
      *
-     * @param string $name The object manager name (null for the default one).
-     *
+     * @param  string  $name  The object manager name (null for the default one).
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getManager($name = null);
@@ -66,8 +67,7 @@ interface ManagerRegistry extends ConnectionRegistry
      * hold an obsolete reference. You can inject the registry instead
      * to avoid this problem.
      *
-     * @param string|null $name The object manager name (null for the default one).
-     *
+     * @param  string|null  $name  The object manager name (null for the default one).
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function resetManager($name = null);
@@ -77,8 +77,7 @@ interface ManagerRegistry extends ConnectionRegistry
      *
      * This method looks for the alias in all registered object managers.
      *
-     * @param string $alias The alias.
-     *
+     * @param  string  $alias  The alias.
      * @return string The full namespace.
      */
     public function getAliasNamespace($alias);
@@ -93,9 +92,8 @@ interface ManagerRegistry extends ConnectionRegistry
     /**
      * Gets the ObjectRepository for an persistent object.
      *
-     * @param string $persistentObject      The name of the persistent object.
-     * @param string $persistentManagerName The object manager name (null for the default one).
-     *
+     * @param  string  $persistentObject  The name of the persistent object.
+     * @param  string  $persistentManagerName  The object manager name (null for the default one).
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository($persistentObject, $persistentManagerName = null);
@@ -103,8 +101,7 @@ interface ManagerRegistry extends ConnectionRegistry
     /**
      * Gets the object manager associated with a given class.
      *
-     * @param string $class A persistent object class name.
-     *
+     * @param  string  $class  A persistent object class name.
      * @return \Doctrine\Common\Persistence\ObjectManager|null
      */
     public function getManagerForClass($class);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -19,7 +20,7 @@ class PHPUnit_Framework_Constraint_SameSize extends PHPUnit_Framework_Constraint
     protected $expectedCount;
 
     /**
-     * @param int $expected
+     * @param  int  $expected
      */
     public function __construct($expected)
     {

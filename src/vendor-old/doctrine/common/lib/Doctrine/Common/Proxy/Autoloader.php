@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -35,32 +36,30 @@ class Autoloader
      * 2. Remove namespace separators from remaining class name.
      * 3. Return PHP filename from proxy-dir with the result from 2.
      *
-     * @param string $proxyDir
-     * @param string $proxyNamespace
-     * @param string $className
-     *
+     * @param  string  $proxyDir
+     * @param  string  $proxyNamespace
+     * @param  string  $className
      * @return string
      *
      * @throws InvalidArgumentException
      */
     public static function resolveFile($proxyDir, $proxyNamespace, $className)
     {
-        if (0 !== strpos($className, $proxyNamespace)) {
+        if (strpos($className, $proxyNamespace) !== 0) {
             throw InvalidArgumentException::notProxyClass($className, $proxyNamespace);
         }
 
         $className = str_replace('\\', '', substr($className, strlen($proxyNamespace) + 1));
 
-        return $proxyDir . DIRECTORY_SEPARATOR . $className . '.php';
+        return $proxyDir.DIRECTORY_SEPARATOR.$className.'.php';
     }
 
     /**
      * Registers and returns autoloader callback for the given proxy dir and namespace.
      *
-     * @param string        $proxyDir
-     * @param string        $proxyNamespace
-     * @param callable|null $notFoundCallback Invoked when the proxy file is not found.
-     *
+     * @param  string  $proxyDir
+     * @param  string  $proxyNamespace
+     * @param  callable|null  $notFoundCallback  Invoked when the proxy file is not found.
      * @return \Closure
      *
      * @throws InvalidArgumentException
@@ -69,12 +68,12 @@ class Autoloader
     {
         $proxyNamespace = ltrim($proxyNamespace, '\\');
 
-        if ( ! (null === $notFoundCallback || is_callable($notFoundCallback))) {
+        if (! ($notFoundCallback === null || is_callable($notFoundCallback))) {
             throw InvalidArgumentException::invalidClassNotFoundCallback($notFoundCallback);
         }
 
         $autoloader = function ($className) use ($proxyDir, $proxyNamespace, $notFoundCallback) {
-            if (0 === strpos($className, $proxyNamespace)) {
+            if (strpos($className, $proxyNamespace) === 0) {
                 $file = Autoloader::resolveFile($proxyDir, $proxyNamespace, $className);
 
                 if ($notFoundCallback && ! file_exists($file)) {

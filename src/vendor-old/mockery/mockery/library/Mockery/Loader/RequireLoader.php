@@ -3,7 +3,6 @@
 namespace Mockery\Loader;
 
 use Mockery\Generator\MockDefinition;
-use Mockery\Loader\Loader;
 
 class RequireLoader implements Loader
 {
@@ -20,7 +19,7 @@ class RequireLoader implements Loader
             return;
         }
 
-        $tmpfname = tempnam($this->path, "Mockery");
+        $tmpfname = tempnam($this->path, 'Mockery');
         file_put_contents($tmpfname, $definition->getCode());
 
         require $tmpfname;

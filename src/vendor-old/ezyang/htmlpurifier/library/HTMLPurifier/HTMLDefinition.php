@@ -25,23 +25,25 @@
  */
 class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 {
-
     // FULLY-PUBLIC VARIABLES ---------------------------------------------
 
     /**
      * Associative array of element names to HTMLPurifier_ElementDef.
+     *
      * @type HTMLPurifier_ElementDef[]
      */
-    public $info = array();
+    public $info = [];
 
     /**
      * Associative array of global attribute name to attribute definition.
+     *
      * @type array
      */
-    public $info_global_attr = array();
+    public $info_global_attr = [];
 
     /**
      * String name of parent element HTML will be going into.
+     *
      * @type string
      */
     public $info_parent = 'div';
@@ -49,71 +51,80 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
     /**
      * Definition for parent element, allows parent element to be a
      * tag that's not allowed inside the HTML fragment.
+     *
      * @type HTMLPurifier_ElementDef
      */
     public $info_parent_def;
 
     /**
      * String name of element used to wrap inline elements in block context.
+     *
      * @type string
+     *
      * @note This is rarely used except for BLOCKQUOTEs in strict mode
      */
     public $info_block_wrapper = 'p';
 
     /**
      * Associative array of deprecated tag name to HTMLPurifier_TagTransform.
+     *
      * @type array
      */
-    public $info_tag_transform = array();
+    public $info_tag_transform = [];
 
     /**
      * Indexed list of HTMLPurifier_AttrTransform to be performed before validation.
+     *
      * @type HTMLPurifier_AttrTransform[]
      */
-    public $info_attr_transform_pre = array();
+    public $info_attr_transform_pre = [];
 
     /**
      * Indexed list of HTMLPurifier_AttrTransform to be performed after validation.
+     *
      * @type HTMLPurifier_AttrTransform[]
      */
-    public $info_attr_transform_post = array();
+    public $info_attr_transform_post = [];
 
     /**
      * Nested lookup array of content set name (Block, Inline) to
      * element name to whether or not it belongs in that content set.
+     *
      * @type array
      */
-    public $info_content_sets = array();
+    public $info_content_sets = [];
 
     /**
      * Indexed list of HTMLPurifier_Injector to be used.
+     *
      * @type HTMLPurifier_Injector[]
      */
-    public $info_injector = array();
+    public $info_injector = [];
 
     /**
      * Doctype object
+     *
      * @type HTMLPurifier_Doctype
      */
     public $doctype;
-
-
 
     // RAW CUSTOMIZATION STUFF --------------------------------------------
 
     /**
      * Adds a custom attribute to a pre-existing element
+     *
      * @note This is strictly convenience, and does not have a corresponding
      *       method in HTMLPurifier_HTMLModule
-     * @param string $element_name Element name to add attribute to
-     * @param string $attr_name Name of attribute
-     * @param mixed $def Attribute definition, can be string or object, see
-     *             HTMLPurifier_AttrTypes for details
+     *
+     * @param  string  $element_name  Element name to add attribute to
+     * @param  string  $attr_name  Name of attribute
+     * @param  mixed  $def  Attribute definition, can be string or object, see
+     *                      HTMLPurifier_AttrTypes for details
      */
     public function addAttribute($element_name, $attr_name, $def)
     {
         $module = $this->getAnonymousModule();
-        if (!isset($module->info[$element_name])) {
+        if (! isset($module->info[$element_name])) {
             $element = $module->addBlankElement($element_name);
         } else {
             $element = $module->info[$element_name];
@@ -123,30 +134,35 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     /**
      * Adds a custom element to your HTML definition
+     *
      * @see HTMLPurifier_HTMLModule::addElement() for detailed
      *       parameter and return value descriptions.
      */
-    public function addElement($element_name, $type, $contents, $attr_collections, $attributes = array())
+    public function addElement($element_name, $type, $contents, $attr_collections, $attributes = [])
     {
         $module = $this->getAnonymousModule();
         // assume that if the user is calling this, the element
         // is safe. This may not be a good idea
         $element = $module->addElement($element_name, $type, $contents, $attr_collections, $attributes);
+
         return $element;
     }
 
     /**
      * Adds a blank element to your HTML definition, for overriding
      * existing behavior
-     * @param string $element_name
+     *
+     * @param  string  $element_name
      * @return HTMLPurifier_ElementDef
+     *
      * @see HTMLPurifier_HTMLModule::addBlankElement() for detailed
      *       parameter and return value descriptions.
      */
     public function addBlankElement($element_name)
     {
-        $module  = $this->getAnonymousModule();
+        $module = $this->getAnonymousModule();
         $element = $module->addBlankElement($element_name);
+
         return $element;
     }
 
@@ -154,14 +170,16 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
      * Retrieves a reference to the anonymous module, so you can
      * bust out advanced features without having to make your own
      * module.
+     *
      * @return HTMLPurifier_HTMLModule
      */
     public function getAnonymousModule()
     {
-        if (!$this->_anonModule) {
-            $this->_anonModule = new HTMLPurifier_HTMLModule();
+        if (! $this->_anonModule) {
+            $this->_anonModule = new HTMLPurifier_HTMLModule;
             $this->_anonModule->name = 'Anonymous';
         }
+
         return $this->_anonModule;
     }
 
@@ -184,11 +202,11 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
      */
     public function __construct()
     {
-        $this->manager = new HTMLPurifier_HTMLModuleManager();
+        $this->manager = new HTMLPurifier_HTMLModuleManager;
     }
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     protected function doSetup($config)
     {
@@ -205,7 +223,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     /**
      * Extract out the information from the manager
-     * @param HTMLPurifier_Config $config
+     *
+     * @param  HTMLPurifier_Config  $config
      */
     protected function processModules($config)
     {
@@ -256,7 +275,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     /**
      * Sets up stuff based on config. We need a better way of doing this.
-     * @param HTMLPurifier_Config $config
+     *
+     * @param  HTMLPurifier_Config  $config
      */
     protected function setupConfigStuff($config)
     {
@@ -284,23 +304,23 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
         }
 
         // support template text
-        $support = "(for information on implementing this, see the support forums) ";
+        $support = '(for information on implementing this, see the support forums) ';
 
         // setup allowed elements -----------------------------------------
 
         $allowed_elements = $config->get('HTML.AllowedElements');
         $allowed_attributes = $config->get('HTML.AllowedAttributes'); // retrieve early
 
-        if (!is_array($allowed_elements) && !is_array($allowed_attributes)) {
+        if (! is_array($allowed_elements) && ! is_array($allowed_attributes)) {
             $allowed = $config->get('HTML.Allowed');
             if (is_string($allowed)) {
-                list($allowed_elements, $allowed_attributes) = $this->parseTinyMCEAllowedList($allowed);
+                [$allowed_elements, $allowed_attributes] = $this->parseTinyMCEAllowedList($allowed);
             }
         }
 
         if (is_array($allowed_elements)) {
             foreach ($this->info as $name => $d) {
-                if (!isset($allowed_elements[$name])) {
+                if (! isset($allowed_elements[$name])) {
                     unset($this->info[$name]);
                 }
                 unset($allowed_elements[$name]);
@@ -320,7 +340,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             // global attributes. It's possible that userland code uses
             // it, but HTMLModuleManager doesn't!
             foreach ($this->info_global_attr as $attr => $x) {
-                $keys = array($attr, "*@$attr", "*.$attr");
+                $keys = [$attr, "*@$attr", "*.$attr"];
                 $delete = true;
                 foreach ($keys as $key) {
                     if ($delete && isset($allowed_attributes[$key])) {
@@ -337,7 +357,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
             foreach ($this->info as $tag => $info) {
                 foreach ($info->attr as $attr => $x) {
-                    $keys = array("$tag@$attr", $attr, "*@$attr", "$tag.$attr", "*.$attr");
+                    $keys = ["$tag@$attr", $attr, "*@$attr", "$tag.$attr", "*.$attr"];
                     $delete = true;
                     foreach ($keys as $key) {
                         if ($delete && isset($allowed_attributes[$key])) {
@@ -350,7 +370,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                     if ($delete) {
                         if ($this->info[$tag]->attr[$attr]->required) {
                             trigger_error(
-                                "Required attribute '$attr' in element '$tag' " .
+                                "Required attribute '$attr' in element '$tag' ".
                                 "was not allowed, which means '$tag' will not be allowed either",
                                 E_USER_WARNING
                             );
@@ -368,9 +388,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                         if ($bits[0] !== '*') {
                             $element = htmlspecialchars($bits[0]);
                             $attribute = htmlspecialchars($bits[1]);
-                            if (!isset($this->info[$element])) {
+                            if (! isset($this->info[$element])) {
                                 trigger_error(
-                                    "Cannot allow attribute '$attribute' if element " .
+                                    "Cannot allow attribute '$attribute' if element ".
                                     "'$element' is not allowed/supported $support"
                                 );
                             } else {
@@ -396,12 +416,13 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
         // setup forbidden elements ---------------------------------------
 
-        $forbidden_elements   = $config->get('HTML.ForbiddenElements');
+        $forbidden_elements = $config->get('HTML.ForbiddenElements');
         $forbidden_attributes = $config->get('HTML.ForbiddenAttributes');
 
         foreach ($this->info as $tag => $info) {
             if (isset($forbidden_elements[$tag])) {
                 unset($this->info[$tag]);
+
                 continue;
             }
             foreach ($info->attr as $attr => $x) {
@@ -410,12 +431,13 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                     isset($forbidden_attributes[$attr])
                 ) {
                     unset($this->info[$tag]->attr[$attr]);
+
                     continue;
                 } elseif (isset($forbidden_attributes["$tag.$attr"])) { // this segment might get removed eventually
                     // $tag.$attr are not user supplied, so no worries!
                     trigger_error(
-                        "Error with $tag.$attr: tag.attr syntax not supported for " .
-                        "HTML.ForbiddenAttributes; use tag@attr instead",
+                        "Error with $tag.$attr: tag.attr syntax not supported for ".
+                        'HTML.ForbiddenAttributes; use tag@attr instead',
                         E_USER_WARNING
                     );
                 }
@@ -449,18 +471,21 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
     /**
      * Parses a TinyMCE-flavored Allowed Elements and Attributes list into
      * separate lists for processing. Format is element[attr1|attr2],element2...
+     *
      * @warning Although it's largely drawn from TinyMCE's implementation,
      *      it is different, and you'll probably have to modify your lists
-     * @param array $list String list to parse
+     *
+     * @param  array  $list  String list to parse
      * @return array
+     *
      * @todo Give this its own class, probably static interface
      */
     public function parseTinyMCEAllowedList($list)
     {
-        $list = str_replace(array(' ', "\t"), '', $list);
+        $list = str_replace([' ', "\t"], '', $list);
 
-        $elements = array();
-        $attributes = array();
+        $elements = [];
+        $attributes = [];
 
         $chunks = preg_split('/(,|[\n\r]+)/', $list);
         foreach ($chunks as $chunk) {
@@ -468,16 +493,16 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                 continue;
             }
             // remove TinyMCE element control characters
-            if (!strpos($chunk, '[')) {
+            if (! strpos($chunk, '[')) {
                 $element = $chunk;
                 $attr = false;
             } else {
-                list($element, $attr) = explode('[', $chunk);
+                [$element, $attr] = explode('[', $chunk);
             }
             if ($element !== '*') {
                 $elements[$element] = true;
             }
-            if (!$attr) {
+            if (! $attr) {
                 continue;
             }
             $attr = substr($attr, 0, strlen($attr) - 1); // remove trailing ]
@@ -486,7 +511,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                 $attributes["$element.$key"] = true;
             }
         }
-        return array($elements, $attributes);
+
+        return [$elements, $attributes];
     }
 }
 

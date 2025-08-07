@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,17 +11,25 @@
 
 /**
  * @since      Class available since Release 2.0.0
+ *
  * @covers     PHPUnit_Framework_TestCase
  */
 class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements PHPUnit_Framework_TestListener
 {
     protected $endCount;
+
     protected $errorCount;
+
     protected $failureCount;
+
     protected $notImplementedCount;
+
     protected $riskyCount;
+
     protected $skippedCount;
+
     protected $result;
+
     protected $startCount;
 
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -48,13 +57,9 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->skippedCount++;
     }
 
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
-    {
-    }
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {}
 
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
-    {
-    }
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {}
 
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -71,15 +76,15 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->result = new PHPUnit_Framework_TestResult;
         $this->result->addListener($this);
 
-        $this->endCount            = 0;
-        $this->failureCount        = 0;
+        $this->endCount = 0;
+        $this->failureCount = 0;
         $this->notImplementedCount = 0;
-        $this->riskyCount          = 0;
-        $this->skippedCount        = 0;
-        $this->startCount          = 0;
+        $this->riskyCount = 0;
+        $this->skippedCount = 0;
+        $this->startCount = 0;
     }
 
-    public function testError()
+    public function test_error()
     {
         $test = new TestError;
         $test->run($this->result);
@@ -88,7 +93,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->assertEquals(1, $this->endCount);
     }
 
-    public function testFailure()
+    public function test_failure()
     {
         $test = new Failure;
         $test->run($this->result);
@@ -97,7 +102,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->assertEquals(1, $this->endCount);
     }
 
-    public function testStartStop()
+    public function test_start_stop()
     {
         $test = new Success;
         $test->run($this->result);

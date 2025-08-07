@@ -11,12 +11,12 @@
 
 namespace Prophecy\Call;
 
+use Prophecy\Argument\ArgumentsWildcard;
+use Prophecy\Exception\Call\UnexpectedCallException;
 use Prophecy\Exception\Prophecy\MethodProphecyException;
 use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Argument\ArgumentsWildcard;
 use Prophecy\Util\StringUtil;
-use Prophecy\Exception\Call\UnexpectedCallException;
 
 /**
  * Calls receiver & manager.
@@ -30,14 +30,12 @@ class CallCenter
     /**
      * @var Call[]
      */
-    private $recordedCalls = array();
+    private $recordedCalls = [];
 
     /**
      * Initializes call center.
-     *
-     * @param StringUtil $util
      */
-    public function __construct(StringUtil $util = null)
+    public function __construct(?StringUtil $util = null)
     {
         $this->util = $util ?: new StringUtil;
     }
@@ -45,10 +43,7 @@ class CallCenter
     /**
      * Makes and records specific method call for object prophecy.
      *
-     * @param ObjectProphecy $prophecy
-     * @param string         $methodName
-     * @param array          $arguments
-     *
+     * @param  string  $methodName
      * @return mixed Returns null if no promise for prophecy found or promise return value.
      *
      * @throws \Prophecy\Exception\Call\UnexpectedCallException If no appropriate method prophecy found
@@ -74,32 +69,34 @@ class CallCenter
         }
 
         // If no method prophecies defined, then it's a dummy, so we'll just return null
-        if ('__destruct' === $methodName || 0 == count($prophecy->getMethodProphecies())) {
+        if ($methodName === '__destruct' || count($prophecy->getMethodProphecies()) == 0) {
             $this->recordedCalls[] = new Call($methodName, $arguments, null, null, $file, $line);
 
             return null;
         }
 
         // There are method prophecies, so it's a fake/stub. Searching prophecy for this call
-        $matches = array();
+        $matches = [];
         foreach ($prophecy->getMethodProphecies($methodName) as $methodProphecy) {
             if (0 < $score = $methodProphecy->getArgumentsWildcard()->scoreArguments($arguments)) {
-                $matches[] = array($score, $methodProphecy);
+                $matches[] = [$score, $methodProphecy];
             }
         }
 
         // If fake/stub doesn't have method prophecy for this call - throw exception
-        if (!count($matches)) {
+        if (! count($matches)) {
             throw $this->createUnexpectedCallException($prophecy, $methodName, $arguments);
         }
 
         // Sort matches by their score value
-        @usort($matches, function ($match1, $match2) { return $match2[0] - $match1[0]; });
+        @usort($matches, function ($match1, $match2) {
+            return $match2[0] - $match1[0];
+        });
 
         // If Highest rated method prophecy has a promise - execute it or return null instead
         $methodProphecy = $matches[0][1];
         $returnValue = null;
-        $exception   = null;
+        $exception = null;
         if ($promise = $methodProphecy->getPromise()) {
             try {
                 $returnValue = $promise->execute($arguments, $prophecy, $methodProphecy);
@@ -119,7 +116,7 @@ class CallCenter
             $methodName, $arguments, $returnValue, $exception, $file, $line
         );
 
-        if (null !== $exception) {
+        if ($exception !== null) {
             throw $exception;
         }
 
@@ -129,9 +126,7 @@ class CallCenter
     /**
      * Searches for calls by method name & arguments wildcard.
      *
-     * @param string            $methodName
-     * @param ArgumentsWildcard $wildcard
-     *
+     * @param  string  $methodName
      * @return Call[]
      */
     public function findCalls($methodName, ArgumentsWildcard $wildcard)
@@ -139,18 +134,17 @@ class CallCenter
         return array_values(
             array_filter($this->recordedCalls, function (Call $call) use ($methodName, $wildcard) {
                 return $methodName === $call->getMethodName()
-                    && 0 < $wildcard->scoreArguments($call->getArguments())
-                ;
+                    && $wildcard->scoreArguments($call->getArguments()) > 0;
             })
         );
     }
 
     private function createUnexpectedCallException(ObjectProphecy $prophecy, $methodName,
-                                                   array $arguments)
+        array $arguments)
     {
         $classname = get_class($prophecy->reveal());
-        $argstring = implode(', ', array_map(array($this->util, 'stringify'), $arguments));
-        $expected  = implode("\n", array_map(function (MethodProphecy $methodProphecy) {
+        $argstring = implode(', ', array_map([$this->util, 'stringify'], $arguments));
+        $expected = implode("\n", array_map(function (MethodProphecy $methodProphecy) {
             return sprintf('  - %s(%s)',
                 $methodProphecy->getMethodName(),
                 $methodProphecy->getArgumentsWildcard()

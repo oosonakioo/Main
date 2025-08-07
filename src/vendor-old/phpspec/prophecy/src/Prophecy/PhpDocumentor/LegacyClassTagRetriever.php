@@ -22,8 +22,6 @@ use phpDocumentor\Reflection\DocBlock\Tag\MethodTag as LegacyMethodTag;
 final class LegacyClassTagRetriever implements MethodTagRetrieverInterface
 {
     /**
-     * @param \ReflectionClass $reflectionClass
-     *
      * @return LegacyMethodTag[]
      */
     public function getTagList(\ReflectionClass $reflectionClass)

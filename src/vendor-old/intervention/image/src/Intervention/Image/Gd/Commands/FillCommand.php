@@ -2,16 +2,16 @@
 
 namespace Intervention\Image\Gd\Commands;
 
-use Intervention\Image\Gd\Decoder;
 use Intervention\Image\Gd\Color;
+use Intervention\Image\Gd\Decoder;
 
 class FillCommand extends \Intervention\Image\Commands\AbstractCommand
 {
     /**
      * Fills image with color or pattern
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

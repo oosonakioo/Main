@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateRegion extends Migration
 {
@@ -24,14 +24,13 @@ class CreateRegion extends Migration
             $table->timestamps();
         });
 
-        Schema::create('regions_translations', function(Blueprint $table)
-        {
+        Schema::create('regions_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('regions_id')->unsigned();
             $table->string('title', 250);
             $table->text('detail');
             $table->string('locale')->index();
-            $table->unique(['regions_id','locale']);
+            $table->unique(['regions_id', 'locale']);
             $table->foreign('regions_id')->references('id')->on('regions')->onDelete('cascade');
         });
     }

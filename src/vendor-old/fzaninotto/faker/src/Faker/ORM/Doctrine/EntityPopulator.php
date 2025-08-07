@@ -15,19 +15,19 @@ class EntityPopulator
      * @var ClassMetadata
      */
     protected $class;
+
     /**
      * @var array
      */
-    protected $columnFormatters = array();
+    protected $columnFormatters = [];
+
     /**
      * @var array
      */
-    protected $modifiers = array();
+    protected $modifiers = [];
 
     /**
      * Class constructor.
-     *
-     * @param ClassMetadata $class
      */
     public function __construct(ClassMetadata $class)
     {
@@ -42,9 +42,6 @@ class EntityPopulator
         return $this->class->getName();
     }
 
-    /**
-     * @param $columnFormatters
-     */
     public function setColumnFormatters($columnFormatters)
     {
         $this->columnFormatters = $columnFormatters;
@@ -63,9 +60,6 @@ class EntityPopulator
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
     }
 
-    /**
-     * @param array $modifiers
-     */
     public function setModifiers(array $modifiers)
     {
         $this->modifiers = $modifiers;
@@ -79,35 +73,33 @@ class EntityPopulator
         return $this->modifiers;
     }
 
-    /**
-     * @param array $modifiers
-     */
     public function mergeModifiersWith(array $modifiers)
     {
         $this->modifiers = array_merge($this->modifiers, $modifiers);
     }
 
     /**
-     * @param \Faker\Generator $generator
      * @return array
      */
     public function guessColumnFormatters(\Faker\Generator $generator)
     {
-        $formatters = array();
+        $formatters = [];
         $nameGuesser = new \Faker\Guesser\Name($generator);
         $columnTypeGuesser = new ColumnTypeGuesser($generator);
         foreach ($this->class->getFieldNames() as $fieldName) {
-            if ($this->class->isIdentifier($fieldName) || !$this->class->hasField($fieldName)) {
+            if ($this->class->isIdentifier($fieldName) || ! $this->class->hasField($fieldName)) {
                 continue;
             }
 
             $size = isset($this->class->fieldMappings[$fieldName]['length']) ? $this->class->fieldMappings[$fieldName]['length'] : null;
             if ($formatter = $nameGuesser->guessFormat($fieldName, $size)) {
                 $formatters[$fieldName] = $formatter;
+
                 continue;
             }
             if ($formatter = $columnTypeGuesser->guessFormat($fieldName, $this->class)) {
                 $formatters[$fieldName] = $formatter;
+
                 continue;
             }
         }
@@ -137,7 +129,7 @@ class EntityPopulator
                 if (isset($inserted[$relatedClass])) {
                     if ($unique) {
                         $related = null;
-                        if (isset($inserted[$relatedClass][$index]) || !$optional) {
+                        if (isset($inserted[$relatedClass][$index]) || ! $optional) {
                             $related = $inserted[$relatedClass][$index];
                         }
 
@@ -158,8 +150,8 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
-     * @param ObjectManager $manager
-     * @param bool $generateId
+     *
+     * @param  bool  $generateId
      * @return EntityPopulator
      */
     public function execute(ObjectManager $manager, $insertedEntities, $generateId = false)
@@ -185,20 +177,20 @@ class EntityPopulator
     private function fillColumns($obj, $insertedEntities)
     {
         foreach ($this->columnFormatters as $field => $format) {
-            if (null !== $format) {
+            if ($format !== null) {
                 // Add some extended debugging information to any errors thrown by the formatter
                 try {
                     $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
                 } catch (\InvalidArgumentException $ex) {
                     throw new \InvalidArgumentException(sprintf(
-                        "Failed to generate a value for %s::%s: %s",
+                        'Failed to generate a value for %s::%s: %s',
                         get_class($obj),
                         $field,
                         $ex->getMessage()
                     ));
                 }
                 // Try a standard setter if it's available, otherwise fall back on reflection
-                $setter = sprintf("set%s", ucfirst($field));
+                $setter = sprintf('set%s', ucfirst($field));
                 if (method_exists($obj, $setter)) {
                     $obj->$setter($value);
                 } else {
@@ -216,7 +208,6 @@ class EntityPopulator
     }
 
     /**
-     * @param EntityManagerInterface $manager
      * @return int|null
      */
     private function generateId($obj, $column, EntityManagerInterface $manager)
@@ -224,9 +215,9 @@ class EntityPopulator
         /* @var $repository \Doctrine\ORM\EntityRepository */
         $repository = $manager->getRepository(get_class($obj));
         $result = $repository->createQueryBuilder('e')
-                ->select(sprintf('e.%s', $column))
-                ->getQuery()
-                ->getResult();
+            ->select(sprintf('e.%s', $column))
+            ->getQuery()
+            ->getResult();
         $ids = array_map('current', $result);
 
         $id = null;

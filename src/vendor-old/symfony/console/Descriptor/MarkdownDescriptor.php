@@ -29,7 +29,7 @@ class MarkdownDescriptor extends Descriptor
     /**
      * {@inheritdoc}
      */
-    protected function describeInputArgument(InputArgument $argument, array $options = array())
+    protected function describeInputArgument(InputArgument $argument, array $options = [])
     {
         $this->write(
             '**'.$argument->getName().':**'."\n\n"
@@ -44,7 +44,7 @@ class MarkdownDescriptor extends Descriptor
     /**
      * {@inheritdoc}
      */
-    protected function describeInputOption(InputOption $option, array $options = array())
+    protected function describeInputOption(InputOption $option, array $options = [])
     {
         $this->write(
             '**'.$option->getName().':**'."\n\n"
@@ -61,7 +61,7 @@ class MarkdownDescriptor extends Descriptor
     /**
      * {@inheritdoc}
      */
-    protected function describeInputDefinition(InputDefinition $definition, array $options = array())
+    protected function describeInputDefinition(InputDefinition $definition, array $options = [])
     {
         if ($showArguments = count($definition->getArguments()) > 0) {
             $this->write('### Arguments:');
@@ -87,7 +87,7 @@ class MarkdownDescriptor extends Descriptor
     /**
      * {@inheritdoc}
      */
-    protected function describeCommand(Command $command, array $options = array())
+    protected function describeCommand(Command $command, array $options = [])
     {
         $command->getSynopsis();
         $command->mergeApplicationDefinition(false);
@@ -97,7 +97,7 @@ class MarkdownDescriptor extends Descriptor
             .str_repeat('-', strlen($command->getName()))."\n\n"
             .'* Description: '.($command->getDescription() ?: '<none>')."\n"
             .'* Usage:'."\n\n"
-            .array_reduce(array_merge(array($command->getSynopsis()), $command->getAliases(), $command->getUsages()), function ($carry, $usage) {
+            .array_reduce(array_merge([$command->getSynopsis()], $command->getAliases(), $command->getUsages()), function ($carry, $usage) {
                 return $carry .= '  * `'.$usage.'`'."\n";
             })
         );
@@ -116,7 +116,7 @@ class MarkdownDescriptor extends Descriptor
     /**
      * {@inheritdoc}
      */
-    protected function describeApplication(Application $application, array $options = array())
+    protected function describeApplication(Application $application, array $options = [])
     {
         $describedNamespace = isset($options['namespace']) ? $options['namespace'] : null;
         $description = new ApplicationDescription($application, $describedNamespace);
@@ -124,7 +124,7 @@ class MarkdownDescriptor extends Descriptor
         $this->write($application->getName()."\n".str_repeat('=', strlen($application->getName())));
 
         foreach ($description->getNamespaces() as $namespace) {
-            if (ApplicationDescription::GLOBAL_NAMESPACE !== $namespace['id']) {
+            if ($namespace['id'] !== ApplicationDescription::GLOBAL_NAMESPACE) {
                 $this->write("\n\n");
                 $this->write('**'.$namespace['id'].':**');
             }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * phpDocumentor
  *
@@ -6,6 +7,7 @@
  *
  * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -31,13 +33,13 @@ final class Fqsen
     /**
      * Initializes the object.
      *
-     * @param string $fqsen
+     * @param  string  $fqsen
      *
      * @throws \InvalidArgumentException when $fqsen is not matching the format.
      */
     public function __construct($fqsen)
     {
-        $matches = array();
+        $matches = [];
         $result = preg_match('/^\\\\([\\w_\\\\]*)(?:[:]{2}\\$?([\\w_]+))?(?:\\(\\))?$/', $fqsen, $matches);
 
         if ($result === 0) {

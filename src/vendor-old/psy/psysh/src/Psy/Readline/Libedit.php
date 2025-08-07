@@ -29,7 +29,7 @@ class Libedit extends GNUReadline
      */
     public static function isSupported()
     {
-        return function_exists('readline') && !function_exists('readline_list_history');
+        return function_exists('readline') && ! function_exists('readline_list_history');
     }
 
     /**
@@ -38,8 +38,8 @@ class Libedit extends GNUReadline
     public function listHistory()
     {
         $history = file_get_contents($this->historyFile);
-        if (!$history) {
-            return array();
+        if (! $history) {
+            return [];
         }
 
         // libedit doesn't seem to support non-unix line separators.
@@ -47,11 +47,12 @@ class Libedit extends GNUReadline
 
         // shift the history signature, ensure it's valid
         if (array_shift($history) !== '_HiStOrY_V2_') {
-            return array();
+            return [];
         }
 
         // decode the line
-        $history = array_map(array($this, 'parseHistoryLine'), $history);
+        $history = array_map([$this, 'parseHistoryLine'], $history);
+
         // filter empty lines & comments
         return array_values(array_filter($history));
     }
@@ -62,14 +63,13 @@ class Libedit extends GNUReadline
      * if "\0" is found in an entry,
      * everything from it until the next line is a comment.
      *
-     * @param string $line The history line to parse.
-     *
+     * @param  string  $line  The history line to parse.
      * @return string | null
      */
     protected function parseHistoryLine($line)
     {
         // empty line, comment or timestamp
-        if (!$line || $line[0] === "\0") {
+        if (! $line || $line[0] === "\0") {
             return;
         }
         // if "\0" is found in an entry, then

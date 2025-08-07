@@ -37,8 +37,6 @@ class StrictTypesPass extends CodeCleanerPass
      * a new declaration is encountered.
      *
      * @throws FatalErrorException if an invalid `strict_types` declaration is found.
-     *
-     * @param array $nodes
      */
     public function beforeTraverse(array $nodes)
     {
@@ -53,7 +51,7 @@ class StrictTypesPass extends CodeCleanerPass
                 foreach ($node->declares as $declare) {
                     if ($declare->key === 'strict_types') {
                         $value = $declare->value;
-                        if (!$value instanceof LNumber || ($value->value !== 0 && $value->value !== 1)) {
+                        if (! $value instanceof LNumber || ($value->value !== 0 && $value->value !== 1)) {
                             throw new FatalErrorException('strict_types declaration must have 0 or 1 as its value');
                         }
 
@@ -65,8 +63,8 @@ class StrictTypesPass extends CodeCleanerPass
 
         if ($prependStrictTypes) {
             $first = reset($nodes);
-            if (!$first instanceof DeclareStmt) {
-                $declare = new DeclareStmt(array(new DeclareDeclare('strict_types', new LNumber(1))));
+            if (! $first instanceof DeclareStmt) {
+                $declare = new DeclareStmt([new DeclareDeclare('strict_types', new LNumber(1))]);
                 array_unshift($nodes, $declare);
             }
         }

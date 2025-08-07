@@ -11,9 +11,9 @@
 
 namespace Prophecy\Doubler\ClassPatch;
 
+use Prophecy\Doubler\Generator\Node\ArgumentNode;
 use Prophecy\Doubler\Generator\Node\ClassNode;
 use Prophecy\Doubler\Generator\Node\MethodNode;
-use Prophecy\Doubler\Generator\Node\ArgumentNode;
 
 /**
  * Add Prophecy functionality to the double.
@@ -26,7 +26,6 @@ class ProphecySubjectPatch implements ClassPatchInterface
     /**
      * Always returns true.
      *
-     * @param ClassNode $node
      *
      * @return bool
      */
@@ -37,8 +36,6 @@ class ProphecySubjectPatch implements ClassPatchInterface
 
     /**
      * Apply Prophecy functionality to class node.
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {
@@ -46,7 +43,7 @@ class ProphecySubjectPatch implements ClassPatchInterface
         $node->addProperty('objectProphecy', 'private');
 
         foreach ($node->getMethods() as $name => $method) {
-            if ('__construct' === strtolower($name)) {
+            if (strtolower($name) === '__construct') {
                 continue;
             }
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,18 +11,18 @@
 
 class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase
 {
-    public function testParseIniSection()
+    public function test_parse_ini_section()
     {
         $phptTestCase = new PhpTestCaseProxy(__FILE__);
-        $settings     = $phptTestCase->parseIniSection("foo=1\nbar = 2\rbaz = 3\r\nempty=\nignore");
+        $settings = $phptTestCase->parseIniSection("foo=1\nbar = 2\rbaz = 3\r\nempty=\nignore");
 
-        $expected = array(
+        $expected = [
             'foo=1',
             'bar = 2',
             'baz = 3',
             'empty=',
             'ignore',
-        );
+        ];
 
         $this->assertEquals($expected, $settings);
     }

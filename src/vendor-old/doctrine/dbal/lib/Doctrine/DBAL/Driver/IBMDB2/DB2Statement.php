@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,7 +32,7 @@ class DB2Statement implements \IteratorAggregate, Statement
     /**
      * @var array
      */
-    private $_bindParam = array();
+    private $_bindParam = [];
 
     /**
      * @var string Name of the default class to instantiate when fetch mode is \PDO::FETCH_CLASS.
@@ -41,10 +42,10 @@ class DB2Statement implements \IteratorAggregate, Statement
     /**
      * @var string Constructor arguments for the default class to instantiate when fetch mode is \PDO::FETCH_CLASS.
      */
-    private $defaultFetchClassCtorArgs = array();
+    private $defaultFetchClassCtorArgs = [];
 
     /**
-     * @var integer
+     * @var int
      */
     private $_defaultFetchMode = \PDO::FETCH_BOTH;
 
@@ -53,13 +54,13 @@ class DB2Statement implements \IteratorAggregate, Statement
      *
      * @var array
      */
-    static private $_typeMap = array(
+    private static $_typeMap = [
         \PDO::PARAM_INT => DB2_LONG,
         \PDO::PARAM_STR => DB2_CHAR,
-    );
+    ];
 
     /**
-     * @param resource $stmt
+     * @param  resource  $stmt
      */
     public function __construct($stmt)
     {
@@ -79,7 +80,7 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function bindParam($column, &$variable, $type = null, $length = null)
     {
-        $this->_bindParam[$column] =& $variable;
+        $this->_bindParam[$column] = &$variable;
 
         if ($type && isset(self::$_typeMap[$type])) {
             $type = self::$_typeMap[$type];
@@ -87,7 +88,7 @@ class DB2Statement implements \IteratorAggregate, Statement
             $type = DB2_CHAR;
         }
 
-        if (!db2_bind_param($this->_stmt, $column, "variable", DB2_PARAM_IN, $type)) {
+        if (! db2_bind_param($this->_stmt, $column, 'variable', DB2_PARAM_IN, $type)) {
             throw new DB2Exception(db2_stmt_errormsg());
         }
 
@@ -99,11 +100,11 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function closeCursor()
     {
-        if ( ! $this->_stmt) {
+        if (! $this->_stmt) {
             return false;
         }
 
-        $this->_bindParam = array();
+        $this->_bindParam = [];
         db2_free_result($this->_stmt);
         $ret = db2_free_stmt($this->_stmt);
         $this->_stmt = false;
@@ -116,7 +117,7 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function columnCount()
     {
-        if ( ! $this->_stmt) {
+        if (! $this->_stmt) {
             return false;
         }
 
@@ -136,10 +137,10 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function errorInfo()
     {
-        return array(
+        return [
             0 => db2_stmt_errormsg(),
             1 => db2_stmt_error(),
-        );
+        ];
     }
 
     /**
@@ -147,7 +148,7 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function execute($params = null)
     {
-        if ( ! $this->_stmt) {
+        if (! $this->_stmt) {
             return false;
         }
 
@@ -175,8 +176,8 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
-        $this->_defaultFetchMode         = $fetchMode;
-        $this->defaultFetchClass         = $arg2 ? $arg2 : $this->defaultFetchClass;
+        $this->_defaultFetchMode = $fetchMode;
+        $this->defaultFetchClass = $arg2 ? $arg2 : $this->defaultFetchClass;
         $this->defaultFetchClassCtorArgs = $arg3 ? (array) $arg3 : $this->defaultFetchClassCtorArgs;
 
         return true;
@@ -205,12 +206,12 @@ class DB2Statement implements \IteratorAggregate, Statement
                 return db2_fetch_assoc($this->_stmt);
             case \PDO::FETCH_CLASS:
                 $className = $this->defaultFetchClass;
-                $ctorArgs  = $this->defaultFetchClassCtorArgs;
+                $ctorArgs = $this->defaultFetchClassCtorArgs;
 
                 if (func_num_args() >= 2) {
-                    $args      = func_get_args();
+                    $args = func_get_args();
                     $className = $args[1];
-                    $ctorArgs  = isset($args[2]) ? $args[2] : array();
+                    $ctorArgs = isset($args[2]) ? $args[2] : [];
                 }
 
                 $result = db2_fetch_object($this->_stmt);
@@ -225,7 +226,7 @@ class DB2Statement implements \IteratorAggregate, Statement
             case \PDO::FETCH_OBJ:
                 return db2_fetch_object($this->_stmt);
             default:
-                throw new DB2Exception("Given Fetch-Style " . $fetchMode . " is not supported.");
+                throw new DB2Exception('Given Fetch-Style '.$fetchMode.' is not supported.');
         }
     }
 
@@ -234,11 +235,11 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function fetchAll($fetchMode = null)
     {
-        $rows = array();
+        $rows = [];
 
         switch ($fetchMode) {
             case \PDO::FETCH_CLASS:
-                while ($row = call_user_func_array(array($this, 'fetch'), func_get_args())) {
+                while ($row = call_user_func_array([$this, 'fetch'], func_get_args())) {
                     $rows[] = $row;
                 }
                 break;
@@ -263,7 +264,7 @@ class DB2Statement implements \IteratorAggregate, Statement
     {
         $row = $this->fetch(\PDO::FETCH_NUM);
 
-        if (false === $row) {
+        if ($row === false) {
             return false;
         }
 
@@ -275,24 +276,23 @@ class DB2Statement implements \IteratorAggregate, Statement
      */
     public function rowCount()
     {
-        return (@db2_num_rows($this->_stmt))?:0;
+        return (@db2_num_rows($this->_stmt)) ?: 0;
     }
 
     /**
      * Casts a stdClass object to the given class name mapping its' properties.
      *
-     * @param \stdClass     $sourceObject     Object to cast from.
-     * @param string|object $destinationClass Name of the class or class instance to cast to.
-     * @param array         $ctorArgs         Arguments to use for constructing the destination class instance.
-     *
+     * @param  \stdClass  $sourceObject  Object to cast from.
+     * @param  string|object  $destinationClass  Name of the class or class instance to cast to.
+     * @param  array  $ctorArgs  Arguments to use for constructing the destination class instance.
      * @return object
      *
      * @throws DB2Exception
      */
-    private function castObject(\stdClass $sourceObject, $destinationClass, array $ctorArgs = array())
+    private function castObject(\stdClass $sourceObject, $destinationClass, array $ctorArgs = [])
     {
-        if ( ! is_string($destinationClass)) {
-            if ( ! is_object($destinationClass)) {
+        if (! is_string($destinationClass)) {
+            if (! is_object($destinationClass)) {
                 throw new DB2Exception(sprintf(
                     'Destination class has to be of type string or object, %s given.', gettype($destinationClass)
                 ));
@@ -302,15 +302,15 @@ class DB2Statement implements \IteratorAggregate, Statement
             $destinationClass = $destinationClass->newInstanceArgs($ctorArgs);
         }
 
-        $sourceReflection           = new \ReflectionObject($sourceObject);
+        $sourceReflection = new \ReflectionObject($sourceObject);
         $destinationClassReflection = new \ReflectionObject($destinationClass);
         /** @var \ReflectionProperty[] $destinationProperties */
-        $destinationProperties      = array_change_key_case($destinationClassReflection->getProperties(), \CASE_LOWER);
+        $destinationProperties = array_change_key_case($destinationClassReflection->getProperties(), \CASE_LOWER);
 
         foreach ($sourceReflection->getProperties() as $sourceProperty) {
             $sourceProperty->setAccessible(true);
 
-            $name  = $sourceProperty->getName();
+            $name = $sourceProperty->getName();
             $value = $sourceProperty->getValue($sourceObject);
 
             // Try to find a case-matching property.

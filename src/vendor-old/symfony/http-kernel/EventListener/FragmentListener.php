@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\UriSigner;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Handles content fragments represented by special URIs.
@@ -32,13 +32,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class FragmentListener implements EventSubscriberInterface
 {
     private $signer;
+
     private $fragmentPath;
 
     /**
      * Constructor.
      *
-     * @param UriSigner $signer       A UriSigner instance
-     * @param string    $fragmentPath The path that triggers this listener
+     * @param  UriSigner  $signer  A UriSigner instance
+     * @param  string  $fragmentPath  The path that triggers this listener
      */
     public function __construct(UriSigner $signer, $fragmentPath = '/_fragment')
     {
@@ -49,7 +50,7 @@ class FragmentListener implements EventSubscriberInterface
     /**
      * Fixes request attributes when the path is '/_fragment'.
      *
-     * @param GetResponseEvent $event A GetResponseEvent instance
+     * @param  GetResponseEvent  $event  A GetResponseEvent instance
      *
      * @throws AccessDeniedHttpException if the request does not come from a trusted IP.
      */
@@ -74,15 +75,15 @@ class FragmentListener implements EventSubscriberInterface
 
         parse_str($request->query->get('_path', ''), $attributes);
         $request->attributes->add($attributes);
-        $request->attributes->set('_route_params', array_replace($request->attributes->get('_route_params', array()), $attributes));
+        $request->attributes->set('_route_params', array_replace($request->attributes->get('_route_params', []), $attributes));
         $request->query->remove('_path');
     }
 
     protected function validateRequest(Request $request)
     {
         // is the Request safe?
-        if (!$request->isMethodSafe()) {
-            throw new AccessDeniedHttpException();
+        if (! $request->isMethodSafe()) {
+            throw new AccessDeniedHttpException;
         }
 
         // is the Request signed?
@@ -91,13 +92,13 @@ class FragmentListener implements EventSubscriberInterface
             return;
         }
 
-        throw new AccessDeniedHttpException();
+        throw new AccessDeniedHttpException;
     }
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(array('onKernelRequest', 48)),
-        );
+        return [
+            KernelEvents::REQUEST => [['onKernelRequest', 48]],
+        ];
     }
 }

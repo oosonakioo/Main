@@ -21,21 +21,27 @@ use Prophecy\Exception\InvalidArgumentException;
 class MethodNode
 {
     private $name;
+
     private $code;
+
     private $visibility = 'public';
+
     private $static = false;
+
     private $returnsReference = false;
+
     private $returnType;
+
     private $nullableReturnType = false;
 
     /**
      * @var ArgumentNode[]
      */
-    private $arguments = array();
+    private $arguments = [];
 
     /**
-     * @param string $name
-     * @param string $code
+     * @param  string  $name
+     * @param  string  $code
      */
     public function __construct($name, $code = null)
     {
@@ -49,13 +55,13 @@ class MethodNode
     }
 
     /**
-     * @param string $visibility
+     * @param  string  $visibility
      */
     public function setVisibility($visibility)
     {
         $visibility = strtolower($visibility);
 
-        if (!in_array($visibility, array('public', 'private', 'protected'))) {
+        if (! in_array($visibility, ['public', 'private', 'protected'])) {
             throw new InvalidArgumentException(sprintf(
                 '`%s` method visibility is not supported.', $visibility
             ));
@@ -104,11 +110,11 @@ class MethodNode
 
     public function hasReturnType()
     {
-        return null !== $this->returnType;
+        return $this->returnType !== null;
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      */
     public function setReturnType($type = null)
     {
@@ -117,7 +123,7 @@ class MethodNode
                 $this->returnType = null;
                 break;
 
-            case 'string';
+            case 'string':
             case 'float':
             case 'int':
             case 'bool':
@@ -142,7 +148,7 @@ class MethodNode
                 break;
 
             default:
-                $this->returnType = '\\' . ltrim($type, '\\');
+                $this->returnType = '\\'.ltrim($type, '\\');
         }
     }
 
@@ -152,7 +158,7 @@ class MethodNode
     }
 
     /**
-     * @param bool $bool
+     * @param  bool  $bool
      */
     public function setNullableReturnType($bool = true)
     {
@@ -168,7 +174,7 @@ class MethodNode
     }
 
     /**
-     * @param string $code
+     * @param  string  $code
      */
     public function setCode($code)
     {
@@ -177,8 +183,7 @@ class MethodNode
 
     public function getCode()
     {
-        if ($this->returnsReference)
-        {
+        if ($this->returnsReference) {
             return "throw new \Prophecy\Exception\Doubler\ReturnByReferenceException('Returning by reference not supported', get_class(\$this), '{$this->name}');";
         }
 
@@ -189,7 +194,7 @@ class MethodNode
     {
         $this->code = sprintf(
             'return parent::%s(%s);', $this->getName(), implode(', ',
-                array_map(array($this, 'generateArgument'), $this->arguments)
+                array_map([$this, 'generateArgument'], $this->arguments)
             )
         );
     }

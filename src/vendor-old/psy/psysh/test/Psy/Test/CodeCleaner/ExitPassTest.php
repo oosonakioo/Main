@@ -20,15 +20,15 @@ class ExitPassTest extends CodeCleanerTestCase
      */
     private $expectedExceptionString = "throw new Psy\\Exception\\BreakException('Goodbye.');";
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->setPass(new ExitPass());
+        $this->setPass(new ExitPass);
     }
 
     /**
      * @dataProvider dataProviderExitStatement
      */
-    public function testExitStatement($from, $to)
+    public function test_exit_statement($from, $to)
     {
         $this->assertProcessesAs($from, $to);
     }
@@ -40,12 +40,12 @@ class ExitPassTest extends CodeCleanerTestCase
      */
     public function dataProviderExitStatement()
     {
-        return array(
-            array('exit;', $this->expectedExceptionString),
-            array('exit();', $this->expectedExceptionString),
-            array('die;', $this->expectedExceptionString),
-            array('if (true) { exit; }', "if (true) {\n    $this->expectedExceptionString\n}"),
-            array('if (false) { exit; }', "if (false) {\n    $this->expectedExceptionString\n}"),
-        );
+        return [
+            ['exit;', $this->expectedExceptionString],
+            ['exit();', $this->expectedExceptionString],
+            ['die;', $this->expectedExceptionString],
+            ['if (true) { exit; }', "if (true) {\n    $this->expectedExceptionString\n}"],
+            ['if (false) { exit; }', "if (false) {\n    $this->expectedExceptionString\n}"],
+        ];
     }
 }

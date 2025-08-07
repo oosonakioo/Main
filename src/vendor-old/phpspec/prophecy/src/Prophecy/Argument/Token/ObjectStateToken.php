@@ -11,9 +11,9 @@
 
 namespace Prophecy\Argument\Token;
 
-use SebastianBergmann\Comparator\ComparisonFailure;
 use Prophecy\Comparator\Factory as ComparatorFactory;
 use Prophecy\Util\StringUtil;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Object state-checker token.
@@ -23,27 +23,28 @@ use Prophecy\Util\StringUtil;
 class ObjectStateToken implements TokenInterface
 {
     private $name;
+
     private $value;
+
     private $util;
+
     private $comparatorFactory;
 
     /**
      * Initializes token.
      *
-     * @param string            $methodName
-     * @param mixed             $value             Expected return value
-     * @param null|StringUtil   $util
-     * @param ComparatorFactory $comparatorFactory
+     * @param  string  $methodName
+     * @param  mixed  $value  Expected return value
      */
     public function __construct(
         $methodName,
         $value,
-        StringUtil $util = null,
-        ComparatorFactory $comparatorFactory = null
+        ?StringUtil $util = null,
+        ?ComparatorFactory $comparatorFactory = null
     ) {
-        $this->name  = $methodName;
+        $this->name = $methodName;
         $this->value = $value;
-        $this->util  = $util ?: new StringUtil;
+        $this->util = $util ?: new StringUtil;
 
         $this->comparatorFactory = $comparatorFactory ?: ComparatorFactory::getInstance();
     }
@@ -51,14 +52,13 @@ class ObjectStateToken implements TokenInterface
     /**
      * Scores 8 if argument is an object, which method returns expected value.
      *
-     * @param mixed $argument
-     *
+     * @param  mixed  $argument
      * @return bool|int
      */
     public function scoreArgument($argument)
     {
         if (is_object($argument) && method_exists($argument, $this->name)) {
-            $actual = call_user_func(array($argument, $this->name));
+            $actual = call_user_func([$argument, $this->name]);
 
             $comparator = $this->comparatorFactory->getComparatorFor(
                 $this->value, $actual
@@ -66,6 +66,7 @@ class ObjectStateToken implements TokenInterface
 
             try {
                 $comparator->assertEquals($this->value, $actual);
+
                 return 8;
             } catch (ComparisonFailure $failure) {
                 return false;

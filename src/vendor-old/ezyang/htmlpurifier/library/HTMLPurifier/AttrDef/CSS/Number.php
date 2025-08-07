@@ -5,15 +5,15 @@
  */
 class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
 {
-
     /**
      * Indicates whether or not only positive values are allowed.
+     *
      * @type bool
      */
     protected $non_negative = false;
 
     /**
-     * @param bool $non_negative indicates whether negatives are forbidden
+     * @param  bool  $non_negative  indicates whether negatives are forbidden
      */
     public function __construct($non_negative = false)
     {
@@ -21,10 +21,11 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $number
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $number
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return string|bool
+     *
      * @warning Some contexts do not pass $config, $context. These
      *          variables should not be used without checking HTMLPurifier_Length
      */
@@ -52,7 +53,8 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
 
         if (ctype_digit($number)) {
             $number = ltrim($number, '0');
-            return $number ? $sign . $number : '0';
+
+            return $number ? $sign.$number : '0';
         }
 
         // Period is the only non-numeric character allowed
@@ -60,12 +62,12 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
             return false;
         }
 
-        list($left, $right) = explode('.', $number, 2);
+        [$left, $right] = explode('.', $number, 2);
 
         if ($left === '' && $right === '') {
             return false;
         }
-        if ($left !== '' && !ctype_digit($left)) {
+        if ($left !== '' && ! ctype_digit($left)) {
             return false;
         }
 
@@ -73,11 +75,12 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
         $right = rtrim($right, '0');
 
         if ($right === '') {
-            return $left ? $sign . $left : '0';
-        } elseif (!ctype_digit($right)) {
+            return $left ? $sign.$left : '0';
+        } elseif (! ctype_digit($right)) {
             return false;
         }
-        return $sign . $left . '.' . $right;
+
+        return $sign.$left.'.'.$right;
     }
 }
 

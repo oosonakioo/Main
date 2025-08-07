@@ -19,20 +19,23 @@ namespace Symfony\Component\Yaml\Exception;
 class ParseException extends RuntimeException
 {
     private $parsedFile;
+
     private $parsedLine;
+
     private $snippet;
+
     private $rawMessage;
 
     /**
      * Constructor.
      *
-     * @param string     $message    The error message
-     * @param int        $parsedLine The line where the error occurred
-     * @param int        $snippet    The snippet of code near the problem
-     * @param string     $parsedFile The file name where the error occurred
-     * @param \Exception $previous   The previous exception
+     * @param  string  $message  The error message
+     * @param  int  $parsedLine  The line where the error occurred
+     * @param  int  $snippet  The snippet of code near the problem
+     * @param  string  $parsedFile  The file name where the error occurred
+     * @param  \Exception  $previous  The previous exception
      */
-    public function __construct($message, $parsedLine = -1, $snippet = null, $parsedFile = null, \Exception $previous = null)
+    public function __construct($message, $parsedLine = -1, $snippet = null, $parsedFile = null, ?\Exception $previous = null)
     {
         $this->parsedFile = $parsedFile;
         $this->parsedLine = $parsedLine;
@@ -57,7 +60,7 @@ class ParseException extends RuntimeException
     /**
      * Sets the snippet of code near the error.
      *
-     * @param string $snippet The code snippet
+     * @param  string  $snippet  The code snippet
      */
     public function setSnippet($snippet)
     {
@@ -81,7 +84,7 @@ class ParseException extends RuntimeException
     /**
      * Sets the filename where the error occurred.
      *
-     * @param string $parsedFile The filename
+     * @param  string  $parsedFile  The filename
      */
     public function setParsedFile($parsedFile)
     {
@@ -103,7 +106,7 @@ class ParseException extends RuntimeException
     /**
      * Sets the line where the error occurred.
      *
-     * @param int $parsedLine The file line
+     * @param  int  $parsedLine  The file line
      */
     public function setParsedLine($parsedLine)
     {
@@ -117,12 +120,12 @@ class ParseException extends RuntimeException
         $this->message = $this->rawMessage;
 
         $dot = false;
-        if ('.' === substr($this->message, -1)) {
+        if (substr($this->message, -1) === '.') {
             $this->message = substr($this->message, 0, -1);
             $dot = true;
         }
 
-        if (null !== $this->parsedFile) {
+        if ($this->parsedFile !== null) {
             $this->message .= sprintf(' in %s', json_encode($this->parsedFile, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         }
 

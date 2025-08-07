@@ -7,21 +7,20 @@
  */
 class HTMLPurifier_AttrTransform_NameSync extends HTMLPurifier_AttrTransform
 {
-
     public function __construct()
     {
-        $this->idDef = new HTMLPurifier_AttrDef_HTML_ID();
+        $this->idDef = new HTMLPurifier_AttrDef_HTML_ID;
     }
 
     /**
-     * @param array $attr
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $attr
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function transform($attr, $config, $context)
     {
-        if (!isset($attr['name'])) {
+        if (! isset($attr['name'])) {
             return $attr;
         }
         $name = $attr['name'];
@@ -34,6 +33,7 @@ class HTMLPurifier_AttrTransform_NameSync extends HTMLPurifier_AttrTransform
         } else {
             $attr['name'] = $result;
         }
+
         return $attr;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Illuminate\Console\Scheduling;
 
-use LogicException;
-use InvalidArgumentException;
 use Illuminate\Contracts\Container\Container;
+use InvalidArgumentException;
+use LogicException;
 
 class CallbackEvent extends Event
 {
@@ -26,7 +26,6 @@ class CallbackEvent extends Event
      * Create a new event instance.
      *
      * @param  string  $callback
-     * @param  array  $parameters
      * @return void
      *
      * @throws \InvalidArgumentException
@@ -46,7 +45,6 @@ class CallbackEvent extends Event
     /**
      * Run the given event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return mixed
      *
      * @throws \Exception

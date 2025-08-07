@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,6 +33,7 @@ namespace Doctrine\Common\Collections;
  * EntityManager or Repositories.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 interface Selectable
@@ -40,7 +42,6 @@ interface Selectable
      * Selects all elements from a selectable that match the expression and
      * returns a new collection containing these elements.
      *
-     * @param Criteria $criteria
      *
      * @return Collection
      */

@@ -27,25 +27,25 @@ class ChainCacheClearerTest extends \PHPUnit_Framework_TestCase
         @unlink(self::$cacheDir);
     }
 
-    public function testInjectClearersInConstructor()
+    public function test_inject_clearers_in_constructor()
     {
         $clearer = $this->getMockClearer();
         $clearer
             ->expects($this->once())
             ->method('clear');
 
-        $chainClearer = new ChainCacheClearer(array($clearer));
+        $chainClearer = new ChainCacheClearer([$clearer]);
         $chainClearer->clear(self::$cacheDir);
     }
 
-    public function testInjectClearerUsingAdd()
+    public function test_inject_clearer_using_add()
     {
         $clearer = $this->getMockClearer();
         $clearer
             ->expects($this->once())
             ->method('clear');
 
-        $chainClearer = new ChainCacheClearer();
+        $chainClearer = new ChainCacheClearer;
         $chainClearer->add($clearer);
         $chainClearer->clear(self::$cacheDir);
     }

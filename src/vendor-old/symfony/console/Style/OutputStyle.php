@@ -24,9 +24,6 @@ abstract class OutputStyle implements OutputInterface, StyleInterface
 {
     private $output;
 
-    /**
-     * @param OutputInterface $output
-     */
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
@@ -41,8 +38,7 @@ abstract class OutputStyle implements OutputInterface, StyleInterface
     }
 
     /**
-     * @param int $max
-     *
+     * @param  int  $max
      * @return ProgressBar
      */
     public function createProgressBar($max = 0)

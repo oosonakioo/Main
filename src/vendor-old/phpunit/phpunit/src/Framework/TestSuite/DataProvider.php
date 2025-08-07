@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -15,8 +16,6 @@ class PHPUnit_Framework_TestSuite_DataProvider extends PHPUnit_Framework_TestSui
 {
     /**
      * Sets the dependencies of a TestCase.
-     *
-     * @param array $dependencies
      */
     public function setDependencies(array $dependencies)
     {

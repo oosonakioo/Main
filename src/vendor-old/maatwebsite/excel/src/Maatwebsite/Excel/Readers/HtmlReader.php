@@ -1,38 +1,40 @@
-<?php namespace Maatwebsite\Excel\Readers;
+<?php
 
-use PHPExcel;
+namespace Maatwebsite\Excel\Readers;
+
+use DOMDocument;
+use DOMElement;
 use DOMNode;
 use DOMText;
-use DOMElement;
-use DOMDocument;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Maatwebsite\Excel\Parsers\CssParser;
+use PHPExcel;
 use PHPExcel_Cell;
-use PHPExcel_Settings;
 use PHPExcel_Reader_HTML;
-use PHPExcel_Style_Color;
+use PHPExcel_Settings;
+use PHPExcel_Style_Alignment;
+use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use PHPExcel_Style_Font;
-use PHPExcel_Style_Border;
 use PHPExcel_Worksheet_Drawing;
-use PHPExcel_Style_Alignment;
-use Maatwebsite\Excel\Parsers\CssParser;
-use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
 /**
- *
  * LaravelExcel HTML reader
  *
  * @category   Laravel Excel
+ *
  * @version    2.0.0
- * @package    maatwebsite/excel
+ *
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
  * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class Html extends PHPExcel_Reader_HTML {
-
+class Html extends PHPExcel_Reader_HTML
+{
     /**
      * Style per range
+     *
      * @var array
      */
     protected $styles = [];
@@ -48,42 +50,41 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Input encoding
+     *
      * @var string
      */
     protected $_inputEncoding = 'ANSI';
 
     /**
      * Sheet index to read
+     *
      * @var int
      */
     protected $_sheetIndex = 0;
 
     /**
      * HTML tags formatting settings
+     *
      * @var array
      */
     protected $_formats = [];
 
     /**
      * The current colspan
-     * @var integer
+     *
+     * @var int
      */
     protected $spanWidth = 1;
 
     /**
      * The current rowspan
-     * @var integer
+     *
+     * @var int
      */
     protected $spanHeight = 1;
 
-    /**
-     * @var
-     */
     private $cssParser;
 
-    /**
-     * @param CssParser $cssParser
-     */
     public function __construct(CssParser $cssParser)
     {
         $this->cssParser = $cssParser;
@@ -93,36 +94,35 @@ class Html extends PHPExcel_Reader_HTML {
     /**
      * Loads PHPExcel from file
      *
-     * @param   string                                 $pFilename
-     * @param   boolean                                $isString
-     * @param bool|LaravelExcelWorksheet|null|PHPExcel $obj
+     * @param  string  $pFilename
+     * @param  bool  $isString
+     * @param  bool|LaravelExcelWorksheet|null|PHPExcel  $obj
+     * @return LaravelExcelWorksheet
+     *
      * @throws \PHPExcel_Reader_Exception
-     * @return  LaravelExcelWorksheet
      */
     public function load($pFilename, $isString = false, $obj = false)
     {
         // Set the default style formats
         $this->setStyleFormats();
 
-        if ( $obj instanceof PHPExcel )
-        {
+        if ($obj instanceof PHPExcel) {
             // Load into this instance
             return $this->loadIntoExisting($pFilename, $obj, $isString);
-        }
-        elseif ( $obj instanceof LaravelExcelWorksheet )
-        {
+        } elseif ($obj instanceof LaravelExcelWorksheet) {
             // Load into this instance
             return $this->loadIntoExistingSheet($pFilename, $obj, $isString);
         }
 
-        $objPHPExcel = $obj ? $obj : new PHPExcel();
+        $objPHPExcel = $obj ? $obj : new PHPExcel;
 
         return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);
     }
 
     /**
      * Set the style formats from our config file
-     * @return  array
+     *
+     * @return array
      */
     protected function setStyleFormats()
     {
@@ -132,29 +132,26 @@ class Html extends PHPExcel_Reader_HTML {
     /**
      * Loads HTML from file into sheet instance
      *
-     * @param   string                $pFilename
-     * @param   LaravelExcelWorksheet $sheet
-     * @param   boolean               $isString
-     * @return  LaravelExcelWorksheet
-     * @throws  PHPExcel_Reader_Exception
+     * @param  string  $pFilename
+     * @param  bool  $isString
+     * @return LaravelExcelWorksheet
+     *
+     * @throws PHPExcel_Reader_Exception
      */
     public function loadIntoExistingSheet($pFilename, LaravelExcelWorksheet $sheet, $isString = false)
     {
         $isHtmlFile = false;
 
         // Check if it's a string or file
-        if ( !$isString )
-        {
+        if (! $isString) {
             // Double check if it's a file
-            if ( is_file($pFilename) )
-            {
+            if (is_file($pFilename)) {
                 $isHtmlFile = true;
                 $this->_openFile($pFilename);
 
-                if ( !$this->_isValidFormat() )
-                {
+                if (! $this->_isValidFormat()) {
                     fclose($this->_fileHandle);
-                    throw new PHPExcel_Reader_Exception($pFilename . " is an Invalid HTML file.");
+                    throw new PHPExcel_Reader_Exception($pFilename.' is an Invalid HTML file.');
                 }
 
                 fclose($this->_fileHandle);
@@ -165,20 +162,14 @@ class Html extends PHPExcel_Reader_HTML {
         $dom = new DOMDocument;
 
         // Check if we need to load the file or the HTML
-        if ( $isHtmlFile )
-        {
+        if ($isHtmlFile) {
             // Load HTML from file
-            if ( (version_compare(PHP_VERSION, '5.4.0') >= 0) && defined(LIBXML_DTDLOAD) )
-            {
+            if ((version_compare(PHP_VERSION, '5.4.0') >= 0) && defined(LIBXML_DTDLOAD)) {
                 $loaded = @$dom->loadHTMLFile($pFilename, PHPExcel_Settings::getLibXmlLoaderOptions());
-            }
-            else
-            {
+            } else {
                 $loaded = @$dom->loadHTMLFile($pFilename);
             }
-        }
-        else
-        {
+        } else {
             // Load HTML from string
             @$dom->loadHTML(mb_convert_encoding($pFilename, 'HTML-ENTITIES', 'UTF-8'));
 
@@ -195,9 +186,8 @@ class Html extends PHPExcel_Reader_HTML {
             $loaded = @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
         }
 
-        if ( $loaded === false )
-        {
-            throw new PHPExcel_Reader_Exception('Failed to load ' . $pFilename . ' as a DOM Document');
+        if ($loaded === false) {
+            throw new PHPExcel_Reader_Exception('Failed to load '.$pFilename.' as a DOM Document');
         }
 
         //  Discard white space
@@ -208,31 +198,28 @@ class Html extends PHPExcel_Reader_HTML {
         $content = '';
         $this->_processDomElement($dom, $sheet, $row, $column, $content);
 
-        if ( !$sheet->hasFixedSizeColumns() )
+        if (! $sheet->hasFixedSizeColumns()) {
             $this->autosizeColumn($sheet);
+        }
 
         return $sheet;
     }
 
     /**
      * Autosize column for document
-     * @param  LaravelExcelWorksheet $sheet
+     *
+     * @param  LaravelExcelWorksheet  $sheet
      * @return LaravelExcelWorksheet
      */
     public function autosizeColumn($sheet)
     {
-        if ( $columns = $sheet->getAutosize() )
-        {
-            if ( is_array($columns) )
-            {
+        if ($columns = $sheet->getAutosize()) {
+            if (is_array($columns)) {
                 $sheet->setAutoSize($columns);
-            }
-            else
-            {
+            } else {
                 $toCol = $sheet->getHighestColumn();
                 $toCol++;
-                for ($i = 'A'; $i !== $toCol; $i++)
-                {
+                for ($i = 'A'; $i !== $toCol; $i++) {
                     $sheet->getColumnDimension($i)->setAutoSize(true);
                 }
 
@@ -245,48 +232,43 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Process the dom element
-     * @param  DOMNode               $element
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $row
-     * @param  integer               $column
-     * @param  string                $cellContent
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $row
+     * @param  int  $column
+     * @param  string  $cellContent
      * @return void
      */
     protected function _processDomElement(DOMNode $element, $sheet, &$row, &$column, &$cellContent, $format = null)
     {
-        foreach ($element->childNodes as $child)
-        {
+        foreach ($element->childNodes as $child) {
             // If is text
-            if ( $child instanceof DOMText )
-            {
+            if ($child instanceof DOMText) {
                 // get the dom text
                 $domText = preg_replace('/\s+/u', ' ', trim($child->nodeValue));
 
                 //  simply append the text if the cell content is a plain text string
-                if ( is_string($cellContent) )
-                {
+                if (is_string($cellContent)) {
                     $cellContent .= $domText;
                 }
             }
 
             // If is a dom element
-            elseif ( $child instanceof DOMElement )
-            {
+            elseif ($child instanceof DOMElement) {
                 $attributeArray = [];
 
                 // Set row (=parent) styles
-                if ( isset($this->styles[$row]) )
+                if (isset($this->styles[$row])) {
                     $this->parseInlineStyles($sheet, $column, $row, $this->styles[$row]);
+                }
 
                 // Loop through the child's attributes
-                foreach ($child->attributes as $attribute)
-                {
+                foreach ($child->attributes as $attribute) {
                     // Add the attribute to the array
                     $attributeArray[$attribute->name] = $attribute->value;
 
                     // Attribute names
-                    switch ($attribute->name)
-                    {
+                    switch ($attribute->name) {
                         // Colspan
                         case 'width':
                             $this->parseWidth($sheet, $column, $row, $attribute->value);
@@ -296,55 +278,53 @@ class Html extends PHPExcel_Reader_HTML {
                             $this->parseHeight($sheet, $column, $row, $attribute->value);
                             break;
 
-                        // Colspan
+                            // Colspan
                         case 'colspan':
                             $this->parseColSpan($sheet, $column, $row, $attribute->value, $child->attributes);
                             break;
 
-                        // Rowspan
+                            // Rowspan
                         case 'rowspan':
                             $this->parseRowSpan($sheet, $column, $row, $attribute->value, $child->attributes);
                             break;
 
-                        // Alignment
+                            // Alignment
                         case 'align':
                             $this->parseAlign($sheet, $column, $row, $attribute->value);
                             break;
 
-                        // Vertical alignment
+                            // Vertical alignment
                         case 'valign':
                             $this->parseValign($sheet, $column, $row, $attribute->value);
                             break;
 
-                        // Cell format
+                            // Cell format
                         case 'data-format':
                             $this->parseDataFormat($sheet, $column, $row, $attribute->value);
                             break;
 
-                        // Inline css styles
+                            // Inline css styles
                         case 'style':
                             $this->parseInlineStyles($sheet, $column, $row, $attribute->value);
 
-                            if ( $child->nodeName == 'tr' )
+                            if ($child->nodeName == 'tr') {
                                 $this->styles[$row] = $attribute->value;
+                            }
                             break;
                     }
                 }
 
                 // nodeName
-                switch ($child->nodeName)
-                {
+                switch ($child->nodeName) {
 
                     // Meta tags
                     case 'meta' :
 
                         // Loop through the attributes
-                        foreach ($attributeArray as $attributeName => $attributeValue)
-                        {
+                        foreach ($attributeArray as $attributeName => $attributeValue) {
 
                             // Switch the names
-                            switch ($attributeName)
-                            {
+                            switch ($attributeName) {
                                 // Set input encoding
                                 case 'charset':
                                     $_inputEncoding = $attributeValue;
@@ -357,14 +337,14 @@ class Html extends PHPExcel_Reader_HTML {
 
                         break;
 
-                    // Set sheet title
+                        // Set sheet title
                     case 'title' :
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         $sheet->setTitle($cellContent);
                         $cellContent = '';
                         break;
 
-                    // Text
+                        // Text
                     case 'span'  :
                     case 'div'   :
                     case 'font'  :
@@ -374,84 +354,78 @@ class Html extends PHPExcel_Reader_HTML {
                     case 'b'     :
 
                         // Add space after empty cells
-                        if ( $cellContent > '' )
+                        if ($cellContent > '') {
                             $cellContent .= ' ';
+                        }
 
                         // Continue processing
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         // Add space after empty cells
-                        if ( $cellContent > '' )
+                        if ($cellContent > '') {
                             $cellContent .= ' ';
+                        }
 
                         // Set the styling
-                        if ( isset($this->_formats[$child->nodeName]) )
-                        {
-                            $sheet->getStyle($column . $row)
-                                  ->applyFromArray($this->_formats[$child->nodeName]);
+                        if (isset($this->_formats[$child->nodeName])) {
+                            $sheet->getStyle($column.$row)
+                                ->applyFromArray($this->_formats[$child->nodeName]);
                         }
 
                         break;
 
-                    // Horizontal rules
+                        // Horizontal rules
                     case 'hr' :
 
                         // Flush the cell
                         $this->flushCell($sheet, $column, $row, $cellContent);
 
                         // count
-                        ++$row;
+                        $row++;
 
                         // Set the styling
-                        if ( isset($this->_formats[$child->nodeName]) )
-                        {
-                            $sheet->getStyle($column . $row)->applyFromArray($this->_formats[$child->nodeName]);
+                        if (isset($this->_formats[$child->nodeName])) {
+                            $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
                         }
                         // If not, enter cell content
-                        else
-                        {
+                        else {
                             $cellContent = '----------';
                             $this->flushCell($sheet, $column, $row, $cellContent);
                         }
 
-                        ++$row;
+                        $row++;
 
-                    // Linebreaks
+                        // Linebreaks
                     case 'br' :
 
                         // Add linebreak
-                        if ( $this->_tableLevel > 0 )
-                        {
+                        if ($this->_tableLevel > 0) {
                             $cellContent .= "\n";
                         }
 
                         //  Otherwise flush our existing content and move the row cursor on
-                        else
-                        {
+                        else {
                             $this->flushCell($sheet, $column, $row, $cellContent);
-                            ++$row;
+                            $row++;
                         }
 
                         break;
 
-                    // Hyperlinks
+                        // Hyperlinks
                     case 'a'  :
 
-                        foreach ($attributeArray as $attributeName => $attributeValue)
-                        {
-                            switch ($attributeName)
-                            {
+                        foreach ($attributeArray as $attributeName => $attributeValue) {
+                            switch ($attributeName) {
                                 case 'href':
 
                                     // Set the url
-                                    $sheet->getCell($column . $row)
-                                          ->getHyperlink()
-                                          ->setUrl($attributeValue);
+                                    $sheet->getCell($column.$row)
+                                        ->getHyperlink()
+                                        ->setUrl($attributeValue);
 
                                     // Set styling
-                                    if ( isset($this->_formats[$child->nodeName]) )
-                                    {
-                                        $sheet->getStyle($column . $row)->applyFromArray($this->_formats[$child->nodeName]);
+                                    if (isset($this->_formats[$child->nodeName])) {
+                                        $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
                                     }
 
                                     break;
@@ -464,7 +438,7 @@ class Html extends PHPExcel_Reader_HTML {
 
                         break;
 
-                    // Headings/paragraphs and lists
+                        // Headings/paragraphs and lists
                     case 'h1' :
                     case 'h2' :
                     case 'h3' :
@@ -475,22 +449,17 @@ class Html extends PHPExcel_Reader_HTML {
                     case 'ul' :
                     case 'p'  :
 
-                        if ( $this->_tableLevel > 0 )
-                        {
+                        if ($this->_tableLevel > 0) {
                             $cellContent .= "\n";
                             $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                             $this->flushCell($sheet, $column, $row, $cellContent);
 
                             // Set style
-                            if ( isset($this->_formats[$child->nodeName]) )
-                            {
-                                $sheet->getStyle($column . $row)->applyFromArray($this->_formats[$child->nodeName]);
+                            if (isset($this->_formats[$child->nodeName])) {
+                                $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
                             }
-                        }
-                        else
-                        {
-                            if ( $cellContent > '' )
-                            {
+                        } else {
+                            if ($cellContent > '') {
                                 $this->flushCell($sheet, $column, $row, $cellContent);
                                 $row += 2;
                             }
@@ -498,9 +467,8 @@ class Html extends PHPExcel_Reader_HTML {
                             $this->flushCell($sheet, $column, $row, $cellContent);
 
                             // Set style
-                            if ( isset($this->_formats[$child->nodeName]) )
-                            {
-                                $sheet->getStyle($column . $row)->applyFromArray($this->_formats[$child->nodeName]);
+                            if (isset($this->_formats[$child->nodeName])) {
+                                $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
                             }
 
                             $row += 2;
@@ -508,23 +476,19 @@ class Html extends PHPExcel_Reader_HTML {
                         }
                         break;
 
-                    // List istem
+                        // List istem
                     case 'li'  :
 
-                        if ( $this->_tableLevel > 0 )
-                        {
+                        if ($this->_tableLevel > 0) {
                             //  If we're inside a table, replace with a \n
                             $cellContent .= "\n";
                             $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
-                        }
-                        else
-                        {
-                            if ( $cellContent > '' )
-                            {
+                        } else {
+                            if ($cellContent > '') {
                                 $this->flushCell($sheet, $column, $row, $cellContent);
                             }
 
-                            ++$row;
+                            $row++;
 
                             $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                             $this->flushCell($sheet, $column, $row, $cellContent);
@@ -532,7 +496,7 @@ class Html extends PHPExcel_Reader_HTML {
                         }
                         break;
 
-                    // Tables
+                        // Tables
                     case 'table' :
 
                         // Flush the cells
@@ -541,26 +505,24 @@ class Html extends PHPExcel_Reader_HTML {
                         // Set the start column
                         $column = $this->_setTableStartColumn($column);
 
-                        if ( $this->_tableLevel > 1 )
-                            --$row;
+                        if ($this->_tableLevel > 1) {
+                            $row--;
+                        }
 
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         // Release the table start column
                         $column = $this->_releaseTableStartColumn();
 
-                        if ( $this->_tableLevel > 1 )
-                        {
-                            ++$column;
-                        }
-                        else
-                        {
-                            ++$row;
+                        if ($this->_tableLevel > 1) {
+                            $column++;
+                        } else {
+                            $row++;
                         }
 
                         break;
 
-                    // Heading and body
+                        // Heading and body
                     case 'thead' :
                     case 'tbody' :
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
@@ -570,7 +532,7 @@ class Html extends PHPExcel_Reader_HTML {
                         $this->insertImageBySrc($sheet, $column, $row, $child);
                         break;
 
-                    // Table rows
+                        // Table rows
                     case 'tr' :
 
                         // Get start column
@@ -582,22 +544,21 @@ class Html extends PHPExcel_Reader_HTML {
                         // Continue processing
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
-                        ++$row;
+                        $row++;
 
                         // reset the span height
                         $this->spanHeight = 1;
 
                         break;
 
-                    // Table heading
+                        // Table heading
                     case 'th' :
                         // Continue processing
                         $this->_processHeadings($child, $sheet, $row, $column, $cellContent);
 
                         // If we have a colspan, count the right amount of columns, else just 1
-                        for ($w = 0; $w < $this->spanWidth; $w++)
-                        {
-                            ++$column;
+                        for ($w = 0; $w < $this->spanWidth; $w++) {
+                            $column++;
                         }
 
                         // reset the span width after the process
@@ -605,22 +566,21 @@ class Html extends PHPExcel_Reader_HTML {
 
                         break;
 
-                    // Table cell
+                        // Table cell
                     case 'td' :
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         $this->flushCell($sheet, $column, $row, $cellContent);
 
                         // If we have a colspan, count the right amount of columns, else just 1
-                        for ($w = 0; $w < $this->spanWidth; $w++)
-                        {
-                            ++$column;
+                        for ($w = 0; $w < $this->spanWidth; $w++) {
+                            $column++;
                         }
 
                         // reset the span width after the process
                         $this->spanWidth = 1;
                         break;
 
-                    // Html Body
+                        // Html Body
                     case 'body' :
                         $row = 1;
                         $column = 'A';
@@ -629,7 +589,7 @@ class Html extends PHPExcel_Reader_HTML {
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         break;
 
-                    // Default
+                        // Default
                     default:
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                 }
@@ -639,16 +599,18 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Set the start column
-     * @param   string $column
-     * @return  string
+     *
+     * @param  string  $column
+     * @return string
      */
     protected function _setTableStartColumn($column)
     {
         // Set to a
-        if ( $this->_tableLevel == 0 )
+        if ($this->_tableLevel == 0) {
             $column = 'A';
+        }
 
-        ++$this->_tableLevel;
+        $this->_tableLevel++;
 
         // Get nested column
         $this->_nestedColumn[$this->_tableLevel] = $column;
@@ -658,6 +620,7 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Get the table start column
+     *
      * @return string
      */
     protected function _getTableStartColumn()
@@ -667,66 +630,64 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Release the table start column
+     *
      * @return array
      */
     protected function _releaseTableStartColumn()
     {
-        --$this->_tableLevel;
+        $this->_tableLevel--;
 
         return array_pop($this->_nestedColumn);
     }
 
     /**
      * Flush the cells
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  string                $cellContent
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $cellContent
      * @return void
      */
     protected function flushCell($sheet, $column, $row, &$cellContent)
     {
         // Process merged cells
-        list($column, $cellContent) = $this->processMergedCells($sheet, $column, $row, $cellContent);
+        [$column, $cellContent] = $this->processMergedCells($sheet, $column, $row, $cellContent);
 
-        if ( is_string($cellContent) )
-        {
+        if (is_string($cellContent)) {
             //  Simple String content
-            if ( trim($cellContent) > '' )
-            {
+            if (trim($cellContent) > '') {
                 //  Only actually write it if there's content in the string
                 //  Write to worksheet to be done here...
                 //  ... we return the cell so we can mess about with styles more easily
 
-                $cell = $sheet->setCellValue($column . $row, $cellContent, true);
+                $cell = $sheet->setCellValue($column.$row, $cellContent, true);
                 $this->_dataArray[$row][$column] = $cellContent;
             }
-        }
-        else
-        {
-            $this->_dataArray[$row][$column] = 'RICH TEXT: ' . $cellContent;
+        } else {
+            $this->_dataArray[$row][$column] = 'RICH TEXT: '.$cellContent;
         }
         $cellContent = (string) '';
     }
 
     /**
      * Process table headings
-     * @param  string                $child
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $row
-     * @param  integer               $column
-     * @param                        $cellContent
-     * @throws \PHPExcel_Exception
+     *
+     * @param  string  $child
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $row
+     * @param  int  $column
      * @return LaravelExcelWorksheet
+     *
+     * @throws \PHPExcel_Exception
      */
     protected function _processHeadings($child, $sheet, $row, $column, $cellContent)
     {
         $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
         $this->flushCell($sheet, $column, $row, $cellContent);
 
-        if ( isset($this->_formats[$child->nodeName]) )
-        {
-            $sheet->getStyle($column . $row)->applyFromArray($this->_formats[$child->nodeName]);
+        if (isset($this->_formats[$child->nodeName])) {
+            $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
         }
 
         return $sheet;
@@ -734,10 +695,11 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Insert a image inside the sheet
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  string                $attributes
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $attributes
      * @return void
      */
     protected function insertImageBySrc($sheet, $column, $row, $attributes)
@@ -749,23 +711,25 @@ class Html extends PHPExcel_Reader_HTML {
         $alt = $attributes->getAttribute('alt');
 
         // init drawing
-        $drawing = new PHPExcel_Worksheet_Drawing();
+        $drawing = new PHPExcel_Worksheet_Drawing;
 
         // Set image
         $drawing->setPath($src);
         $drawing->setName($alt);
         $drawing->setWorksheet($sheet);
-        $drawing->setCoordinates($column . $row);
+        $drawing->setCoordinates($column.$row);
         $drawing->setResizeProportional();
         $drawing->setOffsetX($drawing->getWidth() - $drawing->getWidth() / 5);
         $drawing->setOffsetY(10);
 
         // Set height and width
-        if ( $width > 0 )
+        if ($width > 0) {
             $drawing->setWidth($width);
+        }
 
-        if ( $height > 0 )
+        if ($height > 0) {
             $drawing->setHeight($height);
+        }
 
         // Set cell width based on image
         $this->parseWidth($sheet, $column, $row, $drawing->getWidth() / 3);
@@ -774,12 +738,13 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Set cell data format
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  integer               $width
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  int  $width
      * @return void
-    */
+     */
     protected function parseDataFormat($sheet, $column, $row, $format)
     {
         $sheet->setColumnFormat([$column.$row => $format]);
@@ -787,10 +752,11 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Set column width
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  integer               $width
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  int  $width
      * @return void
      */
     protected function parseWidth($sheet, $column, $row, $width)
@@ -800,10 +766,11 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Set row height
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  integer               $height
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  int  $height
      * @return void
      */
     protected function parseHeight($sheet, $column, $row, $height)
@@ -813,36 +780,33 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Parse colspans
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  integer               $spanWidth
-     * @param                        $attributes
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  int  $spanWidth
      * @return void
      */
     protected function parseColSpan($sheet, $column, $row, $spanWidth, $attributes)
     {
-        $startCell = $column . $row;
+        $startCell = $column.$row;
 
         $this->spanWidth = $spanWidth;
 
         // Find end column letter
-        for ($i = 0; $i < ($spanWidth - 1); $i++)
-        {
-            ++$column;
+        for ($i = 0; $i < ($spanWidth - 1); $i++) {
+            $column++;
         }
 
         // Set endcell
-        $endCell = ($column) . $row;
+        $endCell = ($column).$row;
 
         // Set range
-        $range = $startCell . ':' . $endCell;
+        $range = $startCell.':'.$endCell;
 
         // Remember css inline styles
-        foreach ($attributes as $attribute)
-        {
-            if ( $attribute->name == 'style' )
-            {
+        foreach ($attributes as $attribute) {
+            if ($attribute->name == 'style') {
                 $this->styles[$range] = $attribute->value;
             }
         }
@@ -853,11 +817,11 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Parse colspans
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  integer               $spanHeight
-     * @param                        $attributes
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  int  $spanHeight
      * @return void
      */
     protected function parseRowSpan($sheet, $column, $row, $spanHeight, $attributes)
@@ -866,20 +830,20 @@ class Html extends PHPExcel_Reader_HTML {
         $this->spanHeight = --$spanHeight;
 
         // Set start cell
-        $startCell = $column . $row;
+        $startCell = $column.$row;
 
         // Set endcell = current row number + spanheight
-        $endCell = $column . ($row + $this->spanHeight);
-        $range = $startCell . ':' . $endCell;
+        $endCell = $column.($row + $this->spanHeight);
+        $range = $startCell.':'.$endCell;
 
         // Remember css inline styles
-        //foreach($attributes as $attribute)
-        //{
+        // foreach($attributes as $attribute)
+        // {
         //    if($attribute->name == 'style')
         //    {
         //        $this->styles[$range] = $attribute->value;
         //    }
-        //}
+        // }
 
         // Merge the cells
         $sheet->mergeCells($range);
@@ -887,20 +851,20 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Parse the align
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  string                $value
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $value
      * @return void
      */
     protected function parseAlign($sheet, $column, $row, $value)
     {
 
         $horizontal = false;
-        $cells = $sheet->getStyle($column . $row);
+        $cells = $sheet->getStyle($column.$row);
 
-        switch ($value)
-        {
+        switch ($value) {
             case 'center':
                 $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                 break;
@@ -918,28 +882,29 @@ class Html extends PHPExcel_Reader_HTML {
                 break;
         }
 
-        if ( $horizontal )
+        if ($horizontal) {
             $cells->getAlignment()->applyFromArray(
                 ['horizontal' => $horizontal]
             );
+        }
     }
 
     /**
      * Parse the valign
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  string                $value
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $value
      * @return void
      */
     protected function parseValign($sheet, $column, $row, $value)
     {
 
         $vertical = false;
-        $cells = $sheet->getStyle($column . $row);
+        $cells = $sheet->getStyle($column.$row);
 
-        switch ($value)
-        {
+        switch ($value) {
             case 'top':
                 $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
                 break;
@@ -957,18 +922,20 @@ class Html extends PHPExcel_Reader_HTML {
                 break;
         }
 
-        if ( $vertical )
+        if ($vertical) {
             $cells->getAlignment()->applyFromArray(
                 ['vertical' => $vertical]
             );
+        }
     }
 
     /**
      * Parse the inline styles
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  string                $styleTag
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $styleTag
      * @return void
      */
     protected function parseInlineStyles($sheet, $column, $row, $styleTag)
@@ -981,16 +948,16 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Parse the styles
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
      * @param                        array @styles
      * @return void
      */
     protected function parseCssAttributes($sheet, $column, $row, $styles = [])
     {
-        foreach ($styles as $tag)
-        {
+        foreach ($styles as $tag) {
             $style = explode(':', $tag);
             $name = trim(reset($style));
             $value = trim(end($style));
@@ -1001,29 +968,29 @@ class Html extends PHPExcel_Reader_HTML {
 
     /**
      * Parse CSS
-     * @param  LaravelExcelWorksheet $sheet
-     * @param  string                $column
-     * @param  integer               $row
-     * @param  string                $name
-     * @param  string                $value
+     *
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $name
+     * @param  string  $value
      * @return void
      */
     protected function parseCssProperties($sheet, $column, $row, $name, $value)
     {
-        $cells = $sheet->getStyle($column . $row);
-        switch ($name)
-        {
+        $cells = $sheet->getStyle($column.$row);
+        switch ($name) {
             // Cell width
             case 'width':
                 $this->parseWidth($sheet, $column, $row, $value);
                 break;
 
-            // Row height
+                // Row height
             case 'height':
                 $this->parseHeight($sheet, $column, $row, $value);
                 break;
 
-            // BACKGROUND
+                // BACKGROUND
             case 'background':
             case 'background-color':
 
@@ -1033,14 +1000,14 @@ class Html extends PHPExcel_Reader_HTML {
 
                 $cells->getFill()->applyFromArray(
                     [
-                        'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                        'color' => ['rgb' => $value]
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => ['rgb' => $value],
                     ]
                 );
 
                 break;
 
-            // TEXT COLOR
+                // TEXT COLOR
             case 'color':
                 $value = $this->getColor($value);
                 $cells->getFont()->getColor()->applyFromArray(
@@ -1048,34 +1015,35 @@ class Html extends PHPExcel_Reader_HTML {
                 );
                 break;
 
-            // FONT SIZE
+                // FONT SIZE
             case 'font-size':
                 $cells->getFont()->setSize($value);
                 break;
 
-            // FONT WEIGHT
+                // FONT WEIGHT
             case 'font-weight':
-                if ( $value == 'bold' || $value >= 500 )
+                if ($value == 'bold' || $value >= 500) {
                     $cells->getFont()->setBold(true);
+                }
                 break;
 
-            // FONT STYLE
+                // FONT STYLE
             case 'font-style':
-                if ( $value == 'italic' )
+                if ($value == 'italic') {
                     $cells->getFont()->setItalic(true);
+                }
                 break;
 
-            // FONT FACE
+                // FONT FACE
             case 'font-family':
                 $cells->getFont()->applyFromArray(
                     ['name' => $value]
                 );
                 break;
 
-            // TEXT DECORATION
+                // TEXT DECORATION
             case 'text-decoration':
-                switch ($value)
-                {
+                switch ($value) {
                     case 'underline':
                         $cells->getFont()->setUnderline(PHPExcel_Style_Font::UNDERLINE_SINGLE);
                         break;
@@ -1086,13 +1054,12 @@ class Html extends PHPExcel_Reader_HTML {
                 }
                 break;
 
-            // Text align
+                // Text align
             case 'text-align':
 
                 $horizontal = false;
 
-                switch ($value)
-                {
+                switch ($value) {
                     case 'center':
                         $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                         break;
@@ -1110,20 +1077,20 @@ class Html extends PHPExcel_Reader_HTML {
                         break;
                 }
 
-                if ( $horizontal )
+                if ($horizontal) {
                     $cells->getAlignment()->applyFromArray(
                         ['horizontal' => $horizontal]
                     );
+                }
 
                 break;
 
-            // Vertical align
+                // Vertical align
             case 'vertical-align':
 
                 $vertical = false;
 
-                switch ($value)
-                {
+                switch ($value) {
                     case 'top':
                         $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
                         break;
@@ -1141,17 +1108,18 @@ class Html extends PHPExcel_Reader_HTML {
                         break;
                 }
 
-                if ( $vertical )
+                if ($vertical) {
                     $cells->getAlignment()->applyFromArray(
                         ['vertical' => $vertical]
                     );
+                }
                 break;
 
-            // Borders
+                // Borders
             case 'border':
             case 'borders':
                 $borders = explode(' ', $value);
-                if (!empty($borders[1])) {
+                if (! empty($borders[1])) {
                     $style = $borders[1];
                     $color = end($borders);
                     $color = $this->getColor($color);
@@ -1163,10 +1131,10 @@ class Html extends PHPExcel_Reader_HTML {
                 }
                 break;
 
-            // Border-top
+                // Border-top
             case 'border-top':
                 $borders = explode(' ', $value);
-                if (!empty($borders[1])) {
+                if (! empty($borders[1])) {
                     $style = $borders[1];
                     $color = end($borders);
                     $color = $this->getColor($color);
@@ -1179,10 +1147,10 @@ class Html extends PHPExcel_Reader_HTML {
                 }
                 break;
 
-            // Border-bottom
+                // Border-bottom
             case 'border-bottom':
                 $borders = explode(' ', $value);
-                if (!empty($borders[1])) {
+                if (! empty($borders[1])) {
                     $style = $borders[1];
                     $color = end($borders);
                     $color = $this->getColor($color);
@@ -1194,10 +1162,10 @@ class Html extends PHPExcel_Reader_HTML {
                 }
                 break;
 
-            // Border-right
+                // Border-right
             case 'border-right':
                 $borders = explode(' ', $value);
-                if (!empty($borders[1])) {
+                if (! empty($borders[1])) {
                     $style = $borders[1];
                     $color = end($borders);
                     $color = $this->getColor($color);
@@ -1209,10 +1177,10 @@ class Html extends PHPExcel_Reader_HTML {
                 }
                 break;
 
-            // Border-left
+                // Border-left
             case 'border-left':
                 $borders = explode(' ', $value);
-                if (!empty($borders[1])) {
+                if (! empty($borders[1])) {
                     $style = $borders[1];
                     $color = end($borders);
                     $color = $this->getColor($color);
@@ -1224,28 +1192,31 @@ class Html extends PHPExcel_Reader_HTML {
                 }
                 break;
 
-            // wrap-text
+                // wrap-text
             case 'wrap-text':
 
-                if ( $value == 'true' )
+                if ($value == 'true') {
                     $wrap = true;
+                }
 
-                if ( !$value || $value == 'false' )
+                if (! $value || $value == 'false') {
                     $wrap = false;
+                }
 
                 $cells->getAlignment()->setWrapText($wrap);
 
                 break;
 
             case 'text-indent':
-                $cells->getAlignment()->setIndent((int)$value);
+                $cells->getAlignment()->setIndent((int) $value);
                 break;
         }
     }
 
     /**
      * Get the color
-     * @param  string $color
+     *
+     * @param  string  $color
      * @return string
      */
     public function getColor($color)
@@ -1253,22 +1224,23 @@ class Html extends PHPExcel_Reader_HTML {
         $color = str_replace('#', '', $color);
 
         // If color is only 3 chars long, mirror it to 6 chars
-        if ( strlen($color) == 3 )
-            $color = $color . $color;
+        if (strlen($color) == 3) {
+            $color = $color.$color;
+        }
 
         return $color;
     }
 
     /**
      * Get the border style
-     * @param  string $style
+     *
+     * @param  string  $style
      * @return string
      */
     public function borderStyle($style)
     {
-        switch ($style)
-        {
-            case 'solid';
+        switch ($style) {
+            case 'solid':
                 return PHPExcel_Style_Border::BORDER_THIN;
                 break;
 
@@ -1331,30 +1303,24 @@ class Html extends PHPExcel_Reader_HTML {
     }
 
     /**
-     * @param $sheet
-     * @param $column
-     * @param $row
-     * @param $cellContent
-     * @throws \PHPExcel_Exception
      * @return array
+     *
+     * @throws \PHPExcel_Exception
      */
     private function processMergedCells($sheet, &$column, $row, $cellContent)
     {
         // Find the cells
-        $cell = $sheet->getCell($column . $row);
+        $cell = $sheet->getCell($column.$row);
 
         // Get the merged cells
-        foreach ($sheet->getMergeCells() as $mergedCells)
-        {
+        foreach ($sheet->getMergeCells() as $mergedCells) {
             // If cells is in the merged cells range
-            if ( $cell->isInRange($mergedCells) )
-            {
+            if ($cell->isInRange($mergedCells)) {
                 // Get columns
-                preg_match("/(.*):(.*?)/u", $mergedCells, $matches);
+                preg_match('/(.*):(.*?)/u', $mergedCells, $matches);
 
                 // skip the first item in the merge
-                if ( $matches[1] != $column . $row )
-                {
+                if ($matches[1] != $column.$row) {
                     $newCol = PHPExcel_Cell::stringFromColumnIndex(
                         (PHPExcel_Cell::columnIndexFromString($column) + 1) - 1
                     );
@@ -1362,8 +1328,9 @@ class Html extends PHPExcel_Reader_HTML {
                     $column = $newCol;
 
                     // Set style for merged cells
-                    if ( isset($this->styles[$row]) )
+                    if (isset($this->styles[$row])) {
                         $this->parseInlineStyles($sheet, $column, $row, $this->styles[$row]);
+                    }
 
                     // Flush cell
                     $this->flushCell($sheet, $column, $row, $cellContent);

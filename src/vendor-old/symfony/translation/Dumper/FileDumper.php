@@ -41,7 +41,7 @@ abstract class FileDumper implements DumperInterface
     /**
      * Sets the template for the relative paths to files.
      *
-     * @param string $relativePathTemplate A template for the relative paths to files
+     * @param  string  $relativePathTemplate  A template for the relative paths to files
      */
     public function setRelativePathTemplate($relativePathTemplate)
     {
@@ -61,9 +61,9 @@ abstract class FileDumper implements DumperInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(MessageCatalogue $messages, $options = array())
+    public function dump(MessageCatalogue $messages, $options = [])
     {
-        if (!array_key_exists('path', $options)) {
+        if (! array_key_exists('path', $options)) {
             throw new \InvalidArgumentException('The file dumper needs a path option.');
         }
 
@@ -77,7 +77,7 @@ abstract class FileDumper implements DumperInterface
                 }
             } else {
                 $directory = dirname($fullpath);
-                if (!file_exists($directory) && !@mkdir($directory, 0777, true)) {
+                if (! file_exists($directory) && ! @mkdir($directory, 0777, true)) {
                     throw new \RuntimeException(sprintf('Unable to create directory "%s".', $directory));
                 }
             }
@@ -89,13 +89,10 @@ abstract class FileDumper implements DumperInterface
     /**
      * Transforms a domain of a message catalogue to its string representation.
      *
-     * @param MessageCatalogue $messages
-     * @param string           $domain
-     * @param array            $options
-     *
+     * @param  string  $domain
      * @return string representation
      */
-    abstract public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array());
+    abstract public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = []);
 
     /**
      * Gets the file extension of the dumper.
@@ -107,17 +104,16 @@ abstract class FileDumper implements DumperInterface
     /**
      * Gets the relative file path using the template.
      *
-     * @param string $domain The domain
-     * @param string $locale The locale
-     *
+     * @param  string  $domain  The domain
+     * @param  string  $locale  The locale
      * @return string The relative file path
      */
     private function getRelativePath($domain, $locale)
     {
-        return strtr($this->relativePathTemplate, array(
+        return strtr($this->relativePathTemplate, [
             '%domain%' => $domain,
             '%locale%' => $locale,
             '%extension%' => $this->getExtension(),
-        ));
+        ]);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -49,12 +50,12 @@ class FileCacheReader implements Reader
     /**
      * @var array
      */
-    private $loadedAnnotations = array();
+    private $loadedAnnotations = [];
 
     /**
      * @var array
      */
-    private $classNameHashes = array();
+    private $classNameHashes = [];
 
     /**
      * @var int
@@ -64,15 +65,14 @@ class FileCacheReader implements Reader
     /**
      * Constructor.
      *
-     * @param Reader  $reader
-     * @param string  $cacheDir
-     * @param boolean $debug
+     * @param  string  $cacheDir
+     * @param  bool  $debug
      *
      * @throws \InvalidArgumentException
      */
     public function __construct(Reader $reader, $cacheDir, $debug = false, $umask = 0002)
     {
-        if ( ! is_int($umask)) {
+        if (! is_int($umask)) {
             throw new \InvalidArgumentException(sprintf(
                 'The parameter umask must be an integer, was: %s',
                 gettype($umask)
@@ -82,11 +82,11 @@ class FileCacheReader implements Reader
         $this->reader = $reader;
         $this->umask = $umask;
 
-        if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777 & (~$this->umask), true)) {
+        if (! is_dir($cacheDir) && ! @mkdir($cacheDir, 0777 & (~$this->umask), true)) {
             throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist and could not be created.', $cacheDir));
         }
 
-        $this->dir   = rtrim($cacheDir, '\\/');
+        $this->dir = rtrim($cacheDir, '\\/');
         $this->debug = $debug;
     }
 
@@ -95,7 +95,7 @@ class FileCacheReader implements Reader
      */
     public function getClassAnnotations(\ReflectionClass $class)
     {
-        if ( ! isset($this->classNameHashes[$class->name])) {
+        if (! isset($this->classNameHashes[$class->name])) {
             $this->classNameHashes[$class->name] = sha1($class->name);
         }
         $key = $this->classNameHashes[$class->name];
@@ -105,9 +105,10 @@ class FileCacheReader implements Reader
         }
 
         $path = $this->dir.'/'.strtr($key, '\\', '-').'.cache.php';
-        if (!is_file($path)) {
+        if (! is_file($path)) {
             $annot = $this->reader->getClassAnnotations($class);
             $this->saveCacheFile($path, $annot);
+
             return $this->loadedAnnotations[$key] = $annot;
         }
 
@@ -118,6 +119,7 @@ class FileCacheReader implements Reader
 
             $annot = $this->reader->getClassAnnotations($class);
             $this->saveCacheFile($path, $annot);
+
             return $this->loadedAnnotations[$key] = $annot;
         }
 
@@ -130,7 +132,7 @@ class FileCacheReader implements Reader
     public function getPropertyAnnotations(\ReflectionProperty $property)
     {
         $class = $property->getDeclaringClass();
-        if ( ! isset($this->classNameHashes[$class->name])) {
+        if (! isset($this->classNameHashes[$class->name])) {
             $this->classNameHashes[$class->name] = sha1($class->name);
         }
         $key = $this->classNameHashes[$class->name].'$'.$property->getName();
@@ -140,9 +142,10 @@ class FileCacheReader implements Reader
         }
 
         $path = $this->dir.'/'.strtr($key, '\\', '-').'.cache.php';
-        if (!is_file($path)) {
+        if (! is_file($path)) {
             $annot = $this->reader->getPropertyAnnotations($property);
             $this->saveCacheFile($path, $annot);
+
             return $this->loadedAnnotations[$key] = $annot;
         }
 
@@ -153,6 +156,7 @@ class FileCacheReader implements Reader
 
             $annot = $this->reader->getPropertyAnnotations($property);
             $this->saveCacheFile($path, $annot);
+
             return $this->loadedAnnotations[$key] = $annot;
         }
 
@@ -165,7 +169,7 @@ class FileCacheReader implements Reader
     public function getMethodAnnotations(\ReflectionMethod $method)
     {
         $class = $method->getDeclaringClass();
-        if ( ! isset($this->classNameHashes[$class->name])) {
+        if (! isset($this->classNameHashes[$class->name])) {
             $this->classNameHashes[$class->name] = sha1($class->name);
         }
         $key = $this->classNameHashes[$class->name].'#'.$method->getName();
@@ -175,9 +179,10 @@ class FileCacheReader implements Reader
         }
 
         $path = $this->dir.'/'.strtr($key, '\\', '-').'.cache.php';
-        if (!is_file($path)) {
+        if (! is_file($path)) {
             $annot = $this->reader->getMethodAnnotations($method);
             $this->saveCacheFile($path, $annot);
+
             return $this->loadedAnnotations[$key] = $annot;
         }
 
@@ -188,6 +193,7 @@ class FileCacheReader implements Reader
 
             $annot = $this->reader->getMethodAnnotations($method);
             $this->saveCacheFile($path, $annot);
+
             return $this->loadedAnnotations[$key] = $annot;
         }
 
@@ -197,20 +203,19 @@ class FileCacheReader implements Reader
     /**
      * Saves the cache file.
      *
-     * @param string $path
-     * @param mixed  $data
-     *
+     * @param  string  $path
+     * @param  mixed  $data
      * @return void
      */
     private function saveCacheFile($path, $data)
     {
-        if (!is_writable($this->dir)) {
+        if (! is_writable($this->dir)) {
             throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable. Both, the webserver and the console user need access. You can manage access rights for multiple users with "chmod +a". If your system does not support this, check out the acl package.', $this->dir));
         }
 
         $tempfile = tempnam($this->dir, uniqid('', true));
 
-        if (false === $tempfile) {
+        if ($tempfile === false) {
             throw new \RuntimeException(sprintf('Unable to create tempfile in directory: %s', $this->dir));
         }
 
@@ -218,13 +223,13 @@ class FileCacheReader implements Reader
 
         $written = file_put_contents($tempfile, '<?php return unserialize('.var_export(serialize($data), true).');');
 
-        if (false === $written) {
+        if ($written === false) {
             throw new \RuntimeException(sprintf('Unable to write cached file to: %s', $tempfile));
         }
 
         @chmod($tempfile, 0666 & (~$this->umask));
 
-        if (false === rename($tempfile, $path)) {
+        if (rename($tempfile, $path) === false) {
             @unlink($tempfile);
             throw new \RuntimeException(sprintf('Unable to rename %s to %s', $tempfile, $path));
         }
@@ -285,6 +290,6 @@ class FileCacheReader implements Reader
      */
     public function clearLoadedAnnotations()
     {
-        $this->loadedAnnotations = array();
+        $this->loadedAnnotations = [];
     }
 }

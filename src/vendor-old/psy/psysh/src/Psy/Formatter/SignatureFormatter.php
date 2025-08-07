@@ -25,7 +25,6 @@ class SignatureFormatter implements Formatter
      *
      * Defers to subclasses to do the actual formatting.
      *
-     * @param \Reflector $reflector
      *
      * @return string Formatted signature.
      */
@@ -35,7 +34,7 @@ class SignatureFormatter implements Formatter
             case $reflector instanceof \ReflectionFunction:
                 return self::formatFunction($reflector);
 
-            // this case also covers \ReflectionObject:
+                // this case also covers \ReflectionObject:
             case $reflector instanceof \ReflectionClass:
                 return self::formatClass($reflector);
 
@@ -49,14 +48,13 @@ class SignatureFormatter implements Formatter
                 return self::formatProperty($reflector);
 
             default:
-                throw new \InvalidArgumentException('Unexpected Reflector class: ' . get_class($reflector));
+                throw new \InvalidArgumentException('Unexpected Reflector class: '.get_class($reflector));
         }
     }
 
     /**
      * Print the signature name.
      *
-     * @param \Reflector $reflector
      *
      * @return string Formatted name.
      */
@@ -70,7 +68,6 @@ class SignatureFormatter implements Formatter
      *
      * Technically this should be a trait. Can't wait for 5.4 :)
      *
-     * @param \Reflector $reflector
      *
      * @return string Formatted modifiers.
      */
@@ -84,13 +81,12 @@ class SignatureFormatter implements Formatter
     /**
      * Format a class signature.
      *
-     * @param \ReflectionClass $reflector
      *
      * @return string Formatted signature.
      */
     private static function formatClass(\ReflectionClass $reflector)
     {
-        $chunks = array();
+        $chunks = [];
 
         if ($modifiers = self::formatModifiers($reflector)) {
             $chunks[] = $modifiers;
@@ -110,7 +106,7 @@ class SignatureFormatter implements Formatter
         }
 
         $interfaces = $reflector->getInterfaceNames();
-        if (!empty($interfaces)) {
+        if (! empty($interfaces)) {
             sort($interfaces);
 
             $chunks[] = 'implements';
@@ -125,7 +121,6 @@ class SignatureFormatter implements Formatter
     /**
      * Format a constant signature.
      *
-     * @param ReflectionConstant $reflector
      *
      * @return string Formatted signature.
      */
@@ -146,8 +141,7 @@ class SignatureFormatter implements Formatter
     /**
      * Helper for getting output style for a given value's type.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return string
      */
     private static function getTypeStyle($value)
@@ -166,7 +160,6 @@ class SignatureFormatter implements Formatter
     /**
      * Format a property signature.
      *
-     * @param \ReflectionProperty $reflector
      *
      * @return string Formatted signature.
      */
@@ -182,8 +175,7 @@ class SignatureFormatter implements Formatter
     /**
      * Format a function signature.
      *
-     * @param \ReflectionFunction $reflector
-     *
+     * @param  \ReflectionFunction  $reflector
      * @return string Formatted signature.
      */
     private static function formatFunction(\ReflectionFunctionAbstract $reflector)
@@ -199,7 +191,6 @@ class SignatureFormatter implements Formatter
     /**
      * Format a method signature.
      *
-     * @param \ReflectionMethod $reflector
      *
      * @return string Formatted signature.
      */
@@ -215,13 +206,12 @@ class SignatureFormatter implements Formatter
     /**
      * Print the function params.
      *
-     * @param \ReflectionFunctionAbstract $reflector
      *
      * @return string
      */
     private static function formatFunctionParams(\ReflectionFunctionAbstract $reflector)
     {
-        $params = array();
+        $params = [];
         foreach ($reflector->getParameters() as $param) {
             $hint = '';
             try {
@@ -236,23 +226,23 @@ class SignatureFormatter implements Formatter
                 // come to think of it, the only time I've seen this is with the intl extension.
 
                 // Hax: we'll try to extract it :P
-                $chunks = explode('$' . $param->getName(), (string) $param);
+                $chunks = explode('$'.$param->getName(), (string) $param);
                 $chunks = explode(' ', trim($chunks[0]));
-                $guess  = end($chunks);
+                $guess = end($chunks);
 
                 $hint = sprintf('<urgent>%s</urgent> ', $guess);
             }
 
             if ($param->isOptional()) {
-                if (!$param->isDefaultValueAvailable()) {
-                    $value     = 'unknown';
+                if (! $param->isDefaultValueAvailable()) {
+                    $value = 'unknown';
                     $typeStyle = 'urgent';
                 } else {
-                    $value     = $param->getDefaultValue();
+                    $value = $param->getDefaultValue();
                     $typeStyle = self::getTypeStyle($value);
-                    $value     = is_array($value) ? 'array()' : is_null($value) ? 'null' : var_export($value, true);
+                    $value = is_array($value) ? 'array()' : is_null($value) ? 'null' : var_export($value, true);
                 }
-                $default   = sprintf(' = <%s>%s</%s>', $typeStyle, OutputFormatter::escape($value), $typeStyle);
+                $default = sprintf(' = <%s>%s</%s>', $typeStyle, OutputFormatter::escape($value), $typeStyle);
             } else {
                 $default = '';
             }

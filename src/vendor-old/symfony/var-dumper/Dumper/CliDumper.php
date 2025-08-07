@@ -21,11 +21,14 @@ use Symfony\Component\VarDumper\Cloner\Cursor;
 class CliDumper extends AbstractDumper
 {
     public static $defaultColors;
+
     public static $defaultOutput = 'php://stdout';
 
     protected $colors;
+
     protected $maxStringWidth = 0;
-    protected $styles = array(
+
+    protected $styles = [
         // See http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
         'default' => '38;5;208',
         'num' => '1;38;5;38',
@@ -39,17 +42,18 @@ class CliDumper extends AbstractDumper
         'meta' => '38;5;170',
         'key' => '38;5;113',
         'index' => '38;5;38',
-    );
+    ];
 
     protected static $controlCharsRx = '/[\x00-\x1F\x7F]+/';
-    protected static $controlCharsMap = array(
+
+    protected static $controlCharsMap = [
         "\t" => '\t',
         "\n" => '\n',
         "\v" => '\v',
         "\f" => '\f',
         "\r" => '\r',
         "\033" => '\e',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -58,9 +62,9 @@ class CliDumper extends AbstractDumper
     {
         parent::__construct($output, $charset);
 
-        if ('\\' === DIRECTORY_SEPARATOR && 'ON' !== @getenv('ConEmuANSI') && 'xterm' !== @getenv('TERM')) {
-            // Use only the base 16 xterm colors when using ANSICON or standard Windows 10 CLI 
-            $this->setStyles(array(
+        if ('\\' === DIRECTORY_SEPARATOR && @getenv('ConEmuANSI') !== 'ON' && @getenv('TERM') !== 'xterm') {
+            // Use only the base 16 xterm colors when using ANSICON or standard Windows 10 CLI
+            $this->setStyles([
                 'default' => '31',
                 'num' => '1;34',
                 'const' => '1;31',
@@ -70,14 +74,14 @@ class CliDumper extends AbstractDumper
                 'meta' => '35',
                 'key' => '32',
                 'index' => '34',
-            ));
+            ]);
         }
     }
 
     /**
      * Enables/disables colored output.
      *
-     * @param bool $colors
+     * @param  bool  $colors
      */
     public function setColors($colors)
     {
@@ -87,7 +91,7 @@ class CliDumper extends AbstractDumper
     /**
      * Sets the maximum number of characters per line for dumped strings.
      *
-     * @param int $maxStringWidth
+     * @param  int  $maxStringWidth
      */
     public function setMaxStringWidth($maxStringWidth)
     {
@@ -97,7 +101,7 @@ class CliDumper extends AbstractDumper
     /**
      * Configures styles.
      *
-     * @param array $styles A map of style names to style definitions
+     * @param  array  $styles  A map of style names to style definitions
      */
     public function setStyles(array $styles)
     {
@@ -112,7 +116,7 @@ class CliDumper extends AbstractDumper
         $this->dumpKey($cursor);
 
         $style = 'const';
-        $attr = array();
+        $attr = [];
 
         switch ($type) {
             case 'integer':
@@ -123,12 +127,15 @@ class CliDumper extends AbstractDumper
                 $style = 'num';
 
                 switch (true) {
-                    case INF === $value:  $value = 'INF';  break;
-                    case -INF === $value: $value = '-INF'; break;
-                    case is_nan($value):  $value = 'NAN';  break;
+                    case $value === INF:  $value = 'INF';
+                        break;
+                    case -INF === $value: $value = '-INF';
+                        break;
+                    case is_nan($value):  $value = 'NAN';
+                        break;
                     default:
                         $value = (string) $value;
-                        if (false === strpos($value, $this->decimalPoint)) {
+                        if (strpos($value, $this->decimalPoint) === false) {
                             $value .= $this->decimalPoint.'0';
                         }
                         break;
@@ -144,8 +151,8 @@ class CliDumper extends AbstractDumper
                 break;
 
             default:
-                $attr['value'] = isset($value[0]) && !preg_match('//u', $value) ? $this->utf8Encode($value) : $value;
-                $value = isset($type[0]) && !preg_match('//u', $type) ? $this->utf8Encode($type) : $type;
+                $attr['value'] = isset($value[0]) && ! preg_match('//u', $value) ? $this->utf8Encode($value) : $value;
+                $value = isset($type[0]) && ! preg_match('//u', $type) ? $this->utf8Encode($type) : $type;
                 break;
         }
 
@@ -164,16 +171,16 @@ class CliDumper extends AbstractDumper
         if ($bin) {
             $str = $this->utf8Encode($str);
         }
-        if ('' === $str) {
+        if ($str === '') {
             $this->line .= '""';
             $this->dumpLine($cursor->depth, true);
         } else {
-            $attr = array(
-                'length' => 0 <= $cut ? mb_strlen($str, 'UTF-8') + $cut : 0,
+            $attr = [
+                'length' => $cut >= 0 ? mb_strlen($str, 'UTF-8') + $cut : 0,
                 'binary' => $bin,
-            );
+            ];
             $str = explode("\n", $str);
-            if (isset($str[1]) && !isset($str[2]) && !isset($str[1][0])) {
+            if (isset($str[1]) && ! isset($str[2]) && ! isset($str[1][0])) {
                 unset($str[1]);
                 $str[0] .= "\n";
             }
@@ -195,21 +202,21 @@ class CliDumper extends AbstractDumper
                 if ($i < $m) {
                     $str .= "\n";
                 }
-                if (0 < $this->maxStringWidth && $this->maxStringWidth < $len = mb_strlen($str, 'UTF-8')) {
+                if ($this->maxStringWidth > 0 && $this->maxStringWidth < $len = mb_strlen($str, 'UTF-8')) {
                     $str = mb_substr($str, 0, $this->maxStringWidth, 'UTF-8');
                     $lineCut = $len - $this->maxStringWidth;
                 }
-                if ($m && 0 < $cursor->depth) {
+                if ($m && $cursor->depth > 0) {
                     $this->line .= $this->indentPad;
                 }
-                if ('' !== $str) {
+                if ($str !== '') {
                     $this->line .= $this->style('str', $str, $attr);
                 }
                 if ($i++ == $m) {
                     if ($m) {
-                        if ('' !== $str) {
+                        if ($str !== '') {
                             $this->dumpLine($cursor->depth);
-                            if (0 < $cursor->depth) {
+                            if ($cursor->depth > 0) {
                                 $this->line .= $this->indentPad;
                             }
                         }
@@ -241,22 +248,22 @@ class CliDumper extends AbstractDumper
     {
         $this->dumpKey($cursor);
 
-        if (!preg_match('//u', $class)) {
+        if (! preg_match('//u', $class)) {
             $class = $this->utf8Encode($class);
         }
-        if (Cursor::HASH_OBJECT === $type) {
-            $prefix = $class && 'stdClass' !== $class ? $this->style('note', $class).' {' : '{';
-        } elseif (Cursor::HASH_RESOURCE === $type) {
+        if ($type === Cursor::HASH_OBJECT) {
+            $prefix = $class && $class !== 'stdClass' ? $this->style('note', $class).' {' : '{';
+        } elseif ($type === Cursor::HASH_RESOURCE) {
             $prefix = $this->style('note', $class.' resource').($hasChild ? ' {' : ' ');
         } else {
             $prefix = $class ? $this->style('note', 'array:'.$class).' [' : '[';
         }
 
-        if ($cursor->softRefCount || 0 < $cursor->softRefHandle) {
-            $prefix .= $this->style('ref', (Cursor::HASH_RESOURCE === $type ? '@' : '#').(0 < $cursor->softRefHandle ? $cursor->softRefHandle : $cursor->softRefTo), array('count' => $cursor->softRefCount));
-        } elseif ($cursor->hardRefTo && !$cursor->refIndex && $class) {
-            $prefix .= $this->style('ref', '&'.$cursor->hardRefTo, array('count' => $cursor->hardRefCount));
-        } elseif (!$hasChild && Cursor::HASH_RESOURCE === $type) {
+        if ($cursor->softRefCount || $cursor->softRefHandle > 0) {
+            $prefix .= $this->style('ref', ($type === Cursor::HASH_RESOURCE ? '@' : '#').($cursor->softRefHandle > 0 ? $cursor->softRefHandle : $cursor->softRefTo), ['count' => $cursor->softRefCount]);
+        } elseif ($cursor->hardRefTo && ! $cursor->refIndex && $class) {
+            $prefix .= $this->style('ref', '&'.$cursor->hardRefTo, ['count' => $cursor->hardRefCount]);
+        } elseif (! $hasChild && $type === Cursor::HASH_RESOURCE) {
             $prefix = substr($prefix, 0, -1);
         }
 
@@ -273,22 +280,22 @@ class CliDumper extends AbstractDumper
     public function leaveHash(Cursor $cursor, $type, $class, $hasChild, $cut)
     {
         $this->dumpEllipsis($cursor, $hasChild, $cut);
-        $this->line .= Cursor::HASH_OBJECT === $type ? '}' : (Cursor::HASH_RESOURCE !== $type ? ']' : ($hasChild ? '}' : ''));
+        $this->line .= $type === Cursor::HASH_OBJECT ? '}' : ($type !== Cursor::HASH_RESOURCE ? ']' : ($hasChild ? '}' : ''));
         $this->dumpLine($cursor->depth, true);
     }
 
     /**
      * Dumps an ellipsis for cut children.
      *
-     * @param Cursor $cursor   The Cursor position in the dump
-     * @param bool   $hasChild When the dump of the hash has child item
-     * @param int    $cut      The number of items the hash has been cut by
+     * @param  Cursor  $cursor  The Cursor position in the dump
+     * @param  bool  $hasChild  When the dump of the hash has child item
+     * @param  int  $cut  The number of items the hash has been cut by
      */
     protected function dumpEllipsis(Cursor $cursor, $hasChild, $cut)
     {
         if ($cut) {
             $this->line .= ' …';
-            if (0 < $cut) {
+            if ($cut > 0) {
                 $this->line .= $cut;
             }
             if ($hasChild) {
@@ -300,7 +307,7 @@ class CliDumper extends AbstractDumper
     /**
      * Dumps a key in a hash structure.
      *
-     * @param Cursor $cursor The Cursor position in the dump
+     * @param  Cursor  $cursor  The Cursor position in the dump
      */
     protected function dumpKey(Cursor $cursor)
     {
@@ -308,7 +315,7 @@ class CliDumper extends AbstractDumper
             if ($cursor->hashKeyIsBinary) {
                 $key = $this->utf8Encode($key);
             }
-            $attr = array('binary' => $cursor->hashKeyIsBinary);
+            $attr = ['binary' => $cursor->hashKeyIsBinary];
             $bin = $cursor->hashKeyIsBinary ? 'b' : '';
             $style = 'key';
             switch ($cursor->hashType) {
@@ -327,9 +334,9 @@ class CliDumper extends AbstractDumper
                     $key = "\0~\0".$key;
                     // No break;
                 case Cursor::HASH_OBJECT:
-                    if (!isset($key[0]) || "\0" !== $key[0]) {
+                    if (! isset($key[0]) || $key[0] !== "\0") {
                         $this->line .= '+'.$bin.$this->style('public', $key).': ';
-                    } elseif (0 < strpos($key, "\0", 1)) {
+                    } elseif (strpos($key, "\0", 1) > 0) {
                         $key = explode("\0", substr($key, 1), 2);
 
                         switch ($key[0]) {
@@ -354,13 +361,13 @@ class CliDumper extends AbstractDumper
                         $this->line .= $bin.$this->style($style, $key[1], $attr).': ';
                     } else {
                         // This case should not happen
-                        $this->line .= '-'.$bin.'"'.$this->style('private', $key, array('class' => '')).'": ';
+                        $this->line .= '-'.$bin.'"'.$this->style('private', $key, ['class' => '']).'": ';
                     }
                     break;
             }
 
             if ($cursor->hardRefTo) {
-                $this->line .= $this->style('ref', '&'.($cursor->hardRefCount ? $cursor->hardRefTo : ''), array('count' => $cursor->hardRefCount)).' ';
+                $this->line .= $this->style('ref', '&'.($cursor->hardRefCount ? $cursor->hardRefTo : ''), ['count' => $cursor->hardRefCount]).' ';
             }
         }
     }
@@ -368,15 +375,14 @@ class CliDumper extends AbstractDumper
     /**
      * Decorates a value with some style.
      *
-     * @param string $style The type of style being applied
-     * @param string $value The value being styled
-     * @param array  $attr  Optional context information
-     *
+     * @param  string  $style  The type of style being applied
+     * @param  string  $value  The value being styled
+     * @param  array  $attr  Optional context information
      * @return string The value with style decoration
      */
-    protected function style($style, $value, $attr = array())
+    protected function style($style, $value, $attr = [])
     {
-        if (null === $this->colors) {
+        if ($this->colors === null) {
             $this->colors = $this->supportsColors();
         }
 
@@ -396,7 +402,7 @@ class CliDumper extends AbstractDumper
         }, $value, -1, $cchrCount);
 
         if ($this->colors) {
-            if ($cchrCount && "\033" === $value[0]) {
+            if ($cchrCount && $value[0] === "\033") {
                 $value = substr($value, strlen($startCchr));
             } else {
                 $value = "\033[{$style}m".$value;
@@ -419,7 +425,7 @@ class CliDumper extends AbstractDumper
         if ($this->outputStream !== static::$defaultOutput) {
             return @(is_resource($this->outputStream) && function_exists('posix_isatty') && posix_isatty($this->outputStream));
         }
-        if (null !== static::$defaultColors) {
+        if (static::$defaultColors !== null) {
             return static::$defaultColors;
         }
         if (isset($_SERVER['argv'][1])) {
@@ -447,14 +453,14 @@ class CliDumper extends AbstractDumper
 
         if ('\\' === DIRECTORY_SEPARATOR) {
             static::$defaultColors = @(
-                0 >= version_compare('10.0.10586', PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD)
-                || false !== getenv('ANSICON')
-                || 'ON' === getenv('ConEmuANSI')
-                || 'xterm' === getenv('TERM')
+                version_compare('10.0.10586', PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD) <= 0
+                || getenv('ANSICON') !== false
+                || getenv('ConEmuANSI') === 'ON'
+                || getenv('TERM') === 'xterm'
             );
         } elseif (function_exists('posix_isatty')) {
-            $h = stream_get_meta_data($this->outputStream) + array('wrapper_type' => null);
-            $h = 'Output' === $h['stream_type'] && 'PHP' === $h['wrapper_type'] ? fopen('php://stdout', 'wb') : $this->outputStream;
+            $h = stream_get_meta_data($this->outputStream) + ['wrapper_type' => null];
+            $h = $h['stream_type'] === 'Output' && $h['wrapper_type'] === 'PHP' ? fopen('php://stdout', 'wb') : $this->outputStream;
             static::$defaultColors = @posix_isatty($h);
         } else {
             static::$defaultColors = false;

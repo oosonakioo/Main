@@ -12,115 +12,117 @@
 namespace Monolog\Handler;
 
 use Monolog\Formatter\LineFormatter;
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 class NewRelicHandlerTest extends TestCase
 {
     public static $appname;
+
     public static $customParameters;
+
     public static $transactionName;
 
-    public function setUp()
+    protected function setUp()
     {
         self::$appname = null;
-        self::$customParameters = array();
+        self::$customParameters = [];
         self::$transactionName = null;
     }
 
     /**
      * @expectedException Monolog\Handler\MissingExtensionException
      */
-    public function testThehandlerThrowsAnExceptionIfTheNRExtensionIsNotLoaded()
+    public function test_thehandler_throws_an_exception_if_the_nr_extension_is_not_loaded()
     {
-        $handler = new StubNewRelicHandlerWithoutExtension();
+        $handler = new StubNewRelicHandlerWithoutExtension;
         $handler->handle($this->getRecord(Logger::ERROR));
     }
 
-    public function testThehandlerCanHandleTheRecord()
+    public function test_thehandler_can_handle_the_record()
     {
-        $handler = new StubNewRelicHandler();
+        $handler = new StubNewRelicHandler;
         $handler->handle($this->getRecord(Logger::ERROR));
     }
 
-    public function testThehandlerCanAddContextParamsToTheNewRelicTrace()
+    public function test_thehandler_can_add_context_params_to_the_new_relic_trace()
     {
-        $handler = new StubNewRelicHandler();
-        $handler->handle($this->getRecord(Logger::ERROR, 'log message', array('a' => 'b')));
-        $this->assertEquals(array('context_a' => 'b'), self::$customParameters);
+        $handler = new StubNewRelicHandler;
+        $handler->handle($this->getRecord(Logger::ERROR, 'log message', ['a' => 'b']));
+        $this->assertEquals(['context_a' => 'b'], self::$customParameters);
     }
 
-    public function testThehandlerCanAddExplodedContextParamsToTheNewRelicTrace()
+    public function test_thehandler_can_add_exploded_context_params_to_the_new_relic_trace()
     {
         $handler = new StubNewRelicHandler(Logger::ERROR, true, self::$appname, true);
         $handler->handle($this->getRecord(
             Logger::ERROR,
             'log message',
-            array('a' => array('key1' => 'value1', 'key2' => 'value2'))
+            ['a' => ['key1' => 'value1', 'key2' => 'value2']]
         ));
         $this->assertEquals(
-            array('context_a_key1' => 'value1', 'context_a_key2' => 'value2'),
+            ['context_a_key1' => 'value1', 'context_a_key2' => 'value2'],
             self::$customParameters
         );
     }
 
-    public function testThehandlerCanAddExtraParamsToTheNewRelicTrace()
+    public function test_thehandler_can_add_extra_params_to_the_new_relic_trace()
     {
         $record = $this->getRecord(Logger::ERROR, 'log message');
-        $record['extra'] = array('c' => 'd');
+        $record['extra'] = ['c' => 'd'];
 
-        $handler = new StubNewRelicHandler();
+        $handler = new StubNewRelicHandler;
         $handler->handle($record);
 
-        $this->assertEquals(array('extra_c' => 'd'), self::$customParameters);
+        $this->assertEquals(['extra_c' => 'd'], self::$customParameters);
     }
 
-    public function testThehandlerCanAddExplodedExtraParamsToTheNewRelicTrace()
+    public function test_thehandler_can_add_exploded_extra_params_to_the_new_relic_trace()
     {
         $record = $this->getRecord(Logger::ERROR, 'log message');
-        $record['extra'] = array('c' => array('key1' => 'value1', 'key2' => 'value2'));
+        $record['extra'] = ['c' => ['key1' => 'value1', 'key2' => 'value2']];
 
         $handler = new StubNewRelicHandler(Logger::ERROR, true, self::$appname, true);
         $handler->handle($record);
 
         $this->assertEquals(
-            array('extra_c_key1' => 'value1', 'extra_c_key2' => 'value2'),
+            ['extra_c_key1' => 'value1', 'extra_c_key2' => 'value2'],
             self::$customParameters
         );
     }
 
-    public function testThehandlerCanAddExtraContextAndParamsToTheNewRelicTrace()
+    public function test_thehandler_can_add_extra_context_and_params_to_the_new_relic_trace()
     {
-        $record = $this->getRecord(Logger::ERROR, 'log message', array('a' => 'b'));
-        $record['extra'] = array('c' => 'd');
+        $record = $this->getRecord(Logger::ERROR, 'log message', ['a' => 'b']);
+        $record['extra'] = ['c' => 'd'];
 
-        $handler = new StubNewRelicHandler();
+        $handler = new StubNewRelicHandler;
         $handler->handle($record);
 
-        $expected = array(
+        $expected = [
             'context_a' => 'b',
             'extra_c' => 'd',
-        );
+        ];
 
         $this->assertEquals($expected, self::$customParameters);
     }
 
-    public function testThehandlerCanHandleTheRecordsFormattedUsingTheLineFormatter()
+    public function test_thehandler_can_handle_the_records_formatted_using_the_line_formatter()
     {
-        $handler = new StubNewRelicHandler();
-        $handler->setFormatter(new LineFormatter());
+        $handler = new StubNewRelicHandler;
+        $handler->setFormatter(new LineFormatter);
         $handler->handle($this->getRecord(Logger::ERROR));
     }
 
-    public function testTheAppNameIsNullByDefault()
+    public function test_the_app_name_is_null_by_default()
     {
-        $handler = new StubNewRelicHandler();
+        $handler = new StubNewRelicHandler;
         $handler->handle($this->getRecord(Logger::ERROR, 'log message'));
 
         $this->assertEquals(null, self::$appname);
     }
 
-    public function testTheAppNameCanBeInjectedFromtheConstructor()
+    public function test_the_app_name_can_be_injected_fromthe_constructor()
     {
         $handler = new StubNewRelicHandler(Logger::DEBUG, false, 'myAppName');
         $handler->handle($this->getRecord(Logger::ERROR, 'log message'));
@@ -128,23 +130,23 @@ class NewRelicHandlerTest extends TestCase
         $this->assertEquals('myAppName', self::$appname);
     }
 
-    public function testTheAppNameCanBeOverriddenFromEachLog()
+    public function test_the_app_name_can_be_overridden_from_each_log()
     {
         $handler = new StubNewRelicHandler(Logger::DEBUG, false, 'myAppName');
-        $handler->handle($this->getRecord(Logger::ERROR, 'log message', array('appname' => 'logAppName')));
+        $handler->handle($this->getRecord(Logger::ERROR, 'log message', ['appname' => 'logAppName']));
 
         $this->assertEquals('logAppName', self::$appname);
     }
 
-    public function testTheTransactionNameIsNullByDefault()
+    public function test_the_transaction_name_is_null_by_default()
     {
-        $handler = new StubNewRelicHandler();
+        $handler = new StubNewRelicHandler;
         $handler->handle($this->getRecord(Logger::ERROR, 'log message'));
 
         $this->assertEquals(null, self::$transactionName);
     }
 
-    public function testTheTransactionNameCanBeInjectedFromTheConstructor()
+    public function test_the_transaction_name_can_be_injected_from_the_constructor()
     {
         $handler = new StubNewRelicHandler(Logger::DEBUG, false, null, false, 'myTransaction');
         $handler->handle($this->getRecord(Logger::ERROR, 'log message'));
@@ -152,10 +154,10 @@ class NewRelicHandlerTest extends TestCase
         $this->assertEquals('myTransaction', self::$transactionName);
     }
 
-    public function testTheTransactionNameCanBeOverriddenFromEachLog()
+    public function test_the_transaction_name_can_be_overridden_from_each_log()
     {
         $handler = new StubNewRelicHandler(Logger::DEBUG, false, null, false, 'myTransaction');
-        $handler->handle($this->getRecord(Logger::ERROR, 'log message', array('transaction_name' => 'logTransactName')));
+        $handler->handle($this->getRecord(Logger::ERROR, 'log message', ['transaction_name' => 'logTransactName']));
 
         $this->assertEquals('logTransactName', self::$transactionName);
     }

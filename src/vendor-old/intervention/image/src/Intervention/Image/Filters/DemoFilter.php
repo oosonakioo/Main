@@ -12,14 +12,14 @@ class DemoFilter implements FilterInterface
     /**
      * Size of filter effects
      *
-     * @var integer
+     * @var int
      */
     private $size;
 
     /**
      * Creates new instance of filter
      *
-     * @param integer $size
+     * @param  int  $size
      */
     public function __construct($size = null)
     {
@@ -29,7 +29,6 @@ class DemoFilter implements FilterInterface
     /**
      * Applies filter effects to given image
      *
-     * @param  \Intervention\Image\Image $image
      * @return \Intervention\Image\Image
      */
     public function applyFilter(\Intervention\Image\Image $image)

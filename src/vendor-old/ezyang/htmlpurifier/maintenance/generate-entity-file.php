@@ -24,40 +24,53 @@ $output_file = '../library/HTMLPurifier/EntityLookup/entities.ser';
 function unichr($dec)
 {
     if ($dec < 128) {
-        $utf  = chr($dec);
+        $utf = chr($dec);
     } elseif ($dec < 2048) {
-        $utf  = chr(192 + (($dec - ($dec % 64)) / 64));
+        $utf = chr(192 + (($dec - ($dec % 64)) / 64));
         $utf .= chr(128 + ($dec % 64));
     } else {
-        $utf  = chr(224 + (($dec - ($dec % 4096)) / 4096));
+        $utf = chr(224 + (($dec - ($dec % 4096)) / 4096));
         $utf .= chr(128 + ((($dec % 4096) - ($dec % 64)) / 64));
         $utf .= chr(128 + ($dec % 64));
     }
+
     return $utf;
 }
 
-if ( !is_dir($entity_dir) ) exit("Fatal Error: Can't find entity directory.\n");
-if ( file_exists($output_file) ) exit("Fatal Error: output file already exists.\n");
+if (! is_dir($entity_dir)) {
+    exit("Fatal Error: Can't find entity directory.\n");
+}
+if (file_exists($output_file)) {
+    exit("Fatal Error: output file already exists.\n");
+}
 
 $dh = @opendir($entity_dir);
-if ( !$dh ) exit("Fatal Error: Cannot read entity directory.\n");
+if (! $dh) {
+    exit("Fatal Error: Cannot read entity directory.\n");
+}
 
-$entity_files = array();
+$entity_files = [];
 while (($file = readdir($dh)) !== false) {
-    if (@$file[0] === '.') continue;
-    if (substr(strrchr($file, "."), 1) !== 'ent') continue;
+    if (@$file[0] === '.') {
+        continue;
+    }
+    if (substr(strrchr($file, '.'), 1) !== 'ent') {
+        continue;
+    }
     $entity_files[] = $file;
 }
 closedir($dh);
 
-if ( !$entity_files ) exit("Fatal Error: No entity files to parse.\n");
+if (! $entity_files) {
+    exit("Fatal Error: No entity files to parse.\n");
+}
 
-$entity_table = array();
+$entity_table = [];
 $regexp = '/<!ENTITY\s+([A-Za-z0-9]+)\s+"&#(?:38;#)?([0-9]+);">/';
 
-foreach ( $entity_files as $file ) {
-    $contents = file_get_contents($entity_dir . $file);
-    $matches = array();
+foreach ($entity_files as $file) {
+    $contents = file_get_contents($entity_dir.$file);
+    $matches = [];
     preg_match_all($regexp, $contents, $matches, PREG_SET_ORDER);
     foreach ($matches as $match) {
         $entity_table[$match[1]] = unichr($match[2]);
@@ -70,6 +83,6 @@ $fh = fopen($output_file, 'w');
 fwrite($fh, $output);
 fclose($fh);
 
-echo "Completed successfully.";
+echo 'Completed successfully.';
 
 // vim: et sw=4 sts=4

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,28 +28,26 @@ use Doctrine\DBAL\DBALException;
 class QueryException extends DBALException
 {
     /**
-     * @param string $alias
-     * @param array  $registeredAliases
-     *
+     * @param  string  $alias
+     * @param  array  $registeredAliases
      * @return \Doctrine\DBAL\Query\QueryException
      */
-    static public function unknownAlias($alias, $registeredAliases)
+    public static function unknownAlias($alias, $registeredAliases)
     {
-        return new self("The given alias '" . $alias . "' is not part of " .
-            "any FROM or JOIN clause table. The currently registered " .
-            "aliases are: " . implode(", ", $registeredAliases) . ".");
+        return new self("The given alias '".$alias."' is not part of ".
+            'any FROM or JOIN clause table. The currently registered '.
+            'aliases are: '.implode(', ', $registeredAliases).'.');
     }
 
     /**
-     * @param string $alias
-     * @param array  $registeredAliases
-     *
+     * @param  string  $alias
+     * @param  array  $registeredAliases
      * @return \Doctrine\DBAL\Query\QueryException
      */
-    static public function nonUniqueAlias($alias, $registeredAliases)
+    public static function nonUniqueAlias($alias, $registeredAliases)
     {
-        return new self("The given alias '" . $alias . "' is not unique " .
-            "in FROM and JOIN clause table. The currently registered " .
-            "aliases are: " . implode(", ", $registeredAliases) . ".");
+        return new self("The given alias '".$alias."' is not unique ".
+            'in FROM and JOIN clause table. The currently registered '.
+            'aliases are: '.implode(', ', $registeredAliases).'.');
     }
 }

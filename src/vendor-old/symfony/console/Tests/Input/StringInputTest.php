@@ -20,7 +20,7 @@ class StringInputTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTokenizeData
      */
-    public function testTokenize($input, $tokens, $message)
+    public function test_tokenize($input, $tokens, $message)
     {
         $input = new StringInput($input);
         $r = new \ReflectionClass('Symfony\Component\Console\Input\ArgvInput');
@@ -29,10 +29,10 @@ class StringInputTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($tokens, $p->getValue($input), $message);
     }
 
-    public function testInputOptionWithGivenString()
+    public function test_input_option_with_given_string()
     {
         $definition = new InputDefinition(
-            array(new InputOption('foo', null, InputOption::VALUE_REQUIRED))
+            [new InputOption('foo', null, InputOption::VALUE_REQUIRED)]
         );
 
         // call to bind
@@ -43,36 +43,36 @@ class StringInputTest extends \PHPUnit_Framework_TestCase
 
     public function getTokenizeData()
     {
-        return array(
-            array('', array(), '->tokenize() parses an empty string'),
-            array('foo', array('foo'), '->tokenize() parses arguments'),
-            array('  foo  bar  ', array('foo', 'bar'), '->tokenize() ignores whitespaces between arguments'),
-            array('"quoted"', array('quoted'), '->tokenize() parses quoted arguments'),
-            array("'quoted'", array('quoted'), '->tokenize() parses quoted arguments'),
-            array("'a\rb\nc\td'", array("a\rb\nc\td"), '->tokenize() parses whitespace chars in strings'),
-            array("'a'\r'b'\n'c'\t'd'", array('a', 'b', 'c', 'd'), '->tokenize() parses whitespace chars between args as spaces'),
-            array('\"quoted\"', array('"quoted"'), '->tokenize() parses escaped-quoted arguments'),
-            array("\'quoted\'", array('\'quoted\''), '->tokenize() parses escaped-quoted arguments'),
-            array('-a', array('-a'), '->tokenize() parses short options'),
-            array('-azc', array('-azc'), '->tokenize() parses aggregated short options'),
-            array('-awithavalue', array('-awithavalue'), '->tokenize() parses short options with a value'),
-            array('-a"foo bar"', array('-afoo bar'), '->tokenize() parses short options with a value'),
-            array('-a"foo bar""foo bar"', array('-afoo barfoo bar'), '->tokenize() parses short options with a value'),
-            array('-a\'foo bar\'', array('-afoo bar'), '->tokenize() parses short options with a value'),
-            array('-a\'foo bar\'\'foo bar\'', array('-afoo barfoo bar'), '->tokenize() parses short options with a value'),
-            array('-a\'foo bar\'"foo bar"', array('-afoo barfoo bar'), '->tokenize() parses short options with a value'),
-            array('--long-option', array('--long-option'), '->tokenize() parses long options'),
-            array('--long-option=foo', array('--long-option=foo'), '->tokenize() parses long options with a value'),
-            array('--long-option="foo bar"', array('--long-option=foo bar'), '->tokenize() parses long options with a value'),
-            array('--long-option="foo bar""another"', array('--long-option=foo baranother'), '->tokenize() parses long options with a value'),
-            array('--long-option=\'foo bar\'', array('--long-option=foo bar'), '->tokenize() parses long options with a value'),
-            array("--long-option='foo bar''another'", array('--long-option=foo baranother'), '->tokenize() parses long options with a value'),
-            array("--long-option='foo bar'\"another\"", array('--long-option=foo baranother'), '->tokenize() parses long options with a value'),
-            array('foo -a -ffoo --long bar', array('foo', '-a', '-ffoo', '--long', 'bar'), '->tokenize() parses when several arguments and options'),
-        );
+        return [
+            ['', [], '->tokenize() parses an empty string'],
+            ['foo', ['foo'], '->tokenize() parses arguments'],
+            ['  foo  bar  ', ['foo', 'bar'], '->tokenize() ignores whitespaces between arguments'],
+            ['"quoted"', ['quoted'], '->tokenize() parses quoted arguments'],
+            ["'quoted'", ['quoted'], '->tokenize() parses quoted arguments'],
+            ["'a\rb\nc\td'", ["a\rb\nc\td"], '->tokenize() parses whitespace chars in strings'],
+            ["'a'\r'b'\n'c'\t'd'", ['a', 'b', 'c', 'd'], '->tokenize() parses whitespace chars between args as spaces'],
+            ['\"quoted\"', ['"quoted"'], '->tokenize() parses escaped-quoted arguments'],
+            ["\'quoted\'", ['\'quoted\''], '->tokenize() parses escaped-quoted arguments'],
+            ['-a', ['-a'], '->tokenize() parses short options'],
+            ['-azc', ['-azc'], '->tokenize() parses aggregated short options'],
+            ['-awithavalue', ['-awithavalue'], '->tokenize() parses short options with a value'],
+            ['-a"foo bar"', ['-afoo bar'], '->tokenize() parses short options with a value'],
+            ['-a"foo bar""foo bar"', ['-afoo barfoo bar'], '->tokenize() parses short options with a value'],
+            ['-a\'foo bar\'', ['-afoo bar'], '->tokenize() parses short options with a value'],
+            ['-a\'foo bar\'\'foo bar\'', ['-afoo barfoo bar'], '->tokenize() parses short options with a value'],
+            ['-a\'foo bar\'"foo bar"', ['-afoo barfoo bar'], '->tokenize() parses short options with a value'],
+            ['--long-option', ['--long-option'], '->tokenize() parses long options'],
+            ['--long-option=foo', ['--long-option=foo'], '->tokenize() parses long options with a value'],
+            ['--long-option="foo bar"', ['--long-option=foo bar'], '->tokenize() parses long options with a value'],
+            ['--long-option="foo bar""another"', ['--long-option=foo baranother'], '->tokenize() parses long options with a value'],
+            ['--long-option=\'foo bar\'', ['--long-option=foo bar'], '->tokenize() parses long options with a value'],
+            ["--long-option='foo bar''another'", ['--long-option=foo baranother'], '->tokenize() parses long options with a value'],
+            ["--long-option='foo bar'\"another\"", ['--long-option=foo baranother'], '->tokenize() parses long options with a value'],
+            ['foo -a -ffoo --long bar', ['foo', '-a', '-ffoo', '--long', 'bar'], '->tokenize() parses when several arguments and options'],
+        ];
     }
 
-    public function testToString()
+    public function test_to_string()
     {
         $input = new StringInput('-f foo');
         $this->assertEquals('-f foo', (string) $input);

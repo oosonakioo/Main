@@ -37,10 +37,9 @@ class MessageSelector
      * The two methods can also be mixed:
      *     {0} There are no apples|one: There is one apple|more: There are %count% apples
      *
-     * @param string $message The message being translated
-     * @param int    $number  The number of items represented for the message
-     * @param string $locale  The locale to use for choosing
-     *
+     * @param  string  $message  The message being translated
+     * @param  int  $number  The number of items represented for the message
+     * @param  string  $locale  The locale to use for choosing
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -48,8 +47,8 @@ class MessageSelector
     public function choose($message, $number, $locale)
     {
         $parts = explode('|', $message);
-        $explicitRules = array();
-        $standardRules = array();
+        $explicitRules = [];
+        $standardRules = [];
         foreach ($parts as $part) {
             $part = trim($part);
 
@@ -71,10 +70,10 @@ class MessageSelector
 
         $position = PluralizationRules::get($number, $locale);
 
-        if (!isset($standardRules[$position])) {
+        if (! isset($standardRules[$position])) {
             // when there's exactly one rule given, and that rule is a standard
             // rule, use this rule
-            if (1 === count($parts) && isset($standardRules[0])) {
+            if (count($parts) === 1 && isset($standardRules[0])) {
                 return $standardRules[0];
             }
 

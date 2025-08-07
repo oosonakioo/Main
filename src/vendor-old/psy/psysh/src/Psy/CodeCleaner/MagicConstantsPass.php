@@ -27,14 +27,13 @@ class MagicConstantsPass extends CodeCleanerPass
      * Swap out __DIR__ and __FILE__ constants, because the default ones when
      * calling eval() don't make sense.
      *
-     * @param Node $node
      *
      * @return null|FuncCall|StringNode
      */
     public function enterNode(Node $node)
     {
         if ($node instanceof Dir) {
-            return new FuncCall(new Name('getcwd'), array(), $node->getAttributes());
+            return new FuncCall(new Name('getcwd'), [], $node->getAttributes());
         } elseif ($node instanceof File) {
             return new StringNode('', $node->getAttributes());
         }

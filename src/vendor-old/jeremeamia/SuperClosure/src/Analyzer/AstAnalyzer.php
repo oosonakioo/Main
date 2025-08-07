@@ -1,16 +1,18 @@
-<?php namespace SuperClosure\Analyzer;
+<?php
 
-use SuperClosure\Analyzer\Visitor\ThisDetectorVisitor;
-use SuperClosure\Exception\ClosureAnalysisException;
-use SuperClosure\Analyzer\Visitor\ClosureLocatorVisitor;
-use SuperClosure\Analyzer\Visitor\MagicConstantVisitor;
-use PhpParser\NodeTraverser;
-use PhpParser\PrettyPrinter\Standard as NodePrinter;
+namespace SuperClosure\Analyzer;
+
 use PhpParser\Error as ParserError;
+use PhpParser\Lexer\Emulative as EmulativeLexer;
+use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser as CodeParser;
 use PhpParser\ParserFactory;
-use PhpParser\Lexer\Emulative as EmulativeLexer;
+use PhpParser\PrettyPrinter\Standard as NodePrinter;
+use SuperClosure\Analyzer\Visitor\ClosureLocatorVisitor;
+use SuperClosure\Analyzer\Visitor\MagicConstantVisitor;
+use SuperClosure\Analyzer\Visitor\ThisDetectorVisitor;
+use SuperClosure\Exception\ClosureAnalysisException;
 
 /**
  * This is the AST based analyzer.
@@ -43,7 +45,6 @@ class AstAnalyzer extends ClosureAnalyzer
     /**
      * Parses the closure's code and produces an abstract syntax tree (AST).
      *
-     * @param array $data
      *
      * @throws ClosureAnalysisException if there is an issue finding the closure
      */
@@ -66,7 +67,7 @@ class AstAnalyzer extends ClosureAnalyzer
         }
 
         $data['ast'] = $locator->closureNode;
-        if (!$data['ast']) {
+        if (! $data['ast']) {
             // @codeCoverageIgnoreStart
             throw new ClosureAnalysisException(
                 'The closure was not found within the abstract syntax tree.'
@@ -81,8 +82,6 @@ class AstAnalyzer extends ClosureAnalyzer
      * Returns the variables that in the "use" clause of the closure definition.
      * These are referred to as the "used variables", "static variables", or
      * "closed upon variables", "context" of the closure.
-     *
-     * @param array $data
      */
     protected function determineContext(array &$data)
     {
@@ -92,6 +91,7 @@ class AstAnalyzer extends ClosureAnalyzer
             if ($node->byRef) {
                 $refs++;
             }
+
             return $node->var;
         }, $data['ast']->uses);
         $data['hasRefs'] = ($refs > 0);
@@ -108,21 +108,18 @@ class AstAnalyzer extends ClosureAnalyzer
     }
 
     /**
-     * @param \ReflectionFunction $reflection
+     * @return \PhpParser\Node[]
      *
      * @throws ClosureAnalysisException
-     *
-     * @return \PhpParser\Node[]
      */
     private function getFileAst(\ReflectionFunction $reflection)
     {
         $fileName = $reflection->getFileName();
-        if (!file_exists($fileName)) {
+        if (! file_exists($fileName)) {
             throw new ClosureAnalysisException(
                 "The file containing the closure, \"{$fileName}\" did not exist."
             );
         }
-
 
         return $this->getParser()->parse(file_get_contents($fileName));
     }

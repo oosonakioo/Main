@@ -22,20 +22,20 @@ class CliDumperTest extends \PHPUnit_Framework_TestCase
 {
     use VarDumperTestTrait;
 
-    public function testGet()
+    public function test_get()
     {
         require __DIR__.'/Fixtures/dumb-var.php';
 
         $dumper = new CliDumper('php://output');
         $dumper->setColors(false);
-        $cloner = new VarCloner();
-        $cloner->addCasters(array(
+        $cloner = new VarCloner;
+        $cloner->addCasters([
             ':stream' => function ($res, $a) {
                 unset($a['uri'], $a['wrapper_data']);
 
                 return $a;
             },
-        ));
+        ]);
         $data = $cloner->cloneVar($var);
 
         ob_start();
@@ -110,12 +110,12 @@ EOTXT
     /**
      * @requires extension xml
      */
-    public function testXmlResource()
+    public function test_xml_resource()
     {
         $var = xml_parser_create();
 
         $this->assertDumpMatchesFormat(
-            <<<EOTXT
+            <<<'EOTXT'
 xml resource {
   current_byte_index: %i
   current_column_number: %i
@@ -128,7 +128,7 @@ EOTXT
         );
     }
 
-    public function testJsonCast()
+    public function test_json_cast()
     {
         $var = (array) json_decode('{"0":{},"1":null}');
         foreach ($var as &$v) {
@@ -137,7 +137,7 @@ EOTXT
         $var[''] = 2;
 
         $this->assertDumpMatchesFormat(
-            <<<EOTXT
+            <<<'EOTXT'
 array:4 [
   "0" => {}
   "1" => &1 null
@@ -150,13 +150,13 @@ EOTXT
         );
     }
 
-    public function testObjectCast()
+    public function test_object_cast()
     {
-        $var = (object) array(1 => 1);
+        $var = (object) [1 => 1];
         $var->{1} = 2;
 
         $this->assertDumpMatchesFormat(
-            <<<EOTXT
+            <<<'EOTXT'
 {
   +1: 1
   +"1": 2
@@ -167,7 +167,7 @@ EOTXT
         );
     }
 
-    public function testClosedResource()
+    public function test_closed_resource()
     {
         if (defined('HHVM_VERSION') && HHVM_VERSION_ID < 30600) {
             $this->markTestSkipped();
@@ -178,7 +178,7 @@ EOTXT
 
         $dumper = new CliDumper('php://output');
         $dumper->setColors(false);
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
         $data = $cloner->cloneVar($var);
 
         ob_start();
@@ -196,24 +196,24 @@ EOTXT
         );
     }
 
-    public function testThrowingCaster()
+    public function test_throwing_caster()
     {
         $out = fopen('php://memory', 'r+b');
 
         require_once __DIR__.'/Fixtures/Twig.php';
-        $twig = new \__TwigTemplate_VarDumperFixture_u75a09(new \Twig_Environment(new \Twig_Loader_Filesystem()));
+        $twig = new \__TwigTemplate_VarDumperFixture_u75a09(new \Twig_Environment(new \Twig_Loader_Filesystem));
 
-        $dumper = new CliDumper();
+        $dumper = new CliDumper;
         $dumper->setColors(false);
-        $cloner = new VarCloner();
-        $cloner->addCasters(array(
+        $cloner = new VarCloner;
+        $cloner->addCasters([
             ':stream' => function ($res, $a) {
                 unset($a['wrapper_data']);
 
                 return $a;
             },
-        ));
-        $cloner->addCasters(array(
+        ]);
+        $cloner->addCasters([
             ':stream' => eval('return function () use ($twig) {
                 try {
                     $twig->render(array());
@@ -221,7 +221,7 @@ EOTXT
                     throw $e->getPrevious();
                 }
             };'),
-        ));
+        ]);
         $line = __LINE__ - 2;
         $ref = (int) $out;
 
@@ -231,11 +231,11 @@ EOTXT
         $out = stream_get_contents($out);
 
         if (method_exists($twig, 'getSource')) {
-            $twig = <<<EOTXT
+            $twig = <<<'EOTXT'
           foo.twig:2: """
-            foo bar\\n
-              twig source\\n
-            \\n
+            foo bar\n
+              twig source\n
+            \n
             """
 
 EOTXT;
@@ -312,14 +312,14 @@ EOTXT
         );
     }
 
-    public function testRefsInProperties()
+    public function test_refs_in_properties()
     {
-        $var = (object) array('foo' => 'foo');
+        $var = (object) ['foo' => 'foo'];
         $var->bar = &$var->foo;
 
-        $dumper = new CliDumper();
+        $dumper = new CliDumper;
         $dumper->setColors(false);
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
 
         $out = fopen('php://memory', 'r+b');
         $data = $cloner->cloneVar($var);
@@ -343,15 +343,17 @@ EOTXT
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
+     *
      * @requires PHP 5.6
      */
-    public function testSpecialVars56()
+    public function test_special_vars56()
     {
         $var = $this->getSpecialVars();
 
         $this->assertDumpEquals(
-            <<<EOTXT
+            <<<'EOTXT'
 array:3 [
   0 => array:1 [
     0 => &1 array:1 [
@@ -373,9 +375,10 @@ EOTXT
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
-    public function testGlobalsNoExt()
+    public function test_globals_no_ext()
     {
         $var = $this->getSpecialVars();
         unset($var[0]);
@@ -387,7 +390,7 @@ EOTXT
             }
         });
         $dumper->setColors(false);
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
 
         $refl = new \ReflectionProperty($cloner, 'useExt');
         $refl->setAccessible(true);
@@ -397,7 +400,7 @@ EOTXT
         $dumper->dump($data);
 
         $this->assertSame(
-            <<<EOTXT
+            <<<'EOTXT'
 array:2 [
   1 => array:1 [
     "GLOBALS" => &1 array:1 [
@@ -415,9 +418,10 @@ EOTXT
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
-    public function testBuggyRefs()
+    public function test_buggy_refs()
     {
         if (PHP_VERSION_ID >= 50600) {
             $this->markTestSkipped('PHP 5.6 fixed refs counting');
@@ -426,9 +430,9 @@ EOTXT
         $var = $this->getSpecialVars();
         $var = $var[0];
 
-        $dumper = new CliDumper();
+        $dumper = new CliDumper;
         $dumper->setColors(false);
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
 
         $data = $cloner->cloneVar($var)->withMaxDepth(3);
         $out = '';
@@ -439,7 +443,7 @@ EOTXT
         });
 
         $this->assertSame(
-            <<<EOTXT
+            <<<'EOTXT'
 array:1 [
   0 => array:1 [
     0 => array:1 [
@@ -457,18 +461,18 @@ EOTXT
     private function getSpecialVars()
     {
         foreach (array_keys($GLOBALS) as $var) {
-            if ('GLOBALS' !== $var) {
+            if ($var !== 'GLOBALS') {
                 unset($GLOBALS[$var]);
             }
         }
 
         $var = function &() {
-            $var = array();
+            $var = [];
             $var[] = &$var;
 
             return $var;
         };
 
-        return array($var(), $GLOBALS, &$GLOBALS);
+        return [$var(), $GLOBALS, &$GLOBALS];
     }
 }

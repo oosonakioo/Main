@@ -1,8 +1,9 @@
 <?php
+
 class Issue1570Test extends PHPUnit_Framework_TestCase
 {
-    public function testOne()
+    public function test_one()
     {
-        print '*';
+        echo '*';
     }
 }

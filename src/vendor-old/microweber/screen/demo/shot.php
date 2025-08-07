@@ -1,10 +1,10 @@
 <?php
 
 // Use the first autoload instead if you don't want to install composer
-//require_once '../autoload.php';
+// require_once '../autoload.php';
 require_once '../vendor/autoload.php';
 
-if (!isset($_GET['url'])) {
+if (! isset($_GET['url'])) {
     exit;
 }
 
@@ -41,9 +41,9 @@ if (isset($_GET['format'])) { // Format
 $fileLocation = 'test';
 $screen->save($fileLocation);
 
-header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-header("Pragma: no-cache"); // HTTP 1.0.
-header("Expires: 0"); // Proxies.
-header('Content-Type:' . $screen->getImageType()->getMimeType());
-header('Content-Length: ' . filesize($screen->getImageLocation()));
+header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
+header('Pragma: no-cache'); // HTTP 1.0.
+header('Expires: 0'); // Proxies.
+header('Content-Type:'.$screen->getImageType()->getMimeType());
+header('Content-Length: '.filesize($screen->getImageLocation()));
 readfile($screen->getImageLocation());

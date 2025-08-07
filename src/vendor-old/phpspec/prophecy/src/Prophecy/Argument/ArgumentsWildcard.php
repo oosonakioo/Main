@@ -21,18 +21,19 @@ class ArgumentsWildcard
     /**
      * @var Token\TokenInterface[]
      */
-    private $tokens = array();
+    private $tokens = [];
+
     private $string;
 
     /**
      * Initializes wildcard.
      *
-     * @param array $arguments Array of argument tokens or values
+     * @param  array  $arguments  Array of argument tokens or values
      */
     public function __construct(array $arguments)
     {
         foreach ($arguments as $argument) {
-            if (!$argument instanceof Token\TokenInterface) {
+            if (! $argument instanceof Token\TokenInterface) {
                 $argument = new Token\ExactValueToken($argument);
             }
 
@@ -43,17 +44,16 @@ class ArgumentsWildcard
     /**
      * Calculates wildcard match score for provided arguments.
      *
-     * @param array $arguments
      *
      * @return false|int False OR integer score (higher - better)
      */
     public function scoreArguments(array $arguments)
     {
-        if (0 == count($arguments) && 0 == count($this->tokens)) {
+        if (count($arguments) == 0 && count($this->tokens) == 0) {
             return 1;
         }
 
-        $arguments  = array_values($arguments);
+        $arguments = array_values($arguments);
         $totalScore = 0;
         foreach ($this->tokens as $i => $token) {
             $argument = isset($arguments[$i]) ? $arguments[$i] : null;
@@ -63,7 +63,7 @@ class ArgumentsWildcard
 
             $totalScore += $score;
 
-            if (true === $token->isLast()) {
+            if ($token->isLast() === true) {
                 return $totalScore;
             }
         }
@@ -82,7 +82,7 @@ class ArgumentsWildcard
      */
     public function __toString()
     {
-        if (null === $this->string) {
+        if ($this->string === null) {
             $this->string = implode(', ', array_map(function ($token) {
                 return (string) $token;
             }, $this->tokens));

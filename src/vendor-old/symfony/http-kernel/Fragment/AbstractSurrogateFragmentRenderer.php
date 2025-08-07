@@ -25,7 +25,9 @@ use Symfony\Component\HttpKernel\UriSigner;
 abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRenderer
 {
     private $surrogate;
+
     private $inlineStrategy;
+
     private $signer;
 
     /**
@@ -34,11 +36,10 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
      * The "fallback" strategy when surrogate is not available should always be an
      * instance of InlineFragmentRenderer.
      *
-     * @param SurrogateInterface        $surrogate      An Surrogate instance
-     * @param FragmentRendererInterface $inlineStrategy The inline strategy to use when the surrogate is not supported
-     * @param UriSigner                 $signer
+     * @param  SurrogateInterface  $surrogate  An Surrogate instance
+     * @param  FragmentRendererInterface  $inlineStrategy  The inline strategy to use when the surrogate is not supported
      */
-    public function __construct(SurrogateInterface $surrogate = null, FragmentRendererInterface $inlineStrategy, UriSigner $signer = null)
+    public function __construct(?SurrogateInterface $surrogate, FragmentRendererInterface $inlineStrategy, ?UriSigner $signer = null)
     {
         $this->surrogate = $surrogate;
         $this->inlineStrategy = $inlineStrategy;
@@ -61,9 +62,9 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
      *
      * @see Symfony\Component\HttpKernel\HttpCache\SurrogateInterface
      */
-    public function render($uri, Request $request, array $options = array())
+    public function render($uri, Request $request, array $options = [])
     {
-        if (!$this->surrogate || !$this->surrogate->hasSurrogateCapability($request)) {
+        if (! $this->surrogate || ! $this->surrogate->hasSurrogateCapability($request)) {
             return $this->inlineStrategy->render($uri, $request, $options);
         }
 
@@ -83,7 +84,7 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
 
     private function generateSignedFragmentUri($uri, Request $request)
     {
-        if (null === $this->signer) {
+        if ($this->signer === null) {
             throw new \LogicException('You must use a URI when using the ESI rendering strategy or set a URL signer.');
         }
 

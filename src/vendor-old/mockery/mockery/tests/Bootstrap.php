@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -28,17 +28,17 @@ error_reporting(E_ALL);
  * Determine the root, library, and tests directories of the framework
  * distribution.
  */
-$root    = realpath(dirname(dirname(__FILE__)));
+$root = realpath(dirname(dirname(__FILE__)));
 $library = "$root/library";
-$tests   = "$root/tests";
+$tests = "$root/tests";
 
 /**
  * Check that --dev composer installation was done
  */
-if (!file_exists($root . '/vendor/autoload.php')) {
+if (! file_exists($root.'/vendor/autoload.php')) {
     throw new Exception(
         'Please run "php composer.phar install --dev" in root directory '
-        . 'to setup unit test dependencies before running the tests'
+        .'to setup unit test dependencies before running the tests'
     );
 }
 
@@ -48,10 +48,10 @@ if (!file_exists($root . '/vendor/autoload.php')) {
  * loading other copies of the code and tests that would supercede
  * this copy.
  */
-$path = array(
+$path = [
     $library, // required for `testCallingRegisterRegistersSelfAsSplAutoloaderFunction`
     get_include_path(),
-);
+];
 set_include_path(implode(PATH_SEPARATOR, $path));
 
 require_once "$root/vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php";
@@ -70,7 +70,7 @@ if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
     /*
      * Omit from code coverage reports the contents of the tests directory
      */
-    foreach (array('.php', '.phtml', '.csv', '.inc') as $suffix) {
+    foreach (['.php', '.phtml', '.csv', '.inc'] as $suffix) {
         PHPUnit_Util_Filter::addDirectoryToFilter($tests, $suffix);
     }
     PHPUnit_Util_Filter::addDirectoryToFilter(PEAR_INSTALL_DIR);

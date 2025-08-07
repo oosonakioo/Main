@@ -9,32 +9,36 @@ class BuilderFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideTestFactory
      */
-    public function testFactory($methodName, $className) {
+    public function test_factory($methodName, $className)
+    {
         $factory = new BuilderFactory;
         $this->assertInstanceOf($className, $factory->$methodName('test'));
     }
 
-    public function provideTestFactory() {
-        return array(
-            array('namespace', 'PhpParser\Builder\Namespace_'),
-            array('class',     'PhpParser\Builder\Class_'),
-            array('interface', 'PhpParser\Builder\Interface_'),
-            array('trait',     'PhpParser\Builder\Trait_'),
-            array('method',    'PhpParser\Builder\Method'),
-            array('function',  'PhpParser\Builder\Function_'),
-            array('property',  'PhpParser\Builder\Property'),
-            array('param',     'PhpParser\Builder\Param'),
-            array('use',       'PhpParser\Builder\Use_'),
-        );
+    public function provideTestFactory()
+    {
+        return [
+            ['namespace', 'PhpParser\Builder\Namespace_'],
+            ['class',     'PhpParser\Builder\Class_'],
+            ['interface', 'PhpParser\Builder\Interface_'],
+            ['trait',     'PhpParser\Builder\Trait_'],
+            ['method',    'PhpParser\Builder\Method'],
+            ['function',  'PhpParser\Builder\Function_'],
+            ['property',  'PhpParser\Builder\Property'],
+            ['param',     'PhpParser\Builder\Param'],
+            ['use',       'PhpParser\Builder\Use_'],
+        ];
     }
 
-    public function testNonExistingMethod() {
+    public function test_non_existing_method()
+    {
         $this->setExpectedException('LogicException', 'Method "foo" does not exist');
-        $factory = new BuilderFactory();
+        $factory = new BuilderFactory;
         $factory->foo();
     }
 
-    public function testIntegration() {
+    public function test_integration()
+    {
         $factory = new BuilderFactory;
         $node = $factory->namespace('Name\Space')
             ->addStmt($factory->use('Foo\Bar\SomeOtherClass'))
@@ -65,9 +69,8 @@ class BuilderFactoryTest extends \PHPUnit_Framework_TestCase
                 ->addStmt($factory->property('someProperty')->makeProtected())
                 ->addStmt($factory->property('anotherProperty')
                     ->makePrivate()
-                    ->setDefault(array(1, 2, 3))))
-            ->getNode()
-        ;
+                    ->setDefault([1, 2, 3])))
+            ->getNode();
 
         $expected = <<<'EOC'
 <?php
@@ -96,8 +99,8 @@ abstract class SomeClass extends SomeOtherClass implements A\Few, \Interfaces
 }
 EOC;
 
-        $stmts = array($node);
-        $prettyPrinter = new PrettyPrinter\Standard();
+        $stmts = [$node];
+        $prettyPrinter = new PrettyPrinter\Standard;
         $generated = $prettyPrinter->prettyPrintFile($stmts);
 
         $this->assertEquals(

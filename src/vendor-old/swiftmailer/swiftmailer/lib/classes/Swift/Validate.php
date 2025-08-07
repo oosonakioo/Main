@@ -24,8 +24,7 @@ class Swift_Validate
     /**
      * Checks if an e-mail address matches the current grammars.
      *
-     * @param string $email
-     *
+     * @param  string  $email
      * @return bool
      */
     public static function email($email)
@@ -36,8 +35,8 @@ class Swift_Validate
         }
 
         return (bool) preg_match(
-                '/^'.self::$grammar->getDefinition('addr-spec').'$/D',
-                $email
-            );
+            '/^'.self::$grammar->getDefinition('addr-spec').'$/D',
+            $email
+        );
     }
 }

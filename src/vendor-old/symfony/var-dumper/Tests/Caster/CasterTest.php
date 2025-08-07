@@ -21,7 +21,7 @@ class CasterTest extends \PHPUnit_Framework_TestCase
 {
     use VarDumperTestTrait;
 
-    private $referenceArray = array(
+    private $referenceArray = [
         'null' => null,
         'empty' => false,
         'public' => 'pub',
@@ -29,14 +29,14 @@ class CasterTest extends \PHPUnit_Framework_TestCase
         "\0+\0dynamic" => 'dyn',
         "\0*\0protected" => 'prot',
         "\0Foo\0private" => 'priv',
-    );
+    ];
 
     /**
      * @dataProvider provideFilter
      */
-    public function testFilter($filter, $expectedDiff, $listedProperties = null)
+    public function test_filter($filter, $expectedDiff, $listedProperties = null)
     {
-        if (null === $listedProperties) {
+        if ($listedProperties === null) {
             $filteredArray = Caster::filter($this->referenceArray, $filter);
         } else {
             $filteredArray = Caster::filter($this->referenceArray, $filter, $listedProperties);
@@ -47,113 +47,113 @@ class CasterTest extends \PHPUnit_Framework_TestCase
 
     public function provideFilter()
     {
-        return array(
-            array(
+        return [
+            [
                 0,
-                array(),
-            ),
-            array(
+                [],
+            ],
+            [
                 Caster::EXCLUDE_PUBLIC,
-                array(
+                [
                     'null' => null,
                     'empty' => false,
                     'public' => 'pub',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_NULL,
-                array(
+                [
                     'null' => null,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_EMPTY,
-                array(
+                [
                     'null' => null,
                     'empty' => false,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_VIRTUAL,
-                array(
+                [
                     "\0~\0virtual" => 'virt',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_DYNAMIC,
-                array(
+                [
                     "\0+\0dynamic" => 'dyn',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_PROTECTED,
-                array(
+                [
                     "\0*\0protected" => 'prot',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_PRIVATE,
-                array(
+                [
                     "\0Foo\0private" => 'priv',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_VERBOSE,
-                array(
+                [
                     'public' => 'pub',
                     "\0*\0protected" => 'prot',
-                ),
-                array('public', "\0*\0protected"),
-            ),
-            array(
+                ],
+                ['public', "\0*\0protected"],
+            ],
+            [
                 Caster::EXCLUDE_NOT_IMPORTANT,
-                array(
+                [
                     'null' => null,
                     'empty' => false,
                     "\0~\0virtual" => 'virt',
                     "\0+\0dynamic" => 'dyn',
                     "\0Foo\0private" => 'priv',
-                ),
-                array('public', "\0*\0protected"),
-            ),
-            array(
+                ],
+                ['public', "\0*\0protected"],
+            ],
+            [
                 Caster::EXCLUDE_VIRTUAL | Caster::EXCLUDE_DYNAMIC,
-                array(
+                [
                     "\0~\0virtual" => 'virt',
                     "\0+\0dynamic" => 'dyn',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 Caster::EXCLUDE_NOT_IMPORTANT | Caster::EXCLUDE_VERBOSE,
                 $this->referenceArray,
-                array('public', "\0*\0protected"),
-            ),
-            array(
+                ['public', "\0*\0protected"],
+            ],
+            [
                 Caster::EXCLUDE_NOT_IMPORTANT | Caster::EXCLUDE_EMPTY,
-                array(
+                [
                     'null' => null,
                     'empty' => false,
                     "\0~\0virtual" => 'virt',
                     "\0+\0dynamic" => 'dyn',
                     "\0*\0protected" => 'prot',
                     "\0Foo\0private" => 'priv',
-                ),
-                array('public', 'empty'),
-            ),
-            array(
+                ],
+                ['public', 'empty'],
+            ],
+            [
                 Caster::EXCLUDE_VERBOSE | Caster::EXCLUDE_EMPTY | Caster::EXCLUDE_STRICT,
-                array(
+                [
                     'empty' => false,
-                ),
-                array('public', 'empty'),
-            ),
-        );
+                ],
+                ['public', 'empty'],
+            ],
+        ];
     }
 
     /**
      * @requires PHP 7.0
      */
-    public function testAnonymousClass()
+    public function test_anonymous_class()
     {
         $c = eval('return new class extends stdClass { private $foo = "foo"; };');
 

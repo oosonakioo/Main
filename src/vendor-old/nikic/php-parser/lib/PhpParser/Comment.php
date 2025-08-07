@@ -5,17 +5,20 @@ namespace PhpParser;
 class Comment
 {
     protected $text;
+
     protected $line;
+
     protected $filePos;
 
     /**
      * Constructs a comment node.
      *
-     * @param string $text         Comment text (including comment delimiters like /*)
-     * @param int    $startLine    Line number the comment started on
-     * @param int    $startFilePos File offset the comment started on
+     * @param  string  $text  Comment text (including comment delimiters like /*)
+     * @param  int  $startLine  Line number the comment started on
+     * @param  int  $startFilePos  File offset the comment started on
      */
-    public function __construct($text, $startLine = -1, $startFilePos = -1) {
+    public function __construct($text, $startLine = -1, $startFilePos = -1)
+    {
         $this->text = $text;
         $this->line = $startLine;
         $this->filePos = $startFilePos;
@@ -26,18 +29,20 @@ class Comment
      *
      * @return string The comment text (including comment delimiters like /*)
      */
-    public function getText() {
+    public function getText()
+    {
         return $this->text;
     }
 
     /**
      * Sets the comment text.
      *
-     * @param string $text The comment text (including comment delimiters like /*)
+     * @param  string  $text  The comment text (including comment delimiters like /*)
      *
      * @deprecated Construct a new comment instead
      */
-    public function setText($text) {
+    public function setText($text)
+    {
         $this->text = $text;
     }
 
@@ -46,18 +51,20 @@ class Comment
      *
      * @return int Line number
      */
-    public function getLine() {
+    public function getLine()
+    {
         return $this->line;
     }
 
     /**
      * Sets the line number the comment started on.
      *
-     * @param int $line Line number
+     * @param  int  $line  Line number
      *
      * @deprecated Construct a new comment instead
      */
-    public function setLine($line) {
+    public function setLine($line)
+    {
         $this->line = $line;
     }
 
@@ -66,7 +73,8 @@ class Comment
      *
      * @return int File offset
      */
-    public function getFilePos() {
+    public function getFilePos()
+    {
         return $this->filePos;
     }
 
@@ -75,7 +83,8 @@ class Comment
      *
      * @return string The comment text (including comment delimiters like /*)
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->text;
     }
 
@@ -89,10 +98,11 @@ class Comment
      *
      * @return mixed|string
      */
-    public function getReformattedText() {
+    public function getReformattedText()
+    {
         $text = trim($this->text);
         $newlinePos = strpos($text, "\n");
-        if (false === $newlinePos) {
+        if ($newlinePos === false) {
             // Single line comments don't need further processing
             return $text;
         } elseif (preg_match('((*BSR_ANYCRLF)(*ANYCRLF)^.*(?:\R\s+\*.*)+$)', $text)) {
@@ -116,7 +126,7 @@ class Comment
             // is handled by removing the whitespace sequence on the line before the closing
             // */ on all lines. So if the last line is "    */", then "    " is removed at the
             // start of all lines.
-            return preg_replace('(^' . preg_quote($matches[1]) . ')m', '', $text);
+            return preg_replace('(^'.preg_quote($matches[1]).')m', '', $text);
         } elseif (preg_match('(^/\*\*?\s*(?!\s))', $text, $matches)) {
             // Multi line comment of the type
             //
@@ -129,14 +139,16 @@ class Comment
             // lines and the length of the "/* " opening sequence.
             $prefixLen = $this->getShortestWhitespacePrefixLen(substr($text, $newlinePos + 1));
             $removeLen = $prefixLen - strlen($matches[0]);
-            return preg_replace('(^\s{' . $removeLen . '})m', '', $text);
+
+            return preg_replace('(^\s{'.$removeLen.'})m', '', $text);
         }
 
         // No idea how to format this comment, so simply return as is
         return $text;
     }
 
-    private function getShortestWhitespacePrefixLen($str) {
+    private function getShortestWhitespacePrefixLen($str)
+    {
         $lines = explode("\n", $str);
         $shortestPrefixLen = INF;
         foreach ($lines as $line) {
@@ -146,6 +158,7 @@ class Comment
                 $shortestPrefixLen = $prefixLen;
             }
         }
+
         return $shortestPrefixLen;
     }
 }

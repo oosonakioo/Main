@@ -2,28 +2,28 @@
 
 class Swift_Transport_StreamBufferTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSettingWriteTranslationsCreatesFilters()
+    public function test_setting_write_translations_creates_filters()
     {
         $factory = $this->_createFactory();
         $factory->expects($this->once())
-                ->method('createFilter')
-                ->with('a', 'b')
-                ->will($this->returnCallback(array($this, '_createFilter')));
+            ->method('createFilter')
+            ->with('a', 'b')
+            ->will($this->returnCallback([$this, '_createFilter']));
 
         $buffer = $this->_createBuffer($factory);
-        $buffer->setWriteTranslations(array('a' => 'b'));
+        $buffer->setWriteTranslations(['a' => 'b']);
     }
 
-    public function testOverridingTranslationsOnlyAddsNeededFilters()
+    public function test_overriding_translations_only_adds_needed_filters()
     {
         $factory = $this->_createFactory();
         $factory->expects($this->exactly(2))
-                ->method('createFilter')
-                ->will($this->returnCallback(array($this, '_createFilter')));
+            ->method('createFilter')
+            ->will($this->returnCallback([$this, '_createFilter']));
 
         $buffer = $this->_createBuffer($factory);
-        $buffer->setWriteTranslations(array('a' => 'b'));
-        $buffer->setWriteTranslations(array('x' => 'y', 'a' => 'b'));
+        $buffer->setWriteTranslations(['a' => 'b']);
+        $buffer->setWriteTranslations(['x' => 'y', 'a' => 'b']);
     }
 
     private function _createBuffer($replacementFactory)

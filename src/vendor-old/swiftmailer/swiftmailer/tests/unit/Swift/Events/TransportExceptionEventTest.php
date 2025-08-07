@@ -2,7 +2,7 @@
 
 class Swift_Events_TransportExceptionEventTest extends \PHPUnit_Framework_TestCase
 {
-    public function testExceptionCanBeFetchViaGetter()
+    public function test_exception_can_be_fetch_via_getter()
     {
         $ex = $this->_createException();
         $transport = $this->_createTransport();
@@ -10,10 +10,10 @@ class Swift_Events_TransportExceptionEventTest extends \PHPUnit_Framework_TestCa
         $ref = $evt->getException();
         $this->assertEquals($ex, $ref,
             '%s: Exception should be available via getException()'
-            );
+        );
     }
 
-    public function testSourceIsTransport()
+    public function test_source_is_transport()
     {
         $ex = $this->_createException();
         $transport = $this->_createTransport();
@@ -21,7 +21,7 @@ class Swift_Events_TransportExceptionEventTest extends \PHPUnit_Framework_TestCa
         $ref = $evt->getSource();
         $this->assertEquals($transport, $ref,
             '%s: Transport should be available via getSource()'
-            );
+        );
     }
 
     private function _createEvent(Swift_Transport $transport, Swift_TransportException $ex)

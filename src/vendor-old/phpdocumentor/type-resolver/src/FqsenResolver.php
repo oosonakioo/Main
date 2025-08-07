@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -19,7 +21,7 @@ class FqsenResolver
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
-    public function resolve($fqsen, Context $context = null)
+    public function resolve($fqsen, ?Context $context = null)
     {
         if ($context === null) {
             $context = new Context('');
@@ -35,8 +37,7 @@ class FqsenResolver
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return bool
      */
     private function isFqsen($type)
@@ -48,9 +49,7 @@ class FqsenResolver
      * Resolves a partial Structural Element Name (i.e. `Reflection\DocBlock`) to its FQSEN representation
      * (i.e. `\phpDocumentor\Reflection\DocBlock`) based on the Namespace and aliases mentioned in the Context.
      *
-     * @param string $type
-     * @param Context $context
-     *
+     * @param  string  $type
      * @return Fqsen
      */
     private function resolvePartialStructuralElementName($type, Context $context)
@@ -60,17 +59,17 @@ class FqsenResolver
         $namespaceAliases = $context->getNamespaceAliases();
 
         // if the first segment is not an alias; prepend namespace name and return
-        if (!isset($namespaceAliases[$typeParts[0]])) {
+        if (! isset($namespaceAliases[$typeParts[0]])) {
             $namespace = $context->getNamespace();
-            if ('' !== $namespace) {
+            if ($namespace !== '') {
                 $namespace .= self::OPERATOR_NAMESPACE;
             }
 
-            return new Fqsen(self::OPERATOR_NAMESPACE . $namespace . $type);
+            return new Fqsen(self::OPERATOR_NAMESPACE.$namespace.$type);
         }
 
         $typeParts[0] = $namespaceAliases[$typeParts[0]];
 
-        return new Fqsen(self::OPERATOR_NAMESPACE . implode(self::OPERATOR_NAMESPACE, $typeParts));
+        return new Fqsen(self::OPERATOR_NAMESPACE.implode(self::OPERATOR_NAMESPACE, $typeParts));
     }
 }

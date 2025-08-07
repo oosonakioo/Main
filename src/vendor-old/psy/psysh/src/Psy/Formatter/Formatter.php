@@ -17,8 +17,6 @@ namespace Psy\Formatter;
 interface Formatter
 {
     /**
-     * @param \Reflector $reflector
-     *
      * @return string
      */
     public static function format(\Reflector $reflector);

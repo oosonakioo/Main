@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHPExcel
  *
@@ -19,9 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   PHPExcel
- * @package    PHPExcel_Shared_Escher
+ *
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ *
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -29,92 +31,100 @@
  * PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
  *
  * @category   PHPExcel
- * @package    PHPExcel_Shared_Escher
+ *
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
 {
-	const BLIPTYPE_ERROR	= 0x00;
-	const BLIPTYPE_UNKNOWN	= 0x01;
-	const BLIPTYPE_EMF		= 0x02;
-	const BLIPTYPE_WMF		= 0x03;
-	const BLIPTYPE_PICT		= 0x04;
-	const BLIPTYPE_JPEG		= 0x05;
-	const BLIPTYPE_PNG		= 0x06;
-	const BLIPTYPE_DIB		= 0x07;
-	const BLIPTYPE_TIFF		= 0x11;
-	const BLIPTYPE_CMYKJPEG	= 0x12;
+    const BLIPTYPE_ERROR = 0x00;
 
-	/**
-	 * The parent BLIP Store Entry Container
-	 *
-	 * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer
-	 */
-	private $_parent;
+    const BLIPTYPE_UNKNOWN = 0x01;
 
-	/**
-	 * The BLIP (Big Large Image or Picture)
-	 *
-	 * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
-	 */
-	private $_blip;
+    const BLIPTYPE_EMF = 0x02;
 
-	/**
-	 * The BLIP type
-	 *
-	 * @var int
-	 */
-	private $_blipType;
+    const BLIPTYPE_WMF = 0x03;
 
-	/**
-	 * Set parent BLIP Store Entry Container
-	 *
-	 * @param PHPExcel_Shared_Escher_DggContainer_BstoreContainer $parent
-	 */
-	public function setParent($parent)
-	{
-		$this->_parent = $parent;
-	}
+    const BLIPTYPE_PICT = 0x04;
 
-	/**
-	 * Get the BLIP
-	 *
-	 * @return PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
-	 */
-	public function getBlip()
-	{
-		return $this->_blip;
-	}
+    const BLIPTYPE_JPEG = 0x05;
 
-	/**
-	 * Set the BLIP
-	 *
-	 * @param PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip $blip
-	 */
-	public function setBlip($blip)
-	{
-		$this->_blip = $blip;
-		$blip->setParent($this);
-	}
+    const BLIPTYPE_PNG = 0x06;
 
-	/**
-	 * Get the BLIP type
-	 *
-	 * @return int
-	 */
-	public function getBlipType()
-	{
-		return $this->_blipType;
-	}
+    const BLIPTYPE_DIB = 0x07;
 
-	/**
-	 * Set the BLIP type
-	 *
-	 * @param int
-	 */
-	public function setBlipType($blipType)
-	{
-		$this->_blipType = $blipType;
-	}
+    const BLIPTYPE_TIFF = 0x11;
 
+    const BLIPTYPE_CMYKJPEG = 0x12;
+
+    /**
+     * The parent BLIP Store Entry Container
+     *
+     * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer
+     */
+    private $_parent;
+
+    /**
+     * The BLIP (Big Large Image or Picture)
+     *
+     * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
+     */
+    private $_blip;
+
+    /**
+     * The BLIP type
+     *
+     * @var int
+     */
+    private $_blipType;
+
+    /**
+     * Set parent BLIP Store Entry Container
+     *
+     * @param  PHPExcel_Shared_Escher_DggContainer_BstoreContainer  $parent
+     */
+    public function setParent($parent)
+    {
+        $this->_parent = $parent;
+    }
+
+    /**
+     * Get the BLIP
+     *
+     * @return PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
+     */
+    public function getBlip()
+    {
+        return $this->_blip;
+    }
+
+    /**
+     * Set the BLIP
+     *
+     * @param  PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip  $blip
+     */
+    public function setBlip($blip)
+    {
+        $this->_blip = $blip;
+        $blip->setParent($this);
+    }
+
+    /**
+     * Get the BLIP type
+     *
+     * @return int
+     */
+    public function getBlipType()
+    {
+        return $this->_blipType;
+    }
+
+    /**
+     * Set the BLIP type
+     *
+     * @param int
+     */
+    public function setBlipType($blipType)
+    {
+        $this->_blipType = $blipType;
+    }
 }

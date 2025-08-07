@@ -5,7 +5,6 @@
  */
 class ConfigDoc_HTMLXSLTProcessor
 {
-
     /**
      * Instance of XSLTProcessor
      */
@@ -13,7 +12,9 @@ class ConfigDoc_HTMLXSLTProcessor
 
     public function __construct($proc = false)
     {
-        if ($proc === false) $proc = new XSLTProcessor();
+        if ($proc === false) {
+            $proc = new XSLTProcessor;
+        }
         $this->xsltProcessor = $proc;
     }
 
@@ -24,22 +25,25 @@ class ConfigDoc_HTMLXSLTProcessor
     {
         if (is_string($xsl)) {
             $xsl_file = $xsl;
-            $xsl = new DOMDocument();
+            $xsl = new DOMDocument;
             $xsl->load($xsl_file);
         }
+
         return $this->xsltProcessor->importStylesheet($xsl);
     }
 
     /**
      * Transforms an XML file into compatible XHTML based on the stylesheet
-     * @param $xml XML DOM tree, or string filename
+     *
+     * @param  $xml  XML DOM tree, or string filename
      * @return string HTML output
+     *
      * @todo Rename to transformToXHTML, as transformToHTML is misleading
      */
     public function transformToHTML($xml)
     {
         if (is_string($xml)) {
-            $dom = new DOMDocument();
+            $dom = new DOMDocument;
             $dom->load($xml);
         } else {
             $dom = $xml;
@@ -53,11 +57,11 @@ class ConfigDoc_HTMLXSLTProcessor
 
         if (class_exists('Tidy')) {
             // cleanup output
-            $config = array(
-                'indent'        => true,
-                'output-xhtml'  => true,
-                'wrap'          => 80
-            );
+            $config = [
+                'indent' => true,
+                'output-xhtml' => true,
+                'wrap' => 80,
+            ];
             $tidy = new Tidy;
             $tidy->parseString($out, $config, 'utf8');
             $tidy->cleanRepair();
@@ -69,7 +73,8 @@ class ConfigDoc_HTMLXSLTProcessor
 
     /**
      * Bulk sets parameters for the XSL stylesheet
-     * @param array $options Associative array of options to set
+     *
+     * @param  array  $options  Associative array of options to set
      */
     public function setParameters($options)
     {
@@ -83,9 +88,8 @@ class ConfigDoc_HTMLXSLTProcessor
      */
     public function __call($name, $arguments)
     {
-        call_user_func_array(array($this->xsltProcessor, $name), $arguments);
+        call_user_func_array([$this->xsltProcessor, $name], $arguments);
     }
-
 }
 
 // vim: et sw=4 sts=4

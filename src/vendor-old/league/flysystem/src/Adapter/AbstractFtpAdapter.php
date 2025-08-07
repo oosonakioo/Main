@@ -83,30 +83,27 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Constructor.
-     *
-     * @param array $config
      */
     public function __construct(array $config)
     {
-        $this->safeStorage = new SafeStorage();
+        $this->safeStorage = new SafeStorage;
         $this->setConfig($config);
     }
 
     /**
      * Set the config.
      *
-     * @param array $config
      *
      * @return $this
      */
     public function setConfig(array $config)
     {
         foreach ($this->configurable as $setting) {
-            if ( ! isset($config[$setting])) {
+            if (! isset($config[$setting])) {
                 continue;
             }
 
-            $method = 'set' . ucfirst($setting);
+            $method = 'set'.ucfirst($setting);
 
             if (method_exists($this, $method)) {
                 $this->$method($config[$setting]);
@@ -129,8 +126,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the host.
      *
-     * @param string $host
-     *
+     * @param  string  $host
      * @return $this
      */
     public function setHost($host)
@@ -143,8 +139,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the public permission value.
      *
-     * @param int $permPublic
-     *
+     * @param  int  $permPublic
      * @return $this
      */
     public function setPermPublic($permPublic)
@@ -157,8 +152,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the private permission value.
      *
-     * @param int $permPrivate
-     *
+     * @param  int  $permPrivate
      * @return $this
      */
     public function setPermPrivate($permPrivate)
@@ -191,8 +185,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the ftp port.
      *
-     * @param int|string $port
-     *
+     * @param  int|string  $port
      * @return $this
      */
     public function setPort($port)
@@ -205,13 +198,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the root folder to work from.
      *
-     * @param string $root
-     *
+     * @param  string  $root
      * @return $this
      */
     public function setRoot($root)
     {
-        $this->root = rtrim($root, '\\/') . $this->separator;
+        $this->root = rtrim($root, '\\/').$this->separator;
 
         return $this;
     }
@@ -231,8 +223,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set ftp username.
      *
-     * @param string $username
-     *
+     * @param  string  $username
      * @return $this
      */
     public function setUsername($username)
@@ -255,8 +246,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the ftp password.
      *
-     * @param string $password
-     *
+     * @param  string  $password
      * @return $this
      */
     public function setPassword($password)
@@ -279,8 +269,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the amount of seconds before the connection should timeout.
      *
-     * @param int $timeout
-     *
+     * @param  int  $timeout
      * @return $this
      */
     public function setTimeout($timeout)
@@ -303,8 +292,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Set the FTP system type (windows or unix).
      *
-     * @param string $systemType
-     *
+     * @param  string  $systemType
      * @return $this
      */
     public function setSystemType($systemType)
@@ -315,7 +303,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function listContents($directory = '', $recursive = false)
     {
@@ -327,9 +315,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Normalize a directory listing.
      *
-     * @param array  $listing
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return array directory listing
      */
     protected function normalizeListing(array $listing, $prefix = '')
@@ -341,6 +327,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
         while ($item = array_shift($listing)) {
             if (preg_match('#^.*:$#', $item)) {
                 $base = trim($item, ':');
+
                 continue;
             }
 
@@ -353,7 +340,6 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Sort a directory listing.
      *
-     * @param array $result
      *
      * @return array sorted listing
      */
@@ -371,9 +357,8 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Normalize a file entry.
      *
-     * @param string $item
-     * @param string $base
-     *
+     * @param  string  $item
+     * @param  string  $base
      * @return array normalized file array
      *
      * @throws NotSupportedException
@@ -394,9 +379,8 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Normalize a Unix file entry.
      *
-     * @param string $item
-     * @param string $base
-     *
+     * @param  string  $item
+     * @param  string  $base
      * @return array normalized file array
      */
     protected function normalizeUnixObject($item, $base)
@@ -407,9 +391,9 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
             throw new RuntimeException("Metadata can't be parsed from item '$item' , not enough parts.");
         }
 
-        list($permissions, /* $number */, /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);
+        [$permissions, /* $number */, /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time */, $name] = explode(' ', $item, 9);
         $type = $this->detectType($permissions);
-        $path = empty($base) ? $name : $base . $this->separator . $name;
+        $path = empty($base) ? $name : $base.$this->separator.$name;
 
         if ($type === 'dir') {
             return compact('type', 'path');
@@ -425,9 +409,8 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Normalize a Windows/DOS file entry.
      *
-     * @param string $item
-     * @param string $base
-     *
+     * @param  string  $item
+     * @param  string  $base
      * @return array normalized file array
      */
     protected function normalizeWindowsObject($item, $base)
@@ -438,12 +421,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
             throw new RuntimeException("Metadata can't be parsed from item '$item' , not enough parts.");
         }
 
-        list($date, $time, $size, $name) = explode(' ', $item, 4);
-        $path = empty($base) ? $name : $base . $this->separator . $name;
+        [$date, $time, $size, $name] = explode(' ', $item, 4);
+        $path = empty($base) ? $name : $base.$this->separator.$name;
 
         // Check for the correct date/time format
         $format = strlen($date) === 8 ? 'm-d-yH:iA' : 'Y-m-dH:i';
-        $dt = DateTime::createFromFormat($format, $date . $time);
+        $dt = DateTime::createFromFormat($format, $date.$time);
         $timestamp = $dt ? $dt->getTimestamp() : (int) strtotime("$date $time");
 
         if ($size === '<DIR>') {
@@ -462,8 +445,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Get the system type from a listing item.
      *
-     * @param string $item
-     *
+     * @param  string  $item
      * @return string the system type
      */
     protected function detectSystemType($item)
@@ -474,8 +456,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Get the file type from the permissions.
      *
-     * @param string $permissions
-     *
+     * @param  string  $permissions
      * @return string file type
      */
     protected function detectType($permissions)
@@ -486,8 +467,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Normalize a permissions string.
      *
-     * @param string $permissions
-     *
+     * @param  string  $permissions
      * @return int
      */
     protected function normalizePermissions($permissions)
@@ -514,14 +494,13 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Filter out dot-directories.
      *
-     * @param array $list
      *
      * @return array
      */
     public function removeDotDirectories(array $list)
     {
         $filter = function ($line) {
-            if ( ! empty($line) && ! preg_match('#.* \.(\.)?$|^total#', $line)) {
+            if (! empty($line) && ! preg_match('#.* \.(\.)?$|^total#', $line)) {
                 return true;
             }
 
@@ -532,7 +511,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function has($path)
     {
@@ -540,7 +519,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSize($path)
     {
@@ -548,7 +527,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVisibility($path)
     {
@@ -558,12 +537,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     /**
      * Ensure a directory exists.
      *
-     * @param string $dirname
+     * @param  string  $dirname
      */
     public function ensureDirectory($dirname)
     {
-        if ( ! empty($dirname) && ! $this->has($dirname)) {
-            $this->createDir($dirname, new Config());
+        if (! empty($dirname) && ! $this->has($dirname)) {
+            $this->createDir($dirname, new Config);
         }
     }
 
@@ -574,7 +553,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     {
         $tries = 0;
 
-        while ( ! $this->isConnected() && $tries < 3) {
+        while (! $this->isConnected() && $tries < 3) {
             $tries++;
             $this->disconnect();
             $this->connect();

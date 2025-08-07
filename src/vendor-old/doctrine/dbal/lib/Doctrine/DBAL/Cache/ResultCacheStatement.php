@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,9 +20,9 @@
 
 namespace Doctrine\DBAL\Cache;
 
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\Common\Cache\Cache;
+use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Driver\Statement;
 use PDO;
 
 /**
@@ -45,7 +46,6 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
     private $resultCache;
 
     /**
-     *
      * @var string
      */
     private $cacheKey;
@@ -56,7 +56,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
     private $realKey;
 
     /**
-     * @var integer
+     * @var int
      */
     private $lifetime;
 
@@ -68,7 +68,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
     /**
      * Did we reach the end of the statement?
      *
-     * @var boolean
+     * @var bool
      */
     private $emptied = false;
 
@@ -78,16 +78,14 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
     private $data;
 
     /**
-     * @var integer
+     * @var int
      */
     private $defaultFetchMode = PDO::FETCH_BOTH;
 
     /**
-     * @param \Doctrine\DBAL\Driver\Statement $stmt
-     * @param \Doctrine\Common\Cache\Cache    $resultCache
-     * @param string                          $cacheKey
-     * @param string                          $realKey
-     * @param integer                         $lifetime
+     * @param  string  $cacheKey
+     * @param  string  $realKey
+     * @param  int  $lifetime
      */
     public function __construct(Statement $stmt, Cache $resultCache, $cacheKey, $realKey, $lifetime)
     {
@@ -106,8 +104,8 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
         $this->statement->closeCursor();
         if ($this->emptied && $this->data !== null) {
             $data = $this->resultCache->fetch($this->cacheKey);
-            if ( ! $data) {
-                $data = array();
+            if (! $data) {
+                $data = [];
             }
             $data[$this->realKey] = $this->data;
 
@@ -150,7 +148,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
     public function fetch($fetchMode = null)
     {
         if ($this->data === null) {
-            $this->data = array();
+            $this->data = [];
         }
 
         $row = $this->statement->fetch(PDO::FETCH_ASSOC);
@@ -168,7 +166,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
             } elseif ($fetchMode == PDO::FETCH_COLUMN) {
                 return reset($row);
             } else {
-                throw new \InvalidArgumentException("Invalid fetch-style given for caching result.");
+                throw new \InvalidArgumentException('Invalid fetch-style given for caching result.');
             }
         }
         $this->emptied = true;
@@ -181,7 +179,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
      */
     public function fetchAll($fetchMode = null)
     {
-        $rows = array();
+        $rows = [];
         while ($row = $this->fetch($fetchMode)) {
             $rows[] = $row;
         }
@@ -195,7 +193,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
     public function fetchColumn($columnIndex = 0)
     {
         $row = $this->fetch(PDO::FETCH_NUM);
-        if (!isset($row[$columnIndex])) {
+        if (! isset($row[$columnIndex])) {
             // TODO: verify this is correct behavior
             return false;
         }
@@ -212,7 +210,7 @@ class ResultCacheStatement implements \IteratorAggregate, ResultStatement
      * this behaviour is not guaranteed for all databases and should not be
      * relied on for portable applications.
      *
-     * @return integer The number of rows.
+     * @return int The number of rows.
      */
     public function rowCount()
     {

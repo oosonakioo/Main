@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -34,23 +35,23 @@ class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailed
      *
      * @var array
      */
-    protected $syntheticTrace = array();
+    protected $syntheticTrace = [];
 
     /**
      * Constructor.
      *
-     * @param string $message
-     * @param int    $code
-     * @param string $file
-     * @param int    $line
-     * @param array  $trace
+     * @param  string  $message
+     * @param  int  $code
+     * @param  string  $file
+     * @param  int  $line
+     * @param  array  $trace
      */
     public function __construct($message, $code, $file, $line, $trace)
     {
         parent::__construct($message, $code);
 
-        $this->syntheticFile  = $file;
-        $this->syntheticLine  = $line;
+        $this->syntheticFile = $file;
+        $this->syntheticLine = $line;
         $this->syntheticTrace = $trace;
     }
 

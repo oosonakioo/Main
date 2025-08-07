@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -32,7 +33,7 @@ class PHP_CodeCoverage_Report_XML_File_Coverage
     {
         $this->contextNode = $context;
 
-        $this->writer = new XMLWriter();
+        $this->writer = new XMLWriter;
         $this->writer->openMemory();
         $this->writer->startElementNs(null, $context->nodeName, 'http://schema.phpunit.de/coverage/1.0');
         $this->writer->writeAttribute('nr', $line);

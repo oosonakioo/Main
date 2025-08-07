@@ -31,11 +31,12 @@ class EntityPopulator
     /**
      * @var array
      */
-    protected $columnFormatters = array();
+    protected $columnFormatters = [];
+
     /**
      * @var array
      */
-    protected $modifiers = array();
+    protected $modifiers = [];
 
     /**
      * @var bool
@@ -44,10 +45,6 @@ class EntityPopulator
 
     /**
      * Class constructor.
-     *
-     * @param Mapper $mapper
-     * @param Locator $locator
-     * @param $useExistingData
      */
     public function __construct(Mapper $mapper, Locator $locator, $useExistingData = false)
     {
@@ -64,9 +61,6 @@ class EntityPopulator
         return $this->mapper;
     }
 
-    /**
-     * @param $columnFormatters
-     */
     public function setColumnFormatters($columnFormatters)
     {
         $this->columnFormatters = $columnFormatters;
@@ -80,17 +74,11 @@ class EntityPopulator
         return $this->columnFormatters;
     }
 
-    /**
-     * @param $columnFormatters
-     */
     public function mergeColumnFormattersWith($columnFormatters)
     {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
     }
 
-    /**
-     * @param array $modifiers
-     */
     public function setModifiers(array $modifiers)
     {
         $this->modifiers = $modifiers;
@@ -104,21 +92,17 @@ class EntityPopulator
         return $this->modifiers;
     }
 
-    /**
-     * @param array $modifiers
-     */
     public function mergeModifiersWith(array $modifiers)
     {
         $this->modifiers = array_merge($this->modifiers, $modifiers);
     }
 
     /**
-     * @param Generator $generator
      * @return array
      */
     public function guessColumnFormatters(Generator $generator)
     {
-        $formatters = array();
+        $formatters = [];
         $nameGuesser = new Name($generator);
         $columnTypeGuesser = new ColumnTypeGuesser($generator);
         $fields = $this->mapper->fields();
@@ -128,10 +112,12 @@ class EntityPopulator
             }
             if ($formatter = $nameGuesser->guessFormat($fieldName)) {
                 $formatters[$fieldName] = $formatter;
+
                 continue;
             }
             if ($formatter = $columnTypeGuesser->guessFormat($field)) {
                 $formatters[$fieldName] = $formatter;
+
                 continue;
             }
         }
@@ -149,8 +135,8 @@ class EntityPopulator
 
                 $locator = $this->locator;
 
-                $formatters[$fieldName] = function ($inserted) use ($required, $entityName, $locator) {
-                    if (!empty($inserted[$entityName])) {
+                $formatters[$fieldName] = function ($inserted) use ($required, $entityName) {
+                    if (! empty($inserted[$entityName])) {
                         return $inserted[$entityName][mt_rand(0, count($inserted[$entityName]) - 1)]->getId();
                     } else {
                         if ($required && $this->useExistingData) {
@@ -179,7 +165,6 @@ class EntityPopulator
     /**
      * Insert one new record using the Entity class.
      *
-     * @param $insertedEntities
      * @return string
      */
     public function execute($insertedEntities)
@@ -191,28 +176,19 @@ class EntityPopulator
 
         $this->mapper->insert($obj);
 
-
         return $obj;
     }
 
-    /**
-     * @param $obj
-     * @param $insertedEntities
-     */
     private function fillColumns($obj, $insertedEntities)
     {
         foreach ($this->columnFormatters as $field => $format) {
-            if (null !== $format) {
+            if ($format !== null) {
                 $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
                 $obj->set($field, $value);
             }
         }
     }
 
-    /**
-     * @param $obj
-     * @param $insertedEntities
-     */
     private function callMethods($obj, $insertedEntities)
     {
         foreach ($this->getModifiers() as $modifier) {

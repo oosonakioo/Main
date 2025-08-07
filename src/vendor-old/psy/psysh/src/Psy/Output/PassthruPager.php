@@ -21,8 +21,6 @@ class PassthruPager extends StreamOutput implements OutputPager
 {
     /**
      * Constructor.
-     *
-     * @param StreamOutput $output
      */
     public function __construct(StreamOutput $output)
     {

@@ -16,7 +16,7 @@ class AuthenticationException extends Exception
     /**
      * Create a new authentication exception.
      *
-     * @param \Illuminate\Contracts\Auth\Guard|null  $guard
+     * @param  \Illuminate\Contracts\Auth\Guard|null  $guard
      */
     public function __construct($guard = null)
     {

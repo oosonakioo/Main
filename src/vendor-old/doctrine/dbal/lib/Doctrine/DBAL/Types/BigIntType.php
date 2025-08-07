@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,6 +26,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * Type that maps a database BIGINT to a PHP string.
  *
  * @author robo
+ *
  * @since 2.0
  */
 class BigIntType extends Type
@@ -58,6 +60,6 @@ class BigIntType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return (null === $value) ? null : (string) $value;
+        return ($value === null) ? null : (string) $value;
     }
 }

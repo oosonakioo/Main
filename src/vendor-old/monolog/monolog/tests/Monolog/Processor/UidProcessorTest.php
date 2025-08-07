@@ -18,14 +18,14 @@ class UidProcessorTest extends TestCase
     /**
      * @covers Monolog\Processor\UidProcessor::__invoke
      */
-    public function testProcessor()
+    public function test_processor()
     {
-        $processor = new UidProcessor();
+        $processor = new UidProcessor;
         $record = $processor($this->getRecord());
         $this->assertArrayHasKey('uid', $record['extra']);
     }
 
-    public function testGetUid()
+    public function test_get_uid()
     {
         $processor = new UidProcessor(10);
         $this->assertEquals(10, strlen($processor->getUid()));

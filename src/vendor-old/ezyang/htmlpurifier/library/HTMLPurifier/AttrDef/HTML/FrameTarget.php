@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_HTML_FrameTarget extends HTMLPurifier_AttrDef_Enum
 {
-
     /**
      * @type array
      */
@@ -16,14 +15,12 @@ class HTMLPurifier_AttrDef_HTML_FrameTarget extends HTMLPurifier_AttrDef_Enum
      */
     protected $case_sensitive = false;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -31,6 +28,7 @@ class HTMLPurifier_AttrDef_HTML_FrameTarget extends HTMLPurifier_AttrDef_Enum
         if ($this->valid_values === false) {
             $this->valid_values = $config->get('Attr.AllowedFrameTargets');
         }
+
         return parent::validate($string, $config, $context);
     }
 }

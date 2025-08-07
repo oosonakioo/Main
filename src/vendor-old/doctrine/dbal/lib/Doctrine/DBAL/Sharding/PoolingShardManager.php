@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -43,13 +44,10 @@ class PoolingShardManager implements ShardManager
      */
     private $currentDistributionValue;
 
-    /**
-     * @param PoolingShardConnection $conn
-     */
     public function __construct(PoolingShardConnection $conn)
     {
-        $params       = $conn->getParams();
-        $this->conn   = $conn;
+        $params = $conn->getParams();
+        $this->conn = $conn;
         $this->choser = $params['shardChoser'];
     }
 
@@ -63,8 +61,7 @@ class PoolingShardManager implements ShardManager
     }
 
     /**
-     * @param string $distributionValue
-     *
+     * @param  string  $distributionValue
      * @return void
      */
     public function selectShard($distributionValue)
@@ -88,20 +85,17 @@ class PoolingShardManager implements ShardManager
     public function getShards()
     {
         $params = $this->conn->getParams();
-        $shards = array();
+        $shards = [];
 
         foreach ($params['shards'] as $shard) {
-            $shards[] = array('id' => $shard['id']);
+            $shards[] = ['id' => $shard['id']];
         }
 
         return $shards;
     }
 
     /**
-     * @param string $sql
-     * @param array  $params
-     * @param array  $types
-     *
+     * @param  string  $sql
      * @return array
      *
      * @throws \RuntimeException
@@ -109,11 +103,11 @@ class PoolingShardManager implements ShardManager
     public function queryAll($sql, array $params, array $types)
     {
         $shards = $this->getShards();
-        if (!$shards) {
-            throw new \RuntimeException("No shards found.");
+        if (! $shards) {
+            throw new \RuntimeException('No shards found.');
         }
 
-        $result = array();
+        $result = [];
         $oldDistribution = $this->getCurrentDistributionValue();
 
         foreach ($shards as $shard) {

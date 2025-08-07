@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ use Doctrine\DBAL\Schema\SqliteSchemaManager;
  * Abstract base implementation of the {@link Doctrine\DBAL\Driver} interface for SQLite based drivers.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -100,7 +102,7 @@ abstract class AbstractSQLiteDriver implements Driver, ExceptionConverterDriver
      */
     public function getDatabasePlatform()
     {
-        return new SqlitePlatform();
+        return new SqlitePlatform;
     }
 
     /**

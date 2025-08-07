@@ -19,7 +19,7 @@ class SwiftMailerHandlerTest extends TestCase
     /** @var \Swift_Mailer|\PHPUnit_Framework_MockObject_MockObject */
     private $mailer;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->mailer = $this
             ->getMockBuilder('Swift_Mailer')
@@ -27,7 +27,7 @@ class SwiftMailerHandlerTest extends TestCase
             ->getMock();
     }
 
-    public function testMessageCreationIsLazyWhenUsingCallback()
+    public function test_message_creation_is_lazy_when_using_callback()
     {
         $this->mailer->expects($this->never())
             ->method('send');
@@ -37,17 +37,17 @@ class SwiftMailerHandlerTest extends TestCase
         };
         $handler = new SwiftMailerHandler($this->mailer, $callback);
 
-        $records = array(
+        $records = [
             $this->getRecord(Logger::DEBUG),
             $this->getRecord(Logger::INFO),
-        );
+        ];
         $handler->handleBatch($records);
     }
 
-    public function testMessageCanBeCustomizedGivenLoggedData()
+    public function test_message_can_be_customized_given_logged_data()
     {
         // Wire Mailer to expect a specific Swift_Message with a customized Subject
-        $expectedMessage = new \Swift_Message();
+        $expectedMessage = new \Swift_Message;
         $this->mailer->expects($this->once())
             ->method('send')
             ->with($this->callback(function ($value) use ($expectedMessage) {
@@ -66,16 +66,16 @@ class SwiftMailerHandlerTest extends TestCase
         $handler = new SwiftMailerHandler($this->mailer, $callback);
 
         // Logging 1 record makes this an Emergency
-        $records = array(
+        $records = [
             $this->getRecord(Logger::EMERGENCY),
-        );
+        ];
         $handler->handleBatch($records);
     }
 
-    public function testMessageSubjectFormatting()
+    public function test_message_subject_formatting()
     {
         // Wire Mailer to expect a specific Swift_Message with a customized Subject
-        $messageTemplate = new \Swift_Message();
+        $messageTemplate = new \Swift_Message;
         $messageTemplate->setSubject('Alert: %level_name% %message%');
         $receivedMessage = null;
 
@@ -83,30 +83,31 @@ class SwiftMailerHandlerTest extends TestCase
             ->method('send')
             ->with($this->callback(function ($value) use (&$receivedMessage) {
                 $receivedMessage = $value;
+
                 return true;
             }));
 
         $handler = new SwiftMailerHandler($this->mailer, $messageTemplate);
 
-        $records = array(
+        $records = [
             $this->getRecord(Logger::EMERGENCY),
-        );
+        ];
         $handler->handleBatch($records);
 
         $this->assertEquals('Alert: EMERGENCY test', $receivedMessage->getSubject());
     }
 
-    public function testMessageHaveUniqueId()
+    public function test_message_have_unique_id()
     {
         $messageTemplate = \Swift_Message::newInstance();
         $handler = new SwiftMailerHandler($this->mailer, $messageTemplate);
 
         $method = new \ReflectionMethod('Monolog\Handler\SwiftMailerHandler', 'buildMessage');
         $method->setAccessible(true);
-        $method->invokeArgs($handler, array($messageTemplate, array()));
+        $method->invokeArgs($handler, [$messageTemplate, []]);
 
-        $builtMessage1 = $method->invoke($handler, $messageTemplate, array());
-        $builtMessage2 = $method->invoke($handler, $messageTemplate, array());
+        $builtMessage1 = $method->invoke($handler, $messageTemplate, []);
+        $builtMessage2 = $method->invoke($handler, $messageTemplate, []);
 
         $this->assertFalse($builtMessage1->getId() === $builtMessage2->getId(), 'Two different messages have the same id');
     }

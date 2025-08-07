@@ -12,11 +12,11 @@
 namespace Symfony\Component\HttpKernel;
 
 use Symfony\Component\BrowserKit\Client as BaseClient;
+use Symfony\Component\BrowserKit\Cookie as DomCookie;
+use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\BrowserKit\History;
 use Symfony\Component\BrowserKit\Request as DomRequest;
 use Symfony\Component\BrowserKit\Response as DomResponse;
-use Symfony\Component\BrowserKit\Cookie as DomCookie;
-use Symfony\Component\BrowserKit\History;
-use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,12 +33,12 @@ class Client extends BaseClient
     /**
      * Constructor.
      *
-     * @param HttpKernelInterface $kernel    An HttpKernel instance
-     * @param array               $server    The server parameters (equivalent of $_SERVER)
-     * @param History             $history   A History instance to store the browser history
-     * @param CookieJar           $cookieJar A CookieJar instance to store the cookies
+     * @param  HttpKernelInterface  $kernel  An HttpKernel instance
+     * @param  array  $server  The server parameters (equivalent of $_SERVER)
+     * @param  History  $history  A History instance to store the browser history
+     * @param  CookieJar  $cookieJar  A CookieJar instance to store the cookies
      */
-    public function __construct(HttpKernelInterface $kernel, array $server = array(), History $history = null, CookieJar $cookieJar = null)
+    public function __construct(HttpKernelInterface $kernel, array $server = [], ?History $history = null, ?CookieJar $cookieJar = null)
     {
         // These class properties must be set before calling the parent constructor, as it may depend on it.
         $this->kernel = $kernel;
@@ -70,8 +70,7 @@ class Client extends BaseClient
     /**
      * Makes a request.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return Response A Response instance
      */
     protected function doRequest($request)
@@ -88,8 +87,7 @@ class Client extends BaseClient
     /**
      * Returns the script to execute when the request must be insulated.
      *
-     * @param Request $request A Request instance
-     *
+     * @param  Request  $request  A Request instance
      * @return string
      */
     protected function getScript($request)
@@ -136,8 +134,7 @@ EOF;
     /**
      * Converts the BrowserKit request to a HttpKernel request.
      *
-     * @param DomRequest $request A DomRequest instance
-     *
+     * @param  DomRequest  $request  A DomRequest instance
      * @return Request A Request instance
      */
     protected function filterRequest(DomRequest $request)
@@ -162,13 +159,12 @@ EOF;
      *
      * @see UploadedFile
      *
-     * @param array $files An array of files
-     *
+     * @param  array  $files  An array of files
      * @return array An array with all uploaded files marked as already moved
      */
     protected function filterFiles(array $files)
     {
-        $filtered = array();
+        $filtered = [];
         foreach ($files as $key => $value) {
             if (is_array($value)) {
                 $filtered[$key] = $this->filterFiles($value);
@@ -201,15 +197,14 @@ EOF;
     /**
      * Converts the HttpKernel response to a BrowserKit response.
      *
-     * @param Response $response A Response instance
-     *
+     * @param  Response  $response  A Response instance
      * @return DomResponse A DomResponse instance
      */
     protected function filterResponse($response)
     {
         $headers = $response->headers->all();
         if ($response->headers->getCookies()) {
-            $cookies = array();
+            $cookies = [];
             foreach ($response->headers->getCookies() as $cookie) {
                 $cookies[] = new DomCookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
             }

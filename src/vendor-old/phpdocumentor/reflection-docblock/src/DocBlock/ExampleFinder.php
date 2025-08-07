@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -23,12 +25,11 @@ class ExampleFinder
     private $sourceDirectory = '';
 
     /** @var string[] */
-    private $exampleDirectories = array();
+    private $exampleDirectories = [];
 
     /**
      * Attempts to find the example contents for the given descriptor.
      *
-     * @param Example $example
      *
      * @return string
      */
@@ -37,7 +38,7 @@ class ExampleFinder
         $filename = $example->getFilePath();
 
         $file = $this->getExampleFileContents($filename);
-        if (!$file) {
+        if (! $file) {
             return "** File not found : {$filename} **";
         }
 
@@ -47,8 +48,7 @@ class ExampleFinder
     /**
      * Registers the project's root directory where an 'examples' folder can be expected.
      *
-     * @param string $directory
-     *
+     * @param  string  $directory
      * @return void
      */
     public function setSourceDirectory($directory = '')
@@ -69,7 +69,7 @@ class ExampleFinder
     /**
      * Registers a series of directories that may contain examples.
      *
-     * @param string[] $directories
+     * @param  string[]  $directories
      */
     public function setExampleDirectories(array $directories)
     {
@@ -97,8 +97,7 @@ class ExampleFinder
      * 3. Checks the 'examples' folder in the current working directory for examples
      * 4. Checks the path relative to the current working directory for the given filename
      *
-     * @param string $filename
-     *
+     * @param  string  $filename
      * @return string|null
      */
     private function getExampleFileContents($filename)
@@ -113,7 +112,7 @@ class ExampleFinder
             }
         }
 
-        if (!$normalizedPath) {
+        if (! $normalizedPath) {
             if (is_readable($this->getExamplePathFromSource($filename))) {
                 $normalizedPath = $this->getExamplePathFromSource($filename);
             } elseif (is_readable($this->getExamplePathFromExampleDirectory($filename))) {
@@ -129,33 +128,30 @@ class ExampleFinder
     /**
      * Get example filepath based on the example directory inside your project.
      *
-     * @param string $file
-     *
+     * @param  string  $file
      * @return string
      */
     private function getExamplePathFromExampleDirectory($file)
     {
-        return getcwd() . DIRECTORY_SEPARATOR . 'examples' . DIRECTORY_SEPARATOR . $file;
+        return getcwd().DIRECTORY_SEPARATOR.'examples'.DIRECTORY_SEPARATOR.$file;
     }
 
     /**
      * Returns a path to the example file in the given directory..
      *
-     * @param string $directory
-     * @param string $file
-     *
+     * @param  string  $directory
+     * @param  string  $file
      * @return string
      */
     private function constructExamplePath($directory, $file)
     {
-        return rtrim($directory, '\\/') . DIRECTORY_SEPARATOR . $file;
+        return rtrim($directory, '\\/').DIRECTORY_SEPARATOR.$file;
     }
 
     /**
      * Get example filepath based on sourcecode.
      *
-     * @param string $file
-     *
+     * @param  string  $file
      * @return string
      */
     private function getExamplePathFromSource($file)

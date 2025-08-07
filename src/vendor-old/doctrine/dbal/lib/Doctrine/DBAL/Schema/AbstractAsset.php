@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,6 +30,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 abstract class AbstractAsset
@@ -46,15 +48,14 @@ abstract class AbstractAsset
     protected $_namespace = null;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $_quoted = false;
 
     /**
      * Sets the name of this asset.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return void
      */
     protected function _setName($name)
@@ -63,8 +64,8 @@ abstract class AbstractAsset
             $this->_quoted = true;
             $name = $this->trimQuotes($name);
         }
-        if (strpos($name, ".") !== false) {
-            $parts = explode(".", $name);
+        if (strpos($name, '.') !== false) {
+            $parts = explode('.', $name);
             $this->_namespace = $parts[0];
             $name = $parts[1];
         }
@@ -74,9 +75,8 @@ abstract class AbstractAsset
     /**
      * Is this asset in the default namespace?
      *
-     * @param string $defaultNamespaceName
-     *
-     * @return boolean
+     * @param  string  $defaultNamespaceName
+     * @return bool
      */
     public function isInDefaultNamespace($defaultNamespaceName)
     {
@@ -99,8 +99,7 @@ abstract class AbstractAsset
      * The shortest name is stripped of the default namespace. All other
      * namespaced elements are returned as full-qualified names.
      *
-     * @param string $defaultNamespaceName
-     *
+     * @param  string  $defaultNamespaceName
      * @return string
      */
     public function getShortestName($defaultNamespaceName)
@@ -122,15 +121,14 @@ abstract class AbstractAsset
      * Every non-namespaced element is prefixed with the default namespace
      * name which is passed as argument to this method.
      *
-     * @param string $defaultNamespaceName
-     *
+     * @param  string  $defaultNamespaceName
      * @return string
      */
     public function getFullQualifiedName($defaultNamespaceName)
     {
         $name = $this->getName();
-        if ( ! $this->_namespace) {
-            $name = $defaultNamespaceName . "." . $name;
+        if (! $this->_namespace) {
+            $name = $defaultNamespaceName.'.'.$name;
         }
 
         return strtolower($name);
@@ -139,7 +137,7 @@ abstract class AbstractAsset
     /**
      * Checks if this asset's name is quoted.
      *
-     * @return boolean
+     * @return bool
      */
     public function isQuoted()
     {
@@ -149,25 +147,23 @@ abstract class AbstractAsset
     /**
      * Checks if this identifier is quoted.
      *
-     * @param string $identifier
-     *
-     * @return boolean
+     * @param  string  $identifier
+     * @return bool
      */
     protected function isIdentifierQuoted($identifier)
     {
-        return (isset($identifier[0]) && ($identifier[0] == '`' || $identifier[0] == '"' || $identifier[0] == '['));
+        return isset($identifier[0]) && ($identifier[0] == '`' || $identifier[0] == '"' || $identifier[0] == '[');
     }
 
     /**
      * Trim quotes from the identifier.
      *
-     * @param string $identifier
-     *
+     * @param  string  $identifier
      * @return string
      */
     protected function trimQuotes($identifier)
     {
-        return str_replace(array('`', '"', '[', ']'), '', $identifier);
+        return str_replace(['`', '"', '[', ']'], '', $identifier);
     }
 
     /**
@@ -178,7 +174,7 @@ abstract class AbstractAsset
     public function getName()
     {
         if ($this->_namespace) {
-            return $this->_namespace . "." . $this->_name;
+            return $this->_namespace.'.'.$this->_name;
         }
 
         return $this->_name;
@@ -188,19 +184,18 @@ abstract class AbstractAsset
      * Gets the quoted representation of this asset but only if it was defined with one. Otherwise
      * return the plain unquoted value as inserted.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return string
      */
     public function getQuotedName(AbstractPlatform $platform)
     {
         $keywords = $platform->getReservedKeywordsList();
-        $parts = explode(".", $this->getName());
+        $parts = explode('.', $this->getName());
         foreach ($parts as $k => $v) {
             $parts[$k] = ($this->_quoted || $keywords->isKeyword($v)) ? $platform->quoteIdentifier($v) : $v;
         }
 
-        return implode(".", $parts);
+        return implode('.', $parts);
     }
 
     /**
@@ -210,18 +205,17 @@ abstract class AbstractAsset
      * however building idents automatically for foreign keys, composite keys or such can easily create
      * very long names.
      *
-     * @param array   $columnNames
-     * @param string  $prefix
-     * @param integer $maxSize
-     *
+     * @param  array  $columnNames
+     * @param  string  $prefix
+     * @param  int  $maxSize
      * @return string
      */
-    protected function _generateIdentifierName($columnNames, $prefix='', $maxSize=30)
+    protected function _generateIdentifierName($columnNames, $prefix = '', $maxSize = 30)
     {
-        $hash = implode("", array_map(function ($column) {
+        $hash = implode('', array_map(function ($column) {
             return dechex(crc32($column));
         }, $columnNames));
 
-        return substr(strtoupper($prefix . "_" . $hash), 0, $maxSize);
+        return substr(strtoupper($prefix.'_'.$hash), 0, $maxSize);
     }
 }

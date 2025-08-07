@@ -24,7 +24,7 @@ class MoFileLoader extends FileLoader
      *
      * @var float
      */
-    const MO_LITTLE_ENDIAN_MAGIC = 0x950412de;
+    const MO_LITTLE_ENDIAN_MAGIC = 0x950412DE;
 
     /**
      * Magic used for validating the format of a MO file as well as
@@ -32,7 +32,7 @@ class MoFileLoader extends FileLoader
      *
      * @var float
      */
-    const MO_BIG_ENDIAN_MAGIC = 0xde120495;
+    const MO_BIG_ENDIAN_MAGIC = 0xDE120495;
 
     /**
      * The size of the header of a MO file in bytes.
@@ -77,9 +77,9 @@ class MoFileLoader extends FileLoader
         // offsetHashes
         $this->readLong($stream, $isBigEndian);
 
-        $messages = array();
+        $messages = [];
 
-        for ($i = 0; $i < $count; ++$i) {
+        for ($i = 0; $i < $count; $i++) {
             $singularId = $pluralId = null;
             $translated = null;
 
@@ -96,7 +96,7 @@ class MoFileLoader extends FileLoader
             $singularId = fread($stream, $length);
 
             if (strpos($singularId, "\000") !== false) {
-                list($singularId, $pluralId) = explode("\000", $singularId);
+                [$singularId, $pluralId] = explode("\000", $singularId);
             }
 
             fseek($stream, $offsetTranslated + $i * 8);
@@ -114,19 +114,19 @@ class MoFileLoader extends FileLoader
                 $translated = explode("\000", $translated);
             }
 
-            $ids = array('singular' => $singularId, 'plural' => $pluralId);
+            $ids = ['singular' => $singularId, 'plural' => $pluralId];
             $item = compact('ids', 'translated');
 
             if (is_array($item['translated'])) {
                 $messages[$item['ids']['singular']] = stripcslashes($item['translated'][0]);
                 if (isset($item['ids']['plural'])) {
-                    $plurals = array();
+                    $plurals = [];
                     foreach ($item['translated'] as $plural => $translated) {
                         $plurals[] = sprintf('{%d} %s', $plural, $translated);
                     }
                     $messages[$item['ids']['plural']] = stripcslashes(implode('|', $plurals));
                 }
-            } elseif (!empty($item['ids']['singular'])) {
+            } elseif (! empty($item['ids']['singular'])) {
                 $messages[$item['ids']['singular']] = stripcslashes($item['translated']);
             }
         }
@@ -139,9 +139,8 @@ class MoFileLoader extends FileLoader
     /**
      * Reads an unsigned long from stream respecting endianess.
      *
-     * @param resource $stream
-     * @param bool     $isBigEndian
-     *
+     * @param  resource  $stream
+     * @param  bool  $isBigEndian
      * @return int
      */
     private function readLong($stream, $isBigEndian)

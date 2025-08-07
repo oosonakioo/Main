@@ -1,4 +1,5 @@
 <?php
+
 /**
  * phpDocumentor
  *
@@ -7,6 +8,7 @@
  * @author    Ben Selby <benmatselby@gmail.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -30,10 +32,9 @@ final class Link extends BaseTag implements Factory\StaticMethod
     /**
      * Initializes a link to a URL.
      *
-     * @param string      $link
-     * @param Description $description
+     * @param  string  $link
      */
-    public function __construct($link, Description $description = null)
+    public function __construct($link, ?Description $description = null)
     {
         Assert::string($link);
 
@@ -44,7 +45,7 @@ final class Link extends BaseTag implements Factory\StaticMethod
     /**
      * {@inheritdoc}
      */
-    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null)
+    public static function create($body, ?DescriptionFactory $descriptionFactory = null, ?TypeContext $context = null)
     {
         Assert::string($body);
         Assert::notNull($descriptionFactory);
@@ -52,14 +53,14 @@ final class Link extends BaseTag implements Factory\StaticMethod
         $parts = preg_split('/\s+/Su', $body, 2);
         $description = isset($parts[1]) ? $descriptionFactory->create($parts[1], $context) : null;
 
-        return new static($parts[0], $description);
+        return new self($parts[0], $description);
     }
 
     /**
-    * Gets the link
-    *
-    * @return string
-    */
+     * Gets the link
+     *
+     * @return string
+     */
     public function getLink()
     {
         return $this->link;
@@ -72,6 +73,6 @@ final class Link extends BaseTag implements Factory\StaticMethod
      */
     public function __toString()
     {
-        return $this->link . ($this->description ? ' ' . $this->description->render() : '');
+        return $this->link.($this->description ? ' '.$this->description->render() : '');
     }
 }

@@ -15,10 +15,8 @@ class ImageManagerStatic
 
     /**
      * Creates a new instance
-     *
-     * @param ImageManager $manager
      */
-    public function __construct(ImageManager $manager = null)
+    public function __construct(?ImageManager $manager = null)
     {
         self::$manager = $manager ? $manager : new ImageManager;
     }
@@ -36,11 +34,10 @@ class ImageManagerStatic
     /**
      * Statically create new custom configured image manager
      *
-     * @param  array $config
      *
      * @return ImageManager
      */
-    public static function configure(array $config = array())
+    public static function configure(array $config = [])
     {
         return self::$manager = self::getManager()->configure($config);
     }
@@ -48,8 +45,7 @@ class ImageManagerStatic
     /**
      * Statically initiates an Image instance from different input types
      *
-     * @param  mixed $data
-     *
+     * @param  mixed  $data
      * @return \Intervention\Image\Image
      */
     public static function make($data)
@@ -60,10 +56,9 @@ class ImageManagerStatic
     /**
      * Statically creates an empty image canvas
      *
-     * @param  integer $width
-     * @param  integer $height
-     * @param  mixed $background
-     *
+     * @param  int  $width
+     * @param  int  $height
+     * @param  mixed  $background
      * @return \Intervention\Image\Image
      */
     public static function canvas($width, $height, $background = null)
@@ -74,10 +69,8 @@ class ImageManagerStatic
     /**
      * Create new cached image and run callback statically
      *
-     * @param  Closure  $callback
-     * @param  integer  $lifetime
-     * @param  boolean  $returnObj
-     *
+     * @param  int  $lifetime
+     * @param  bool  $returnObj
      * @return mixed
      */
     public static function cache(Closure $callback, $lifetime = null, $returnObj = false)

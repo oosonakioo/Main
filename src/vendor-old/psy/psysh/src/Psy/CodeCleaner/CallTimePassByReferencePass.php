@@ -30,8 +30,6 @@ class CallTimePassByReferencePass extends CodeCleanerPass
      * Validate of use call-time pass-by-reference.
      *
      * @throws RuntimeException if the user used call-time pass-by-reference in PHP >= 5.4.0
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
@@ -39,7 +37,7 @@ class CallTimePassByReferencePass extends CodeCleanerPass
             return;
         }
 
-        if (!$node instanceof FunctionCall && !$node instanceof MethodCall && !$node instanceof StaticCall) {
+        if (! $node instanceof FunctionCall && ! $node instanceof MethodCall && ! $node instanceof StaticCall) {
             return;
         }
 

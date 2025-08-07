@@ -11,10 +11,10 @@
 
 namespace Prophecy\Promise;
 
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Exception\InvalidArgumentException;
 use Closure;
+use Prophecy\Exception\InvalidArgumentException;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Callback promise.
@@ -28,13 +28,13 @@ class CallbackPromise implements PromiseInterface
     /**
      * Initializes callback promise.
      *
-     * @param callable $callback Custom callback
+     * @param  callable  $callback  Custom callback
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
     public function __construct($callback)
     {
-        if (!is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw new InvalidArgumentException(sprintf(
                 'Callable expected as an argument to CallbackPromise, but got %s.',
                 gettype($callback)
@@ -47,9 +47,6 @@ class CallbackPromise implements PromiseInterface
     /**
      * Evaluates promise callback.
      *
-     * @param array          $args
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
      *
      * @return mixed
      */

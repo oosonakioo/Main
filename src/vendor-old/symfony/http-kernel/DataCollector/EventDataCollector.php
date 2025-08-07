@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
+use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcherInterface;
 
 /**
  * EventDataCollector.
@@ -25,7 +25,7 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
 {
     protected $dispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher = null)
+    public function __construct(?EventDispatcherInterface $dispatcher = null)
     {
         $this->dispatcher = $dispatcher;
     }
@@ -33,12 +33,12 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, ?\Exception $exception = null)
     {
-        $this->data = array(
-            'called_listeners' => array(),
-            'not_called_listeners' => array(),
-        );
+        $this->data = [
+            'called_listeners' => [],
+            'not_called_listeners' => [],
+        ];
     }
 
     public function lateCollect()
@@ -52,7 +52,7 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * Sets the called listeners.
      *
-     * @param array $listeners An array of called listeners
+     * @param  array  $listeners  An array of called listeners
      *
      * @see TraceableEventDispatcherInterface
      */
@@ -76,7 +76,7 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * Sets the not called listeners.
      *
-     * @param array $listeners An array of not called listeners
+     * @param  array  $listeners  An array of not called listeners
      *
      * @see TraceableEventDispatcherInterface
      */

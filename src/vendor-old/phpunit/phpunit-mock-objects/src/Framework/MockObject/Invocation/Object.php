@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -21,11 +22,10 @@ class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_M
     public $object;
 
     /**
-     * @param string $className
-     * @param string $methodname
-     * @param array  $parameters
-     * @param object $object
-     * @param object $cloneObjects
+     * @param  string  $className
+     * @param  string  $methodname
+     * @param  object  $object
+     * @param  object  $cloneObjects
      */
     public function __construct($className, $methodName, array $parameters, $object, $cloneObjects = false)
     {

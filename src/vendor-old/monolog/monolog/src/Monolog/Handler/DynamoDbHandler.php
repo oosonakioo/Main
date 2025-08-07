@@ -21,6 +21,7 @@ use Monolog\Logger;
  * Amazon DynamoDB handler (http://aws.amazon.com/dynamodb/)
  *
  * @link https://github.com/aws/aws-sdk-php/
+ *
  * @author Andrew Lawson <adlawson@gmail.com>
  */
 class DynamoDbHandler extends AbstractProcessingHandler
@@ -48,10 +49,9 @@ class DynamoDbHandler extends AbstractProcessingHandler
     protected $marshaler;
 
     /**
-     * @param DynamoDbClient $client
-     * @param string         $table
-     * @param int            $level
-     * @param bool           $bubble
+     * @param  string  $table
+     * @param  int  $level
+     * @param  bool  $bubble
      */
     public function __construct(DynamoDbClient $client, $table, $level = Logger::DEBUG, $bubble = true)
     {
@@ -80,20 +80,19 @@ class DynamoDbHandler extends AbstractProcessingHandler
             $formatted = $this->client->formatAttributes($filtered);
         }
 
-        $this->client->putItem(array(
+        $this->client->putItem([
             'TableName' => $this->table,
             'Item' => $formatted,
-        ));
+        ]);
     }
 
     /**
-     * @param  array $record
      * @return array
      */
     protected function filterEmptyFields(array $record)
     {
         return array_filter($record, function ($value) {
-            return !empty($value) || false === $value || 0 === $value;
+            return ! empty($value) || $value === false || $value === 0;
         });
     }
 

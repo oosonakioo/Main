@@ -3,13 +3,13 @@
 namespace Illuminate\Database\Eloquent;
 
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Database\Query\Expression;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Query\Expression;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Builder
 {
@@ -75,7 +75,6 @@ class Builder
     /**
      * Create a new Eloquent query builder instance.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
      */
     public function __construct(QueryBuilder $query)
@@ -123,10 +122,9 @@ class Builder
     /**
      * Remove all or passed registered global scopes.
      *
-     * @param  array|null  $scopes
      * @return $this
      */
-    public function withoutGlobalScopes(array $scopes = null)
+    public function withoutGlobalScopes(?array $scopes = null)
     {
         if (is_array($scopes)) {
             foreach ($scopes as $scope) {
@@ -228,7 +226,6 @@ class Builder
     /**
      * Get the first record matching the attributes or instantiate it.
      *
-     * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrNew(array $attributes)
@@ -243,7 +240,6 @@ class Builder
     /**
      * Get the first record matching the attributes or create it.
      *
-     * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(array $attributes)
@@ -262,8 +258,6 @@ class Builder
     /**
      * Create or update a record matching the attributes, and fill it with values.
      *
-     * @param  array  $attributes
-     * @param  array  $values
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function updateOrCreate(array $attributes, array $values = [])
@@ -358,7 +352,6 @@ class Builder
      * Chunk the results of the query.
      *
      * @param  int  $count
-     * @param  callable  $callback
      * @return bool
      */
     public function chunk($count, callable $callback)
@@ -385,7 +378,6 @@ class Builder
      * Chunk the results of a query by comparing numeric IDs.
      *
      * @param  int  $count
-     * @param  callable  $callback
      * @param  string  $column
      * @return bool
      */
@@ -411,7 +403,6 @@ class Builder
     /**
      * Execute a callback over each item while chunking.
      *
-     * @param  callable  $callback
      * @param  int  $count
      * @return bool
      */
@@ -524,7 +515,6 @@ class Builder
     /**
      * Update a record in the database.
      *
-     * @param  array  $values
      * @return int
      */
     public function update(array $values)
@@ -537,7 +527,6 @@ class Builder
      *
      * @param  string  $column
      * @param  int  $amount
-     * @param  array  $extra
      * @return int
      */
     public function increment($column, $amount = 1, array $extra = [])
@@ -552,7 +541,6 @@ class Builder
      *
      * @param  string  $column
      * @param  int  $amount
-     * @param  array  $extra
      * @return int
      */
     public function decrement($column, $amount = 1, array $extra = [])
@@ -565,7 +553,6 @@ class Builder
     /**
      * Add the "updated at" column to an array of values.
      *
-     * @param  array  $values
      * @return array
      */
     protected function addUpdatedAtColumn(array $values)
@@ -606,7 +593,6 @@ class Builder
     /**
      * Register a replacement for the default delete function.
      *
-     * @param  \Closure  $callback
      * @return void
      */
     public function onDelete(Closure $callback)
@@ -632,7 +618,6 @@ class Builder
     /**
      * Eager load the relationships for the models.
      *
-     * @param  array  $models
      * @return array
      */
     public function eagerLoadRelations(array $models)
@@ -652,9 +637,7 @@ class Builder
     /**
      * Eagerly load the relationship on a set of models.
      *
-     * @param  array  $models
      * @param  string  $name
-     * @param  \Closure  $constraints
      * @return array
      */
     protected function loadRelation(array $models, $name, Closure $constraints)
@@ -764,7 +747,7 @@ class Builder
      *
      * @param  string  $column
      * @param  string  $operator
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  string  $boolean
      * @return $this
      */
@@ -788,7 +771,7 @@ class Builder
      *
      * @param  string  $column
      * @param  string  $operator
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function orWhere($column, $operator = null, $value = null)
@@ -801,12 +784,11 @@ class Builder
      *
      * @param  string  $relation
      * @param  string  $operator
-     * @param  int     $count
+     * @param  int  $count
      * @param  string  $boolean
-     * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function has($relation, $operator = '>=', $count = 1, $boolean = 'and', Closure $callback = null)
+    public function has($relation, $operator = '>=', $count = 1, $boolean = 'and', ?Closure $callback = null)
     {
         if (strpos($relation, '.') !== false) {
             return $this->hasNested($relation, $operator, $count, $boolean, $callback);
@@ -836,7 +818,7 @@ class Builder
      *
      * @param  string  $relations
      * @param  string  $operator
-     * @param  int     $count
+     * @param  int  $count
      * @param  string  $boolean
      * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Eloquent\Builder|static
@@ -848,7 +830,7 @@ class Builder
         // In order to nest "has", we need to add count relation constraints on the
         // callback Closure. We'll do this by simply passing the Closure its own
         // reference to itself so it calls itself recursively on each segment.
-        $closure = function ($q) use (&$closure, &$relations, $operator, $count, $boolean, $callback) {
+        $closure = function ($q) use (&$closure, &$relations, $operator, $count, $callback) {
             if (count($relations) > 1) {
                 $q->whereHas(array_shift($relations), $closure);
             } else {
@@ -864,10 +846,9 @@ class Builder
      *
      * @param  string  $relation
      * @param  string  $boolean
-     * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function doesntHave($relation, $boolean = 'and', Closure $callback = null)
+    public function doesntHave($relation, $boolean = 'and', ?Closure $callback = null)
     {
         return $this->has($relation, '<', 1, $boolean, $callback);
     }
@@ -875,10 +856,9 @@ class Builder
     /**
      * Add a relationship count / exists condition to the query with where clauses.
      *
-     * @param  string    $relation
-     * @param  \Closure  $callback
-     * @param  string    $operator
-     * @param  int       $count
+     * @param  string  $relation
+     * @param  string  $operator
+     * @param  int  $count
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function whereHas($relation, Closure $callback, $operator = '>=', $count = 1)
@@ -890,10 +870,9 @@ class Builder
      * Add a relationship count / exists condition to the query with where clauses.
      *
      * @param  string  $relation
-     * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function whereDoesntHave($relation, Closure $callback = null)
+    public function whereDoesntHave($relation, ?Closure $callback = null)
     {
         return $this->doesntHave($relation, 'and', $callback);
     }
@@ -903,7 +882,7 @@ class Builder
      *
      * @param  string  $relation
      * @param  string  $operator
-     * @param  int     $count
+     * @param  int  $count
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function orHas($relation, $operator = '>=', $count = 1)
@@ -914,10 +893,9 @@ class Builder
     /**
      * Add a relationship count / exists condition to the query with where clauses and an "or".
      *
-     * @param  string    $relation
-     * @param  \Closure  $callback
-     * @param  string    $operator
-     * @param  int       $count
+     * @param  string  $relation
+     * @param  string  $operator
+     * @param  int  $count
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function orWhereHas($relation, Closure $callback, $operator = '>=', $count = 1)
@@ -928,8 +906,6 @@ class Builder
     /**
      * Add the "has" condition where clause to the query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $hasQuery
-     * @param  \Illuminate\Database\Eloquent\Relations\Relation  $relation
      * @param  string  $operator
      * @param  int  $count
      * @param  string  $boolean
@@ -963,7 +939,6 @@ class Builder
     /**
      * Add a sub query count clause to the query.
      *
-     * @param  \Illuminate\Database\Query\Builder $query
      * @param  string  $operator
      * @param  int  $count
      * @param  string  $boolean
@@ -983,7 +958,6 @@ class Builder
     /**
      * Merge the constraints from a relation query to the current query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $relation
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function mergeModelDefinedRelationConstraints(Builder $relation)
@@ -1086,7 +1060,6 @@ class Builder
     /**
      * Parse a list of relations into individuals.
      *
-     * @param  array  $relations
      * @return array
      */
     protected function parseWithRelations(array $relations)
@@ -1102,7 +1075,7 @@ class Builder
                     //
                 };
 
-                list($name, $constraints) = [$constraints, $f];
+                [$name, $constraints] = [$constraints, $f];
             }
 
             // We need to separate out any nested includes. Which allows the developers
@@ -1120,7 +1093,7 @@ class Builder
      * Parse the nested relationships in a relation.
      *
      * @param  string  $name
-     * @param  array   $results
+     * @param  array  $results
      * @return array
      */
     protected function parseNestedWith($name, $results)
@@ -1146,7 +1119,6 @@ class Builder
     /**
      * Add the given scopes to the current builder instance.
      *
-     * @param  array  $scopes
      * @return mixed
      */
     public function scopes(array $scopes)
@@ -1155,7 +1127,7 @@ class Builder
 
         foreach ($scopes as $scope => $parameters) {
             if (is_int($scope)) {
-                list($scope, $parameters) = [$parameters, []];
+                [$scope, $parameters] = [$parameters, []];
             }
 
             $builder = $builder->callScope(
@@ -1169,8 +1141,7 @@ class Builder
     /**
      * Apply the given scope on the current builder instance.
      *
-     * @param  callable $scope
-     * @param  array $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     protected function callScope(callable $scope, $parameters = [])
@@ -1222,7 +1193,6 @@ class Builder
     /**
      * Determine if the scope added after the given offset should be nested.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  int  $originalWhereCount
      * @return bool
      */
@@ -1234,7 +1204,6 @@ class Builder
     /**
      * Nest where conditions by slicing them at the given where count.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  int  $originalWhereCount
      * @return void
      */
@@ -1259,7 +1228,6 @@ class Builder
     /**
      * Slice where conditions at the given offset and add them to the query as a nested condition.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $wheres
      * @param  int  $offset
      * @param  int  $length
@@ -1342,7 +1310,6 @@ class Builder
     /**
      * Set the relationships being eagerly loaded.
      *
-     * @param  array  $eagerLoad
      * @return $this
      */
     public function setEagerLoads(array $eagerLoad)
@@ -1365,7 +1332,6 @@ class Builder
     /**
      * Set a model instance for the model being queried.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return $this
      */
     public function setModel(Model $model)
@@ -1380,8 +1346,7 @@ class Builder
     /**
      * Extend the builder with a given callback.
      *
-     * @param  string    $name
-     * @param  \Closure  $callback
+     * @param  string  $name
      * @return void
      */
     public function macro($name, Closure $callback)
@@ -1404,7 +1369,7 @@ class Builder
      * Dynamically handle calls into the query instance.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

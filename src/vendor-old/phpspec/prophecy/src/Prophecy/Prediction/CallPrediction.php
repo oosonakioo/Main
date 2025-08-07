@@ -11,13 +11,13 @@
 
 namespace Prophecy\Prediction;
 
-use Prophecy\Call\Call;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Argument\ArgumentsWildcard;
 use Prophecy\Argument\Token\AnyValuesToken;
-use Prophecy\Util\StringUtil;
+use Prophecy\Call\Call;
 use Prophecy\Exception\Prediction\NoCallsException;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Util\StringUtil;
 
 /**
  * Call prediction.
@@ -30,10 +30,8 @@ class CallPrediction implements PredictionInterface
 
     /**
      * Initializes prediction.
-     *
-     * @param StringUtil $util
      */
-    public function __construct(StringUtil $util = null)
+    public function __construct(?StringUtil $util = null)
     {
         $this->util = $util ?: new StringUtil;
     }
@@ -41,9 +39,7 @@ class CallPrediction implements PredictionInterface
     /**
      * Tests that there was at least one call.
      *
-     * @param Call[]         $calls
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
+     * @param  Call[]  $calls
      *
      * @throws \Prophecy\Exception\Prediction\NoCallsException
      */
@@ -55,7 +51,7 @@ class CallPrediction implements PredictionInterface
 
         $methodCalls = $object->findProphecyMethodCalls(
             $method->getMethodName(),
-            new ArgumentsWildcard(array(new AnyValuesToken))
+            new ArgumentsWildcard([new AnyValuesToken])
         );
 
         if (count($methodCalls)) {
@@ -76,7 +72,7 @@ class CallPrediction implements PredictionInterface
         throw new NoCallsException(sprintf(
             "No calls have been made that match:\n".
             "  %s->%s(%s)\n".
-            "but expected at least one.",
+            'but expected at least one.',
 
             get_class($object->reveal()),
             $method->getMethodName(),

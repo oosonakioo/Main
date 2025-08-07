@@ -16,15 +16,17 @@ use Symfony\Component\HttpKernel\Config\EnvParametersResource;
 class EnvParametersResourceTest extends \PHPUnit_Framework_TestCase
 {
     protected $prefix = '__DUMMY_';
+
     protected $initialEnv;
+
     protected $resource;
 
     protected function setUp()
     {
-        $this->initialEnv = array(
+        $this->initialEnv = [
             $this->prefix.'1' => 'foo',
             $this->prefix.'2' => 'bar',
-        );
+        ];
 
         foreach ($this->initialEnv as $key => $value) {
             $_SERVER[$key] = $value;
@@ -36,30 +38,30 @@ class EnvParametersResourceTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         foreach ($_SERVER as $key => $value) {
-            if (0 === strpos($key, $this->prefix)) {
+            if (strpos($key, $this->prefix) === 0) {
                 unset($_SERVER[$key]);
             }
         }
     }
 
-    public function testGetResource()
+    public function test_get_resource()
     {
         $this->assertSame(
-            array('prefix' => $this->prefix, 'variables' => $this->initialEnv),
+            ['prefix' => $this->prefix, 'variables' => $this->initialEnv],
             $this->resource->getResource(),
             '->getResource() returns the resource'
         );
     }
 
-    public function testToString()
+    public function test_to_string()
     {
         $this->assertSame(
-            serialize(array('prefix' => $this->prefix, 'variables' => $this->initialEnv)),
+            serialize(['prefix' => $this->prefix, 'variables' => $this->initialEnv]),
             (string) $this->resource
         );
     }
 
-    public function testIsFreshNotChanged()
+    public function test_is_fresh_not_changed()
     {
         $this->assertTrue(
             $this->resource->isFresh(time()),
@@ -67,7 +69,7 @@ class EnvParametersResourceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIsFreshValueChanged()
+    public function test_is_fresh_value_changed()
     {
         reset($this->initialEnv);
         $_SERVER[key($this->initialEnv)] = 'baz';
@@ -78,7 +80,7 @@ class EnvParametersResourceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIsFreshValueRemoved()
+    public function test_is_fresh_value_removed()
     {
         reset($this->initialEnv);
         unset($_SERVER[key($this->initialEnv)]);
@@ -89,7 +91,7 @@ class EnvParametersResourceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIsFreshValueAdded()
+    public function test_is_fresh_value_added()
     {
         $_SERVER[$this->prefix.'3'] = 'foo';
 
@@ -99,7 +101,7 @@ class EnvParametersResourceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSerializeUnserialize()
+    public function test_serialize_unserialize()
     {
         $this->assertEquals($this->resource, unserialize(serialize($this->resource)));
     }

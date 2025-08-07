@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -32,7 +33,7 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
     protected $previous;
 
     /**
-     * @param Throwable|Exception $e
+     * @param  Throwable|Exception  $e
      */
     public function __construct($e)
     {
@@ -41,8 +42,8 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
         parent::__construct($e->getMessage(), (int) $e->getCode());
 
         $this->classname = get_class($e);
-        $this->file      = $e->getFile();
-        $this->line      = $e->getLine();
+        $this->file = $e->getFile();
+        $this->line = $e->getLine();
 
         $this->serializableTrace = $e->getTrace();
 
@@ -79,11 +80,11 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
         $string = PHPUnit_Framework_TestFailure::exceptionToString($this);
 
         if ($trace = PHPUnit_Util_Filter::getFilteredStacktrace($this)) {
-            $string .= "\n" . $trace;
+            $string .= "\n".$trace;
         }
 
         if ($this->previous) {
-            $string .= "\nCaused by\n" . $this->previous;
+            $string .= "\nCaused by\n".$this->previous;
         }
 
         return $string;

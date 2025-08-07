@@ -15,20 +15,23 @@ class HTMLPurifier_AttrDef_CSS_Multiple extends HTMLPurifier_AttrDef
 {
     /**
      * Instance of component definition to defer validation to.
+     *
      * @type HTMLPurifier_AttrDef
+     *
      * @todo Make protected
      */
     public $single;
 
     /**
      * Max number of values allowed.
+     *
      * @todo Make protected
      */
     public $max;
 
     /**
-     * @param HTMLPurifier_AttrDef $single HTMLPurifier_AttrDef to multiply
-     * @param int $max Max number of values allowed (usually four)
+     * @param  HTMLPurifier_AttrDef  $single  HTMLPurifier_AttrDef to multiply
+     * @param  int  $max  Max number of values allowed (usually four)
      */
     public function __construct($single, $max = 4)
     {
@@ -37,9 +40,9 @@ class HTMLPurifier_AttrDef_CSS_Multiple extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -57,13 +60,14 @@ class HTMLPurifier_AttrDef_CSS_Multiple extends HTMLPurifier_AttrDef
             }
             $result = $this->single->validate($parts[$i], $config, $context);
             if ($result !== false) {
-                $final .= $result . ' ';
+                $final .= $result.' ';
                 $num++;
             }
         }
         if ($final === '') {
             return false;
         }
+
         return rtrim($final);
     }
 }

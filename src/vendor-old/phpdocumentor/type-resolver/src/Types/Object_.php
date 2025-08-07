@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -29,15 +31,13 @@ final class Object_ implements Type
 
     /**
      * Initializes this object with an optional FQSEN, if not provided this object is considered 'untyped'.
-     *
-     * @param Fqsen $fqsen
      */
-    public function __construct(Fqsen $fqsen = null)
+    public function __construct(?Fqsen $fqsen = null)
     {
-        if (strpos((string)$fqsen, '::') !== false || strpos((string)$fqsen, '()') !== false) {
+        if (strpos((string) $fqsen, '::') !== false || strpos((string) $fqsen, '()') !== false) {
             throw new \InvalidArgumentException(
                 'Object types can only refer to a class, interface or trait but a method, function, constant or '
-                . 'property was received: ' . (string)$fqsen
+                .'property was received: '.(string) $fqsen
             );
         }
 
@@ -62,7 +62,7 @@ final class Object_ implements Type
     public function __toString()
     {
         if ($this->fqsen) {
-            return (string)$this->fqsen;
+            return (string) $this->fqsen;
         }
 
         return 'object';

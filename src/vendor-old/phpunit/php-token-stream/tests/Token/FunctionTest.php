@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_TokenStream package.
  *
@@ -11,12 +12,12 @@
 /**
  * Tests for the PHP_Token_FUNCTION class.
  *
- * @package    PHP_TokenStream
- * @subpackage Tests
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ *
  * @version    Release: @package_version@
+ *
  * @link       http://github.com/sebastianbergmann/php-token-stream/
  * @since      Class available since Release 1.0.0
  */
@@ -26,7 +27,7 @@ class PHP_Token_FunctionTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'source.php');
+        $ts = new PHP_Token_Stream(TEST_FILES_PATH.'source.php');
 
         foreach ($ts as $token) {
             if ($token instanceof PHP_Token_FUNCTION) {
@@ -38,31 +39,31 @@ class PHP_Token_FunctionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHP_Token_FUNCTION::getArguments
      */
-    public function testGetArguments()
+    public function test_get_arguments()
     {
-        $this->assertEquals(array(), $this->functions[0]->getArguments());
+        $this->assertEquals([], $this->functions[0]->getArguments());
 
         $this->assertEquals(
-          array('$baz' => 'Baz'), $this->functions[1]->getArguments()
+            ['$baz' => 'Baz'], $this->functions[1]->getArguments()
         );
 
         $this->assertEquals(
-          array('$foobar' => 'Foobar'), $this->functions[2]->getArguments()
+            ['$foobar' => 'Foobar'], $this->functions[2]->getArguments()
         );
 
         $this->assertEquals(
-          array('$barfoo' => 'Barfoo'), $this->functions[3]->getArguments()
+            ['$barfoo' => 'Barfoo'], $this->functions[3]->getArguments()
         );
 
-        $this->assertEquals(array(), $this->functions[4]->getArguments());
+        $this->assertEquals([], $this->functions[4]->getArguments());
 
-        $this->assertEquals(array('$x' => null, '$y' => null), $this->functions[5]->getArguments());
+        $this->assertEquals(['$x' => null, '$y' => null], $this->functions[5]->getArguments());
     }
 
     /**
      * @covers PHP_Token_FUNCTION::getName
      */
-    public function testGetName()
+    public function test_get_name()
     {
         $this->assertEquals('foo', $this->functions[0]->getName());
         $this->assertEquals('bar', $this->functions[1]->getName());
@@ -74,7 +75,7 @@ class PHP_Token_FunctionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHP_Token::getLine
      */
-    public function testGetLine()
+    public function test_get_line()
     {
         $this->assertEquals(5, $this->functions[0]->getLine());
         $this->assertEquals(10, $this->functions[1]->getLine());
@@ -86,7 +87,7 @@ class PHP_Token_FunctionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHP_TokenWithScope::getEndLine
      */
-    public function testGetEndLine()
+    public function test_get_end_line()
     {
         $this->assertEquals(5, $this->functions[0]->getEndLine());
         $this->assertEquals(12, $this->functions[1]->getEndLine());
@@ -98,49 +99,49 @@ class PHP_Token_FunctionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHP_Token_FUNCTION::getDocblock
      */
-    public function testGetDocblock()
+    public function test_get_docblock()
     {
         $this->assertNull($this->functions[0]->getDocblock());
 
         $this->assertEquals(
-          "/**\n     * @param Baz \$baz\n     */",
-          $this->functions[1]->getDocblock()
+            "/**\n     * @param Baz \$baz\n     */",
+            $this->functions[1]->getDocblock()
         );
 
         $this->assertEquals(
-          "/**\n     * @param Foobar \$foobar\n     */",
-          $this->functions[2]->getDocblock()
+            "/**\n     * @param Foobar \$foobar\n     */",
+            $this->functions[2]->getDocblock()
         );
 
         $this->assertNull($this->functions[3]->getDocblock());
         $this->assertNull($this->functions[4]->getDocblock());
     }
 
-    public function testSignature()
+    public function test_signature()
     {
-        $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'source5.php');
-        $f  = $ts->getFunctions();
-        $c  = $ts->getClasses();
-        $i  = $ts->getInterfaces();
+        $ts = new PHP_Token_Stream(TEST_FILES_PATH.'source5.php');
+        $f = $ts->getFunctions();
+        $c = $ts->getClasses();
+        $i = $ts->getInterfaces();
 
         $this->assertEquals(
-          'foo($a, array $b, array $c = array())',
-          $f['foo']['signature']
+            'foo($a, array $b, array $c = array())',
+            $f['foo']['signature']
         );
 
         $this->assertEquals(
-          'm($a, array $b, array $c = array())',
-          $c['c']['methods']['m']['signature']
+            'm($a, array $b, array $c = array())',
+            $c['c']['methods']['m']['signature']
         );
 
         $this->assertEquals(
-          'm($a, array $b, array $c = array())',
-          $c['a']['methods']['m']['signature']
+            'm($a, array $b, array $c = array())',
+            $c['a']['methods']['m']['signature']
         );
 
         $this->assertEquals(
-          'm($a, array $b, array $c = array())',
-          $i['i']['methods']['m']['signature']
+            'm($a, array $b, array $c = array())',
+            $i['i']['methods']['m']['signature']
         );
     }
 }

@@ -6,10 +6,9 @@ use Illuminate\Support\ServiceProvider;
 
 /**
  * Class CaptchaServiceProvider
- * @package Mews\Captcha
  */
-class CaptchaServiceProvider extends ServiceProvider {
-
+class CaptchaServiceProvider extends ServiceProvider
+{
     /**
      * Boot the service provider.
      *
@@ -19,14 +18,14 @@ class CaptchaServiceProvider extends ServiceProvider {
     {
         // Publish configuration files
         $this->publishes([
-            __DIR__.'/../config/captcha.php' => config_path('captcha.php')
+            __DIR__.'/../config/captcha.php' => config_path('captcha.php'),
         ], 'config');
 
         // HTTP routing
         if (strpos($this->app->version(), 'Lumen') !== false) {
-           $this->app->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
+            $this->app->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
         } else {
-            if ((double) $this->app->version() >= 5.2) {
+            if ((float) $this->app->version() >= 5.2) {
                 $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
             } else {
                 $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
@@ -34,8 +33,7 @@ class CaptchaServiceProvider extends ServiceProvider {
         }
 
         // Validator extensions
-        $this->app['validator']->extend('captcha', function($attribute, $value, $parameters)
-        {
+        $this->app['validator']->extend('captcha', function ($attribute, $value, $parameters) {
             return captcha_check($value);
         });
     }
@@ -53,8 +51,7 @@ class CaptchaServiceProvider extends ServiceProvider {
         );
 
         // Bind captcha
-        $this->app->bind('captcha', function($app)
-        {
+        $this->app->bind('captcha', function ($app) {
             return new Captcha(
                 $app['Illuminate\Filesystem\Filesystem'],
                 $app['Illuminate\Config\Repository'],
@@ -65,5 +62,4 @@ class CaptchaServiceProvider extends ServiceProvider {
             );
         });
     }
-
 }

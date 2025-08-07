@@ -19,9 +19,9 @@ class IdentityTranslatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTransTests
      */
-    public function testTrans($expected, $id, $parameters)
+    public function test_trans($expected, $id, $parameters)
     {
-        $translator = new IdentityTranslator();
+        $translator = new IdentityTranslator;
 
         $this->assertEquals($expected, $translator->trans($id, $parameters));
     }
@@ -29,9 +29,9 @@ class IdentityTranslatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTransChoiceTests
      */
-    public function testTransChoiceWithExplicitLocale($expected, $id, $number, $parameters)
+    public function test_trans_choice_with_explicit_locale($expected, $id, $number, $parameters)
     {
-        $translator = new IdentityTranslator();
+        $translator = new IdentityTranslator;
         $translator->setLocale('en');
 
         $this->assertEquals($expected, $translator->transChoice($id, $number, $parameters));
@@ -40,29 +40,29 @@ class IdentityTranslatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTransChoiceTests
      */
-    public function testTransChoiceWithDefaultLocale($expected, $id, $number, $parameters)
+    public function test_trans_choice_with_default_locale($expected, $id, $number, $parameters)
     {
         \Locale::setDefault('en');
 
-        $translator = new IdentityTranslator();
+        $translator = new IdentityTranslator;
 
         $this->assertEquals($expected, $translator->transChoice($id, $number, $parameters));
     }
 
-    public function testGetSetLocale()
+    public function test_get_set_locale()
     {
-        $translator = new IdentityTranslator();
+        $translator = new IdentityTranslator;
         $translator->setLocale('en');
 
         $this->assertEquals('en', $translator->getLocale());
     }
 
-    public function testGetLocaleReturnsDefaultLocaleIfNotSet()
+    public function test_get_locale_returns_default_locale_if_not_set()
     {
         // in order to test with "pt_BR"
         IntlTestHelper::requireFullIntl($this);
 
-        $translator = new IdentityTranslator();
+        $translator = new IdentityTranslator;
 
         \Locale::setDefault('en');
         $this->assertEquals('en', $translator->getLocale());
@@ -73,23 +73,23 @@ class IdentityTranslatorTest extends \PHPUnit_Framework_TestCase
 
     public function getTransTests()
     {
-        return array(
-            array('Symfony is great!', 'Symfony is great!', array()),
-            array('Symfony is awesome!', 'Symfony is %what%!', array('%what%' => 'awesome')),
-        );
+        return [
+            ['Symfony is great!', 'Symfony is great!', []],
+            ['Symfony is awesome!', 'Symfony is %what%!', ['%what%' => 'awesome']],
+        ];
     }
 
     public function getTransChoiceTests()
     {
-        return array(
-            array('There are no apples', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 0, array('%count%' => 0)),
-            array('There is one apple', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 1, array('%count%' => 1)),
-            array('There are 10 apples', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 10, array('%count%' => 10)),
-            array('There are 0 apples', 'There is 1 apple|There are %count% apples', 0, array('%count%' => 0)),
-            array('There is 1 apple', 'There is 1 apple|There are %count% apples', 1, array('%count%' => 1)),
-            array('There are 10 apples', 'There is 1 apple|There are %count% apples', 10, array('%count%' => 10)),
+        return [
+            ['There are no apples', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 0, ['%count%' => 0]],
+            ['There is one apple', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 1, ['%count%' => 1]],
+            ['There are 10 apples', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 10, ['%count%' => 10]],
+            ['There are 0 apples', 'There is 1 apple|There are %count% apples', 0, ['%count%' => 0]],
+            ['There is 1 apple', 'There is 1 apple|There are %count% apples', 1, ['%count%' => 1]],
+            ['There are 10 apples', 'There is 1 apple|There are %count% apples', 10, ['%count%' => 10]],
             // custom validation messages may be coded with a fixed value
-            array('There are 2 apples', 'There are 2 apples', 2, array('%count%' => 2)),
-        );
+            ['There are 2 apples', 'There are 2 apples', 2, ['%count%' => 2]],
+        ];
     }
 }

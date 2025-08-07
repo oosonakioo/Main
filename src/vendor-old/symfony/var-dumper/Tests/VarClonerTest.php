@@ -18,11 +18,11 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
  */
 class VarClonerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMaxIntBoundary()
+    public function test_max_int_boundary()
     {
-        $data = array(PHP_INT_MAX => 123);
+        $data = [PHP_INT_MAX => 123];
 
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
         $clone = $cloner->cloneVar($data);
 
         $expected = <<<EOTXT
@@ -61,11 +61,11 @@ EOTXT;
         $this->assertSame(sprintf($expected, PHP_INT_MAX), print_r($clone, true));
     }
 
-    public function testClone()
+    public function test_clone()
     {
         $json = json_decode('{"1":{"var":"val"},"2":{"var":"val"}}');
 
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
         $clone = $cloner->cloneVar($json);
 
         $expected = <<<EOTXT
@@ -135,11 +135,11 @@ EOTXT;
         $this->assertStringMatchesFormat($expected, print_r($clone, true));
     }
 
-    public function testJsonCast()
+    public function test_json_cast()
     {
         $data = (array) json_decode('{"1":{}}');
 
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
         $clone = $cloner->cloneVar($data);
 
         $expected = <<<'EOTXT'
@@ -201,18 +201,18 @@ EOTXT;
         $this->assertStringMatchesFormat($expected, ob_get_clean());
     }
 
-    public function testCaster()
+    public function test_caster()
     {
-        $cloner = new VarCloner(array(
+        $cloner = new VarCloner([
             '*' => function ($obj, $array) {
-                return array('foo' => 123);
+                return ['foo' => 123];
             },
             __CLASS__ => function ($obj, $array) {
-                ++$array['foo'];
+                $array['foo']++;
 
                 return $array;
             },
-        ));
+        ]);
         $clone = $cloner->cloneVar($this);
 
         $expected = <<<EOTXT

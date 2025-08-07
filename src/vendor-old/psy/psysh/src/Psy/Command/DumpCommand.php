@@ -30,8 +30,6 @@ class DumpCommand extends ReflectingCommand implements PresenterAware
 
     /**
      * PresenterAware interface.
-     *
-     * @param Presenter $presenter
      */
     public function setPresenter(Presenter $presenter)
     {
@@ -45,11 +43,11 @@ class DumpCommand extends ReflectingCommand implements PresenterAware
     {
         $this
             ->setName('dump')
-            ->setDefinition(array(
+            ->setDefinition([
                 new InputArgument('target', InputArgument::REQUIRED, 'A target object or primitive to dump.', null),
                 new InputOption('depth', '', InputOption::VALUE_REQUIRED, 'Depth to parse', 10),
                 new InputOption('all', 'a', InputOption::VALUE_NONE, 'Include private and protected methods and properties.'),
-            ))
+            ])
             ->setDescription('Dump an object or primitive.')
             ->setHelp(
                 <<<'HELP'
@@ -69,7 +67,7 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $depth  = $input->getOption('depth');
+        $depth = $input->getOption('depth');
         $target = $this->resolveTarget($input->getArgument('target'));
         $output->page($this->presenter->present($target, $depth, $input->getOption('all') ? Presenter::VERBOSE : 0));
     }
@@ -77,19 +75,19 @@ HELP
     /**
      * Resolve dump target name.
      *
-     * @throws RuntimeException if target name does not exist in the current scope.
      *
-     * @param string $target
-     *
+     * @param  string  $target
      * @return mixed
+     *
+     * @throws RuntimeException if target name does not exist in the current scope.
      */
     protected function resolveTarget($target)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match(self::INSTANCE, $target, $matches)) {
             return $this->getScopeVariable($matches[1]);
         } else {
-            throw new RuntimeException('Unknown target: ' . $target);
+            throw new RuntimeException('Unknown target: '.$target);
         }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Illuminate\Database\Migrations;
 
+use Illuminate\Database\ConnectionResolverInterface as Resolver;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Database\ConnectionResolverInterface as Resolver;
 
 class Migrator
 {
@@ -47,14 +47,11 @@ class Migrator
     /**
      * Create a new migrator instance.
      *
-     * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
-     * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
-     * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
     public function __construct(MigrationRepositoryInterface $repository,
-                                Resolver $resolver,
-                                Filesystem $files)
+        Resolver $resolver,
+        Filesystem $files)
     {
         $this->files = $files;
         $this->resolver = $resolver;
@@ -65,7 +62,6 @@ class Migrator
      * Run the outstanding migrations at a given path.
      *
      * @param  string  $path
-     * @param  array  $options
      * @return void
      */
     public function run($path, array $options = [])
@@ -90,7 +86,6 @@ class Migrator
      * Run an array of migrations.
      *
      * @param  array  $migrations
-     * @param  array  $options
      * @return void
      */
     public function runMigrationList($migrations, array $options = [])
@@ -129,8 +124,8 @@ class Migrator
      * Run "up" a migration instance.
      *
      * @param  string  $file
-     * @param  int     $batch
-     * @param  bool    $pretend
+     * @param  int  $batch
+     * @param  bool  $pretend
      * @return void
      */
     protected function runUp($file, $batch, $pretend)
@@ -214,7 +209,7 @@ class Migrator
      * Run "down" a migration instance.
      *
      * @param  object  $migration
-     * @param  bool    $pretend
+     * @param  bool  $pretend
      * @return void
      */
     protected function runDown($migration, $pretend)
@@ -273,7 +268,6 @@ class Migrator
      * Require in all the migration files in a given path.
      *
      * @param  string  $path
-     * @param  array   $files
      * @return void
      */
     public function requireFiles($path, array $files)

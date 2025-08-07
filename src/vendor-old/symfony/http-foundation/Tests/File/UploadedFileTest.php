@@ -17,12 +17,12 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        if (!ini_get('file_uploads')) {
+        if (! ini_get('file_uploads')) {
             $this->markTestSkipped('file_uploads is disabled in php.ini');
         }
     }
 
-    public function testConstructWhenFileNotExists()
+    public function test_construct_when_file_not_exists()
     {
         $this->setExpectedException('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
 
@@ -33,7 +33,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFileUploadsWithNoMimeType()
+    public function test_file_uploads_with_no_mime_type()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -50,7 +50,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFileUploadsWithUnknownMimeType()
+    public function test_file_uploads_with_unknown_mime_type()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/.unknownextension',
@@ -63,7 +63,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('application/octet-stream', $file->getClientMimeType());
     }
 
-    public function testGuessClientExtension()
+    public function test_guess_client_extension()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -76,7 +76,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('gif', $file->guessClientExtension());
     }
 
-    public function testGuessClientExtensionWithIncorrectMimeType()
+    public function test_guess_client_extension_with_incorrect_mime_type()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -89,7 +89,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('jpeg', $file->guessClientExtension());
     }
 
-    public function testErrorIsOkByDefault()
+    public function test_error_is_ok_by_default()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -102,7 +102,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(UPLOAD_ERR_OK, $file->getError());
     }
 
-    public function testGetClientOriginalName()
+    public function test_get_client_original_name()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -115,7 +115,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('original.gif', $file->getClientOriginalName());
     }
 
-    public function testGetClientOriginalExtension()
+    public function test_get_client_original_extension()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -131,7 +131,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    public function testMoveLocalFileIsNotAllowed()
+    public function test_move_local_file_is_not_allowed()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -144,7 +144,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $movedFile = $file->move(__DIR__.'/Fixtures/directory');
     }
 
-    public function testMoveLocalFileIsAllowedInTestMode()
+    public function test_move_local_file_is_allowed_in_test_mode()
     {
         $path = __DIR__.'/Fixtures/test.copy.gif';
         $targetDir = __DIR__.'/Fixtures/directory';
@@ -171,7 +171,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         @unlink($targetPath);
     }
 
-    public function testGetClientOriginalNameSanitizeFilename()
+    public function test_get_client_original_name_sanitize_filename()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -184,7 +184,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('original.gif', $file->getClientOriginalName());
     }
 
-    public function testGetSize()
+    public function test_get_size()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -205,7 +205,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(filesize(__DIR__.'/Fixtures/test'), $file->getSize());
     }
 
-    public function testGetExtension()
+    public function test_get_extension()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -216,7 +216,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('gif', $file->getExtension());
     }
 
-    public function testIsValid()
+    public function test_is_valid()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -233,7 +233,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider uploadedFileErrorProvider
      */
-    public function testIsInvalidOnUploadError($error)
+    public function test_is_invalid_on_upload_error($error)
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',
@@ -248,16 +248,16 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
 
     public function uploadedFileErrorProvider()
     {
-        return array(
-            array(UPLOAD_ERR_INI_SIZE),
-            array(UPLOAD_ERR_FORM_SIZE),
-            array(UPLOAD_ERR_PARTIAL),
-            array(UPLOAD_ERR_NO_TMP_DIR),
-            array(UPLOAD_ERR_EXTENSION),
-        );
+        return [
+            [UPLOAD_ERR_INI_SIZE],
+            [UPLOAD_ERR_FORM_SIZE],
+            [UPLOAD_ERR_PARTIAL],
+            [UPLOAD_ERR_NO_TMP_DIR],
+            [UPLOAD_ERR_EXTENSION],
+        ];
     }
 
-    public function testIsInvalidIfNotHttpUpload()
+    public function test_is_invalid_if_not_http_upload()
     {
         $file = new UploadedFile(
             __DIR__.'/Fixtures/test.gif',

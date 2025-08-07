@@ -4,15 +4,15 @@ use Mockery as m;
 
 class Swift_Bug518Test extends \PHPUnit_Framework_TestCase
 {
-    public function testIfEmailChangesAfterQueued()
+    public function test_if_email_changes_after_queued()
     {
         $failedRecipients = 'value';
-        $message = new Swift_Message();
+        $message = new Swift_Message;
         $message->setTo('foo@bar.com');
 
         $that = $this;
         $messageValidation = function ($m) use ($that) {
-            //the getTo should return the same value as we put in
+            // the getTo should return the same value as we put in
             $that->assertEquals('foo@bar.com', key($m->getTo()), 'The message has changed after it was put to the memory queue');
 
             return true;
@@ -24,7 +24,7 @@ class Swift_Bug518Test extends \PHPUnit_Framework_TestCase
             ->with(m::on($messageValidation), $failedRecipients)
             ->andReturn(1);
 
-        $memorySpool = new Swift_MemorySpool();
+        $memorySpool = new Swift_MemorySpool;
         $memorySpool->queueMessage($message);
 
         /*

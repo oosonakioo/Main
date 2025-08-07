@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -20,12 +22,11 @@ class PassthroughFormatter implements Formatter
     /**
      * Formats the given tag to return a simple plain text version.
      *
-     * @param Tag $tag
      *
      * @return string
      */
     public function format(Tag $tag)
     {
-        return '@' . $tag->getName() . ' ' . (string)$tag;
+        return '@'.$tag->getName().' '.(string) $tag;
     }
 }

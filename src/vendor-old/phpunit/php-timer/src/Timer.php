@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_Timer package.
  *
@@ -16,16 +17,16 @@ class PHP_Timer
     /**
      * @var array
      */
-    private static $times = array(
-      'hour'   => 3600000,
-      'minute' => 60000,
-      'second' => 1000
-    );
+    private static $times = [
+        'hour' => 3600000,
+        'minute' => 60000,
+        'second' => 1000,
+    ];
 
     /**
      * @var array
      */
-    private static $startTimes = array();
+    private static $startTimes = [];
 
     /**
      * @var float
@@ -64,11 +65,11 @@ class PHP_Timer
             if ($ms >= $value) {
                 $time = floor($ms / $value * 100.0) / 100.0;
 
-                return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
+                return $time.' '.($time == 1 ? $unit : $unit.'s');
             }
         }
 
-        return $ms . ' ms';
+        return $ms.' ms';
     }
 
     /**

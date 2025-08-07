@@ -11,35 +11,35 @@
 
 namespace Symfony\Component\Translation\Tests\Dumper;
 
-use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Dumper\YamlFileDumper;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class YamlFileDumperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTreeFormatCatalogue()
+    public function test_tree_format_catalogue()
     {
         $catalogue = new MessageCatalogue('en');
         $catalogue->add(
-            array(
+            [
                 'foo.bar1' => 'value1',
                 'foo.bar2' => 'value2',
-            ));
+            ]);
 
-        $dumper = new YamlFileDumper();
+        $dumper = new YamlFileDumper;
 
-        $this->assertStringEqualsFile(__DIR__.'/../fixtures/messages.yml', $dumper->formatCatalogue($catalogue, 'messages', array('as_tree' => true, 'inline' => 999)));
+        $this->assertStringEqualsFile(__DIR__.'/../fixtures/messages.yml', $dumper->formatCatalogue($catalogue, 'messages', ['as_tree' => true, 'inline' => 999]));
     }
 
-    public function testLinearFormatCatalogue()
+    public function test_linear_format_catalogue()
     {
         $catalogue = new MessageCatalogue('en');
         $catalogue->add(
-            array(
+            [
                 'foo.bar1' => 'value1',
                 'foo.bar2' => 'value2',
-            ));
+            ]);
 
-        $dumper = new YamlFileDumper();
+        $dumper = new YamlFileDumper;
 
         $this->assertStringEqualsFile(__DIR__.'/../fixtures/messages_linear.yml', $dumper->formatCatalogue($catalogue, 'messages'));
     }

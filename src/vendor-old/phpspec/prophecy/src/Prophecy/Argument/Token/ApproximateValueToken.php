@@ -19,6 +19,7 @@ namespace Prophecy\Argument\Token;
 class ApproximateValueToken implements TokenInterface
 {
     private $value;
+
     private $precision;
 
     public function __construct($value, $precision = 0)

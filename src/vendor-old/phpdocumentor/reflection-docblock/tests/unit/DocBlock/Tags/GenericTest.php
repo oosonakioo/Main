@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @generic      http://phpdoc.org
  */
 
@@ -19,6 +21,7 @@ use phpDocumentor\Reflection\Types\Context;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Generic
+ *
  * @covers ::<private>
  */
 class GenericTest extends \PHPUnit_Framework_TestCase
@@ -26,9 +29,10 @@ class GenericTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Generic::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned()
+    public function test_if_correct_tag_name_is_returned()
     {
         $fixture = new Generic('generic', new Description('Description'));
 
@@ -41,9 +45,10 @@ class GenericTest extends \PHPUnit_Framework_TestCase
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    public function test_if_tag_can_be_rendered_using_default_formatter()
     {
         $fixture = new Generic('generic', new Description('Description'));
 
@@ -53,9 +58,10 @@ class GenericTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Generic::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    public function test_if_tag_can_be_rendered_using_specific_formatter()
     {
         $fixture = new Generic('generic', new Description('Description'));
 
@@ -68,9 +74,10 @@ class GenericTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription()
+    public function test_has_description()
     {
         $expected = new Description('Description');
 
@@ -82,24 +89,26 @@ class GenericTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::__toString
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testStringRepresentationIsReturned()
+    public function test_string_representation_is_returned()
     {
         $fixture = new Generic('generic', new Description('Description'));
 
-        $this->assertSame('Description', (string)$fixture);
+        $this->assertSame('Description', (string) $fixture);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Generic::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod()
+    public function test_factory_method()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $context = new Context('');
@@ -111,25 +120,27 @@ class GenericTest extends \PHPUnit_Framework_TestCase
 
         $fixture = Generic::create('My Description', 'generic', $descriptionFactory, $context);
 
-        $this->assertSame('My Description', (string)$fixture);
+        $this->assertSame('My Description', (string) $fixture);
         $this->assertSame($generics, $fixture->getName());
         $this->assertSame($description, $fixture->getDescription());
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfNameIsNotString()
+    public function test_factory_method_fails_if_name_is_not_string()
     {
         Generic::create('', []);
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfNameIsNotEmpty()
+    public function test_factory_method_fails_if_name_is_not_empty()
     {
         Generic::create('', '');
     }
@@ -137,9 +148,10 @@ class GenericTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::create
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfNameContainsIllegalCharacters()
+    public function test_factory_method_fails_if_name_contains_illegal_characters()
     {
         Generic::create('', 'name/myname');
     }

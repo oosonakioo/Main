@@ -2,15 +2,15 @@
 
 namespace Doctrine\Tests\Common\Cache;
 
-use Doctrine\Common\Cache\Cache;
 use ArrayObject;
+use Doctrine\Common\Cache\Cache;
 
 abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
 {
     /**
      * @dataProvider provideDataToCache
      */
-    public function testSetContainsFetchDelete($value)
+    public function test_set_contains_fetch_delete($value)
     {
         $cache = $this->_getCacheDriver();
 
@@ -32,7 +32,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
     /**
      * @dataProvider provideDataToCache
      */
-    public function testUpdateExistingEntry($value)
+    public function test_update_existing_entry($value)
     {
         $cache = $this->_getCacheDriver();
 
@@ -48,7 +48,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         }
     }
 
-    public function testCacheKeyIsCaseSensitive()
+    public function test_cache_key_is_case_sensitive()
     {
         $cache = $this->_getCacheDriver();
 
@@ -63,11 +63,11 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertTrue($cache->contains('key', 'Deleting cache item with different case must not affect other cache item'));
     }
 
-    public function testFetchMultiple()
+    public function test_fetch_multiple()
     {
-        $cache  = $this->_getCacheDriver();
+        $cache = $this->_getCacheDriver();
         $values = $this->provideDataToCache();
-        $saved  = array();
+        $saved = [];
 
         foreach ($values as $key => $value) {
             $cache->save($key, $value[0]);
@@ -88,7 +88,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
             'Testing fetchMultiple with a single key'
         );
 
-        $keysWithNonExisting = array();
+        $keysWithNonExisting = [];
         $keysWithNonExisting[] = 'non_existing1';
         $keysWithNonExisting[] = $keys[0];
         $keysWithNonExisting[] = 'non_existing2';
@@ -102,14 +102,14 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         );
     }
 
-    public function testFetchMultipleWithNoKeys()
+    public function test_fetch_multiple_with_no_keys()
     {
         $cache = $this->_getCacheDriver();
 
-        $this->assertSame(array(), $cache->fetchMultiple(array()));
+        $this->assertSame([], $cache->fetchMultiple([]));
     }
 
-    public function testSaveMultiple()
+    public function test_save_multiple()
     {
         $cache = $this->_getCacheDriver();
         $cache->deleteAll();
@@ -127,35 +127,35 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
 
     public function provideDataToCache()
     {
-        $obj = new \stdClass();
+        $obj = new \stdClass;
         $obj->foo = 'bar';
-        $obj2 = new \stdClass();
+        $obj2 = new \stdClass;
         $obj2->bar = 'foo';
         $obj2->obj = $obj;
         $obj->obj2 = $obj2;
 
-        return array(
-            'array' => array(array('one', 2, 3.01)),
-            'string' => array('value'),
-            'string_invalid_utf8' => array("\xc3\x28"),
-            'string_null_byte' => array('with'."\0".'null char'),
-            'integer' => array(1),
-            'float' => array(1.5),
-            'object' => array(new ArrayObject(array('one', 2, 3.01))),
-            'object_recursive' => array($obj),
-            'true' => array(true),
+        return [
+            'array' => [['one', 2, 3.01]],
+            'string' => ['value'],
+            'string_invalid_utf8' => ["\xc3\x28"],
+            'string_null_byte' => ['with'."\0".'null char'],
+            'integer' => [1],
+            'float' => [1.5],
+            'object' => [new ArrayObject(['one', 2, 3.01])],
+            'object_recursive' => [$obj],
+            'true' => [true],
             // the following are considered FALSE in boolean context, but caches should still recognize their existence
-            'null' => array(null),
-            'false' => array(false),
-            'array_empty' => array(array()),
-            'string_zero' => array('0'),
-            'integer_zero' => array(0),
-            'float_zero' => array(0.0),
-            'string_empty' => array(''),
-        );
+            'null' => [null],
+            'false' => [false],
+            'array_empty' => [[]],
+            'string_zero' => ['0'],
+            'integer_zero' => [0],
+            'float_zero' => [0.0],
+            'string_empty' => [''],
+        ];
     }
 
-    public function testDeleteIsSuccessfulWhenKeyDoesNotExist()
+    public function test_delete_is_successful_when_key_does_not_exist()
     {
         $cache = $this->_getCacheDriver();
 
@@ -164,7 +164,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertTrue($cache->delete('key'));
     }
 
-    public function testDeleteAll()
+    public function test_delete_all()
     {
         $cache = $this->_getCacheDriver();
 
@@ -178,7 +178,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
     /**
      * @dataProvider provideCacheIds
      */
-    public function testCanHandleSpecialCacheIds($id)
+    public function test_can_handle_special_cache_ids($id)
     {
         $cache = $this->_getCacheDriver();
 
@@ -191,7 +191,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse($cache->fetch($id));
     }
 
-    public function testNoCacheIdCollisions()
+    public function test_no_cache_id_collisions()
     {
         $cache = $this->_getCacheDriver();
 
@@ -222,37 +222,37 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
      */
     public function provideCacheIds()
     {
-        return array(
-            array(':'),
-            array('\\'),
-            array('/'),
-            array('<'),
-            array('>'),
-            array('"'),
-            array('*'),
-            array('?'),
-            array('|'),
-            array('['),
-            array(']'),
-            array('ä'),
-            array('a'),
-            array('é'),
-            array('e'),
-            array('.'), // directory traversal
-            array('..'), // directory traversal
-            array('-'),
-            array('_'),
-            array('$'),
-            array('%'),
-            array(' '),
-            array("\0"),
-            array(''),
-            array(str_repeat('a', 300)), // long key
-            array(str_repeat('a', 113)),
-        );
+        return [
+            [':'],
+            ['\\'],
+            ['/'],
+            ['<'],
+            ['>'],
+            ['"'],
+            ['*'],
+            ['?'],
+            ['|'],
+            ['['],
+            [']'],
+            ['ä'],
+            ['a'],
+            ['é'],
+            ['e'],
+            ['.'], // directory traversal
+            ['..'], // directory traversal
+            ['-'],
+            ['_'],
+            ['$'],
+            ['%'],
+            [' '],
+            ["\0"],
+            [''],
+            [str_repeat('a', 300)], // long key
+            [str_repeat('a', 113)],
+        ];
     }
 
-    public function testLifetime()
+    public function test_lifetime()
     {
         $cache = $this->_getCacheDriver();
         $cache->save('expire', 'value', 1);
@@ -262,7 +262,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse($cache->contains('expire'), 'Data should be expired');
     }
 
-    public function testNoExpire()
+    public function test_no_expire()
     {
         $cache = $this->_getCacheDriver();
         $cache->save('noexpire', 'value', 0);
@@ -271,16 +271,16 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertTrue($cache->contains('noexpire'), 'Data with lifetime of zero should not expire');
     }
 
-    public function testLongLifetime()
+    public function test_long_lifetime()
     {
         $cache = $this->_getCacheDriver();
         $cache->save('longlifetime', 'value', 30 * 24 * 3600 + 1);
         $this->assertTrue($cache->contains('longlifetime'), 'Data with lifetime > 30 days should be accepted');
     }
 
-    public function testDeleteAllAndNamespaceVersioningBetweenCaches()
+    public function test_delete_all_and_namespace_versioning_between_caches()
     {
-        if ( ! $this->isSharedStorage()) {
+        if (! $this->isSharedStorage()) {
             $this->markTestSkipped('The cache storage needs to be shared.');
         }
 
@@ -317,7 +317,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse($cache3->contains('key2'));
     }
 
-    public function testFlushAll()
+    public function test_flush_all()
     {
         $cache = $this->_getCacheDriver();
 
@@ -328,9 +328,9 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse($cache->contains('key2'));
     }
 
-    public function testFlushAllAndNamespaceVersioningBetweenCaches()
+    public function test_flush_all_and_namespace_versioning_between_caches()
     {
-        if ( ! $this->isSharedStorage()) {
+        if (! $this->isSharedStorage()) {
             $this->markTestSkipped('The cache storage needs to be shared.');
         }
 
@@ -382,7 +382,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertTrue($cache3->contains('key3'));
     }
 
-    public function testNamespace()
+    public function test_namespace()
     {
         $cache = $this->_getCacheDriver();
 
@@ -396,7 +396,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertFalse($cache->contains('key1'));
     }
 
-    public function testDeleteAllNamespace()
+    public function test_delete_all_namespace()
     {
         $cache = $this->_getCacheDriver();
 
@@ -424,7 +424,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
     /**
      * @group DCOM-43
      */
-    public function testGetStats()
+    public function test_get_stats()
     {
         $cache = $this->_getCacheDriver();
         $stats = $cache->getStats();
@@ -436,7 +436,7 @@ abstract class CacheTest extends \Doctrine\Tests\DoctrineTestCase
         $this->assertArrayHasKey(Cache::STATS_MEMORY_AVAILABLE, $stats);
     }
 
-    public function testSaveReturnsTrueWithAndWithoutTTlSet()
+    public function test_save_returns_true_with_and_without_t_tl_set()
     {
         $cache = $this->_getCacheDriver();
         $cache->deleteAll();

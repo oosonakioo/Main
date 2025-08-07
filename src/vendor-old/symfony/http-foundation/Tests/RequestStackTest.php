@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetCurrentRequest()
+    public function test_get_current_request()
     {
-        $requestStack = new RequestStack();
+        $requestStack = new RequestStack;
         $this->assertNull($requestStack->getCurrentRequest());
 
         $request = Request::create('/foo');
@@ -32,9 +32,9 @@ class RequestStackTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($requestStack->pop());
     }
 
-    public function testGetMasterRequest()
+    public function test_get_master_request()
     {
-        $requestStack = new RequestStack();
+        $requestStack = new RequestStack;
         $this->assertNull($requestStack->getMasterRequest());
 
         $masterRequest = Request::create('/foo');
@@ -46,9 +46,9 @@ class RequestStackTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($masterRequest, $requestStack->getMasterRequest());
     }
 
-    public function testGetParentRequest()
+    public function test_get_parent_request()
     {
-        $requestStack = new RequestStack();
+        $requestStack = new RequestStack;
         $this->assertNull($requestStack->getParentRequest());
 
         $masterRequest = Request::create('/foo');

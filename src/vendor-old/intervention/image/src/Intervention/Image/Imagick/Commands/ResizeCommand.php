@@ -7,8 +7,8 @@ class ResizeCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Resizes image dimensions
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

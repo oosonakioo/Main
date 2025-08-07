@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Persistence;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -40,8 +42,7 @@ interface ConnectionRegistry
     /**
      * Gets the named connection.
      *
-     * @param string $name The connection name (null for the default one).
-     *
+     * @param  string  $name  The connection name (null for the default one).
      * @return object
      */
     public function getConnection($name = null);

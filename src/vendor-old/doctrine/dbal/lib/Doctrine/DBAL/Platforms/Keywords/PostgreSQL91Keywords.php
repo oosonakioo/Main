@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -44,7 +46,7 @@ class PostgreSQL91Keywords extends PostgreSQLKeywords
      */
     protected function getKeywords()
     {
-        return array(
+        return [
             'ALL',
             'ANALYSE',
             'ANALYZE',
@@ -143,6 +145,6 @@ class PostgreSQL91Keywords extends PostgreSQLKeywords
             'WHERE',
             'WINDOW',
             'WITH',
-        );
+        ];
     }
 }

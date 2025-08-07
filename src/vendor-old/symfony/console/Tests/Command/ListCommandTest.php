@@ -11,33 +11,33 @@
 
 namespace Symfony\Component\Console\Tests\Command;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class ListCommandTest extends \PHPUnit_Framework_TestCase
 {
-    public function testExecuteListsCommands()
+    public function test_execute_lists_commands()
     {
-        $application = new Application();
+        $application = new Application;
         $commandTester = new CommandTester($command = $application->get('list'));
-        $commandTester->execute(array('command' => $command->getName()), array('decorated' => false));
+        $commandTester->execute(['command' => $command->getName()], ['decorated' => false]);
 
         $this->assertRegExp('/help\s{2,}Displays help for a command/', $commandTester->getDisplay(), '->execute() returns a list of available commands');
     }
 
-    public function testExecuteListsCommandsWithXmlOption()
+    public function test_execute_lists_commands_with_xml_option()
     {
-        $application = new Application();
+        $application = new Application;
         $commandTester = new CommandTester($command = $application->get('list'));
-        $commandTester->execute(array('command' => $command->getName(), '--format' => 'xml'));
+        $commandTester->execute(['command' => $command->getName(), '--format' => 'xml']);
         $this->assertRegExp('/<command id="list" name="list">/', $commandTester->getDisplay(), '->execute() returns a list of available commands in XML if --xml is passed');
     }
 
-    public function testExecuteListsCommandsWithRawOption()
+    public function test_execute_lists_commands_with_raw_option()
     {
-        $application = new Application();
+        $application = new Application;
         $commandTester = new CommandTester($command = $application->get('list'));
-        $commandTester->execute(array('command' => $command->getName(), '--raw' => true));
+        $commandTester->execute(['command' => $command->getName(), '--raw' => true]);
         $output = <<<'EOF'
 help   Displays help for a command
 list   Lists commands
@@ -47,13 +47,13 @@ EOF;
         $this->assertEquals($output, $commandTester->getDisplay(true));
     }
 
-    public function testExecuteListsCommandsWithNamespaceArgument()
+    public function test_execute_lists_commands_with_namespace_argument()
     {
         require_once realpath(__DIR__.'/../Fixtures/FooCommand.php');
-        $application = new Application();
-        $application->add(new \FooCommand());
+        $application = new Application;
+        $application->add(new \FooCommand);
         $commandTester = new CommandTester($command = $application->get('list'));
-        $commandTester->execute(array('command' => $command->getName(), 'namespace' => 'foo', '--raw' => true));
+        $commandTester->execute(['command' => $command->getName(), 'namespace' => 'foo', '--raw' => true]);
         $output = <<<'EOF'
 foo:bar   The foo:bar command
 
@@ -62,13 +62,13 @@ EOF;
         $this->assertEquals($output, $commandTester->getDisplay(true));
     }
 
-    public function testExecuteListsCommandsOrder()
+    public function test_execute_lists_commands_order()
     {
         require_once realpath(__DIR__.'/../Fixtures/Foo6Command.php');
-        $application = new Application();
-        $application->add(new \Foo6Command());
+        $application = new Application;
+        $application->add(new \Foo6Command);
         $commandTester = new CommandTester($command = $application->get('list'));
-        $commandTester->execute(array('command' => $command->getName()), array('decorated' => false));
+        $commandTester->execute(['command' => $command->getName()], ['decorated' => false]);
         $output = <<<'EOF'
 Console Tool
 
@@ -94,13 +94,13 @@ EOF;
         $this->assertEquals($output, trim($commandTester->getDisplay(true)));
     }
 
-    public function testExecuteListsCommandsOrderRaw()
+    public function test_execute_lists_commands_order_raw()
     {
         require_once realpath(__DIR__.'/../Fixtures/Foo6Command.php');
-        $application = new Application();
-        $application->add(new \Foo6Command());
+        $application = new Application;
+        $application->add(new \Foo6Command);
         $commandTester = new CommandTester($command = $application->get('list'));
-        $commandTester->execute(array('command' => $command->getName(), '--raw' => true));
+        $commandTester->execute(['command' => $command->getName(), '--raw' => true]);
         $output = <<<'EOF'
 help       Displays help for a command
 list       Lists commands

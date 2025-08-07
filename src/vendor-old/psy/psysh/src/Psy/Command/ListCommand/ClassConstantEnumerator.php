@@ -22,7 +22,7 @@ class ClassConstantEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list constants when a Reflector is present.
 
@@ -31,13 +31,13 @@ class ClassConstantEnumerator extends Enumerator
         }
 
         // We can only list constants on actual class (or object) reflectors.
-        if (!$reflector instanceof \ReflectionClass) {
+        if (! $reflector instanceof \ReflectionClass) {
             // TODO: handle ReflectionExtension as well
             return;
         }
 
         // only list constants if we are specifically asked
-        if (!$input->getOption('constants')) {
+        if (! $input->getOption('constants')) {
             return;
         }
 
@@ -47,7 +47,7 @@ class ClassConstantEnumerator extends Enumerator
             return;
         }
 
-        $ret = array();
+        $ret = [];
         $ret[$this->getKindLabel($reflector)] = $constants;
 
         return $ret;
@@ -56,13 +56,12 @@ class ClassConstantEnumerator extends Enumerator
     /**
      * Get defined constants for the given class or object Reflector.
      *
-     * @param \Reflector $reflector
      *
      * @return array
      */
     protected function getConstants(\Reflector $reflector)
     {
-        $constants = array();
+        $constants = [];
         foreach ($reflector->getConstants() as $name => $constant) {
             $constants[$name] = new ReflectionConstant($reflector, $name);
         }
@@ -76,22 +75,21 @@ class ClassConstantEnumerator extends Enumerator
     /**
      * Prepare formatted constant array.
      *
-     * @param array $constants
      *
      * @return array
      */
     protected function prepareConstants(array $constants)
     {
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         foreach ($constants as $name => $constant) {
             if ($this->showItem($name)) {
-                $ret[$name] = array(
-                    'name'  => $name,
+                $ret[$name] = [
+                    'name' => $name,
                     'style' => self::IS_CONSTANT,
                     'value' => $this->presentRef($constant->getValue()),
-                );
+                ];
             }
         }
 
@@ -101,7 +99,6 @@ class ClassConstantEnumerator extends Enumerator
     /**
      * Get a label for the particular kind of "class" represented.
      *
-     * @param \ReflectionClass $reflector
      *
      * @return string
      */

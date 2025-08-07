@@ -21,7 +21,7 @@ class GlobalVariableEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list globals when no Reflector is present.
         if ($reflector !== null || $target !== null) {
@@ -29,7 +29,7 @@ class GlobalVariableEnumerator extends Enumerator
         }
 
         // only list globals if we are specifically asked
-        if (!$input->getOption('globals')) {
+        if (! $input->getOption('globals')) {
             return;
         }
 
@@ -39,9 +39,9 @@ class GlobalVariableEnumerator extends Enumerator
             return;
         }
 
-        return array(
+        return [
             'Global Variables' => $globals,
-        );
+        ];
     }
 
     /**
@@ -56,7 +56,7 @@ class GlobalVariableEnumerator extends Enumerator
         $names = array_keys($GLOBALS);
         natcasesort($names);
 
-        $ret = array();
+        $ret = [];
         foreach ($names as $name) {
             $ret[$name] = $GLOBALS[$name];
         }
@@ -67,23 +67,22 @@ class GlobalVariableEnumerator extends Enumerator
     /**
      * Prepare formatted global variable array.
      *
-     * @param array $globals
-     *
+     * @param  array  $globals
      * @return array
      */
     protected function prepareGlobals($globals)
     {
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         foreach ($globals as $name => $value) {
             if ($this->showItem($name)) {
-                $fname = '$' . $name;
-                $ret[$fname] = array(
-                    'name'  => $fname,
+                $fname = '$'.$name;
+                $ret[$fname] = [
+                    'name' => $fname,
                     'style' => self::IS_GLOBAL,
                     'value' => $this->presentRef($value),
-                );
+                ];
             }
         }
 

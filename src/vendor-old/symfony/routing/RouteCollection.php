@@ -23,17 +23,17 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-class RouteCollection implements \IteratorAggregate, \Countable
+class RouteCollection implements \Countable, \IteratorAggregate
 {
     /**
      * @var Route[]
      */
-    private $routes = array();
+    private $routes = [];
 
     /**
      * @var array
      */
-    private $resources = array();
+    private $resources = [];
 
     public function __clone()
     {
@@ -69,8 +69,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Adds a route.
      *
-     * @param string $name  The route name
-     * @param Route  $route A Route instance
+     * @param  string  $name  The route name
+     * @param  Route  $route  A Route instance
      */
     public function add($name, Route $route)
     {
@@ -92,8 +92,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Gets a route by name.
      *
-     * @param string $name The route name
-     *
+     * @param  string  $name  The route name
      * @return Route|null A Route instance or null when not found
      */
     public function get($name)
@@ -104,7 +103,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Removes a route or an array of routes by name from the collection.
      *
-     * @param string|array $name The route name or an array of route names
+     * @param  string|array  $name  The route name or an array of route names
      */
     public function remove($name)
     {
@@ -117,7 +116,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      * Adds a route collection at the end of the current set by appending all
      * routes of the added collection.
      *
-     * @param RouteCollection $collection A RouteCollection instance
+     * @param  RouteCollection  $collection  A RouteCollection instance
      */
     public function addCollection(RouteCollection $collection)
     {
@@ -134,15 +133,15 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Adds a prefix to the path of all child routes.
      *
-     * @param string $prefix       An optional prefix to add before each pattern of the route collection
-     * @param array  $defaults     An array of default values
-     * @param array  $requirements An array of requirements
+     * @param  string  $prefix  An optional prefix to add before each pattern of the route collection
+     * @param  array  $defaults  An array of default values
+     * @param  array  $requirements  An array of requirements
      */
-    public function addPrefix($prefix, array $defaults = array(), array $requirements = array())
+    public function addPrefix($prefix, array $defaults = [], array $requirements = [])
     {
         $prefix = trim(trim($prefix), '/');
 
-        if ('' === $prefix) {
+        if ($prefix === '') {
             return;
         }
 
@@ -156,11 +155,11 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Sets the host pattern on all routes.
      *
-     * @param string $pattern      The pattern
-     * @param array  $defaults     An array of default values
-     * @param array  $requirements An array of requirements
+     * @param  string  $pattern  The pattern
+     * @param  array  $defaults  An array of default values
+     * @param  array  $requirements  An array of requirements
      */
-    public function setHost($pattern, array $defaults = array(), array $requirements = array())
+    public function setHost($pattern, array $defaults = [], array $requirements = [])
     {
         foreach ($this->routes as $route) {
             $route->setHost($pattern);
@@ -174,7 +173,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * Existing conditions will be overridden.
      *
-     * @param string $condition The condition
+     * @param  string  $condition  The condition
      */
     public function setCondition($condition)
     {
@@ -188,7 +187,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * An existing default value under the same name in a route will be overridden.
      *
-     * @param array $defaults An array of default values
+     * @param  array  $defaults  An array of default values
      */
     public function addDefaults(array $defaults)
     {
@@ -204,7 +203,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * An existing requirement under the same name in a route will be overridden.
      *
-     * @param array $requirements An array of requirements
+     * @param  array  $requirements  An array of requirements
      */
     public function addRequirements(array $requirements)
     {
@@ -220,7 +219,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * An existing option value under the same name in a route will be overridden.
      *
-     * @param array $options An array of options
+     * @param  array  $options  An array of options
      */
     public function addOptions(array $options)
     {
@@ -234,7 +233,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Sets the schemes (e.g. 'https') all child routes are restricted to.
      *
-     * @param string|array $schemes The scheme or an array of schemes
+     * @param  string|array  $schemes  The scheme or an array of schemes
      */
     public function setSchemes($schemes)
     {
@@ -246,7 +245,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Sets the HTTP methods (e.g. 'POST') all child routes are restricted to.
      *
-     * @param string|array $methods The method or an array of methods
+     * @param  string|array  $methods  The method or an array of methods
      */
     public function setMethods($methods)
     {
@@ -268,7 +267,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Adds a resource for this collection.
      *
-     * @param ResourceInterface $resource A resource instance
+     * @param  ResourceInterface  $resource  A resource instance
      */
     public function addResource(ResourceInterface $resource)
     {

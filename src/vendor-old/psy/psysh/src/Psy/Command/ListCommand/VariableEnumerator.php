@@ -20,7 +20,8 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class VariableEnumerator extends Enumerator
 {
-    private static $specialVars = array('_', '_e');
+    private static $specialVars = ['_', '_e'];
+
     private $context;
 
     /**
@@ -28,9 +29,6 @@ class VariableEnumerator extends Enumerator
      *
      * Unlike most other enumerators, the Variable Enumerator needs access to
      * the current scope variables, so we need to pass it a Context instance.
-     *
-     * @param Presenter $presenter
-     * @param Context   $context
      */
     public function __construct(Presenter $presenter, Context $context)
     {
@@ -41,7 +39,7 @@ class VariableEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list variables when no Reflector is present.
         if ($reflector !== null || $target !== null) {
@@ -49,27 +47,26 @@ class VariableEnumerator extends Enumerator
         }
 
         // only list variables if we are specifically asked
-        if (!$input->getOption('vars')) {
+        if (! $input->getOption('vars')) {
             return;
         }
 
-        $showAll   = $input->getOption('all');
+        $showAll = $input->getOption('all');
         $variables = $this->prepareVariables($this->getVariables($showAll));
 
         if (empty($variables)) {
             return;
         }
 
-        return array(
+        return [
             'Variables' => $variables,
-        );
+        ];
     }
 
     /**
      * Get scope variables.
      *
-     * @param bool $showAll Include special variables (e.g. $_).
-     *
+     * @param  bool  $showAll  Include special variables (e.g. $_).
      * @return array
      */
     protected function getVariables($showAll)
@@ -90,9 +87,9 @@ class VariableEnumerator extends Enumerator
             }
         });
 
-        $ret = array();
+        $ret = [];
         foreach ($scopeVars as $name => $val) {
-            if (!$showAll && in_array($name, self::$specialVars)) {
+            if (! $showAll && in_array($name, self::$specialVars)) {
                 continue;
             }
 
@@ -105,22 +102,21 @@ class VariableEnumerator extends Enumerator
     /**
      * Prepare formatted variable array.
      *
-     * @param array $variables
      *
      * @return array
      */
     protected function prepareVariables(array $variables)
     {
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
         foreach ($variables as $name => $val) {
             if ($this->showItem($name)) {
-                $fname = '$' . $name;
-                $ret[$fname] = array(
-                    'name'  => $fname,
+                $fname = '$'.$name;
+                $ret[$fname] = [
+                    'name' => $fname,
                     'style' => in_array($name, self::$specialVars) ? self::IS_PRIVATE : self::IS_PUBLIC,
                     'value' => $this->presentRef($val), // TODO: add types to variable signatures
-                );
+                ];
             }
         }
 

@@ -3,10 +3,10 @@
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
-use Illuminate\Foundation\Application;
-use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Foundation\Application;
 use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class VerifyCsrfToken
 {
@@ -34,8 +34,6 @@ class VerifyCsrfToken
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
      */
     public function __construct(Application $app, Encrypter $encrypter)
@@ -48,7 +46,6 @@ class VerifyCsrfToken
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      *
      * @throws \Illuminate\Session\TokenMismatchException

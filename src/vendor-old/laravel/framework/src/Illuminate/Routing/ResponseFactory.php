@@ -2,16 +2,16 @@
 
 namespace Illuminate\Routing;
 
-use JsonSerializable;
-use Illuminate\Support\Str;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Routing\ResponseFactory as FactoryContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Illuminate\Contracts\Routing\ResponseFactory as FactoryContract;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResponseFactory implements FactoryContract
 {
@@ -34,8 +34,6 @@ class ResponseFactory implements FactoryContract
     /**
      * Create a new response factory instance.
      *
-     * @param  \Illuminate\Contracts\View\Factory  $view
-     * @param  \Illuminate\Routing\Redirector  $redirector
      * @return void
      */
     public function __construct(ViewFactory $view, Redirector $redirector)
@@ -49,7 +47,6 @@ class ResponseFactory implements FactoryContract
      *
      * @param  string  $content
      * @param  int  $status
-     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public function make($content = '', $status = 200, array $headers = [])
@@ -63,7 +60,6 @@ class ResponseFactory implements FactoryContract
      * @param  string  $view
      * @param  array  $data
      * @param  int  $status
-     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public function view($view, $data = [], $status = 200, array $headers = [])
@@ -76,7 +72,6 @@ class ResponseFactory implements FactoryContract
      *
      * @param  string|array  $data
      * @param  int  $status
-     * @param  array  $headers
      * @param  int  $options
      * @return \Illuminate\Http\JsonResponse
      */
@@ -95,7 +90,6 @@ class ResponseFactory implements FactoryContract
      * @param  string  $callback
      * @param  string|array  $data
      * @param  int  $status
-     * @param  array  $headers
      * @param  int  $options
      * @return \Illuminate\Http\JsonResponse
      */
@@ -109,7 +103,6 @@ class ResponseFactory implements FactoryContract
      *
      * @param  \Closure  $callback
      * @param  int  $status
-     * @param  array  $headers
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function stream($callback, $status = 200, array $headers = [])
@@ -122,7 +115,6 @@ class ResponseFactory implements FactoryContract
      *
      * @param  \SplFileInfo|string  $file
      * @param  string  $name
-     * @param  array  $headers
      * @param  string|null  $disposition
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
@@ -140,9 +132,8 @@ class ResponseFactory implements FactoryContract
     /**
      * Return the raw contents of a binary file.
      *
-     * @param  \SplFileInfo|string $file
-     * @param  array $headers
-     * @return  \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @param  \SplFileInfo|string  $file
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function file($file, array $headers = [])
     {

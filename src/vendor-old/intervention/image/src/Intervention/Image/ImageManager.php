@@ -11,16 +11,14 @@ class ImageManager
      *
      * @var array
      */
-    public $config = array(
-        'driver' => 'gd'
-    );
+    public $config = [
+        'driver' => 'gd',
+    ];
 
     /**
      * Creates new instance of Image Manager
-     *
-     * @param array $config
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         $this->checkRequirements();
         $this->configure($config);
@@ -28,10 +26,8 @@ class ImageManager
 
     /**
      * Overrides configuration settings
-     *
-     * @param array $config
      */
-    public function configure(array $config = array())
+    public function configure(array $config = [])
     {
         $this->config = array_replace($this->config, $config);
 
@@ -41,8 +37,7 @@ class ImageManager
     /**
      * Initiates an Image instance from different input types
      *
-     * @param  mixed $data
-     *
+     * @param  mixed  $data
      * @return \Intervention\Image\Image
      */
     public function make($data)
@@ -53,10 +48,9 @@ class ImageManager
     /**
      * Creates an empty image canvas
      *
-     * @param  integer $width
-     * @param  integer $height
-     * @param  mixed $background
-     *
+     * @param  int  $width
+     * @param  int  $height
+     * @param  mixed  $background
      * @return \Intervention\Image\Image
      */
     public function canvas($width, $height, $background = null)
@@ -68,10 +62,8 @@ class ImageManager
      * Create new cached image and run callback
      * (requires additional package intervention/imagecache)
      *
-     * @param Closure $callback
-     * @param integer $lifetime
-     * @param boolean $returnObj
-     *
+     * @param  int  $lifetime
+     * @param  bool  $returnObj
      * @return Image
      */
     public function cache(Closure $callback, $lifetime = null, $returnObj = false)
@@ -89,7 +81,7 @@ class ImageManager
         }
 
         throw new \Intervention\Image\Exception\MissingDependencyException(
-            "Please install package intervention/imagecache before running this function."
+            'Please install package intervention/imagecache before running this function.'
         );
     }
 
@@ -118,7 +110,7 @@ class ImageManager
         }
 
         throw new \Intervention\Image\Exception\NotSupportedException(
-            "Unknown driver type."
+            'Unknown driver type.'
         );
     }
 
@@ -129,9 +121,9 @@ class ImageManager
      */
     private function checkRequirements()
     {
-        if ( ! function_exists('finfo_buffer')) {
+        if (! function_exists('finfo_buffer')) {
             throw new \Intervention\Image\Exception\MissingDependencyException(
-                "PHP Fileinfo extension must be installed/enabled to use Intervention Image."
+                'PHP Fileinfo extension must be installed/enabled to use Intervention Image.'
             );
         }
     }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '1 jaro|:count jaroj',
     'y' => '1 jaro|:count jaroj',
     'month' => '1 monato|:count monatoj',
@@ -28,4 +28,4 @@ return array(
     'from_now' => 'je :time',
     'after' => ':time poste',
     'before' => ':time antaŭe',
-);
+];

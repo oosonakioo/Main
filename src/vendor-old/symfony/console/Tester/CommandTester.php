@@ -13,9 +13,9 @@ namespace Symfony\Component\Console\Tester;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 
 /**
  * Eases the testing of console commands.
@@ -25,14 +25,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CommandTester
 {
     private $command;
+
     private $input;
+
     private $output;
+
     private $statusCode;
 
     /**
      * Constructor.
      *
-     * @param Command $command A Command instance to test
+     * @param  Command  $command  A Command instance to test
      */
     public function __construct(Command $command)
     {
@@ -48,20 +51,19 @@ class CommandTester
      *  * decorated:   Sets the output decorated flag
      *  * verbosity:   Sets the output verbosity flag
      *
-     * @param array $input   An array of command arguments and options
-     * @param array $options An array of execution options
-     *
+     * @param  array  $input  An array of command arguments and options
+     * @param  array  $options  An array of execution options
      * @return int The command exit code
      */
-    public function execute(array $input, array $options = array())
+    public function execute(array $input, array $options = [])
     {
         // set the command name automatically if the application requires
         // this argument and no command name was passed
-        if (!isset($input['command'])
+        if (! isset($input['command'])
             && (null !== $application = $this->command->getApplication())
             && $application->getDefinition()->hasArgument('command')
         ) {
-            $input = array_merge(array('command' => $this->command->getName()), $input);
+            $input = array_merge(['command' => $this->command->getName()], $input);
         }
 
         $this->input = new ArrayInput($input);
@@ -83,8 +85,7 @@ class CommandTester
     /**
      * Gets the display returned by the last execution of the command.
      *
-     * @param bool $normalize Whether to normalize end of lines to \n or not
-     *
+     * @param  bool  $normalize  Whether to normalize end of lines to \n or not
      * @return string The display
      */
     public function getDisplay($normalize = false)

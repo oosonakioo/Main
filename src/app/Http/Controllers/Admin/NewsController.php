@@ -14,34 +14,38 @@ class NewsController extends AdminController
     public function index()
     {
         $news = News::orderBy('sort', 'asc')->get();
+
         return view('admin.news', [
-            'news' => $news
+            'news' => $news,
         ]);
     }
 
     public function create()
     {
-        $news = new News();
+        $news = new News;
+
         return view('admin.news-create', [
             'news' => $news,
-            'categories'  => $this->getCategories()
+            'categories' => $this->getCategories(),
         ]);
     }
 
     public function store(Request $request)
     {
         $this->doValidate($request);
-        $news = new News();
+        $news = new News;
         $this->doSave($request, $news);
+
         return Helper::redirect('admin/news');
     }
 
     public function edit($id)
     {
         $news = News::find($id);
+
         return view('admin.news-create', [
             'news' => $news,
-            'categories'  => $this->getCategories()
+            'categories' => $this->getCategories(),
         ]);
     }
 
@@ -50,12 +54,14 @@ class NewsController extends AdminController
         $this->doValidate($request);
         $news = News::find($id);
         $this->doSave($request, $news);
+
         return Helper::redirect('admin/news');
     }
 
     public function destroy($id)
     {
         $count = News::destroy($id);
+
         return $count == 1 ? $id : -1;
     }
 
@@ -63,19 +69,19 @@ class NewsController extends AdminController
     {
         $validate = [];
         foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-            $title = 'title_' . $locale;
-            $detail = 'detail_' . $locale;
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
 
             $validate[$title] = 'required';
             $validate[$detail] = 'required';
         }
-        //$validate['category'] = 'required';
-        //$validate['news_date'] = 'required';
-        //$validate['image'] = 'required';
+        // $validate['category'] = 'required';
+        // $validate['news_date'] = 'required';
+        // $validate['image'] = 'required';
 
-        //if($this->isPinToHome($request)) {
+        // if($this->isPinToHome($request)) {
         //    $validate['sort'] = 'required';
-        //}
+        // }
 
         $this->validate($request, $validate);
     }
@@ -88,8 +94,8 @@ class NewsController extends AdminController
     private function doSave(Request $request, $news)
     {
         foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-            $title = 'title_' . $locale;
-            $detail = 'detail_' . $locale;
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
 
             $news->translateOrNew($locale)->title = $request[$title];
             $news->translateOrNew($locale)->detail = $request[$detail];
@@ -106,7 +112,7 @@ class NewsController extends AdminController
 
     private function getCategories()
     {
-        return Categories::where("active", true)
+        return Categories::where('active', true)
             ->where('menu', 'news-cat')
             ->get();
     }

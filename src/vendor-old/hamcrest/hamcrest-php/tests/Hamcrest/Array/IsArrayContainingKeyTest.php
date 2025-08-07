@@ -1,41 +1,41 @@
 <?php
+
 namespace Hamcrest\Arrays;
 
 use Hamcrest\AbstractMatcherTest;
 
 class IsArrayContainingKeyTest extends AbstractMatcherTest
 {
-
     protected function createMatcher()
     {
         return IsArrayContainingKey::hasKeyInArray('irrelevant');
     }
 
-    public function testMatchesSingleElementArrayContainingKey()
+    public function test_matches_single_element_array_containing_key()
     {
-        $array = array('a'=>1);
+        $array = ['a' => 1];
 
         $this->assertMatches(hasKey('a'), $array, 'Matches single key');
     }
 
-    public function testMatchesArrayContainingKey()
+    public function test_matches_array_containing_key()
     {
-        $array = array('a'=>1, 'b'=>2, 'c'=>3);
+        $array = ['a' => 1, 'b' => 2, 'c' => 3];
 
         $this->assertMatches(hasKey('a'), $array, 'Matches a');
         $this->assertMatches(hasKey('c'), $array, 'Matches c');
     }
 
-    public function testMatchesArrayContainingKeyWithIntegerKeys()
+    public function test_matches_array_containing_key_with_integer_keys()
     {
-        $array = array(1=>'A', 2=>'B');
+        $array = [1 => 'A', 2 => 'B'];
 
         assertThat($array, hasKey(1));
     }
 
-    public function testMatchesArrayContainingKeyWithNumberKeys()
+    public function test_matches_array_containing_key_with_number_keys()
     {
-        $array = array(1=>'A', 2=>'B');
+        $array = [1 => 'A', 2 => 'B'];
 
         assertThat($array, hasKey(1));
 
@@ -43,19 +43,19 @@ class IsArrayContainingKeyTest extends AbstractMatcherTest
         assertThat($array, IsArrayContainingKey::hasKeyInArray(2));
     }
 
-    public function testHasReadableDescription()
+    public function test_has_readable_description()
     {
         $this->assertDescription('array with key "a"', hasKey('a'));
     }
 
-    public function testDoesNotMatchEmptyArray()
+    public function test_does_not_match_empty_array()
     {
-        $this->assertMismatchDescription('array was []', hasKey('Foo'), array());
+        $this->assertMismatchDescription('array was []', hasKey('Foo'), []);
     }
 
-    public function testDoesNotMatchArrayMissingKey()
+    public function test_does_not_match_array_missing_key()
     {
-        $array = array('a'=>1, 'b'=>2, 'c'=>3);
+        $array = ['a' => 1, 'b' => 2, 'c' => 3];
 
         $this->assertMismatchDescription('array was ["a" => <1>, "b" => <2>, "c" => <3>]', hasKey('d'), $array);
     }

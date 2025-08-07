@@ -1,4 +1,6 @@
-<?php namespace Jenssegers\Date;
+<?php
+
+namespace Jenssegers\Date;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +29,6 @@ class DateServiceProvider extends ServiceProvider
 
     /**
      * Set the locale.
-     *
      */
     protected function setLocale()
     {

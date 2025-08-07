@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ namespace Doctrine\DBAL\Schema;
  * in an abstract class for proper quotation capabilities.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.4
  */
@@ -34,15 +36,15 @@ class Identifier extends AbstractAsset
     /**
      * Constructor.
      *
-     * @param string $identifier Identifier name to wrap.
-     * @param bool   $quote      Whether to force quoting the given identifier.
+     * @param  string  $identifier  Identifier name to wrap.
+     * @param  bool  $quote  Whether to force quoting the given identifier.
      */
     public function __construct($identifier, $quote = false)
     {
         $this->_setName($identifier);
 
         if ($quote && ! $this->_quoted) {
-            $this->_setName('"' . $this->getName() . '"');
+            $this->_setName('"'.$this->getName().'"');
         }
     }
 }

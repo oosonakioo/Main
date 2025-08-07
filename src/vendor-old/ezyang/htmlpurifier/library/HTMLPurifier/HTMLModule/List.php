@@ -22,15 +22,15 @@ class HTMLPurifier_HTMLModule_List extends HTMLPurifier_HTMLModule
     /**
      * @type array
      */
-    public $content_sets = array('Flow' => 'List');
+    public $content_sets = ['Flow' => 'List'];
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
-        $ol = $this->addElement('ol', 'List', new HTMLPurifier_ChildDef_List(), 'Common');
-        $ul = $this->addElement('ul', 'List', new HTMLPurifier_ChildDef_List(), 'Common');
+        $ol = $this->addElement('ol', 'List', new HTMLPurifier_ChildDef_List, 'Common');
+        $ul = $this->addElement('ul', 'List', new HTMLPurifier_ChildDef_List, 'Common');
         // XXX The wrap attribute is handled by MakeWellFormed.  This is all
         // quite unsatisfactory, because we generated this
         // *specifically* for lists, and now a big chunk of the handling

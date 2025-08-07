@@ -29,16 +29,16 @@ class MethodNotFoundException extends DoubleException
     private $arguments;
 
     /**
-     * @param string $message
-     * @param string $classname
-     * @param string $methodName
-     * @param null|Argument\ArgumentsWildcard|array $arguments
+     * @param  string  $message
+     * @param  string  $classname
+     * @param  string  $methodName
+     * @param  null|Argument\ArgumentsWildcard|array  $arguments
      */
     public function __construct($message, $classname, $methodName, $arguments = null)
     {
         parent::__construct($message);
 
-        $this->classname  = $classname;
+        $this->classname = $classname;
         $this->methodName = $methodName;
         $this->arguments = $arguments;
     }

@@ -7,15 +7,15 @@ use Faker\Provider\es_ES\Person;
 
 class PersonTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->seed(1);
         $faker->addProvider(new Person($faker));
         $this->faker = $faker;
     }
 
-    public function testDNI()
+    public function test_dni()
     {
         $dni = $this->faker->dni;
         $this->assertTrue($this->isValidDNI($dni));
@@ -31,7 +31,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
 
         $map = 'TRWAGMYFPDXBNJZSQVHLCKE';
 
-        list(, $number, $letter) = $matches;
+        [, $number, $letter] = $matches;
 
         return strtoupper($letter) === $map[((int) $number) % 23];
     }

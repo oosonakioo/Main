@@ -19,7 +19,7 @@ class MailHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\MailHandler::handleBatch
      */
-    public function testHandleBatch()
+    public function test_handle_batch()
     {
         $formatter = $this->getMock('Monolog\\Formatter\\FormatterInterface');
         $formatter->expects($this->once())
@@ -39,13 +39,13 @@ class MailHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\MailHandler::handleBatch
      */
-    public function testHandleBatchNotSendsMailIfMessagesAreBelowLevel()
+    public function test_handle_batch_not_sends_mail_if_messages_are_below_level()
     {
-        $records = array(
+        $records = [
             $this->getRecord(Logger::DEBUG, 'debug message 1'),
             $this->getRecord(Logger::DEBUG, 'debug message 2'),
             $this->getRecord(Logger::INFO, 'information'),
-        );
+        ];
 
         $handler = $this->getMockForAbstractClass('Monolog\\Handler\\MailHandler');
         $handler->expects($this->never())
@@ -58,12 +58,12 @@ class MailHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\MailHandler::write
      */
-    public function testHandle()
+    public function test_handle()
     {
         $handler = $this->getMockForAbstractClass('Monolog\\Handler\\MailHandler');
 
         $record = $this->getRecord();
-        $records = array($record);
+        $records = [$record];
         $records[0]['formatted'] = '['.$record['datetime']->format('Y-m-d H:i:s').'] test.WARNING: test [] []'."\n";
 
         $handler->expects($this->once())

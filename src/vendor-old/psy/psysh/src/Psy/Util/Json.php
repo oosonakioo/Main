@@ -19,9 +19,8 @@ class Json
     /**
      * Encode a value as JSON.
      *
-     * @param mixed $val
-     * @param int   $opt
-     *
+     * @param  mixed  $val
+     * @param  int  $opt
      * @return string
      */
     public static function encode($val, $opt = 0)

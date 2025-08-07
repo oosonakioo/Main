@@ -18,49 +18,49 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
     /**
      * Add a new Mailbox Header with a list of $addresses.
      *
-     * @param string       $name
-     * @param array|string $addresses
+     * @param  string  $name
+     * @param  array|string  $addresses
      */
     public function addMailboxHeader($name, $addresses = null);
 
     /**
      * Add a new Date header using $timestamp (UNIX time).
      *
-     * @param string $name
-     * @param int    $timestamp
+     * @param  string  $name
+     * @param  int  $timestamp
      */
     public function addDateHeader($name, $timestamp = null);
 
     /**
      * Add a new basic text header with $name and $value.
      *
-     * @param string $name
-     * @param string $value
+     * @param  string  $name
+     * @param  string  $value
      */
     public function addTextHeader($name, $value = null);
 
     /**
      * Add a new ParameterizedHeader with $name, $value and $params.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $params
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array  $params
      */
-    public function addParameterizedHeader($name, $value = null, $params = array());
+    public function addParameterizedHeader($name, $value = null, $params = []);
 
     /**
      * Add a new ID header for Message-ID or Content-ID.
      *
-     * @param string       $name
-     * @param string|array $ids
+     * @param  string  $name
+     * @param  string|array  $ids
      */
     public function addIdHeader($name, $ids = null);
 
     /**
      * Add a new Path header with an address (path) in it.
      *
-     * @param string $name
-     * @param string $path
+     * @param  string  $name
+     * @param  string  $path
      */
     public function addPathHeader($name, $path = null);
 
@@ -69,9 +69,8 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
      *
      * If multiple headers match, the actual one may be specified by $index.
      *
-     * @param string $name
-     * @param int    $index
-     *
+     * @param  string  $name
+     * @param  int  $index
      * @return bool
      */
     public function has($name, $index = 0);
@@ -85,8 +84,7 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
      * If $index is specified, the header will be inserted into the set at this
      * offset.
      *
-     * @param Swift_Mime_Header $header
-     * @param int               $index
+     * @param  int  $index
      */
     public function set(Swift_Mime_Header $header, $index = 0);
 
@@ -95,9 +93,8 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
      * If multiple headers match, the actual one may be specified by $index.
      * Returns NULL if none present.
      *
-     * @param string $name
-     * @param int    $index
-     *
+     * @param  string  $name
+     * @param  int  $index
      * @return Swift_Mime_Header
      */
     public function get($name, $index = 0);
@@ -105,8 +102,7 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
     /**
      * Get all headers with the given $name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return array
      */
     public function getAll($name = null);
@@ -123,15 +119,15 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
      *
      * If multiple headers match, the actual one may be specified by $index.
      *
-     * @param string $name
-     * @param int    $index
+     * @param  string  $name
+     * @param  int  $index
      */
     public function remove($name, $index = 0);
 
     /**
      * Remove all headers with the given $name.
      *
-     * @param string $name
+     * @param  string  $name
      */
     public function removeAll($name);
 
@@ -146,8 +142,6 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
      * Define a list of Header names as an array in the correct order.
      *
      * These Headers will be output in the given order where present.
-     *
-     * @param array $sequence
      */
     public function defineOrdering(array $sequence);
 
@@ -155,8 +149,6 @@ interface Swift_Mime_HeaderSet extends Swift_Mime_CharsetObserver
      * Set a list of header names which must always be displayed when set.
      *
      * Usually headers without a field value won't be output unless set here.
-     *
-     * @param array $names
      */
     public function setAlwaysDisplayed(array $names);
 

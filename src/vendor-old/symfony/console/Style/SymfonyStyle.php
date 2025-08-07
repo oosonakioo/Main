@@ -35,15 +35,15 @@ class SymfonyStyle extends OutputStyle
     const MAX_LINE_LENGTH = 120;
 
     private $input;
+
     private $questionHelper;
+
     private $progressBar;
+
     private $lineLength;
+
     private $bufferedOutput;
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
@@ -57,15 +57,15 @@ class SymfonyStyle extends OutputStyle
     /**
      * Formats a message as a block of text.
      *
-     * @param string|array $messages The message to write in the block
-     * @param string|null  $type     The block type (added in [] on first line)
-     * @param string|null  $style    The style to apply to the whole block
-     * @param string       $prefix   The prefix for the block
-     * @param bool         $padding  Whether to add vertical padding
+     * @param  string|array  $messages  The message to write in the block
+     * @param  string|null  $type  The block type (added in [] on first line)
+     * @param  string|null  $style  The style to apply to the whole block
+     * @param  string  $prefix  The prefix for the block
+     * @param  bool  $padding  Whether to add vertical padding
      */
     public function block($messages, $type = null, $style = null, $prefix = ' ', $padding = false)
     {
-        $messages = is_array($messages) ? array_values($messages) : array($messages);
+        $messages = is_array($messages) ? array_values($messages) : [$messages];
 
         $this->autoPrependBlock();
         $this->writeln($this->createBlock($messages, $type, $style, $prefix, $padding, true));
@@ -78,10 +78,10 @@ class SymfonyStyle extends OutputStyle
     public function title($message)
     {
         $this->autoPrependBlock();
-        $this->writeln(array(
+        $this->writeln([
             sprintf('<comment>%s</>', $message),
             sprintf('<comment>%s</>', str_repeat('=', Helper::strlenWithoutDecoration($this->getFormatter(), $message))),
-        ));
+        ]);
         $this->newLine();
     }
 
@@ -91,10 +91,10 @@ class SymfonyStyle extends OutputStyle
     public function section($message)
     {
         $this->autoPrependBlock();
-        $this->writeln(array(
+        $this->writeln([
             sprintf('<comment>%s</>', $message),
             sprintf('<comment>%s</>', str_repeat('-', Helper::strlenWithoutDecoration($this->getFormatter(), $message))),
-        ));
+        ]);
         $this->newLine();
     }
 
@@ -119,7 +119,7 @@ class SymfonyStyle extends OutputStyle
     {
         $this->autoPrependText();
 
-        $messages = is_array($message) ? array_values($message) : array($message);
+        $messages = is_array($message) ? array_values($message) : [$message];
         foreach ($messages as $message) {
             $this->writeln(sprintf(' %s', $message));
         }
@@ -128,11 +128,11 @@ class SymfonyStyle extends OutputStyle
     /**
      * Formats a command comment.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function comment($message)
     {
-        $messages = is_array($message) ? array_values($message) : array($message);
+        $messages = is_array($message) ? array_values($message) : [$message];
 
         $this->autoPrependBlock();
         $this->writeln($this->createBlock($messages, null, null, '<fg=default;bg=default> // </>'));
@@ -233,7 +233,7 @@ class SymfonyStyle extends OutputStyle
      */
     public function choice($question, array $choices, $default = null)
     {
-        if (null !== $default) {
+        if ($default !== null) {
             $values = array_flip($choices);
             $default = $values[$default];
         }
@@ -285,8 +285,6 @@ class SymfonyStyle extends OutputStyle
     }
 
     /**
-     * @param Question $question
-     *
      * @return string
      */
     public function askQuestion(Question $question)
@@ -295,8 +293,8 @@ class SymfonyStyle extends OutputStyle
             $this->autoPrependBlock();
         }
 
-        if (!$this->questionHelper) {
-            $this->questionHelper = new SymfonyQuestionHelper();
+        if (! $this->questionHelper) {
+            $this->questionHelper = new SymfonyQuestionHelper;
         }
 
         $answer = $this->questionHelper->ask($this->input, $this, $question);
@@ -341,7 +339,7 @@ class SymfonyStyle extends OutputStyle
      */
     private function getProgressBar()
     {
-        if (!$this->progressBar) {
+        if (! $this->progressBar) {
             throw new RuntimeException('The ProgressBar is not started.');
         }
 
@@ -350,7 +348,7 @@ class SymfonyStyle extends OutputStyle
 
     private function getTerminalWidth()
     {
-        $application = new Application();
+        $application = new Application;
         $dimensions = $application->getTerminalDimensions();
 
         return $dimensions[0] ?: self::MAX_LINE_LENGTH;
@@ -360,18 +358,18 @@ class SymfonyStyle extends OutputStyle
     {
         $chars = substr(str_replace(PHP_EOL, "\n", $this->bufferedOutput->fetch()), -2);
 
-        if (!isset($chars[0])) {
-            return $this->newLine(); //empty history, so we should start with a new line.
+        if (! isset($chars[0])) {
+            return $this->newLine(); // empty history, so we should start with a new line.
         }
-        //Prepend new line for each non LF chars (This means no blank line was output before)
+        // Prepend new line for each non LF chars (This means no blank line was output before)
         $this->newLine(2 - substr_count($chars, "\n"));
     }
 
     private function autoPrependText()
     {
         $fetched = $this->bufferedOutput->fetch();
-        //Prepend new line if last char isn't EOL:
-        if ("\n" !== substr($fetched, -1)) {
+        // Prepend new line if last char isn't EOL:
+        if (substr($fetched, -1) !== "\n") {
             $this->newLine();
         }
     }
@@ -382,16 +380,16 @@ class SymfonyStyle extends OutputStyle
         // Preserve the last 4 chars inserted (PHP_EOL on windows is two chars) in the history buffer
         return array_map(function ($value) {
             return substr($value, -4);
-        }, array_merge(array($this->bufferedOutput->fetch()), (array) $messages));
+        }, array_merge([$this->bufferedOutput->fetch()], (array) $messages));
     }
 
     private function createBlock($messages, $type = null, $style = null, $prefix = ' ', $padding = false, $escape = false)
     {
         $indentLength = 0;
         $prefixLength = Helper::strlenWithoutDecoration($this->getFormatter(), $prefix);
-        $lines = array();
+        $lines = [];
 
-        if (null !== $type) {
+        if ($type !== null) {
             $type = sprintf('[%s] ', $type);
             $indentLength = strlen($type);
             $lineIndentation = str_repeat(' ', $indentLength);
@@ -418,7 +416,7 @@ class SymfonyStyle extends OutputStyle
         }
 
         foreach ($lines as $i => &$line) {
-            if (null !== $type) {
+            if ($type !== null) {
                 $line = $firstLineIndex === $i ? $type.$line : $lineIndentation.$line;
             }
 

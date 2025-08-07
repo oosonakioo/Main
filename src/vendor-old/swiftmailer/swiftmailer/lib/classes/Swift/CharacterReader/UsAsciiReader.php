@@ -18,18 +18,17 @@ class Swift_CharacterReader_UsAsciiReader implements Swift_CharacterReader
     /**
      * Returns the complete character map.
      *
-     * @param string $string
-     * @param int    $startOffset
-     * @param array  $currentMap
-     * @param string $ignoredChars
-     *
+     * @param  string  $string
+     * @param  int  $startOffset
+     * @param  array  $currentMap
+     * @param  string  $ignoredChars
      * @return int
      */
     public function getCharPositions($string, $startOffset, &$currentMap, &$ignoredChars)
     {
         $strlen = strlen($string);
         $ignoredChars = '';
-        for ($i = 0; $i < $strlen; ++$i) {
+        for ($i = 0; $i < $strlen; $i++) {
             if ($string[$i] > "\x07F") {
                 // Invalid char
                 $currentMap[$i + $startOffset] = $string[$i];
@@ -57,15 +56,14 @@ class Swift_CharacterReader_UsAsciiReader implements Swift_CharacterReader
      * A value of zero means this is already a valid character.
      * A value of -1 means this cannot possibly be a valid character.
      *
-     * @param string $bytes
-     * @param int    $size
-     *
+     * @param  string  $bytes
+     * @param  int  $size
      * @return int
      */
     public function validateByteSequence($bytes, $size)
     {
         $byte = reset($bytes);
-        if (1 == count($bytes) && $byte >= 0x00 && $byte <= 0x7F) {
+        if (count($bytes) == 1 && $byte >= 0x00 && $byte <= 0x7F) {
             return 0;
         }
 

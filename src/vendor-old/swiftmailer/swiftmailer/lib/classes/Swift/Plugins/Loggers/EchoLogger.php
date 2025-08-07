@@ -21,7 +21,7 @@ class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger
     /**
      * Create a new EchoLogger.
      *
-     * @param bool $isHtml
+     * @param  bool  $isHtml
      */
     public function __construct($isHtml = true)
     {
@@ -31,7 +31,7 @@ class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger
     /**
      * Add a log entry.
      *
-     * @param string $entry
+     * @param  string  $entry
      */
     public function add($entry)
     {
@@ -45,14 +45,10 @@ class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger
     /**
      * Not implemented.
      */
-    public function clear()
-    {
-    }
+    public function clear() {}
 
     /**
      * Not implemented.
      */
-    public function dump()
-    {
-    }
+    public function dump() {}
 }

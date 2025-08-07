@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Platforms;
  * Provides the behavior, features and SQL dialect of the PostgreSQL 9.1 database platform.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -49,7 +51,7 @@ class PostgreSQL91Platform extends PostgreSqlPlatform
      */
     public function getColumnCollationDeclarationSQL($collation)
     {
-        return 'COLLATE ' . $this->quoteSingleIdentifier($collation);
+        return 'COLLATE '.$this->quoteSingleIdentifier($collation);
     }
 
     /**

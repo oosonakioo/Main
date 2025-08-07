@@ -13,8 +13,8 @@ namespace Prophecy\Doubler;
 
 use Doctrine\Instantiator\Instantiator;
 use Prophecy\Doubler\ClassPatch\ClassPatchInterface;
-use Prophecy\Doubler\Generator\ClassMirror;
 use Prophecy\Doubler\Generator\ClassCreator;
+use Prophecy\Doubler\Generator\ClassMirror;
 use Prophecy\Exception\InvalidArgumentException;
 use ReflectionClass;
 
@@ -27,13 +27,15 @@ use ReflectionClass;
 class Doubler
 {
     private $mirror;
+
     private $creator;
+
     private $namer;
 
     /**
      * @var ClassPatchInterface[]
      */
-    private $patches = array();
+    private $patches = [];
 
     /**
      * @var \Doctrine\Instantiator\Instantiator
@@ -42,17 +44,13 @@ class Doubler
 
     /**
      * Initializes doubler.
-     *
-     * @param ClassMirror   $mirror
-     * @param ClassCreator  $creator
-     * @param NameGenerator $namer
      */
-    public function __construct(ClassMirror $mirror = null, ClassCreator $creator = null,
-                                NameGenerator $namer = null)
+    public function __construct(?ClassMirror $mirror = null, ?ClassCreator $creator = null,
+        ?NameGenerator $namer = null)
     {
-        $this->mirror  = $mirror  ?: new ClassMirror;
+        $this->mirror = $mirror ?: new ClassMirror;
         $this->creator = $creator ?: new ClassCreator;
-        $this->namer   = $namer   ?: new NameGenerator;
+        $this->namer = $namer ?: new NameGenerator;
     }
 
     /**
@@ -67,8 +65,6 @@ class Doubler
 
     /**
      * Registers new class patch.
-     *
-     * @param ClassPatchInterface $patch
      */
     public function registerClassPatch(ClassPatchInterface $patch)
     {
@@ -82,39 +78,37 @@ class Doubler
     /**
      * Creates double from specific class or/and list of interfaces.
      *
-     * @param ReflectionClass   $class
-     * @param ReflectionClass[] $interfaces Array of ReflectionClass instances
-     * @param array             $args       Constructor arguments
-     *
+     * @param  ReflectionClass[]  $interfaces  Array of ReflectionClass instances
+     * @param  array  $args  Constructor arguments
      * @return DoubleInterface
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
-    public function double(ReflectionClass $class = null, array $interfaces, array $args = null)
+    public function double(?ReflectionClass $class, array $interfaces, ?array $args = null)
     {
         foreach ($interfaces as $interface) {
-            if (!$interface instanceof ReflectionClass) {
+            if (! $interface instanceof ReflectionClass) {
                 throw new InvalidArgumentException(sprintf(
                     "[ReflectionClass \$interface1 [, ReflectionClass \$interface2]] array expected as\n".
-                    "a second argument to `Doubler::double(...)`, but got %s.",
+                    'a second argument to `Doubler::double(...)`, but got %s.',
                     is_object($interface) ? get_class($interface).' class' : gettype($interface)
                 ));
             }
         }
 
-        $classname  = $this->createDoubleClass($class, $interfaces);
+        $classname = $this->createDoubleClass($class, $interfaces);
         $reflection = new ReflectionClass($classname);
 
-        if (null !== $args) {
+        if ($args !== null) {
             return $reflection->newInstanceArgs($args);
         }
         if ((null === $constructor = $reflection->getConstructor())
-            || ($constructor->isPublic() && !$constructor->isFinal())) {
+            || ($constructor->isPublic() && ! $constructor->isFinal())) {
             return $reflection->newInstance();
         }
 
-        if (!$this->instantiator) {
-            $this->instantiator = new Instantiator();
+        if (! $this->instantiator) {
+            $this->instantiator = new Instantiator;
         }
 
         return $this->instantiator->instantiate($classname);
@@ -123,12 +117,10 @@ class Doubler
     /**
      * Creates double class and returns its FQN.
      *
-     * @param ReflectionClass   $class
-     * @param ReflectionClass[] $interfaces
-     *
+     * @param  ReflectionClass[]  $interfaces
      * @return string
      */
-    protected function createDoubleClass(ReflectionClass $class = null, array $interfaces)
+    protected function createDoubleClass(?ReflectionClass $class, array $interfaces)
     {
         $name = $this->namer->name($class, $interfaces);
         $node = $this->mirror->reflect($class, $interfaces);

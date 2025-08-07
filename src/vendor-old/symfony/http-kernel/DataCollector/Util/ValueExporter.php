@@ -19,10 +19,9 @@ class ValueExporter
     /**
      * Converts a PHP value to a string.
      *
-     * @param mixed $value The PHP value
-     * @param int   $depth only for internal usage
-     * @param bool  $deep  only for internal usage
-     *
+     * @param  mixed  $value  The PHP value
+     * @param  int  $depth  only for internal usage
+     * @param  bool  $deep  only for internal usage
      * @return string The string representation of the given value
      */
     public function exportValue($value, $depth = 1, $deep = false)
@@ -46,7 +45,7 @@ class ValueExporter
 
             $indent = str_repeat('  ', $depth);
 
-            $a = array();
+            $a = [];
             foreach ($value as $k => $v) {
                 if (is_array($v)) {
                     $deep = true;
@@ -65,15 +64,15 @@ class ValueExporter
             return sprintf('Resource(%s#%d)', get_resource_type($value), $value);
         }
 
-        if (null === $value) {
+        if ($value === null) {
             return 'null';
         }
 
-        if (false === $value) {
+        if ($value === false) {
             return 'false';
         }
 
-        if (true === $value) {
+        if ($value === true) {
             return 'true';
         }
 

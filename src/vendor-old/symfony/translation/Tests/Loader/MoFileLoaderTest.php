@@ -11,39 +11,39 @@
 
 namespace Symfony\Component\Translation\Tests\Loader;
 
-use Symfony\Component\Translation\Loader\MoFileLoader;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Translation\Loader\MoFileLoader;
 
 class MoFileLoaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLoad()
+    public function test_load()
     {
-        $loader = new MoFileLoader();
+        $loader = new MoFileLoader;
         $resource = __DIR__.'/../fixtures/resources.mo';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
-        $this->assertEquals(array('foo' => 'bar'), $catalogue->all('domain1'));
+        $this->assertEquals(['foo' => 'bar'], $catalogue->all('domain1'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource)), $catalogue->getResources());
+        $this->assertEquals([new FileResource($resource)], $catalogue->getResources());
     }
 
-    public function testLoadPlurals()
+    public function test_load_plurals()
     {
-        $loader = new MoFileLoader();
+        $loader = new MoFileLoader;
         $resource = __DIR__.'/../fixtures/plurals.mo';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
-        $this->assertEquals(array('foo' => 'bar', 'foos' => '{0} bar|{1} bars'), $catalogue->all('domain1'));
+        $this->assertEquals(['foo' => 'bar', 'foos' => '{0} bar|{1} bars'], $catalogue->all('domain1'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource)), $catalogue->getResources());
+        $this->assertEquals([new FileResource($resource)], $catalogue->getResources());
     }
 
     /**
      * @expectedException \Symfony\Component\Translation\Exception\NotFoundResourceException
      */
-    public function testLoadNonExistingResource()
+    public function test_load_non_existing_resource()
     {
-        $loader = new MoFileLoader();
+        $loader = new MoFileLoader;
         $resource = __DIR__.'/../fixtures/non-existing.mo';
         $loader->load($resource, 'en', 'domain1');
     }
@@ -51,21 +51,21 @@ class MoFileLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\Translation\Exception\InvalidResourceException
      */
-    public function testLoadInvalidResource()
+    public function test_load_invalid_resource()
     {
-        $loader = new MoFileLoader();
+        $loader = new MoFileLoader;
         $resource = __DIR__.'/../fixtures/empty.mo';
         $loader->load($resource, 'en', 'domain1');
     }
 
-    public function testLoadEmptyTranslation()
+    public function test_load_empty_translation()
     {
-        $loader = new MoFileLoader();
+        $loader = new MoFileLoader;
         $resource = __DIR__.'/../fixtures/empty-translation.mo';
         $catalogue = $loader->load($resource, 'en', 'message');
 
-        $this->assertEquals(array(), $catalogue->all('message'));
+        $this->assertEquals([], $catalogue->all('message'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource)), $catalogue->getResources());
+        $this->assertEquals([new FileResource($resource)], $catalogue->getResources());
     }
 }

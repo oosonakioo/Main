@@ -2,17 +2,17 @@
 
 namespace Illuminate\Pagination;
 
-use Countable;
 use ArrayAccess;
-use JsonSerializable;
-use IteratorAggregate;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Pagination\Presenter;
+use Countable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
+use Illuminate\Contracts\Pagination\Presenter;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use IteratorAggregate;
+use JsonSerializable;
 
-class LengthAwarePaginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable, Jsonable, LengthAwarePaginatorContract
+class LengthAwarePaginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, Jsonable, JsonSerializable, LengthAwarePaginatorContract
 {
     /**
      * The total number of items before slicing.
@@ -35,7 +35,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param  int  $total
      * @param  int  $perPage
      * @param  int|null  $currentPage
-     * @param  array  $options (path, query, fragment, pageName)
+     * @param  array  $options  (path, query, fragment, pageName)
      * @return void
      */
     public function __construct($items, $total, $perPage, $currentPage = null, array $options = [])
@@ -111,10 +111,9 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
     /**
      * Render the paginator using the given presenter.
      *
-     * @param  \Illuminate\Contracts\Pagination\Presenter|null  $presenter
      * @return string
      */
-    public function links(Presenter $presenter = null)
+    public function links(?Presenter $presenter = null)
     {
         return $this->render($presenter);
     }
@@ -122,10 +121,9 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
     /**
      * Render the paginator using the given presenter.
      *
-     * @param  \Illuminate\Contracts\Pagination\Presenter|null  $presenter
      * @return string
      */
-    public function render(Presenter $presenter = null)
+    public function render(?Presenter $presenter = null)
     {
         if (is_null($presenter) && static::$presenterResolver) {
             $presenter = call_user_func(static::$presenterResolver, $this);
@@ -144,15 +142,15 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
     public function toArray()
     {
         return [
-            'total'         => $this->total(),
-            'per_page'      => $this->perPage(),
-            'current_page'  => $this->currentPage(),
-            'last_page'     => $this->lastPage(),
+            'total' => $this->total(),
+            'per_page' => $this->perPage(),
+            'current_page' => $this->currentPage(),
+            'last_page' => $this->lastPage(),
             'next_page_url' => $this->nextPageUrl(),
             'prev_page_url' => $this->previousPageUrl(),
-            'from'          => $this->firstItem(),
-            'to'            => $this->lastItem(),
-            'data'          => $this->items->toArray(),
+            'from' => $this->firstItem(),
+            'to' => $this->lastItem(),
+            'data' => $this->items->toArray(),
         ];
     }
 

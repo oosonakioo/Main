@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * ConfigDataCollector.
@@ -27,15 +27,18 @@ class ConfigDataCollector extends DataCollector
      * @var KernelInterface
      */
     private $kernel;
+
     private $name;
+
     private $version;
+
     private $cacheVersionInfo = true;
 
     /**
      * Constructor.
      *
-     * @param string $name    The name of the application using the web profiler
-     * @param string $version The version of the application using the web profiler
+     * @param  string  $name  The name of the application using the web profiler
+     * @param  string  $version  The version of the application using the web profiler
      */
     public function __construct($name = null, $version = null)
     {
@@ -46,9 +49,9 @@ class ConfigDataCollector extends DataCollector
     /**
      * Sets the Kernel associated with this Request.
      *
-     * @param KernelInterface $kernel A KernelInterface instance
+     * @param  KernelInterface  $kernel  A KernelInterface instance
      */
-    public function setKernel(KernelInterface $kernel = null)
+    public function setKernel(?KernelInterface $kernel = null)
     {
         $this->kernel = $kernel;
     }
@@ -56,9 +59,9 @@ class ConfigDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, ?\Exception $exception = null)
     {
-        $this->data = array(
+        $this->data = [
             'app_name' => $this->name,
             'app_version' => $this->version,
             'token' => $response->headers->get('X-Debug-Token'),
@@ -74,9 +77,9 @@ class ConfigDataCollector extends DataCollector
             'xcache_enabled' => extension_loaded('xcache') && ini_get('xcache.cacher'),
             'wincache_enabled' => extension_loaded('wincache') && ini_get('wincache.ocenabled'),
             'zend_opcache_enabled' => extension_loaded('Zend OPcache') && ini_get('opcache.enable'),
-            'bundles' => array(),
+            'bundles' => [],
             'sapi_name' => PHP_SAPI,
-        );
+        ];
 
         if (isset($this->kernel)) {
             foreach ($this->kernel->getBundles() as $name => $bundle) {
@@ -272,7 +275,7 @@ class ConfigDataCollector extends DataCollector
      */
     private function determineSymfonyState()
     {
-        $now = new \DateTime();
+        $now = new \DateTime;
         $eom = \DateTime::createFromFormat('m/Y', Kernel::END_OF_MAINTENANCE)->modify('last day of this month');
         $eol = \DateTime::createFromFormat('m/Y', Kernel::END_OF_LIFE)->modify('last day of this month');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Comparator package.
  *
@@ -10,5 +11,4 @@
 
 namespace SebastianBergmann\Comparator;
 
-class TestClass {
-}
+class TestClass {}

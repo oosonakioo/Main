@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -18,17 +19,17 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     /**
      * @var PHP_CodeCoverage_Report_Node[]
      */
-    protected $children = array();
+    protected $children = [];
 
     /**
      * @var PHP_CodeCoverage_Report_Node_Directory[]
      */
-    protected $directories = array();
+    protected $directories = [];
 
     /**
      * @var PHP_CodeCoverage_Report_Node_File[]
      */
-    protected $files = array();
+    protected $files = [];
 
     /**
      * @var array
@@ -139,14 +140,14 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     /**
      * Adds a new directory.
      *
-     * @param  string                                 $name
+     * @param  string  $name
      * @return PHP_CodeCoverage_Report_Node_Directory
      */
     public function addDirectory($name)
     {
         $directory = new self($name, $this);
 
-        $this->children[]    = $directory;
+        $this->children[] = $directory;
         $this->directories[] = &$this->children[count($this->children) - 1];
 
         return $directory;
@@ -155,11 +156,10 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     /**
      * Adds a new file.
      *
-     * @param  string                            $name
-     * @param  array                             $coverageData
-     * @param  array                             $testData
-     * @param  bool                              $cacheTokens
+     * @param  string  $name
+     * @param  bool  $cacheTokens
      * @return PHP_CodeCoverage_Report_Node_File
+     *
      * @throws PHP_CodeCoverage_Exception
      */
     public function addFile($name, array $coverageData, array $testData, $cacheTokens)
@@ -173,10 +173,10 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
         );
 
         $this->children[] = $file;
-        $this->files[]    = &$this->children[count($this->children) - 1];
+        $this->files[] = &$this->children[count($this->children) - 1];
 
         $this->numExecutableLines = -1;
-        $this->numExecutedLines   = -1;
+        $this->numExecutedLines = -1;
 
         return $file;
     }
@@ -219,7 +219,7 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     public function getClasses()
     {
         if ($this->classes === null) {
-            $this->classes = array();
+            $this->classes = [];
 
             foreach ($this->children as $child) {
                 $this->classes = array_merge(
@@ -240,7 +240,7 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     public function getTraits()
     {
         if ($this->traits === null) {
-            $this->traits = array();
+            $this->traits = [];
 
             foreach ($this->children as $child) {
                 $this->traits = array_merge(
@@ -261,7 +261,7 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     public function getFunctions()
     {
         if ($this->functions === null) {
-            $this->functions = array();
+            $this->functions = [];
 
             foreach ($this->children as $child) {
                 $this->functions = array_merge(
@@ -282,13 +282,13 @@ class PHP_CodeCoverage_Report_Node_Directory extends PHP_CodeCoverage_Report_Nod
     public function getLinesOfCode()
     {
         if ($this->linesOfCode === null) {
-            $this->linesOfCode = array('loc' => 0, 'cloc' => 0, 'ncloc' => 0);
+            $this->linesOfCode = ['loc' => 0, 'cloc' => 0, 'ncloc' => 0];
 
             foreach ($this->children as $child) {
                 $linesOfCode = $child->getLinesOfCode();
 
-                $this->linesOfCode['loc']   += $linesOfCode['loc'];
-                $this->linesOfCode['cloc']  += $linesOfCode['cloc'];
+                $this->linesOfCode['loc'] += $linesOfCode['loc'];
+                $this->linesOfCode['cloc'] += $linesOfCode['cloc'];
                 $this->linesOfCode['ncloc'] += $linesOfCode['ncloc'];
             }
         }

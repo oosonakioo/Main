@@ -2,7 +2,7 @@
 
 class Swift_MessageTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCloning()
+    public function test_cloning()
     {
         $message1 = new Swift_Message('subj', 'body', 'ctype');
         $message2 = new Swift_Message('subj', 'body', 'ctype');
@@ -11,7 +11,7 @@ class Swift_MessageTest extends \PHPUnit_Framework_TestCase
         $this->_recursiveObjectCloningCheck($message1, $message2, $message1_clone);
     }
 
-    public function testCloningWithSigners()
+    public function test_cloning_with_signers()
     {
         $message1 = new Swift_Message('subj', 'body', 'ctype');
         $signer = new Swift_Signers_DKIMSigner(dirname(dirname(__DIR__)).'/_samples/dkim/dkim.test.priv', 'test.example', 'example');
@@ -24,7 +24,7 @@ class Swift_MessageTest extends \PHPUnit_Framework_TestCase
         $this->_recursiveObjectCloningCheck($message1, $message2, $message1_clone);
     }
 
-    public function testBodySwap()
+    public function test_body_swap()
     {
         $message1 = new Swift_Message('Test');
         $html = Swift_MimePart::newInstance('<html></html>', 'text/html');

@@ -37,18 +37,18 @@ class NumberComparator extends Comparator
     /**
      * Constructor.
      *
-     * @param string $test A comparison string
+     * @param  string  $test  A comparison string
      *
      * @throws \InvalidArgumentException If the test is not understood
      */
     public function __construct($test)
     {
-        if (!preg_match('#^\s*(==|!=|[<>]=?)?\s*([0-9\.]+)\s*([kmg]i?)?\s*$#i', $test, $matches)) {
+        if (! preg_match('#^\s*(==|!=|[<>]=?)?\s*([0-9\.]+)\s*([kmg]i?)?\s*$#i', $test, $matches)) {
             throw new \InvalidArgumentException(sprintf('Don\'t understand "%s" as a number test.', $test));
         }
 
         $target = $matches[2];
-        if (!is_numeric($target)) {
+        if (! is_numeric($target)) {
             throw new \InvalidArgumentException(sprintf('Invalid number "%s".', $target));
         }
         if (isset($matches[3])) {

@@ -25,18 +25,16 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
     private $_out;
 
     /** Buffer initialization parameters */
-    private $_params = array();
+    private $_params = [];
 
     /** The ReplacementFilterFactory */
     private $_replacementFactory;
 
     /** Translations performed on data being streamed into the buffer */
-    private $_translations = array();
+    private $_translations = [];
 
     /**
      * Create a new StreamBuffer using $replacementFactory for transformations.
-     *
-     * @param Swift_ReplacementFilterFactory $replacementFactory
      */
     public function __construct(Swift_ReplacementFilterFactory $replacementFactory)
     {
@@ -47,8 +45,6 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
      * Perform any initialization needed, using the given $params.
      *
      * Parameters will vary depending upon the type of IoBuffer used.
-     *
-     * @param array $params
      */
     public function initialize(array $params)
     {
@@ -67,8 +63,8 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
     /**
      * Set an individual param on the buffer (e.g. switching to SSL).
      *
-     * @param string $param
-     * @param mixed  $value
+     * @param  string  $param
+     * @param  mixed  $value
      */
     public function setParam($param, $value)
     {
@@ -123,22 +119,22 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
      *
      * This could replace LF with CRLF for example.
      *
-     * @param string[] $replacements
+     * @param  string[]  $replacements
      */
     public function setWriteTranslations(array $replacements)
     {
         foreach ($this->_translations as $search => $replace) {
-            if (!isset($replacements[$search])) {
+            if (! isset($replacements[$search])) {
                 $this->removeFilter($search);
                 unset($this->_translations[$search]);
             }
         }
 
         foreach ($replacements as $search => $replace) {
-            if (!isset($this->_translations[$search])) {
+            if (! isset($this->_translations[$search])) {
                 $this->addFilter(
                     $this->_replacementFactory->createFilter($search, $replace), $search
-                    );
+                );
                 $this->_translations[$search] = true;
             }
         }
@@ -150,15 +146,14 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
      * The $sequence number comes from any writes and may or may not be used
      * depending upon the implementation.
      *
-     * @param int $sequence of last write to scan from
+     * @param  int  $sequence  of last write to scan from
+     * @return string
      *
      * @throws Swift_IoException
-     *
-     * @return string
      */
     public function readLine($sequence)
     {
-        if (isset($this->_out) && !feof($this->_out)) {
+        if (isset($this->_out) && ! feof($this->_out)) {
             $line = fgets($this->_out);
             if (strlen($line) == 0) {
                 $metas = stream_get_meta_data($this->_out);
@@ -182,15 +177,14 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
      * If less bytes exist than are requested the remaining bytes are given instead.
      * If no bytes are remaining at all, boolean false is returned.
      *
-     * @param int $length
+     * @param  int  $length
+     * @return string|bool
      *
      * @throws Swift_IoException
-     *
-     * @return string|bool
      */
     public function read($length)
     {
-        if (isset($this->_out) && !feof($this->_out)) {
+        if (isset($this->_out) && ! feof($this->_out)) {
             $ret = fread($this->_out, $length);
             if (strlen($ret) == 0) {
                 $metas = stream_get_meta_data($this->_out);
@@ -208,9 +202,7 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
     }
 
     /** Not implemented */
-    public function setReadPointer($byteOffset)
-    {
-    }
+    public function setReadPointer($byteOffset) {}
 
     /** Flush the stream contents */
     protected function _flush()
@@ -229,7 +221,7 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
 
             while ($totalBytesWritten < $bytesToWrite) {
                 $bytesWritten = fwrite($this->_in, substr($bytes, $totalBytesWritten));
-                if (false === $bytesWritten || 0 === $bytesWritten) {
+                if ($bytesWritten === false || $bytesWritten === 0) {
                     break;
                 }
 
@@ -248,15 +240,15 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
     private function _establishSocketConnection()
     {
         $host = $this->_params['host'];
-        if (!empty($this->_params['protocol'])) {
+        if (! empty($this->_params['protocol'])) {
             $host = $this->_params['protocol'].'://'.$host;
         }
         $timeout = 15;
-        if (!empty($this->_params['timeout'])) {
+        if (! empty($this->_params['timeout'])) {
             $timeout = $this->_params['timeout'];
         }
-        $options = array();
-        if (!empty($this->_params['sourceIp'])) {
+        $options = [];
+        if (! empty($this->_params['sourceIp'])) {
             $options['socket']['bindto'] = $this->_params['sourceIp'].':0';
         }
         if (isset($this->_params['stream_context_options'])) {
@@ -264,13 +256,13 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
         }
         $streamContext = stream_context_create($options);
         $this->_stream = @stream_socket_client($host.':'.$this->_params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
-        if (false === $this->_stream) {
+        if ($this->_stream === false) {
             throw new Swift_TransportException(
                 'Connection could not be established with host '.$this->_params['host'].
                 ' ['.$errstr.' #'.$errno.']'
-                );
+            );
         }
-        if (!empty($this->_params['blocking'])) {
+        if (! empty($this->_params['blocking'])) {
             stream_set_blocking($this->_stream, 1);
         } else {
             stream_set_blocking($this->_stream, 0);
@@ -286,18 +278,18 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
     private function _establishProcessConnection()
     {
         $command = $this->_params['command'];
-        $descriptorSpec = array(
-            0 => array('pipe', 'r'),
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w'),
-            );
-        $pipes = array();
+        $descriptorSpec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ];
+        $pipes = [];
         $this->_stream = proc_open($command, $descriptorSpec, $pipes);
         stream_set_blocking($pipes[2], 0);
         if ($err = stream_get_contents($pipes[2])) {
             throw new Swift_TransportException(
                 'Process could not be started ['.$err.']'
-                );
+            );
         }
         $this->_in = &$pipes[0];
         $this->_out = &$pipes[1];
@@ -313,7 +305,7 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
             case self::TYPE_SOCKET:
             default:
                 $host = $this->_params['host'];
-                if (!empty($this->_params['protocol'])) {
+                if (! empty($this->_params['protocol'])) {
                     $host = $this->_params['protocol'].'://'.$host;
                 }
                 $host .= ':'.$this->_params['port'];

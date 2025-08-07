@@ -22,7 +22,7 @@ class ReflectionCasterTest extends \PHPUnit_Framework_TestCase
 {
     use VarDumperTestTrait;
 
-    public function testReflectionCaster()
+    public function test_reflection_caster()
     {
         $var = new \ReflectionClass('ReflectionClass');
 
@@ -60,20 +60,20 @@ EOTXT
         );
     }
 
-    public function testClosureCaster()
+    public function test_closure_caster()
     {
         $a = $b = 123;
-        $var = function ($x) use ($a, &$b) {};
+        $var = function ($x) use (&$b) {};
 
         $this->assertDumpMatchesFormat(
-            <<<EOTXT
+            <<<'EOTXT'
 Closure {
 %Aparameters: {
-    \$x: {}
+    $x: {}
   }
   use: {
-    \$a: 123
-    \$b: & 123
+    $a: 123
+    $b: & 123
   }
   file: "%sReflectionCasterTest.php"
   line: "66 to 66"
@@ -83,7 +83,7 @@ EOTXT
         );
     }
 
-    public function testReflectionParameter()
+    public function test_reflection_parameter()
     {
         $var = new \ReflectionParameter(__NAMESPACE__.'\reflectionParameterFixture', 0);
 
@@ -103,7 +103,7 @@ EOTXT
     /**
      * @requires PHP 7.0
      */
-    public function testReflectionParameterScalar()
+    public function test_reflection_parameter_scalar()
     {
         $f = eval('return function (int $a) {};');
         $var = new \ReflectionParameter($f, 0);
@@ -123,7 +123,7 @@ EOTXT
     /**
      * @requires PHP 7.0
      */
-    public function testReturnType()
+    public function test_return_type()
     {
         $f = eval('return function ():int {};');
         $line = __LINE__ - 1;
@@ -145,9 +145,9 @@ EOTXT
     /**
      * @requires PHP 7.0
      */
-    public function testGenerator()
+    public function test_generator()
     {
-        $g = new GeneratorDemo();
+        $g = new GeneratorDemo;
         $g = $g->baz();
         $r = new \ReflectionGenerator($g);
 
@@ -220,10 +220,8 @@ array:2 [
 ]
 EODUMP;
 
-        $this->assertDumpMatchesFormat($xDump, array($r, $r->getExecutingGenerator()));
+        $this->assertDumpMatchesFormat($xDump, [$r, $r->getExecutingGenerator()]);
     }
 }
 
-function reflectionParameterFixture(NotLoadableClass $arg1 = null, $arg2)
-{
-}
+function reflectionParameterFixture(?NotLoadableClass $arg1, $arg2) {}

@@ -38,11 +38,10 @@ class Glob
     /**
      * Returns a regexp which is the equivalent of the glob pattern.
      *
-     * @param string $glob                The glob pattern
-     * @param bool   $strictLeadingDot
-     * @param bool   $strictWildcardSlash
-     * @param string $delimiter           Optional delimiter
-     *
+     * @param  string  $glob  The glob pattern
+     * @param  bool  $strictLeadingDot
+     * @param  bool  $strictWildcardSlash
+     * @param  string  $delimiter  Optional delimiter
      * @return string regex The regexp
      */
     public static function toRegex($glob, $strictLeadingDot = true, $strictWildcardSlash = true, $delimiter = '#')
@@ -52,39 +51,39 @@ class Glob
         $inCurlies = 0;
         $regex = '';
         $sizeGlob = strlen($glob);
-        for ($i = 0; $i < $sizeGlob; ++$i) {
+        for ($i = 0; $i < $sizeGlob; $i++) {
             $car = $glob[$i];
             if ($firstByte) {
-                if ($strictLeadingDot && '.' !== $car) {
+                if ($strictLeadingDot && $car !== '.') {
                     $regex .= '(?=[^\.])';
                 }
 
                 $firstByte = false;
             }
 
-            if ('/' === $car) {
+            if ($car === '/') {
                 $firstByte = true;
             }
 
-            if ($delimiter === $car || '.' === $car || '(' === $car || ')' === $car || '|' === $car || '+' === $car || '^' === $car || '$' === $car) {
+            if ($delimiter === $car || $car === '.' || $car === '(' || $car === ')' || $car === '|' || $car === '+' || $car === '^' || $car === '$') {
                 $regex .= "\\$car";
-            } elseif ('*' === $car) {
+            } elseif ($car === '*') {
                 $regex .= $escaping ? '\\*' : ($strictWildcardSlash ? '[^/]*' : '.*');
-            } elseif ('?' === $car) {
+            } elseif ($car === '?') {
                 $regex .= $escaping ? '\\?' : ($strictWildcardSlash ? '[^/]' : '.');
-            } elseif ('{' === $car) {
+            } elseif ($car === '{') {
                 $regex .= $escaping ? '\\{' : '(';
-                if (!$escaping) {
-                    ++$inCurlies;
+                if (! $escaping) {
+                    $inCurlies++;
                 }
-            } elseif ('}' === $car && $inCurlies) {
+            } elseif ($car === '}' && $inCurlies) {
                 $regex .= $escaping ? '}' : ')';
-                if (!$escaping) {
-                    --$inCurlies;
+                if (! $escaping) {
+                    $inCurlies--;
                 }
-            } elseif (',' === $car && $inCurlies) {
+            } elseif ($car === ',' && $inCurlies) {
                 $regex .= $escaping ? ',' : '|';
-            } elseif ('\\' === $car) {
+            } elseif ($car === '\\') {
                 if ($escaping) {
                     $regex .= '\\\\';
                     $escaping = false;

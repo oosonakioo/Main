@@ -3,14 +3,14 @@
 namespace Illuminate\Foundation\Http;
 
 use Exception;
-use Throwable;
-use Illuminate\Routing\Router;
-use Illuminate\Routing\Pipeline;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
+use Illuminate\Routing\Pipeline;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Facade;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Throwable;
 
 class Kernel implements KernelContract
 {
@@ -67,8 +67,6 @@ class Kernel implements KernelContract
     /**
      * Create a new HTTP kernel instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function __construct(Application $app, Router $router)
@@ -127,9 +125,9 @@ class Kernel implements KernelContract
         $this->bootstrap();
 
         return (new Pipeline($this->app))
-                    ->send($request)
-                    ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
-                    ->then($this->dispatchToRouter());
+            ->send($request)
+            ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
+            ->then($this->dispatchToRouter());
     }
 
     /**
@@ -147,7 +145,7 @@ class Kernel implements KernelContract
         );
 
         foreach ($middlewares as $middleware) {
-            list($name, $parameters) = $this->parseMiddleware($middleware);
+            [$name, $parameters] = $this->parseMiddleware($middleware);
 
             $instance = $this->app->make($name);
 
@@ -182,7 +180,7 @@ class Kernel implements KernelContract
      */
     protected function parseMiddleware($middleware)
     {
-        list($name, $parameters) = array_pad(explode(':', $middleware, 2), 2, []);
+        [$name, $parameters] = array_pad(explode(':', $middleware, 2), 2, []);
 
         if (is_string($parameters)) {
             $parameters = explode(',', $parameters);
@@ -271,7 +269,6 @@ class Kernel implements KernelContract
     /**
      * Report the exception to the exception handler.
      *
-     * @param  \Exception  $e
      * @return void
      */
     protected function reportException(Exception $e)
@@ -283,7 +280,6 @@ class Kernel implements KernelContract
      * Render the exception to a response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderException($request, Exception $e)

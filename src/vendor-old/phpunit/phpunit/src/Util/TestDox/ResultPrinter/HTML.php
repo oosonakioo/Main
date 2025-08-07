@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -31,12 +32,12 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'start class' event.
      *
-     * @param string $name
+     * @param  string  $name
      */
     protected function startClass($name)
     {
         $this->write(
-            '<h2 id="' . $name . '">' . $this->currentTestClassPrettified .
+            '<h2 id="'.$name.'">'.$this->currentTestClassPrettified.
             '</h2><ul>'
         );
     }
@@ -44,26 +45,26 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'on test' event.
      *
-     * @param string $name
-     * @param bool   $success
+     * @param  string  $name
+     * @param  bool  $success
      */
     protected function onTest($name, $success = true)
     {
-        if (!$success) {
-            $strikeOpen  = '<span style="text-decoration:line-through;">';
+        if (! $success) {
+            $strikeOpen = '<span style="text-decoration:line-through;">';
             $strikeClose = '</span>';
         } else {
-            $strikeOpen  = '';
+            $strikeOpen = '';
             $strikeClose = '';
         }
 
-        $this->write('<li>' . $strikeOpen . $name . $strikeClose . '</li>');
+        $this->write('<li>'.$strikeOpen.$name.$strikeClose.'</li>');
     }
 
     /**
      * Handler for 'end class' event.
      *
-     * @param string $name
+     * @param  string  $name
      */
     protected function endClass($name)
     {

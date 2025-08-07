@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,9 +32,6 @@ class StaticReflectionClass extends ReflectionClass
      */
     private $staticReflectionParser;
 
-    /**
-     * @param StaticReflectionParser $staticReflectionParser
-     */
     public function __construct(StaticReflectionParser $staticReflectionParser)
     {
         $this->staticReflectionParser = $staticReflectionParser;

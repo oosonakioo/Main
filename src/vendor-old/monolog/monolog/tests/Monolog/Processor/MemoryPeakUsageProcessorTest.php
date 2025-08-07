@@ -19,9 +19,9 @@ class MemoryPeakUsageProcessorTest extends TestCase
      * @covers Monolog\Processor\MemoryPeakUsageProcessor::__invoke
      * @covers Monolog\Processor\MemoryProcessor::formatBytes
      */
-    public function testProcessor()
+    public function test_processor()
     {
-        $processor = new MemoryPeakUsageProcessor();
+        $processor = new MemoryPeakUsageProcessor;
         $record = $processor($this->getRecord());
         $this->assertArrayHasKey('memory_peak_usage', $record['extra']);
         $this->assertRegExp('#[0-9.]+ (M|K)?B$#', $record['extra']['memory_peak_usage']);
@@ -31,7 +31,7 @@ class MemoryPeakUsageProcessorTest extends TestCase
      * @covers Monolog\Processor\MemoryPeakUsageProcessor::__invoke
      * @covers Monolog\Processor\MemoryProcessor::formatBytes
      */
-    public function testProcessorWithoutFormatting()
+    public function test_processor_without_formatting()
     {
         $processor = new MemoryPeakUsageProcessor(true, false);
         $record = $processor($this->getRecord());

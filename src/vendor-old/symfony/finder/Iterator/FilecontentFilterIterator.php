@@ -26,18 +26,18 @@ class FilecontentFilterIterator extends MultiplePcreFilterIterator
      */
     public function accept()
     {
-        if (!$this->matchRegexps && !$this->noMatchRegexps) {
+        if (! $this->matchRegexps && ! $this->noMatchRegexps) {
             return true;
         }
 
         $fileinfo = $this->current();
 
-        if ($fileinfo->isDir() || !$fileinfo->isReadable()) {
+        if ($fileinfo->isDir() || ! $fileinfo->isReadable()) {
             return false;
         }
 
         $content = $fileinfo->getContents();
-        if (!$content) {
+        if (! $content) {
             return false;
         }
 
@@ -47,8 +47,7 @@ class FilecontentFilterIterator extends MultiplePcreFilterIterator
     /**
      * Converts string to regexp if necessary.
      *
-     * @param string $str Pattern: string or regexp
-     *
+     * @param  string  $str  Pattern: string or regexp
      * @return string regexp corresponding to a given string or regexp
      */
     protected function toRegex($str)

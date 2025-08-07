@@ -11,41 +11,41 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Handler\SyslogUdp\UdpSocket;
+use Monolog\TestCase;
 
 /**
  * @requires extension sockets
  */
 class UdpSocketTest extends TestCase
 {
-    public function testWeDoNotTruncateShortMessages()
+    public function test_we_do_not_truncate_short_messages()
     {
-        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', array('send'), array('lol', 'lol'));
+        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', ['send'], ['lol', 'lol']);
 
         $socket->expects($this->at(0))
             ->method('send')
-            ->with("HEADER: The quick brown fox jumps over the lazy dog");
+            ->with('HEADER: The quick brown fox jumps over the lazy dog');
 
-        $socket->write("The quick brown fox jumps over the lazy dog", "HEADER: ");
+        $socket->write('The quick brown fox jumps over the lazy dog', 'HEADER: ');
     }
 
-    public function testLongMessagesAreTruncated()
+    public function test_long_messages_are_truncated()
     {
-        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', array('send'), array('lol', 'lol'));
+        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', ['send'], ['lol', 'lol']);
 
-        $truncatedString = str_repeat("derp", 16254).'d';
+        $truncatedString = str_repeat('derp', 16254).'d';
 
         $socket->expects($this->exactly(1))
             ->method('send')
-            ->with("HEADER" . $truncatedString);
+            ->with('HEADER'.$truncatedString);
 
-        $longString = str_repeat("derp", 20000);
+        $longString = str_repeat('derp', 20000);
 
-        $socket->write($longString, "HEADER");
+        $socket->write($longString, 'HEADER');
     }
 
-    public function testDoubleCloseDoesNotError()
+    public function test_double_close_does_not_error()
     {
         $socket = new UdpSocket('127.0.0.1', 514);
         $socket->close();
@@ -55,10 +55,10 @@ class UdpSocketTest extends TestCase
     /**
      * @expectedException LogicException
      */
-    public function testWriteAfterCloseErrors()
+    public function test_write_after_close_errors()
     {
         $socket = new UdpSocket('127.0.0.1', 514);
         $socket->close();
-        $socket->write('foo', "HEADER");
+        $socket->write('foo', 'HEADER');
     }
 }

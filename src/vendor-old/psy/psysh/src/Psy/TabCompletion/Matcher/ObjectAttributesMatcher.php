@@ -26,7 +26,7 @@ class ObjectAttributesMatcher extends AbstractContextAwareMatcher
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array())
+    public function getMatches(array $tokens, array $info = [])
     {
         $input = $this->getInput($tokens);
 
@@ -41,7 +41,7 @@ class ObjectAttributesMatcher extends AbstractContextAwareMatcher
         try {
             $object = $this->getVariable($objectName);
         } catch (InvalidArgumentException $e) {
-            return array();
+            return [];
         }
 
         return array_filter(

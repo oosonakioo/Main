@@ -6,7 +6,6 @@
  */
 class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
 {
-
     /**
      * @type HTMLPurifier_ConfigSchema_Interchange
      */
@@ -18,7 +17,7 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
     private $namespace;
 
     /**
-     * @param string $html
+     * @param  string  $html
      */
     protected function writeHTMLDiv($html)
     {
@@ -33,19 +32,20 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
     }
 
     /**
-     * @param mixed $var
+     * @param  mixed  $var
      * @return string
      */
     protected function export($var)
     {
-        if ($var === array()) {
+        if ($var === []) {
             return 'array()';
         }
+
         return var_export($var, true);
     }
 
     /**
-     * @param HTMLPurifier_ConfigSchema_Interchange $interchange
+     * @param  HTMLPurifier_ConfigSchema_Interchange  $interchange
      */
     public function build($interchange)
     {
@@ -70,14 +70,14 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
     }
 
     /**
-     * @param HTMLPurifier_ConfigSchema_Interchange_Directive $directive
+     * @param  HTMLPurifier_ConfigSchema_Interchange_Directive  $directive
      */
     public function buildDirective($directive)
     {
         // Kludge, although I suppose having a notion of a "root namespace"
         // certainly makes things look nicer when documentation is built.
         // Depends on things being sorted.
-        if (!$this->namespace || $this->namespace !== $directive->id->getRootNamespace()) {
+        if (! $this->namespace || $this->namespace !== $directive->id->getRootNamespace()) {
             if ($this->namespace) {
                 $this->endElement();
             } // namespace

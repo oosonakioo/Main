@@ -2,12 +2,12 @@
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Routing\Route;
-use Illuminate\Routing\Router;
 use Illuminate\Console\Command;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class RouteListCommand extends Command
@@ -50,7 +50,6 @@ class RouteListCommand extends Command
     /**
      * Create a new route command instance.
      *
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function __construct(Router $router)
@@ -104,16 +103,15 @@ class RouteListCommand extends Command
     /**
      * Get the route information for a given route.
      *
-     * @param  \Illuminate\Routing\Route  $route
      * @return array
      */
     protected function getRouteInformation(Route $route)
     {
         return $this->filterRoute([
-            'host'   => $route->domain(),
+            'host' => $route->domain(),
             'method' => implode('|', $route->methods()),
-            'uri'    => $route->uri(),
-            'name'   => $route->getName(),
+            'uri' => $route->uri(),
+            'name' => $route->getName(),
             'action' => $route->getActionName(),
             'middleware' => $this->getMiddleware($route),
         ]);
@@ -122,7 +120,6 @@ class RouteListCommand extends Command
     /**
      * Display the route information on the console.
      *
-     * @param  array  $routes
      * @return void
      */
     protected function displayRoutes(array $routes)
@@ -192,7 +189,6 @@ class RouteListCommand extends Command
      * Determine if the given options exclude a particular method.
      *
      * @param  string  $method
-     * @param  array  $options
      * @return bool
      */
     protected function methodExcludedByOptions($method, array $options)
@@ -204,7 +200,6 @@ class RouteListCommand extends Command
     /**
      * Filter the route by URI and / or name.
      *
-     * @param  array  $route
      * @return array|null
      */
     protected function filterRoute(array $route)

@@ -20,9 +20,9 @@ class FluentdFormatterTest extends TestCase
      * @covers Monolog\Formatter\FluentdFormatter::__construct
      * @covers Monolog\Formatter\FluentdFormatter::isUsingLevelsInTag
      */
-    public function testConstruct()
+    public function test_construct()
     {
-        $formatter = new FluentdFormatter();
+        $formatter = new FluentdFormatter;
         $this->assertEquals(false, $formatter->isUsingLevelsInTag());
         $formatter = new FluentdFormatter(false);
         $this->assertEquals(false, $formatter->isUsingLevelsInTag());
@@ -33,12 +33,12 @@ class FluentdFormatterTest extends TestCase
     /**
      * @covers Monolog\Formatter\FluentdFormatter::format
      */
-    public function testFormat()
+    public function test_format()
     {
         $record = $this->getRecord(Logger::WARNING);
-        $record['datetime'] = new \DateTime("@0");
+        $record['datetime'] = new \DateTime('@0');
 
-        $formatter = new FluentdFormatter();
+        $formatter = new FluentdFormatter;
         $this->assertEquals(
             '["test",0,{"message":"test","extra":[],"level":300,"level_name":"WARNING"}]',
             $formatter->format($record)
@@ -48,10 +48,10 @@ class FluentdFormatterTest extends TestCase
     /**
      * @covers Monolog\Formatter\FluentdFormatter::format
      */
-    public function testFormatWithTag()
+    public function test_format_with_tag()
     {
         $record = $this->getRecord(Logger::ERROR);
-        $record['datetime'] = new \DateTime("@0");
+        $record['datetime'] = new \DateTime('@0');
 
         $formatter = new FluentdFormatter(true);
         $this->assertEquals(

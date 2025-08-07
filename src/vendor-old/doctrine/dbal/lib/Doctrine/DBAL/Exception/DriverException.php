@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,6 +26,7 @@ use Doctrine\DBAL\DBALException;
  * Base class for all errors detected in the driver.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -40,8 +42,8 @@ class DriverException extends DBALException
     /**
      * Constructor.
      *
-     * @param string                                $message         The exception message.
-     * @param \Doctrine\DBAL\Driver\DriverException $driverException The DBAL driver exception to chain.
+     * @param  string  $message  The exception message.
+     * @param  \Doctrine\DBAL\Driver\DriverException  $driverException  The DBAL driver exception to chain.
      */
     public function __construct($message, \Doctrine\DBAL\Driver\DriverException $driverException)
     {
@@ -61,7 +63,7 @@ class DriverException extends DBALException
      *
      * Returns null if no error code was given by the driver.
      *
-     * @return integer|string|null
+     * @return int|string|null
      */
     public function getErrorCode()
     {

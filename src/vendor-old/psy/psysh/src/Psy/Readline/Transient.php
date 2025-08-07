@@ -19,7 +19,9 @@ use Psy\Exception\BreakException;
 class Transient implements Readline
 {
     private $history;
+
     private $historySize;
+
     private $eraseDups;
 
     /**
@@ -38,9 +40,9 @@ class Transient implements Readline
     public function __construct($historyFile = null, $historySize = 0, $eraseDups = false)
     {
         // don't do anything with the history file...
-        $this->history     = array();
+        $this->history = [];
         $this->historySize = $historySize;
-        $this->eraseDups   = $eraseDups;
+        $this->eraseDups = $eraseDups;
     }
 
     /**
@@ -73,7 +75,7 @@ class Transient implements Readline
      */
     public function clearHistory()
     {
-        $this->history = array();
+        $this->history = [];
 
         return true;
     }
@@ -97,9 +99,9 @@ class Transient implements Readline
     /**
      * {@inheritdoc}
      *
-     * @throws BreakException if user hits Ctrl+D
-     *
      * @return string
+     *
+     * @throws BreakException if user hits Ctrl+D
      */
     public function readline($prompt = null)
     {
@@ -127,13 +129,13 @@ class Transient implements Readline
     /**
      * Get a STDIN file handle.
      *
-     * @throws BreakException if user hits Ctrl+D
-     *
      * @return resource
+     *
+     * @throws BreakException if user hits Ctrl+D
      */
     private function getStdin()
     {
-        if (!isset($this->stdin)) {
+        if (! isset($this->stdin)) {
             $this->stdin = fopen('php://stdin', 'r');
         }
 

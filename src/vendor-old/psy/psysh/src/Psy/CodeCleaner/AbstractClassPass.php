@@ -22,18 +22,17 @@ use Psy\Exception\FatalErrorException;
 class AbstractClassPass extends CodeCleanerPass
 {
     private $class;
+
     private $abstractMethods;
 
     /**
      * @throws RuntimeException if the node is an abstract function with a body.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
         if ($node instanceof ClassStmt) {
             $this->class = $node;
-            $this->abstractMethods = array();
+            $this->abstractMethods = [];
         } elseif ($node instanceof ClassMethod) {
             if ($node->isAbstract()) {
                 $name = sprintf('%s::%s', $this->class->name, $node->name);
@@ -48,14 +47,12 @@ class AbstractClassPass extends CodeCleanerPass
 
     /**
      * @throws RuntimeException if the node is a non-abstract class with abstract methods.
-     *
-     * @param Node $node
      */
     public function leaveNode(Node $node)
     {
         if ($node instanceof ClassStmt) {
             $count = count($this->abstractMethods);
-            if ($count > 0 && !$node->isAbstract()) {
+            if ($count > 0 && ! $node->isAbstract()) {
                 throw new FatalErrorException(sprintf(
                     'Class %s contains %d abstract method%s must therefore be declared abstract or implement the remaining methods (%s)',
                     $node->name,

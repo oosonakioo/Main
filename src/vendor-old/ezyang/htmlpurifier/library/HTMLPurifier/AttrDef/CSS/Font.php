@@ -5,19 +5,20 @@
  */
 class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
 {
-
     /**
      * Local copy of validators
+     *
      * @type HTMLPurifier_AttrDef[]
+     *
      * @note If we moved specific CSS property definitions to their own
      *       classes instead of having them be assembled at run time by
      *       CSSDefinition, this wouldn't be necessary.  We'd instantiate
      *       our own copies.
      */
-    protected $info = array();
+    protected $info = [];
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function __construct($config)
     {
@@ -31,21 +32,21 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
     {
-        static $system_fonts = array(
+        static $system_fonts = [
             'caption' => true,
             'icon' => true,
             'menu' => true,
             'message-box' => true,
             'small-caption' => true,
-            'status-bar' => true
-        );
+            'status-bar' => true,
+        ];
 
         // regular pre-processing
         $string = $this->parseCDATA($string);
@@ -61,8 +62,8 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
 
         $bits = explode(' ', $string); // bits to process
         $stage = 0; // this indicates what we're looking for
-        $caught = array(); // which stage 0 properties have we caught?
-        $stage_1 = array('font-style', 'font-variant', 'font-weight');
+        $caught = []; // which stage 0 properties have we caught?
+        $stage_1 = ['font-style', 'font-variant', 'font-weight'];
         $final = ''; // output
 
         for ($i = 0, $size = count($bits); $i < $size; $i++) {
@@ -81,7 +82,7 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                             $context
                         );
                         if ($r !== false) {
-                            $final .= $r . ' ';
+                            $final .= $r.' ';
                             $caught[$validator_name] = true;
                             break;
                         }
@@ -96,7 +97,7 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                 case 1: // attempting to catch font-size and perhaps line-height
                     $found_slash = false;
                     if (strpos($bits[$i], '/') !== false) {
-                        list($font_size, $line_height) =
+                        [$font_size, $line_height] =
                             explode('/', $bits[$i]);
                         if ($line_height === '') {
                             // ooh, there's a space after the slash!
@@ -126,6 +127,7 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                                         return false;
                                     } else {
                                         $found_slash = true;
+
                                         continue;
                                     }
                                 }
@@ -145,13 +147,14 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                                 $context
                             );
                             if ($r !== false) {
-                                $final .= '/' . $r;
+                                $final .= '/'.$r;
                             }
                         }
                         $final .= ' ';
                         $stage = 2;
                         break;
                     }
+
                     return false;
                 case 2: // attempting to catch font-family
                     $font_family =
@@ -162,13 +165,16 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                         $context
                     );
                     if ($r !== false) {
-                        $final .= $r . ' ';
+                        $final .= $r.' ';
+
                         // processing completed successfully
                         return rtrim($final);
                     }
+
                     return false;
             }
         }
+
         return false;
     }
 }

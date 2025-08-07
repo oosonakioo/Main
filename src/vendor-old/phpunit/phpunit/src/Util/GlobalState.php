@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,27 +17,27 @@ class PHPUnit_Util_GlobalState
     /**
      * @var array
      */
-    protected static $superGlobalArrays = array(
-      '_ENV',
-      '_POST',
-      '_GET',
-      '_COOKIE',
-      '_SERVER',
-      '_FILES',
-      '_REQUEST'
-    );
+    protected static $superGlobalArrays = [
+        '_ENV',
+        '_POST',
+        '_GET',
+        '_COOKIE',
+        '_SERVER',
+        '_FILES',
+        '_REQUEST',
+    ];
 
     /**
      * @var array
      */
-    protected static $superGlobalArraysLong = array(
-      'HTTP_ENV_VARS',
-      'HTTP_POST_VARS',
-      'HTTP_GET_VARS',
-      'HTTP_COOKIE_VARS',
-      'HTTP_SERVER_VARS',
-      'HTTP_POST_FILES'
-    );
+    protected static $superGlobalArraysLong = [
+        'HTTP_ENV_VARS',
+        'HTTP_POST_VARS',
+        'HTTP_GET_VARS',
+        'HTTP_COOKIE_VARS',
+        'HTTP_SERVER_VARS',
+        'HTTP_POST_FILES',
+    ];
 
     public static function getIncludedFilesAsString()
     {
@@ -46,11 +47,11 @@ class PHPUnit_Util_GlobalState
     public static function processIncludedFilesAsString(array $files)
     {
         $blacklist = new PHPUnit_Util_Blacklist;
-        $prefix    = false;
-        $result    = '';
+        $prefix = false;
+        $result = '';
 
         if (defined('__PHPUNIT_PHAR__')) {
-            $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
+            $prefix = 'phar://'.__PHPUNIT_PHAR__.'/';
         }
 
         for ($i = count($files) - 1; $i > 0; $i--) {
@@ -65,8 +66,8 @@ class PHPUnit_Util_GlobalState
                 continue;
             }
 
-            if (!$blacklist->isBlacklisted($file) && is_file($file)) {
-                $result = 'require_once \'' . $file . "';\n" . $result;
+            if (! $blacklist->isBlacklisted($file) && is_file($file)) {
+                $result = 'require_once \''.$file."';\n".$result;
             }
         }
 
@@ -75,12 +76,12 @@ class PHPUnit_Util_GlobalState
 
     public static function getIniSettingsAsString()
     {
-        $result      = '';
+        $result = '';
         $iniSettings = ini_get_all(null, false);
 
         foreach ($iniSettings as $key => $value) {
             $result .= sprintf(
-                '@ini_set(%s, %s);' . "\n",
+                '@ini_set(%s, %s);'."\n",
                 self::exportVariable($key),
                 self::exportVariable($value)
             );
@@ -92,12 +93,12 @@ class PHPUnit_Util_GlobalState
     public static function getConstantsAsString()
     {
         $constants = get_defined_constants(true);
-        $result    = '';
+        $result = '';
 
         if (isset($constants['user'])) {
             foreach ($constants['user'] as $name => $value) {
                 $result .= sprintf(
-                    'if (!defined(\'%s\')) define(\'%s\', %s);' . "\n",
+                    'if (!defined(\'%s\')) define(\'%s\', %s);'."\n",
                     $name,
                     $name,
                     self::exportVariable($value)
@@ -110,7 +111,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getGlobalsAsString()
     {
-        $result            = '';
+        $result = '';
         $superGlobalArrays = self::getSuperGlobalArrays();
 
         foreach ($superGlobalArrays as $superGlobalArray) {
@@ -122,7 +123,7 @@ class PHPUnit_Util_GlobalState
                     }
 
                     $result .= sprintf(
-                        '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
+                        '$GLOBALS[\'%s\'][\'%s\'] = %s;'."\n",
                         $superGlobalArray,
                         $key,
                         self::exportVariable($GLOBALS[$superGlobalArray][$key])
@@ -131,13 +132,13 @@ class PHPUnit_Util_GlobalState
             }
         }
 
-        $blacklist   = $superGlobalArrays;
+        $blacklist = $superGlobalArrays;
         $blacklist[] = 'GLOBALS';
 
         foreach (array_keys($GLOBALS) as $key) {
-            if (!in_array($key, $blacklist) && !$GLOBALS[$key] instanceof Closure) {
+            if (! in_array($key, $blacklist) && ! $GLOBALS[$key] instanceof Closure) {
                 $result .= sprintf(
-                    '$GLOBALS[\'%s\'] = %s;' . "\n",
+                    '$GLOBALS[\'%s\'] = %s;'."\n",
                     $key,
                     self::exportVariable($GLOBALS[$key])
                 );
@@ -166,8 +167,8 @@ class PHPUnit_Util_GlobalState
             return var_export($variable, true);
         }
 
-        return 'unserialize(' .
-                var_export(serialize($variable), true) .
+        return 'unserialize('.
+                var_export(serialize($variable), true).
                 ')';
     }
 
@@ -178,7 +179,7 @@ class PHPUnit_Util_GlobalState
         foreach ($array as $element) {
             if (is_array($element)) {
                 $result = self::arrayOnlyContainsScalars($element);
-            } elseif (!is_scalar($element) && !is_null($element)) {
+            } elseif (! is_scalar($element) && ! is_null($element)) {
                 $result = false;
             }
 

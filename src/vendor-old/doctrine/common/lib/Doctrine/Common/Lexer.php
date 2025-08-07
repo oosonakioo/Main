@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,10 +29,9 @@ use Doctrine\Common\Lexer\AbstractLexer;
  * only stays for being BC.
  *
  * @since  2.0
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
  */
-abstract class Lexer extends AbstractLexer
-{
-}
+abstract class Lexer extends AbstractLexer {}

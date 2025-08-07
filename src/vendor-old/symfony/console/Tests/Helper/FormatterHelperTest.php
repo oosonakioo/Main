@@ -15,9 +15,9 @@ use Symfony\Component\Console\Helper\FormatterHelper;
 
 class FormatterHelperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFormatSection()
+    public function test_format_section()
     {
-        $formatter = new FormatterHelper();
+        $formatter = new FormatterHelper;
 
         $this->assertEquals(
             '<info>[cli]</info> Some text to display',
@@ -26,9 +26,9 @@ class FormatterHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFormatBlock()
+    public function test_format_block()
     {
-        $formatter = new FormatterHelper();
+        $formatter = new FormatterHelper;
 
         $this->assertEquals(
             '<error> Some text to display </error>',
@@ -39,7 +39,7 @@ class FormatterHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             '<error> Some text to display </error>'."\n".
             '<error> foo bar              </error>',
-            $formatter->formatBlock(array('Some text to display', 'foo bar'), 'error'),
+            $formatter->formatBlock(['Some text to display', 'foo bar'], 'error'),
             '::formatBlock() formats a message in a block'
         );
 
@@ -52,9 +52,9 @@ class FormatterHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFormatBlockWithDiacriticLetters()
+    public function test_format_block_with_diacritic_letters()
     {
-        $formatter = new FormatterHelper();
+        $formatter = new FormatterHelper;
 
         $this->assertEquals(
             '<error>                       </error>'."\n".
@@ -65,9 +65,9 @@ class FormatterHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFormatBlockWithDoubleWidthDiacriticLetters()
+    public function test_format_block_with_double_width_diacritic_letters()
     {
-        $formatter = new FormatterHelper();
+        $formatter = new FormatterHelper;
         $this->assertEquals(
             '<error>                    </error>'."\n".
             '<error>  表示するテキスト  </error>'."\n".
@@ -77,9 +77,9 @@ class FormatterHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFormatBlockLGEscaping()
+    public function test_format_block_lg_escaping()
     {
-        $formatter = new FormatterHelper();
+        $formatter = new FormatterHelper;
 
         $this->assertEquals(
             '<error>                            </error>'."\n".

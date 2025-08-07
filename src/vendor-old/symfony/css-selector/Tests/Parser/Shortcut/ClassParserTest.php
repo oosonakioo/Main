@@ -20,9 +20,9 @@ use Symfony\Component\CssSelector\Parser\Shortcut\ClassParser;
 class ClassParserTest extends \PHPUnit_Framework_TestCase
 {
     /** @dataProvider getParseTestData */
-    public function testParse($source, $representation)
+    public function test_parse($source, $representation)
     {
-        $parser = new ClassParser();
+        $parser = new ClassParser;
         $selectors = $parser->parse($source);
         $this->assertCount(1, $selectors);
 
@@ -33,12 +33,12 @@ class ClassParserTest extends \PHPUnit_Framework_TestCase
 
     public function getParseTestData()
     {
-        return array(
-            array('.testclass', 'Class[Element[*].testclass]'),
-            array('testel.testclass', 'Class[Element[testel].testclass]'),
-            array('testns|.testclass', 'Class[Element[testns|*].testclass]'),
-            array('testns|*.testclass', 'Class[Element[testns|*].testclass]'),
-            array('testns|testel.testclass', 'Class[Element[testns|testel].testclass]'),
-        );
+        return [
+            ['.testclass', 'Class[Element[*].testclass]'],
+            ['testel.testclass', 'Class[Element[testel].testclass]'],
+            ['testns|.testclass', 'Class[Element[testns|*].testclass]'],
+            ['testns|*.testclass', 'Class[Element[testns|*].testclass]'],
+            ['testns|testel.testclass', 'Class[Element[testns|testel].testclass]'],
+        ];
     }
 }

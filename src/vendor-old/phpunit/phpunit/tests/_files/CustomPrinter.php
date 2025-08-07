@@ -1,4 +1,3 @@
 <?php
-class CustomPrinter extends PHPUnit_TextUI_ResultPrinter
-{
-}
+
+class CustomPrinter extends PHPUnit_TextUI_ResultPrinter {}

@@ -39,8 +39,8 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
     /**
      * Create a new FileByteStream for $path.
      *
-     * @param string $path
-     * @param bool   $writable if true
+     * @param  string  $path
+     * @param  bool  $writable  if true
      */
     public function __construct($path, $writable = false)
     {
@@ -73,16 +73,15 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
      * remaining bytes are given instead. If no bytes are remaining at all, boolean
      * false is returned.
      *
-     * @param int $length
+     * @param  int  $length
+     * @return string|bool
      *
      * @throws Swift_IoException
-     *
-     * @return string|bool
      */
     public function read($length)
     {
         $fp = $this->_getReadHandle();
-        if (!feof($fp)) {
+        if (! feof($fp)) {
             if ($this->_quotes) {
                 ini_set('magic_quotes_runtime', 0);
             }
@@ -111,8 +110,7 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
     /**
      * Move the internal read pointer to $byteOffset in the stream.
      *
-     * @param int $byteOffset
-     *
+     * @param  int  $byteOffset
      * @return bool
      */
     public function setReadPointer($byteOffset)
@@ -131,16 +129,14 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
     }
 
     /** Not used */
-    protected function _flush()
-    {
-    }
+    protected function _flush() {}
 
     /** Get the resource for reading */
     private function _getReadHandle()
     {
-        if (!isset($this->_reader)) {
+        if (! isset($this->_reader)) {
             $pointer = @fopen($this->_path, 'rb');
-            if (!$pointer) {
+            if (! $pointer) {
                 throw new Swift_IoException(
                     'Unable to open file for reading ['.$this->_path.']'
                 );
@@ -158,8 +154,8 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
     /** Get the resource for writing */
     private function _getWriteHandle()
     {
-        if (!isset($this->_writer)) {
-            if (!$this->_writer = fopen($this->_path, $this->_mode)) {
+        if (! isset($this->_writer)) {
+            if (! $this->_writer = fopen($this->_path, $this->_mode)) {
                 throw new Swift_IoException(
                     'Unable to open file for writing ['.$this->_path.']'
                 );
@@ -217,11 +213,11 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
         $currentPos = ftell($this->_reader);
         fclose($this->_reader);
         $source = fopen($this->_path, 'rb');
-        if (!$source) {
+        if (! $source) {
             throw new Swift_IoException('Unable to open file for copying ['.$this->_path.']');
         }
         fseek($tmpFile, 0, SEEK_SET);
-        while (!feof($source)) {
+        while (! feof($source)) {
             fwrite($tmpFile, fread($source, 4096));
         }
         fseek($tmpFile, $currentPos, SEEK_SET);

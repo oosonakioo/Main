@@ -2,132 +2,133 @@
 
 namespace PhpParser\Builder;
 
-use PhpParser\Node\Name;
-use PhpParser\Node\Stmt;
-use PhpParser\Node\Expr;
-use PhpParser\Node\Scalar;
 use PhpParser\Comment;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar;
+use PhpParser\Node\Stmt;
 
 class PropertyTest extends \PHPUnit_Framework_TestCase
 {
-    public function createPropertyBuilder($name) {
+    public function createPropertyBuilder($name)
+    {
         return new Property($name);
     }
 
-    public function testModifiers() {
+    public function test_modifiers()
+    {
         $node = $this->createPropertyBuilder('test')
             ->makePrivate()
             ->makeStatic()
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Stmt\Property(
                 Stmt\Class_::MODIFIER_PRIVATE
               | Stmt\Class_::MODIFIER_STATIC,
-                array(
-                    new Stmt\PropertyProperty('test')
-                )
+                [
+                    new Stmt\PropertyProperty('test'),
+                ]
             ),
             $node
         );
 
         $node = $this->createPropertyBuilder('test')
             ->makeProtected()
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Stmt\Property(
                 Stmt\Class_::MODIFIER_PROTECTED,
-                array(
-                    new Stmt\PropertyProperty('test')
-                )
+                [
+                    new Stmt\PropertyProperty('test'),
+                ]
             ),
             $node
         );
 
         $node = $this->createPropertyBuilder('test')
             ->makePublic()
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals(
             new Stmt\Property(
                 Stmt\Class_::MODIFIER_PUBLIC,
-                array(
-                    new Stmt\PropertyProperty('test')
-                )
+                [
+                    new Stmt\PropertyProperty('test'),
+                ]
             ),
             $node
         );
     }
 
-    public function testDocComment() {
+    public function test_doc_comment()
+    {
         $node = $this->createPropertyBuilder('test')
             ->setDocComment('/** Test */')
             ->getNode();
 
         $this->assertEquals(new Stmt\Property(
             Stmt\Class_::MODIFIER_PUBLIC,
-            array(
-                new Stmt\PropertyProperty('test')
-            ),
-            array(
-                'comments' => array(new Comment\Doc('/** Test */'))
-            )
+            [
+                new Stmt\PropertyProperty('test'),
+            ],
+            [
+                'comments' => [new Comment\Doc('/** Test */')],
+            ]
         ), $node);
     }
 
     /**
      * @dataProvider provideTestDefaultValues
      */
-    public function testDefaultValues($value, $expectedValueNode) {
+    public function test_default_values($value, $expectedValueNode)
+    {
         $node = $this->createPropertyBuilder('test')
             ->setDefault($value)
-            ->getNode()
-        ;
+            ->getNode();
 
         $this->assertEquals($expectedValueNode, $node->props[0]->default);
     }
 
-    public function provideTestDefaultValues() {
-        return array(
-            array(
+    public function provideTestDefaultValues()
+    {
+        return [
+            [
                 null,
-                new Expr\ConstFetch(new Name('null'))
-            ),
-            array(
+                new Expr\ConstFetch(new Name('null')),
+            ],
+            [
                 true,
-                new Expr\ConstFetch(new Name('true'))
-            ),
-            array(
+                new Expr\ConstFetch(new Name('true')),
+            ],
+            [
                 false,
-                new Expr\ConstFetch(new Name('false'))
-            ),
-            array(
+                new Expr\ConstFetch(new Name('false')),
+            ],
+            [
                 31415,
-                new Scalar\LNumber(31415)
-            ),
-            array(
+                new Scalar\LNumber(31415),
+            ],
+            [
                 3.1415,
-                new Scalar\DNumber(3.1415)
-            ),
-            array(
+                new Scalar\DNumber(3.1415),
+            ],
+            [
                 'Hallo World',
-                new Scalar\String_('Hallo World')
-            ),
-            array(
-                array(1, 2, 3),
-                new Expr\Array_(array(
+                new Scalar\String_('Hallo World'),
+            ],
+            [
+                [1, 2, 3],
+                new Expr\Array_([
                     new Expr\ArrayItem(new Scalar\LNumber(1)),
                     new Expr\ArrayItem(new Scalar\LNumber(2)),
                     new Expr\ArrayItem(new Scalar\LNumber(3)),
-                ))
-            ),
-            array(
-                array('foo' => 'bar', 'bar' => 'foo'),
-                new Expr\Array_(array(
+                ]),
+            ],
+            [
+                ['foo' => 'bar', 'bar' => 'foo'],
+                new Expr\Array_([
                     new Expr\ArrayItem(
                         new Scalar\String_('bar'),
                         new Scalar\String_('foo')
@@ -136,12 +137,12 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
                         new Scalar\String_('foo'),
                         new Scalar\String_('bar')
                     ),
-                ))
-            ),
-            array(
+                ]),
+            ],
+            [
                 new Scalar\MagicConst\Dir,
-                new Scalar\MagicConst\Dir
-            )
-        );
+                new Scalar\MagicConst\Dir,
+            ],
+        ];
     }
 }

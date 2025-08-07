@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,8 +24,10 @@ namespace Doctrine\Common\Persistence;
  * Base class to simplify ObjectManager decorators
  *
  * @license http://opensource.org/licenses/MIT MIT
+ *
  * @link    www.doctrine-project.org
  * @since   2.4
+ *
  * @author  Lars Strojny <lars@strojny.net>
  */
 abstract class ObjectManagerDecorator implements ObjectManager

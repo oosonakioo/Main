@@ -2,10 +2,10 @@
 
 namespace Illuminate\Auth\Access;
 
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class Gate implements GateContract
 {
@@ -56,12 +56,6 @@ class Gate implements GateContract
     /**
      * Create a new gate instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
-     * @param  callable  $userResolver
-     * @param  array  $abilities
-     * @param  array  $policies
-     * @param  array  $beforeCallbacks
-     * @param  array  $afterCallbacks
      * @return void
      */
     public function __construct(Container $container, callable $userResolver, array $abilities = [], array $policies = [], array $beforeCallbacks = [], array $afterCallbacks = [])
@@ -116,7 +110,7 @@ class Gate implements GateContract
     protected function buildAbilityCallback($callback)
     {
         return function () use ($callback) {
-            list($class, $method) = explode('@', $callback);
+            [$class, $method] = explode('@', $callback);
 
             return call_user_func_array([$this->resolvePolicy($class), $method], func_get_args());
         };
@@ -139,7 +133,6 @@ class Gate implements GateContract
     /**
      * Register a callback to run before all Gate checks.
      *
-     * @param  callable  $callback
      * @return $this
      */
     public function before(callable $callback)
@@ -152,7 +145,6 @@ class Gate implements GateContract
     /**
      * Register a callback to run after all Gate checks.
      *
-     * @param  callable  $callback
      * @return $this
      */
     public function after(callable $callback)
@@ -255,7 +247,6 @@ class Gate implements GateContract
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $ability
-     * @param  array  $arguments
      * @return bool
      */
     protected function callAuthCallback($user, $ability, array $arguments)
@@ -274,7 +265,6 @@ class Gate implements GateContract
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $ability
-     * @param  array  $arguments
      * @return bool|null
      */
     protected function callBeforeCallbacks($user, $ability, array $arguments)
@@ -293,7 +283,6 @@ class Gate implements GateContract
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $ability
-     * @param  array  $arguments
      * @param  bool  $result
      * @return void
      */
@@ -311,7 +300,6 @@ class Gate implements GateContract
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $ability
-     * @param  array  $arguments
      * @return callable
      */
     protected function resolveAuthCallback($user, $ability, array $arguments)
@@ -330,7 +318,6 @@ class Gate implements GateContract
     /**
      * Determine if the first argument in the array corresponds to a policy.
      *
-     * @param  array  $arguments
      * @return bool
      */
     protected function firstArgumentCorrespondsToPolicy(array $arguments)
@@ -351,7 +338,6 @@ class Gate implements GateContract
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $ability
-     * @param  array  $arguments
      * @return callable
      */
     protected function resolvePolicyCallback($user, $ability, array $arguments)

@@ -31,7 +31,6 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
     /**
      * Create a new database failed job provider.
      *
-     * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
      * @param  string  $database
      * @param  string  $table
      * @return void

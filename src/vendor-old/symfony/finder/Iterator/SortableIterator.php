@@ -19,19 +19,24 @@ namespace Symfony\Component\Finder\Iterator;
 class SortableIterator implements \IteratorAggregate
 {
     const SORT_BY_NAME = 1;
+
     const SORT_BY_TYPE = 2;
+
     const SORT_BY_ACCESSED_TIME = 3;
+
     const SORT_BY_CHANGED_TIME = 4;
+
     const SORT_BY_MODIFIED_TIME = 5;
 
     private $iterator;
+
     private $sort;
 
     /**
      * Constructor.
      *
-     * @param \Traversable $iterator The Iterator to filter
-     * @param int|callable $sort     The sort type (SORT_BY_NAME, SORT_BY_TYPE, or a PHP callback)
+     * @param  \Traversable  $iterator  The Iterator to filter
+     * @param  int|callable  $sort  The sort type (SORT_BY_NAME, SORT_BY_TYPE, or a PHP callback)
      *
      * @throws \InvalidArgumentException
      */
@@ -39,11 +44,11 @@ class SortableIterator implements \IteratorAggregate
     {
         $this->iterator = $iterator;
 
-        if (self::SORT_BY_NAME === $sort) {
+        if ($sort === self::SORT_BY_NAME) {
             $this->sort = function ($a, $b) {
                 return strcmp($a->getRealpath(), $b->getRealpath());
             };
-        } elseif (self::SORT_BY_TYPE === $sort) {
+        } elseif ($sort === self::SORT_BY_TYPE) {
             $this->sort = function ($a, $b) {
                 if ($a->isDir() && $b->isFile()) {
                     return -1;
@@ -53,15 +58,15 @@ class SortableIterator implements \IteratorAggregate
 
                 return strcmp($a->getRealpath(), $b->getRealpath());
             };
-        } elseif (self::SORT_BY_ACCESSED_TIME === $sort) {
+        } elseif ($sort === self::SORT_BY_ACCESSED_TIME) {
             $this->sort = function ($a, $b) {
                 return $a->getATime() - $b->getATime();
             };
-        } elseif (self::SORT_BY_CHANGED_TIME === $sort) {
+        } elseif ($sort === self::SORT_BY_CHANGED_TIME) {
             $this->sort = function ($a, $b) {
                 return $a->getCTime() - $b->getCTime();
             };
-        } elseif (self::SORT_BY_MODIFIED_TIME === $sort) {
+        } elseif ($sort === self::SORT_BY_MODIFIED_TIME) {
             $this->sort = function ($a, $b) {
                 return $a->getMTime() - $b->getMTime();
             };

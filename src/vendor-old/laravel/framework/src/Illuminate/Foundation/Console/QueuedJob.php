@@ -16,7 +16,6 @@ class QueuedJob
     /**
      * Create a new job instance.
      *
-     * @param  \Illuminate\Contracts\Console\Kernel  $kernel
      * @return void
      */
     public function __construct(KernelContract $kernel)

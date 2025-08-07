@@ -9,7 +9,7 @@ class SwiftMailerTestCase extends \PHPUnit_Framework_TestCase
 {
     public static function regExp($pattern)
     {
-        if (!is_string($pattern)) {
+        if (! is_string($pattern)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 

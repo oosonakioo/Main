@@ -16,11 +16,11 @@ class TestCoreModelExtension extends TestsBase
 
     public function test_it_saves_empty_instances()
     {
-        $company = new Company();
+        $company = new Company;
         $company->save();
         $this->assertGreaterThan(0, $company->id);
 
-        $country = new Continent();
+        $country = new Continent;
         $country->save();
         $this->assertGreaterThan(0, $country->id);
     }
@@ -42,7 +42,7 @@ class TestCoreModelExtension extends TestsBase
      */
     public function test_it_throws_query_exception_if_code_is_null()
     {
-        $country = new Country();
+        $country = new Country;
         $country->name = 'Belgium';
         $country->code = null;
         $country->save();
@@ -53,7 +53,7 @@ class TestCoreModelExtension extends TestsBase
      */
     public function test_it_throws_query_exception_if_saving_and_name_is_null()
     {
-        $country = new Country();
+        $country = new Country;
         $country->code = 'be';
         $country->name = null;
         $country->save();
@@ -63,7 +63,7 @@ class TestCoreModelExtension extends TestsBase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function ($model) use ($that) {
+        $event->listen('eloquent*', function ($model) {
             return get_class($model) == 'Dimsav\Translatable\Test\Model\Country' ? false : true;
         });
 
@@ -77,11 +77,11 @@ class TestCoreModelExtension extends TestsBase
     {
         $that = $this;
         $event = App::make('events');
-        $event->listen('eloquent*', function ($model) use ($that) {
+        $event->listen('eloquent*', function ($model) {
             return get_class($model) == 'Dimsav\Translatable\Test\Model\Continent' ? false : true;
         });
 
-        $continent = new Continent();
+        $continent = new Continent;
         $this->assertFalse($continent->save());
     }
 
@@ -92,7 +92,7 @@ class TestCoreModelExtension extends TestsBase
      */
     public function test_it_throws_exception_if_filling_a_protected_property()
     {
-        $country = new CountryGuarded();
+        $country = new CountryGuarded;
         $this->assertTrue($country->totallyGuarded());
         $country->fill(['en' => ['name' => 'Italy']]);
     }

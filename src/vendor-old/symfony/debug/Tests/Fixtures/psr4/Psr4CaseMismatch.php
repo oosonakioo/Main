@@ -2,6 +2,4 @@
 
 namespace Symfony\Component\Debug\Tests\Fixtures;
 
-class PSR4CaseMismatch
-{
-}
+class PSR4CaseMismatch {}

@@ -2,34 +2,35 @@
 
 namespace PhpParser\Node\Stmt;
 
-use PhpParser\Node;
 use PhpParser\Error;
+use PhpParser\Node;
 
 class Interface_ extends ClassLike
 {
     /** @var Node\Name[] Extended interfaces */
     public $extends;
 
-    protected static $specialNames = array(
-        'self'   => true,
+    protected static $specialNames = [
+        'self' => true,
         'parent' => true,
         'static' => true,
-    );
+    ];
 
     /**
      * Constructs a class node.
      *
-     * @param string $name       Name
-     * @param array  $subNodes   Array of the following optional subnodes:
+     * @param  string  $name  Name
+     * @param  array  $subNodes  Array of the following optional subnodes:
      *                           'extends' => array(): Name of extended interfaces
      *                           'stmts'   => array(): Statements
-     * @param array  $attributes Additional attributes
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct($name, array $subNodes = array(), array $attributes = array()) {
+    public function __construct($name, array $subNodes = [], array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->name = $name;
-        $this->extends = isset($subNodes['extends']) ? $subNodes['extends'] : array();
-        $this->stmts = isset($subNodes['stmts']) ? $subNodes['stmts'] : array();
+        $this->extends = isset($subNodes['extends']) ? $subNodes['extends'] : [];
+        $this->stmts = isset($subNodes['stmts']) ? $subNodes['stmts'] : [];
 
         if (isset(self::$specialNames[strtolower($this->name)])) {
             throw new Error(sprintf('Cannot use \'%s\' as class name as it is reserved', $this->name));
@@ -45,7 +46,8 @@ class Interface_ extends ClassLike
         }
     }
 
-    public function getSubNodeNames() {
-        return array('name', 'extends', 'stmts');
+    public function getSubNodeNames()
+    {
+        return ['name', 'extends', 'stmts'];
     }
 }

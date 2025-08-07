@@ -1,7 +1,6 @@
 <?php
+
 class InheritedTestCase extends OneTestCase
 {
-    public function test2()
-    {
-    }
+    public function test2() {}
 }

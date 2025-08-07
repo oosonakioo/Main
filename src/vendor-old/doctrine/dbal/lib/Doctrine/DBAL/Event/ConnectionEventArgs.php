@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Connection;
  *
  * @link   www.doctrine-project.org
  * @since  1.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class ConnectionEventArgs extends EventArgs
@@ -36,9 +38,6 @@ class ConnectionEventArgs extends EventArgs
      */
     private $_connection;
 
-    /**
-     * @param \Doctrine\DBAL\Connection $connection
-     */
     public function __construct(Connection $connection)
     {
         $this->_connection = $connection;

@@ -1,10 +1,11 @@
 <?php
+
 // Declare the interface 'iTemplate'
 interface iTemplate
 {
     public function setVariable($name, $var);
-    public function
-        getHtml($template);
+
+    public function getHtml($template);
 }
 
 interface a
@@ -20,11 +21,7 @@ interface b extends a
 // short desc for class that implement a unique interface
 class c implements b
 {
-    public function foo()
-    {
-    }
+    public function foo() {}
 
-    public function baz(Baz $baz)
-    {
-    }
+    public function baz(Baz $baz) {}
 }

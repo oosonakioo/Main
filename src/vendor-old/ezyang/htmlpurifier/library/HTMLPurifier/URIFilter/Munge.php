@@ -35,41 +35,42 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
     /**
      * @type array
      */
-    protected $replace = array();
+    protected $replace = [];
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      * @return bool
      */
     public function prepare($config)
     {
-        $this->target = $config->get('URI.' . $this->name);
-        $this->parser = new HTMLPurifier_URIParser();
+        $this->target = $config->get('URI.'.$this->name);
+        $this->parser = new HTMLPurifier_URIParser;
         $this->doEmbed = $config->get('URI.MungeResources');
         $this->secretKey = $config->get('URI.MungeSecretKey');
-        if ($this->secretKey && !function_exists('hash_hmac')) {
-            throw new Exception("Cannot use %URI.MungeSecretKey without hash_hmac support.");
+        if ($this->secretKey && ! function_exists('hash_hmac')) {
+            throw new Exception('Cannot use %URI.MungeSecretKey without hash_hmac support.');
         }
+
         return true;
     }
 
     /**
-     * @param HTMLPurifier_URI $uri
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_URI  $uri
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool
      */
     public function filter(&$uri, $config, $context)
     {
-        if ($context->get('EmbeddedURI', true) && !$this->doEmbed) {
+        if ($context->get('EmbeddedURI', true) && ! $this->doEmbed) {
             return true;
         }
 
         $scheme_obj = $uri->getSchemeObj($config, $context);
-        if (!$scheme_obj) {
+        if (! $scheme_obj) {
             return true;
         } // ignore unknown schemes, maybe another postfilter did it
-        if (!$scheme_obj->browsable) {
+        if (! $scheme_obj->browsable) {
             return true;
         } // ignore non-browseable schemes, since we can't munge those in a reasonable way
         if ($uri->isBenign($config, $context)) {
@@ -87,13 +88,14 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
             return true;
         }
         $uri = $new_uri; // overwrite
+
         return true;
     }
 
     /**
-     * @param HTMLPurifier_URI $uri
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_URI  $uri
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      */
     protected function makeReplace($uri, $config, $context)
     {
@@ -107,7 +109,7 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
         $this->replace['%p'] = $context->get('CurrentCSSProperty', true);
         // not always available
         if ($this->secretKey) {
-            $this->replace['%t'] = hash_hmac("sha256", $string, $this->secretKey);
+            $this->replace['%t'] = hash_hmac('sha256', $string, $this->secretKey);
         }
     }
 }

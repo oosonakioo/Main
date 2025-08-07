@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,9 +17,8 @@
 class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {
     /**
-     * @param string $suiteClassName
-     * @param string $suiteClassFile
-     *
+     * @param  string  $suiteClassName
+     * @param  string  $suiteClassFile
      * @return ReflectionClass
      *
      * @throws PHPUnit_Framework_Exception
@@ -33,7 +33,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             );
         }
 
-        if (!class_exists($suiteClassName, false)) {
+        if (! class_exists($suiteClassName, false)) {
             $loadedClasses = get_declared_classes();
 
             $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
@@ -43,7 +43,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             );
         }
 
-        if (!class_exists($suiteClassName, false) && !empty($loadedClasses)) {
+        if (! class_exists($suiteClassName, false) && ! empty($loadedClasses)) {
             $offset = 0 - strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
@@ -56,17 +56,17 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             }
         }
 
-        if (!class_exists($suiteClassName, false) && !empty($loadedClasses)) {
+        if (! class_exists($suiteClassName, false) && ! empty($loadedClasses)) {
             $testCaseClass = 'PHPUnit_Framework_TestCase';
 
             foreach ($loadedClasses as $loadedClass) {
-                $class     = new ReflectionClass($loadedClass);
+                $class = new ReflectionClass($loadedClass);
                 $classFile = $class->getFileName();
 
                 if ($class->isSubclassOf($testCaseClass) &&
-                    !$class->isAbstract()) {
+                    ! $class->isAbstract()) {
                     $suiteClassName = $loadedClass;
-                    $testCaseClass  = $loadedClass;
+                    $testCaseClass = $loadedClass;
 
                     if ($classFile == realpath($suiteClassFile)) {
                         break;
@@ -76,7 +76,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 if ($class->hasMethod('suite')) {
                     $method = $class->getMethod('suite');
 
-                    if (!$method->isAbstract() &&
+                    if (! $method->isAbstract() &&
                         $method->isPublic() &&
                         $method->isStatic()) {
                         $suiteClassName = $loadedClass;
@@ -107,8 +107,6 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     }
 
     /**
-     * @param ReflectionClass $aClass
-     *
      * @return ReflectionClass
      */
     public function reload(ReflectionClass $aClass)

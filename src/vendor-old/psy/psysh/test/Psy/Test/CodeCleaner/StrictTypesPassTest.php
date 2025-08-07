@@ -15,16 +15,16 @@ use Psy\CodeCleaner\StrictTypesPass;
 
 class StrictTypesPassTest extends CodeCleanerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         if (version_compare(PHP_VERSION, '7.0', '<')) {
             $this->markTestSkipped();
         }
 
-        $this->setPass(new StrictTypesPass());
+        $this->setPass(new StrictTypesPass);
     }
 
-    public function testProcess()
+    public function test_process()
     {
         $this->assertProcessesAs('declare(strict_types=1)', 'declare (strict_types=1);');
         $this->assertProcessesAs('null', "declare (strict_types=1);\nnull;");
@@ -34,9 +34,10 @@ class StrictTypesPassTest extends CodeCleanerTestCase
 
     /**
      * @dataProvider invalidDeclarations
+     *
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testInvalidDeclarations($declaration)
+    public function test_invalid_declarations($declaration)
     {
         $stmts = $this->parse($declaration);
         $this->traverser->traverse($stmts);
@@ -44,10 +45,10 @@ class StrictTypesPassTest extends CodeCleanerTestCase
 
     public function invalidDeclarations()
     {
-        return array(
-            array('declare(strict_types=-1)'),
-            array('declare(strict_types=2)'),
-            array('declare(strict_types="foo")'),
-        );
+        return [
+            ['declare(strict_types=-1)'],
+            ['declare(strict_types=2)'],
+            ['declare(strict_types="foo")'],
+        ];
     }
 }

@@ -2,6 +2,4 @@
 
 namespace Symfony\Component\VarDumper\Tests\Fixtures;
 
-class NotLoadableClass extends NotLoadableClass
-{
-}
+class NotLoadableClass extends NotLoadableClass {}

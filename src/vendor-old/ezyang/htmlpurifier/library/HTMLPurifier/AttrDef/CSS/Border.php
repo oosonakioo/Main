@@ -5,15 +5,15 @@
  */
 class HTMLPurifier_AttrDef_CSS_Border extends HTMLPurifier_AttrDef
 {
-
     /**
      * Local copy of properties this property is shorthand for.
+     *
      * @type HTMLPurifier_AttrDef[]
      */
-    protected $info = array();
+    protected $info = [];
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function __construct($config)
     {
@@ -24,9 +24,9 @@ class HTMLPurifier_AttrDef_CSS_Border extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -34,7 +34,7 @@ class HTMLPurifier_AttrDef_CSS_Border extends HTMLPurifier_AttrDef
         $string = $this->parseCDATA($string);
         $string = $this->mungeRgb($string);
         $bits = explode(' ', $string);
-        $done = array(); // segments we've finished
+        $done = []; // segments we've finished
         $ret = ''; // return value
         foreach ($bits as $bit) {
             foreach ($this->info as $propname => $validator) {
@@ -43,12 +43,13 @@ class HTMLPurifier_AttrDef_CSS_Border extends HTMLPurifier_AttrDef
                 }
                 $r = $validator->validate($bit, $config, $context);
                 if ($r !== false) {
-                    $ret .= $r . ' ';
+                    $ret .= $r.' ';
                     $done[$propname] = true;
                     break;
                 }
             }
         }
+
         return rtrim($ret);
     }
 }

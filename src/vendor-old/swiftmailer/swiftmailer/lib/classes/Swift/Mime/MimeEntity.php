@@ -73,7 +73,7 @@ interface Swift_Mime_MimeEntity extends Swift_Mime_CharsetObserver, Swift_Mime_E
      *
      * This includes grandchildren.
      *
-     * @param Swift_Mime_MimeEntity[] $children
+     * @param  Swift_Mime_MimeEntity[]  $children
      */
     public function setChildren(array $children);
 
@@ -96,8 +96,8 @@ interface Swift_Mime_MimeEntity extends Swift_Mime_CharsetObserver, Swift_Mime_E
     /**
      * Set the body content of this entity as a string.
      *
-     * @param string $body
-     * @param string $contentType optional
+     * @param  string  $body
+     * @param  string  $contentType  optional
      */
     public function setBody($body, $contentType = null);
 
@@ -111,7 +111,7 @@ interface Swift_Mime_MimeEntity extends Swift_Mime_CharsetObserver, Swift_Mime_E
     /**
      * Get this entire entity as a ByteStream.
      *
-     * @param Swift_InputByteStream $is to write to
+     * @param  Swift_InputByteStream  $is  to write to
      */
     public function toByteStream(Swift_InputByteStream $is);
 }

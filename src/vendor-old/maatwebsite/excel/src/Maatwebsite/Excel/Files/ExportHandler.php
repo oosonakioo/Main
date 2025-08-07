@@ -1,12 +1,13 @@
-<?php namespace Maatwebsite\Excel\Files;
+<?php
 
-interface ExportHandler {
+namespace Maatwebsite\Excel\Files;
 
+interface ExportHandler
+{
     /**
      * Handle the export
-     * @param $file
+     *
      * @return mixed
      */
     public function handle($file);
-
-} 
+}

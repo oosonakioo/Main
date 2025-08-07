@@ -25,8 +25,7 @@ class Swift_Mime_Headers_PathHeader extends Swift_Mime_Headers_AbstractHeader
     /**
      * Creates a new PathHeader with the given $name.
      *
-     * @param string             $name
-     * @param Swift_Mime_Grammar $grammar
+     * @param  string  $name
      */
     public function __construct($name, Swift_Mime_Grammar $grammar)
     {
@@ -51,7 +50,7 @@ class Swift_Mime_Headers_PathHeader extends Swift_Mime_Headers_AbstractHeader
      * Set the model for the field body.
      * This method takes a string for an address.
      *
-     * @param string $model
+     * @param  string  $model
      *
      * @throws Swift_RfcComplianceException
      */
@@ -74,15 +73,15 @@ class Swift_Mime_Headers_PathHeader extends Swift_Mime_Headers_AbstractHeader
     /**
      * Set the Address which should appear in this Header.
      *
-     * @param string $address
+     * @param  string  $address
      *
      * @throws Swift_RfcComplianceException
      */
     public function setAddress($address)
     {
-        if (null === $address) {
+        if ($address === null) {
             $this->_address = null;
-        } elseif ('' == $address) {
+        } elseif ($address == '') {
             $this->_address = '';
         } else {
             $this->_assertValidAddress($address);
@@ -115,7 +114,7 @@ class Swift_Mime_Headers_PathHeader extends Swift_Mime_Headers_AbstractHeader
      */
     public function getFieldBody()
     {
-        if (!$this->getCachedValue()) {
+        if (! $this->getCachedValue()) {
             if (isset($this->_address)) {
                 $this->setCachedValue('<'.$this->_address.'>');
             }
@@ -127,17 +126,17 @@ class Swift_Mime_Headers_PathHeader extends Swift_Mime_Headers_AbstractHeader
     /**
      * Throws an Exception if the address passed does not comply with RFC 2822.
      *
-     * @param string $address
+     * @param  string  $address
      *
      * @throws Swift_RfcComplianceException If address is invalid
      */
     private function _assertValidAddress($address)
     {
-        if (!preg_match('/^'.$this->getGrammar()->getDefinition('addr-spec').'$/D',
+        if (! preg_match('/^'.$this->getGrammar()->getDefinition('addr-spec').'$/D',
             $address)) {
             throw new Swift_RfcComplianceException(
                 'Address set in PathHeader does not comply with addr-spec of RFC 2822.'
-                );
+            );
         }
     }
 }

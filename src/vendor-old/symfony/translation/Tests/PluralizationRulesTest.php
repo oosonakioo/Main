@@ -35,7 +35,7 @@ class PluralizationRulesTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider failingLangcodes
      */
-    public function testFailedLangcodes($nplural, $langCodes)
+    public function test_failed_langcodes($nplural, $langCodes)
     {
         $matrix = $this->generateTestData($langCodes);
         $this->validateMatrix($nplural, $matrix, false);
@@ -44,7 +44,7 @@ class PluralizationRulesTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider successLangcodes
      */
-    public function testLangcodes($nplural, $langCodes)
+    public function test_langcodes($nplural, $langCodes)
     {
         $matrix = $this->generateTestData($langCodes);
         $this->validateMatrix($nplural, $matrix);
@@ -59,14 +59,14 @@ class PluralizationRulesTest extends \PHPUnit_Framework_TestCase
      */
     public function successLangcodes()
     {
-        return array(
-            array('1', array('ay', 'bo', 'cgg', 'dz', 'id', 'ja', 'jbo', 'ka', 'kk', 'km', 'ko', 'ky')),
-            array('2', array('nl', 'fr', 'en', 'de', 'de_GE', 'hy', 'hy_AM')),
-            array('3', array('be', 'bs', 'cs', 'hr')),
-            array('4', array('cy', 'mt', 'sl')),
-            array('5', array()),
-            array('6', array('ar')),
-        );
+        return [
+            ['1', ['ay', 'bo', 'cgg', 'dz', 'id', 'ja', 'jbo', 'ka', 'kk', 'km', 'ko', 'ky']],
+            ['2', ['nl', 'fr', 'en', 'de', 'de_GE', 'hy', 'hy_AM']],
+            ['3', ['be', 'bs', 'cs', 'hr']],
+            ['4', ['cy', 'mt', 'sl']],
+            ['5', []],
+            ['6', ['ar']],
+        ];
     }
 
     /**
@@ -79,22 +79,22 @@ class PluralizationRulesTest extends \PHPUnit_Framework_TestCase
      */
     public function failingLangcodes()
     {
-        return array(
-            array('1', array('fa')),
-            array('2', array('jbo')),
-            array('3', array('cbs')),
-            array('4', array('gd', 'kw')),
-            array('5', array('ga')),
-            array('6', array()),
-        );
+        return [
+            ['1', ['fa']],
+            ['2', ['jbo']],
+            ['3', ['cbs']],
+            ['4', ['gd', 'kw']],
+            ['5', ['ga']],
+            ['6', []],
+        ];
     }
 
     /**
      * We validate only on the plural coverage. Thus the real rules is not tested.
      *
-     * @param string $nplural       plural expected
-     * @param array  $matrix        containing langcodes and their plural index values
-     * @param bool   $expectSuccess
+     * @param  string  $nplural  plural expected
+     * @param  array  $matrix  containing langcodes and their plural index values
+     * @param  bool  $expectSuccess
      */
     protected function validateMatrix($nplural, $matrix, $expectSuccess = true)
     {
@@ -110,9 +110,9 @@ class PluralizationRulesTest extends \PHPUnit_Framework_TestCase
 
     protected function generateTestData($langCodes)
     {
-        $matrix = array();
+        $matrix = [];
         foreach ($langCodes as $langCode) {
-            for ($count = 0; $count < 200; ++$count) {
+            for ($count = 0; $count < 200; $count++) {
                 $plural = PluralizationRules::get($count, $langCode);
                 $matrix[$langCode][$count] = $plural;
             }

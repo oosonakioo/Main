@@ -3,13 +3,13 @@
 namespace Illuminate\Foundation\Console;
 
 use Exception;
-use Throwable;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Console\Application as Artisan;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Throwable;
 
 class Kernel implements KernelContract
 {
@@ -60,8 +60,6 @@ class Kernel implements KernelContract
     /**
      * Create a new console kernel instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
     public function __construct(Application $app, Dispatcher $events)
@@ -137,7 +135,6 @@ class Kernel implements KernelContract
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -160,7 +157,6 @@ class Kernel implements KernelContract
      * Run an Artisan console command by name.
      *
      * @param  string  $command
-     * @param  array  $parameters
      * @return int
      */
     public function call($command, array $parameters = [])
@@ -174,7 +170,6 @@ class Kernel implements KernelContract
      * Queue the given console command.
      *
      * @param  string  $command
-     * @param  array   $parameters
      * @return void
      */
     public function queue($command, array $parameters = [])
@@ -234,7 +229,7 @@ class Kernel implements KernelContract
     {
         if (is_null($this->artisan)) {
             return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
-                                ->resolveCommands($this->commands);
+                ->resolveCommands($this->commands);
         }
 
         return $this->artisan;
@@ -253,7 +248,6 @@ class Kernel implements KernelContract
     /**
      * Report the exception to the exception handler.
      *
-     * @param  \Exception  $e
      * @return void
      */
     protected function reportException(Exception $e)
@@ -265,7 +259,6 @@ class Kernel implements KernelContract
      * Report the exception to the exception handler.
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
-     * @param  \Exception  $e
      * @return void
      */
     protected function renderException($output, Exception $e)

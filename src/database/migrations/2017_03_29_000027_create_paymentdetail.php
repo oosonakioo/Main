@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePaymentDetail extends Migration
 {
@@ -15,7 +15,7 @@ class CreatePaymentDetail extends Migration
         Schema::create('paymentdetails', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('docuno_id')->unsigned()->nullable();
-            $table->integer('listno')->unsigned();  
+            $table->integer('listno')->unsigned();
             $table->integer('goodprice2')->unsigned();
             $table->integer('goodqty2')->unsigned();
             $table->string('goodcode', 250);

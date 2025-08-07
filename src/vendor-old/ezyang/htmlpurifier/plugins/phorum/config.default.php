@@ -1,11 +1,13 @@
 <?php
 
-if(!defined("PHORUM")) exit;
+if (! defined('PHORUM')) {
+    exit;
+}
 
 // default HTML Purifier configuration settings
 $config->set('HTML.Allowed',
-  // alphabetically sorted
-'a[href|title]
+    // alphabetically sorted
+    'a[href|title]
 abbr[title]
 acronym[title]
 b
@@ -51,7 +53,7 @@ $config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
 $config->set('Core.AggressivelyFixLt', true);
 $config->set('Core.Encoding', $GLOBALS['PHORUM']['DATA']['CHARSET']); // we'll change this eventually
 if (strtolower($GLOBALS['PHORUM']['DATA']['CHARSET']) !== 'utf-8') {
-  $config->set('Core.EscapeNonASCIICharacters', true);
+    $config->set('Core.EscapeNonASCIICharacters', true);
 }
 
 // vim: et sw=4 sts=4

@@ -20,16 +20,16 @@ use Symfony\Component\HttpFoundation\Session\Storage\Proxy\NativeProxy;
  */
 class NativeProxyTest extends \PHPUnit_Framework_TestCase
 {
-    public function testIsWrapper()
+    public function test_is_wrapper()
     {
-        $proxy = new NativeProxy();
+        $proxy = new NativeProxy;
         $this->assertFalse($proxy->isWrapper());
     }
 
-    public function testGetSaveHandlerName()
+    public function test_get_save_handler_name()
     {
         $name = ini_get('session.save_handler');
-        $proxy = new NativeProxy();
+        $proxy = new NativeProxy;
         $this->assertEquals($name, $proxy->getSaveHandlerName());
     }
 }

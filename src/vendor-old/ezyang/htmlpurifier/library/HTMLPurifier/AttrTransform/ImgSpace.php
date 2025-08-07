@@ -13,38 +13,38 @@ class HTMLPurifier_AttrTransform_ImgSpace extends HTMLPurifier_AttrTransform
     /**
      * @type array
      */
-    protected $css = array(
-        'hspace' => array('left', 'right'),
-        'vspace' => array('top', 'bottom')
-    );
+    protected $css = [
+        'hspace' => ['left', 'right'],
+        'vspace' => ['top', 'bottom'],
+    ];
 
     /**
-     * @param string $attr
+     * @param  string  $attr
      */
     public function __construct($attr)
     {
         $this->attr = $attr;
-        if (!isset($this->css[$attr])) {
-            trigger_error(htmlspecialchars($attr) . ' is not valid space attribute');
+        if (! isset($this->css[$attr])) {
+            trigger_error(htmlspecialchars($attr).' is not valid space attribute');
         }
     }
 
     /**
-     * @param array $attr
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $attr
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function transform($attr, $config, $context)
     {
-        if (!isset($attr[$this->attr])) {
+        if (! isset($attr[$this->attr])) {
             return $attr;
         }
 
         $width = $this->confiscateAttr($attr, $this->attr);
         // some validation could happen here
 
-        if (!isset($this->css[$this->attr])) {
+        if (! isset($this->css[$this->attr])) {
             return $attr;
         }
 
@@ -54,6 +54,7 @@ class HTMLPurifier_AttrTransform_ImgSpace extends HTMLPurifier_AttrTransform
             $style .= "$property:{$width}px;";
         }
         $this->prependCSS($attr, $style);
+
         return $attr;
     }
 }

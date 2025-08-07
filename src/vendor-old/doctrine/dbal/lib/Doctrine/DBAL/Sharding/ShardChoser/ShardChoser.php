@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,10 +33,8 @@ interface ShardChoser
     /**
      * Picks a shard for the given distribution value.
      *
-     * @param string                                         $distributionValue
-     * @param \Doctrine\DBAL\Sharding\PoolingShardConnection $conn
-     *
-     * @return integer
+     * @param  string  $distributionValue
+     * @return int
      */
-    function pickShard($distributionValue, PoolingShardConnection $conn);
+    public function pickShard($distributionValue, PoolingShardConnection $conn);
 }

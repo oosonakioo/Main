@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -27,125 +27,106 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class MockingParameterAndReturnTypesTest extends MockeryTestCase
 {
-    public function setup()
+    protected function setup()
     {
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown()
+    protected function teardown()
     {
         $this->container->mockery_close();
     }
 
-    public function testMockingStringReturnType()
+    public function test_mocking_string_return_type()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnString");
-        $this->assertSame("", $mock->returnString());
+        $mock->shouldReceive('returnString');
+        $this->assertSame('', $mock->returnString());
     }
 
-    public function testMockingIntegerReturnType()
+    public function test_mocking_integer_return_type()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnInteger");
+        $mock->shouldReceive('returnInteger');
         $this->assertEquals(0, $mock->returnInteger());
     }
 
-    public function testMockingFloatReturnType()
+    public function test_mocking_float_return_type()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnFloat");
+        $mock->shouldReceive('returnFloat');
         $this->assertSame(0.0, $mock->returnFloat());
     }
 
-    public function testMockingBooleanReturnType()
+    public function test_mocking_boolean_return_type()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnBoolean");
+        $mock->shouldReceive('returnBoolean');
         $this->assertSame(false, $mock->returnBoolean());
     }
 
-    public function testMockingArrayReturnType()
+    public function test_mocking_array_return_type()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnArray");
+        $mock->shouldReceive('returnArray');
         $this->assertSame([], $mock->returnArray());
     }
 
-    public function testMockingGeneratorReturnTyps()
+    public function test_mocking_generator_return_typs()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnGenerator");
+        $mock->shouldReceive('returnGenerator');
         $this->assertInstanceOf("\Generator", $mock->returnGenerator());
     }
 
-    public function testMockingCallableReturnType()
+    public function test_mocking_callable_return_type()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("returnCallable");
+        $mock->shouldReceive('returnCallable');
         $this->assertTrue(is_callable($mock->returnCallable()));
     }
 
-    public function testMockingClassReturnTypes()
+    public function test_mocking_class_return_types()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("withClassReturnType");
+        $mock->shouldReceive('withClassReturnType');
         $this->assertInstanceOf("test\Mockery\TestWithParameterAndReturnType", $mock->withClassReturnType());
     }
 
-    public function testMockingParameterTypes()
+    public function test_mocking_parameter_types()
     {
         $mock = $this->container->mock("test\Mockery\TestWithParameterAndReturnType");
 
-        $mock->shouldReceive("withScalarParameters");
+        $mock->shouldReceive('withScalarParameters');
         $mock->withScalarParameters(1, 1.0, true, 'string');
     }
 }
 
-
 abstract class TestWithParameterAndReturnType
 {
-    public function returnString(): string
-    {
-    }
+    public function returnString(): string {}
 
-    public function returnInteger(): int
-    {
-    }
+    public function returnInteger(): int {}
 
-    public function returnFloat(): float
-    {
-    }
+    public function returnFloat(): float {}
 
-    public function returnBoolean(): bool
-    {
-    }
+    public function returnBoolean(): bool {}
 
-    public function returnArray(): array
-    {
-    }
+    public function returnArray(): array {}
 
-    public function returnCallable(): callable
-    {
-    }
+    public function returnCallable(): callable {}
 
-    public function returnGenerator(): \Generator
-    {
-    }
+    public function returnGenerator(): \Generator {}
 
-    public function withClassReturnType(): TestWithParameterAndReturnType
-    {
-    }
+    public function withClassReturnType(): TestWithParameterAndReturnType {}
 
-    public function withScalarParameters(int $integer, float $float, bool $boolean, string $string)
-    {
-    }
+    public function withScalarParameters(int $integer, float $float, bool $boolean, string $string) {}
 }

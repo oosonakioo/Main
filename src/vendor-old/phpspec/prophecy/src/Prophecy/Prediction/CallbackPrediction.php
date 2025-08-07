@@ -11,11 +11,11 @@
 
 namespace Prophecy\Prediction;
 
-use Prophecy\Call\Call;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Exception\InvalidArgumentException;
 use Closure;
+use Prophecy\Call\Call;
+use Prophecy\Exception\InvalidArgumentException;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Callback prediction.
@@ -29,13 +29,13 @@ class CallbackPrediction implements PredictionInterface
     /**
      * Initializes callback prediction.
      *
-     * @param callable $callback Custom callback
+     * @param  callable  $callback  Custom callback
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
     public function __construct($callback)
     {
-        if (!is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw new InvalidArgumentException(sprintf(
                 'Callable expected as an argument to CallbackPrediction, but got %s.',
                 gettype($callback)
@@ -48,9 +48,7 @@ class CallbackPrediction implements PredictionInterface
     /**
      * Executes preset callback.
      *
-     * @param Call[]         $calls
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
+     * @param  Call[]  $calls
      */
     public function check(array $calls, ObjectProphecy $object, MethodProphecy $method)
     {

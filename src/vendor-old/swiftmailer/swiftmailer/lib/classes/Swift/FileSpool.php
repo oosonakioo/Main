@@ -29,7 +29,7 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     /**
      * Create a new FileSpool.
      *
-     * @param string $path
+     * @param  string  $path
      *
      * @throws Swift_IoException
      */
@@ -37,8 +37,8 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     {
         $this->_path = $path;
 
-        if (!file_exists($this->_path)) {
-            if (!mkdir($this->_path, 0777, true)) {
+        if (! file_exists($this->_path)) {
+            if (! mkdir($this->_path, 0777, true)) {
                 throw new Swift_IoException(sprintf('Unable to create path "%s".', $this->_path));
             }
         }
@@ -57,23 +57,19 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     /**
      * Starts this Spool mechanism.
      */
-    public function start()
-    {
-    }
+    public function start() {}
 
     /**
      * Stops this Spool mechanism.
      */
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     /**
      * Allow to manage the enqueuing retry limit.
      *
      * Default, is ten and allows over 64^20 different fileNames
      *
-     * @param int $limit
+     * @param  int  $limit
      */
     public function setRetryLimit($limit)
     {
@@ -83,21 +79,20 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     /**
      * Queues a message.
      *
-     * @param Swift_Mime_Message $message The message to store
+     * @param  Swift_Mime_Message  $message  The message to store
+     * @return bool
      *
      * @throws Swift_IoException
-     *
-     * @return bool
      */
     public function queueMessage(Swift_Mime_Message $message)
     {
         $ser = serialize($message);
         $fileName = $this->_path.'/'.$this->getRandomString(10);
-        for ($i = 0; $i < $this->_retryLimit; ++$i) {
+        for ($i = 0; $i < $this->_retryLimit; $i++) {
             /* We try an exclusive creation of the file. This is an atomic operation, it avoid locking mechanism */
             $fp = @fopen($fileName.'.message', 'x');
-            if (false !== $fp) {
-                if (false === fwrite($fp, $ser)) {
+            if ($fp !== false) {
+                if (fwrite($fp, $ser) === false) {
                     return false;
                 }
 
@@ -114,7 +109,7 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     /**
      * Execute a recovery if for any reason a process is sending for too long.
      *
-     * @param int $timeout in second Defaults is for very slow smtp responses
+     * @param  int  $timeout  in second Defaults is for very slow smtp responses
      */
     public function recover($timeout = 900)
     {
@@ -133,9 +128,8 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     /**
      * Sends messages using the given transport instance.
      *
-     * @param Swift_Transport $transport        A transport instance
-     * @param string[]        $failedRecipients An array of failures by-reference
-     *
+     * @param  Swift_Transport  $transport  A transport instance
+     * @param  string[]  $failedRecipients  An array of failures by-reference
      * @return int The number of sent e-mail's
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
@@ -143,7 +137,7 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
         $directoryIterator = new DirectoryIterator($this->_path);
 
         /* Start the transport only if there are queued files to send */
-        if (!$transport->isStarted()) {
+        if (! $transport->isStarted()) {
             foreach ($directoryIterator as $file) {
                 if (substr($file->getRealPath(), -8) == '.message') {
                     $transport->start();
@@ -189,8 +183,7 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
     /**
      * Returns a random string needed to generate a fileName for the queue.
      *
-     * @param int $count
-     *
+     * @param  int  $count
      * @return string
      */
     protected function getRandomString($count)
@@ -199,7 +192,7 @@ class Swift_FileSpool extends Swift_ConfigurableSpool
         $base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
         $ret = '';
         $strlen = strlen($base);
-        for ($i = 0; $i < $count; ++$i) {
+        for ($i = 0; $i < $count; $i++) {
             $ret .= $base[((int) rand(0, $strlen - 1))];
         }
 

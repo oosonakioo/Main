@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -25,20 +26,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-if (!is_callable('random_bytes')) {
+if (! is_callable('random_bytes')) {
     /**
      * If the libsodium PHP extension is loaded, we'll use it above any other
      * solution.
      *
      * libsodium-php project:
+     *
      * @ref https://github.com/jedisct1/libsodium-php
      *
-     * @param int $bytes
+     * @param  int  $bytes
+     * @return string
      *
      * @throws Exception
-     *
-     * @return string
      */
     function random_bytes($bytes)
     {

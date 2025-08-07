@@ -2,8 +2,8 @@
 
 namespace Illuminate\Validation;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Support\Str;
 
 class DatabasePresenceVerifier implements PresenceVerifierInterface
 {
@@ -24,7 +24,6 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
     /**
      * Create a new database presence verifier.
      *
-     * @param  \Illuminate\Database\ConnectionResolverInterface  $db
      * @return void
      */
     public function __construct(ConnectionResolverInterface $db)
@@ -38,9 +37,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
      * @param  string  $collection
      * @param  string  $column
      * @param  string  $value
-     * @param  int     $excludeId
+     * @param  int  $excludeId
      * @param  string  $idColumn
-     * @param  array   $extra
      * @return int
      */
     public function getCount($collection, $column, $value, $excludeId = null, $idColumn = null, array $extra = [])
@@ -63,8 +61,6 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
      *
      * @param  string  $collection
      * @param  string  $column
-     * @param  array   $values
-     * @param  array   $extra
      * @return int
      */
     public function getMultiCount($collection, $column, array $values, array $extra = [])

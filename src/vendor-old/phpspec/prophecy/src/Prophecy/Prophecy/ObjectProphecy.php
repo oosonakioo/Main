@@ -11,16 +11,16 @@
 
 namespace Prophecy\Prophecy;
 
-use SebastianBergmann\Comparator\ComparisonFailure;
-use Prophecy\Comparator\Factory as ComparatorFactory;
-use Prophecy\Call\Call;
-use Prophecy\Doubler\LazyDouble;
 use Prophecy\Argument\ArgumentsWildcard;
+use Prophecy\Call\Call;
 use Prophecy\Call\CallCenter;
-use Prophecy\Exception\Prophecy\ObjectProphecyException;
-use Prophecy\Exception\Prophecy\MethodProphecyException;
+use Prophecy\Comparator\Factory as ComparatorFactory;
+use Prophecy\Doubler\LazyDouble;
 use Prophecy\Exception\Prediction\AggregateException;
 use Prophecy\Exception\Prediction\PredictionException;
+use Prophecy\Exception\Prophecy\MethodProphecyException;
+use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Object prophecy.
@@ -30,32 +30,30 @@ use Prophecy\Exception\Prediction\PredictionException;
 class ObjectProphecy implements ProphecyInterface
 {
     private $lazyDouble;
+
     private $callCenter;
+
     private $revealer;
+
     private $comparatorFactory;
 
     /**
      * @var MethodProphecy[][]
      */
-    private $methodProphecies = array();
+    private $methodProphecies = [];
 
     /**
      * Initializes object prophecy.
-     *
-     * @param LazyDouble        $lazyDouble
-     * @param CallCenter        $callCenter
-     * @param RevealerInterface $revealer
-     * @param ComparatorFactory $comparatorFactory
      */
     public function __construct(
         LazyDouble $lazyDouble,
-        CallCenter $callCenter = null,
-        RevealerInterface $revealer = null,
-        ComparatorFactory $comparatorFactory = null
+        ?CallCenter $callCenter = null,
+        ?RevealerInterface $revealer = null,
+        ?ComparatorFactory $comparatorFactory = null
     ) {
         $this->lazyDouble = $lazyDouble;
         $this->callCenter = $callCenter ?: new CallCenter;
-        $this->revealer   = $revealer ?: new Revealer;
+        $this->revealer = $revealer ?: new Revealer;
 
         $this->comparatorFactory = $comparatorFactory ?: ComparatorFactory::getInstance();
     }
@@ -63,8 +61,7 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Forces double to extend specific class.
      *
-     * @param string $class
-     *
+     * @param  string  $class
      * @return $this
      */
     public function willExtend($class)
@@ -77,8 +74,7 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Forces double to implement specific interface.
      *
-     * @param string $interface
-     *
+     * @param  string  $interface
      * @return $this
      */
     public function willImplement($interface)
@@ -91,11 +87,10 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Sets constructor arguments.
      *
-     * @param array $arguments
      *
      * @return $this
      */
-    public function willBeConstructedWith(array $arguments = null)
+    public function willBeConstructedWith(?array $arguments = null)
     {
         $this->lazyDouble->setArguments($arguments);
 
@@ -113,7 +108,7 @@ class ObjectProphecy implements ProphecyInterface
     {
         $double = $this->lazyDouble->getInstance();
 
-        if (null === $double || !$double instanceof ProphecySubjectInterface) {
+        if ($double === null || ! $double instanceof ProphecySubjectInterface) {
             throw new ObjectProphecyException(
                 "Generated double must implement ProphecySubjectInterface, but it does not.\n".
                 'It seems you have wrongly configured doubler without required ClassPatch.',
@@ -129,7 +124,6 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Adds method prophecy to object prophecy.
      *
-     * @param MethodProphecy $methodProphecy
      *
      * @throws \Prophecy\Exception\Prophecy\MethodProphecyException If method prophecy doesn't
      *                                                              have arguments wildcard
@@ -137,10 +131,10 @@ class ObjectProphecy implements ProphecyInterface
     public function addMethodProphecy(MethodProphecy $methodProphecy)
     {
         $argumentsWildcard = $methodProphecy->getArgumentsWildcard();
-        if (null === $argumentsWildcard) {
+        if ($argumentsWildcard === null) {
             throw new MethodProphecyException(sprintf(
                 "Can not add prophecy for a method `%s::%s()`\n".
-                "as you did not specify arguments wildcard for it.",
+                'as you did not specify arguments wildcard for it.',
                 get_class($this->reveal()),
                 $methodProphecy->getMethodName()
             ), $methodProphecy);
@@ -148,8 +142,8 @@ class ObjectProphecy implements ProphecyInterface
 
         $methodName = $methodProphecy->getMethodName();
 
-        if (!isset($this->methodProphecies[$methodName])) {
-            $this->methodProphecies[$methodName] = array();
+        if (! isset($this->methodProphecies[$methodName])) {
+            $this->methodProphecies[$methodName] = [];
         }
 
         $this->methodProphecies[$methodName][] = $methodProphecy;
@@ -158,18 +152,17 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Returns either all or related to single method prophecies.
      *
-     * @param null|string $methodName
-     *
+     * @param  null|string  $methodName
      * @return MethodProphecy[]
      */
     public function getMethodProphecies($methodName = null)
     {
-        if (null === $methodName) {
+        if ($methodName === null) {
             return $this->methodProphecies;
         }
 
-        if (!isset($this->methodProphecies[$methodName])) {
-            return array();
+        if (! isset($this->methodProphecies[$methodName])) {
+            return [];
         }
 
         return $this->methodProphecies[$methodName];
@@ -178,15 +171,13 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Makes specific method call.
      *
-     * @param string $methodName
-     * @param array  $arguments
-     *
+     * @param  string  $methodName
      * @return mixed
      */
     public function makeProphecyMethodCall($methodName, array $arguments)
     {
         $arguments = $this->revealer->reveal($arguments);
-        $return    = $this->callCenter->makeCall($this, $methodName, $arguments);
+        $return = $this->callCenter->makeCall($this, $methodName, $arguments);
 
         return $this->revealer->reveal($return);
     }
@@ -194,9 +185,7 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Finds calls by method name & arguments wildcard.
      *
-     * @param string            $methodName
-     * @param ArgumentsWildcard $wildcard
-     *
+     * @param  string  $methodName
      * @return Call[]
      */
     public function findProphecyMethodCalls($methodName, ArgumentsWildcard $wildcard)
@@ -232,9 +221,7 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Creates new method prophecy using specified method name and arguments.
      *
-     * @param string $methodName
-     * @param array  $arguments
-     *
+     * @param  string  $methodName
      * @return MethodProphecy
      */
     public function __call($methodName, array $arguments)
@@ -249,8 +236,10 @@ class ObjectProphecy implements ProphecyInterface
 
             try {
                 $comparator->assertEquals($argumentsWildcard, $arguments);
+
                 return $prophecy;
-            } catch (ComparisonFailure $failure) {}
+            } catch (ComparisonFailure $failure) {
+            }
         }
 
         return new MethodProphecy($this, $methodName, $arguments);
@@ -259,8 +248,7 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Tries to get property value from double.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return mixed
      */
     public function __get($name)
@@ -271,8 +259,8 @@ class ObjectProphecy implements ProphecyInterface
     /**
      * Tries to set property value to double.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param  string  $name
+     * @param  mixed  $value
      */
     public function __set($name, $value)
     {

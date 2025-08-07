@@ -11,99 +11,105 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class UserController extends AdminController
 {
-	public function index()
-	{
-		$returnview = 'admin.users';
+    public function index()
+    {
+        $returnview = 'admin.users';
 
-		$users = User::where('id','>', '1')
-		 	->orderBy('updated_at', 'desc')
-			->get();
-		return view($returnview, [
-			'users' => $users,
-		]);
-	}
+        $users = User::where('id', '>', '1')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-	public function create()
-	{
-		$returnview = 'admin.users-create';
+        return view($returnview, [
+            'users' => $users,
+        ]);
+    }
 
-		$users = new User();
-		return view($returnview, [
-			'users' => $users,
-		]);
-	}
+    public function create()
+    {
+        $returnview = 'admin.users-create';
 
-	public function store(Request $request)
-	{
-		$redirect = 'admin/users';
+        $users = new User;
 
-		$this->doValidate($request);
-		$users = new User();
-		$this->doSave($request, $users);
-		return Helper::redirect($redirect);
-	}
+        return view($returnview, [
+            'users' => $users,
+        ]);
+    }
 
-	public function edit($id)
-	{
-		$returnview = 'admin.users-create';
+    public function store(Request $request)
+    {
+        $redirect = 'admin/users';
 
-		$users = User::find($id);
-		return view($returnview, [
-			'users' => $users,
-		]);
-	}
+        $this->doValidate($request);
+        $users = new User;
+        $this->doSave($request, $users);
 
-	public function update(Request $request, $id)
-	{
-		$redirect = 'admin/users';
+        return Helper::redirect($redirect);
+    }
 
-		$this->doValidate($request);
-		$users = User::find($id);
-		$this->doSave($request, $users);
-		return Helper::redirect($redirect);
-	}
+    public function edit($id)
+    {
+        $returnview = 'admin.users-create';
 
-	public function destroy($id)
-	{
-		$count = User::destroy($id);
-		return $count == 1 ? $id : -1;
-	}
+        $users = User::find($id);
 
-	private function doValidate(Request $request)
-	{
-		$validate = [];
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			//$title = 'title_' . $locale;
-			//$detail = 'detail_' . $locale;
+        return view($returnview, [
+            'users' => $users,
+        ]);
+    }
 
-			$validate['name'] = 'required';
-			$validate['email'] = 'required|email';
-			$validate['password'] = 'required';
-		}
-		$this->validate($request, $validate);
-	}
+    public function update(Request $request, $id)
+    {
+        $redirect = 'admin/users';
 
-	private function doSave(Request $request, $users)
-	{
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			//$title = 'title_' . $locale;
-			//$detail = 'detail_' . $locale;
+        $this->doValidate($request);
+        $users = User::find($id);
+        $this->doSave($request, $users);
 
-			//$lists->translateOrNew($locale)->title = $request[$title];
-			//$lists->translateOrNew($locale)->detail = $request[$detail];
-		}
+        return Helper::redirect($redirect);
+    }
 
-		if (Input::get('permission') == '') {
-		$permission = '';
-		} else {
-			$permission = implode(',', Input::get('permission'));
-			$permission = ','. $permission. ',';
-		}
+    public function destroy($id)
+    {
+        $count = User::destroy($id);
 
-		$users->name = $request->name;
-		$users->email = $request->email;
-		$users->password = bcrypt($request->password);
-		$users->permission = $permission;
-		$users->save();
-	}
+        return $count == 1 ? $id : -1;
+    }
+
+    private function doValidate(Request $request)
+    {
+        $validate = [];
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            // $title = 'title_' . $locale;
+            // $detail = 'detail_' . $locale;
+
+            $validate['name'] = 'required';
+            $validate['email'] = 'required|email';
+            $validate['password'] = 'required';
+        }
+        $this->validate($request, $validate);
+    }
+
+    private function doSave(Request $request, $users)
+    {
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            // $title = 'title_' . $locale;
+            // $detail = 'detail_' . $locale;
+
+            // $lists->translateOrNew($locale)->title = $request[$title];
+            // $lists->translateOrNew($locale)->detail = $request[$detail];
+        }
+
+        if (Input::get('permission') == '') {
+            $permission = '';
+        } else {
+            $permission = implode(',', Input::get('permission'));
+            $permission = ','.$permission.',';
+        }
+
+        $users->name = $request->name;
+        $users->email = $request->email;
+        $users->password = bcrypt($request->password);
+        $users->permission = $permission;
+        $users->save();
+    }
 }

@@ -2,13 +2,12 @@
 
 namespace Collective\Html\Eloquent;
 
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
-use Illuminate\Support\Str;
 
 trait FormAccessible
 {
-
     /**
      * A cached ReflectionClass instance for $this
      *
@@ -17,8 +16,7 @@ trait FormAccessible
     protected $reflection;
 
     /**
-     * @param string $key
-     *
+     * @param  string  $key
      * @return mixed
      */
     public function getFormValue($key)
@@ -46,8 +44,6 @@ trait FormAccessible
     }
 
     /**
-     * @param $key
-     *
      * @return bool
      */
     protected function hasFormMutator($key)
@@ -55,26 +51,24 @@ trait FormAccessible
         $methods = $this->getReflection()->getMethods(ReflectionMethod::IS_PUBLIC);
 
         $mutator = collect($methods)
-          ->first(function ($index, ReflectionMethod $method) use ($key) {
-              return $method->getName() == 'form' . Str::studly($key) . 'Attribute';
-          });
+            ->first(function ($index, ReflectionMethod $method) use ($key) {
+                return $method->getName() == 'form'.Str::studly($key).'Attribute';
+            });
 
         return (bool) $mutator;
     }
 
     /**
-     * @param $key
-     * @param $value
-     *
      * @return mixed
      */
     private function mutateFormAttribute($key, $value)
     {
-        return $this->{'form' . Str::studly($key) . 'Attribute'}($value);
+        return $this->{'form'.Str::studly($key).'Attribute'}($value);
     }
 
     /**
      * Get a ReflectionClass Instance
+     *
      * @return ReflectionClass
      */
     protected function getReflection()

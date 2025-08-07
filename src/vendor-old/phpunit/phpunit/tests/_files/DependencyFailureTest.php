@@ -1,22 +1,19 @@
 <?php
+
 class DependencyFailureTest extends PHPUnit_Framework_TestCase
 {
-    public function testOne()
+    public function test_one()
     {
         $this->fail();
     }
 
     /**
-     * @depends testOne
+     * @depends test_one
      */
-    public function testTwo()
-    {
-    }
+    public function test_two() {}
 
     /**
-     * @depends testTwo
+     * @depends test_two
      */
-    public function testThree()
-    {
-    }
+    public function test_three() {}
 }

@@ -15,16 +15,16 @@ use Monolog\TestCase;
 
 class WebProcessorTest extends TestCase
 {
-    public function testProcessor()
+    public function test_processor()
     {
-        $server = array(
-            'REQUEST_URI'    => 'A',
-            'REMOTE_ADDR'    => 'B',
+        $server = [
+            'REQUEST_URI' => 'A',
+            'REMOTE_ADDR' => 'B',
             'REQUEST_METHOD' => 'C',
-            'HTTP_REFERER'   => 'D',
-            'SERVER_NAME'    => 'F',
-            'UNIQUE_ID'      => 'G',
-        );
+            'HTTP_REFERER' => 'D',
+            'SERVER_NAME' => 'F',
+            'UNIQUE_ID' => 'G',
+        ];
 
         $processor = new WebProcessor($server);
         $record = $processor($this->getRecord());
@@ -36,77 +36,77 @@ class WebProcessorTest extends TestCase
         $this->assertEquals($server['UNIQUE_ID'], $record['extra']['unique_id']);
     }
 
-    public function testProcessorDoNothingIfNoRequestUri()
+    public function test_processor_do_nothing_if_no_request_uri()
     {
-        $server = array(
-            'REMOTE_ADDR'    => 'B',
+        $server = [
+            'REMOTE_ADDR' => 'B',
             'REQUEST_METHOD' => 'C',
-        );
+        ];
         $processor = new WebProcessor($server);
         $record = $processor($this->getRecord());
         $this->assertEmpty($record['extra']);
     }
 
-    public function testProcessorReturnNullIfNoHttpReferer()
+    public function test_processor_return_null_if_no_http_referer()
     {
-        $server = array(
-            'REQUEST_URI'    => 'A',
-            'REMOTE_ADDR'    => 'B',
+        $server = [
+            'REQUEST_URI' => 'A',
+            'REMOTE_ADDR' => 'B',
             'REQUEST_METHOD' => 'C',
-            'SERVER_NAME'    => 'F',
-        );
+            'SERVER_NAME' => 'F',
+        ];
         $processor = new WebProcessor($server);
         $record = $processor($this->getRecord());
         $this->assertNull($record['extra']['referrer']);
     }
 
-    public function testProcessorDoesNotAddUniqueIdIfNotPresent()
+    public function test_processor_does_not_add_unique_id_if_not_present()
     {
-        $server = array(
-            'REQUEST_URI'    => 'A',
-            'REMOTE_ADDR'    => 'B',
+        $server = [
+            'REQUEST_URI' => 'A',
+            'REMOTE_ADDR' => 'B',
             'REQUEST_METHOD' => 'C',
-            'SERVER_NAME'    => 'F',
-        );
+            'SERVER_NAME' => 'F',
+        ];
         $processor = new WebProcessor($server);
         $record = $processor($this->getRecord());
         $this->assertFalse(isset($record['extra']['unique_id']));
     }
 
-    public function testProcessorAddsOnlyRequestedExtraFields()
+    public function test_processor_adds_only_requested_extra_fields()
     {
-        $server = array(
-            'REQUEST_URI'    => 'A',
-            'REMOTE_ADDR'    => 'B',
+        $server = [
+            'REQUEST_URI' => 'A',
+            'REMOTE_ADDR' => 'B',
             'REQUEST_METHOD' => 'C',
-            'SERVER_NAME'    => 'F',
-        );
+            'SERVER_NAME' => 'F',
+        ];
 
-        $processor = new WebProcessor($server, array('url', 'http_method'));
+        $processor = new WebProcessor($server, ['url', 'http_method']);
         $record = $processor($this->getRecord());
 
-        $this->assertSame(array('url' => 'A', 'http_method' => 'C'), $record['extra']);
+        $this->assertSame(['url' => 'A', 'http_method' => 'C'], $record['extra']);
     }
 
-    public function testProcessorConfiguringOfExtraFields()
+    public function test_processor_configuring_of_extra_fields()
     {
-        $server = array(
-            'REQUEST_URI'    => 'A',
-            'REMOTE_ADDR'    => 'B',
+        $server = [
+            'REQUEST_URI' => 'A',
+            'REMOTE_ADDR' => 'B',
             'REQUEST_METHOD' => 'C',
-            'SERVER_NAME'    => 'F',
-        );
+            'SERVER_NAME' => 'F',
+        ];
 
-        $processor = new WebProcessor($server, array('url' => 'REMOTE_ADDR'));
+        $processor = new WebProcessor($server, ['url' => 'REMOTE_ADDR']);
         $record = $processor($this->getRecord());
 
-        $this->assertSame(array('url' => 'B'), $record['extra']);
+        $this->assertSame(['url' => 'B'], $record['extra']);
     }
 
     /**
      * @expectedException UnexpectedValueException
      */
-    public function testInvalidData()
+    public function test_invalid_data()
     {
         new WebProcessor(new \stdClass);
     }

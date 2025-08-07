@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,6 +32,7 @@ use Doctrine\DBAL\VersionAwarePlatformDriver;
  * Abstract base implementation of the {@link Doctrine\DBAL\Driver} interface for MySQL based drivers.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -120,24 +122,24 @@ abstract class AbstractMySQLDriver implements Driver, ExceptionConverterDriver, 
      */
     public function createDatabasePlatformForVersion($version)
     {
-        if ( ! preg_match('/^(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?)?/', $version, $versionParts)) {
+        if (! preg_match('/^(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?)?/', $version, $versionParts)) {
             throw DBALException::invalidPlatformVersionSpecified(
                 $version,
                 '<major_version>.<minor_version>.<patch_version>'
             );
         }
 
-        if (false !== stripos($version, 'mariadb')) {
+        if (stripos($version, 'mariadb') !== false) {
             return $this->getDatabasePlatform();
         }
 
         $majorVersion = $versionParts['major'];
         $minorVersion = isset($versionParts['minor']) ? $versionParts['minor'] : 0;
         $patchVersion = isset($versionParts['patch']) ? $versionParts['patch'] : 0;
-        $version      = $majorVersion . '.' . $minorVersion . '.' . $patchVersion;
+        $version = $majorVersion.'.'.$minorVersion.'.'.$patchVersion;
 
         if (version_compare($version, '5.7', '>=')) {
-            return new MySQL57Platform();
+            return new MySQL57Platform;
         }
 
         return $this->getDatabasePlatform();
@@ -162,7 +164,7 @@ abstract class AbstractMySQLDriver implements Driver, ExceptionConverterDriver, 
      */
     public function getDatabasePlatform()
     {
-        return new MySqlPlatform();
+        return new MySqlPlatform;
     }
 
     /**

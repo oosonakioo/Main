@@ -3,9 +3,9 @@
 namespace Illuminate\Cache;
 
 use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 
 class FileStore implements Store
 {
@@ -28,7 +28,6 @@ class FileStore implements Store
     /**
      * Create a new file cache store instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $directory
      * @return void
      */
@@ -93,8 +92,8 @@ class FileStore implements Store
      * Store an item in the cache for a given number of minutes.
      *
      * @param  string  $key
-     * @param  mixed   $value
-     * @param  int     $minutes
+     * @param  mixed  $value
+     * @param  int  $minutes
      * @return void
      */
     public function put($key, $value, $minutes)
@@ -123,7 +122,7 @@ class FileStore implements Store
      * Increment the value of an item in the cache.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int
      */
     public function increment($key, $value = 1)
@@ -141,7 +140,7 @@ class FileStore implements Store
      * Decrement the value of an item in the cache.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int
      */
     public function decrement($key, $value = 1)
@@ -153,7 +152,7 @@ class FileStore implements Store
      * Store an item in the cache indefinitely.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function forever($key, $value)

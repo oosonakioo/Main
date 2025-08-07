@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Driver;
  *
  * @link   www.doctrine-project.org
  * @since  2.5
+ *
  * @author Till Klampaeckel <till@php.net>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */

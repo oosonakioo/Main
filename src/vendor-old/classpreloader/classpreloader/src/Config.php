@@ -41,8 +41,7 @@ class Config
     /**
      * Add the filename owned by the config.
      *
-     * @param string $filename
-     *
+     * @param  string  $filename
      * @return \ClassPreloader\Config
      */
     public function addFile($filename)
@@ -62,7 +61,7 @@ class Config
         $filenames = [];
         foreach ($this->filenames as $f) {
             foreach ($this->inclusiveFilters as $filter) {
-                if (!preg_match($filter, $f)) {
+                if (! preg_match($filter, $f)) {
                     continue 2;
                 }
             }
@@ -82,8 +81,7 @@ class Config
      *
      * We're filtering the classes using a regular expression.
      *
-     * @param string $pattern
-     *
+     * @param  string  $pattern
      * @return \ClassPreloader\Config
      */
     public function addExclusiveFilter($pattern)
@@ -98,8 +96,7 @@ class Config
      *
      * We're filtering the classes using a regular expression.
      *
-     * @param string $pattern Regular expression pattern
-     *
+     * @param  string  $pattern  Regular expression pattern
      * @return \ClassPreloader\Config
      */
     public function addInclusiveFilter($pattern)
