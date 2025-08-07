@@ -9,7 +9,6 @@ class Issues extends Model
 {
     use SoftDeletes;
 
-
     public function issueTopic()
     {
         return $this->belongsTo(\App\Models\Categories::class, 'issue_topic_id');

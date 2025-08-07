@@ -10,5 +10,4 @@ class Subscribe extends Model
     use SoftDeletes;
 
     protected $table = 'subscribe';
-
 }
