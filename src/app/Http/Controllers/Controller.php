@@ -8,7 +8,6 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Controller
 {
-
     public function __construct()
     {
         $lang = LaravelLocalization::getCurrentLocale();
