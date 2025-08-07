@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateMedia extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -55,4 +55,4 @@ class CreateMedia extends Migration
         Schema::drop('medias_gallerys');
         Schema::drop('medias');
     }
-}
+};

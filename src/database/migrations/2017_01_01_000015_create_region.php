@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateRegion extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -45,4 +45,4 @@ class CreateRegion extends Migration
         Schema::drop('regions_translations');
         Schema::drop('regions');
     }
-}
+};

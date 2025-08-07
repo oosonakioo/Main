@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateIssues extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -37,4 +37,4 @@ class CreateIssues extends Migration
         $table->dropColumn('deleted_at');
         Schema::drop('issues');
     }
-}
+};

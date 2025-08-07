@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateContents extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -40,4 +40,4 @@ class CreateContents extends Migration
         Schema::drop('contents_translations');
         Schema::drop('contents');
     }
-}
+};

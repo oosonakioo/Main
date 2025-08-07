@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateNews extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -45,4 +45,4 @@ class CreateNews extends Migration
         Schema::drop('news_translations');
         Schema::drop('news');
     }
-}
+};

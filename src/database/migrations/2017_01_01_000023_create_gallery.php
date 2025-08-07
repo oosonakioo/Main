@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateGallery extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -43,4 +43,4 @@ class CreateGallery extends Migration
         Schema::drop('gallerys_translations');
         Schema::drop('gallerys');
     }
-}
+};
