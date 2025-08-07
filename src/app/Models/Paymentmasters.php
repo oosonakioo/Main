@@ -8,6 +8,6 @@ class Paymentmasters extends Model
 	protected $fillable = ['docuno', 'paymentstatus'];
 
 	public function price() {
-			return $this->hasMany('App\Models\Paymentdetails', 'docuno_id', 'docuno');
+			return $this->hasMany(\App\Models\Paymentdetails::class, 'docuno_id', 'docuno');
 	}
 }

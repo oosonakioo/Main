@@ -10,10 +10,10 @@ class Maillists extends Model
 
 	public function getdocuno()
 	{
-		return $this->belongsTo('App\Models\Paymentmasters');
+		return $this->belongsTo(\App\Models\Paymentmasters::class);
 	}
 	public function gettemplates()
 	{
-		return $this->belongsTo('App\Models\Templates');
+		return $this->belongsTo(\App\Models\Templates::class);
 	}
 }
