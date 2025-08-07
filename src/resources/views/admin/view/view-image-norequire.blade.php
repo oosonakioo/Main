@@ -2,7 +2,7 @@
     $imageField = empty($key) ? "images" : $key;
 ?>
 <div class="form-group">
-    <label class="form-control-static col-md-2" for="{{ $imageField }}">{{ trans('admin.contents-image') }} {!! $label or "" !!}</label>
+    <label class="form-control-static col-md-2" for="{{ $imageField }}">{{ trans('admin.contents-image') }} {!! $label ?? "" !!}</label>
     <div class="col-md-6">
         <div class="input-group">
             <input class="form-control" type="text" id="{{ $imageField }}" name="{{ $imageField }}"
