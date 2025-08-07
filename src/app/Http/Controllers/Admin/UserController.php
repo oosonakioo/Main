@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\User;
 use Helper;
@@ -12,7 +13,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class UserController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $returnview = 'admin.users';
 
@@ -25,7 +26,7 @@ class UserController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $returnview = 'admin.users-create';
 
@@ -47,7 +48,7 @@ class UserController extends AdminController
         return Helper::redirect($redirect);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $returnview = 'admin.users-create';
 

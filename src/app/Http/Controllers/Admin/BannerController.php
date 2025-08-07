@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Banners;
 use Helper;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 
 class BannerController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $banners = [
             Banners::firstOrCreate(['menu' => 'home-1']),

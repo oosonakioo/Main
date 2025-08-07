@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Articles;
 use App\Models\Categories;
@@ -11,7 +12,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ArticlesController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $articles = Articles::orderBy('articles_date', 'desc')->get();
 
@@ -20,7 +21,7 @@ class ArticlesController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $articles = new Articles;
 
@@ -39,7 +40,7 @@ class ArticlesController extends AdminController
         return Helper::redirect('admin/articles');
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $articles = Articles::find($id);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use Auth;
 use Helper;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $user = Auth::user();
 

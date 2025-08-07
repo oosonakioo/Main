@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Categories;
 use App\Models\Products;
@@ -12,7 +13,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ProductController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $menu = $this->getCategoryURL();
 
@@ -32,7 +33,7 @@ class ProductController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $menu = $this->getCategoryURL();
 
@@ -60,7 +61,7 @@ class ProductController extends AdminController
         return Helper::redirect($redirect);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $menu = $this->getCategoryURL();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Paymentmasters;
 use DateTime;
@@ -12,7 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportsController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $paymentmaster = Paymentmasters::where('paymentstatus', 4)
             ->orderBy('updated_at', 'desc')

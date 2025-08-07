@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AdminController;
 use App\Models\Maillists;
 use App\Models\Paymentdetails;
@@ -21,7 +23,7 @@ use Screen\Capture;
 
 class MaillistsController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $maillists = Maillists::orderBy('updated_at', 'desc')->get();
 
@@ -30,7 +32,7 @@ class MaillistsController extends AdminController
         ]);
     }
 
-    public function genmail()
+    public function genmail(): JsonResponse
     {
         // File::requireOnce('Rundiz/Number/NumberEng.php');
         require 'Rundiz/Number/NumberEng.php';
@@ -271,7 +273,7 @@ class MaillistsController extends AdminController
         return response()->json($response);
     }
 
-    public function sendmail(Request $request)
+    public function sendmail(Request $request): JsonResponse
     {
 
         // File::requireOnce('mail/PHPMailerAutoload.php');

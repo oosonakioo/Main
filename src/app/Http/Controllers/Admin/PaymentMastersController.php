@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Maillists;
 use App\Models\Paymentdetails;
@@ -14,7 +16,7 @@ use Illuminate\Http\Request;
 
 class PaymentMastersController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $paymentmaster = Paymentmasters::where('paymentstatus', '<', 6)
             ->where('active', true)
@@ -25,7 +27,7 @@ class PaymentMastersController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $paymentmaster = new Paymentmasters;
 
@@ -34,7 +36,7 @@ class PaymentMastersController extends AdminController
         ]);
     }
 
-    public function batchdelete()
+    public function batchdelete(): JsonResponse
     {
         $del_data = Paymentmasters::where('paymentstatus', '<', 6)
             ->whereRaw('shipdate < date_add(now(), interval -1 month)')->get();
@@ -71,7 +73,7 @@ class PaymentMastersController extends AdminController
 
     }
 
-    public function save(Request $request)
+    public function save(Request $request): JsonResponse
     {
         $data_ok = true;
         // $this->doValidate($request);
@@ -117,7 +119,7 @@ class PaymentMastersController extends AdminController
         return Helper::redirect($redirect);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $paymentmaster = Paymentmasters::find($id);
 

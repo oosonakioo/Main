@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Medias;
 use App\Models\MediasGallery;
@@ -12,7 +13,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class GallerysController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $menu = $this->getDownloadURL();
         $medias = Medias::where('menu', 'gallerys')
@@ -25,7 +26,7 @@ class GallerysController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $menu = $this->getDownloadURL();
         $medias = new Medias;
@@ -48,7 +49,7 @@ class GallerysController extends AdminController
         return Helper::redirect($returnview);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $menu = $this->getDownloadURL();
         $medias = Medias::find($id);

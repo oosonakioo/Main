@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Categories;
 use Helper;
@@ -11,7 +12,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class CategoryController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $menu = $this->getCategoryURL();
 
@@ -25,7 +26,7 @@ class CategoryController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $menu = $this->getCategoryURL();
 
@@ -49,7 +50,7 @@ class CategoryController extends AdminController
         return Helper::redirect($redirect);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $menu = $this->getCategoryURL();
 

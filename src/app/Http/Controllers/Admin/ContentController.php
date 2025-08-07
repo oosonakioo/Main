@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Contents;
 use Helper;
@@ -10,7 +11,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ContentController extends AdminController
 {
-    public function index($menu)
+    public function index($menu): View
     {
         $title = trans('admin.content-'.$menu);
         $content = Contents::firstOrNew([Contents::MENU => $menu]);

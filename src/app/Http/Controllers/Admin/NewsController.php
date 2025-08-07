@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Categories;
 use App\Models\News;
@@ -11,7 +12,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class NewsController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $news = News::orderBy('sort', 'asc')->get();
 
@@ -20,7 +21,7 @@ class NewsController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $news = new News;
 
@@ -39,7 +40,7 @@ class NewsController extends AdminController
         return Helper::redirect('admin/news');
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $news = News::find($id);
 

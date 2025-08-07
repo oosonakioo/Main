@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Students;
 use Helper;
@@ -9,7 +11,7 @@ use Illuminate\Http\Request;
 
 class StudentController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $student = Students::orderBy('updated_at', 'desc')->get();
 
@@ -18,7 +20,7 @@ class StudentController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $student = new Students;
 
@@ -27,7 +29,7 @@ class StudentController extends AdminController
         ]);
     }
 
-    public function save(Request $request)
+    public function save(Request $request): JsonResponse
     {
         $data_ok = true;
         // $this->doValidate($request);
@@ -70,7 +72,7 @@ class StudentController extends AdminController
         return Helper::redirect('admin/student');
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $student = Students::find($id);
 

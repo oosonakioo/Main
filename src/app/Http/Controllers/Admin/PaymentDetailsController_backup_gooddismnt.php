@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Paymentdetails;
 use App\Models\Paymentmasters;
@@ -10,7 +12,7 @@ use Illuminate\Http\Request;
 
 class PaymentDetailsController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $paymentdetail = Paymentdetails::where('active', true)
             ->orderBy('updated_at', 'desc')
@@ -27,7 +29,7 @@ class PaymentDetailsController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $paymentdetail = new Paymentdetails;
         $payment = Paymentmasters::where('active', true)
@@ -40,7 +42,7 @@ class PaymentDetailsController extends AdminController
         ]);
     }
 
-    public function save(Request $request)
+    public function save(Request $request): JsonResponse
     {
         $data_ok = true;
 
@@ -86,7 +88,7 @@ class PaymentDetailsController extends AdminController
         return Helper::redirect($redirect);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $paymentdetail = Paymentdetails::find($id);
         $payment = Paymentmasters::where('active', true)

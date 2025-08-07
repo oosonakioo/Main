@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Issues;
 
 class IssueController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $issues = Issues::orderBy('created_at', 'desc')->get();
 

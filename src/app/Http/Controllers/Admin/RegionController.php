@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Lists;
 use App\Models\Regions;
@@ -12,7 +13,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RegionController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $menu = $this->getCategoryURL();
 

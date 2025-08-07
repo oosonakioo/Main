@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Paymentdetails;
 use App\Models\Paymentmasters;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Config;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): View
     {
 
         return view('home.index', [
@@ -22,7 +23,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function invoice($studentid, $masterid)
+    public function invoice($studentid, $masterid): View
     {
         require 'Rundiz/Number/NumberEng.php';
 
@@ -100,7 +101,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function payment($encryptionstr)
+    public function payment($encryptionstr): View
     {
         require 'Rundiz/Number/NumberEng.php';
 
@@ -187,7 +188,7 @@ class HomeController extends Controller
         }
     }
 
-    public function paymentsuccess(Request $request)
+    public function paymentsuccess(Request $request): View
     {
 
         require 'Rundiz/Number/NumberEng.php';
@@ -243,14 +244,14 @@ class HomeController extends Controller
         }
     }
 
-    public function paymentfail(Request $request)
+    public function paymentfail(Request $request): View
     {
         return view('home.paymenterror', [
             'errormsg' => 'Payment transaction failed. We received an error processing your card. Please enter your information again or try a different card.',
         ]);
     }
 
-    public function paymentcancel(Request $request)
+    public function paymentcancel(Request $request): View
     {
         return view('home.paymenterror', [
             'errormsg' => 'Payment transaction failed. We received an error processing your card. Please enter your information again or try a different card.',

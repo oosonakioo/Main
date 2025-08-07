@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Settings;
 use Helper;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 
 class SettingController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $title = Settings::firstOrCreate([Settings::KEY => Settings::WEB_TITLE]);
         $desc = Settings::firstOrCreate([Settings::KEY => Settings::WEB_DESC]);

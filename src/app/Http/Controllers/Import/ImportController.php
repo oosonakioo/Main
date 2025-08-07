@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Import;
 
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\CustInfoes;
 use App\Models\PaymentDetails;
@@ -10,7 +12,7 @@ use Illuminate\Http\Request;
 
 class ImportController extends Controller
 {
-    public function custinfo()
+    public function custinfo(): View
     {
 
         return view('import.custInfo', [
@@ -18,7 +20,7 @@ class ImportController extends Controller
         ]);
     }
 
-    public function invoice()
+    public function invoice(): View
     {
 
         return view('import.invoice', [
@@ -26,7 +28,7 @@ class ImportController extends Controller
         ]);
     }
 
-    public function uploadCustInfo(Request $request)
+    public function uploadCustInfo(Request $request): JsonResponse
     {
         $inputArray = $request->all();
         $json = (array) json_decode($inputArray['json']);
@@ -53,7 +55,7 @@ class ImportController extends Controller
         return response()->json($response);
     }
 
-    public function uploadInvoice(Request $request)
+    public function uploadInvoice(Request $request): JsonResponse
     {
         $inputArray = $request->all();
         $json = (array) json_decode($inputArray['json']);

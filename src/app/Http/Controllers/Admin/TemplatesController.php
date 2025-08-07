@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Templates;
 use Helper;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 
 class TemplatesController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $template = Templates::orderBy('updated_at', 'desc')
             ->get();
@@ -19,7 +20,7 @@ class TemplatesController extends AdminController
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         $template = new Templates;
         // set default
@@ -41,7 +42,7 @@ class TemplatesController extends AdminController
         return Helper::redirect('admin/template');
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $template = Templates::find($id);
 

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Subscribe;
 
 class SubscribeController extends AdminController
 {
-    public function index()
+    public function index(): View
     {
         $subscribes = Subscribe::all();
 
@@ -16,7 +17,7 @@ class SubscribeController extends AdminController
         ]);
     }
 
-    public function history()
+    public function history(): View
     {
         $subscribes = Subscribe::onlyTrashed()->get();
 
