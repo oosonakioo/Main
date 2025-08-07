@@ -6,7 +6,16 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
-    ->withProviders()
+    ->withProviders([
+        \Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+        \Dimsav\Translatable\TranslatableServiceProvider::class,
+        \Jenssegers\Date\DateServiceProvider::class,
+        \Barryvdh\Elfinder\ElfinderServiceProvider::class,
+        \Mews\Purifier\PurifierServiceProvider::class,
+        \Mews\Captcha\CaptchaServiceProvider::class,
+        \Maatwebsite\Excel\ExcelServiceProvider::class,
+        \niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
+    ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         // api: __DIR__.'/../routes/api.php',
