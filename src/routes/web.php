@@ -11,22 +11,15 @@ Route::get('elfinder/popup', '\Barryvdh\Elfinder\Barryvdh\Elfinder\ElfinderContr
 /***
  * Authen page
  */
-Route::group([
-    'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['web'],
-], function () {
+Route::prefix(LaravelLocalization::setLocale())->middleware('web')->group(function () {
     Route::auth();
 });
 
 /***
  * Admin page
  */
-Route::group(
-    [
-        'prefix' => LaravelLocalization::setLocale().'/admin',
-        'middleware' => ['web', 'auth', 'localeSessionRedirect', 'localizationRedirect'],
-        'namespace' => 'Admin',
-    ], function () {
+Route::prefix(LaravelLocalization::setLocale().'/admin')->middleware('web', 'auth', 'localeSessionRedirect', 'localizationRedirect')->namespace('Admin')->group(
+    function () {
         Route::get('profile', 'ProfileController@index');
         Route::post('profile', 'ProfileController@update');
 
@@ -138,12 +131,8 @@ Route::group(
 /***
  * Home page
  */
-Route::group(
-    [
-        'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['web', 'localeSessionRedirect', 'localizationRedirect'],
-        'namespace' => 'Home',
-    ], function () {
+Route::prefix(LaravelLocalization::setLocale())->middleware('web', 'localeSessionRedirect', 'localizationRedirect')->namespace('Home')->group(
+    function () {
         Route::get('/', 'HomeController@index');
         Route::get('home', 'HomeController@index');
 
@@ -165,7 +154,7 @@ Route::group(
         // Route::get('paymentinfo', 'HomeController@paymentinfo');
     });
 
-Route::group(['middleware' => 'web', 'namespace' => 'Home'], function () {
+Route::middleware('web')->namespace('Home')->group(function () {
     Route::get('/set/{value}', 'SessionController@set');
     Route::get('/get', 'SessionController@get');
     Route::get('/destroy', 'SessionController@destroy');
