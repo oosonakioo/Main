@@ -13,6 +13,6 @@ class Regions extends Model
 
     public function Lists()
     {
-        return $this->belongsTo('App\Models\Lists');
+        return $this->belongsTo(\App\Models\Lists::class);
     }
 }

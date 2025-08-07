@@ -10,6 +10,6 @@ class Paymentmasters extends Model
 
     public function price()
     {
-        return $this->hasMany('App\Models\Paymentdetails', 'docuno_id', 'docuno');
+        return $this->hasMany(\App\Models\Paymentdetails::class, 'docuno_id', 'docuno');
     }
 }
