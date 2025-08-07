@@ -120,7 +120,6 @@ class SchemaDiff
      *
      * This way it is ensured that assets are deleted which might not be relevant to the metadata schema at all.
      *
-     * @param  \Doctrine\DBAL\Platforms\AbstractPlatform  $platform
      * @return array
      */
     public function toSaveSql(AbstractPlatform $platform)
@@ -129,7 +128,6 @@ class SchemaDiff
     }
 
     /**
-     * @param  \Doctrine\DBAL\Platforms\AbstractPlatform  $platform
      * @return array
      */
     public function toSql(AbstractPlatform $platform)
@@ -138,7 +136,6 @@ class SchemaDiff
     }
 
     /**
-     * @param  \Doctrine\DBAL\Platforms\AbstractPlatform  $platform
      * @param  bool  $saveMode
      * @return array
      */

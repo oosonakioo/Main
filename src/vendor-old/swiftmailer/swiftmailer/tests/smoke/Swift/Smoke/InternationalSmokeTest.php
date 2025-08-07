@@ -29,8 +29,8 @@ class Swift_Smoke_InternationalSmokeTest extends SwiftMailerSmokeTestCase
                 'Δεν βρέθηκαν λέξεις.'
             )
             ->attach(Swift_Attachment::fromPath($this->_attFile)
-            ->setContentType('application/zip')
-            ->setFilename('κείμενο, εδάφιο, θέμα.zip')
+                ->setContentType('application/zip')
+                ->setFilename('κείμενο, εδάφιο, θέμα.zip')
             );
         $this->assertEquals(1, $mailer->send($message),
             '%s: The smoke test should send a single message'

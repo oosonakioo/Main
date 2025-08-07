@@ -250,7 +250,8 @@ class PHPExcel
      * return string|null|array
      */
     public function getRibbonXMLData($What = 'all') // we need some constants here...
-    {$ReturnData = null;
+    {
+        $ReturnData = null;
         $What = strtolower($What);
         switch ($What) {
             case 'all':

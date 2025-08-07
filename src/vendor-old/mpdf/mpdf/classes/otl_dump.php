@@ -3983,16 +3983,16 @@ $MarkAttachmentType = '.var_export($this->MarkAttachmentType, true).';
                 $savepos = ftell($this->fh);
                 $this->getGlyphs($glyphIdx, $start, $glyphSet, $subsetglyphs);
                 $this->seek($savepos);
-                if ($flags&GF_WORDS) {
+                if ($flags & GF_WORDS) {
                     $this->skip(4);
                 } else {
                     $this->skip(2);
                 }
-                if ($flags&GF_SCALE) {
+                if ($flags & GF_SCALE) {
                     $this->skip(2);
-                } elseif ($flags&GF_XYSCALE) {
+                } elseif ($flags & GF_XYSCALE) {
                     $this->skip(4);
-                } elseif ($flags&GF_TWOBYTWO) {
+                } elseif ($flags & GF_TWOBYTWO) {
                     $this->skip(8);
                 }
             }

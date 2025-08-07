@@ -171,6 +171,6 @@ if (! function_exists('codeHex2utf')) {
             return '&#x'.$hex.';';
         }
 
-        return code2utf($num,$lo);
+        return code2utf($num, $lo);
     }
 }

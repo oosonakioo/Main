@@ -898,7 +898,7 @@ class PHPExcel_Calculation_LookupRef
             unset($value);
         }
 
-        return self::VLOOKUP($lookup_value,$lookup_vector,2);
+        return self::VLOOKUP($lookup_value, $lookup_vector, 2);
     }	//	function LOOKUP()
 
 }	//	class PHPExcel_Calculation_LookupRef
