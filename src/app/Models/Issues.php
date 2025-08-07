@@ -13,6 +13,6 @@ class Issues extends Model
 
 	public function issueTopic()
 	{
-    	return $this->belongsTo('App\Models\Categories', 'issue_topic_id');
+    	return $this->belongsTo(\App\Models\Categories::class, 'issue_topic_id');
 	}
 }
