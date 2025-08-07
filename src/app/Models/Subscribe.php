@@ -11,5 +11,4 @@ class Subscribe extends Model
 
     protected $table = 'subscribe';
 
-    protected $dates = ['deleted_at'];
 }
