@@ -20,49 +20,49 @@ class ExpressionRequestMatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \LogicException
      */
-    public function testWhenNoExpressionIsSet()
+    public function test_when_no_expression_is_set()
     {
-        $expressionRequestMatcher = new ExpressionRequestMatcher();
-        $expressionRequestMatcher->matches(new Request());
+        $expressionRequestMatcher = new ExpressionRequestMatcher;
+        $expressionRequestMatcher->matches(new Request);
     }
 
     /**
      * @dataProvider provideExpressions
      */
-    public function testMatchesWhenParentMatchesIsTrue($expression, $expected)
+    public function test_matches_when_parent_matches_is_true($expression, $expected)
     {
         $request = Request::create('/foo');
-        $expressionRequestMatcher = new ExpressionRequestMatcher();
+        $expressionRequestMatcher = new ExpressionRequestMatcher;
 
-        $expressionRequestMatcher->setExpression(new ExpressionLanguage(), $expression);
+        $expressionRequestMatcher->setExpression(new ExpressionLanguage, $expression);
         $this->assertSame($expected, $expressionRequestMatcher->matches($request));
     }
 
     /**
      * @dataProvider provideExpressions
      */
-    public function testMatchesWhenParentMatchesIsFalse($expression)
+    public function test_matches_when_parent_matches_is_false($expression)
     {
         $request = Request::create('/foo');
         $request->attributes->set('foo', 'foo');
-        $expressionRequestMatcher = new ExpressionRequestMatcher();
+        $expressionRequestMatcher = new ExpressionRequestMatcher;
         $expressionRequestMatcher->matchAttribute('foo', 'bar');
 
-        $expressionRequestMatcher->setExpression(new ExpressionLanguage(), $expression);
+        $expressionRequestMatcher->setExpression(new ExpressionLanguage, $expression);
         $this->assertFalse($expressionRequestMatcher->matches($request));
     }
 
     public function provideExpressions()
     {
-        return array(
-            array('request.getMethod() == method', true),
-            array('request.getPathInfo() == path', true),
-            array('request.getHost() == host', true),
-            array('request.getClientIp() == ip', true),
-            array('request.attributes.all() == attributes', true),
-            array('request.getMethod() == method && request.getPathInfo() == path && request.getHost() == host && request.getClientIp() == ip &&  request.attributes.all() == attributes', true),
-            array('request.getMethod() != method', false),
-            array('request.getMethod() != method && request.getPathInfo() == path && request.getHost() == host && request.getClientIp() == ip &&  request.attributes.all() == attributes', false),
-        );
+        return [
+            ['request.getMethod() == method', true],
+            ['request.getPathInfo() == path', true],
+            ['request.getHost() == host', true],
+            ['request.getClientIp() == ip', true],
+            ['request.attributes.all() == attributes', true],
+            ['request.getMethod() == method && request.getPathInfo() == path && request.getHost() == host && request.getClientIp() == ip &&  request.attributes.all() == attributes', true],
+            ['request.getMethod() != method', false],
+            ['request.getMethod() != method && request.getPathInfo() == path && request.getHost() == host && request.getClientIp() == ip &&  request.attributes.all() == attributes', false],
+        ];
     }
 }

@@ -100,10 +100,7 @@ class Noop extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function has($path)
-    {
-        return;
-    }
+    public function has($path) {}
 
     /**
      * {@inheritdoc}

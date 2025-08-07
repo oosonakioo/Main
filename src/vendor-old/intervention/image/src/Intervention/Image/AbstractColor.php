@@ -7,7 +7,7 @@ abstract class AbstractColor
     /**
      * Initiates color object from integer
      *
-     * @param  integer $value
+     * @param  int  $value
      * @return \Intervention\Image\AbstractColor
      */
     abstract public function initFromInteger($value);
@@ -15,7 +15,7 @@ abstract class AbstractColor
     /**
      * Initiates color object from given array
      *
-     * @param  array $value
+     * @param  array  $value
      * @return \Intervention\Image\AbstractColor
      */
     abstract public function initFromArray($value);
@@ -23,7 +23,7 @@ abstract class AbstractColor
     /**
      * Initiates color object from given string
      *
-     * @param  string $value
+     * @param  string  $value
      * @return \Intervention\Image\AbstractColor
      */
     abstract public function initFromString($value);
@@ -31,7 +31,7 @@ abstract class AbstractColor
     /**
      * Initiates color object from given ImagickPixel object
      *
-     * @param  ImagickPixel $value
+     * @param  ImagickPixel  $value
      * @return \Intervention\Image\AbstractColor
      */
     abstract public function initFromObject($value);
@@ -39,9 +39,9 @@ abstract class AbstractColor
     /**
      * Initiates color object from given R, G and B values
      *
-     * @param  integer $r
-     * @param  integer $g
-     * @param  integer $b
+     * @param  int  $r
+     * @param  int  $g
+     * @param  int  $b
      * @return \Intervention\Image\AbstractColor
      */
     abstract public function initFromRgb($r, $g, $b);
@@ -49,10 +49,10 @@ abstract class AbstractColor
     /**
      * Initiates color object from given R, G, B and A values
      *
-     * @param  integer $r
-     * @param  integer $g
-     * @param  integer $b
-     * @param  float   $a
+     * @param  int  $r
+     * @param  int  $g
+     * @param  int  $b
+     * @param  float  $a
      * @return \Intervention\Image\AbstractColor
      */
     abstract public function initFromRgba($r, $g, $b, $a);
@@ -60,14 +60,14 @@ abstract class AbstractColor
     /**
      * Calculates integer value of current color instance
      *
-     * @return integer
+     * @return int
      */
     abstract public function getInt();
 
     /**
      * Calculates hexadecimal value of current color instance
      *
-     * @param  string $prefix
+     * @param  string  $prefix
      * @return string
      */
     abstract public function getHex($prefix);
@@ -89,16 +89,15 @@ abstract class AbstractColor
     /**
      * Determines if current color is different from given color
      *
-     * @param  AbstractColor $color
-     * @param  integer       $tolerance
-     * @return boolean
+     * @param  int  $tolerance
+     * @return bool
      */
     abstract public function differs(AbstractColor $color, $tolerance = 0);
 
     /**
      * Creates new instance
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function __construct($value = null)
     {
@@ -108,7 +107,7 @@ abstract class AbstractColor
     /**
      * Parses given value as color
      *
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return \Intervention\Image\AbstractColor
      */
     public function parse($value)
@@ -132,7 +131,7 @@ abstract class AbstractColor
                 break;
 
             case is_null($value):
-                $this->initFromArray(array(255, 255, 255, 0));
+                $this->initFromArray([255, 255, 255, 0]);
                 break;
 
             default:
@@ -147,7 +146,7 @@ abstract class AbstractColor
     /**
      * Formats current color instance into given format
      *
-     * @param  string $type
+     * @param  string  $type
      * @return mixed
      */
     public function format($type)
@@ -181,7 +180,7 @@ abstract class AbstractColor
     /**
      * Reads RGBA values from string into array
      *
-     * @param  string $value
+     * @param  string  $value
      * @return array
      */
     protected function rgbaFromString($value)
@@ -198,19 +197,19 @@ abstract class AbstractColor
         $rgbaPattern = '/^rgba ?\(([0-9]{1,3}), ?([0-9]{1,3}), ?([0-9]{1,3}), ?([0-9.]{1,4})\)$/i';
 
         if (preg_match($hexPattern, $value, $matches)) {
-            $result = array();
+            $result = [];
             $result[0] = strlen($matches[1]) == '1' ? hexdec($matches[1].$matches[1]) : hexdec($matches[1]);
             $result[1] = strlen($matches[2]) == '1' ? hexdec($matches[2].$matches[2]) : hexdec($matches[2]);
             $result[2] = strlen($matches[3]) == '1' ? hexdec($matches[3].$matches[3]) : hexdec($matches[3]);
             $result[3] = 1;
         } elseif (preg_match($rgbPattern, $value, $matches)) {
-            $result = array();
+            $result = [];
             $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? intval($matches[1]) : 0;
             $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? intval($matches[2]) : 0;
             $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? intval($matches[3]) : 0;
             $result[3] = 1;
         } elseif (preg_match($rgbaPattern, $value, $matches)) {
-            $result = array();
+            $result = [];
             $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? intval($matches[1]) : 0;
             $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? intval($matches[2]) : 0;
             $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? intval($matches[3]) : 0;

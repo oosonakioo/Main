@@ -21,10 +21,10 @@ class TraitEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // bail early if current PHP doesn't know about traits.
-        if (!function_exists('trait_exists')) {
+        if (! function_exists('trait_exists')) {
             return;
         }
 
@@ -41,7 +41,7 @@ class TraitEnumerator extends Enumerator
         }
 
         // only list traits if we are specifically asked
-        if (!$input->getOption('traits')) {
+        if (! $input->getOption('traits')) {
             return;
         }
 
@@ -51,15 +51,14 @@ class TraitEnumerator extends Enumerator
             return;
         }
 
-        return array(
+        return [
             'Traits' => $traits,
-        );
+        ];
     }
 
     /**
      * Prepare formatted trait array.
      *
-     * @param array $traits
      *
      * @return array
      */
@@ -68,15 +67,15 @@ class TraitEnumerator extends Enumerator
         natcasesort($traits);
 
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         foreach ($traits as $name) {
             if ($this->showItem($name)) {
-                $ret[$name] = array(
-                    'name'  => $name,
+                $ret[$name] = [
+                    'name' => $name,
                     'style' => self::IS_CLASS,
                     'value' => $this->presentSignature($name),
-                );
+                ];
             }
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -23,21 +24,18 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     /**
      * @var array
      */
-    private $_parameterGroups = array();
+    private $_parameterGroups = [];
 
     /**
      * @var array
      */
-    private $_invocations = array();
+    private $_invocations = [];
 
-    /**
-     * @param array $parameterGroups
-     */
     public function __construct(array $parameterGroups)
     {
         foreach ($parameterGroups as $index => $parameters) {
             foreach ($parameters as $parameter) {
-                if (!($parameter instanceof \PHPUnit_Framework_Constraint)) {
+                if (! ($parameter instanceof \PHPUnit_Framework_Constraint)) {
                     $parameter = new \PHPUnit_Framework_Constraint_IsEqual($parameter);
                 }
                 $this->_parameterGroups[$index][] = $parameter;
@@ -56,13 +54,12 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->_invocations[] = $invocation;
-        $callIndex            = count($this->_invocations) - 1;
+        $callIndex = count($this->_invocations) - 1;
         $this->verifyInvocation($invocation, $callIndex);
 
         return false;
@@ -78,8 +75,8 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     /**
      * Verify a single invocation
      *
-     * @param  PHPUnit_Framework_MockObject_Invocation      $invocation
-     * @param  int                                          $callIndex
+     * @param  int  $callIndex
+     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     private function verifyInvocation(PHPUnit_Framework_MockObject_Invocation $invocation, $callIndex)
@@ -88,7 +85,7 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
         if (isset($this->_parameterGroups[$callIndex])) {
             $parameters = $this->_parameterGroups[$callIndex];
         } else {
-          // no parameter assertion for this call index
+            // no parameter assertion for this call index
             return;
         }
 
@@ -111,7 +108,7 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
             $parameter->evaluate(
                 $invocation->parameters[$i],
                 sprintf(
-                    'Parameter %s for invocation #%d %s does not match expected ' .
+                    'Parameter %s for invocation #%d %s does not match expected '.
                     'value.',
                     $i,
                     $callIndex,

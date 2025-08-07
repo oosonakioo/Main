@@ -24,17 +24,20 @@ use Throwable;
 class JsonFormatter extends NormalizerFormatter
 {
     const BATCH_MODE_JSON = 1;
+
     const BATCH_MODE_NEWLINES = 2;
 
     protected $batchMode;
+
     protected $appendNewline;
+
     /**
      * @var bool
      */
     protected $includeStacktraces = false;
 
     /**
-     * @param int $batchMode
+     * @param  int  $batchMode
      */
     public function __construct($batchMode = self::BATCH_MODE_JSON, $appendNewline = true)
     {
@@ -71,7 +74,7 @@ class JsonFormatter extends NormalizerFormatter
      */
     public function format(array $record)
     {
-        return $this->toJson($this->normalize($record), true) . ($this->appendNewline ? "\n" : '');
+        return $this->toJson($this->normalize($record), true).($this->appendNewline ? "\n" : '');
     }
 
     /**
@@ -90,7 +93,7 @@ class JsonFormatter extends NormalizerFormatter
     }
 
     /**
-     * @param bool $include
+     * @param  bool  $include
      */
     public function includeStacktraces($include = true)
     {
@@ -100,7 +103,6 @@ class JsonFormatter extends NormalizerFormatter
     /**
      * Return a JSON-encoded array of records.
      *
-     * @param  array  $records
      * @return string
      */
     protected function formatBatchJson(array $records)
@@ -112,7 +114,6 @@ class JsonFormatter extends NormalizerFormatter
      * Use new lines to separate records instead of a
      * JSON-encoded array.
      *
-     * @param  array  $records
      * @return string
      */
     protected function formatBatchNewlines(array $records)
@@ -132,14 +133,13 @@ class JsonFormatter extends NormalizerFormatter
     /**
      * Normalizes given $data.
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return mixed
      */
     protected function normalize($data)
     {
         if (is_array($data) || $data instanceof \Traversable) {
-            $normalized = array();
+            $normalized = [];
 
             $count = 1;
             foreach ($data as $key => $value) {
@@ -164,23 +164,22 @@ class JsonFormatter extends NormalizerFormatter
      * Normalizes given exception with or without its own stack trace based on
      * `includeStacktraces` property.
      *
-     * @param Exception|Throwable $e
-     *
+     * @param  Exception|Throwable  $e
      * @return array
      */
     protected function normalizeException($e)
     {
         // TODO 2.0 only check for Throwable
-        if (!$e instanceof Exception && !$e instanceof Throwable) {
+        if (! $e instanceof Exception && ! $e instanceof Throwable) {
             throw new \InvalidArgumentException('Exception/Throwable expected, got '.gettype($e).' / '.get_class($e));
         }
 
-        $data = array(
+        $data = [
             'class' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
             'file' => $e->getFile().':'.$e->getLine(),
-        );
+        ];
 
         if ($this->includeStacktraces) {
             $trace = $e->getTrace();

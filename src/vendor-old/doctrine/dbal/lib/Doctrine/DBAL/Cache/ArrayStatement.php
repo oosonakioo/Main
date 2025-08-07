@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,23 +31,20 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
     private $data;
 
     /**
-     * @var integer
+     * @var int
      */
     private $columnCount = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     private $num = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     private $defaultFetchMode = PDO::FETCH_BOTH;
 
-    /**
-     * @param array $data
-     */
     public function __construct(array $data)
     {
         $this->data = $data;
@@ -60,7 +58,7 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
      */
     public function closeCursor()
     {
-        unset ($this->data);
+        unset($this->data);
     }
 
     /**
@@ -77,7 +75,7 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
         if ($arg2 !== null || $arg3 !== null) {
-            throw new \InvalidArgumentException("Caching layer does not support 2nd/3rd argument to setFetchMode()");
+            throw new \InvalidArgumentException('Caching layer does not support 2nd/3rd argument to setFetchMode()');
         }
 
         $this->defaultFetchMode = $fetchMode;
@@ -112,7 +110,7 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
             } elseif ($fetchMode === PDO::FETCH_COLUMN) {
                 return reset($row);
             } else {
-                throw new \InvalidArgumentException("Invalid fetch-style given for fetching result.");
+                throw new \InvalidArgumentException('Invalid fetch-style given for fetching result.');
             }
         }
 
@@ -124,7 +122,7 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
      */
     public function fetchAll($fetchMode = null)
     {
-        $rows = array();
+        $rows = [];
         while ($row = $this->fetch($fetchMode)) {
             $rows[] = $row;
         }
@@ -138,7 +136,7 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
     public function fetchColumn($columnIndex = 0)
     {
         $row = $this->fetch(PDO::FETCH_NUM);
-        if (!isset($row[$columnIndex])) {
+        if (! isset($row[$columnIndex])) {
             // TODO: verify this is correct behavior
             return false;
         }

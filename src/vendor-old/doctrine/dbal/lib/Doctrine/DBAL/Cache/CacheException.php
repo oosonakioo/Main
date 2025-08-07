@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -21,6 +22,7 @@ namespace Doctrine\DBAL\Cache;
 
 /**
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since 2.2
  */
 class CacheException extends \Doctrine\DBAL\DBALException
@@ -28,16 +30,16 @@ class CacheException extends \Doctrine\DBAL\DBALException
     /**
      * @return \Doctrine\DBAL\Cache\CacheException
      */
-    static public function noCacheKey()
+    public static function noCacheKey()
     {
-        return new self("No cache key was set.");
+        return new self('No cache key was set.');
     }
 
     /**
      * @return \Doctrine\DBAL\Cache\CacheException
      */
-    static public function noResultDriverConfigured()
+    public static function noResultDriverConfigured()
     {
-        return new self("Trying to cache a query but no result driver is configured.");
+        return new self('Trying to cache a query but no result driver is configured.');
     }
 }

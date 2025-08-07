@@ -13,14 +13,15 @@ class ContentListingFormatter
      * @var string
      */
     private $directory;
+
     /**
      * @var bool
      */
     private $recursive;
 
     /**
-     * @param string $directory
-     * @param bool   $recursive
+     * @param  string  $directory
+     * @param  bool  $recursive
      */
     public function __construct($directory, $recursive)
     {
@@ -31,7 +32,6 @@ class ContentListingFormatter
     /**
      * Format contents listing.
      *
-     * @param array $listing
      *
      * @return array
      */
@@ -55,7 +55,6 @@ class ContentListingFormatter
     /**
      * Determine if the entry is out of scope.
      *
-     * @param array $entry
      *
      * @return bool
      */
@@ -75,7 +74,6 @@ class ContentListingFormatter
     /**
      * Check if the entry resides within the parent directory.
      *
-     * @param $entry
      *
      * @return bool
      */
@@ -85,13 +83,12 @@ class ContentListingFormatter
             return true;
         }
 
-        return strpos($entry['path'], $this->directory . '/') === 0;
+        return strpos($entry['path'], $this->directory.'/') === 0;
     }
 
     /**
      * Check if the entry is a direct child of the directory.
      *
-     * @param $entry
      *
      * @return bool
      */
@@ -101,8 +98,6 @@ class ContentListingFormatter
     }
 
     /**
-     * @param array $listing
-     *
      * @return array
      */
     private function sortListing(array $listing)

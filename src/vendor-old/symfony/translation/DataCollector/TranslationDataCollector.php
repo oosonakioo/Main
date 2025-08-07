@@ -27,9 +27,6 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
      */
     private $translator;
 
-    /**
-     * @param DataCollectorTranslator $translator
-     */
     public function __construct(DataCollectorTranslator $translator)
     {
         $this->translator = $translator;
@@ -49,16 +46,14 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
-    {
-    }
+    public function collect(Request $request, Response $response, ?\Exception $exception = null) {}
 
     /**
      * @return array
      */
     public function getMessages()
     {
-        return isset($this->data['messages']) ? $this->data['messages'] : array();
+        return isset($this->data['messages']) ? $this->data['messages'] : [];
     }
 
     /**
@@ -95,21 +90,21 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
 
     private function sanitizeCollectedMessages($messages)
     {
-        $result = array();
+        $result = [];
         foreach ($messages as $key => $message) {
             $messageId = $message['locale'].$message['domain'].$message['id'];
 
-            if (!isset($result[$messageId])) {
+            if (! isset($result[$messageId])) {
                 $message['count'] = 1;
-                $message['parameters'] = !empty($message['parameters']) ? array($message['parameters']) : array();
+                $message['parameters'] = ! empty($message['parameters']) ? [$message['parameters']] : [];
                 $messages[$key]['translation'] = $this->sanitizeString($message['translation']);
                 $result[$messageId] = $message;
             } else {
-                if (!empty($message['parameters'])) {
+                if (! empty($message['parameters'])) {
                     $result[$messageId]['parameters'][] = $message['parameters'];
                 }
 
-                ++$result[$messageId]['count'];
+                $result[$messageId]['count']++;
             }
 
             unset($messages[$key]);
@@ -120,14 +115,14 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
 
     private function computeCount($messages)
     {
-        $count = array(
+        $count = [
             DataCollectorTranslator::MESSAGE_DEFINED => 0,
             DataCollectorTranslator::MESSAGE_MISSING => 0,
             DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK => 0,
-        );
+        ];
 
         foreach ($messages as $message) {
-            ++$count[$message['state']];
+            $count[$message['state']]++;
         }
 
         return $count;

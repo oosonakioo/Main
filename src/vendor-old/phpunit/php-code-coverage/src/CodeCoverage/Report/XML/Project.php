@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -44,7 +45,7 @@ class PHP_CodeCoverage_Report_XML_Project extends PHP_CodeCoverage_Report_XML_No
             'tests'
         )->item(0);
 
-        if (!$testsNode) {
+        if (! $testsNode) {
             $testsNode = $this->getContextNode()->appendChild(
                 $this->getDom()->createElementNS(
                     'http://schema.phpunit.de/coverage/1.0',

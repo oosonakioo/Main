@@ -2,15 +2,14 @@
 
 namespace Barryvdh\elFinderFlysystemDriver\Plugin;
 
-use League\Flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\Plugin\AbstractPlugin;
-use League\Flysystem\Cached\CachedAdapter;
 
 class HasDir extends AbstractPlugin
 {
-
     /**
      * @var AdapterInterface
      */
@@ -28,14 +27,12 @@ class HasDir extends AbstractPlugin
 
     /**
      * Set the Filesystem object.
-     *
-     * @param FilesystemInterface $filesystem
      */
     public function setFilesystem(FilesystemInterface $filesystem)
     {
         parent::setFilesystem($filesystem);
 
-        if ( $filesystem instanceof Filesystem) {
+        if ($filesystem instanceof Filesystem) {
             $this->adapter = $filesystem->getAdapter();
 
             // For a cached adapter, get the underlying instance
@@ -44,7 +41,7 @@ class HasDir extends AbstractPlugin
                 $this->adapter = $this->adapter->getAdapter();
             }
 
-            //TODO: Check on actual implementations, not just an existing method
+            // TODO: Check on actual implementations, not just an existing method
             $this->hasMethod = method_exists($this->adapter, 'hasDir');
         }
 
@@ -63,8 +60,7 @@ class HasDir extends AbstractPlugin
     /**
      * Get the public url
      *
-     * @param string $path  path to file
-     *
+     * @param  string  $path  path to file
      * @return string|false
      */
     public function handle($path = null)
@@ -73,7 +69,7 @@ class HasDir extends AbstractPlugin
             return $this->hasMethod;
         }
 
-        if ( ! $this->hasMethod) {
+        if (! $this->hasMethod) {
             return false;
         }
 
@@ -83,7 +79,7 @@ class HasDir extends AbstractPlugin
     /**
      * Get the URL using a `hasDir()` method on the adapter.
      *
-     * @param  string $path
+     * @param  string  $path
      * @return string
      */
     protected function getFromMethod($path)
@@ -92,14 +88,13 @@ class HasDir extends AbstractPlugin
         if ($this->cachedAdapter) {
             $res = $this->cachedAdapter->getMetadata($path);
         }
-        if (!$res || !isset($res['hasdir'])) {
+        if (! $res || ! isset($res['hasdir'])) {
             $res = $this->adapter->hasDir($path);
         }
         if (is_array($res)) {
-            return isset($res['hasdir'])? $res['hasdir'] : true;
+            return isset($res['hasdir']) ? $res['hasdir'] : true;
         } else {
             return $res;
         }
     }
-
 }

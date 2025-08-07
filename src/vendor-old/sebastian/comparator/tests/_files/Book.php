@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Comparator package.
  *
@@ -12,7 +13,6 @@ namespace SebastianBergmann\Comparator;
 
 /**
  * A book.
- *
  */
 class Book
 {

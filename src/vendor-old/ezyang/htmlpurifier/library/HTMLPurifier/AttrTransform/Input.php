@@ -13,18 +13,18 @@ class HTMLPurifier_AttrTransform_Input extends HTMLPurifier_AttrTransform
 
     public function __construct()
     {
-        $this->pixels = new HTMLPurifier_AttrDef_HTML_Pixels();
+        $this->pixels = new HTMLPurifier_AttrDef_HTML_Pixels;
     }
 
     /**
-     * @param array $attr
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $attr
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function transform($attr, $config, $context)
     {
-        if (!isset($attr['type'])) {
+        if (! isset($attr['type'])) {
             $t = 'text';
         } else {
             $t = strtolower($attr['type']);
@@ -46,9 +46,10 @@ class HTMLPurifier_AttrTransform_Input extends HTMLPurifier_AttrTransform
         if (isset($attr['src']) && $t !== 'image') {
             unset($attr['src']);
         }
-        if (!isset($attr['value']) && ($t === 'radio' || $t === 'checkbox')) {
+        if (! isset($attr['value']) && ($t === 'radio' || $t === 'checkbox')) {
             $attr['value'] = '';
         }
+
         return $attr;
     }
 }

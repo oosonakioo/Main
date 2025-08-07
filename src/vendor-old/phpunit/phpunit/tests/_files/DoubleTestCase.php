@@ -1,4 +1,5 @@
 <?php
+
 class DoubleTestCase implements PHPUnit_Framework_Test
 {
     protected $testCase;
@@ -13,7 +14,7 @@ class DoubleTestCase implements PHPUnit_Framework_Test
         return 2;
     }
 
-    public function run(PHPUnit_Framework_TestResult $result = null)
+    public function run(?PHPUnit_Framework_TestResult $result = null)
     {
         $result->startTest($this);
 

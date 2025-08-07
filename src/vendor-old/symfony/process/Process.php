@@ -30,45 +30,74 @@ use Symfony\Component\Process\Pipes\WindowsPipes;
 class Process
 {
     const ERR = 'err';
+
     const OUT = 'out';
 
     const STATUS_READY = 'ready';
+
     const STATUS_STARTED = 'started';
+
     const STATUS_TERMINATED = 'terminated';
 
     const STDIN = 0;
+
     const STDOUT = 1;
+
     const STDERR = 2;
 
     // Timeout Precision in seconds.
     const TIMEOUT_PRECISION = 0.2;
 
     private $callback;
+
     private $commandline;
+
     private $cwd;
+
     private $env;
+
     private $input;
+
     private $starttime;
+
     private $lastOutputTime;
+
     private $timeout;
+
     private $idleTimeout;
+
     private $options;
+
     private $exitcode;
-    private $fallbackStatus = array();
+
+    private $fallbackStatus = [];
+
     private $processInformation;
+
     private $outputDisabled = false;
+
     private $stdout;
+
     private $stderr;
+
     private $enhanceWindowsCompatibility = true;
+
     private $enhanceSigchildCompatibility;
+
     private $process;
+
     private $status = self::STATUS_READY;
+
     private $incrementalOutputOffset = 0;
+
     private $incrementalErrorOutputOffset = 0;
+
     private $tty;
+
     private $pty;
 
     private $useFileHandles = false;
+
     /** @var PipesInterface */
     private $processPipes;
 
@@ -83,7 +112,7 @@ class Process
      *
      * @var array
      */
-    public static $exitCodes = array(
+    public static $exitCodes = [
         0 => 'OK',
         1 => 'General error',
         2 => 'Misuse of shell builtins',
@@ -124,23 +153,23 @@ class Process
         157 => 'Pollable event',
         // 158 - not defined
         159 => 'Bad syscall',
-    );
+    ];
 
     /**
      * Constructor.
      *
-     * @param string         $commandline The command line to run
-     * @param string|null    $cwd         The working directory or null to use the working dir of the current PHP process
-     * @param array|null     $env         The environment variables or null to use the same environment as the current PHP process
-     * @param string|null    $input       The input
-     * @param int|float|null $timeout     The timeout in seconds or null to disable
-     * @param array          $options     An array of options for proc_open
+     * @param  string  $commandline  The command line to run
+     * @param  string|null  $cwd  The working directory or null to use the working dir of the current PHP process
+     * @param  array|null  $env  The environment variables or null to use the same environment as the current PHP process
+     * @param  string|null  $input  The input
+     * @param  int|float|null  $timeout  The timeout in seconds or null to disable
+     * @param  array  $options  An array of options for proc_open
      *
      * @throws RuntimeException When proc_open is not installed
      */
-    public function __construct($commandline, $cwd = null, array $env = null, $input = null, $timeout = 60, array $options = array())
+    public function __construct($commandline, $cwd = null, ?array $env = null, $input = null, $timeout = 60, array $options = [])
     {
-        if (!function_exists('proc_open')) {
+        if (! function_exists('proc_open')) {
             throw new RuntimeException('The Process class relies on proc_open, which is not available on your PHP installation.');
         }
 
@@ -151,10 +180,10 @@ class Process
         // on Gnu/Linux, PHP builds with --enable-maintainer-zts are also affected
         // @see : https://bugs.php.net/bug.php?id=51800
         // @see : https://bugs.php.net/bug.php?id=50524
-        if (null === $this->cwd && (defined('ZEND_THREAD_SAFE') || '\\' === DIRECTORY_SEPARATOR)) {
+        if ($this->cwd === null && (defined('ZEND_THREAD_SAFE') || '\\' === DIRECTORY_SEPARATOR)) {
             $this->cwd = getcwd();
         }
-        if (null !== $env) {
+        if ($env !== null) {
             $this->setEnv($env);
         }
 
@@ -164,7 +193,7 @@ class Process
         $this->pty = false;
         $this->enhanceWindowsCompatibility = true;
         $this->enhanceSigchildCompatibility = '\\' !== DIRECTORY_SEPARATOR && $this->isSigchildEnabled();
-        $this->options = array_replace(array('suppress_errors' => true, 'binary_pipes' => true), $options);
+        $this->options = array_replace(['suppress_errors' => true, 'binary_pipes' => true], $options);
     }
 
     public function __destruct()
@@ -187,14 +216,13 @@ class Process
      * The STDOUT and STDERR are also available after the process is finished
      * via the getOutput() and getErrorOutput() methods.
      *
-     * @param callable|null $callback A PHP callback to run whenever there is some
-     *                                output available on STDOUT or STDERR
-     *
+     * @param  callable|null  $callback  A PHP callback to run whenever there is some
+     *                                   output available on STDOUT or STDERR
      * @return int The exit status code
      *
      * @throws RuntimeException When process can't be launched
      * @throws RuntimeException When process stopped after receiving signal
-     * @throws LogicException   In case a callback is provided and output has been disabled
+     * @throws LogicException In case a callback is provided and output has been disabled
      */
     public function run($callback = null)
     {
@@ -209,20 +237,19 @@ class Process
      * This is identical to run() except that an exception is thrown if the process
      * exits with a non-zero exit code.
      *
-     * @param callable|null $callback
      *
      * @return self
      *
-     * @throws RuntimeException       if PHP was compiled with --enable-sigchild and the enhanced sigchild compatibility mode is not enabled
+     * @throws RuntimeException if PHP was compiled with --enable-sigchild and the enhanced sigchild compatibility mode is not enabled
      * @throws ProcessFailedException if the process didn't terminate successfully
      */
-    public function mustRun(callable $callback = null)
+    public function mustRun(?callable $callback = null)
     {
-        if (!$this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+        if (! $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. You must use setEnhanceSigchildCompatibility() to use this method.');
         }
 
-        if (0 !== $this->run($callback)) {
+        if ($this->run($callback) !== 0) {
             throw new ProcessFailedException($this);
         }
 
@@ -241,19 +268,19 @@ class Process
      * the output in real-time while writing the standard input to the process.
      * It allows to have feedback from the independent process during execution.
      *
-     * @param callable|null $callback A PHP callback to run whenever there is some
-     *                                output available on STDOUT or STDERR
+     * @param  callable|null  $callback  A PHP callback to run whenever there is some
+     *                                   output available on STDOUT or STDERR
      *
      * @throws RuntimeException When process can't be launched
      * @throws RuntimeException When process is already running
-     * @throws LogicException   In case a callback is provided and output has been disabled
+     * @throws LogicException In case a callback is provided and output has been disabled
      */
-    public function start(callable $callback = null)
+    public function start(?callable $callback = null)
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Process is already running');
         }
-        if ($this->outputDisabled && null !== $callback) {
+        if ($this->outputDisabled && $callback !== null) {
             throw new LogicException('Output has been disabled, enable it to allow the use of a callback.');
         }
 
@@ -271,12 +298,12 @@ class Process
             }
             $commandline .= '"';
 
-            if (!isset($this->options['bypass_shell'])) {
+            if (! isset($this->options['bypass_shell'])) {
                 $this->options['bypass_shell'] = true;
             }
-        } elseif (!$this->useFileHandles && $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+        } elseif (! $this->useFileHandles && $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
             // last exit code is output on the fourth pipe and caught to work around --enable-sigchild
-            $descriptors[3] = array('pipe', 'w');
+            $descriptors[3] = ['pipe', 'w'];
 
             // See https://unix.stackexchange.com/questions/71205/background-process-pipe-input
             $commandline = '{ ('.$this->commandline.') <&3 3<&- 3>/dev/null & } 3<&0;';
@@ -289,7 +316,7 @@ class Process
 
         $this->process = proc_open($commandline, $descriptors, $this->processPipes->pipes, $this->cwd, $this->env, $this->options);
 
-        if (!is_resource($this->process)) {
+        if (! is_resource($this->process)) {
             throw new RuntimeException('Unable to launch a new process.');
         }
         $this->status = self::STATUS_STARTED;
@@ -311,9 +338,8 @@ class Process
      *
      * Be warned that the process is cloned before being started.
      *
-     * @param callable|null $callback A PHP callback to run whenever there is some
-     *                                output available on STDOUT or STDERR
-     *
+     * @param  callable|null  $callback  A PHP callback to run whenever there is some
+     *                                   output available on STDOUT or STDERR
      * @return Process The new process
      *
      * @throws RuntimeException When process can't be launched
@@ -321,7 +347,7 @@ class Process
      *
      * @see start()
      */
-    public function restart(callable $callback = null)
+    public function restart(?callable $callback = null)
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Process is already running');
@@ -340,27 +366,26 @@ class Process
      * from the output in real-time while writing the standard input to the process.
      * It allows to have feedback from the independent process during execution.
      *
-     * @param callable|null $callback A valid PHP callback
-     *
+     * @param  callable|null  $callback  A valid PHP callback
      * @return int The exitcode of the process
      *
      * @throws RuntimeException When process timed out
      * @throws RuntimeException When process stopped after receiving signal
-     * @throws LogicException   When process is not yet started
+     * @throws LogicException When process is not yet started
      */
-    public function wait(callable $callback = null)
+    public function wait(?callable $callback = null)
     {
         $this->requireProcessIsStarted(__FUNCTION__);
 
         $this->updateStatus(false);
-        if (null !== $callback) {
+        if ($callback !== null) {
             $this->callback = $this->buildCallback($callback);
         }
 
         do {
             $this->checkTimeout();
             $running = '\\' === DIRECTORY_SEPARATOR ? $this->isRunning() : $this->processPipes->areOpen();
-            $this->readPipes($running, '\\' !== DIRECTORY_SEPARATOR || !$running);
+            $this->readPipes($running, '\\' !== DIRECTORY_SEPARATOR || ! $running);
         } while ($running);
 
         while ($this->isRunning()) {
@@ -387,11 +412,10 @@ class Process
     /**
      * Sends a POSIX signal to the process.
      *
-     * @param int $signal A valid POSIX signal (see http://www.php.net/manual/en/pcntl.constants.php)
-     *
+     * @param  int  $signal  A valid POSIX signal (see http://www.php.net/manual/en/pcntl.constants.php)
      * @return Process
      *
-     * @throws LogicException   In case the process is not running
+     * @throws LogicException In case the process is not running
      * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
      * @throws RuntimeException In case of failure
      */
@@ -408,14 +432,14 @@ class Process
      * @return Process
      *
      * @throws RuntimeException In case the process is already running
-     * @throws LogicException   if an idle timeout is set
+     * @throws LogicException if an idle timeout is set
      */
     public function disableOutput()
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Disabling output while the process is running is not possible.');
         }
-        if (null !== $this->idleTimeout) {
+        if ($this->idleTimeout !== null) {
             throw new LogicException('Output can not be disabled while an idle timeout is set.');
         }
 
@@ -489,7 +513,7 @@ class Process
         $latest = stream_get_contents($this->stdout, -1, $this->incrementalOutputOffset);
         $this->incrementalOutputOffset = ftell($this->stdout);
 
-        if (false === $latest) {
+        if ($latest === false) {
             return '';
         }
 
@@ -548,7 +572,7 @@ class Process
         $latest = stream_get_contents($this->stderr, -1, $this->incrementalErrorOutputOffset);
         $this->incrementalErrorOutputOffset = ftell($this->stderr);
 
-        if (false === $latest) {
+        if ($latest === false) {
             return '';
         }
 
@@ -578,7 +602,7 @@ class Process
      */
     public function getExitCode()
     {
-        if (!$this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+        if (! $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. You must use setEnhanceSigchildCompatibility() to use this method.');
         }
 
@@ -614,7 +638,7 @@ class Process
      */
     public function isSuccessful()
     {
-        return 0 === $this->getExitCode();
+        return $this->getExitCode() === 0;
     }
 
     /**
@@ -625,13 +649,13 @@ class Process
      * @return bool
      *
      * @throws RuntimeException In case --enable-sigchild is activated
-     * @throws LogicException   In case the process is not terminated
+     * @throws LogicException In case the process is not terminated
      */
     public function hasBeenSignaled()
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
-        if (!$this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+        if (! $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
         }
 
@@ -646,13 +670,13 @@ class Process
      * @return int
      *
      * @throws RuntimeException In case --enable-sigchild is activated
-     * @throws LogicException   In case the process is not terminated
+     * @throws LogicException In case the process is not terminated
      */
     public function getTermSignal()
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
-        if ($this->isSigchildEnabled() && (!$this->enhanceSigchildCompatibility || -1 === $this->processInformation['termsig'])) {
+        if ($this->isSigchildEnabled() && (! $this->enhanceSigchildCompatibility || $this->processInformation['termsig'] === -1)) {
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
         }
 
@@ -698,7 +722,7 @@ class Process
      */
     public function isRunning()
     {
-        if (self::STATUS_STARTED !== $this->status) {
+        if ($this->status !== self::STATUS_STARTED) {
             return false;
         }
 
@@ -746,9 +770,8 @@ class Process
     /**
      * Stops the process.
      *
-     * @param int|float $timeout The timeout in seconds
-     * @param int       $signal  A POSIX signal to send in case the process has not stop at timeout, default is SIGKILL (9)
-     *
+     * @param  int|float  $timeout  The timeout in seconds
+     * @param  int  $signal  A POSIX signal to send in case the process has not stop at timeout, default is SIGKILL (9)
      * @return int The exit-code of the process
      */
     public function stop($timeout = 10, $signal = null)
@@ -785,7 +808,7 @@ class Process
      *
      * @internal
      *
-     * @param string $line The line to append
+     * @param  string  $line  The line to append
      */
     public function addOutput($line)
     {
@@ -801,7 +824,7 @@ class Process
      *
      * @internal
      *
-     * @param string $line The line to append
+     * @param  string  $line  The line to append
      */
     public function addErrorOutput($line)
     {
@@ -825,8 +848,7 @@ class Process
     /**
      * Sets the command line to be executed.
      *
-     * @param string $commandline The command to execute
-     *
+     * @param  string  $commandline  The command to execute
      * @return self The current Process instance
      */
     public function setCommandLine($commandline)
@@ -861,8 +883,7 @@ class Process
      *
      * To disable the timeout, set this value to null.
      *
-     * @param int|float|null $timeout The timeout in seconds
-     *
+     * @param  int|float|null  $timeout  The timeout in seconds
      * @return self The current Process instance
      *
      * @throws InvalidArgumentException if the timeout is negative
@@ -879,16 +900,15 @@ class Process
      *
      * To disable the timeout, set this value to null.
      *
-     * @param int|float|null $timeout The timeout in seconds
-     *
+     * @param  int|float|null  $timeout  The timeout in seconds
      * @return self The current Process instance
      *
-     * @throws LogicException           if the output is disabled
+     * @throws LogicException if the output is disabled
      * @throws InvalidArgumentException if the timeout is negative
      */
     public function setIdleTimeout($timeout)
     {
-        if (null !== $timeout && $this->outputDisabled) {
+        if ($timeout !== null && $this->outputDisabled) {
             throw new LogicException('Idle timeout can not be set while the output is disabled.');
         }
 
@@ -900,8 +920,7 @@ class Process
     /**
      * Enables or disables the TTY mode.
      *
-     * @param bool $tty True to enabled and false to disable
-     *
+     * @param  bool  $tty  True to enabled and false to disable
      * @return self The current Process instance
      *
      * @throws RuntimeException In case the TTY mode is not supported
@@ -911,7 +930,7 @@ class Process
         if ('\\' === DIRECTORY_SEPARATOR && $tty) {
             throw new RuntimeException('TTY mode is not supported on Windows platform.');
         }
-        if ($tty && (!file_exists('/dev/tty') || !is_readable('/dev/tty'))) {
+        if ($tty && (! file_exists('/dev/tty') || ! is_readable('/dev/tty'))) {
             throw new RuntimeException('TTY mode requires /dev/tty to be readable.');
         }
 
@@ -933,8 +952,7 @@ class Process
     /**
      * Sets PTY mode.
      *
-     * @param bool $bool
-     *
+     * @param  bool  $bool
      * @return self
      */
     public function setPty($bool)
@@ -961,7 +979,7 @@ class Process
      */
     public function getWorkingDirectory()
     {
-        if (null === $this->cwd) {
+        if ($this->cwd === null) {
             // getcwd() will return false if any one of the parent directories does not have
             // the readable or search mode set, even if the current directory does
             return getcwd() ?: null;
@@ -973,8 +991,7 @@ class Process
     /**
      * Sets the current working directory.
      *
-     * @param string $cwd The new working directory
-     *
+     * @param  string  $cwd  The new working directory
      * @return self The current Process instance
      */
     public function setWorkingDirectory($cwd)
@@ -1003,18 +1020,17 @@ class Process
      * That happens in PHP when 'argv' is registered into
      * the $_ENV array for instance.
      *
-     * @param array $env The new environment variables
-     *
+     * @param  array  $env  The new environment variables
      * @return self The current Process instance
      */
     public function setEnv(array $env)
     {
         // Process can not handle env values that are arrays
         $env = array_filter($env, function ($value) {
-            return !is_array($value);
+            return ! is_array($value);
         });
 
-        $this->env = array();
+        $this->env = [];
         foreach ($env as $key => $value) {
             $this->env[$key] = (string) $value;
         }
@@ -1037,8 +1053,7 @@ class Process
      *
      * This content will be passed to the underlying process standard input.
      *
-     * @param mixed $input The content
-     *
+     * @param  mixed  $input  The content
      * @return self The current Process instance
      *
      * @throws LogicException In case the process is running
@@ -1067,8 +1082,7 @@ class Process
     /**
      * Sets the options for proc_open.
      *
-     * @param array $options The new options
-     *
+     * @param  array  $options  The new options
      * @return self The current Process instance
      */
     public function setOptions(array $options)
@@ -1093,8 +1107,7 @@ class Process
     /**
      * Sets whether or not Windows compatibility is enabled.
      *
-     * @param bool $enhance
-     *
+     * @param  bool  $enhance
      * @return self The current Process instance
      */
     public function setEnhanceWindowsCompatibility($enhance)
@@ -1121,8 +1134,7 @@ class Process
      * determine the success of a process when PHP has been compiled with
      * the --enable-sigchild option
      *
-     * @param bool $enhance
-     *
+     * @param  bool  $enhance
      * @return self The current Process instance
      */
     public function setEnhanceSigchildCompatibility($enhance)
@@ -1146,13 +1158,13 @@ class Process
             return;
         }
 
-        if (null !== $this->timeout && $this->timeout < microtime(true) - $this->starttime) {
+        if ($this->timeout !== null && $this->timeout < microtime(true) - $this->starttime) {
             $this->stop(0);
 
             throw new ProcessTimedOutException($this, ProcessTimedOutException::TYPE_GENERAL);
         }
 
-        if (null !== $this->idleTimeout && $this->idleTimeout < microtime(true) - $this->lastOutputTime) {
+        if ($this->idleTimeout !== null && $this->idleTimeout < microtime(true) - $this->lastOutputTime) {
             $this->stop(0);
 
             throw new ProcessTimedOutException($this, ProcessTimedOutException::TYPE_IDLE);
@@ -1168,7 +1180,7 @@ class Process
     {
         static $result;
 
-        if (null !== $result) {
+        if ($result !== null) {
             return $result;
         }
 
@@ -1176,7 +1188,7 @@ class Process
             return $result = false;
         }
 
-        return $result = (bool) @proc_open('echo 1', array(array('pty'), array('pty'), array('pty')), $pipes);
+        return $result = (bool) @proc_open('echo 1', [['pty'], ['pty'], ['pty']], $pipes);
     }
 
     /**
@@ -1201,8 +1213,7 @@ class Process
      * The callbacks adds all occurred output to the specific buffer and calls
      * the user callback (if present) with the received output.
      *
-     * @param callable|null $callback The user defined PHP callback
-     *
+     * @param  callable|null  $callback  The user defined PHP callback
      * @return \Closure A PHP closure
      */
     protected function buildCallback($callback)
@@ -1215,7 +1226,7 @@ class Process
                 $this->addErrorOutput($data);
             }
 
-            if (null !== $callback) {
+            if ($callback !== null) {
                 call_user_func($callback, $type, $data);
             }
         };
@@ -1226,24 +1237,24 @@ class Process
     /**
      * Updates the status of the process, reads pipes.
      *
-     * @param bool $blocking Whether to use a blocking read call
+     * @param  bool  $blocking  Whether to use a blocking read call
      */
     protected function updateStatus($blocking)
     {
-        if (self::STATUS_STARTED !== $this->status) {
+        if ($this->status !== self::STATUS_STARTED) {
             return;
         }
 
         $this->processInformation = proc_get_status($this->process);
         $running = $this->processInformation['running'];
 
-        $this->readPipes($running && $blocking, '\\' !== DIRECTORY_SEPARATOR || !$running);
+        $this->readPipes($running && $blocking, '\\' !== DIRECTORY_SEPARATOR || ! $running);
 
         if ($this->fallbackStatus && $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
             $this->processInformation = $this->fallbackStatus + $this->processInformation;
         }
 
-        if (!$running) {
+        if (! $running) {
             $this->close();
         }
     }
@@ -1255,24 +1266,24 @@ class Process
      */
     protected function isSigchildEnabled()
     {
-        if (null !== self::$sigchild) {
+        if (self::$sigchild !== null) {
             return self::$sigchild;
         }
 
-        if (!function_exists('phpinfo') || defined('HHVM_VERSION')) {
+        if (! function_exists('phpinfo') || defined('HHVM_VERSION')) {
             return self::$sigchild = false;
         }
 
         ob_start();
         phpinfo(INFO_GENERAL);
 
-        return self::$sigchild = false !== strpos(ob_get_clean(), '--enable-sigchild');
+        return self::$sigchild = strpos(ob_get_clean(), '--enable-sigchild') !== false;
     }
 
     /**
      * Reads pipes for the freshest output.
      *
-     * @param $caller The name of the method that needs fresh outputs
+     * @param  $caller  The name of the method that needs fresh outputs
      *
      * @throws LogicException in case output has been disabled or process is not started
      */
@@ -1290,8 +1301,7 @@ class Process
     /**
      * Validates and returns the filtered timeout.
      *
-     * @param int|float|null $timeout
-     *
+     * @param  int|float|null  $timeout
      * @return float|null
      *
      * @throws InvalidArgumentException if the given timeout is a negative number
@@ -1300,7 +1310,7 @@ class Process
     {
         $timeout = (float) $timeout;
 
-        if (0.0 === $timeout) {
+        if ($timeout === 0.0) {
             $timeout = null;
         } elseif ($timeout < 0) {
             throw new InvalidArgumentException('The timeout value must be a valid positive integer or float number.');
@@ -1312,8 +1322,8 @@ class Process
     /**
      * Reads pipes, executes callback.
      *
-     * @param bool $blocking Whether to use blocking calls or not
-     * @param bool $close    Whether to close file handles or not
+     * @param  bool  $blocking  Whether to use blocking calls or not
+     * @param  bool  $close  Whether to close file handles or not
      */
     private function readPipes($blocking, $close)
     {
@@ -1321,9 +1331,9 @@ class Process
 
         $callback = $this->callback;
         foreach ($result as $type => $data) {
-            if (3 !== $type) {
+            if ($type !== 3) {
                 $callback($type === self::STDOUT ? self::OUT : self::ERR, $data);
-            } elseif (!isset($this->fallbackStatus['signaled'])) {
+            } elseif (! isset($this->fallbackStatus['signaled'])) {
                 $this->fallbackStatus['exitcode'] = (int) $data;
             }
         }
@@ -1343,8 +1353,8 @@ class Process
         $this->exitcode = $this->processInformation['exitcode'];
         $this->status = self::STATUS_TERMINATED;
 
-        if (-1 === $this->exitcode) {
-            if ($this->processInformation['signaled'] && 0 < $this->processInformation['termsig']) {
+        if ($this->exitcode === -1) {
+            if ($this->processInformation['signaled'] && $this->processInformation['termsig'] > 0) {
                 // if process has been signaled, no exitcode but a valid termsig, apply Unix convention
                 $this->exitcode = 128 + $this->processInformation['termsig'];
             } elseif ($this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
@@ -1369,7 +1379,7 @@ class Process
         $this->starttime = null;
         $this->callback = null;
         $this->exitcode = null;
-        $this->fallbackStatus = array();
+        $this->fallbackStatus = [];
         $this->processInformation = null;
         $this->stdout = fopen('php://temp/maxmemory:'.(1024 * 1024), 'wb+');
         $this->stderr = fopen('php://temp/maxmemory:'.(1024 * 1024), 'wb+');
@@ -1383,12 +1393,11 @@ class Process
     /**
      * Sends a POSIX signal to the process.
      *
-     * @param int  $signal         A valid POSIX signal (see http://www.php.net/manual/en/pcntl.constants.php)
-     * @param bool $throwException Whether to throw exception in case signal failed
-     *
+     * @param  int  $signal  A valid POSIX signal (see http://www.php.net/manual/en/pcntl.constants.php)
+     * @param  bool  $throwException  Whether to throw exception in case signal failed
      * @return bool True if the signal was sent successfully, false otherwise
      *
-     * @throws LogicException   In case the process is not running
+     * @throws LogicException In case the process is not running
      * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
      * @throws RuntimeException In case of failure
      */
@@ -1412,14 +1421,14 @@ class Process
                 return false;
             }
         } else {
-            if (!$this->enhanceSigchildCompatibility || !$this->isSigchildEnabled()) {
+            if (! $this->enhanceSigchildCompatibility || ! $this->isSigchildEnabled()) {
                 $ok = @proc_terminate($this->process, $signal);
             } elseif (function_exists('posix_kill')) {
                 $ok = @posix_kill($pid, $signal);
-            } elseif ($ok = proc_open(sprintf('kill -%d %d', $signal, $pid), array(2 => array('pipe', 'w')), $pipes)) {
-                $ok = false === fgets($pipes[2]);
+            } elseif ($ok = proc_open(sprintf('kill -%d %d', $signal, $pid), [2 => ['pipe', 'w']], $pipes)) {
+                $ok = fgets($pipes[2]) === false;
             }
-            if (!$ok) {
+            if (! $ok) {
                 if ($throwException) {
                     throw new RuntimeException(sprintf('Error while sending signal `%s`.', $signal));
                 }
@@ -1439,13 +1448,13 @@ class Process
     /**
      * Ensures the process is running or terminated, throws a LogicException if the process has a not started.
      *
-     * @param string $functionName The function name that was called
+     * @param  string  $functionName  The function name that was called
      *
      * @throws LogicException If the process has not run.
      */
     private function requireProcessIsStarted($functionName)
     {
-        if (!$this->isStarted()) {
+        if (! $this->isStarted()) {
             throw new LogicException(sprintf('Process must be started before calling %s.', $functionName));
         }
     }
@@ -1453,13 +1462,13 @@ class Process
     /**
      * Ensures the process is terminated, throws a LogicException if the process has a status different than `terminated`.
      *
-     * @param string $functionName The function name that was called
+     * @param  string  $functionName  The function name that was called
      *
      * @throws LogicException If the process is not yet terminated.
      */
     private function requireProcessIsTerminated($functionName)
     {
-        if (!$this->isTerminated()) {
+        if (! $this->isTerminated()) {
             throw new LogicException(sprintf('Process must be terminated before calling %s.', $functionName));
         }
     }

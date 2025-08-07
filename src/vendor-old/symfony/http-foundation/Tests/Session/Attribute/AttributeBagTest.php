@@ -32,21 +32,21 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->array = array(
+        $this->array = [
             'hello' => 'world',
             'always' => 'be happy',
             'user.login' => 'drak',
-            'csrf.token' => array(
+            'csrf.token' => [
                 'a' => '1234',
                 'b' => '4321',
-            ),
-            'category' => array(
-                'fishing' => array(
+            ],
+            'category' => [
+                'fishing' => [
                     'first' => 'cod',
                     'second' => 'sole',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->bag = new AttributeBag('_sf2');
         $this->bag->initialize($this->array);
     }
@@ -54,27 +54,27 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->bag = null;
-        $this->array = array();
+        $this->array = [];
     }
 
-    public function testInitialize()
+    public function test_initialize()
     {
-        $bag = new AttributeBag();
+        $bag = new AttributeBag;
         $bag->initialize($this->array);
         $this->assertEquals($this->array, $bag->all());
-        $array = array('should' => 'change');
+        $array = ['should' => 'change'];
         $bag->initialize($array);
         $this->assertEquals($array, $bag->all());
     }
 
-    public function testGetStorageKey()
+    public function test_get_storage_key()
     {
         $this->assertEquals('_sf2', $this->bag->getStorageKey());
         $attributeBag = new AttributeBag('test');
         $this->assertEquals('test', $attributeBag->getStorageKey());
     }
 
-    public function testGetSetName()
+    public function test_get_set_name()
     {
         $this->assertEquals('attributes', $this->bag->getName());
         $this->bag->setName('foo');
@@ -84,7 +84,7 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testHas($key, $value, $exists)
+    public function test_has($key, $value, $exists)
     {
         $this->assertEquals($exists, $this->bag->has($key));
     }
@@ -92,12 +92,12 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testGet($key, $value, $expected)
+    public function test_get($key, $value, $expected)
     {
         $this->assertEquals($value, $this->bag->get($key));
     }
 
-    public function testGetDefaults()
+    public function test_get_defaults()
     {
         $this->assertNull($this->bag->get('user2.login'));
         $this->assertEquals('default', $this->bag->get('user2.login', 'default'));
@@ -106,13 +106,13 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testSet($key, $value, $expected)
+    public function test_set($key, $value, $expected)
     {
         $this->bag->set($key, $value);
         $this->assertEquals($value, $this->bag->get($key));
     }
 
-    public function testAll()
+    public function test_all()
     {
         $this->assertEquals($this->array, $this->bag->all());
 
@@ -122,9 +122,9 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($array, $this->bag->all());
     }
 
-    public function testReplace()
+    public function test_replace()
     {
-        $array = array();
+        $array = [];
         $array['name'] = 'jack';
         $array['foo.bar'] = 'beep';
         $this->bag->replace($array);
@@ -134,7 +134,7 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->bag->get('user.login'));
     }
 
-    public function testRemove()
+    public function test_remove()
     {
         $this->assertEquals('world', $this->bag->get('hello'));
         $this->bag->remove('hello');
@@ -149,39 +149,39 @@ class AttributeBagTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->bag->get('user.login'));
     }
 
-    public function testClear()
+    public function test_clear()
     {
         $this->bag->clear();
-        $this->assertEquals(array(), $this->bag->all());
+        $this->assertEquals([], $this->bag->all());
     }
 
     public function attributesProvider()
     {
-        return array(
-            array('hello', 'world', true),
-            array('always', 'be happy', true),
-            array('user.login', 'drak', true),
-            array('csrf.token', array('a' => '1234', 'b' => '4321'), true),
-            array('category', array('fishing' => array('first' => 'cod', 'second' => 'sole')), true),
-            array('user2.login', null, false),
-            array('never', null, false),
-            array('bye', null, false),
-            array('bye/for/now', null, false),
-        );
+        return [
+            ['hello', 'world', true],
+            ['always', 'be happy', true],
+            ['user.login', 'drak', true],
+            ['csrf.token', ['a' => '1234', 'b' => '4321'], true],
+            ['category', ['fishing' => ['first' => 'cod', 'second' => 'sole']], true],
+            ['user2.login', null, false],
+            ['never', null, false],
+            ['bye', null, false],
+            ['bye/for/now', null, false],
+        ];
     }
 
-    public function testGetIterator()
+    public function test_get_iterator()
     {
         $i = 0;
         foreach ($this->bag as $key => $val) {
             $this->assertEquals($this->array[$key], $val);
-            ++$i;
+            $i++;
         }
 
         $this->assertEquals(count($this->array), $i);
     }
 
-    public function testCount()
+    public function test_count()
     {
         $this->assertEquals(count($this->array), count($this->bag));
     }

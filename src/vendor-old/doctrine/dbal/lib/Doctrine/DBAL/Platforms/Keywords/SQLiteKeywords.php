@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SQLiteKeywords extends KeywordList
@@ -41,7 +43,7 @@ class SQLiteKeywords extends KeywordList
      */
     protected function getKeywords()
     {
-        return array(
+        return [
             'ABORT',
             'ACTION',
             'ADD',
@@ -162,7 +164,7 @@ class SQLiteKeywords extends KeywordList
             'VIEW',
             'VIRTUAL',
             'WHEN',
-            'WHERE'
-        );
+            'WHERE',
+        ];
     }
 }

@@ -3,28 +3,27 @@
 namespace Faker\Test\Provider\en_ZA;
 
 use Faker\Generator;
-use Faker\Provider\en_ZA\Person;
-use Faker\Provider\en_ZA\Internet;
 use Faker\Provider\en_ZA\Company;
+use Faker\Provider\en_ZA\Internet;
+use Faker\Provider\en_ZA\Person;
 
 class InternetTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Generator
      */
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Person($faker));
         $faker->addProvider(new Internet($faker));
         $faker->addProvider(new Company($faker));
         $this->faker = $faker;
     }
 
-    public function testEmailIsValid()
+    public function test_email_is_valid()
     {
         $email = $this->faker->email();
         $this->assertNotFalse(filter_var($email, FILTER_VALIDATE_EMAIL));

@@ -12,16 +12,18 @@ class DNumber extends Scalar
     /**
      * Constructs a float number scalar node.
      *
-     * @param float $value      Value of the number
-     * @param array $attributes Additional attributes
+     * @param  float  $value  Value of the number
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct($value, array $attributes = array()) {
+    public function __construct($value, array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->value = $value;
     }
 
-    public function getSubNodeNames() {
-        return array('value');
+    public function getSubNodeNames()
+    {
+        return ['value'];
     }
 
     /**
@@ -29,26 +31,26 @@ class DNumber extends Scalar
      *
      * Parses a DNUMBER token like PHP would.
      *
-     * @param string $str A string number
-     *
+     * @param  string  $str  A string number
      * @return float The parsed number
      */
-    public static function parse($str) {
+    public static function parse($str)
+    {
         // if string contains any of .eE just cast it to float
-        if (false !== strpbrk($str, '.eE')) {
+        if (strpbrk($str, '.eE') !== false) {
             return (float) $str;
         }
 
         // otherwise it's an integer notation that overflowed into a float
         // if it starts with 0 it's one of the special integer notations
-        if ('0' === $str[0]) {
+        if ($str[0] === '0') {
             // hex
-            if ('x' === $str[1] || 'X' === $str[1]) {
+            if ($str[1] === 'x' || $str[1] === 'X') {
                 return hexdec($str);
             }
 
             // bin
-            if ('b' === $str[1] || 'B' === $str[1]) {
+            if ($str[1] === 'b' || $str[1] === 'B') {
                 return bindec($str);
             }
 

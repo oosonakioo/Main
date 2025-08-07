@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -20,9 +21,9 @@ class StreamWrapper
     /**
      * Returns a resource representing the stream.
      *
-     * @param StreamInterface $stream The stream to get a resource for
-     *
+     * @param  StreamInterface  $stream  The stream to get a resource for
      * @return resource
+     *
      * @throws \InvalidArgumentException if stream is not readable or writable
      */
     public static function getResource(StreamInterface $stream)
@@ -35,11 +36,11 @@ class StreamWrapper
             $mode = 'w';
         } else {
             throw new \InvalidArgumentException('The stream must be readable, '
-                . 'writable, or both.');
+                .'writable, or both.');
         }
 
         return fopen('guzzle://stream', $mode, null, stream_context_create([
-            'guzzle' => ['stream' => $stream]
+            'guzzle' => ['stream' => $stream],
         ]));
     }
 
@@ -48,7 +49,7 @@ class StreamWrapper
      */
     public static function register()
     {
-        if (!in_array('guzzle', stream_get_wrappers())) {
+        if (! in_array('guzzle', stream_get_wrappers())) {
             stream_wrapper_register('guzzle', __CLASS__);
         }
     }
@@ -57,7 +58,7 @@ class StreamWrapper
     {
         $options = stream_context_get_options($this->context);
 
-        if (!isset($options['guzzle']['stream'])) {
+        if (! isset($options['guzzle']['stream'])) {
             return false;
         }
 
@@ -97,25 +98,25 @@ class StreamWrapper
     public function stream_stat()
     {
         static $modeMap = [
-            'r'  => 33060,
+            'r' => 33060,
             'r+' => 33206,
-            'w'  => 33188
+            'w' => 33188,
         ];
 
         return [
-            'dev'     => 0,
-            'ino'     => 0,
-            'mode'    => $modeMap[$this->mode],
-            'nlink'   => 0,
-            'uid'     => 0,
-            'gid'     => 0,
-            'rdev'    => 0,
-            'size'    => $this->stream->getSize() ?: 0,
-            'atime'   => 0,
-            'mtime'   => 0,
-            'ctime'   => 0,
+            'dev' => 0,
+            'ino' => 0,
+            'mode' => $modeMap[$this->mode],
+            'nlink' => 0,
+            'uid' => 0,
+            'gid' => 0,
+            'rdev' => 0,
+            'size' => $this->stream->getSize() ?: 0,
+            'atime' => 0,
+            'mtime' => 0,
+            'ctime' => 0,
             'blksize' => 0,
-            'blocks'  => 0
+            'blocks' => 0,
         ];
     }
 }

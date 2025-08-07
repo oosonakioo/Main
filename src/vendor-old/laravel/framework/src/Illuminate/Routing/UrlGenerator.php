@@ -2,14 +2,14 @@
 
 namespace Illuminate\Routing;
 
+use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use InvalidArgumentException;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Routing\UrlRoutable;
-use Illuminate\Routing\Exceptions\UrlGenerationException;
-use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
+use InvalidArgumentException;
 
 class UrlGenerator implements UrlGeneratorContract
 {
@@ -96,8 +96,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Create a new URL Generator instance.
      *
-     * @param  \Illuminate\Routing\RouteCollection  $routes
-     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function __construct(RouteCollection $routes, Request $request)
@@ -192,7 +190,7 @@ class UrlGenerator implements UrlGeneratorContract
      * Generate a secure, absolute URL to the given path.
      *
      * @param  string  $path
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function secure($path, $parameters = [])
@@ -299,7 +297,7 @@ class UrlGenerator implements UrlGeneratorContract
      * Get the URL to a named route.
      *
      * @param  string  $name
-     * @param  mixed   $parameters
+     * @param  mixed  $parameters
      * @param  bool  $absolute
      * @return string
      *
@@ -319,7 +317,7 @@ class UrlGenerator implements UrlGeneratorContract
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $parameters
-     * @param  bool   $absolute
+     * @param  bool  $absolute
      * @return string
      *
      * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
@@ -363,7 +361,6 @@ class UrlGenerator implements UrlGeneratorContract
      * Replace all of the wildcard parameters for a route path.
      *
      * @param  string  $path
-     * @param  array  $parameters
      * @return string
      */
     protected function replaceRouteParameters($path, array &$parameters)
@@ -397,7 +394,6 @@ class UrlGenerator implements UrlGeneratorContract
      * Add a query string to the URI.
      *
      * @param  string  $uri
-     * @param  array  $parameters
      * @return mixed|string
      */
     protected function addQueryString($uri, array $parameters)
@@ -447,7 +443,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Get the query string for a given route.
      *
-     * @param  array  $parameters
      * @return string
      */
     protected function getRouteQueryString(array $parameters)
@@ -478,7 +473,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Get the string parameters from a given list.
      *
-     * @param  array  $parameters
      * @return array
      */
     protected function getStringParameters(array $parameters)
@@ -491,7 +485,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Get the numeric parameters from a given list.
      *
-     * @param  array  $parameters
      * @return array
      */
     protected function getNumericParameters(array $parameters)
@@ -588,8 +581,8 @@ class UrlGenerator implements UrlGeneratorContract
      * Get the URL to a controller action.
      *
      * @param  string  $action
-     * @param  mixed   $parameters
-     * @param  bool    $absolute
+     * @param  mixed  $parameters
+     * @param  bool  $absolute
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -684,7 +677,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Set the current request instance.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function setRequest(Request $request)
@@ -698,7 +690,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Set the route collection.
      *
-     * @param  \Illuminate\Routing\RouteCollection  $routes
      * @return $this
      */
     public function setRoutes(RouteCollection $routes)
@@ -735,7 +726,6 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Set the session resolver for the generator.
      *
-     * @param  callable  $sessionResolver
      * @return $this
      */
     public function setSessionResolver(callable $sessionResolver)

@@ -23,14 +23,13 @@ class PhpExecutableFinder
 
     public function __construct()
     {
-        $this->executableFinder = new ExecutableFinder();
+        $this->executableFinder = new ExecutableFinder;
     }
 
     /**
      * Finds The PHP executable.
      *
-     * @param bool $includeArgs Whether or not include command arguments
-     *
+     * @param  bool  $includeArgs  Whether or not include command arguments
      * @return string|false The PHP executable path or false if it cannot be found
      */
     public function find($includeArgs = true)
@@ -44,12 +43,12 @@ class PhpExecutableFinder
         }
 
         // PHP_BINARY return the current sapi executable
-        if (PHP_BINARY && in_array(PHP_SAPI, array('cli', 'cli-server', 'phpdbg')) && is_file(PHP_BINARY)) {
+        if (PHP_BINARY && in_array(PHP_SAPI, ['cli', 'cli-server', 'phpdbg']) && is_file(PHP_BINARY)) {
             return PHP_BINARY.$args;
         }
 
         if ($php = getenv('PHP_PATH')) {
-            if (!is_executable($php)) {
+            if (! is_executable($php)) {
                 return false;
             }
 
@@ -62,7 +61,7 @@ class PhpExecutableFinder
             }
         }
 
-        $dirs = array(PHP_BINDIR);
+        $dirs = [PHP_BINDIR];
         if ('\\' === DIRECTORY_SEPARATOR) {
             $dirs[] = 'C:\xampp\php\\';
         }
@@ -77,7 +76,7 @@ class PhpExecutableFinder
      */
     public function findArguments()
     {
-        $arguments = array();
+        $arguments = [];
 
         if (defined('HHVM_VERSION')) {
             $arguments[] = '--php';

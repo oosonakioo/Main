@@ -23,9 +23,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class TimeDataCollector extends DataCollector implements LateDataCollectorInterface
 {
     protected $kernel;
+
     protected $stopwatch;
 
-    public function __construct(KernelInterface $kernel = null, $stopwatch = null)
+    public function __construct(?KernelInterface $kernel = null, $stopwatch = null)
     {
         $this->kernel = $kernel;
         $this->stopwatch = $stopwatch;
@@ -34,19 +35,19 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, ?\Exception $exception = null)
     {
-        if (null !== $this->kernel) {
+        if ($this->kernel !== null) {
             $startTime = $this->kernel->getStartTime();
         } else {
             $startTime = $request->server->get('REQUEST_TIME_FLOAT', $request->server->get('REQUEST_TIME'));
         }
 
-        $this->data = array(
+        $this->data = [
             'token' => $response->headers->get('X-Debug-Token'),
             'start_time' => $startTime * 1000,
-            'events' => array(),
-        );
+            'events' => [],
+        ];
     }
 
     /**
@@ -54,7 +55,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      */
     public function lateCollect()
     {
-        if (null !== $this->stopwatch && isset($this->data['token'])) {
+        if ($this->stopwatch !== null && isset($this->data['token'])) {
             $this->setEvents($this->stopwatch->getSectionEvents($this->data['token']));
         }
         unset($this->data['token']);
@@ -63,7 +64,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
     /**
      * Sets the request events.
      *
-     * @param array $events The request events
+     * @param  array  $events  The request events
      */
     public function setEvents(array $events)
     {
@@ -91,7 +92,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      */
     public function getDuration()
     {
-        if (!isset($this->data['events']['__section__'])) {
+        if (! isset($this->data['events']['__section__'])) {
             return 0;
         }
 
@@ -109,7 +110,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      */
     public function getInitTime()
     {
-        if (!isset($this->data['events']['__section__'])) {
+        if (! isset($this->data['events']['__section__'])) {
             return 0;
         }
 

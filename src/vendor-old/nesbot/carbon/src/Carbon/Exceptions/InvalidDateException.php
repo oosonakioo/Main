@@ -33,12 +33,11 @@ class InvalidDateException extends InvalidArgumentException
     /**
      * Constructor.
      *
-     * @param string          $field
-     * @param mixed           $value
-     * @param int             $code
-     * @param \Exception|null $previous
+     * @param  string  $field
+     * @param  mixed  $value
+     * @param  int  $code
      */
-    public function __construct($field, $value, $code = 0, Exception $previous = null)
+    public function __construct($field, $value, $code = 0, ?Exception $previous = null)
     {
         $this->field = $field;
         $this->value = $value;

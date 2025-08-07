@@ -31,8 +31,7 @@ class Unescaper
     /**
      * Unescapes a single quoted string.
      *
-     * @param string $value A single quoted string
-     *
+     * @param  string  $value  A single quoted string
      * @return string The unescaped string
      */
     public function unescapeSingleQuotedString($value)
@@ -43,8 +42,7 @@ class Unescaper
     /**
      * Unescapes a double quoted string.
      *
-     * @param string $value A double quoted string
-     *
+     * @param  string  $value  A double quoted string
      * @return string The unescaped string
      */
     public function unescapeDoubleQuotedString($value)
@@ -60,8 +58,7 @@ class Unescaper
     /**
      * Unescapes a character that was found in a double-quoted string.
      *
-     * @param string $value An escaped character
-     *
+     * @param  string  $value  An escaped character
      * @return string The unescaped character
      */
     private function unescapeCharacter($value)
@@ -121,8 +118,7 @@ class Unescaper
     /**
      * Get the UTF-8 character for the given code point.
      *
-     * @param int $c The unicode code point
-     *
+     * @param  int  $c  The unicode code point
      * @return string The corresponding UTF-8 character
      */
     private static function utf8chr($c)
@@ -130,10 +126,10 @@ class Unescaper
         if (0x80 > $c %= 0x200000) {
             return chr($c);
         }
-        if (0x800 > $c) {
+        if ($c < 0x800) {
             return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
         }
-        if (0x10000 > $c) {
+        if ($c < 0x10000) {
             return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
         }
 

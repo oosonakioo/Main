@@ -11,108 +11,115 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class CategoryController extends AdminController
 {
-	public function index()
-	{
-		$menu = $this->getCategoryURL();
+    public function index()
+    {
+        $menu = $this->getCategoryURL();
 
-		$categories = Categories::where('menu', $menu)
-			->orderBy('updated_at', 'desc')
-			->get();
-		return view('admin.categories', [
-			'menu'				=> $menu,
-			'categories' 	=> $categories,
-		]);
-	}
+        $categories = Categories::where('menu', $menu)
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-	public function create()
-	{
-		$menu = $this->getCategoryURL();
+        return view('admin.categories', [
+            'menu' => $menu,
+            'categories' => $categories,
+        ]);
+    }
 
-		$category = new Categories();
-		return view('admin.categories-create', [
-			'menu'				=> $menu,
-			'category' 		=> $category
-		]);
-	}
+    public function create()
+    {
+        $menu = $this->getCategoryURL();
 
-	public function store(Request $request)
-	{
-		$menu = $this->getCategoryURL();
-		$redirect = 'admin/'. $menu. '/categories';
+        $category = new Categories;
 
-		$this->doValidate($request);
-		$category = new Categories();
-		$this->doSave($request, $category);
-		return Helper::redirect($redirect);
-	}
+        return view('admin.categories-create', [
+            'menu' => $menu,
+            'category' => $category,
+        ]);
+    }
 
-	public function edit($id)
-	{
-		$menu = $this->getCategoryURL();
+    public function store(Request $request)
+    {
+        $menu = $this->getCategoryURL();
+        $redirect = 'admin/'.$menu.'/categories';
 
-		$category = Categories::find($id);
-		return view('admin.categories-create', [
-			'menu'				=> $menu,
-			'category' 		=> $category,
-		]);
-	}
+        $this->doValidate($request);
+        $category = new Categories;
+        $this->doSave($request, $category);
 
-	public function update(Request $request, $id)
-	{
-		$menu = $this->getCategoryURL();
-		$redirect = 'admin/'. $menu. '/categories';
+        return Helper::redirect($redirect);
+    }
 
-		$this->doValidate($request);
-		$category = Categories::find($id);
-		$this->doSave($request, $category);
-		return Helper::redirect($redirect);
-	}
+    public function edit($id)
+    {
+        $menu = $this->getCategoryURL();
 
-	public function destroy($id)
-	{
-		$count = Categories::destroy($id);
-		return $count == 1 ? $id : -1;
-	}
+        $category = Categories::find($id);
 
-	private function doValidate(Request $request)
-	{
-		$validate = [];
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			$title = 'title_' . $locale;
-			$detail = 'detail_' . $locale;
+        return view('admin.categories-create', [
+            'menu' => $menu,
+            'category' => $category,
+        ]);
+    }
 
-			$validate[$title] = 'required';
-			//$validate[$detail] = 'required';
-		}
-		$this->validate($request, $validate);
-	}
+    public function update(Request $request, $id)
+    {
+        $menu = $this->getCategoryURL();
+        $redirect = 'admin/'.$menu.'/categories';
 
-	private function doSave(Request $request, $category)
-	{
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			$title = 'title_' . $locale;
-			$detail = 'detail_' . $locale;
+        $this->doValidate($request);
+        $category = Categories::find($id);
+        $this->doSave($request, $category);
 
-			$category->translateOrNew($locale)->title = $request[$title];
-			$category->translateOrNew($locale)->detail = $request[$detail];
-		}
-		$category->menu = $request->menu;
-		$category->value = $request->value;
-		$category->sort = $request->sort;
-		$category->active = ($request->active === 'active');
-		$category->save();
-	}
+        return Helper::redirect($redirect);
+    }
 
-	private static function getCategoryURL()
-	{
-		$arr_menu = Config::get('setting.catcontents');
-		$currenturl = $_SERVER['REQUEST_URI'];
+    public function destroy($id)
+    {
+        $count = Categories::destroy($id);
 
-		foreach ($arr_menu as $value) {
-			if (strpos($currenturl, $value) !== false) {
-				$return = $value;
-			}
-		}
-		return $return;
-	}
+        return $count == 1 ? $id : -1;
+    }
+
+    private function doValidate(Request $request)
+    {
+        $validate = [];
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
+
+            $validate[$title] = 'required';
+            // $validate[$detail] = 'required';
+        }
+        $this->validate($request, $validate);
+    }
+
+    private function doSave(Request $request, $category)
+    {
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
+
+            $category->translateOrNew($locale)->title = $request[$title];
+            $category->translateOrNew($locale)->detail = $request[$detail];
+        }
+        $category->menu = $request->menu;
+        $category->value = $request->value;
+        $category->sort = $request->sort;
+        $category->active = ($request->active === 'active');
+        $category->save();
+    }
+
+    private static function getCategoryURL()
+    {
+        $arr_menu = Config::get('setting.catcontents');
+        $currenturl = $_SERVER['REQUEST_URI'];
+
+        foreach ($arr_menu as $value) {
+            if (strpos($currenturl, $value) !== false) {
+                $return = $value;
+            }
+        }
+
+        return $return;
+    }
 }

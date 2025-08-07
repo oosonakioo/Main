@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ use MongoDate;
  * MongoDB cache provider.
  *
  * @since  1.1
+ *
  * @author Jeremy Mikola <jmikola@gmail.com>
  */
 class MongoDBCache extends CacheProvider
@@ -70,7 +72,6 @@ class MongoDBCache extends CacheProvider
      *
      * @see http://www.php.net/manual/en/mongo.readpreferences.php
      * @see http://www.php.net/manual/en/mongo.writeconcerns.php
-     * @param MongoCollection $collection
      */
     public function __construct(MongoCollection $collection)
     {
@@ -82,7 +83,7 @@ class MongoDBCache extends CacheProvider
      */
     protected function doFetch($id)
     {
-        $document = $this->collection->findOne(array('_id' => $id), array(self::DATA_FIELD, self::EXPIRATION_FIELD));
+        $document = $this->collection->findOne(['_id' => $id], [self::DATA_FIELD, self::EXPIRATION_FIELD]);
 
         if ($document === null) {
             return false;
@@ -90,6 +91,7 @@ class MongoDBCache extends CacheProvider
 
         if ($this->isExpired($document)) {
             $this->doDelete($id);
+
             return false;
         }
 
@@ -101,7 +103,7 @@ class MongoDBCache extends CacheProvider
      */
     protected function doContains($id)
     {
-        $document = $this->collection->findOne(array('_id' => $id), array(self::EXPIRATION_FIELD));
+        $document = $this->collection->findOne(['_id' => $id], [self::EXPIRATION_FIELD]);
 
         if ($document === null) {
             return false;
@@ -109,6 +111,7 @@ class MongoDBCache extends CacheProvider
 
         if ($this->isExpired($document)) {
             $this->doDelete($id);
+
             return false;
         }
 
@@ -122,12 +125,12 @@ class MongoDBCache extends CacheProvider
     {
         try {
             $result = $this->collection->update(
-                array('_id' => $id),
-                array('$set' => array(
+                ['_id' => $id],
+                ['$set' => [
                     self::EXPIRATION_FIELD => ($lifeTime > 0 ? new MongoDate(time() + $lifeTime) : null),
                     self::DATA_FIELD => new MongoBinData(serialize($data), MongoBinData::BYTE_ARRAY),
-                )),
-                array('upsert' => true, 'multiple' => false)
+                ]],
+                ['upsert' => true, 'multiple' => false]
             );
         } catch (MongoCursorException $e) {
             return false;
@@ -141,7 +144,7 @@ class MongoDBCache extends CacheProvider
      */
     protected function doDelete($id)
     {
-        $result = $this->collection->remove(array('_id' => $id));
+        $result = $this->collection->remove(['_id' => $id]);
 
         return isset($result['ok']) ? $result['ok'] == 1 : true;
     }
@@ -162,29 +165,28 @@ class MongoDBCache extends CacheProvider
      */
     protected function doGetStats()
     {
-        $serverStatus = $this->collection->db->command(array(
+        $serverStatus = $this->collection->db->command([
             'serverStatus' => 1,
             'locks' => 0,
             'metrics' => 0,
             'recordStats' => 0,
             'repl' => 0,
-        ));
+        ]);
 
-        $collStats = $this->collection->db->command(array('collStats' => 1));
+        $collStats = $this->collection->db->command(['collStats' => 1]);
 
-        return array(
+        return [
             Cache::STATS_HITS => null,
             Cache::STATS_MISSES => null,
             Cache::STATS_UPTIME => (isset($serverStatus['uptime']) ? (int) $serverStatus['uptime'] : null),
             Cache::STATS_MEMORY_USAGE => (isset($collStats['size']) ? (int) $collStats['size'] : null),
-            Cache::STATS_MEMORY_AVAILABLE  => null,
-        );
+            Cache::STATS_MEMORY_AVAILABLE => null,
+        ];
     }
 
     /**
      * Check if the document is expired.
      *
-     * @param array $document
      *
      * @return bool
      */

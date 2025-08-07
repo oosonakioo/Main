@@ -21,7 +21,7 @@ class InterfaceEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list interfaces when no Reflector is present.
         //
@@ -36,7 +36,7 @@ class InterfaceEnumerator extends Enumerator
         }
 
         // only list interfaces if we are specifically asked
-        if (!$input->getOption('interfaces')) {
+        if (! $input->getOption('interfaces')) {
             return;
         }
 
@@ -46,15 +46,14 @@ class InterfaceEnumerator extends Enumerator
             return;
         }
 
-        return array(
+        return [
             'Interfaces' => $interfaces,
-        );
+        ];
     }
 
     /**
      * Prepare formatted interface array.
      *
-     * @param array $interfaces
      *
      * @return array
      */
@@ -63,15 +62,15 @@ class InterfaceEnumerator extends Enumerator
         natcasesort($interfaces);
 
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         foreach ($interfaces as $name) {
             if ($this->showItem($name)) {
-                $ret[$name] = array(
-                    'name'  => $name,
+                $ret[$name] = [
+                    'name' => $name,
                     'style' => self::IS_CLASS,
                     'value' => $this->presentSignature($name),
-                );
+                ];
             }
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -19,71 +20,71 @@ class PHPUnit_TextUI_Command
     /**
      * @var array
      */
-    protected $arguments = array(
-        'listGroups'              => false,
-        'loader'                  => null,
-        'useDefaultConfiguration' => true
-    );
+    protected $arguments = [
+        'listGroups' => false,
+        'loader' => null,
+        'useDefaultConfiguration' => true,
+    ];
 
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var array
      */
-    protected $longOptions = array(
-        'colors=='             => null,
-        'bootstrap='           => null,
-        'columns='             => null,
-        'configuration='       => null,
-        'coverage-clover='     => null,
-        'coverage-crap4j='     => null,
-        'coverage-html='       => null,
-        'coverage-php='        => null,
-        'coverage-text=='      => null,
-        'coverage-xml='        => null,
-        'debug'                => null,
-        'exclude-group='       => null,
-        'filter='              => null,
-        'testsuite='           => null,
-        'group='               => null,
-        'help'                 => null,
-        'include-path='        => null,
-        'list-groups'          => null,
-        'loader='              => null,
-        'log-json='            => null,
-        'log-junit='           => null,
-        'log-tap='             => null,
-        'process-isolation'    => null,
-        'repeat='              => null,
-        'stderr'               => null,
-        'stop-on-error'        => null,
-        'stop-on-failure'      => null,
-        'stop-on-incomplete'   => null,
-        'stop-on-risky'        => null,
-        'stop-on-skipped'      => null,
+    protected $longOptions = [
+        'colors==' => null,
+        'bootstrap=' => null,
+        'columns=' => null,
+        'configuration=' => null,
+        'coverage-clover=' => null,
+        'coverage-crap4j=' => null,
+        'coverage-html=' => null,
+        'coverage-php=' => null,
+        'coverage-text==' => null,
+        'coverage-xml=' => null,
+        'debug' => null,
+        'exclude-group=' => null,
+        'filter=' => null,
+        'testsuite=' => null,
+        'group=' => null,
+        'help' => null,
+        'include-path=' => null,
+        'list-groups' => null,
+        'loader=' => null,
+        'log-json=' => null,
+        'log-junit=' => null,
+        'log-tap=' => null,
+        'process-isolation' => null,
+        'repeat=' => null,
+        'stderr' => null,
+        'stop-on-error' => null,
+        'stop-on-failure' => null,
+        'stop-on-incomplete' => null,
+        'stop-on-risky' => null,
+        'stop-on-skipped' => null,
         'report-useless-tests' => null,
-        'strict-coverage'      => null,
+        'strict-coverage' => null,
         'disallow-test-output' => null,
-        'enforce-time-limit'   => null,
-        'disallow-todo-tests'  => null,
-        'strict-global-state'  => null,
-        'strict'               => null,
-        'tap'                  => null,
-        'testdox'              => null,
-        'testdox-html='        => null,
-        'testdox-text='        => null,
-        'test-suffix='         => null,
-        'no-configuration'     => null,
-        'no-coverage'          => null,
-        'no-globals-backup'    => null,
-        'printer='             => null,
-        'static-backup'        => null,
-        'verbose'              => null,
-        'version'              => null
-    );
+        'enforce-time-limit' => null,
+        'disallow-todo-tests' => null,
+        'strict-global-state' => null,
+        'strict' => null,
+        'tap' => null,
+        'testdox' => null,
+        'testdox-html=' => null,
+        'testdox-text=' => null,
+        'test-suffix=' => null,
+        'no-configuration' => null,
+        'no-coverage' => null,
+        'no-globals-backup' => null,
+        'printer=' => null,
+        'static-backup' => null,
+        'verbose' => null,
+        'version' => null,
+    ];
 
     /**
      * @var bool
@@ -91,7 +92,7 @@ class PHPUnit_TextUI_Command
     private $versionStringPrinted = false;
 
     /**
-     * @param bool $exit
+     * @param  bool  $exit
      */
     public static function main($exit = true)
     {
@@ -101,9 +102,7 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param array $argv
-     * @param bool  $exit
-     *
+     * @param  bool  $exit
      * @return int
      */
     public function run(array $argv, $exit = true)
@@ -126,13 +125,13 @@ class PHPUnit_TextUI_Command
         if ($this->arguments['listGroups']) {
             $this->printVersionString();
 
-            print "Available test group(s):\n";
+            echo "Available test group(s):\n";
 
             $groups = $suite->getGroups();
             sort($groups);
 
             foreach ($groups as $group) {
-                print " - $group\n";
+                echo " - $group\n";
             }
 
             if ($exit) {
@@ -148,14 +147,14 @@ class PHPUnit_TextUI_Command
         try {
             $result = $runner->doRun($suite, $this->arguments);
         } catch (PHPUnit_Framework_Exception $e) {
-            print $e->getMessage() . "\n";
+            echo $e->getMessage()."\n";
         }
 
         $ret = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
 
         if (isset($result) && $result->wasSuccessful()) {
             $ret = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
-        } elseif (!isset($result) || $result->errorCount() > 0) {
+        } elseif (! isset($result) || $result->errorCount() > 0) {
             $ret = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
         }
 
@@ -220,17 +219,15 @@ class PHPUnit_TextUI_Command
      *
      * }
      * </code>
-     *
-     * @param array $argv
      */
     protected function handleArguments(array $argv)
     {
         if (defined('__PHPUNIT_PHAR__')) {
             $this->longOptions['check-version'] = null;
-            $this->longOptions['selfupdate']    = null;
-            $this->longOptions['self-update']   = null;
-            $this->longOptions['selfupgrade']   = null;
-            $this->longOptions['self-upgrade']  = null;
+            $this->longOptions['selfupdate'] = null;
+            $this->longOptions['self-update'] = null;
+            $this->longOptions['selfupgrade'] = null;
+            $this->longOptions['self-upgrade'] = null;
         }
 
         try {
@@ -287,9 +284,9 @@ class PHPUnit_TextUI_Command
                         $option[1] = 'php://stdout';
                     }
 
-                    $this->arguments['coverageText']                   = $option[1];
+                    $this->arguments['coverageText'] = $option[1];
                     $this->arguments['coverageTextShowUncoveredFiles'] = false;
-                    $this->arguments['coverageTextShowOnlySummary']    = false;
+                    $this->arguments['coverageTextShowOnlySummary'] = false;
                     break;
 
                 case '--coverage-xml':
@@ -471,10 +468,10 @@ class PHPUnit_TextUI_Command
                     break;
 
                 case '--strict':
-                    $this->arguments['reportUselessTests']         = true;
-                    $this->arguments['strictCoverage']             = true;
-                    $this->arguments['disallowTestOutput']         = true;
-                    $this->arguments['enforceTimeLimit']           = true;
+                    $this->arguments['reportUselessTests'] = true;
+                    $this->arguments['strictCoverage'] = true;
+                    $this->arguments['disallowTestOutput'] = true;
+                    $this->arguments['enforceTimeLimit'] = true;
                     $this->arguments['disallowTodoAnnotatedTests'] = true;
                     $this->arguments['deprecatedStrictModeOption'] = true;
                     break;
@@ -502,11 +499,11 @@ class PHPUnit_TextUI_Command
 
                     if (isset($this->longOptions[$optionName])) {
                         $handler = $this->longOptions[$optionName];
-                    } elseif (isset($this->longOptions[$optionName . '='])) {
-                        $handler = $this->longOptions[$optionName . '='];
+                    } elseif (isset($this->longOptions[$optionName.'='])) {
+                        $handler = $this->longOptions[$optionName.'='];
                     }
 
-                    if (isset($handler) && is_callable(array($this, $handler))) {
+                    if (isset($handler) && is_callable([$this, $handler])) {
                         $this->$handler($option[1]);
                     }
             }
@@ -514,7 +511,7 @@ class PHPUnit_TextUI_Command
 
         $this->handleCustomTestSuite();
 
-        if (!isset($this->arguments['test'])) {
+        if (! isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
             }
@@ -529,18 +526,18 @@ class PHPUnit_TextUI_Command
                 is_file($this->arguments['test']) &&
                 substr($this->arguments['test'], -5, 5) != '.phpt') {
                 $this->arguments['testFile'] = realpath($this->arguments['test']);
-                $this->arguments['test']     = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
+                $this->arguments['test'] = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
             }
         }
 
-        if (!isset($this->arguments['testSuffixes'])) {
-            $this->arguments['testSuffixes'] = array('Test.php', '.phpt');
+        if (! isset($this->arguments['testSuffixes'])) {
+            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
         if (isset($includePath)) {
             ini_set(
                 'include_path',
-                $includePath . PATH_SEPARATOR . ini_get('include_path')
+                $includePath.PATH_SEPARATOR.ini_get('include_path')
             );
         }
 
@@ -550,18 +547,18 @@ class PHPUnit_TextUI_Command
 
         if (isset($this->arguments['configuration']) &&
             is_dir($this->arguments['configuration'])) {
-            $configurationFile = $this->arguments['configuration'] . '/phpunit.xml';
+            $configurationFile = $this->arguments['configuration'].'/phpunit.xml';
 
             if (file_exists($configurationFile)) {
                 $this->arguments['configuration'] = realpath(
                     $configurationFile
                 );
-            } elseif (file_exists($configurationFile . '.dist')) {
+            } elseif (file_exists($configurationFile.'.dist')) {
                 $this->arguments['configuration'] = realpath(
-                    $configurationFile . '.dist'
+                    $configurationFile.'.dist'
                 );
             }
-        } elseif (!isset($this->arguments['configuration']) &&
+        } elseif (! isset($this->arguments['configuration']) &&
                   $this->arguments['useDefaultConfiguration']) {
             if (file_exists('phpunit.xml')) {
                 $this->arguments['configuration'] = realpath('phpunit.xml');
@@ -578,10 +575,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['configuration']
                 );
             } catch (Throwable $e) {
-                print $e->getMessage() . "\n";
+                echo $e->getMessage()."\n";
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             } catch (Exception $e) {
-                print $e->getMessage() . "\n";
+                echo $e->getMessage()."\n";
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
 
@@ -637,7 +634,7 @@ class PHPUnit_TextUI_Command
 
             $browsers = $configuration->getSeleniumBrowserConfiguration();
 
-            if (!empty($browsers)) {
+            if (! empty($browsers)) {
                 $this->arguments['deprecatedSeleniumConfiguration'] = true;
 
                 if (class_exists('PHPUnit_Extensions_SeleniumTestCase')) {
@@ -645,7 +642,7 @@ class PHPUnit_TextUI_Command
                 }
             }
 
-            if (!isset($this->arguments['test'])) {
+            if (! isset($this->arguments['test'])) {
                 $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['testsuite']) ? $this->arguments['testsuite'] : null);
 
                 if ($testSuite !== null) {
@@ -668,8 +665,8 @@ class PHPUnit_TextUI_Command
             $this->arguments['test']->addTest($test);
         }
 
-        if (!isset($this->arguments['test']) ||
-            (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
+        if (! isset($this->arguments['test']) ||
+            (isset($this->arguments['testDatabaseLogRevision']) && ! isset($this->arguments['testDatabaseDSN']))) {
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
@@ -678,14 +675,13 @@ class PHPUnit_TextUI_Command
     /**
      * Handles the loading of the PHPUnit_Runner_TestSuiteLoader implementation.
      *
-     * @param string $loaderClass
-     * @param string $loaderFile
-     *
+     * @param  string  $loaderClass
+     * @param  string  $loaderFile
      * @return PHPUnit_Runner_TestSuiteLoader
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
     {
-        if (!class_exists($loaderClass, false)) {
+        if (! class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
                 $loaderFile = PHPUnit_Util_Filesystem::classNameToFilename(
                     $loaderClass
@@ -723,14 +719,13 @@ class PHPUnit_TextUI_Command
     /**
      * Handles the loading of the PHPUnit_Util_Printer implementation.
      *
-     * @param string $printerClass
-     * @param string $printerFile
-     *
+     * @param  string  $printerClass
+     * @param  string  $printerFile
      * @return PHPUnit_Util_Printer|string
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {
-        if (!class_exists($printerClass, false)) {
+        if (! class_exists($printerClass, false)) {
             if ($printerFile == '') {
                 $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
                     $printerClass
@@ -771,7 +766,7 @@ class PHPUnit_TextUI_Command
     /**
      * Loads a bootstrap file.
      *
-     * @param string $filename
+     * @param  string  $filename
      */
     protected function handleBootstrap($filename)
     {
@@ -791,17 +786,17 @@ class PHPUnit_TextUI_Command
 
         $localFilename = realpath($_SERVER['argv'][0]);
 
-        if (!is_writable($localFilename)) {
-            print 'No write permission to update ' . $localFilename . "\n";
+        if (! is_writable($localFilename)) {
+            echo 'No write permission to update '.$localFilename."\n";
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
-        if (!extension_loaded('openssl')) {
-            print "The OpenSSL extension is not loaded.\n";
+        if (! extension_loaded('openssl')) {
+            echo "The OpenSSL extension is not loaded.\n";
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
-        if (!$upgrade) {
+        if (! $upgrade) {
             $remoteFilename = sprintf(
                 'https://phar.phpunit.de/phpunit-%s.phar',
                 file_get_contents(
@@ -818,24 +813,24 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit') . '.phar';
+        $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit').'.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
-        $caFile = dirname($tempFilename) . '/ca.pem';
-        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
+        $caFile = dirname($tempFilename).'/ca.pem';
+        copy(__PHPUNIT_PHAR_ROOT__.'/ca.pem', $caFile);
 
-        print 'Updating the PHPUnit PHAR ... ';
+        echo 'Updating the PHPUnit PHAR ... ';
 
-        $options = array(
-            'ssl' => array(
+        $options = [
+            'ssl' => [
                 'allow_self_signed' => false,
-                'cafile'            => $caFile,
-                'verify_peer'       => true
-            )
-        );
+                'cafile' => $caFile,
+                'verify_peer' => true,
+            ],
+        ];
 
         if (PHP_VERSION_ID < 50600) {
-            $options['ssl']['CN_match']        = 'phar.phpunit.de';
+            $options['ssl']['CN_match'] = 'phar.phpunit.de';
             $options['ssl']['SNI_server_name'] = 'phar.phpunit.de';
         }
 
@@ -864,11 +859,11 @@ class PHPUnit_TextUI_Command
         if (isset($e)) {
             unlink($caFile);
             unlink($tempFilename);
-            print " done\n\n" . $e->getMessage() . "\n";
+            echo " done\n\n".$e->getMessage()."\n";
             exit(2);
         }
 
-        print " done\n";
+        echo " done\n";
         exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
     }
 
@@ -880,13 +875,13 @@ class PHPUnit_TextUI_Command
         $this->printVersionString();
 
         $latestVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
-        $isOutdated    = version_compare($latestVersion, PHPUnit_Runner_Version::id(), '>');
+        $isOutdated = version_compare($latestVersion, PHPUnit_Runner_Version::id(), '>');
 
         if ($isOutdated) {
-            print "You are not using the latest version of PHPUnit.\n";
-            print 'Use "phpunit --self-upgrade" to install PHPUnit ' . $latestVersion . "\n";
+            echo "You are not using the latest version of PHPUnit.\n";
+            echo 'Use "phpunit --self-upgrade" to install PHPUnit '.$latestVersion."\n";
         } else {
-            print "You are using the latest version of PHPUnit.\n";
+            echo "You are using the latest version of PHPUnit.\n";
         }
 
         exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
@@ -899,7 +894,7 @@ class PHPUnit_TextUI_Command
     {
         $this->printVersionString();
 
-        print <<<EOT
+        echo <<<'EOT'
 Usage: phpunit [options] UnitTest [UnitTest.php]
        phpunit [options] <directory>
 
@@ -941,7 +936,7 @@ Test Execution Options:
   --disallow-todo-tests     Disallow @todo-annotated tests.
 
   --process-isolation       Run each test in a separate PHP process.
-  --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
+  --no-globals-backup       Do not backup and restore $GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
 
   --colors=<flag>           Use colors in output ("never", "auto" or "always").
@@ -979,18 +974,16 @@ Miscellaneous Options:
 EOT;
 
         if (defined('__PHPUNIT_PHAR__')) {
-            print "\n  --check-version           Check whether PHPUnit is the latest version.";
-            print "\n  --self-update             Update PHPUnit to the latest version within the same\n                            release series.\n";
-            print "\n  --self-upgrade            Upgrade PHPUnit to the latest version.\n";
+            echo "\n  --check-version           Check whether PHPUnit is the latest version.";
+            echo "\n  --self-update             Update PHPUnit to the latest version within the same\n                            release series.\n";
+            echo "\n  --self-upgrade            Upgrade PHPUnit to the latest version.\n";
         }
     }
 
     /**
      * Custom callback for test suite discovery.
      */
-    protected function handleCustomTestSuite()
-    {
-    }
+    protected function handleCustomTestSuite() {}
 
     private function printVersionString()
     {
@@ -998,18 +991,16 @@ EOT;
             return;
         }
 
-        print PHPUnit_Runner_Version::getVersionString() . "\n\n";
+        echo PHPUnit_Runner_Version::getVersionString()."\n\n";
 
         $this->versionStringPrinted = true;
     }
 
-    /**
-     */
     private function showError($message)
     {
         $this->printVersionString();
 
-        print $message . "\n";
+        echo $message."\n";
 
         exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
     }

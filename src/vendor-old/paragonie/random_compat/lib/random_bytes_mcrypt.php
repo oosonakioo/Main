@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -25,19 +26,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-if (!is_callable('random_bytes')) {
+if (! is_callable('random_bytes')) {
     /**
      * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
      *
      * @ref https://bugs.php.net/bug.php?id=55169
      * @ref https://github.com/php/php-src/blob/c568ffe5171d942161fc8dda066bce844bdef676/ext/mcrypt/mcrypt.c#L1321-L1386
      *
-     * @param int $bytes
+     * @param  int  $bytes
+     * @return string
      *
      * @throws Exception
-     *
-     * @return string
      */
     function random_bytes($bytes)
     {

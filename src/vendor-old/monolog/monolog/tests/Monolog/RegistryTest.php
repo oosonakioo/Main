@@ -20,9 +20,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider hasLoggerProvider
+     *
      * @covers Monolog\Registry::hasLogger
      */
-    public function testHasLogger(array $loggersToAdd, array $loggersToCheck, array $expectedResult)
+    public function test_has_logger(array $loggersToAdd, array $loggersToCheck, array $expectedResult)
     {
         foreach ($loggersToAdd as $loggerToAdd) {
             Registry::addLogger($loggerToAdd);
@@ -38,32 +39,32 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $logger2 = new Logger('test2');
         $logger3 = new Logger('test3');
 
-        return array(
+        return [
             // only instances
-            array(
-                array($logger1),
-                array($logger1, $logger2),
-                array(true, false),
-            ),
+            [
+                [$logger1],
+                [$logger1, $logger2],
+                [true, false],
+            ],
             // only names
-            array(
-                array($logger1),
-                array('test1', 'test2'),
-                array(true, false),
-            ),
+            [
+                [$logger1],
+                ['test1', 'test2'],
+                [true, false],
+            ],
             // mixed case
-            array(
-                array($logger1, $logger2),
-                array('test1', $logger2, 'test3', $logger3),
-                array(true, true, false, false),
-            ),
-        );
+            [
+                [$logger1, $logger2],
+                ['test1', $logger2, 'test3', $logger3],
+                [true, true, false, false],
+            ],
+        ];
     }
 
     /**
      * @covers Monolog\Registry::clear
      */
-    public function testClearClears()
+    public function test_clear_clears()
     {
         Registry::addLogger(new Logger('test1'), 'log');
         Registry::clear();
@@ -74,10 +75,11 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider removedLoggerProvider
+     *
      * @covers Monolog\Registry::addLogger
      * @covers Monolog\Registry::removeLogger
      */
-    public function testRemovesLogger($loggerToAdd, $remove)
+    public function test_removes_logger($loggerToAdd, $remove)
     {
         Registry::addLogger($loggerToAdd);
         Registry::removeLogger($remove);
@@ -90,10 +92,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     {
         $logger1 = new Logger('test1');
 
-        return array(
-            array($logger1, $logger1),
-            array($logger1, 'test1'),
-        );
+        return [
+            [$logger1, $logger1],
+            [$logger1, 'test1'],
+        ];
     }
 
     /**
@@ -101,7 +103,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      * @covers Monolog\Registry::getInstance
      * @covers Monolog\Registry::__callStatic
      */
-    public function testGetsSameLogger()
+    public function test_gets_same_logger()
     {
         $logger1 = new Logger('test1');
         $logger2 = new Logger('test2');
@@ -115,9 +117,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @covers Monolog\Registry::getInstance
      */
-    public function testFailsOnNonExistantLogger()
+    public function test_fails_on_non_existant_logger()
     {
         Registry::getInstance('test1');
     }
@@ -125,7 +128,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Monolog\Registry::addLogger
      */
-    public function testReplacesLogger()
+    public function test_replaces_logger()
     {
         $log1 = new Logger('test1');
         $log2 = new Logger('test2');
@@ -139,9 +142,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @covers Monolog\Registry::addLogger
      */
-    public function testFailsOnUnspecifiedReplacement()
+    public function test_fails_on_unspecified_replacement()
     {
         $log1 = new Logger('test1');
         $log2 = new Logger('test2');

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
-use Mockery;
 use Exception;
+use Mockery;
 
 trait MocksApplicationServices
 {
@@ -115,7 +115,6 @@ trait MocksApplicationServices
     /**
      * Filter the given events against the fired events.
      *
-     * @param  array  $events
      * @return array
      */
     protected function getFiredEvents(array $events)
@@ -198,7 +197,6 @@ trait MocksApplicationServices
     /**
      * Filter the given jobs against the dispatched jobs.
      *
-     * @param  array  $jobs
      * @return array
      */
     protected function getDispatchedJobs(array $jobs)
@@ -209,8 +207,6 @@ trait MocksApplicationServices
     /**
      * Filter the given classes against an array of dispatched classes.
      *
-     * @param  array  $classes
-     * @param  array  $dispatched
      * @return array
      */
     protected function getDispatched(array $classes, array $dispatched)
@@ -224,7 +220,6 @@ trait MocksApplicationServices
      * Check if the given class exists in an array of dispatched classes.
      *
      * @param  string  $needle
-     * @param  array  $haystack
      * @return bool
      */
     protected function wasDispatched($needle, array $haystack)

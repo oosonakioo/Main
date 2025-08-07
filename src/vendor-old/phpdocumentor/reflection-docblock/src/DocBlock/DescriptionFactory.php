@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -38,8 +40,6 @@ class DescriptionFactory
 
     /**
      * Initializes this factory with the means to construct (inline) tags.
-     *
-     * @param TagFactory $tagFactory
      */
     public function __construct(TagFactory $tagFactory)
     {
@@ -49,14 +49,12 @@ class DescriptionFactory
     /**
      * Returns the parsed text of this description.
      *
-     * @param string $contents
-     * @param TypeContext $context
-     *
+     * @param  string  $contents
      * @return Description
      */
-    public function create($contents, TypeContext $context = null)
+    public function create($contents, ?TypeContext $context = null)
     {
-        list($text, $tags) = $this->parse($this->lex($contents), $context);
+        [$text, $tags] = $this->parse($this->lex($contents), $context);
 
         return new Description($text, $tags);
     }
@@ -64,8 +62,7 @@ class DescriptionFactory
     /**
      * Strips the contents from superfluous whitespace and splits the description into a series of tokens.
      *
-     * @param string $contents
-     *
+     * @param  string  $contents
      * @return string[] A series of tokens of which the description text is composed.
      */
     private function lex($contents)
@@ -111,26 +108,24 @@ class DescriptionFactory
     /**
      * Parses the stream of tokens in to a new set of tokens containing Tags.
      *
-     * @param string[] $tokens
-     * @param TypeContext $context
-     *
+     * @param  string[]  $tokens
      * @return string[]|Tag[]
      */
     private function parse($tokens, TypeContext $context)
     {
         $count = count($tokens);
         $tagCount = 0;
-        $tags  = [];
+        $tags = [];
 
         for ($i = 1; $i < $count; $i += 2) {
             $tags[] = $this->tagFactory->create($tokens[$i], $context);
-            $tokens[$i] = '%' . ++$tagCount . '$s';
+            $tokens[$i] = '%'.++$tagCount.'$s';
         }
 
-        //In order to allow "literal" inline tags, the otherwise invalid
-        //sequence "{@}" is changed to "@", and "{}" is changed to "}".
-        //"%" is escaped to "%%" because of vsprintf.
-        //See unit tests for examples.
+        // In order to allow "literal" inline tags, the otherwise invalid
+        // sequence "{@}" is changed to "@", and "{}" is changed to "}".
+        // "%" is escaped to "%%" because of vsprintf.
+        // See unit tests for examples.
         for ($i = 0; $i < $count; $i += 2) {
             $tokens[$i] = str_replace(['{@}', '{}', '%'], ['@', '}', '%%'], $tokens[$i]);
         }
@@ -152,8 +147,7 @@ class DescriptionFactory
      * If we do not normalize the indentation then we have superfluous whitespace on the second and subsequent
      * lines and this may cause rendering issues when, for example, using a Markdown converter.
      *
-     * @param string $contents
-     *
+     * @param  string  $contents
      * @return string
      */
     private function removeSuperfluousStartingWhitespace($contents)
@@ -188,5 +182,4 @@ class DescriptionFactory
 
         return implode("\n", $lines);
     }
-
 }

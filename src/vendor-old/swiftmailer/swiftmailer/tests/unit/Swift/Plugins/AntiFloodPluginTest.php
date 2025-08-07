@@ -2,7 +2,7 @@
 
 class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit_Framework_TestCase
 {
-    public function testThresholdCanBeSetAndFetched()
+    public function test_threshold_can_be_set_and_fetched()
     {
         $plugin = new Swift_Plugins_AntiFloodPlugin(10);
         $this->assertEquals(10, $plugin->getThreshold());
@@ -10,7 +10,7 @@ class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(100, $plugin->getThreshold());
     }
 
-    public function testSleepTimeCanBeSetAndFetched()
+    public function test_sleep_time_can_be_set_and_fetched()
     {
         $plugin = new Swift_Plugins_AntiFloodPlugin(10, 5);
         $this->assertEquals(5, $plugin->getSleepTime());
@@ -18,55 +18,55 @@ class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $plugin->getSleepTime());
     }
 
-    public function testPluginStopsConnectionAfterThreshold()
+    public function test_plugin_stops_connection_after_threshold()
     {
         $transport = $this->_createTransport();
         $transport->expects($this->once())
-                  ->method('start');
+            ->method('start');
         $transport->expects($this->once())
-                  ->method('stop');
+            ->method('stop');
 
         $evt = $this->_createSendEvent($transport);
 
         $plugin = new Swift_Plugins_AntiFloodPlugin(10);
-        for ($i = 0; $i < 12; ++$i) {
+        for ($i = 0; $i < 12; $i++) {
             $plugin->sendPerformed($evt);
         }
     }
 
-    public function testPluginCanStopAndStartMultipleTimes()
+    public function test_plugin_can_stop_and_start_multiple_times()
     {
         $transport = $this->_createTransport();
         $transport->expects($this->exactly(5))
-                  ->method('start');
+            ->method('start');
         $transport->expects($this->exactly(5))
-                  ->method('stop');
+            ->method('stop');
 
         $evt = $this->_createSendEvent($transport);
 
         $plugin = new Swift_Plugins_AntiFloodPlugin(2);
-        for ($i = 0; $i < 11; ++$i) {
+        for ($i = 0; $i < 11; $i++) {
             $plugin->sendPerformed($evt);
         }
     }
 
-    public function testPluginCanSleepDuringRestart()
+    public function test_plugin_can_sleep_during_restart()
     {
         $sleeper = $this->getMockBuilder('Swift_Plugins_Sleeper')->getMock();
         $sleeper->expects($this->once())
-                ->method('sleep')
-                ->with(10);
+            ->method('sleep')
+            ->with(10);
 
         $transport = $this->_createTransport();
         $transport->expects($this->once())
-                  ->method('start');
+            ->method('start');
         $transport->expects($this->once())
-                  ->method('stop');
+            ->method('stop');
 
         $evt = $this->_createSendEvent($transport);
 
         $plugin = new Swift_Plugins_AntiFloodPlugin(99, 10, $sleeper);
-        for ($i = 0; $i < 101; ++$i) {
+        for ($i = 0; $i < 101; $i++) {
             $plugin->sendPerformed($evt);
         }
     }
@@ -79,8 +79,8 @@ class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit_Framework_TestCase
     private function _createSendEvent($transport)
     {
         $evt = $this->getMockBuilder('Swift_Events_SendEvent')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $evt->expects($this->any())
             ->method('getSource')
             ->will($this->returnValue($transport));

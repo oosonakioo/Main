@@ -11,13 +11,14 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
-use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\Slack\SlackRecord;
+use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @author Greg Kedzierski <greg@gregkedzierski.com>
+ *
  * @see    https://api.slack.com/
  */
 class SlackHandlerTest extends TestCase
@@ -32,14 +33,14 @@ class SlackHandlerTest extends TestCase
      */
     private $handler;
 
-    public function setUp()
+    protected function setUp()
     {
-        if (!extension_loaded('openssl')) {
+        if (! extension_loaded('openssl')) {
             $this->markTestSkipped('This test requires openssl to run');
         }
     }
 
-    public function testWriteHeader()
+    public function test_write_header()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -49,7 +50,7 @@ class SlackHandlerTest extends TestCase
         $this->assertRegexp('/POST \/api\/chat.postMessage HTTP\/1.1\\r\\nHost: slack.com\\r\\nContent-Type: application\/x-www-form-urlencoded\\r\\nContent-Length: \d{2,4}\\r\\n\\r\\n/', $content);
     }
 
-    public function testWriteContent()
+    public function test_write_content()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -62,7 +63,7 @@ class SlackHandlerTest extends TestCase
         $this->assertRegExp('/attachments/', $content);
     }
 
-    public function testWriteContentUsesFormatterIfProvided()
+    public function test_write_content_uses_formatter_if_provided()
     {
         $this->createHandler('myToken', 'channel1', 'Monolog', false);
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -79,7 +80,7 @@ class SlackHandlerTest extends TestCase
         $this->assertRegexp('/text=foo--test2/', $content2);
     }
 
-    public function testWriteContentWithEmoji()
+    public function test_write_content_with_emoji()
     {
         $this->createHandler('myToken', 'channel1', 'Monolog', true, 'alien');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -92,7 +93,7 @@ class SlackHandlerTest extends TestCase
     /**
      * @dataProvider provideLevelColors
      */
-    public function testWriteContentWithColors($level, $expectedColor)
+    public function test_write_content_with_colors($level, $expectedColor)
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord($level, 'test1'));
@@ -102,7 +103,7 @@ class SlackHandlerTest extends TestCase
         $this->assertRegexp('/%22color%22%3A%22'.$expectedColor.'/', $content);
     }
 
-    public function testWriteContentWithPlainTextMessage()
+    public function test_write_content_with_plain_text_message()
     {
         $this->createHandler('myToken', 'channel1', 'Monolog', false);
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -114,25 +115,25 @@ class SlackHandlerTest extends TestCase
 
     public function provideLevelColors()
     {
-        return array(
-            array(Logger::DEBUG,    urlencode(SlackRecord::COLOR_DEFAULT)),
-            array(Logger::INFO,     SlackRecord::COLOR_GOOD),
-            array(Logger::NOTICE,   SlackRecord::COLOR_GOOD),
-            array(Logger::WARNING,  SlackRecord::COLOR_WARNING),
-            array(Logger::ERROR,    SlackRecord::COLOR_DANGER),
-            array(Logger::CRITICAL, SlackRecord::COLOR_DANGER),
-            array(Logger::ALERT,    SlackRecord::COLOR_DANGER),
-            array(Logger::EMERGENCY,SlackRecord::COLOR_DANGER),
-        );
+        return [
+            [Logger::DEBUG,    urlencode(SlackRecord::COLOR_DEFAULT)],
+            [Logger::INFO,     SlackRecord::COLOR_GOOD],
+            [Logger::NOTICE,   SlackRecord::COLOR_GOOD],
+            [Logger::WARNING,  SlackRecord::COLOR_WARNING],
+            [Logger::ERROR,    SlackRecord::COLOR_DANGER],
+            [Logger::CRITICAL, SlackRecord::COLOR_DANGER],
+            [Logger::ALERT,    SlackRecord::COLOR_DANGER],
+            [Logger::EMERGENCY, SlackRecord::COLOR_DANGER],
+        ];
     }
 
     private function createHandler($token = 'myToken', $channel = 'channel1', $username = 'Monolog', $useAttachment = true, $iconEmoji = null, $useShortAttachment = false, $includeExtra = false)
     {
-        $constructorArgs = array($token, $channel, $username, $useAttachment, $iconEmoji, Logger::DEBUG, true, $useShortAttachment, $includeExtra);
+        $constructorArgs = [$token, $channel, $username, $useAttachment, $iconEmoji, Logger::DEBUG, true, $useShortAttachment, $includeExtra];
         $this->res = fopen('php://memory', 'a');
         $this->handler = $this->getMock(
             '\Monolog\Handler\SlackHandler',
-            array('fsockopen', 'streamSetTimeout', 'closeSocket'),
+            ['fsockopen', 'streamSetTimeout', 'closeSocket'],
             $constructorArgs
         );
 

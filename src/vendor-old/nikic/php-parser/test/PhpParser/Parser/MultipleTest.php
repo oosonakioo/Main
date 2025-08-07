@@ -4,36 +4,44 @@ namespace PhpParser\Parser;
 
 use PhpParser\Error;
 use PhpParser\Lexer;
-use PhpParser\Node\Scalar\LNumber;
-use PhpParser\ParserTest;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Stmt;
+use PhpParser\ParserTest;
 
-require_once __DIR__ . '/../ParserTest.php';
+require_once __DIR__.'/../ParserTest.php';
 
-class MultipleTest extends ParserTest {
+class MultipleTest extends ParserTest
+{
     // This provider is for the generic parser tests, just pick an arbitrary order here
-    protected function getParser(Lexer $lexer) {
+    protected function getParser(Lexer $lexer)
+    {
         return new Multiple([new Php5($lexer), new Php7($lexer)]);
     }
 
-    private function getPrefer7() {
+    private function getPrefer7()
+    {
         $lexer = new Lexer(['usedAttributes' => []]);
+
         return new Multiple([new Php7($lexer), new Php5($lexer)]);
     }
 
-    private function getPrefer5() {
+    private function getPrefer5()
+    {
         $lexer = new Lexer(['usedAttributes' => []]);
+
         return new Multiple([new Php5($lexer), new Php7($lexer)]);
     }
 
     /** @dataProvider provideTestParse */
-    public function testParse($code, Multiple $parser, $expected) {
+    public function test_parse($code, Multiple $parser, $expected)
+    {
         $this->assertEquals($expected, $parser->parse($code));
         $this->assertSame([], $parser->getErrors());
     }
 
-    public function provideTestParse() {
+    public function provideTestParse()
+    {
         return [
             [
                 // PHP 7 only code
@@ -41,9 +49,9 @@ class MultipleTest extends ParserTest {
                 $this->getPrefer5(),
                 [
                     new Stmt\Class_('Test', ['stmts' => [
-                        new Stmt\ClassMethod('function')
+                        new Stmt\ClassMethod('function'),
                     ]]),
-                ]
+                ],
             ],
             [
                 // PHP 5 only code
@@ -51,9 +59,9 @@ class MultipleTest extends ParserTest {
                 $this->getPrefer7(),
                 [
                     new Stmt\Global_([
-                        new Expr\Variable(new Expr\PropertyFetch(new Expr\Variable('a'), 'b'))
-                    ])
-                ]
+                        new Expr\Variable(new Expr\PropertyFetch(new Expr\Variable('a'), 'b')),
+                    ]),
+                ],
             ],
             [
                 // Different meaning (PHP 5)
@@ -62,8 +70,8 @@ class MultipleTest extends ParserTest {
                 [
                     new Expr\Variable(
                         new Expr\ArrayDimFetch(new Expr\Variable('a'), LNumber::fromString('0'))
-                    )
-                ]
+                    ),
+                ],
             ],
             [
                 // Different meaning (PHP 7)
@@ -72,13 +80,14 @@ class MultipleTest extends ParserTest {
                 [
                     new Expr\ArrayDimFetch(
                         new Expr\Variable(new Expr\Variable('a')), LNumber::fromString('0')
-                    )
-                ]
+                    ),
+                ],
             ],
         ];
     }
 
-    public function testThrownError() {
+    public function test_thrown_error()
+    {
         $this->setExpectedException('PhpParser\Error', 'FAIL A');
 
         $parserA = $this->getMockBuilder('PhpParser\Parser')->getMock();
@@ -93,7 +102,8 @@ class MultipleTest extends ParserTest {
         $parser->parse('dummy');
     }
 
-    public function testGetErrors() {
+    public function test_get_errors()
+    {
         $errorsA = [new Error('A1'), new Error('A2')];
         $parserA = $this->getMockBuilder('PhpParser\Parser')->getMock();
         $parserA->expects($this->at(0))->method('parse');

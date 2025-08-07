@@ -25,12 +25,12 @@ function generateUpToDateMimeArray()
     $mime_xml = @file_get_contents(FREEDESKTOP_XML_URL);
 
     // prepare valid mime types
-    $valid_mime_types = array();
+    $valid_mime_types = [];
 
     // split mime type and extensions eg. "video/x-matroska        mkv mk3d mks"
     if (preg_match_all('/^#?([a-z0-9\-\+\/\.]+)[\t]+(.*)$/miu', $mime_types, $matches) !== false) {
         // collection of predefined mimetypes (bugfix for wrong resolved or missing mime types)
-        $valid_mime_types_preset = array(
+        $valid_mime_types_preset = [
             'php' => 'application/x-php',
             'php3' => 'application/x-php',
             'php4' => 'application/x-php',
@@ -95,7 +95,7 @@ function generateUpToDateMimeArray()
             'xls' => 'application/excel',
             'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'xml' => 'application/xml',
-        );
+        ];
 
         // wrap array for generating file
         foreach ($valid_mime_types_preset as $extension => $mime_type) {
@@ -104,7 +104,7 @@ function generateUpToDateMimeArray()
         }
 
         // collect extensions
-        $valid_extensions = array();
+        $valid_extensions = [];
 
         // all extensions from second match
         foreach ($matches[2] as $i => $extensions) {
@@ -112,8 +112,8 @@ function generateUpToDateMimeArray()
             $extensions = explode(' ', strtolower($extensions));
 
             // force array for foreach
-            if (!is_array($extensions)) {
-                $extensions = array($extensions);
+            if (! is_array($extensions)) {
+                $extensions = [$extensions];
             }
 
             foreach ($extensions as $extension) {
@@ -125,7 +125,7 @@ function generateUpToDateMimeArray()
                     // add extension
                     $valid_extensions[] = $extension;
 
-                    if (!isset($valid_mime_types[$mime_type])) {
+                    if (! isset($valid_mime_types[$mime_type])) {
                         // generate array for mimetype to extension resolver (only first match)
                         $valid_mime_types[$extension] = "'{$extension}' => '{$mime_type}'";
                     }
@@ -138,7 +138,7 @@ function generateUpToDateMimeArray()
 
     foreach ($xml as $node) {
         // check if there is no pattern
-        if (!isset($node->glob['pattern'])) {
+        if (! isset($node->glob['pattern'])) {
             continue;
         }
 
@@ -172,7 +172,7 @@ function generateUpToDateMimeArray()
             }
 
             // check if string length lower than 10
-            if (!isset($valid_mime_types[$mime_type])) {
+            if (! isset($valid_mime_types[$mime_type])) {
                 // generate array for mimetype to extension resolver (only first match)
                 $valid_mime_types[$extension] = "'{$extension}' => '{$mime_type}'";
             }

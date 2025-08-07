@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Schema\Column;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaColumnDefinitionEventArgs extends SchemaEventArgs
@@ -59,28 +61,25 @@ class SchemaColumnDefinitionEventArgs extends SchemaEventArgs
     private $_connection;
 
     /**
-     * @param array                     $tableColumn
-     * @param string                    $table
-     * @param string                    $database
-     * @param \Doctrine\DBAL\Connection $connection
+     * @param  string  $table
+     * @param  string  $database
      */
     public function __construct(array $tableColumn, $table, $database, Connection $connection)
     {
         $this->_tableColumn = $tableColumn;
-        $this->_table       = $table;
-        $this->_database    = $database;
-        $this->_connection  = $connection;
+        $this->_table = $table;
+        $this->_database = $database;
+        $this->_connection = $connection;
     }
 
     /**
      * Allows to clear the column which means the column will be excluded from
      * tables column list.
      *
-     * @param null|\Doctrine\DBAL\Schema\Column $column
      *
      * @return \Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs
      */
-    public function setColumn(Column $column = null)
+    public function setColumn(?Column $column = null)
     {
         $this->_column = $column;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Barryvdh\Elfinder\Console;
 
 use Illuminate\Console\Command;
@@ -9,8 +10,8 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  */
-class PublishCommand extends Command {
-
+class PublishCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -25,7 +26,7 @@ class PublishCommand extends Command {
      */
     protected $description = 'Publish the elFinder assets';
 
-    /** @var Filesystem $fs */
+    /** @var Filesystem */
     protected $files;
 
     protected $publishPath;
@@ -33,8 +34,8 @@ class PublishCommand extends Command {
     /**
      * Create a new Publish command
      *
-     * @param \Illuminate\Filesystem\Filesystem $files
-     * @param string $publishPath
+     * @param  \Illuminate\Filesystem\Filesystem  $files
+     * @param  string  $publishPath
      */
     public function __construct($files, $publishPath)
     {
@@ -53,9 +54,9 @@ class PublishCommand extends Command {
     {
 
         $package = 'barryvdh/elfinder';
-        $destination = $this->publishPath . "/packages/{$package}";
+        $destination = $this->publishPath."/packages/{$package}";
 
-        if ( ! is_null($path = $this->getElfinderPath())) {
+        if (! is_null($path = $this->getElfinderPath())) {
             if ($this->files->exists($destination)) {
                 $this->files->deleteDirectory($destination);
                 $this->info('Old published Assets have been removed');
@@ -66,7 +67,7 @@ class PublishCommand extends Command {
             $this->error('Could not find elfinder path');
         }
 
-        if ( ! is_null($path = $this->getPath())) {
+        if (! is_null($path = $this->getPath())) {
             $copyPublic = $this->files->copyDirectory($path, $destination);
         } else {
             $copyPublic = false;
@@ -84,27 +85,28 @@ class PublishCommand extends Command {
     /**
      * Copy specific directories from elFinder to their destination
      *
-     * @param $destination
      * @return bool
      */
     protected function copyElfinderFiles($destination)
     {
         $result = true;
-        $directories = array('js', 'css', 'img', 'sounds');
+        $directories = ['js', 'css', 'img', 'sounds'];
         $elfinderPath = $this->getElfinderPath();
-        foreach($directories as $dir){
+        foreach ($directories as $dir) {
             $path = $elfinderPath.'/'.$dir;
             $success = $this->files->copyDirectory($path, $destination.'/'.$dir);
             $result = $success && $result;
         }
+
         return $result;
     }
 
     /**
      *  Get the path of the public folder, to merge with the elFinder folders.
      */
-    protected function getPath(){
-        return __DIR__ .'/../../resources/assets';
+    protected function getPath()
+    {
+        return __DIR__.'/../../resources/assets';
     }
 
     /**
@@ -115,7 +117,7 @@ class PublishCommand extends Command {
     protected function getElfinderPath()
     {
         $reflector = new \ReflectionClass('elFinder');
-        return realpath(dirname($reflector->getFileName()) . '/..');
-    }
 
+        return realpath(dirname($reflector->getFileName()).'/..');
+    }
 }

@@ -2,25 +2,23 @@
 
 namespace Mockery\Generator\StringManipulation\Pass;
 
-use Mockery as m;
 use Mockery\Generator\MockConfiguration;
-use Mockery\Generator\StringManipulation\Pass\ClassNamePass;
 
 class ClassNamePassTest extends \PHPUnit_Framework_TestCase
 {
-    const CODE = "namespace Mockery; class Mock {}";
+    const CODE = 'namespace Mockery; class Mock {}';
 
-    public function setup()
+    protected function setup()
     {
-        $this->pass = new ClassNamePass();
+        $this->pass = new ClassNamePass;
     }
 
     /**
      * @test
      */
-    public function shouldRemoveNamespaceDefinition()
+    public function should_remove_namespace_definition()
     {
-        $config = new MockConfiguration(array(), array(), array(), "Dave\Dave");
+        $config = new MockConfiguration([], [], [], "Dave\Dave");
         $code = $this->pass->apply(static::CODE, $config);
         $this->assertNotContains('namespace Mockery;', $code);
     }
@@ -28,9 +26,9 @@ class ClassNamePassTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReplaceNamespaceIfClassNameIsNamespaced()
+    public function should_replace_namespace_if_class_name_is_namespaced()
     {
-        $config = new MockConfiguration(array(), array(), array(), "Dave\Dave");
+        $config = new MockConfiguration([], [], [], "Dave\Dave");
         $code = $this->pass->apply(static::CODE, $config);
         $this->assertNotContains('namespace Mockery;', $code);
         $this->assertContains('namespace Dave;', $code);
@@ -39,9 +37,9 @@ class ClassNamePassTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReplaceClassNameWithSpecifiedName()
+    public function should_replace_class_name_with_specified_name()
     {
-        $config = new MockConfiguration(array(), array(), array(), "Dave");
+        $config = new MockConfiguration([], [], [], 'Dave');
         $code = $this->pass->apply(static::CODE, $config);
         $this->assertContains('class Dave', $code);
     }
@@ -49,9 +47,9 @@ class ClassNamePassTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveLeadingBackslashesFromNamespace()
+    public function should_remove_leading_backslashes_from_namespace()
     {
-        $config = new MockConfiguration(array(), array(), array(), "\Dave\Dave");
+        $config = new MockConfiguration([], [], [], "\Dave\Dave");
         $code = $this->pass->apply(static::CODE, $config);
         $this->assertContains('namespace Dave;', $code);
     }

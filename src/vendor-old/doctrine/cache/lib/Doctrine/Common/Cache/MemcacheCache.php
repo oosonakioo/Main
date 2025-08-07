@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,13 +20,14 @@
 
 namespace Doctrine\Common\Cache;
 
-use \Memcache;
+use Memcache;
 
 /**
  * Memcache cache provider.
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -42,7 +44,6 @@ class MemcacheCache extends CacheProvider
     /**
      * Sets the memcache instance to use.
      *
-     * @param Memcache $memcache
      *
      * @return void
      */
@@ -76,9 +77,9 @@ class MemcacheCache extends CacheProvider
     {
         $flags = null;
         $this->memcache->get($id, $flags);
-        
-        //if memcache has changed the value of "flags", it means the value exists
-        return ($flags !== null);
+
+        // if memcache has changed the value of "flags", it means the value exists
+        return $flags !== null;
     }
 
     /**
@@ -89,6 +90,7 @@ class MemcacheCache extends CacheProvider
         if ($lifeTime > 30 * 24 * 3600) {
             $lifeTime = time() + $lifeTime;
         }
+
         return $this->memcache->set($id, $data, 0, (int) $lifeTime);
     }
 
@@ -115,12 +117,13 @@ class MemcacheCache extends CacheProvider
     protected function doGetStats()
     {
         $stats = $this->memcache->getStats();
-        return array(
-            Cache::STATS_HITS   => $stats['get_hits'],
+
+        return [
+            Cache::STATS_HITS => $stats['get_hits'],
             Cache::STATS_MISSES => $stats['get_misses'],
             Cache::STATS_UPTIME => $stats['uptime'],
-            Cache::STATS_MEMORY_USAGE     => $stats['bytes'],
+            Cache::STATS_MEMORY_USAGE => $stats['bytes'],
             Cache::STATS_MEMORY_AVAILABLE => $stats['limit_maxbytes'],
-        );
+        ];
     }
 }

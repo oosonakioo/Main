@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,6 +34,7 @@ use Doctrine\DBAL\VersionAwarePlatformDriver;
  * Abstract base implementation of the {@link Doctrine\DBAL\Driver} interface for SAP Sybase SQL Anywhere based drivers.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -80,7 +82,7 @@ abstract class AbstractSQLAnywhereDriver implements Driver, ExceptionConverterDr
      */
     public function createDatabasePlatformForVersion($version)
     {
-        if ( ! preg_match(
+        if (! preg_match(
             '/^(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+)(?:\.(?P<build>\d+))?)?)?/',
             $version,
             $versionParts
@@ -95,17 +97,17 @@ abstract class AbstractSQLAnywhereDriver implements Driver, ExceptionConverterDr
         $minorVersion = isset($versionParts['minor']) ? $versionParts['minor'] : 0;
         $patchVersion = isset($versionParts['patch']) ? $versionParts['patch'] : 0;
         $buildVersion = isset($versionParts['build']) ? $versionParts['build'] : 0;
-        $version      = $majorVersion . '.' . $minorVersion . '.' . $patchVersion . '.' . $buildVersion;
+        $version = $majorVersion.'.'.$minorVersion.'.'.$patchVersion.'.'.$buildVersion;
 
-        switch(true) {
+        switch (true) {
             case version_compare($version, '16', '>='):
-                return new SQLAnywhere16Platform();
+                return new SQLAnywhere16Platform;
             case version_compare($version, '12', '>='):
-                return new SQLAnywhere12Platform();
+                return new SQLAnywhere12Platform;
             case version_compare($version, '11', '>='):
-                return new SQLAnywhere11Platform();
+                return new SQLAnywhere11Platform;
             default:
-                return new SQLAnywherePlatform();
+                return new SQLAnywherePlatform;
         }
     }
 
@@ -128,7 +130,7 @@ abstract class AbstractSQLAnywhereDriver implements Driver, ExceptionConverterDr
      */
     public function getDatabasePlatform()
     {
-        return new SQLAnywhere12Platform();
+        return new SQLAnywhere12Platform;
     }
 
     /**

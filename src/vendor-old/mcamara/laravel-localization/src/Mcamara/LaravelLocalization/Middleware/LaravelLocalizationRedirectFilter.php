@@ -6,14 +6,12 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class LaravelLocalizationRedirectFilter extends LaravelLocalizationMiddlewareBase 
+class LaravelLocalizationRedirectFilter extends LaravelLocalizationMiddlewareBase
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -33,11 +31,11 @@ class LaravelLocalizationRedirectFilter extends LaravelLocalizationMiddlewareBas
             $hideDefaultLocale = app('laravellocalization')->hideDefaultLocaleInURL();
             $redirection = false;
 
-            if (!empty($locales[$localeCode])) {
+            if (! empty($locales[$localeCode])) {
                 if ($localeCode === $defaultLocale && $hideDefaultLocale) {
                     $redirection = app('laravellocalization')->getNonLocalizedURL();
                 }
-            } elseif ($currentLocale !== $defaultLocale || !$hideDefaultLocale) {
+            } elseif ($currentLocale !== $defaultLocale || ! $hideDefaultLocale) {
                 // If the current url does not contain any locale
                 // The system redirect the user to the very same url "localized"
                 // we use the current locale to redirect him

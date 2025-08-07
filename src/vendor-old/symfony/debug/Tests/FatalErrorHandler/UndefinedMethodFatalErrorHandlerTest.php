@@ -19,9 +19,9 @@ class UndefinedMethodFatalErrorHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideUndefinedMethodData
      */
-    public function testUndefinedMethod($error, $translatedMessage)
+    public function test_undefined_method($error, $translatedMessage)
     {
-        $handler = new UndefinedMethodFatalErrorHandler();
+        $handler = new UndefinedMethodFatalErrorHandler;
         $exception = $handler->handleError($error, new FatalErrorException('', 0, $error['type'], $error['file'], $error['line']));
 
         $this->assertInstanceOf('Symfony\Component\Debug\Exception\UndefinedMethodException', $exception);
@@ -33,34 +33,34 @@ class UndefinedMethodFatalErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function provideUndefinedMethodData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'type' => 1,
                     'line' => 12,
                     'file' => 'foo.php',
                     'message' => 'Call to undefined method SplObjectStorage::what()',
-                ),
+                ],
                 'Attempted to call an undefined method named "what" of class "SplObjectStorage".',
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     'type' => 1,
                     'line' => 12,
                     'file' => 'foo.php',
                     'message' => 'Call to undefined method SplObjectStorage::walid()',
-                ),
+                ],
                 "Attempted to call an undefined method named \"walid\" of class \"SplObjectStorage\".\nDid you mean to call \"valid\"?",
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     'type' => 1,
                     'line' => 12,
                     'file' => 'foo.php',
                     'message' => 'Call to undefined method SplObjectStorage::offsetFet()',
-                ),
+                ],
                 "Attempted to call an undefined method named \"offsetFet\" of class \"SplObjectStorage\".\nDid you mean to call e.g. \"offsetGet\", \"offsetSet\" or \"offsetUnset\"?",
-            ),
-        );
+            ],
+        ];
     }
 }

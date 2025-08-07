@@ -20,19 +20,19 @@ class ExceptionNamespaceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Class
+     *
      * @expectedExceptionMessage My\Space\ExceptionNamespaceTest::ERROR_MESSAGE
+     *
      * @expectedExceptionCode My\Space\ExceptionNamespaceTest::ERROR_CODE
      */
-    public function testConstants()
-    {
-    }
+    public function test_constants() {}
 
     /**
      * @expectedException Class
+     *
      * @expectedExceptionCode My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT
+     *
      * @expectedExceptionMessage My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT
      */
-    public function testUnknownConstants()
-    {
-    }
+    public function test_unknown_constants() {}
 }

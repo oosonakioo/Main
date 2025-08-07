@@ -7,8 +7,8 @@ class GammaCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Applies gamma correction to a given image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

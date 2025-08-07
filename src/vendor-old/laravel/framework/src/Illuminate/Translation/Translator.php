@@ -3,9 +3,9 @@
 namespace Illuminate\Translation;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\NamespacedItemResolver;
+use Illuminate\Support\Str;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -49,7 +49,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     /**
      * Create a new translator instance.
      *
-     * @param  \Illuminate\Translation\LoaderInterface  $loader
      * @param  string  $locale
      * @return void
      */
@@ -88,14 +87,13 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * Get the translation for the given key.
      *
      * @param  string  $key
-     * @param  array   $replace
      * @param  string|null  $locale
      * @param  bool  $fallback
      * @return string|array|null
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
-        list($namespace, $group, $item) = $this->parseKey($key);
+        [$namespace, $group, $item] = $this->parseKey($key);
 
         // Here we will get the locale that should be used for the language line. If one
         // was not passed, we will use the default locales which was given to us when
@@ -131,7 +129,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * @param  string  $group
      * @param  string  $locale
      * @param  string  $item
-     * @param  array   $replace
      * @return string|array|null
      */
     protected function getLine($namespace, $group, $locale, $item, array $replace)
@@ -149,7 +146,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * Make the place-holder replacements on a line.
      *
      * @param  string  $line
-     * @param  array   $replace
      * @return string
      */
     protected function makeReplacements($line, array $replace)
@@ -170,7 +166,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     /**
      * Sort the replacements array.
      *
-     * @param  array  $replace
      * @return array
      */
     protected function sortReplacements(array $replace)
@@ -185,7 +180,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      *
      * @param  string  $key
      * @param  int|array|\Countable  $number
-     * @param  array   $replace
      * @param  string  $locale
      * @return string
      */
@@ -206,7 +200,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * Get the translation for a given key.
      *
      * @param  string  $id
-     * @param  array   $parameters
      * @param  string  $domain
      * @param  string  $locale
      * @return string|array|null
@@ -221,7 +214,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      *
      * @param  string  $id
      * @param  int|array|\Countable  $number
-     * @param  array   $parameters
      * @param  string  $domain
      * @param  string  $locale
      * @return string
@@ -323,7 +315,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     /**
      * Set the message selector instance.
      *
-     * @param  \Symfony\Component\Translation\MessageSelector  $selector
      * @return void
      */
     public function setSelector(MessageSelector $selector)

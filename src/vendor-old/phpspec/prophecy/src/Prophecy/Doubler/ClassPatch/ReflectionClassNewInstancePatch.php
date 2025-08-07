@@ -24,19 +24,16 @@ class ReflectionClassNewInstancePatch implements ClassPatchInterface
     /**
      * Supports ReflectionClass
      *
-     * @param ClassNode $node
      *
      * @return bool
      */
     public function supports(ClassNode $node)
     {
-        return 'ReflectionClass' === $node->getParentClass();
+        return $node->getParentClass() === 'ReflectionClass';
     }
 
     /**
      * Updates newInstance's first argument to make it optional
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {

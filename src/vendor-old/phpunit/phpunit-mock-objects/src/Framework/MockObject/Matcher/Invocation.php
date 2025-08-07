@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -14,7 +15,7 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framework_SelfDescribing, PHPUnit_Framework_MockObject_Verifiable
+interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framework_MockObject_Verifiable, PHPUnit_Framework_SelfDescribing
 {
     /**
      * Registers the invocation $invocation in the object as being invoked.
@@ -27,9 +28,9 @@ interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framew
      *
      * If the matcher is a stub it will also have a return value.
      *
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
-     *                                                             Object containing information on a mocked or stubbed method which
-     *                                                             was invoked.
+     * @param  PHPUnit_Framework_MockObject_Invocation  $invocation
+     *                                                               Object containing information on a mocked or stubbed method which
+     *                                                               was invoked.
      * @return mixed
      */
     public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation);
@@ -39,9 +40,9 @@ interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framew
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
      *
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
-     *                                                             Object containing information on a mocked or stubbed method which
-     *                                                             was invoked.
+     * @param  PHPUnit_Framework_MockObject_Invocation  $invocation
+     *                                                               Object containing information on a mocked or stubbed method which
+     *                                                               was invoked.
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation);

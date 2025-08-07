@@ -2,7 +2,7 @@
 
 class Swift_Events_TransportChangeEventTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetTransportReturnsTransport()
+    public function test_get_transport_returns_transport()
     {
         $transport = $this->_createTransport();
         $evt = $this->_createEvent($transport);
@@ -10,7 +10,7 @@ class Swift_Events_TransportChangeEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($transport, $ref);
     }
 
-    public function testSourceIsTransport()
+    public function test_source_is_transport()
     {
         $transport = $this->_createTransport();
         $evt = $this->_createEvent($transport);

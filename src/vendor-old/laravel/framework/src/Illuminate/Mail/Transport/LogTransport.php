@@ -2,9 +2,9 @@
 
 namespace Illuminate\Mail\Transport;
 
+use Psr\Log\LoggerInterface;
 use Swift_Mime_Message;
 use Swift_Mime_MimeEntity;
-use Psr\Log\LoggerInterface;
 
 class LogTransport extends Transport
 {
@@ -18,7 +18,6 @@ class LogTransport extends Transport
     /**
      * Create a new log transport instance.
      *
-     * @param  \Psr\Log\LoggerInterface  $logger
      * @return void
      */
     public function __construct(LoggerInterface $logger)
@@ -39,7 +38,6 @@ class LogTransport extends Transport
     /**
      * Get a loggable string out of a Swiftmailer entity.
      *
-     * @param  \Swift_Mime_MimeEntity $entity
      * @return string
      */
     protected function getMimeEntityString(Swift_Mime_MimeEntity $entity)

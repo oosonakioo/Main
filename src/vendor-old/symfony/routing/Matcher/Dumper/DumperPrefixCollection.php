@@ -38,7 +38,7 @@ class DumperPrefixCollection extends DumperCollection
     /**
      * Sets the prefix.
      *
-     * @param string $prefix The prefix
+     * @param  string  $prefix  The prefix
      */
     public function setPrefix($prefix)
     {
@@ -48,8 +48,7 @@ class DumperPrefixCollection extends DumperCollection
     /**
      * Adds a route in the tree.
      *
-     * @param DumperRoute $route The route
-     *
+     * @param  DumperRoute  $route  The route
      * @return DumperPrefixCollection The node the route was added to
      *
      * @throws \LogicException
@@ -58,7 +57,7 @@ class DumperPrefixCollection extends DumperCollection
     {
         $prefix = $route->getRoute()->compile()->getStaticPrefix();
 
-        for ($collection = $this; null !== $collection; $collection = $collection->getParent()) {
+        for ($collection = $this; $collection !== null; $collection = $collection->getParent()) {
             // Same prefix, add to current leave
             if ($collection->prefix === $prefix) {
                 $collection->add($route);
@@ -67,8 +66,8 @@ class DumperPrefixCollection extends DumperCollection
             }
 
             // Prefix starts with route's prefix
-            if ('' === $collection->prefix || 0 === strpos($prefix, $collection->prefix)) {
-                $child = new self();
+            if ($collection->prefix === '' || strpos($prefix, $collection->prefix) === 0) {
+                $child = new self;
                 $child->setPrefix(substr($prefix, 0, strlen($collection->prefix) + 1));
                 $collection->add($child);
 
@@ -87,12 +86,12 @@ class DumperPrefixCollection extends DumperCollection
      */
     public function mergeSlashNodes()
     {
-        $children = array();
+        $children = [];
 
         foreach ($this as $child) {
             if ($child instanceof self) {
                 $child->mergeSlashNodes();
-                if ('/' === substr($child->prefix, -1)) {
+                if (substr($child->prefix, -1) === '/') {
                     $children = array_merge($children, $child->all());
                 } else {
                     $children[] = $child;

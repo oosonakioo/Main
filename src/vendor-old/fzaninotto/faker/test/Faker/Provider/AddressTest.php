@@ -9,14 +9,14 @@ class AddressTest extends \PHPUnit_Framework_TestCase
 {
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Address($faker));
         $this->faker = $faker;
     }
 
-    public function testLatitude()
+    public function test_latitude()
     {
         $latitude = $this->faker->latitude();
         $this->assertInternalType('float', $latitude);
@@ -24,7 +24,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $this->assertLessThanOrEqual(90, $latitude);
     }
 
-    public function testLongitude()
+    public function test_longitude()
     {
         $longitude = $this->faker->longitude();
         $this->assertInternalType('float', $longitude);
@@ -32,7 +32,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $this->assertLessThanOrEqual(180, $longitude);
     }
 
-    public function testCoordinate()
+    public function test_coordinate()
     {
         $coordinate = $this->faker->localCoordinates();
         $this->assertInternalType('array', $coordinate);

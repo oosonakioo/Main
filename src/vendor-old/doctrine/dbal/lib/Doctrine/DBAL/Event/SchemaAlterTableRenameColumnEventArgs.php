@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ use Doctrine\DBAL\Schema\TableDiff;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
@@ -55,20 +57,17 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
     /**
      * @var array
      */
-    private $_sql = array();
+    private $_sql = [];
 
     /**
-     * @param string                                    $oldColumnName
-     * @param \Doctrine\DBAL\Schema\Column              $column
-     * @param \Doctrine\DBAL\Schema\TableDiff           $tableDiff
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param  string  $oldColumnName
      */
     public function __construct($oldColumnName, Column $column, TableDiff $tableDiff, AbstractPlatform $platform)
     {
         $this->_oldColumnName = $oldColumnName;
-        $this->_column        = $column;
-        $this->_tableDiff     = $tableDiff;
-        $this->_platform      = $platform;
+        $this->_column = $column;
+        $this->_tableDiff = $tableDiff;
+        $this->_platform = $platform;
     }
 
     /**
@@ -104,8 +103,7 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
     }
 
     /**
-     * @param string|array $sql
-     *
+     * @param  string|array  $sql
      * @return \Doctrine\DBAL\Event\SchemaAlterTableRenameColumnEventArgs
      */
     public function addSql($sql)

@@ -10,15 +10,14 @@ trait StreamedReadingTrait
     /**
      * Reads a file as a stream.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array|false
      *
      * @see League\Flysystem\ReadInterface::readStream()
      */
     public function readStream($path)
     {
-        if ( ! $data = $this->read($path)) {
+        if (! $data = $this->read($path)) {
             return false;
         }
 
@@ -34,8 +33,7 @@ trait StreamedReadingTrait
     /**
      * Reads a file.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array|false
      *
      * @see League\Flysystem\ReadInterface::read()

@@ -15,7 +15,8 @@
  */
 class Swift_MemorySpool implements Swift_Spool
 {
-    protected $messages = array();
+    protected $messages = [];
+
     private $flushRetries = 3;
 
     /**
@@ -31,19 +32,15 @@ class Swift_MemorySpool implements Swift_Spool
     /**
      * Starts this Transport mechanism.
      */
-    public function start()
-    {
-    }
+    public function start() {}
 
     /**
      * Stops this Transport mechanism.
      */
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     /**
-     * @param int $retries
+     * @param  int  $retries
      */
     public function setFlushRetries($retries)
     {
@@ -53,13 +50,12 @@ class Swift_MemorySpool implements Swift_Spool
     /**
      * Stores a message in the queue.
      *
-     * @param Swift_Mime_Message $message The message to store
-     *
+     * @param  Swift_Mime_Message  $message  The message to store
      * @return bool Whether the operation has succeeded
      */
     public function queueMessage(Swift_Mime_Message $message)
     {
-        //clone the message to make sure it is not changed while in the queue
+        // clone the message to make sure it is not changed while in the queue
         $this->messages[] = clone $message;
 
         return true;
@@ -68,18 +64,17 @@ class Swift_MemorySpool implements Swift_Spool
     /**
      * Sends messages using the given transport instance.
      *
-     * @param Swift_Transport $transport        A transport instance
-     * @param string[]        $failedRecipients An array of failures by-reference
-     *
+     * @param  Swift_Transport  $transport  A transport instance
+     * @param  string[]  $failedRecipients  An array of failures by-reference
      * @return int The number of sent emails
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
     {
-        if (!$this->messages) {
+        if (! $this->messages) {
             return 0;
         }
 
-        if (!$transport->isStarted()) {
+        if (! $transport->isStarted()) {
             $transport->start();
         }
 

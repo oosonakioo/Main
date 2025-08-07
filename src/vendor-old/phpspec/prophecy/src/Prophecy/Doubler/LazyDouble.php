@@ -11,8 +11,8 @@
 
 namespace Prophecy\Doubler;
 
-use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
+use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use ReflectionClass;
 
@@ -25,15 +25,17 @@ use ReflectionClass;
 class LazyDouble
 {
     private $doubler;
+
     private $class;
-    private $interfaces = array();
-    private $arguments  = null;
+
+    private $interfaces = [];
+
+    private $arguments = null;
+
     private $double;
 
     /**
      * Initializes lazy double.
-     *
-     * @param Doubler $doubler
      */
     public function __construct(Doubler $doubler)
     {
@@ -43,19 +45,19 @@ class LazyDouble
     /**
      * Tells doubler to use specific class as parent one for double.
      *
-     * @param string|ReflectionClass $class
+     * @param  string|ReflectionClass  $class
      *
      * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
      * @throws \Prophecy\Exception\Doubler\DoubleException
      */
     public function setParentClass($class)
     {
-        if (null !== $this->double) {
+        if ($this->double !== null) {
             throw new DoubleException('Can not extend class with already instantiated double.');
         }
 
-        if (!$class instanceof ReflectionClass) {
-            if (!class_exists($class)) {
+        if (! $class instanceof ReflectionClass) {
+            if (! class_exists($class)) {
                 throw new ClassNotFoundException(sprintf('Class %s not found.', $class), $class);
             }
 
@@ -68,21 +70,21 @@ class LazyDouble
     /**
      * Tells doubler to implement specific interface with double.
      *
-     * @param string|ReflectionClass $interface
+     * @param  string|ReflectionClass  $interface
      *
      * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
      * @throws \Prophecy\Exception\Doubler\DoubleException
      */
     public function addInterface($interface)
     {
-        if (null !== $this->double) {
+        if ($this->double !== null) {
             throw new DoubleException(
                 'Can not implement interface with already instantiated double.'
             );
         }
 
-        if (!$interface instanceof ReflectionClass) {
-            if (!interface_exists($interface)) {
+        if (! $interface instanceof ReflectionClass) {
+            if (! interface_exists($interface)) {
                 throw new InterfaceNotFoundException(
                     sprintf('Interface %s not found.', $interface),
                     $interface
@@ -97,10 +99,8 @@ class LazyDouble
 
     /**
      * Sets constructor arguments.
-     *
-     * @param array $arguments
      */
-    public function setArguments(array $arguments = null)
+    public function setArguments(?array $arguments = null)
     {
         $this->arguments = $arguments;
     }
@@ -112,8 +112,8 @@ class LazyDouble
      */
     public function getInstance()
     {
-        if (null === $this->double) {
-            if (null !== $this->arguments) {
+        if ($this->double === null) {
+            if ($this->arguments !== null) {
                 return $this->double = $this->doubler->double(
                     $this->class, $this->interfaces, $this->arguments
                 );

@@ -31,7 +31,7 @@ class MockClassWithUnknownTypeHintTest extends MockeryTestCase
     }
 
     /** @test */
-    public function itShouldSuccessfullyBuildTheMock()
+    public function it_should_successfully_build_the_mock()
     {
         $this->container->mock("test\Mockery\HasUnknownClassAsTypeHintOnMethod");
     }
@@ -39,7 +39,5 @@ class MockClassWithUnknownTypeHintTest extends MockeryTestCase
 
 class HasUnknownClassAsTypeHintOnMethod
 {
-    public function foo(\UnknownTestClass\Bar $bar)
-    {
-    }
+    public function foo(\UnknownTestClass\Bar $bar) {}
 }

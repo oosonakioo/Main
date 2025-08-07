@@ -2,8 +2,8 @@
 
 namespace Doctrine\Tests\Common\Inflector;
 
-use Doctrine\Tests\DoctrineTestCase;
 use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Tests\DoctrineTestCase;
 
 class InflectorTest extends DoctrineTestCase
 {
@@ -11,150 +11,151 @@ class InflectorTest extends DoctrineTestCase
      * Singular & Plural test data. Returns an array of sample words.
      *
      * @return array
-     */ 
-    public function dataSampleWords() 
+     */
+    public function dataSampleWords()
     {
         Inflector::reset();
-        
+
         // In the format array('singular', 'plural')
-        return array(
-            array('', ''),
-            array('Alias', 'Aliases'),
-            array('alumnus', 'alumni'),
-            array('analysis', 'analyses'),
-            array('aquarium', 'aquaria'),
-            array('arch', 'arches'),
-            array('atlas', 'atlases'),
-            array('axe', 'axes'),
-            array('baby', 'babies'),
-            array('bacillus', 'bacilli'),
-            array('bacterium', 'bacteria'),
-            array('bureau', 'bureaus'),
-            array('bus', 'buses'),
-            array('Bus', 'Buses'),
-            array('cactus', 'cacti'),
-            array('cafe', 'cafes'),
-            array('calf', 'calves'),
-            array('categoria', 'categorias'),
-            array('chateau', 'chateaux'),
-            array('cherry', 'cherries'),
-            array('child', 'children'),
-            array('church', 'churches'),
-            array('circus', 'circuses'),
-            array('city', 'cities'),
-            array('cod', 'cod'),
-            array('cookie', 'cookies'),
-            array('copy', 'copies'),
-            array('crisis', 'crises'),
-            array('criterion', 'criteria'),
-            array('curriculum', 'curricula'),
-            array('curve', 'curves'),
-            array('deer', 'deer'),
-            array('demo', 'demos'),
-            array('dictionary', 'dictionaries'),
-            array('domino', 'dominoes'),
-            array('dwarf', 'dwarves'),
-            array('echo', 'echoes'),
-            array('elf', 'elves'),
-            array('emphasis', 'emphases'),
-            array('family', 'families'),
-            array('fax', 'faxes'),
-            array('fish', 'fish'),
-            array('flush', 'flushes'),
-            array('fly', 'flies'),
-            array('focus', 'foci'),
-            array('foe', 'foes'),
-            array('food_menu', 'food_menus'),
-            array('FoodMenu', 'FoodMenus'),
-            array('foot', 'feet'),
-            array('fungus', 'fungi'),
-            array('glove', 'gloves'),
-            array('half', 'halves'),
-            array('hero', 'heroes'),
-            array('hippopotamus', 'hippopotami'),
-            array('hoax', 'hoaxes'),
-            array('house', 'houses'),
-            array('human', 'humans'),
-            array('identity', 'identities'),
-            array('index', 'indices'),
-            array('iris', 'irises'),
-            array('kiss', 'kisses'),
-            array('knife', 'knives'),
-            array('leaf', 'leaves'),
-            array('life', 'lives'),
-            array('loaf', 'loaves'),
-            array('man', 'men'),
-            array('matrix', 'matrices'),
-            array('matrix_row', 'matrix_rows'),
-            array('medium', 'media'),
-            array('memorandum', 'memoranda'),
-            array('menu', 'menus'),
-            array('Menu', 'Menus'),
-            array('mess', 'messes'),
-            array('moose', 'moose'),
-            array('motto', 'mottoes'),
-            array('mouse', 'mice'),
-            array('neurosis', 'neuroses'),
-            array('news', 'news'),
-            array('NodeMedia', 'NodeMedia'),
-            array('nucleus', 'nuclei'),
-            array('oasis', 'oases'),
-            array('octopus', 'octopuses'),
-            array('pass', 'passes'),
-            array('person', 'people'),
-            array('plateau', 'plateaux'),
-            array('potato', 'potatoes'),
-            array('powerhouse', 'powerhouses'),
-            array('quiz', 'quizzes'),
-            array('radius', 'radii'),
-            array('reflex', 'reflexes'),
-            array('roof', 'roofs'),
-            array('runner-up', 'runners-up'),
-            array('scarf', 'scarves'),
-            array('scratch', 'scratches'),
-            array('series', 'series'),
-            array('sheep', 'sheep'),
-            array('shelf', 'shelves'),
-            array('shoe', 'shoes'),
-            array('son-in-law', 'sons-in-law'),
-            array('species', 'species'),
-            array('splash', 'splashes'),
-            array('spy', 'spies'),
-            array('stimulus', 'stimuli'),
-            array('stitch', 'stitches'),
-            array('story', 'stories'),
-            array('syllabus', 'syllabi'),
-            array('tax', 'taxes'),
-            array('terminus', 'termini'),
-            array('thesis', 'theses'),
-            array('thief', 'thieves'),
-            array('tomato', 'tomatoes'),
-            array('tooth', 'teeth'),
-            array('tornado', 'tornadoes'),
-            array('try', 'tries'),
-            array('vertex', 'vertices'),
-            array('virus', 'viri'),
-            array('volcano', 'volcanoes'),
-            array('wash', 'washes'),
-            array('watch', 'watches'),
-            array('wave', 'waves'),
-            array('wharf', 'wharves'),
-            array('wife', 'wives'),
-            array('woman', 'women'),
-        );
+        return [
+            ['', ''],
+            ['Alias', 'Aliases'],
+            ['alumnus', 'alumni'],
+            ['analysis', 'analyses'],
+            ['aquarium', 'aquaria'],
+            ['arch', 'arches'],
+            ['atlas', 'atlases'],
+            ['axe', 'axes'],
+            ['baby', 'babies'],
+            ['bacillus', 'bacilli'],
+            ['bacterium', 'bacteria'],
+            ['bureau', 'bureaus'],
+            ['bus', 'buses'],
+            ['Bus', 'Buses'],
+            ['cactus', 'cacti'],
+            ['cafe', 'cafes'],
+            ['calf', 'calves'],
+            ['categoria', 'categorias'],
+            ['chateau', 'chateaux'],
+            ['cherry', 'cherries'],
+            ['child', 'children'],
+            ['church', 'churches'],
+            ['circus', 'circuses'],
+            ['city', 'cities'],
+            ['cod', 'cod'],
+            ['cookie', 'cookies'],
+            ['copy', 'copies'],
+            ['crisis', 'crises'],
+            ['criterion', 'criteria'],
+            ['curriculum', 'curricula'],
+            ['curve', 'curves'],
+            ['deer', 'deer'],
+            ['demo', 'demos'],
+            ['dictionary', 'dictionaries'],
+            ['domino', 'dominoes'],
+            ['dwarf', 'dwarves'],
+            ['echo', 'echoes'],
+            ['elf', 'elves'],
+            ['emphasis', 'emphases'],
+            ['family', 'families'],
+            ['fax', 'faxes'],
+            ['fish', 'fish'],
+            ['flush', 'flushes'],
+            ['fly', 'flies'],
+            ['focus', 'foci'],
+            ['foe', 'foes'],
+            ['food_menu', 'food_menus'],
+            ['FoodMenu', 'FoodMenus'],
+            ['foot', 'feet'],
+            ['fungus', 'fungi'],
+            ['glove', 'gloves'],
+            ['half', 'halves'],
+            ['hero', 'heroes'],
+            ['hippopotamus', 'hippopotami'],
+            ['hoax', 'hoaxes'],
+            ['house', 'houses'],
+            ['human', 'humans'],
+            ['identity', 'identities'],
+            ['index', 'indices'],
+            ['iris', 'irises'],
+            ['kiss', 'kisses'],
+            ['knife', 'knives'],
+            ['leaf', 'leaves'],
+            ['life', 'lives'],
+            ['loaf', 'loaves'],
+            ['man', 'men'],
+            ['matrix', 'matrices'],
+            ['matrix_row', 'matrix_rows'],
+            ['medium', 'media'],
+            ['memorandum', 'memoranda'],
+            ['menu', 'menus'],
+            ['Menu', 'Menus'],
+            ['mess', 'messes'],
+            ['moose', 'moose'],
+            ['motto', 'mottoes'],
+            ['mouse', 'mice'],
+            ['neurosis', 'neuroses'],
+            ['news', 'news'],
+            ['NodeMedia', 'NodeMedia'],
+            ['nucleus', 'nuclei'],
+            ['oasis', 'oases'],
+            ['octopus', 'octopuses'],
+            ['pass', 'passes'],
+            ['person', 'people'],
+            ['plateau', 'plateaux'],
+            ['potato', 'potatoes'],
+            ['powerhouse', 'powerhouses'],
+            ['quiz', 'quizzes'],
+            ['radius', 'radii'],
+            ['reflex', 'reflexes'],
+            ['roof', 'roofs'],
+            ['runner-up', 'runners-up'],
+            ['scarf', 'scarves'],
+            ['scratch', 'scratches'],
+            ['series', 'series'],
+            ['sheep', 'sheep'],
+            ['shelf', 'shelves'],
+            ['shoe', 'shoes'],
+            ['son-in-law', 'sons-in-law'],
+            ['species', 'species'],
+            ['splash', 'splashes'],
+            ['spy', 'spies'],
+            ['stimulus', 'stimuli'],
+            ['stitch', 'stitches'],
+            ['story', 'stories'],
+            ['syllabus', 'syllabi'],
+            ['tax', 'taxes'],
+            ['terminus', 'termini'],
+            ['thesis', 'theses'],
+            ['thief', 'thieves'],
+            ['tomato', 'tomatoes'],
+            ['tooth', 'teeth'],
+            ['tornado', 'tornadoes'],
+            ['try', 'tries'],
+            ['vertex', 'vertices'],
+            ['virus', 'viri'],
+            ['volcano', 'volcanoes'],
+            ['wash', 'washes'],
+            ['watch', 'watches'],
+            ['wave', 'waves'],
+            ['wharf', 'wharves'],
+            ['wife', 'wives'],
+            ['woman', 'women'],
+        ];
     }
 
     /**
      * testInflectingSingulars method
      *
      * @dataProvider dataSampleWords
+     *
      * @return void
      */
-    public function testInflectingSingulars($singular, $plural) 
+    public function test_inflecting_singulars($singular, $plural)
     {
         $this->assertEquals(
-            $singular, 
-            Inflector::singularize($plural), 
+            $singular,
+            Inflector::singularize($plural),
             "'$plural' should be singularized to '$singular'"
         );
     }
@@ -163,13 +164,14 @@ class InflectorTest extends DoctrineTestCase
      * testInflectingPlurals method
      *
      * @dataProvider dataSampleWords
+     *
      * @return void
      */
-    public function testInflectingPlurals($singular, $plural) 
+    public function test_inflecting_plurals($singular, $plural)
     {
         $this->assertEquals(
-            $plural, 
-            Inflector::pluralize($singular), 
+            $plural,
+            Inflector::pluralize($singular),
             "'$singular' should be pluralized to '$plural'"
         );
     }
@@ -179,23 +181,23 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testCustomPluralRule() 
+    public function test_custom_plural_rule()
     {
         Inflector::reset();
-        Inflector::rules('plural', array('/^(custom)$/i' => '\1izables'));
-        
+        Inflector::rules('plural', ['/^(custom)$/i' => '\1izables']);
+
         $this->assertEquals(Inflector::pluralize('custom'), 'customizables');
 
-        Inflector::rules('plural', array('uninflected' => array('uninflectable')));
-        
+        Inflector::rules('plural', ['uninflected' => ['uninflectable']]);
+
         $this->assertEquals(Inflector::pluralize('uninflectable'), 'uninflectable');
 
-        Inflector::rules('plural', array(
-            'rules' => array('/^(alert)$/i' => '\1ables'),
-            'uninflected' => array('noflect', 'abtuse'),
-            'irregular' => array('amaze' => 'amazable', 'phone' => 'phonezes')
-        ));
-        
+        Inflector::rules('plural', [
+            'rules' => ['/^(alert)$/i' => '\1ables'],
+            'uninflected' => ['noflect', 'abtuse'],
+            'irregular' => ['amaze' => 'amazable', 'phone' => 'phonezes'],
+        ]);
+
         $this->assertEquals(Inflector::pluralize('noflect'), 'noflect');
         $this->assertEquals(Inflector::pluralize('abtuse'), 'abtuse');
         $this->assertEquals(Inflector::pluralize('alert'), 'alertables');
@@ -208,19 +210,19 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testCustomSingularRule() 
+    public function test_custom_singular_rule()
     {
         Inflector::reset();
-        Inflector::rules('singular', array('/(eple)r$/i' => '\1', '/(jente)r$/i' => '\1'));
+        Inflector::rules('singular', ['/(eple)r$/i' => '\1', '/(jente)r$/i' => '\1']);
 
         $this->assertEquals(Inflector::singularize('epler'), 'eple');
         $this->assertEquals(Inflector::singularize('jenter'), 'jente');
 
-        Inflector::rules('singular', array(
-            'rules' => array('/^(bil)er$/i' => '\1', '/^(inflec|contribu)tors$/i' => '\1ta'),
-            'uninflected' => array('singulars'),
-            'irregular' => array('spins' => 'spinor')
-        ));
+        Inflector::rules('singular', [
+            'rules' => ['/^(bil)er$/i' => '\1', '/^(inflec|contribu)tors$/i' => '\1ta'],
+            'uninflected' => ['singulars'],
+            'irregular' => ['spins' => 'spinor'],
+        ]);
 
         $this->assertEquals(Inflector::singularize('inflectors'), 'inflecta');
         $this->assertEquals(Inflector::singularize('contributors'), 'contributa');
@@ -233,24 +235,24 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testRulesClearsCaches() 
+    public function test_rules_clears_caches()
     {
         Inflector::reset();
-        
+
         $this->assertEquals(Inflector::singularize('Bananas'), 'Banana');
         $this->assertEquals(Inflector::pluralize('Banana'), 'Bananas');
 
-        Inflector::rules('singular', array(
-            'rules' => array('/(.*)nas$/i' => '\1zzz')
-        ));
-        
+        Inflector::rules('singular', [
+            'rules' => ['/(.*)nas$/i' => '\1zzz'],
+        ]);
+
         $this->assertEquals('Banazzz', Inflector::singularize('Bananas'), 'Was inflected with old rules.');
 
-        Inflector::rules('plural', array(
-            'rules' => array('/(.*)na$/i' => '\1zzz'),
-            'irregular' => array('corpus' => 'corpora')
-        ));
-        
+        Inflector::rules('plural', [
+            'rules' => ['/(.*)na$/i' => '\1zzz'],
+            'irregular' => ['corpus' => 'corpora'],
+        ]);
+
         $this->assertEquals(Inflector::pluralize('Banana'), 'Banazzz', 'Was inflected with old rules.');
         $this->assertEquals(Inflector::pluralize('corpus'), 'corpora', 'Was inflected with old irregular form.');
     }
@@ -260,25 +262,25 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testCustomRuleWithReset() 
+    public function test_custom_rule_with_reset()
     {
         Inflector::reset();
-        
-        $uninflected = array('atlas', 'lapis', 'onibus', 'pires', 'virus', '.*x');
-        $pluralIrregular = array('as' => 'ases');
 
-        Inflector::rules('singular', array(
-            'rules' => array('/^(.*)(a|e|o|u)is$/i' => '\1\2l'),
+        $uninflected = ['atlas', 'lapis', 'onibus', 'pires', 'virus', '.*x'];
+        $pluralIrregular = ['as' => 'ases'];
+
+        Inflector::rules('singular', [
+            'rules' => ['/^(.*)(a|e|o|u)is$/i' => '\1\2l'],
             'uninflected' => $uninflected,
-        ), true);
+        ], true);
 
-        Inflector::rules('plural', array(
-            'rules' => array(
+        Inflector::rules('plural', [
+            'rules' => [
                 '/^(.*)(a|e|o|u)l$/i' => '\1\2is',
-            ),
+            ],
             'uninflected' => $uninflected,
-            'irregular' => $pluralIrregular
-        ), true);
+            'irregular' => $pluralIrregular,
+        ], true);
 
         $this->assertEquals(Inflector::pluralize('Alcool'), 'Alcoois');
         $this->assertEquals(Inflector::pluralize('Atlas'), 'Atlas');
@@ -291,9 +293,9 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testUcwords()
+    public function test_ucwords()
     {
-        $this->assertSame('Top-O-The-Morning To All_of_you!', Inflector::ucwords( 'top-o-the-morning to all_of_you!'));
+        $this->assertSame('Top-O-The-Morning To All_of_you!', Inflector::ucwords('top-o-the-morning to all_of_you!'));
     }
 
     /**
@@ -301,9 +303,8 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testUcwordsWithCustomDelimeters()
+    public function test_ucwords_with_custom_delimeters()
     {
-        $this->assertSame('Top-O-The-Morning To All_Of_You!', Inflector::ucwords( 'top-o-the-morning to all_of_you!', '-_ '));
+        $this->assertSame('Top-O-The-Morning To All_Of_You!', Inflector::ucwords('top-o-the-morning to all_of_you!', '-_ '));
     }
 }
-

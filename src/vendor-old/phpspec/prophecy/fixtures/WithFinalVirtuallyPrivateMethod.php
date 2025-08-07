@@ -9,7 +9,5 @@ class WithFinalVirtuallyPrivateMethod
         return '';
     }
 
-    final public function _getName()
-    {
-    }
+    final public function _getName() {}
 }

@@ -17,14 +17,15 @@ class InstanceOfPassTest extends CodeCleanerTestCase
 {
     protected function setUp()
     {
-        $this->setPass(new InstanceOfPass());
+        $this->setPass(new InstanceOfPass);
     }
 
     /**
      * @dataProvider invalidStatements
+     *
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessInvalidStatement($code)
+    public function test_process_invalid_statement($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -32,25 +33,25 @@ class InstanceOfPassTest extends CodeCleanerTestCase
 
     public function invalidStatements()
     {
-        return array(
-            array('null instanceof stdClass'),
-            array('true instanceof stdClass'),
-            array('9 instanceof stdClass'),
-            array('1.0 instanceof stdClass'),
-            array('"foo" instanceof stdClass'),
-            array('__DIR__ instanceof stdClass'),
-            array('PHP_SAPI instanceof stdClass'),
-            array('1+1 instanceof stdClass'),
-            array('true && false instanceof stdClass'),
-            array('"a"."b" instanceof stdClass'),
-            array('!5 instanceof stdClass'),
-        );
+        return [
+            ['null instanceof stdClass'],
+            ['true instanceof stdClass'],
+            ['9 instanceof stdClass'],
+            ['1.0 instanceof stdClass'],
+            ['"foo" instanceof stdClass'],
+            ['__DIR__ instanceof stdClass'],
+            ['PHP_SAPI instanceof stdClass'],
+            ['1+1 instanceof stdClass'],
+            ['true && false instanceof stdClass'],
+            ['"a"."b" instanceof stdClass'],
+            ['!5 instanceof stdClass'],
+        ];
     }
 
     /**
      * @dataProvider validStatements
      */
-    public function testProcessValidStatement($code)
+    public function test_process_valid_statement($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -58,16 +59,16 @@ class InstanceOfPassTest extends CodeCleanerTestCase
 
     public function validStatements()
     {
-        $data = array(
-            array('$a instanceof stdClass'),
-            array('strtolower("foo") instanceof stdClass'),
-            array('array(1) instanceof stdClass'),
-            array('(string) "foo" instanceof stdClass'),
-            array('(1+1) instanceof stdClass'),
-            array('"foo ${foo} $bar" instanceof stdClass'),
-            array('DateTime::ISO8601 instanceof stdClass'),
+        $data = [
+            ['$a instanceof stdClass'],
+            ['strtolower("foo") instanceof stdClass'],
+            ['array(1) instanceof stdClass'],
+            ['(string) "foo" instanceof stdClass'],
+            ['(1+1) instanceof stdClass'],
+            ['"foo ${foo} $bar" instanceof stdClass'],
+            ['DateTime::ISO8601 instanceof stdClass'],
 
-        );
+        ];
 
         return $data;
     }

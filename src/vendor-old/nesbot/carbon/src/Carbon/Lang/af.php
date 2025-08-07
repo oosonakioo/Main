@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '1 jaar|:count jare',
     'y' => '1 jaar|:count jare',
     'month' => '1 maand|:count maande',
@@ -28,4 +28,4 @@ return array(
     'from_now' => ':time van nou af',
     'after' => ':time na',
     'before' => ':time voor',
-);
+];

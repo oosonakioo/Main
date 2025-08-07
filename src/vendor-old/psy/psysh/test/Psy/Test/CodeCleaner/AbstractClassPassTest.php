@@ -16,18 +16,19 @@ use Psy\CodeCleaner\AbstractClassPass;
 
 class AbstractClassPassTest extends CodeCleanerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        $this->pass      = new AbstractClassPass();
-        $this->traverser = new NodeTraverser();
+        $this->pass = new AbstractClassPass;
+        $this->traverser = new NodeTraverser;
         $this->traverser->addVisitor($this->pass);
     }
 
     /**
      * @dataProvider invalidStatements
+     *
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessStatementFails($code)
+    public function test_process_statement_fails($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -35,17 +36,17 @@ class AbstractClassPassTest extends CodeCleanerTestCase
 
     public function invalidStatements()
     {
-        return array(
-            array('class A { abstract function a(); }'),
-            array('abstract class B { abstract function b() {} }'),
-            array('abstract class B { abstract function b() { echo "yep"; } }'),
-        );
+        return [
+            ['class A { abstract function a(); }'],
+            ['abstract class B { abstract function b() {} }'],
+            ['abstract class B { abstract function b() { echo "yep"; } }'],
+        ];
     }
 
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code)
+    public function test_process_statement_passes($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -53,9 +54,9 @@ class AbstractClassPassTest extends CodeCleanerTestCase
 
     public function validStatements()
     {
-        return array(
-            array('abstract class C { function c() {} }'),
-            array('abstract class D { abstract function d(); }'),
-        );
+        return [
+            ['abstract class C { function c() {} }'],
+            ['abstract class D { abstract function d(); }'],
+        ];
     }
 }

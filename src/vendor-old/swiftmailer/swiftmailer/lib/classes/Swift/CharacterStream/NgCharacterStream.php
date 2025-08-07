@@ -81,8 +81,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * Constructor.
      *
-     * @param Swift_CharacterReaderFactory $factory
-     * @param string                       $charset
+     * @param  string  $charset
      */
     public function __construct(Swift_CharacterReaderFactory $factory, $charset)
     {
@@ -95,7 +94,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * Set the character set used in this CharacterStream.
      *
-     * @param string $charset
+     * @param  string  $charset
      */
     public function setCharacterSet($charset)
     {
@@ -106,8 +105,6 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
 
     /**
      * Set the CharacterReaderFactory for multi charset support.
-     *
-     * @param Swift_CharacterReaderFactory $factory
      */
     public function setCharacterReaderFactory(Swift_CharacterReaderFactory $factory)
     {
@@ -128,8 +125,6 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
 
     /**
      * @see Swift_CharacterStream::importByteStream()
-     *
-     * @param Swift_OutputByteStream $os
      */
     public function importByteStream(Swift_OutputByteStream $os)
     {
@@ -144,7 +139,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * @see Swift_CharacterStream::importString()
      *
-     * @param string $string
+     * @param  string  $string
      */
     public function importString($string)
     {
@@ -155,8 +150,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * @see Swift_CharacterStream::read()
      *
-     * @param int $length
-     *
+     * @param  int  $length
      * @return string
      */
     public function read($length)
@@ -170,14 +164,14 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
             case Swift_CharacterReader::MAP_TYPE_FIXED_LEN:
                 $len = $length * $this->_map;
                 $ret = substr($this->_datas,
-                        $this->_currentPos * $this->_map,
-                        $len);
+                    $this->_currentPos * $this->_map,
+                    $len);
                 $this->_currentPos += $length;
                 break;
 
             case Swift_CharacterReader::MAP_TYPE_INVALID:
                 $ret = '';
-                for (; $this->_currentPos < $length; ++$this->_currentPos) {
+                for (; $this->_currentPos < $length; $this->_currentPos++) {
                     if (isset($this->_map[$this->_currentPos])) {
                         $ret .= '?';
                     } else {
@@ -195,7 +189,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
                     $start = $this->_map['p'][$this->_currentPos - 1];
                 }
                 $to = $start;
-                for (; $this->_currentPos < $end; ++$this->_currentPos) {
+                for (; $this->_currentPos < $end; $this->_currentPos++) {
                     if (isset($this->_map['i'][$this->_currentPos])) {
                         $ret .= substr($this->_datas, $start, $to - $start).'?';
                         $start = $this->_map['p'][$this->_currentPos];
@@ -213,8 +207,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * @see Swift_CharacterStream::readBytes()
      *
-     * @param int $length
-     *
+     * @param  int  $length
      * @return int[]
      */
     public function readBytes($length)
@@ -232,7 +225,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * @see Swift_CharacterStream::setPointer()
      *
-     * @param int $charOffset
+     * @param  int  $charOffset
      */
     public function setPointer($charOffset)
     {
@@ -245,14 +238,14 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
     /**
      * @see Swift_CharacterStream::write()
      *
-     * @param string $chars
+     * @param  string  $chars
      */
     public function write($chars)
     {
-        if (!isset($this->_charReader)) {
+        if (! isset($this->_charReader)) {
             $this->_charReader = $this->_charReaderFactory->getReaderFor(
                 $this->_charset);
-            $this->_map = array();
+            $this->_map = [];
             $this->_mapType = $this->_charReader->getMapType();
         }
         $ignored = '';

@@ -3,13 +3,13 @@
 namespace Illuminate\Queue;
 
 use Exception;
-use Throwable;
-use Illuminate\Contracts\Queue\Job;
-use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Failed\FailedJobProviderInterface;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Throwable;
 
 class Worker
 {
@@ -51,14 +51,11 @@ class Worker
     /**
      * Create a new queue worker.
      *
-     * @param  \Illuminate\Queue\QueueManager  $manager
-     * @param  \Illuminate\Queue\Failed\FailedJobProviderInterface  $failer
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
     public function __construct(QueueManager $manager,
-                                FailedJobProviderInterface $failer = null,
-                                Dispatcher $events = null)
+        ?FailedJobProviderInterface $failer = null,
+        ?Dispatcher $events = null)
     {
         $this->failer = $failer;
         $this->events = $events;
@@ -70,10 +67,10 @@ class Worker
      *
      * @param  string  $connectionName
      * @param  string  $queue
-     * @param  int     $delay
-     * @param  int     $memory
-     * @param  int     $sleep
-     * @param  int     $maxTries
+     * @param  int  $delay
+     * @param  int  $memory
+     * @param  int  $sleep
+     * @param  int  $maxTries
      * @return array
      */
     public function daemon($connectionName, $queue = null, $delay = 0, $memory = 128, $sleep = 3, $maxTries = 0)
@@ -136,9 +133,9 @@ class Worker
      *
      * @param  string  $connectionName
      * @param  string  $queue
-     * @param  int     $delay
-     * @param  int     $sleep
-     * @param  int     $maxTries
+     * @param  int  $delay
+     * @param  int  $sleep
+     * @param  int  $maxTries
      * @return array
      */
     public function pop($connectionName, $queue = null, $delay = 0, $sleep = 3, $maxTries = 0)
@@ -191,7 +188,6 @@ class Worker
      * Process a given job from the queue.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  int  $maxTries
      * @param  int  $delay
      * @return array|null
@@ -226,7 +222,6 @@ class Worker
      * Handle an exception that occurred while the job was running.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  int  $delay
      * @param  \Throwable  $e
      * @return void
@@ -255,7 +250,6 @@ class Worker
      * Raise the before queue job event.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @return void
      */
     protected function raiseBeforeJobEvent($connection, Job $job)
@@ -271,7 +265,6 @@ class Worker
      * Raise the after queue job event.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @return void
      */
     protected function raiseAfterJobEvent($connection, Job $job)
@@ -287,7 +280,6 @@ class Worker
      * Raise the exception occurred queue job event.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  \Throwable  $exception
      * @return void
      */
@@ -304,7 +296,6 @@ class Worker
      * Log a failed job into storage.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @return array
      */
     protected function logFailedJob($connection, Job $job)
@@ -326,7 +317,6 @@ class Worker
      * Raise the failed queue job event.
      *
      * @param  string  $connection
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  int|null  $failedId
      * @return void
      */
@@ -342,7 +332,7 @@ class Worker
     /**
      * Determine if the memory limit has been exceeded.
      *
-     * @param  int   $memoryLimit
+     * @param  int  $memoryLimit
      * @return bool
      */
     public function memoryExceeded($memoryLimit)
@@ -359,13 +349,13 @@ class Worker
     {
         $this->events->fire(new Events\WorkerStopping);
 
-        die;
+        exit;
     }
 
     /**
      * Sleep the script for a given number of seconds.
      *
-     * @param  int   $seconds
+     * @param  int  $seconds
      * @return void
      */
     public function sleep($seconds)
@@ -399,7 +389,6 @@ class Worker
     /**
      * Set the exception handler to use in Daemon mode.
      *
-     * @param  \Illuminate\Contracts\Debug\ExceptionHandler  $handler
      * @return void
      */
     public function setDaemonExceptionHandler(ExceptionHandler $handler)
@@ -410,7 +399,6 @@ class Worker
     /**
      * Set the cache repository implementation.
      *
-     * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @return void
      */
     public function setCache(CacheContract $cache)
@@ -431,7 +419,6 @@ class Worker
     /**
      * Set the queue manager instance.
      *
-     * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
     public function setManager(QueueManager $manager)

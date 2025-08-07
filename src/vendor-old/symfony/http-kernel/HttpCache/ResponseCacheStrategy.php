@@ -29,9 +29,13 @@ use Symfony\Component\HttpFoundation\Response;
 class ResponseCacheStrategy implements ResponseCacheStrategyInterface
 {
     private $cacheable = true;
+
     private $embeddedResponses = 0;
-    private $ttls = array();
-    private $maxAges = array();
+
+    private $ttls = [];
+
+    private $maxAges = [];
+
     private $isNotCacheableResponseEmbedded = false;
 
     /**
@@ -46,12 +50,12 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
             $this->ttls[] = $response->getTtl();
             $this->maxAges[] = $maxAge;
 
-            if (null === $maxAge) {
+            if ($maxAge === null) {
                 $this->isNotCacheableResponseEmbedded = true;
             }
         }
 
-        ++$this->embeddedResponses;
+        $this->embeddedResponses++;
     }
 
     /**
@@ -60,7 +64,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
     public function update(Response $response)
     {
         // if we have no embedded Response, do nothing
-        if (0 === $this->embeddedResponses) {
+        if ($this->embeddedResponses === 0) {
             return;
         }
 
@@ -73,7 +77,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
             $this->cacheable = false;
         }
 
-        if (!$this->cacheable) {
+        if (! $this->cacheable) {
             $response->headers->set('Cache-Control', 'no-cache, must-revalidate');
 
             return;

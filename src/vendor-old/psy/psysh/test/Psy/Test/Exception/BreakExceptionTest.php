@@ -16,15 +16,15 @@ use Psy\Exception\Exception;
 
 class BreakExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testInstance()
+    public function test_instance()
     {
-        $e = new BreakException();
+        $e = new BreakException;
 
         $this->assertTrue($e instanceof Exception);
         $this->assertTrue($e instanceof BreakException);
     }
 
-    public function testMessage()
+    public function test_message()
     {
         $e = new BreakException('foo');
 

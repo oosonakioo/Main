@@ -1,11 +1,13 @@
-<?php namespace Maatwebsite\Excel\Files;
+<?php
+
+namespace Maatwebsite\Excel\Files;
 
 use Illuminate\Foundation\Application;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
-abstract class File {
-
+abstract class File
+{
     /**
      * @var Application
      */
@@ -13,20 +15,18 @@ abstract class File {
 
     /**
      * Excel instance
+     *
      * @var Excel
      */
     protected $excel;
 
     /**
      * Loaded file
+     *
      * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
      */
     protected $file;
 
-    /**
-     * @param Application $app
-     * @param Excel       $excel
-     */
     public function __construct(Application $app, Excel $excel)
     {
         $this->app = $app;
@@ -35,9 +35,10 @@ abstract class File {
 
     /**
      * Handle the import/export of the file
-     * @param $type
-     * @throws LaravelExcelException
+     *
      * @return mixed
+     *
+     * @throws LaravelExcelException
      */
     public function handle($type)
     {
@@ -50,9 +51,10 @@ abstract class File {
 
     /**
      * Get handler
-     * @param $type
-     * @throws LaravelExcelException
+     *
      * @return mixed
+     *
+     * @throws LaravelExcelException
      */
     protected function getHandler($type)
     {
@@ -63,6 +65,7 @@ abstract class File {
 
     /**
      * Get the file instance
+     *
      * @return mixed
      */
     public function getFileInstance()
@@ -72,18 +75,21 @@ abstract class File {
 
     /**
      * Get the handler class name
-     * @throws LaravelExcelException
+     *
      * @return string
+     *
+     * @throws LaravelExcelException
      */
     protected function getHandlerClassName($type)
     {
         // Translate the file into a FileHandler
         $class = get_class($this);
-        $handler = substr_replace($class, $type . 'Handler', strrpos($class, $type));
+        $handler = substr_replace($class, $type.'Handler', strrpos($class, $type));
 
         // Check if the handler exists
-        if (!class_exists($handler))
+        if (! class_exists($handler)) {
             throw new LaravelExcelException("$type handler [$handler] does not exist.");
+        }
 
         return $handler;
     }

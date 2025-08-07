@@ -18,15 +18,15 @@ namespace Prophecy\Argument\Token;
  */
 class LogicalAndToken implements TokenInterface
 {
-    private $tokens = array();
+    private $tokens = [];
 
     /**
-     * @param array $arguments exact values or tokens
+     * @param  array  $arguments  exact values or tokens
      */
     public function __construct(array $arguments)
     {
         foreach ($arguments as $argument) {
-            if (!$argument instanceof TokenInterface) {
+            if (! $argument instanceof TokenInterface) {
                 $argument = new ExactValueToken($argument);
             }
             $this->tokens[] = $argument;
@@ -36,20 +36,19 @@ class LogicalAndToken implements TokenInterface
     /**
      * Scores maximum score from scores returned by tokens for this argument if all of them score.
      *
-     * @param $argument
      *
      * @return bool|int
      */
     public function scoreArgument($argument)
     {
-        if (0 === count($this->tokens)) {
+        if (count($this->tokens) === 0) {
             return false;
         }
 
         $maxScore = 0;
         foreach ($this->tokens as $token) {
             $score = $token->scoreArgument($argument);
-            if (false === $score) {
+            if ($score === false) {
                 return false;
             }
             $maxScore = max($score, $maxScore);
@@ -61,7 +60,7 @@ class LogicalAndToken implements TokenInterface
     /**
      * Returns false.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLast()
     {

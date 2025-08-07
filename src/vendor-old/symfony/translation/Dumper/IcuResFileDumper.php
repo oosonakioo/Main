@@ -28,13 +28,13 @@ class IcuResFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
     {
         $data = $indexes = $resources = '';
 
         foreach ($messages->all($domain) as $source => $target) {
             $indexes .= pack('v', strlen($data) + 28);
-            $data    .= $source."\0";
+            $data .= $source."\0";
         }
 
         $data .= $this->writePadding($data);
@@ -46,8 +46,7 @@ class IcuResFileDumper extends FileDumper
 
             $data .= pack('V', strlen($target))
                 .mb_convert_encoding($target."\0", 'UTF-16LE', 'UTF-8')
-                .$this->writePadding($data)
-                  ;
+                .$this->writePadding($data);
         }
 
         $resOffset = $this->getPosition($data);
@@ -55,8 +54,7 @@ class IcuResFileDumper extends FileDumper
         $data .= pack('v', count($messages))
             .$indexes
             .$this->writePadding($data)
-            .$resources
-              ;
+            .$resources;
 
         $bundleTop = $this->getPosition($data);
 

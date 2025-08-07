@@ -3,10 +3,10 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Composer;
-use Symfony\Component\Finder\Finder;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Finder\Finder;
 
 class AppNameCommand extends Command
 {
@@ -48,8 +48,6 @@ class AppNameCommand extends Command
     /**
      * Create a new key generator command.
      *
-     * @param  \Illuminate\Support\Composer  $composer
-     * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
     public function __construct(Composer $composer, Filesystem $files)
@@ -94,9 +92,9 @@ class AppNameCommand extends Command
     protected function setAppDirectoryNamespace()
     {
         $files = Finder::create()
-                            ->in($this->laravel['path'])
-                            ->contains($this->currentRoot)
-                            ->name('*.php');
+            ->in($this->laravel['path'])
+            ->contains($this->currentRoot)
+            ->name('*.php');
 
         foreach ($files as $file) {
             $this->replaceNamespace($file->getRealPath());

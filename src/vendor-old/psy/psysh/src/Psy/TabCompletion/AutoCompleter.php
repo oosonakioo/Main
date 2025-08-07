@@ -20,13 +20,11 @@ use Psy\TabCompletion\Matcher\AbstractMatcher;
  */
 class AutoCompleter
 {
-    /** @var Matcher\AbstractMatcher[]  */
+    /** @var Matcher\AbstractMatcher[] */
     protected $matchers;
 
     /**
      * Register a tab completion Matcher.
-     *
-     * @param AbstractMatcher $matcher
      */
     public function addMatcher(AbstractMatcher $matcher)
     {
@@ -38,28 +36,27 @@ class AutoCompleter
      */
     public function activate()
     {
-        readline_completion_function(array(&$this, 'callback'));
+        readline_completion_function([&$this, 'callback']);
     }
 
     /**
      * Handle readline completion.
      *
-     * @param string $input Readline current word
-     * @param int    $index Current word index
-     * @param array  $info  readline_info() data
-     *
+     * @param  string  $input  Readline current word
+     * @param  int  $index  Current word index
+     * @param  array  $info  readline_info() data
      * @return array
      */
-    public function processCallback($input, $index, $info = array())
+    public function processCallback($input, $index, $info = [])
     {
         $line = substr($info['line_buffer'], 0, $info['end']);
-        $tokens = token_get_all('<?php ' . $line);
+        $tokens = token_get_all('<?php '.$line);
         // remove whitespaces
         $tokens = array_filter($tokens, function ($token) {
-            return !AbstractMatcher::tokenIs($token, AbstractMatcher::T_WHITESPACE);
+            return ! AbstractMatcher::tokenIs($token, AbstractMatcher::T_WHITESPACE);
         });
 
-        $matches = array();
+        $matches = [];
         foreach ($this->matchers as $matcher) {
             if ($matcher->hasMatched($tokens)) {
                 $matches = array_merge($matcher->getMatches($tokens), $matches);
@@ -68,16 +65,13 @@ class AutoCompleter
 
         $matches = array_unique($matches);
 
-        return !empty($matches) ? $matches : array('');
+        return ! empty($matches) ? $matches : [''];
     }
 
     /**
      * The readline_completion_function callback handler.
      *
      * @see processCallback
-     *
-     * @param $input
-     * @param $index
      *
      * @return array
      */

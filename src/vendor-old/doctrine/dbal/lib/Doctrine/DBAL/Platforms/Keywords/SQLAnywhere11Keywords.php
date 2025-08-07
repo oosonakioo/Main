@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -44,12 +45,12 @@ class SQLAnywhere11Keywords extends SQLAnywhereKeywords
         return array_merge(
             array_diff(
                 parent::getKeywords(),
-                array('IQ')
+                ['IQ']
             ),
-            array(
+            [
                 'MERGE',
-                'OPENSTRING'
-            )
+                'OPENSTRING',
+            ]
         );
     }
 }

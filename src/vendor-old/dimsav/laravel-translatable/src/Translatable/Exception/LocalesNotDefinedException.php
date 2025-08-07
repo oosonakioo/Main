@@ -2,6 +2,4 @@
 
 namespace Dimsav\Translatable\Exception;
 
-class LocalesNotDefinedException extends \Exception
-{
-}
+class LocalesNotDefinedException extends \Exception {}

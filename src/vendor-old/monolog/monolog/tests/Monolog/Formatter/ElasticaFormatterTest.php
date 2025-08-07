@@ -15,10 +15,10 @@ use Monolog\Logger;
 
 class ElasticaFormatterTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        if (!class_exists("Elastica\Document")) {
-            $this->markTestSkipped("ruflin/elastica not installed");
+        if (! class_exists("Elastica\Document")) {
+            $this->markTestSkipped('ruflin/elastica not installed');
         }
     }
 
@@ -27,27 +27,27 @@ class ElasticaFormatterTest extends \PHPUnit_Framework_TestCase
      * @covers Monolog\Formatter\ElasticaFormatter::format
      * @covers Monolog\Formatter\ElasticaFormatter::getDocument
      */
-    public function testFormat()
+    public function test_format()
     {
         // test log message
-        $msg = array(
+        $msg = [
             'level' => Logger::ERROR,
             'level_name' => 'ERROR',
             'channel' => 'meh',
-            'context' => array('foo' => 7, 'bar', 'class' => new \stdClass),
-            'datetime' => new \DateTime("@0"),
-            'extra' => array(),
+            'context' => ['foo' => 7, 'bar', 'class' => new \stdClass],
+            'datetime' => new \DateTime('@0'),
+            'extra' => [],
             'message' => 'log',
-        );
+        ];
 
         // expected values
         $expected = $msg;
         $expected['datetime'] = '1970-01-01T00:00:00.000000+00:00';
-        $expected['context'] = array(
+        $expected['context'] = [
             'class' => '[object] (stdClass: {})',
             'foo' => 7,
             0 => 'bar',
-        );
+        ];
 
         // format log message
         $formatter = new ElasticaFormatter('my_index', 'doc_type');
@@ -70,7 +70,7 @@ class ElasticaFormatterTest extends \PHPUnit_Framework_TestCase
      * @covers Monolog\Formatter\ElasticaFormatter::getIndex
      * @covers Monolog\Formatter\ElasticaFormatter::getType
      */
-    public function testGetters()
+    public function test_getters()
     {
         $formatter = new ElasticaFormatter('my_index', 'doc_type');
         $this->assertEquals('my_index', $formatter->getIndex());

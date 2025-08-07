@@ -3,12 +3,12 @@
 namespace Illuminate\Bus;
 
 use Closure;
-use RuntimeException;
-use Illuminate\Pipeline\Pipeline;
+use Illuminate\Contracts\Bus\QueueingDispatcher;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Bus\QueueingDispatcher;
+use Illuminate\Pipeline\Pipeline;
+use RuntimeException;
 
 class Dispatcher implements QueueingDispatcher
 {
@@ -43,11 +43,9 @@ class Dispatcher implements QueueingDispatcher
     /**
      * Create a new command dispatcher instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
-     * @param  \Closure|null  $queueResolver
      * @return void
      */
-    public function __construct(Container $container, Closure $queueResolver = null)
+    public function __construct(Container $container, ?Closure $queueResolver = null)
     {
         $this->container = $container;
         $this->queueResolver = $queueResolver;
@@ -145,7 +143,6 @@ class Dispatcher implements QueueingDispatcher
     /**
      * Set the pipes through which commands should be piped before dispatching.
      *
-     * @param  array  $pipes
      * @return $this
      */
     public function pipeThrough(array $pipes)

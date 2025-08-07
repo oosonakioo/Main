@@ -12,23 +12,23 @@
 namespace Monolog\Handler;
 
 use Gelf\Message;
-use Monolog\TestCase;
-use Monolog\Logger;
 use Monolog\Formatter\GelfMessageFormatter;
+use Monolog\Logger;
+use Monolog\TestCase;
 
 class GelfHandlerTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        if (!class_exists('Gelf\Publisher') || !class_exists('Gelf\Message')) {
-            $this->markTestSkipped("graylog2/gelf-php not installed");
+        if (! class_exists('Gelf\Publisher') || ! class_exists('Gelf\Message')) {
+            $this->markTestSkipped('graylog2/gelf-php not installed');
         }
     }
 
     /**
      * @covers Monolog\Handler\GelfHandler::__construct
      */
-    public function testConstruct()
+    public function test_construct()
     {
         $handler = new GelfHandler($this->getMessagePublisher());
         $this->assertInstanceOf('Monolog\Handler\GelfHandler', $handler);
@@ -43,19 +43,18 @@ class GelfHandlerTest extends TestCase
 
     protected function getMessagePublisher()
     {
-        return $this->getMock('Gelf\Publisher', array('publish'), array(), '', false);
+        return $this->getMock('Gelf\Publisher', ['publish'], [], '', false);
     }
 
-    public function testDebug()
+    public function test_debug()
     {
-        $record = $this->getRecord(Logger::DEBUG, "A test debug message");
-        $expectedMessage = new Message();
+        $record = $this->getRecord(Logger::DEBUG, 'A test debug message');
+        $expectedMessage = new Message;
         $expectedMessage
             ->setLevel(7)
-            ->setFacility("test")
+            ->setFacility('test')
             ->setShortMessage($record['message'])
-            ->setTimestamp($record['datetime'])
-        ;
+            ->setTimestamp($record['datetime']);
 
         $messagePublisher = $this->getMessagePublisher();
         $messagePublisher->expects($this->once())
@@ -67,16 +66,15 @@ class GelfHandlerTest extends TestCase
         $handler->handle($record);
     }
 
-    public function testWarning()
+    public function test_warning()
     {
-        $record = $this->getRecord(Logger::WARNING, "A test warning message");
-        $expectedMessage = new Message();
+        $record = $this->getRecord(Logger::WARNING, 'A test warning message');
+        $expectedMessage = new Message;
         $expectedMessage
             ->setLevel(4)
-            ->setFacility("test")
+            ->setFacility('test')
             ->setShortMessage($record['message'])
-            ->setTimestamp($record['datetime'])
-        ;
+            ->setTimestamp($record['datetime']);
 
         $messagePublisher = $this->getMessagePublisher();
         $messagePublisher->expects($this->once())
@@ -88,22 +86,21 @@ class GelfHandlerTest extends TestCase
         $handler->handle($record);
     }
 
-    public function testInjectedGelfMessageFormatter()
+    public function test_injected_gelf_message_formatter()
     {
-        $record = $this->getRecord(Logger::WARNING, "A test warning message");
+        $record = $this->getRecord(Logger::WARNING, 'A test warning message');
         $record['extra']['blarg'] = 'yep';
         $record['context']['from'] = 'logger';
 
-        $expectedMessage = new Message();
+        $expectedMessage = new Message;
         $expectedMessage
             ->setLevel(4)
-            ->setFacility("test")
-            ->setHost("mysystem")
+            ->setFacility('test')
+            ->setHost('mysystem')
             ->setShortMessage($record['message'])
             ->setTimestamp($record['datetime'])
-            ->setAdditional("EXTblarg", 'yep')
-            ->setAdditional("CTXfrom", 'logger')
-        ;
+            ->setAdditional('EXTblarg', 'yep')
+            ->setAdditional('CTXfrom', 'logger');
 
         $messagePublisher = $this->getMessagePublisher();
         $messagePublisher->expects($this->once())

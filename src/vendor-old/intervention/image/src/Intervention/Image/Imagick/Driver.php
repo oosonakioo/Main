@@ -6,15 +6,12 @@ class Driver extends \Intervention\Image\AbstractDriver
 {
     /**
      * Creates new instance of driver
-     *
-     * @param Decoder $decoder
-     * @param Encoder $encoder
      */
-    public function __construct(Decoder $decoder = null, Encoder $encoder = null)
+    public function __construct(?Decoder $decoder = null, ?Encoder $encoder = null)
     {
-        if ( ! $this->coreAvailable()) {
+        if (! $this->coreAvailable()) {
             throw new \Intervention\Image\Exception\NotSupportedException(
-                "ImageMagick module not available with this PHP installation."
+                'ImageMagick module not available with this PHP installation.'
             );
         }
 
@@ -25,9 +22,9 @@ class Driver extends \Intervention\Image\AbstractDriver
     /**
      * Creates new image instance
      *
-     * @param  integer $width
-     * @param  integer $height
-     * @param  mixed   $background
+     * @param  int  $width
+     * @param  int  $height
+     * @param  mixed  $background
      * @return \Intervention\Image\Image
      */
     public function newImage($width, $height, $background = null)
@@ -50,7 +47,7 @@ class Driver extends \Intervention\Image\AbstractDriver
     /**
      * Reads given string into color object
      *
-     * @param  string $value
+     * @param  string  $value
      * @return AbstractColor
      */
     public function parseColor($value)
@@ -61,10 +58,10 @@ class Driver extends \Intervention\Image\AbstractDriver
     /**
      * Checks if core module installation is available
      *
-     * @return boolean
+     * @return bool
      */
     protected function coreAvailable()
     {
-        return (extension_loaded('imagick') && class_exists('Imagick'));
+        return extension_loaded('imagick') && class_exists('Imagick');
     }
 }

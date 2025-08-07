@@ -14,12 +14,12 @@ class CallTypeHintPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveCallTypeHintIfRequired()
+    public function should_remove_call_type_hint_if_required()
     {
         $pass = new CallTypeHintPass;
-        $config = m::mock("Mockery\Generator\MockConfiguration", array(
-            "requiresCallTypeHintRemoval" => true,
-        ))->shouldDeferMissing();
+        $config = m::mock("Mockery\Generator\MockConfiguration", [
+            'requiresCallTypeHintRemoval' => true,
+        ])->shouldDeferMissing();
         $code = $pass->apply(static::CODE, $config);
         $this->assertContains('__call($method, $args)', $code);
     }
@@ -27,12 +27,12 @@ class CallTypeHintPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveCallStaticTypeHintIfRequired()
+    public function should_remove_call_static_type_hint_if_required()
     {
         $pass = new CallTypeHintPass;
-        $config = m::mock("Mockery\Generator\MockConfiguration", array(
-            "requiresCallStaticTypeHintRemoval" => true,
-        ))->shouldDeferMissing();
+        $config = m::mock("Mockery\Generator\MockConfiguration", [
+            'requiresCallStaticTypeHintRemoval' => true,
+        ])->shouldDeferMissing();
         $code = $pass->apply(static::CODE, $config);
         $this->assertContains('__callStatic($method, $args)', $code);
     }

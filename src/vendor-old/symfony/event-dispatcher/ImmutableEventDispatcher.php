@@ -28,7 +28,7 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
     /**
      * Creates an unmodifiable proxy for an event dispatcher.
      *
-     * @param EventDispatcherInterface $dispatcher The proxied event dispatcher
+     * @param  EventDispatcherInterface  $dispatcher  The proxied event dispatcher
      */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
@@ -38,7 +38,7 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($eventName, Event $event = null)
+    public function dispatch($eventName, ?Event $event = null)
     {
         return $this->dispatcher->dispatch($eventName, $event);
     }

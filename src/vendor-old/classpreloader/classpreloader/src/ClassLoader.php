@@ -35,7 +35,7 @@ class ClassLoader
      */
     public function __construct()
     {
-        $this->classList = new ClassList();
+        $this->classList = new ClassList;
     }
 
     /**
@@ -53,17 +53,16 @@ class ClassLoader
     /**
      * Wrap a block of code in the autoloader and get a list of loaded classes.
      *
-     * @param callable $func
-     *
+     * @param  callable  $func
      * @return \ClassPreloader\Config
      */
     public static function getIncludes($func)
     {
-        $loader = new static();
+        $loader = new static;
         call_user_func($func, $loader);
         $loader->unregister();
 
-        $config = new Config();
+        $config = new Config;
         foreach ($loader->getFilenames() as $file) {
             $config->addFile($file);
         }
@@ -96,8 +95,7 @@ class ClassLoader
      *
      * We'll return true if it was loaded.
      *
-     * @param string $class
-     *
+     * @param  string  $class
      * @return bool
      */
     public function loadClass($class)
@@ -131,11 +129,11 @@ class ClassLoader
                 $r = new \ReflectionClass($class);
                 foreach ($r->getInterfaces() as $inf) {
                     $name = $inf->getFileName();
-                    if ($name && !in_array($name, $files)) {
+                    if ($name && ! in_array($name, $files)) {
                         $files[] = $name;
                     }
                 }
-                if (!in_array($r->getFileName(), $files)) {
+                if (! in_array($r->getFileName(), $files)) {
                     $files[] = $r->getFileName();
                 }
             } catch (\ReflectionException $e) {

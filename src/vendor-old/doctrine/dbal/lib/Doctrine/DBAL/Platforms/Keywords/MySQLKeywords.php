@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author David Coallier <davidc@php.net>
  */
@@ -42,7 +44,7 @@ class MySQLKeywords extends KeywordList
      */
     protected function getKeywords()
     {
-        return array(
+        return [
             'ADD',
             'ALL',
             'ALTER',
@@ -268,6 +270,6 @@ class MySQLKeywords extends KeywordList
             'XOR',
             'YEAR_MONTH',
             'ZEROFILL',
-        );
+        ];
     }
 }

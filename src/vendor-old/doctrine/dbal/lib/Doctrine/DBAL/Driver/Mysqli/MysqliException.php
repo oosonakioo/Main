@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,4 @@ use Doctrine\DBAL\Driver\AbstractDriverException;
  * @author Kim Hemsø Rasmussen <kimhemsoe@gmail.com>
  * @author Steve Müller <st.mueller@dzh-online.de>
  */
-class MysqliException extends AbstractDriverException
-{
-}
+class MysqliException extends AbstractDriverException {}

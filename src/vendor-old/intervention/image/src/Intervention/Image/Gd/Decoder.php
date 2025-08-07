@@ -9,7 +9,7 @@ class Decoder extends \Intervention\Image\AbstractDecoder
     /**
      * Initiates new image from path in filesystem
      *
-     * @param  string $path
+     * @param  string  $path
      * @return \Intervention\Image\Image
      */
     public function initFromPath($path)
@@ -38,7 +38,7 @@ class Decoder extends \Intervention\Image\AbstractDecoder
 
             default:
                 throw new \Intervention\Image\Exception\NotReadableException(
-                    "Unable to read image type. GD driver is only able to decode JPG, PNG or GIF files."
+                    'Unable to read image type. GD driver is only able to decode JPG, PNG or GIF files.'
                 );
         }
 
@@ -61,7 +61,7 @@ class Decoder extends \Intervention\Image\AbstractDecoder
     /**
      * Initiates new image from GD resource
      *
-     * @param  Resource $resource
+     * @param  resource  $resource
      * @return \Intervention\Image\Image
      */
     public function initFromGdResource($resource)
@@ -72,20 +72,20 @@ class Decoder extends \Intervention\Image\AbstractDecoder
     /**
      * Initiates new image from Imagick object
      *
-     * @param  Imagick $object
+     * @param  Imagick  $object
      * @return \Intervention\Image\Image
      */
     public function initFromImagick(\Imagick $object)
     {
         throw new \Intervention\Image\Exception\NotSupportedException(
-            "Gd driver is unable to init from Imagick object."
+            'Gd driver is unable to init from Imagick object.'
         );
     }
 
     /**
      * Initiates new image from binary data
      *
-     * @param  string $data
+     * @param  string  $data
      * @return \Intervention\Image\Image
      */
     public function initFromBinary($binary)
@@ -93,8 +93,8 @@ class Decoder extends \Intervention\Image\AbstractDecoder
         $resource = @imagecreatefromstring($binary);
 
         if ($resource === false) {
-             throw new \Intervention\Image\Exception\NotReadableException(
-                "Unable to init from given binary data."
+            throw new \Intervention\Image\Exception\NotReadableException(
+                'Unable to init from given binary data.'
             );
         }
 
@@ -107,7 +107,7 @@ class Decoder extends \Intervention\Image\AbstractDecoder
     /**
      * Transform GD resource into Truecolor version
      *
-     * @param  resource $resource
+     * @param  resource  $resource
      * @return bool
      */
     public function gdResourceToTruecolor(&$resource)

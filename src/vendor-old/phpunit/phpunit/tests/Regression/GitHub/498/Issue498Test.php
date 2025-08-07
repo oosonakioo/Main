@@ -4,20 +4,24 @@ class Issue498Test extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     *
      * @dataProvider shouldBeTrueDataProvider
+     *
      * @group falseOnly
      */
-    public function shouldBeTrue($testData)
+    public function should_be_true($testData)
     {
         $this->assertTrue(true);
     }
 
     /**
      * @test
+     *
      * @dataProvider shouldBeFalseDataProvider
+     *
      * @group trueOnly
      */
-    public function shouldBeFalse($testData)
+    public function should_be_false($testData)
     {
         $this->assertFalse(false);
     }
@@ -25,20 +29,20 @@ class Issue498Test extends PHPUnit_Framework_TestCase
     public function shouldBeTrueDataProvider()
     {
 
-        //throw new Exception("Can't create the data");
-        return array(
-            array(true),
-            array(false)
-        );
+        // throw new Exception("Can't create the data");
+        return [
+            [true],
+            [false],
+        ];
     }
 
     public function shouldBeFalseDataProvider()
     {
         throw new Exception("Can't create the data");
 
-        return array(
-            array(true),
-            array(false)
-        );
+        return [
+            [true],
+            [false],
+        ];
     }
 }

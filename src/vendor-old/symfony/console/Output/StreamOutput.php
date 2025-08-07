@@ -35,22 +35,22 @@ class StreamOutput extends Output
     /**
      * Constructor.
      *
-     * @param resource                      $stream    A stream resource
-     * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
-     * @param bool|null                     $decorated Whether to decorate messages (null for auto-guessing)
-     * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
+     * @param  resource  $stream  A stream resource
+     * @param  int  $verbosity  The verbosity level (one of the VERBOSITY constants in OutputInterface)
+     * @param  bool|null  $decorated  Whether to decorate messages (null for auto-guessing)
+     * @param  OutputFormatterInterface|null  $formatter  Output formatter instance (null to use default OutputFormatter)
      *
      * @throws InvalidArgumentException When first argument is not a real stream
      */
-    public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null)
+    public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null, ?OutputFormatterInterface $formatter = null)
     {
-        if (!is_resource($stream) || 'stream' !== get_resource_type($stream)) {
+        if (! is_resource($stream) || get_resource_type($stream) !== 'stream') {
             throw new InvalidArgumentException('The StreamOutput class needs a stream as its first argument.');
         }
 
         $this->stream = $stream;
 
-        if (null === $decorated) {
+        if ($decorated === null) {
             $decorated = $this->hasColorSupport();
         }
 
@@ -72,7 +72,7 @@ class StreamOutput extends Output
      */
     protected function doWrite($message, $newline)
     {
-        if (false === @fwrite($this->stream, $message) || ($newline && (false === @fwrite($this->stream, PHP_EOL)))) {
+        if (@fwrite($this->stream, $message) === false || ($newline && (@fwrite($this->stream, PHP_EOL) === false))) {
             // should never happen
             throw new RuntimeException('Unable to write output.');
         }
@@ -94,10 +94,10 @@ class StreamOutput extends Output
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return
-                0 >= version_compare('10.0.10586', PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD)
-                || false !== getenv('ANSICON')
-                || 'ON' === getenv('ConEmuANSI')
-                || 'xterm' === getenv('TERM');
+                version_compare('10.0.10586', PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD) <= 0
+                || getenv('ANSICON') !== false
+                || getenv('ConEmuANSI') === 'ON'
+                || getenv('TERM') === 'xterm';
         }
 
         return function_exists('posix_isatty') && @posix_isatty($this->stream);

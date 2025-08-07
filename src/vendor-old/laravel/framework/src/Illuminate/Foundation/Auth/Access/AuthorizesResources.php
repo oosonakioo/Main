@@ -9,7 +9,6 @@ trait AuthorizesResources
      *
      * @param  string  $model
      * @param  string|null  $parameter
-     * @param  array  $options
      * @return void
      */
     public function authorizeResource($model, $parameter = null, array $options = [])

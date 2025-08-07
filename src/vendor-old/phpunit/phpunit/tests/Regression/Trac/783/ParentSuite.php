@@ -1,4 +1,5 @@
 <?php
+
 require_once 'ChildSuite.php';
 
 class ParentSuite

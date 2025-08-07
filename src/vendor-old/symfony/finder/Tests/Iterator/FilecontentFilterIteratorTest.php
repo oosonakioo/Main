@@ -15,31 +15,31 @@ use Symfony\Component\Finder\Iterator\FilecontentFilterIterator;
 
 class FilecontentFilterIteratorTest extends IteratorTestCase
 {
-    public function testAccept()
+    public function test_accept()
     {
-        $inner = new MockFileListIterator(array('test.txt'));
-        $iterator = new FilecontentFilterIterator($inner, array(), array());
-        $this->assertIterator(array('test.txt'), $iterator);
+        $inner = new MockFileListIterator(['test.txt']);
+        $iterator = new FilecontentFilterIterator($inner, [], []);
+        $this->assertIterator(['test.txt'], $iterator);
     }
 
-    public function testDirectory()
+    public function test_directory()
     {
-        $inner = new MockFileListIterator(array('directory'));
-        $iterator = new FilecontentFilterIterator($inner, array('directory'), array());
-        $this->assertIterator(array(), $iterator);
+        $inner = new MockFileListIterator(['directory']);
+        $iterator = new FilecontentFilterIterator($inner, ['directory'], []);
+        $this->assertIterator([], $iterator);
     }
 
-    public function testUnreadableFile()
+    public function test_unreadable_file()
     {
-        $inner = new MockFileListIterator(array('file r-'));
-        $iterator = new FilecontentFilterIterator($inner, array('file r-'), array());
-        $this->assertIterator(array(), $iterator);
+        $inner = new MockFileListIterator(['file r-']);
+        $iterator = new FilecontentFilterIterator($inner, ['file r-'], []);
+        $this->assertIterator([], $iterator);
     }
 
     /**
      * @dataProvider getTestFilterData
      */
-    public function testFilter(\Iterator $inner, array $matchPatterns, array $noMatchPatterns, array $resultArray)
+    public function test_filter(\Iterator $inner, array $matchPatterns, array $noMatchPatterns, array $resultArray)
     {
         $iterator = new FilecontentFilterIterator($inner, $matchPatterns, $noMatchPatterns);
         $this->assertIterator($resultArray, $iterator);
@@ -47,40 +47,40 @@ class FilecontentFilterIteratorTest extends IteratorTestCase
 
     public function getTestFilterData()
     {
-        $inner = new MockFileListIterator();
+        $inner = new MockFileListIterator;
 
-        $inner[] = new MockSplFileInfo(array(
+        $inner[] = new MockSplFileInfo([
             'name' => 'a.txt',
             'contents' => 'Lorem ipsum...',
             'type' => 'file',
-            'mode' => 'r+', )
+            'mode' => 'r+', ]
         );
 
-        $inner[] = new MockSplFileInfo(array(
+        $inner[] = new MockSplFileInfo([
             'name' => 'b.yml',
             'contents' => 'dolor sit...',
             'type' => 'file',
-            'mode' => 'r+', )
+            'mode' => 'r+', ]
         );
 
-        $inner[] = new MockSplFileInfo(array(
+        $inner[] = new MockSplFileInfo([
             'name' => 'some/other/dir/third.php',
             'contents' => 'amet...',
             'type' => 'file',
-            'mode' => 'r+', )
+            'mode' => 'r+', ]
         );
 
-        $inner[] = new MockSplFileInfo(array(
+        $inner[] = new MockSplFileInfo([
             'name' => 'unreadable-file.txt',
             'contents' => false,
             'type' => 'file',
-            'mode' => 'r+', )
+            'mode' => 'r+', ]
         );
 
-        return array(
-            array($inner, array('.'), array(), array('a.txt', 'b.yml', 'some/other/dir/third.php')),
-            array($inner, array('ipsum'), array(), array('a.txt')),
-            array($inner, array('i', 'amet'), array('Lorem', 'amet'), array('b.yml')),
-        );
+        return [
+            [$inner, ['.'], [], ['a.txt', 'b.yml', 'some/other/dir/third.php']],
+            [$inner, ['ipsum'], [], ['a.txt']],
+            [$inner, ['i', 'amet'], ['Lorem', 'amet'], ['b.yml']],
+        ];
     }
 }

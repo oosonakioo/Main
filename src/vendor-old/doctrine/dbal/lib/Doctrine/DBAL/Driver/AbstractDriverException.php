@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Driver;
  * Abstract base implementation of the {@link DriverException} interface.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -31,7 +33,7 @@ abstract class AbstractDriverException extends \Exception implements DriverExcep
     /**
      * The driver specific error code.
      *
-     * @var integer|string|null
+     * @var int|string|null
      */
     private $errorCode;
 
@@ -45,16 +47,16 @@ abstract class AbstractDriverException extends \Exception implements DriverExcep
     /**
      * Constructor.
      *
-     * @param string              $message   The driver error message.
-     * @param string|null         $sqlState  The SQLSTATE the driver is in at the time the error occured, if any.
-     * @param integer|string|null $errorCode The driver specific error code if any.
+     * @param  string  $message  The driver error message.
+     * @param  string|null  $sqlState  The SQLSTATE the driver is in at the time the error occured, if any.
+     * @param  int|string|null  $errorCode  The driver specific error code if any.
      */
     public function __construct($message, $sqlState = null, $errorCode = null)
     {
         parent::__construct($message);
 
         $this->errorCode = $errorCode;
-        $this->sqlState  = $sqlState;
+        $this->sqlState = $sqlState;
     }
 
     /**

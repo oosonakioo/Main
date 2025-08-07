@@ -1,6 +1,3 @@
 <?php
 
-class MpdfException extends Exception
-{
-
-}
+class MpdfException extends Exception {}

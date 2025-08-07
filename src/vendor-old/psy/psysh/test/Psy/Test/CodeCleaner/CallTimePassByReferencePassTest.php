@@ -16,18 +16,19 @@ use Psy\CodeCleaner\CallTimePassByReferencePass;
 
 class CallTimePassByReferencePassTest extends CodeCleanerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        $this->pass      = new CallTimePassByReferencePass();
-        $this->traverser = new NodeTraverser();
+        $this->pass = new CallTimePassByReferencePass;
+        $this->traverser = new NodeTraverser;
         $this->traverser->addVisitor($this->pass);
     }
 
     /**
      * @dataProvider invalidStatements
+     *
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessStatementFails($code)
+    public function test_process_statement_fails($code)
     {
         if (version_compare(PHP_VERSION, '5.4', '<')) {
             $this->markTestSkipped();
@@ -39,18 +40,18 @@ class CallTimePassByReferencePassTest extends CodeCleanerTestCase
 
     public function invalidStatements()
     {
-        return array(
-            array('f(&$arg)'),
-            array('$object->method($first, &$arg)'),
-            array('$closure($first, &$arg, $last)'),
-            array('A::b(&$arg)'),
-        );
+        return [
+            ['f(&$arg)'],
+            ['$object->method($first, &$arg)'],
+            ['$closure($first, &$arg, $last)'],
+            ['A::b(&$arg)'],
+        ];
     }
 
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code)
+    public function test_process_statement_passes($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -58,11 +59,11 @@ class CallTimePassByReferencePassTest extends CodeCleanerTestCase
 
     public function validStatements()
     {
-        $data = array(
-            array('array(&$var)'),
-            array('$a = &$b'),
-            array('f(array(&$b))'),
-        );
+        $data = [
+            ['array(&$var)'],
+            ['$a = &$b'],
+            ['f(array(&$b))'],
+        ];
 
         if (version_compare(PHP_VERSION, '5.4', '<')) {
             $data = array_merge($data, $this->invalidStatements());

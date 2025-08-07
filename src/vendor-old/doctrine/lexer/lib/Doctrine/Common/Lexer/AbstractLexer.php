@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\Common\Lexer;
  * Base class for writing simple lexers, i.e. for creating small DSLs.
  *
  * @since  2.0
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
@@ -47,19 +49,19 @@ abstract class AbstractLexer
      *
      * @var array
      */
-    private $tokens = array();
+    private $tokens = [];
 
     /**
      * Current lexer position in input string.
      *
-     * @var integer
+     * @var int
      */
     private $position = 0;
 
     /**
      * Current peek of current lexer position.
      *
-     * @var integer
+     * @var int
      */
     private $peek = 0;
 
@@ -83,14 +85,13 @@ abstract class AbstractLexer
      * The Lexer is immediately reset and the new input tokenized.
      * Any unprocessed tokens from any previous input are lost.
      *
-     * @param string $input The input to be tokenized.
-     *
+     * @param  string  $input  The input to be tokenized.
      * @return void
      */
     public function setInput($input)
     {
-        $this->input  = $input;
-        $this->tokens = array();
+        $this->input = $input;
+        $this->tokens = [];
 
         $this->reset();
         $this->scan($input);
@@ -122,8 +123,7 @@ abstract class AbstractLexer
     /**
      * Resets the lexer position on the input to the given position.
      *
-     * @param integer $position Position to place the lexical scanner.
-     *
+     * @param  int  $position  Position to place the lexical scanner.
      * @return void
      */
     public function resetPosition($position = 0)
@@ -132,10 +132,9 @@ abstract class AbstractLexer
     }
 
     /**
-     * Retrieve the original lexer's input until a given position. 
+     * Retrieve the original lexer's input until a given position.
      *
-     * @param integer $position
-     *
+     * @param  int  $position
      * @return string
      */
     public function getInputUntilPosition($position)
@@ -146,31 +145,29 @@ abstract class AbstractLexer
     /**
      * Checks whether a given token matches the current lookahead.
      *
-     * @param integer|string $token
-     *
-     * @return boolean
+     * @param  int|string  $token
+     * @return bool
      */
     public function isNextToken($token)
     {
-        return null !== $this->lookahead && $this->lookahead['type'] === $token;
+        return $this->lookahead !== null && $this->lookahead['type'] === $token;
     }
 
     /**
      * Checks whether any of the given tokens matches the current lookahead.
      *
-     * @param array $tokens
      *
-     * @return boolean
+     * @return bool
      */
     public function isNextTokenAny(array $tokens)
     {
-        return null !== $this->lookahead && in_array($this->lookahead['type'], $tokens, true);
+        return $this->lookahead !== null && in_array($this->lookahead['type'], $tokens, true);
     }
 
     /**
      * Moves to the next token in the input string.
      *
-     * @return boolean
+     * @return bool
      */
     public function moveNext()
     {
@@ -185,8 +182,7 @@ abstract class AbstractLexer
     /**
      * Tells the lexer to skip input tokens until it sees a token with the given value.
      *
-     * @param string $type The token type to skip until.
-     *
+     * @param  string  $type  The token type to skip until.
      * @return void
      */
     public function skipUntil($type)
@@ -199,10 +195,9 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param mixed   $value
-     * @param integer $token
-     *
-     * @return boolean
+     * @param  mixed  $value
+     * @param  int  $token
+     * @return bool
      */
     public function isA($value, $token)
     {
@@ -232,21 +227,21 @@ abstract class AbstractLexer
     {
         $peek = $this->peek();
         $this->peek = 0;
+
         return $peek;
     }
 
     /**
      * Scans the input string for tokens.
      *
-     * @param string $input A query string.
-     *
+     * @param  string  $input  A query string.
      * @return void
      */
     protected function scan($input)
     {
         static $regex;
 
-        if ( ! isset($regex)) {
+        if (! isset($regex)) {
             $regex = sprintf(
                 '/(%s)|%s/%s',
                 implode(')|(', $this->getCatchablePatterns()),
@@ -262,19 +257,18 @@ abstract class AbstractLexer
             // Must remain before 'value' assignment since it can change content
             $type = $this->getType($match[0]);
 
-            $this->tokens[] = array(
+            $this->tokens[] = [
                 'value' => $match[0],
-                'type'  => $type,
+                'type' => $type,
                 'position' => $match[1],
-            );
+            ];
         }
     }
 
     /**
      * Gets the literal for a given token.
      *
-     * @param integer $token
-     *
+     * @param  int  $token
      * @return string
      */
     public function getLiteral($token)
@@ -285,7 +279,7 @@ abstract class AbstractLexer
 
         foreach ($constants as $name => $value) {
             if ($value === $token) {
-                return $className . '::' . $name;
+                return $className.'::'.$name;
             }
         }
 
@@ -319,9 +313,8 @@ abstract class AbstractLexer
     /**
      * Retrieve token type. Also processes the token value if necessary.
      *
-     * @param string $value
-     *
-     * @return integer
+     * @param  string  $value
+     * @return int
      */
     abstract protected function getType(&$value);
 }

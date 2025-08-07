@@ -24,11 +24,17 @@ namespace Symfony\Component\CssSelector\Parser;
 class Token
 {
     const TYPE_FILE_END = 'eof';
+
     const TYPE_DELIMITER = 'delimiter';
+
     const TYPE_WHITESPACE = 'whitespace';
+
     const TYPE_IDENTIFIER = 'identifier';
+
     const TYPE_HASH = 'hash';
+
     const TYPE_NUMBER = 'number';
+
     const TYPE_STRING = 'string';
 
     /**
@@ -47,9 +53,9 @@ class Token
     private $position;
 
     /**
-     * @param int    $type
-     * @param string $value
-     * @param int    $position
+     * @param  int  $type
+     * @param  string  $value
+     * @param  int  $position
      */
     public function __construct($type, $value, $position)
     {
@@ -87,17 +93,15 @@ class Token
      */
     public function isFileEnd()
     {
-        return self::TYPE_FILE_END === $this->type;
+        return $this->type === self::TYPE_FILE_END;
     }
 
     /**
-     * @param array $values
-     *
      * @return bool
      */
-    public function isDelimiter(array $values = array())
+    public function isDelimiter(array $values = [])
     {
-        if (self::TYPE_DELIMITER !== $this->type) {
+        if ($this->type !== self::TYPE_DELIMITER) {
             return false;
         }
 
@@ -113,7 +117,7 @@ class Token
      */
     public function isWhitespace()
     {
-        return self::TYPE_WHITESPACE === $this->type;
+        return $this->type === self::TYPE_WHITESPACE;
     }
 
     /**
@@ -121,7 +125,7 @@ class Token
      */
     public function isIdentifier()
     {
-        return self::TYPE_IDENTIFIER === $this->type;
+        return $this->type === self::TYPE_IDENTIFIER;
     }
 
     /**
@@ -129,7 +133,7 @@ class Token
      */
     public function isHash()
     {
-        return self::TYPE_HASH === $this->type;
+        return $this->type === self::TYPE_HASH;
     }
 
     /**
@@ -137,7 +141,7 @@ class Token
      */
     public function isNumber()
     {
-        return self::TYPE_NUMBER === $this->type;
+        return $this->type === self::TYPE_NUMBER;
     }
 
     /**
@@ -145,7 +149,7 @@ class Token
      */
     public function isString()
     {
-        return self::TYPE_STRING === $this->type;
+        return $this->type === self::TYPE_STRING;
     }
 
     /**

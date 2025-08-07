@@ -25,12 +25,16 @@ class Profile
     /**
      * @var DataCollectorInterface[]
      */
-    private $collectors = array();
+    private $collectors = [];
 
     private $ip;
+
     private $method;
+
     private $url;
+
     private $time;
+
     private $statusCode;
 
     /**
@@ -41,12 +45,12 @@ class Profile
     /**
      * @var Profile[]
      */
-    private $children = array();
+    private $children = [];
 
     /**
      * Constructor.
      *
-     * @param string $token The token
+     * @param  string  $token  The token
      */
     public function __construct($token)
     {
@@ -56,7 +60,7 @@ class Profile
     /**
      * Sets the token.
      *
-     * @param string $token The token
+     * @param  string  $token  The token
      */
     public function setToken($token)
     {
@@ -76,7 +80,7 @@ class Profile
     /**
      * Sets the parent token.
      *
-     * @param Profile $parent The parent Profile
+     * @param  Profile  $parent  The parent Profile
      */
     public function setParent(Profile $parent)
     {
@@ -116,7 +120,7 @@ class Profile
     /**
      * Sets the IP.
      *
-     * @param string $ip
+     * @param  string  $ip
      */
     public function setIp($ip)
     {
@@ -160,7 +164,7 @@ class Profile
      */
     public function getTime()
     {
-        if (null === $this->time) {
+        if ($this->time === null) {
             return 0;
         }
 
@@ -173,7 +177,7 @@ class Profile
     }
 
     /**
-     * @param int $statusCode
+     * @param  int  $statusCode
      */
     public function setStatusCode($statusCode)
     {
@@ -201,11 +205,11 @@ class Profile
     /**
      * Sets children profiler.
      *
-     * @param Profile[] $children An array of Profile
+     * @param  Profile[]  $children  An array of Profile
      */
     public function setChildren(array $children)
     {
-        $this->children = array();
+        $this->children = [];
         foreach ($children as $child) {
             $this->addChild($child);
         }
@@ -214,7 +218,7 @@ class Profile
     /**
      * Adds the child token.
      *
-     * @param Profile $child The child Profile
+     * @param  Profile  $child  The child Profile
      */
     public function addChild(Profile $child)
     {
@@ -225,15 +229,14 @@ class Profile
     /**
      * Gets a Collector by name.
      *
-     * @param string $name A collector name
-     *
+     * @param  string  $name  A collector name
      * @return DataCollectorInterface A DataCollectorInterface instance
      *
      * @throws \InvalidArgumentException if the collector does not exist
      */
     public function getCollector($name)
     {
-        if (!isset($this->collectors[$name])) {
+        if (! isset($this->collectors[$name])) {
             throw new \InvalidArgumentException(sprintf('Collector "%s" does not exist.', $name));
         }
 
@@ -253,11 +256,11 @@ class Profile
     /**
      * Sets the Collectors associated with this profile.
      *
-     * @param DataCollectorInterface[] $collectors
+     * @param  DataCollectorInterface[]  $collectors
      */
     public function setCollectors(array $collectors)
     {
-        $this->collectors = array();
+        $this->collectors = [];
         foreach ($collectors as $collector) {
             $this->addCollector($collector);
         }
@@ -266,7 +269,7 @@ class Profile
     /**
      * Adds a Collector.
      *
-     * @param DataCollectorInterface $collector A DataCollectorInterface instance
+     * @param  DataCollectorInterface  $collector  A DataCollectorInterface instance
      */
     public function addCollector(DataCollectorInterface $collector)
     {
@@ -276,8 +279,7 @@ class Profile
     /**
      * Returns true if a Collector for the given name exists.
      *
-     * @param string $name A collector name
-     *
+     * @param  string  $name  A collector name
      * @return bool
      */
     public function hasCollector($name)
@@ -287,6 +289,6 @@ class Profile
 
     public function __sleep()
     {
-        return array('token', 'parent', 'children', 'collectors', 'ip', 'method', 'url', 'time');
+        return ['token', 'parent', 'children', 'collectors', 'ip', 'method', 'url', 'time'];
     }
 }

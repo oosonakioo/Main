@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\Common\Persistence\Proxy as BaseProxy;
  *
  * @author Roman Borschel <roman@code-factory.org>
  * @author Marco Pivetta  <ocramius@gmail.com>
+ *
  * @since  2.4
  */
 interface Proxy extends BaseProxy
@@ -34,8 +36,7 @@ interface Proxy extends BaseProxy
     /**
      * Marks the proxy as initialized or not.
      *
-     * @param boolean $initialized
-     *
+     * @param  bool  $initialized
      * @return void
      */
     public function __setInitialized($initialized);
@@ -46,11 +47,10 @@ interface Proxy extends BaseProxy
      * are respectively the proxy object that is being initialized, the method name
      * that triggered initialization and the parameters passed to that method.
      *
-     * @param Closure|null $initializer
      *
      * @return void
      */
-    public function __setInitializer(Closure $initializer = null);
+    public function __setInitializer(?Closure $initializer = null);
 
     /**
      * Retrieves the initializer callback used to initialize the proxy.
@@ -65,11 +65,10 @@ interface Proxy extends BaseProxy
      * Sets the callback to be used when cloning the proxy. That initializer should accept
      * a single parameter, which is the cloned proxy instance itself.
      *
-     * @param Closure|null $cloner
      *
      * @return void
      */
-    public function __setCloner(Closure $cloner = null);
+    public function __setCloner(?Closure $cloner = null);
 
     /**
      * Retrieves the callback to be used when cloning the proxy.

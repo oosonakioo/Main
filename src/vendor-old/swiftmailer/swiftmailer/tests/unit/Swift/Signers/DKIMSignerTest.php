@@ -4,12 +4,12 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
 {
     protected function setUp()
     {
-        if (PHP_VERSION_ID < 50400 && !defined('OPENSSL_ALGO_SHA256')) {
+        if (PHP_VERSION_ID < 50400 && ! defined('OPENSSL_ALGO_SHA256')) {
             $this->markTestSkipped('skipping because of https://bugs.php.net/bug.php?id=61421');
         }
     }
 
-    public function testBasicSigningHeaderManipulation()
+    public function test_basic_signing_header_manipulation()
     {
         $headers = $this->_createHeaders();
         $messageContent = 'Hello World';
@@ -28,7 +28,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
     }
 
     // SHA1 Signing
-    public function testSigningSHA1()
+    public function test_signing_sh_a1()
     {
         $headerSet = $this->_createHeaderSet();
         $messageContent = 'Hello World';
@@ -36,7 +36,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
         $signer->setHashAlgorithm('rsa-sha1');
         $signer->setSignatureTimestamp('1299879181');
         $altered = $signer->getAlteredHeaders();
-        $this->assertEquals(array('DKIM-Signature'), $altered);
+        $this->assertEquals(['DKIM-Signature'], $altered);
         $signer->reset();
         $signer->setHeaders($headerSet);
         $this->assertFalse($headerSet->has('DKIM-Signature'));
@@ -51,7 +51,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
     }
 
     // SHA256 Signing
-    public function testSigning256()
+    public function test_signing256()
     {
         $headerSet = $this->_createHeaderSet();
         $messageContent = 'Hello World';
@@ -59,7 +59,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
         $signer->setHashAlgorithm('rsa-sha256');
         $signer->setSignatureTimestamp('1299879181');
         $altered = $signer->getAlteredHeaders();
-        $this->assertEquals(array('DKIM-Signature'), $altered);
+        $this->assertEquals(['DKIM-Signature'], $altered);
         $signer->reset();
         $signer->setHeaders($headerSet);
         $this->assertFalse($headerSet->has('DKIM-Signature'));
@@ -74,7 +74,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
     }
 
     // Relaxed/Relaxed Hash Signing
-    public function testSigningRelaxedRelaxed256()
+    public function test_signing_relaxed_relaxed256()
     {
         $headerSet = $this->_createHeaderSet();
         $messageContent = 'Hello World';
@@ -84,7 +84,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
         $signer->setBodyCanon('relaxed');
         $signer->setHeaderCanon('relaxed');
         $altered = $signer->getAlteredHeaders();
-        $this->assertEquals(array('DKIM-Signature'), $altered);
+        $this->assertEquals(['DKIM-Signature'], $altered);
         $signer->reset();
         $signer->setHeaders($headerSet);
         $this->assertFalse($headerSet->has('DKIM-Signature'));
@@ -99,7 +99,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
     }
 
     // Relaxed/Simple Hash Signing
-    public function testSigningRelaxedSimple256()
+    public function test_signing_relaxed_simple256()
     {
         $headerSet = $this->_createHeaderSet();
         $messageContent = 'Hello World';
@@ -108,7 +108,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
         $signer->setSignatureTimestamp('1299879181');
         $signer->setHeaderCanon('relaxed');
         $altered = $signer->getAlteredHeaders();
-        $this->assertEquals(array('DKIM-Signature'), $altered);
+        $this->assertEquals(['DKIM-Signature'], $altered);
         $signer->reset();
         $signer->setHeaders($headerSet);
         $this->assertFalse($headerSet->has('DKIM-Signature'));
@@ -123,7 +123,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
     }
 
     // Simple/Relaxed Hash Signing
-    public function testSigningSimpleRelaxed256()
+    public function test_signing_simple_relaxed256()
     {
         $headerSet = $this->_createHeaderSet();
         $messageContent = 'Hello World';
@@ -132,7 +132,7 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
         $signer->setSignatureTimestamp('1299879181');
         $signer->setBodyCanon('relaxed');
         $altered = $signer->getAlteredHeaders();
-        $this->assertEquals(array('DKIM-Signature'), $altered);
+        $this->assertEquals(['DKIM-Signature'], $altered);
         $signer->reset();
         $signer->setHeaders($headerSet);
         $this->assertFalse($headerSet->has('DKIM-Signature'));
@@ -148,13 +148,13 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
 
     private function _createHeaderSet()
     {
-        $cache = new Swift_KeyCache_ArrayKeyCache(new Swift_KeyCache_SimpleKeyCacheInputStream());
-        $factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory();
-        $contentEncoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder();
+        $cache = new Swift_KeyCache_ArrayKeyCache(new Swift_KeyCache_SimpleKeyCacheInputStream);
+        $factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory;
+        $contentEncoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder;
 
         $headerEncoder = new Swift_Mime_HeaderEncoder_QpHeaderEncoder(new Swift_CharacterStream_ArrayCharacterStream($factory, 'utf-8'));
         $paramEncoder = new Swift_Encoder_Rfc2231Encoder(new Swift_CharacterStream_ArrayCharacterStream($factory, 'utf-8'));
-        $grammar = new Swift_Mime_Grammar();
+        $grammar = new Swift_Mime_Grammar;
         $headers = new Swift_Mime_SimpleHeaderSet(new Swift_Mime_SimpleHeaderFactory($headerEncoder, $paramEncoder, $grammar));
 
         return $headers;
@@ -166,59 +166,59 @@ class Swift_Signers_DKIMSignerTest extends \SwiftMailerTestCase
     private function _createHeaders()
     {
         $x = 0;
-        $cache = new Swift_KeyCache_ArrayKeyCache(new Swift_KeyCache_SimpleKeyCacheInputStream());
-        $factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory();
-        $contentEncoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder();
+        $cache = new Swift_KeyCache_ArrayKeyCache(new Swift_KeyCache_SimpleKeyCacheInputStream);
+        $factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory;
+        $contentEncoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder;
 
         $headerEncoder = new Swift_Mime_HeaderEncoder_QpHeaderEncoder(new Swift_CharacterStream_ArrayCharacterStream($factory, 'utf-8'));
         $paramEncoder = new Swift_Encoder_Rfc2231Encoder(new Swift_CharacterStream_ArrayCharacterStream($factory, 'utf-8'));
-        $grammar = new Swift_Mime_Grammar();
+        $grammar = new Swift_Mime_Grammar;
         $headerFactory = new Swift_Mime_SimpleHeaderFactory($headerEncoder, $paramEncoder, $grammar);
         $headers = $this->getMockery('Swift_Mime_HeaderSet');
 
         $headers->shouldReceive('listAll')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('From', 'To', 'Date', 'Subject'));
+            ->zeroOrMoreTimes()
+            ->andReturn(['From', 'To', 'Date', 'Subject']);
         $headers->shouldReceive('has')
-                ->zeroOrMoreTimes()
-                ->with('From')
-                ->andReturn(true);
+            ->zeroOrMoreTimes()
+            ->with('From')
+            ->andReturn(true);
         $headers->shouldReceive('getAll')
-                ->zeroOrMoreTimes()
-                ->with('From')
-                ->andReturn(array($headerFactory->createMailboxHeader('From', 'test@test.test')));
+            ->zeroOrMoreTimes()
+            ->with('From')
+            ->andReturn([$headerFactory->createMailboxHeader('From', 'test@test.test')]);
         $headers->shouldReceive('has')
-                ->zeroOrMoreTimes()
-                ->with('To')
-                ->andReturn(true);
+            ->zeroOrMoreTimes()
+            ->with('To')
+            ->andReturn(true);
         $headers->shouldReceive('getAll')
-                ->zeroOrMoreTimes()
-                ->with('To')
-                ->andReturn(array($headerFactory->createMailboxHeader('To', 'test@test.test')));
+            ->zeroOrMoreTimes()
+            ->with('To')
+            ->andReturn([$headerFactory->createMailboxHeader('To', 'test@test.test')]);
         $headers->shouldReceive('has')
-                ->zeroOrMoreTimes()
-                ->with('Date')
-                ->andReturn(true);
+            ->zeroOrMoreTimes()
+            ->with('Date')
+            ->andReturn(true);
         $headers->shouldReceive('getAll')
-                ->zeroOrMoreTimes()
-                ->with('Date')
-                ->andReturn(array($headerFactory->createTextHeader('Date', 'Fri, 11 Mar 2011 20:56:12 +0000 (GMT)')));
+            ->zeroOrMoreTimes()
+            ->with('Date')
+            ->andReturn([$headerFactory->createTextHeader('Date', 'Fri, 11 Mar 2011 20:56:12 +0000 (GMT)')]);
         $headers->shouldReceive('has')
-                ->zeroOrMoreTimes()
-                ->with('Subject')
-                ->andReturn(true);
+            ->zeroOrMoreTimes()
+            ->with('Subject')
+            ->andReturn(true);
         $headers->shouldReceive('getAll')
-                ->zeroOrMoreTimes()
-                ->with('Subject')
-                ->andReturn(array($headerFactory->createTextHeader('Subject', 'Foo Bar Text Message')));
+            ->zeroOrMoreTimes()
+            ->with('Subject')
+            ->andReturn([$headerFactory->createTextHeader('Subject', 'Foo Bar Text Message')]);
         $headers->shouldReceive('addTextHeader')
-                ->zeroOrMoreTimes()
-                ->with('DKIM-Signature', \Mockery::any())
-                ->andReturn(true);
+            ->zeroOrMoreTimes()
+            ->with('DKIM-Signature', \Mockery::any())
+            ->andReturn(true);
         $headers->shouldReceive('getAll')
-                ->zeroOrMoreTimes()
-                ->with('DKIM-Signature')
-                ->andReturn(array($headerFactory->createTextHeader('DKIM-Signature', 'Foo Bar Text Message')));
+            ->zeroOrMoreTimes()
+            ->with('DKIM-Signature')
+            ->andReturn([$headerFactory->createTextHeader('DKIM-Signature', 'Foo Bar Text Message')]);
 
         return $headers;
     }

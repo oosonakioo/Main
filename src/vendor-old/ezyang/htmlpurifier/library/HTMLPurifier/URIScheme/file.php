@@ -8,6 +8,7 @@ class HTMLPurifier_URIScheme_file extends HTMLPurifier_URIScheme
     /**
      * Generally file:// URLs are not accessible from most
      * machines, so placing them as an img src is incorrect.
+     *
      * @type bool
      */
     public $browsable = false;
@@ -18,14 +19,15 @@ class HTMLPurifier_URIScheme_file extends HTMLPurifier_URIScheme
      * browsers on some operating systems don't understand the
      * authority, though I hear it is used on Windows to refer to
      * network shares.
+     *
      * @type bool
      */
     public $may_omit_host = true;
 
     /**
-     * @param HTMLPurifier_URI $uri
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_URI  $uri
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool
      */
     public function doValidate(&$uri, $config, $context)
@@ -37,6 +39,7 @@ class HTMLPurifier_URIScheme_file extends HTMLPurifier_URIScheme
         // While it seems to work on Firefox, the querystring has
         // no possible effect and is thus stripped.
         $uri->query = null;
+
         return true;
     }
 }

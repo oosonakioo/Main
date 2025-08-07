@@ -28,14 +28,15 @@ class UndefinedTargetClass
 
     public function getMethods()
     {
-        return array();
+        return [];
     }
 
     public function getNamespaceName()
     {
-        $parts = explode("\\", ltrim($this->getName(), "\\"));
+        $parts = explode('\\', ltrim($this->getName(), '\\'));
         array_pop($parts);
-        return implode("\\", $parts);
+
+        return implode('\\', $parts);
     }
 
     public function inNamespace()
@@ -45,7 +46,8 @@ class UndefinedTargetClass
 
     public function getShortName()
     {
-        $parts = explode("\\", $this->getName());
+        $parts = explode('\\', $this->getName());
+
         return array_pop($parts);
     }
 

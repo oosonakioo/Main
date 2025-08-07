@@ -7,8 +7,8 @@ class GreyscaleCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Turns an image into a greyscale version
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

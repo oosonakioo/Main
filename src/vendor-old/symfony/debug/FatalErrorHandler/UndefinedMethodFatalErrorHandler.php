@@ -27,7 +27,7 @@ class UndefinedMethodFatalErrorHandler implements FatalErrorHandlerInterface
     public function handleError(array $error, FatalErrorException $exception)
     {
         preg_match('/^Call to undefined method (.*)::(.*)\(\)$/', $error['message'], $matches);
-        if (!$matches) {
+        if (! $matches) {
             return;
         }
 
@@ -36,10 +36,10 @@ class UndefinedMethodFatalErrorHandler implements FatalErrorHandlerInterface
 
         $message = sprintf('Attempted to call an undefined method named "%s" of class "%s".', $methodName, $className);
 
-        $candidates = array();
+        $candidates = [];
         foreach (get_class_methods($className) as $definedMethodName) {
             $lev = levenshtein($methodName, $definedMethodName);
-            if ($lev <= strlen($methodName) / 3 || false !== strpos($definedMethodName, $methodName)) {
+            if ($lev <= strlen($methodName) / 3 || strpos($definedMethodName, $methodName) !== false) {
                 $candidates[] = $definedMethodName;
             }
         }

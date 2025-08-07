@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,6 +35,6 @@ class UnserializeExceptionArrayObjectAsset extends ArrayObject
      */
     public function __wakeup()
     {
-        throw new BadMethodCallException();
+        throw new BadMethodCallException;
     }
 }

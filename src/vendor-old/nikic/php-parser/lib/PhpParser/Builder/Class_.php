@@ -11,31 +11,37 @@ class Class_ extends Declaration
     protected $name;
 
     protected $extends = null;
-    protected $implements = array();
+
+    protected $implements = [];
+
     protected $type = 0;
 
-    protected $uses = array();
-    protected $constants = array();
-    protected $properties = array();
-    protected $methods = array();
+    protected $uses = [];
+
+    protected $constants = [];
+
+    protected $properties = [];
+
+    protected $methods = [];
 
     /**
      * Creates a class builder.
      *
-     * @param string $name Name of the class
+     * @param  string  $name  Name of the class
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
     /**
      * Extends a class.
      *
-     * @param Name|string $class Name of class to extend
-     *
+     * @param  Name|string  $class  Name of class to extend
      * @return $this The builder instance (for fluid interface)
      */
-    public function extend($class) {
+    public function extend($class)
+    {
         $this->extends = $this->normalizeName($class);
 
         return $this;
@@ -44,11 +50,11 @@ class Class_ extends Declaration
     /**
      * Implements one or more interfaces.
      *
-     * @param Name|string ...$interfaces Names of interfaces to implement
-     *
+     * @param  Name|string  ...$interfaces  Names of interfaces to implement
      * @return $this The builder instance (for fluid interface)
      */
-    public function implement() {
+    public function implement()
+    {
         foreach (func_get_args() as $interface) {
             $this->implements[] = $this->normalizeName($interface);
         }
@@ -61,7 +67,8 @@ class Class_ extends Declaration
      *
      * @return $this The builder instance (for fluid interface)
      */
-    public function makeAbstract() {
+    public function makeAbstract()
+    {
         $this->setModifier(Stmt\Class_::MODIFIER_ABSTRACT);
 
         return $this;
@@ -72,7 +79,8 @@ class Class_ extends Declaration
      *
      * @return $this The builder instance (for fluid interface)
      */
-    public function makeFinal() {
+    public function makeFinal()
+    {
         $this->setModifier(Stmt\Class_::MODIFIER_FINAL);
 
         return $this;
@@ -81,22 +89,22 @@ class Class_ extends Declaration
     /**
      * Adds a statement.
      *
-     * @param Stmt|PhpParser\Builder $stmt The statement to add
-     *
+     * @param  Stmt|PhpParser\Builder  $stmt  The statement to add
      * @return $this The builder instance (for fluid interface)
      */
-    public function addStmt($stmt) {
+    public function addStmt($stmt)
+    {
         $stmt = $this->normalizeNode($stmt);
 
-        $targets = array(
-            'Stmt_TraitUse'    => &$this->uses,
-            'Stmt_ClassConst'  => &$this->constants,
-            'Stmt_Property'    => &$this->properties,
+        $targets = [
+            'Stmt_TraitUse' => &$this->uses,
+            'Stmt_ClassConst' => &$this->constants,
+            'Stmt_Property' => &$this->properties,
             'Stmt_ClassMethod' => &$this->methods,
-        );
+        ];
 
         $type = $stmt->getType();
-        if (!isset($targets[$type])) {
+        if (! isset($targets[$type])) {
             throw new \LogicException(sprintf('Unexpected node of type "%s"', $type));
         }
 
@@ -110,12 +118,13 @@ class Class_ extends Declaration
      *
      * @return Stmt\Class_ The built class node
      */
-    public function getNode() {
-        return new Stmt\Class_($this->name, array(
+    public function getNode()
+    {
+        return new Stmt\Class_($this->name, [
             'type' => $this->type,
             'extends' => $this->extends,
             'implements' => $this->implements,
             'stmts' => array_merge($this->uses, $this->constants, $this->properties, $this->methods),
-        ), $this->attributes);
+        ], $this->attributes);
     }
 }

@@ -11,11 +11,11 @@
 
 namespace Symfony\Component\HttpKernel\Tests\EventListener;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * SessionListenerTest.
@@ -42,46 +42,46 @@ class TestSessionListenerTest extends \PHPUnit_Framework_TestCase
         $this->session = $this->getSession();
     }
 
-    public function testShouldSaveMasterRequestSession()
+    public function test_should_save_master_request_session()
     {
         $this->sessionHasBeenStarted();
         $this->sessionMustBeSaved();
 
-        $this->filterResponse(new Request());
+        $this->filterResponse(new Request);
     }
 
-    public function testShouldNotSaveSubRequestSession()
+    public function test_should_not_save_sub_request_session()
     {
         $this->sessionMustNotBeSaved();
 
-        $this->filterResponse(new Request(), HttpKernelInterface::SUB_REQUEST);
+        $this->filterResponse(new Request, HttpKernelInterface::SUB_REQUEST);
     }
 
-    public function testDoesNotDeleteCookieIfUsingSessionLifetime()
+    public function test_does_not_delete_cookie_if_using_session_lifetime()
     {
         $this->sessionHasBeenStarted();
 
         $params = session_get_cookie_params();
         session_set_cookie_params(0, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
 
-        $response = $this->filterResponse(new Request(), HttpKernelInterface::MASTER_REQUEST);
+        $response = $this->filterResponse(new Request, HttpKernelInterface::MASTER_REQUEST);
         $cookies = $response->headers->getCookies();
 
         $this->assertEquals(0, reset($cookies)->getExpiresTime());
     }
 
-    public function testUnstartedSessionIsNotSave()
+    public function test_unstarted_session_is_not_save()
     {
         $this->sessionHasNotBeenStarted();
         $this->sessionMustNotBeSaved();
 
-        $this->filterResponse(new Request());
+        $this->filterResponse(new Request);
     }
 
     private function filterResponse(Request $request, $type = HttpKernelInterface::MASTER_REQUEST)
     {
         $request->setSession($this->session);
-        $response = new Response();
+        $response = new Response;
         $kernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $event = new FilterResponseEvent($kernel, $request, $type, $response);
 

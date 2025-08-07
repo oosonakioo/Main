@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,7 +23,6 @@ namespace Mockery\CountValidator;
 
 abstract class CountValidatorAbstract
 {
-
     /**
      * Expectation for which this validator is assigned
      *
@@ -40,8 +40,7 @@ abstract class CountValidatorAbstract
     /**
      * Set Expectation object and upper call limit
      *
-     * @param \Mockery\Expectation $expectation
-     * @param int $limit
+     * @param  int  $limit
      */
     public function __construct(\Mockery\Expectation $expectation, $limit)
     {
@@ -52,18 +51,18 @@ abstract class CountValidatorAbstract
     /**
      * Checks if the validator can accept an additional nth call
      *
-     * @param int $n
+     * @param  int  $n
      * @return bool
      */
     public function isEligible($n)
     {
-        return ($n < $this->_limit);
+        return $n < $this->_limit;
     }
 
     /**
      * Validate the call count against this validator
      *
-     * @param int $n
+     * @param  int  $n
      * @return bool
      */
     abstract public function validate($n);

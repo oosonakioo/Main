@@ -9,13 +9,12 @@
  * Besides defining (through code) what precisely makes the string valid,
  * subclasses are also responsible for cleaning the code if possible.
  */
-
 abstract class HTMLPurifier_AttrDef
 {
-
     /**
      * Tells us whether or not an HTML attribute is minimized.
      * Has no meaning in other contexts.
+     *
      * @type bool
      */
     public $minimized = false;
@@ -23,6 +22,7 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Tells us whether or not an HTML attribute is required.
      * Has no meaning in other contexts
+     *
      * @type bool
      */
     public $required = false;
@@ -30,9 +30,9 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Validates and cleans passed string according to a definition.
      *
-     * @param string $string String to be validated and cleaned.
-     * @param HTMLPurifier_Config $config Mandatory HTMLPurifier_Config object.
-     * @param HTMLPurifier_Context $context Mandatory HTMLPurifier_Context object.
+     * @param  string  $string  String to be validated and cleaned.
+     * @param  HTMLPurifier_Config  $config  Mandatory HTMLPurifier_Config object.
+     * @param  HTMLPurifier_Context  $context  Mandatory HTMLPurifier_Context object.
      */
     abstract public function validate($string, $config, $context);
 
@@ -60,13 +60,15 @@ abstract class HTMLPurifier_AttrDef
     public function parseCDATA($string)
     {
         $string = trim($string);
-        $string = str_replace(array("\n", "\t", "\r"), ' ', $string);
+        $string = str_replace(["\n", "\t", "\r"], ' ', $string);
+
         return $string;
     }
 
     /**
      * Factory method for creating this class from a string.
-     * @param string $string String construction info
+     *
+     * @param  string  $string  String construction info
      * @return HTMLPurifier_AttrDef Created AttrDef object corresponding to $string
      */
     public function make($string)
@@ -81,7 +83,8 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Removes spaces from rgb(0, 0, 0) so that shorthand CSS properties work
      * properly. THIS IS A HACK!
-     * @param string $string a CSS colour definition
+     *
+     * @param  string  $string  a CSS colour definition
      * @return string
      */
     protected function mungeRgb($string)
@@ -107,7 +110,7 @@ abstract class HTMLPurifier_AttrDef
                 if (ctype_xdigit($string[$i])) {
                     $code = $string[$i];
                     for ($a = 1, $i++; $i < $c && $a < 6; $i++, $a++) {
-                        if (!ctype_xdigit($string[$i])) {
+                        if (! ctype_xdigit($string[$i])) {
                             break;
                         }
                         $code .= $string[$i];
@@ -123,6 +126,7 @@ abstract class HTMLPurifier_AttrDef
                     if ($i < $c && trim($string[$i]) !== '') {
                         $i--;
                     }
+
                     continue;
                 }
                 if ($string[$i] === "\n") {
@@ -131,6 +135,7 @@ abstract class HTMLPurifier_AttrDef
             }
             $ret .= $string[$i];
         }
+
         return $ret;
     }
 }

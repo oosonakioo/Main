@@ -2,6 +2,7 @@
 
 /**
  * Module defines proprietary tags and attributes in HTML.
+ *
  * @warning If this module is enabled, standards-compliance is off!
  */
 class HTMLPurifier_HTMLModule_Proprietary extends HTMLPurifier_HTMLModule
@@ -12,7 +13,7 @@ class HTMLPurifier_HTMLModule_Proprietary extends HTMLPurifier_HTMLModule
     public $name = 'Proprietary';
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -21,7 +22,7 @@ class HTMLPurifier_HTMLModule_Proprietary extends HTMLPurifier_HTMLModule
             'Inline',
             'Flow',
             'Common',
-            array(
+            [
                 'direction' => 'Enum#left,right,up,down',
                 'behavior' => 'Enum#alternate',
                 'width' => 'Length',
@@ -32,7 +33,7 @@ class HTMLPurifier_HTMLModule_Proprietary extends HTMLPurifier_HTMLModule
                 'bgcolor' => 'Color',
                 'hspace' => 'Pixels',
                 'vspace' => 'Pixels',
-            )
+            ]
         );
     }
 }

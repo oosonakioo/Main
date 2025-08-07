@@ -61,30 +61,30 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
      * If you use such an index, you can drop `gc_probability` to 0 since
      * no garbage-collection is required.
      *
-     * @param \Mongo|\MongoClient|\MongoDB\Client $mongo   A MongoDB\Client, MongoClient or Mongo instance
-     * @param array                               $options An associative array of field options
+     * @param  \Mongo|\MongoClient|\MongoDB\Client  $mongo  A MongoDB\Client, MongoClient or Mongo instance
+     * @param  array  $options  An associative array of field options
      *
      * @throws \InvalidArgumentException When MongoClient or Mongo instance not provided
      * @throws \InvalidArgumentException When "database" or "collection" not provided
      */
     public function __construct($mongo, array $options)
     {
-        if (!($mongo instanceof \MongoDB\Client || $mongo instanceof \MongoClient || $mongo instanceof \Mongo)) {
+        if (! ($mongo instanceof \MongoDB\Client || $mongo instanceof \MongoClient || $mongo instanceof \Mongo)) {
             throw new \InvalidArgumentException('MongoClient or Mongo instance required');
         }
 
-        if (!isset($options['database']) || !isset($options['collection'])) {
+        if (! isset($options['database']) || ! isset($options['collection'])) {
             throw new \InvalidArgumentException('You must provide the "database" and "collection" option for MongoDBSessionHandler');
         }
 
         $this->mongo = $mongo;
 
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'id_field' => '_id',
             'data_field' => 'data',
             'time_field' => 'time',
             'expiry_field' => 'expires_at',
-        ), $options);
+        ], $options);
     }
 
     /**
@@ -110,9 +110,9 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     {
         $methodName = $this->mongo instanceof \MongoDB\Client ? 'deleteOne' : 'remove';
 
-        $this->getCollection()->$methodName(array(
+        $this->getCollection()->$methodName([
             $this->options['id_field'] => $sessionId,
-        ));
+        ]);
 
         return true;
     }
@@ -124,9 +124,9 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     {
         $methodName = $this->mongo instanceof \MongoDB\Client ? 'deleteOne' : 'remove';
 
-        $this->getCollection()->$methodName(array(
-            $this->options['expiry_field'] => array('$lt' => $this->createDateTime()),
-        ));
+        $this->getCollection()->$methodName([
+            $this->options['expiry_field'] => ['$lt' => $this->createDateTime()],
+        ]);
 
         return true;
     }
@@ -138,12 +138,12 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     {
         $expiry = $this->createDateTime(time() + (int) ini_get('session.gc_maxlifetime'));
 
-        $fields = array(
+        $fields = [
             $this->options['time_field'] => $this->createDateTime(),
             $this->options['expiry_field'] => $expiry,
-        );
+        ];
 
-        $options = array('upsert' => true);
+        $options = ['upsert' => true];
 
         if ($this->mongo instanceof \MongoDB\Client) {
             $fields[$this->options['data_field']] = new \MongoDB\BSON\Binary($data, \MongoDB\BSON\Binary::TYPE_OLD_BINARY);
@@ -155,8 +155,8 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
         $methodName = $this->mongo instanceof \MongoDB\Client ? 'updateOne' : 'update';
 
         $this->getCollection()->$methodName(
-            array($this->options['id_field'] => $sessionId),
-            array('$set' => $fields),
+            [$this->options['id_field'] => $sessionId],
+            ['$set' => $fields],
             $options
         );
 
@@ -168,12 +168,12 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
      */
     public function read($sessionId)
     {
-        $dbData = $this->getCollection()->findOne(array(
+        $dbData = $this->getCollection()->findOne([
             $this->options['id_field'] => $sessionId,
-            $this->options['expiry_field'] => array('$gte' => $this->createDateTime()),
-        ));
+            $this->options['expiry_field'] => ['$gte' => $this->createDateTime()],
+        ]);
 
-        if (null === $dbData) {
+        if ($dbData === null) {
             return '';
         }
 
@@ -191,7 +191,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
      */
     private function getCollection()
     {
-        if (null === $this->collection) {
+        if ($this->collection === null) {
             $this->collection = $this->mongo->selectCollection($this->options['database'], $this->options['collection']);
         }
 
@@ -213,11 +213,11 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
      *
      * Return an instance of a MongoDate or \MongoDB\BSON\UTCDateTime
      *
-     * @param int $seconds An integer representing UTC seconds since Jan 1 1970.  Defaults to now.
+     * @param  int  $seconds  An integer representing UTC seconds since Jan 1 1970.  Defaults to now.
      */
     private function createDateTime($seconds = null)
     {
-        if (null === $seconds) {
+        if ($seconds === null) {
             $seconds = time();
         }
 

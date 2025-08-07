@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  *
  * @link    www.doctrine-project.org
  * @since   2.0
+ *
  * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
 abstract class KeywordList
@@ -36,9 +38,8 @@ abstract class KeywordList
     /**
      * Checks if the given word is a keyword of this dialect/vendor platform.
      *
-     * @param string $word
-     *
-     * @return boolean
+     * @param  string  $word
+     * @return bool
      */
     public function isKeyword($word)
     {

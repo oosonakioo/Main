@@ -23,13 +23,13 @@ class GroupHandler extends AbstractHandler
     protected $handlers;
 
     /**
-     * @param array   $handlers Array of Handlers.
-     * @param Boolean $bubble   Whether the messages that are handled can bubble up the stack or not
+     * @param  array  $handlers  Array of Handlers.
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
      */
     public function __construct(array $handlers, $bubble = true)
     {
         foreach ($handlers as $handler) {
-            if (!$handler instanceof HandlerInterface) {
+            if (! $handler instanceof HandlerInterface) {
                 throw new \InvalidArgumentException('The first argument of the GroupHandler must be an array of HandlerInterface instances.');
             }
         }
@@ -67,7 +67,7 @@ class GroupHandler extends AbstractHandler
             $handler->handle($record);
         }
 
-        return false === $this->bubble;
+        return $this->bubble === false;
     }
 
     /**
@@ -76,7 +76,7 @@ class GroupHandler extends AbstractHandler
     public function handleBatch(array $records)
     {
         if ($this->processors) {
-            $processed = array();
+            $processed = [];
             foreach ($records as $record) {
                 foreach ($this->processors as $processor) {
                     $processed[] = call_user_func($processor, $record);

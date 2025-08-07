@@ -22,21 +22,29 @@ use Symfony\Component\Process\Exception\LogicException;
 class ProcessBuilder
 {
     private $arguments;
+
     private $cwd;
-    private $env = array();
+
+    private $env = [];
+
     private $input;
+
     private $timeout = 60;
-    private $options = array();
+
+    private $options = [];
+
     private $inheritEnv = true;
-    private $prefix = array();
+
+    private $prefix = [];
+
     private $outputDisabled = false;
 
     /**
      * Constructor.
      *
-     * @param string[] $arguments An array of arguments
+     * @param  string[]  $arguments  An array of arguments
      */
-    public function __construct(array $arguments = array())
+    public function __construct(array $arguments = [])
     {
         $this->arguments = $arguments;
     }
@@ -44,11 +52,10 @@ class ProcessBuilder
     /**
      * Creates a process builder instance.
      *
-     * @param string[] $arguments An array of arguments
-     *
+     * @param  string[]  $arguments  An array of arguments
      * @return ProcessBuilder
      */
-    public static function create(array $arguments = array())
+    public static function create(array $arguments = [])
     {
         return new static($arguments);
     }
@@ -56,8 +63,7 @@ class ProcessBuilder
     /**
      * Adds an unescaped argument to the command string.
      *
-     * @param string $argument A command argument
-     *
+     * @param  string  $argument  A command argument
      * @return ProcessBuilder
      */
     public function add($argument)
@@ -72,13 +78,12 @@ class ProcessBuilder
      *
      * The prefix is preserved when resetting arguments.
      *
-     * @param string|array $prefix A command prefix or an array of command prefixes
-     *
+     * @param  string|array  $prefix  A command prefix or an array of command prefixes
      * @return ProcessBuilder
      */
     public function setPrefix($prefix)
     {
-        $this->prefix = is_array($prefix) ? $prefix : array($prefix);
+        $this->prefix = is_array($prefix) ? $prefix : [$prefix];
 
         return $this;
     }
@@ -89,8 +94,7 @@ class ProcessBuilder
      * Arguments must not be escaped.
      * Previous arguments are removed.
      *
-     * @param string[] $arguments
-     *
+     * @param  string[]  $arguments
      * @return ProcessBuilder
      */
     public function setArguments(array $arguments)
@@ -103,8 +107,7 @@ class ProcessBuilder
     /**
      * Sets the working directory.
      *
-     * @param null|string $cwd The working directory
-     *
+     * @param  null|string  $cwd  The working directory
      * @return ProcessBuilder
      */
     public function setWorkingDirectory($cwd)
@@ -117,8 +120,7 @@ class ProcessBuilder
     /**
      * Sets whether environment variables will be inherited or not.
      *
-     * @param bool $inheritEnv
-     *
+     * @param  bool  $inheritEnv
      * @return ProcessBuilder
      */
     public function inheritEnvironmentVariables($inheritEnv = true)
@@ -134,9 +136,8 @@ class ProcessBuilder
      * Setting a variable overrides its previous value. Use `null` to unset a
      * defined environment variable.
      *
-     * @param string      $name  The variable name
-     * @param null|string $value The variable value
-     *
+     * @param  string  $name  The variable name
+     * @param  null|string  $value  The variable value
      * @return ProcessBuilder
      */
     public function setEnv($name, $value)
@@ -153,8 +154,7 @@ class ProcessBuilder
      * overridden by the new values passed to this method. Pass `null` to unset
      * a variable.
      *
-     * @param array $variables The variables
-     *
+     * @param  array  $variables  The variables
      * @return ProcessBuilder
      */
     public function addEnvironmentVariables(array $variables)
@@ -167,8 +167,7 @@ class ProcessBuilder
     /**
      * Sets the input of the process.
      *
-     * @param mixed $input The input as a string
-     *
+     * @param  mixed  $input  The input as a string
      * @return ProcessBuilder
      *
      * @throws InvalidArgumentException In case the argument is invalid
@@ -185,15 +184,14 @@ class ProcessBuilder
      *
      * To disable the timeout, set this value to null.
      *
-     * @param float|null $timeout
-     *
+     * @param  float|null  $timeout
      * @return ProcessBuilder
      *
      * @throws InvalidArgumentException
      */
     public function setTimeout($timeout)
     {
-        if (null === $timeout) {
+        if ($timeout === null) {
             $this->timeout = null;
 
             return $this;
@@ -213,9 +211,8 @@ class ProcessBuilder
     /**
      * Adds a proc_open option.
      *
-     * @param string $name  The option name
-     * @param string $value The option value
-     *
+     * @param  string  $name  The option name
+     * @param  string  $value  The option value
      * @return ProcessBuilder
      */
     public function setOption($name, $value)
@@ -258,14 +255,14 @@ class ProcessBuilder
      */
     public function getProcess()
     {
-        if (0 === count($this->prefix) && 0 === count($this->arguments)) {
+        if (count($this->prefix) === 0 && count($this->arguments) === 0) {
             throw new LogicException('You must add() command arguments before calling getProcess().');
         }
 
         $options = $this->options;
 
         $arguments = array_merge($this->prefix, $this->arguments);
-        $script = implode(' ', array_map(array(__NAMESPACE__.'\\ProcessUtils', 'escapeArgument'), $arguments));
+        $script = implode(' ', array_map([__NAMESPACE__.'\\ProcessUtils', 'escapeArgument'], $arguments));
 
         if ($this->inheritEnv) {
             $env = array_replace($_ENV, $_SERVER, $this->env);

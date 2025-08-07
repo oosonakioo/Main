@@ -36,18 +36,18 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
     /**
      * Constructor.
      *
-     * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
-     * @param bool|null                     $decorated Whether to decorate messages (null for auto-guessing)
-     * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
+     * @param  int  $verbosity  The verbosity level (one of the VERBOSITY constants in OutputInterface)
+     * @param  bool|null  $decorated  Whether to decorate messages (null for auto-guessing)
+     * @param  OutputFormatterInterface|null  $formatter  Output formatter instance (null to use default OutputFormatter)
      */
-    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null)
+    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, ?OutputFormatterInterface $formatter = null)
     {
         parent::__construct($this->openOutputStream(), $verbosity, $decorated, $formatter);
 
         $actualDecorated = $this->isDecorated();
         $this->stderr = new StreamOutput($this->openErrorStream(), $verbosity, $decorated, $this->getFormatter());
 
-        if (null === $decorated) {
+        if ($decorated === null) {
             $this->setDecorated($actualDecorated && $this->stderr->isDecorated());
         }
     }
@@ -103,7 +103,7 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
      */
     protected function hasStdoutSupport()
     {
-        return false === $this->isRunningOS400();
+        return $this->isRunningOS400() === false;
     }
 
     /**
@@ -114,7 +114,7 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
      */
     protected function hasStderrSupport()
     {
-        return false === $this->isRunningOS400();
+        return $this->isRunningOS400() === false;
     }
 
     /**
@@ -125,13 +125,13 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
      */
     private function isRunningOS400()
     {
-        $checks = array(
+        $checks = [
             function_exists('php_uname') ? php_uname('s') : '',
             getenv('OSTYPE'),
             PHP_OS,
-        );
+        ];
 
-        return false !== stripos(implode(';', $checks), 'OS400');
+        return stripos(implode(';', $checks), 'OS400') !== false;
     }
 
     /**

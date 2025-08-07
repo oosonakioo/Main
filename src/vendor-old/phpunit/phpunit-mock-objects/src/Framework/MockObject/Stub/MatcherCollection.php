@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -19,8 +20,8 @@ interface PHPUnit_Framework_MockObject_Stub_MatcherCollection
      * Adds a new matcher to the collection which can be used as an expectation
      * or a stub.
      *
-     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
-     *                                                                 Matcher for invocations to mock objects.
+     * @param  PHPUnit_Framework_MockObject_Matcher_Invocation  $matcher
+     *                                                                    Matcher for invocations to mock objects.
      */
     public function addMatcher(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher);
 }

@@ -1,9 +1,9 @@
 <?php
+
 namespace Hamcrest\Core;
 
 class SampleBaseClass
 {
-
     private $_arg;
 
     public function __construct($arg)

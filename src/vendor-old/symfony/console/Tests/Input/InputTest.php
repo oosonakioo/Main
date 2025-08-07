@@ -12,119 +12,125 @@
 namespace Symfony\Component\Console\Tests\Input;
 
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
 class InputTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstructor()
+    public function test_constructor()
     {
-        $input = new ArrayInput(array('name' => 'foo'), new InputDefinition(array(new InputArgument('name'))));
+        $input = new ArrayInput(['name' => 'foo'], new InputDefinition([new InputArgument('name')]));
         $this->assertEquals('foo', $input->getArgument('name'), '->__construct() takes a InputDefinition as an argument');
     }
 
-    public function testOptions()
+    public function test_options()
     {
-        $input = new ArrayInput(array('--name' => 'foo'), new InputDefinition(array(new InputOption('name'))));
+        $input = new ArrayInput(['--name' => 'foo'], new InputDefinition([new InputOption('name')]));
         $this->assertEquals('foo', $input->getOption('name'), '->getOption() returns the value for the given option');
 
         $input->setOption('name', 'bar');
         $this->assertEquals('bar', $input->getOption('name'), '->setOption() sets the value for a given option');
-        $this->assertEquals(array('name' => 'bar'), $input->getOptions(), '->getOptions() returns all option values');
+        $this->assertEquals(['name' => 'bar'], $input->getOptions(), '->getOptions() returns all option values');
 
-        $input = new ArrayInput(array('--name' => 'foo'), new InputDefinition(array(new InputOption('name'), new InputOption('bar', '', InputOption::VALUE_OPTIONAL, '', 'default'))));
+        $input = new ArrayInput(['--name' => 'foo'], new InputDefinition([new InputOption('name'), new InputOption('bar', '', InputOption::VALUE_OPTIONAL, '', 'default')]));
         $this->assertEquals('default', $input->getOption('bar'), '->getOption() returns the default value for optional options');
-        $this->assertEquals(array('name' => 'foo', 'bar' => 'default'), $input->getOptions(), '->getOptions() returns all option values, even optional ones');
+        $this->assertEquals(['name' => 'foo', 'bar' => 'default'], $input->getOptions(), '->getOptions() returns all option values, even optional ones');
     }
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage The "foo" option does not exist.
      */
-    public function testSetInvalidOption()
+    public function test_set_invalid_option()
     {
-        $input = new ArrayInput(array('--name' => 'foo'), new InputDefinition(array(new InputOption('name'), new InputOption('bar', '', InputOption::VALUE_OPTIONAL, '', 'default'))));
+        $input = new ArrayInput(['--name' => 'foo'], new InputDefinition([new InputOption('name'), new InputOption('bar', '', InputOption::VALUE_OPTIONAL, '', 'default')]));
         $input->setOption('foo', 'bar');
     }
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage The "foo" option does not exist.
      */
-    public function testGetInvalidOption()
+    public function test_get_invalid_option()
     {
-        $input = new ArrayInput(array('--name' => 'foo'), new InputDefinition(array(new InputOption('name'), new InputOption('bar', '', InputOption::VALUE_OPTIONAL, '', 'default'))));
+        $input = new ArrayInput(['--name' => 'foo'], new InputDefinition([new InputOption('name'), new InputOption('bar', '', InputOption::VALUE_OPTIONAL, '', 'default')]));
         $input->getOption('foo');
     }
 
-    public function testArguments()
+    public function test_arguments()
     {
-        $input = new ArrayInput(array('name' => 'foo'), new InputDefinition(array(new InputArgument('name'))));
+        $input = new ArrayInput(['name' => 'foo'], new InputDefinition([new InputArgument('name')]));
         $this->assertEquals('foo', $input->getArgument('name'), '->getArgument() returns the value for the given argument');
 
         $input->setArgument('name', 'bar');
         $this->assertEquals('bar', $input->getArgument('name'), '->setArgument() sets the value for a given argument');
-        $this->assertEquals(array('name' => 'bar'), $input->getArguments(), '->getArguments() returns all argument values');
+        $this->assertEquals(['name' => 'bar'], $input->getArguments(), '->getArguments() returns all argument values');
 
-        $input = new ArrayInput(array('name' => 'foo'), new InputDefinition(array(new InputArgument('name'), new InputArgument('bar', InputArgument::OPTIONAL, '', 'default'))));
+        $input = new ArrayInput(['name' => 'foo'], new InputDefinition([new InputArgument('name'), new InputArgument('bar', InputArgument::OPTIONAL, '', 'default')]));
         $this->assertEquals('default', $input->getArgument('bar'), '->getArgument() returns the default value for optional arguments');
-        $this->assertEquals(array('name' => 'foo', 'bar' => 'default'), $input->getArguments(), '->getArguments() returns all argument values, even optional ones');
+        $this->assertEquals(['name' => 'foo', 'bar' => 'default'], $input->getArguments(), '->getArguments() returns all argument values, even optional ones');
     }
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage The "foo" argument does not exist.
      */
-    public function testSetInvalidArgument()
+    public function test_set_invalid_argument()
     {
-        $input = new ArrayInput(array('name' => 'foo'), new InputDefinition(array(new InputArgument('name'), new InputArgument('bar', InputArgument::OPTIONAL, '', 'default'))));
+        $input = new ArrayInput(['name' => 'foo'], new InputDefinition([new InputArgument('name'), new InputArgument('bar', InputArgument::OPTIONAL, '', 'default')]));
         $input->setArgument('foo', 'bar');
     }
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage The "foo" argument does not exist.
      */
-    public function testGetInvalidArgument()
+    public function test_get_invalid_argument()
     {
-        $input = new ArrayInput(array('name' => 'foo'), new InputDefinition(array(new InputArgument('name'), new InputArgument('bar', InputArgument::OPTIONAL, '', 'default'))));
+        $input = new ArrayInput(['name' => 'foo'], new InputDefinition([new InputArgument('name'), new InputArgument('bar', InputArgument::OPTIONAL, '', 'default')]));
         $input->getArgument('foo');
     }
 
     /**
      * @expectedException        \RuntimeException
+     *
      * @expectedExceptionMessage Not enough arguments (missing: "name").
      */
-    public function testValidateWithMissingArguments()
+    public function test_validate_with_missing_arguments()
     {
-        $input = new ArrayInput(array());
-        $input->bind(new InputDefinition(array(new InputArgument('name', InputArgument::REQUIRED))));
+        $input = new ArrayInput([]);
+        $input->bind(new InputDefinition([new InputArgument('name', InputArgument::REQUIRED)]));
         $input->validate();
     }
 
     /**
      * @expectedException        \RuntimeException
+     *
      * @expectedExceptionMessage Not enough arguments (missing: "name").
      */
-    public function testValidateWithMissingRequiredArguments()
+    public function test_validate_with_missing_required_arguments()
     {
-        $input = new ArrayInput(array('bar' => 'baz'));
-        $input->bind(new InputDefinition(array(new InputArgument('name', InputArgument::REQUIRED), new InputArgument('bar', InputArgument::OPTIONAL))));
+        $input = new ArrayInput(['bar' => 'baz']);
+        $input->bind(new InputDefinition([new InputArgument('name', InputArgument::REQUIRED), new InputArgument('bar', InputArgument::OPTIONAL)]));
         $input->validate();
     }
 
-    public function testValidate()
+    public function test_validate()
     {
-        $input = new ArrayInput(array('name' => 'foo'));
-        $input->bind(new InputDefinition(array(new InputArgument('name', InputArgument::REQUIRED))));
+        $input = new ArrayInput(['name' => 'foo']);
+        $input->bind(new InputDefinition([new InputArgument('name', InputArgument::REQUIRED)]));
 
         $this->assertNull($input->validate());
     }
 
-    public function testSetGetInteractive()
+    public function test_set_get_interactive()
     {
-        $input = new ArrayInput(array());
+        $input = new ArrayInput([]);
         $this->assertTrue($input->isInteractive(), '->isInteractive() returns whether the input should be interactive or not');
         $input->setInteractive(false);
         $this->assertFalse($input->isInteractive(), '->setInteractive() changes the interactive flag');

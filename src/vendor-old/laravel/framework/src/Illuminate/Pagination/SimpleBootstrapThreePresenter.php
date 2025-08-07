@@ -2,15 +2,14 @@
 
 namespace Illuminate\Pagination;
 
-use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
+use Illuminate\Support\HtmlString;
 
 class SimpleBootstrapThreePresenter extends BootstrapThreePresenter
 {
     /**
      * Create a simple Bootstrap 3 presenter.
      *
-     * @param  \Illuminate\Contracts\Pagination\Paginator  $paginator
      * @return void
      */
     public function __construct(PaginatorContract $paginator)

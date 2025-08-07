@@ -13,13 +13,12 @@
  *
  * @author Xavier De Cock <xdecock@gmail.com>
  */
-interface Swift_Signers_HeaderSigner extends Swift_Signer, Swift_InputByteStream
+interface Swift_Signers_HeaderSigner extends Swift_InputByteStream, Swift_Signer
 {
     /**
      * Exclude an header from the signed headers.
      *
-     * @param string $header_name
-     *
+     * @param  string  $header_name
      * @return self
      */
     public function ignoreHeader($header_name);
@@ -41,8 +40,7 @@ interface Swift_Signers_HeaderSigner extends Swift_Signer, Swift_InputByteStream
     /**
      * Give the headers already given.
      *
-     * @param Swift_Mime_SimpleHeaderSet $headers
-     *
+     * @param  Swift_Mime_SimpleHeaderSet  $headers
      * @return self
      */
     public function setHeaders(Swift_Mime_HeaderSet $headers);
@@ -50,7 +48,6 @@ interface Swift_Signers_HeaderSigner extends Swift_Signer, Swift_InputByteStream
     /**
      * Add the header(s) to the headerSet.
      *
-     * @param Swift_Mime_HeaderSet $headers
      *
      * @return self
      */

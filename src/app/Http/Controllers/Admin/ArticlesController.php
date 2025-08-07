@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\Models\Categories;
 use App\Models\Articles;
+use App\Models\Categories;
 use Helper;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -14,34 +14,38 @@ class ArticlesController extends AdminController
     public function index()
     {
         $articles = Articles::orderBy('articles_date', 'desc')->get();
+
         return view('admin.articles', [
-            'articles' => $articles
+            'articles' => $articles,
         ]);
     }
 
     public function create()
     {
-        $articles = new Articles();
+        $articles = new Articles;
+
         return view('admin.articles-create', [
             'articles' => $articles,
-            'categories'  => $this->getCategories()
+            'categories' => $this->getCategories(),
         ]);
     }
 
     public function store(Request $request)
     {
         $this->doValidate($request);
-        $articles = new Articles();
+        $articles = new Articles;
         $this->doSave($request, $articles);
+
         return Helper::redirect('admin/articles');
     }
 
     public function edit($id)
     {
         $articles = Articles::find($id);
+
         return view('admin.articles-create', [
             'articles' => $articles,
-            'categories'  => $this->getCategories()
+            'categories' => $this->getCategories(),
         ]);
     }
 
@@ -50,12 +54,14 @@ class ArticlesController extends AdminController
         $this->doValidate($request);
         $articles = Articles::find($id);
         $this->doSave($request, $articles);
+
         return Helper::redirect('admin/articles');
     }
 
     public function destroy($id)
     {
         $count = Articles::destroy($id);
+
         return $count == 1 ? $id : -1;
     }
 
@@ -63,19 +69,19 @@ class ArticlesController extends AdminController
     {
         $validate = [];
         foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-            $title = 'title_' . $locale;
-            $detail = 'detail_' . $locale;
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
 
             $validate[$title] = 'required';
             $validate[$detail] = 'required';
         }
-        //$validate['category'] = 'required';
-        //$validate['articles_date'] = 'required';
-        //$validate['image'] = 'required';
+        // $validate['category'] = 'required';
+        // $validate['articles_date'] = 'required';
+        // $validate['image'] = 'required';
 
-        //if($this->isPinToHome($request)) {
+        // if($this->isPinToHome($request)) {
         //    $validate['sort'] = 'required';
-        //}
+        // }
 
         $this->validate($request, $validate);
     }
@@ -88,10 +94,10 @@ class ArticlesController extends AdminController
     private function doSave(Request $request, $articles)
     {
         foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-            $title = 'title_' . $locale;
-            $description = 'description_' . $locale;
-            $detail = 'detail_' . $locale;
-            $articleby = 'articleby_' . $locale;
+            $title = 'title_'.$locale;
+            $description = 'description_'.$locale;
+            $detail = 'detail_'.$locale;
+            $articleby = 'articleby_'.$locale;
 
             $articles->translateOrNew($locale)->title = $request[$title];
             $articles->translateOrNew($locale)->description = $request[$description];
@@ -112,7 +118,7 @@ class ArticlesController extends AdminController
 
     private function getCategories()
     {
-        return Categories::where("active", true)
+        return Categories::where('active', true)
             ->where('menu', 'articles-cat')
             ->get();
     }

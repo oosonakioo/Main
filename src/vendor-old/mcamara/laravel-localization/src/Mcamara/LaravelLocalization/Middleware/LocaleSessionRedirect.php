@@ -10,9 +10,7 @@ class LocaleSessionRedirect extends LaravelLocalizationMiddlewareBase
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -31,7 +29,7 @@ class LocaleSessionRedirect extends LaravelLocalizationMiddlewareBase
             return $next($request);
         }
 
-        if ($locale && app('laravellocalization')->checkLocaleInSupportedLocales($locale) && !(app('laravellocalization')->getDefaultLocale() === $locale && app('laravellocalization')->hideDefaultLocaleInURL())) {
+        if ($locale && app('laravellocalization')->checkLocaleInSupportedLocales($locale) && ! (app('laravellocalization')->getDefaultLocale() === $locale && app('laravellocalization')->hideDefaultLocaleInURL())) {
             app('session')->reflash();
             $redirection = app('laravellocalization')->getLocalizedURL($locale);
 

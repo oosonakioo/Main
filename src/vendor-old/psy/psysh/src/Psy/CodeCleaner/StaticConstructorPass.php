@@ -30,6 +30,7 @@ use Psy\Exception\FatalErrorException;
 class StaticConstructorPass extends CodeCleanerPass
 {
     private $isPHP533;
+
     private $namespace;
 
     public function __construct()
@@ -39,23 +40,21 @@ class StaticConstructorPass extends CodeCleanerPass
 
     public function beforeTraverse(array $nodes)
     {
-        $this->namespace = array();
+        $this->namespace = [];
     }
 
     /**
      * Validate that the old-style constructor function is not static.
      *
      * @throws FatalErrorException if the old-style constructor function is static.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {
         if ($node instanceof NamespaceStmt) {
-            $this->namespace = isset($node->name) ? $node->name->parts : array();
+            $this->namespace = isset($node->name) ? $node->name->parts : [];
         } elseif ($node instanceof ClassStmt) {
             // Bail early if this is PHP 5.3.3 and we have a namespaced class
-            if (!empty($this->namespace) && $this->isPHP533) {
+            if (! empty($this->namespace) && $this->isPHP533) {
                 return;
             }
 
@@ -63,7 +62,7 @@ class StaticConstructorPass extends CodeCleanerPass
             foreach ($node->stmts as $stmt) {
                 if ($stmt instanceof ClassMethod) {
                     // Bail early if we find a new-style constructor
-                    if ('__construct' === strtolower($stmt->name)) {
+                    if (strtolower($stmt->name) === '__construct') {
                         return;
                     }
 

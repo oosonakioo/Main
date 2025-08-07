@@ -22,7 +22,7 @@ class ConsoleColorFactory
     private $colorMode;
 
     /**
-     * @param string $colorMode
+     * @param  string  $colorMode
      */
     public function __construct($colorMode)
     {
@@ -48,8 +48,8 @@ class ConsoleColorFactory
 
     private function getDefaultConsoleColor()
     {
-        $color = new ConsoleColor();
-        $color->addTheme(Highlighter::LINE_NUMBER, array('blue'));
+        $color = new ConsoleColor;
+        $color->addTheme(Highlighter::LINE_NUMBER, ['blue']);
 
         return $color;
     }
@@ -64,15 +64,15 @@ class ConsoleColorFactory
 
     private function getDisabledConsoleColor()
     {
-        $color = new ConsoleColor();
+        $color = new ConsoleColor;
 
-        $color->addTheme(Highlighter::TOKEN_STRING, array('none'));
-        $color->addTheme(Highlighter::TOKEN_COMMENT, array('none'));
-        $color->addTheme(Highlighter::TOKEN_KEYWORD, array('none'));
-        $color->addTheme(Highlighter::TOKEN_DEFAULT, array('none'));
-        $color->addTheme(Highlighter::TOKEN_HTML, array('none'));
-        $color->addTheme(Highlighter::ACTUAL_LINE_MARK, array('none'));
-        $color->addTheme(Highlighter::LINE_NUMBER, array('none'));
+        $color->addTheme(Highlighter::TOKEN_STRING, ['none']);
+        $color->addTheme(Highlighter::TOKEN_COMMENT, ['none']);
+        $color->addTheme(Highlighter::TOKEN_KEYWORD, ['none']);
+        $color->addTheme(Highlighter::TOKEN_DEFAULT, ['none']);
+        $color->addTheme(Highlighter::TOKEN_HTML, ['none']);
+        $color->addTheme(Highlighter::ACTUAL_LINE_MARK, ['none']);
+        $color->addTheme(Highlighter::LINE_NUMBER, ['none']);
 
         return $color;
     }

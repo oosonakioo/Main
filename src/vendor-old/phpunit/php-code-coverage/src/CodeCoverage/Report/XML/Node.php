@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -30,7 +31,7 @@ class PHP_CodeCoverage_Report_XML_Node
 
     protected function setContextNode(DOMElement $context)
     {
-        $this->dom         = $context->ownerDocument;
+        $this->dom = $context->ownerDocument;
         $this->contextNode = $context;
     }
 
@@ -48,7 +49,7 @@ class PHP_CodeCoverage_Report_XML_Node
     {
         $totalsContainer = $this->getContextNode()->firstChild;
 
-        if (!$totalsContainer) {
+        if (! $totalsContainer) {
             $totalsContainer = $this->getContextNode()->appendChild(
                 $this->dom->createElementNS(
                     'http://schema.phpunit.de/coverage/1.0',

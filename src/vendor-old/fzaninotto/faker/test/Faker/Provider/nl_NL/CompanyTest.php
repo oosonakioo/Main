@@ -9,14 +9,14 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
 {
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Company($faker));
         $this->faker = $faker;
     }
 
-    public function testGenerateValidVatNumber()
+    public function test_generate_valid_vat_number()
     {
         $vatNo = $this->faker->vat();
 
@@ -24,7 +24,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/^NL[0-9]{9}B[0-9]{2}$/', $vatNo);
     }
 
-    public function testGenerateValidBtwNumberAlias()
+    public function test_generate_valid_btw_number_alias()
     {
         $btwNo = $this->faker->btw();
 

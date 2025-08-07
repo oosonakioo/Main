@@ -9,14 +9,14 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
 {
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Company($faker));
         $this->faker = $faker;
     }
 
-    public function testGenerateValidCompanyNumber()
+    public function test_generate_valid_company_number()
     {
         $companyRegNo = $this->faker->companyNumber();
 

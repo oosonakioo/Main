@@ -30,7 +30,6 @@ class FileLoader implements LoaderInterface
     /**
      * Create a new file loader instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path
      * @return void
      */
@@ -79,7 +78,6 @@ class FileLoader implements LoaderInterface
     /**
      * Load a local namespaced translation group for overrides.
      *
-     * @param  array  $lines
      * @param  string  $locale
      * @param  string  $group
      * @param  string  $namespace

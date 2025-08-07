@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -22,8 +23,8 @@ namespace Doctrine\DBAL\Tools\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Task for executing arbitrary SQL that can come from a file or directly from
@@ -31,6 +32,7 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -44,16 +46,16 @@ class RunSqlCommand extends Command
     protected function configure()
     {
         $this
-        ->setName('dbal:run-sql')
-        ->setDescription('Executes arbitrary SQL directly from the command line.')
-        ->setDefinition(array(
-            new InputArgument('sql', InputArgument::REQUIRED, 'The SQL statement to execute.'),
-            new InputOption('depth', null, InputOption::VALUE_REQUIRED, 'Dumping depth of result set.', 7)
-        ))
-        ->setHelp(<<<EOT
+            ->setName('dbal:run-sql')
+            ->setDescription('Executes arbitrary SQL directly from the command line.')
+            ->setDefinition([
+                new InputArgument('sql', InputArgument::REQUIRED, 'The SQL statement to execute.'),
+                new InputOption('depth', null, InputOption::VALUE_REQUIRED, 'Dumping depth of result set.', 7),
+            ])
+            ->setHelp(<<<'EOT'
 Executes arbitrary SQL directly from the command line.
 EOT
-        );
+            );
     }
 
     /**
@@ -69,7 +71,7 @@ EOT
 
         $depth = $input->getOption('depth');
 
-        if ( ! is_numeric($depth)) {
+        if (! is_numeric($depth)) {
             throw new \LogicException("Option 'depth' must contains an integer value");
         }
 

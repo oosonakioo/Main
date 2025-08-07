@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '1 anno|:count anni',
     'y' => '1 anno|:count anni',
     'month' => '1 mese|:count mesi',
@@ -28,4 +28,4 @@ return array(
     'from_now' => ':time da adesso',
     'after' => ':time dopo',
     'before' => ':time prima',
-);
+];

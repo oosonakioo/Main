@@ -16,18 +16,19 @@ use Psy\CodeCleaner\AssignThisVariablePass;
 
 class AssignThisVariablePassTest extends CodeCleanerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        $this->pass      = new AssignThisVariablePass();
-        $this->traverser = new NodeTraverser();
+        $this->pass = new AssignThisVariablePass;
+        $this->traverser = new NodeTraverser;
         $this->traverser->addVisitor($this->pass);
     }
 
     /**
      * @dataProvider invalidStatements
+     *
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessStatementFails($code)
+    public function test_process_statement_fails($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -35,16 +36,16 @@ class AssignThisVariablePassTest extends CodeCleanerTestCase
 
     public function invalidStatements()
     {
-        return array(
-            array('$this = 3'),
-            array('strtolower($this = "this")'),
-        );
+        return [
+            ['$this = 3'],
+            ['strtolower($this = "this")'],
+        ];
     }
 
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code)
+    public function test_process_statement_passes($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -52,11 +53,11 @@ class AssignThisVariablePassTest extends CodeCleanerTestCase
 
     public function validStatements()
     {
-        return array(
-            array('$this'),
-            array('$a = $this'),
-            array('$a = "this"; $$a = 3'),
-            array('$$this = "b"'),
-        );
+        return [
+            ['$this'],
+            ['$a = $this'],
+            ['$a = "this"; $$a = 3'],
+            ['$$this = "b"'],
+        ];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -24,20 +25,22 @@ class BankAccountWithCustomExtensionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers BankAccount::getBalance
+     *
      * @group balanceIsInitiallyZero
      * @group specification
      */
-    public function testBalanceIsInitiallyZero()
+    public function test_balance_is_initially_zero()
     {
         $this->assertEquals(0, $this->ba->getBalance());
     }
 
     /**
      * @covers BankAccount::withdrawMoney
+     *
      * @group balanceCannotBecomeNegative
      * @group specification
      */
-    public function testBalanceCannotBecomeNegative()
+    public function test_balance_cannot_become_negative()
     {
         try {
             $this->ba->withdrawMoney(1);
@@ -52,10 +55,11 @@ class BankAccountWithCustomExtensionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers BankAccount::depositMoney
+     *
      * @group balanceCannotBecomeNegative
      * @group specification
      */
-    public function testBalanceCannotBecomeNegative2()
+    public function test_balance_cannot_become_negative2()
     {
         try {
             $this->ba->depositMoney(-1);

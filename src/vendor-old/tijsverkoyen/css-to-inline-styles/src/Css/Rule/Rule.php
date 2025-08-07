@@ -22,17 +22,16 @@ final class Rule
     private $specificity;
 
     /**
-     * @var integer
+     * @var int
      */
     private $order;
 
     /**
      * Rule constructor.
      *
-     * @param string      $selector
-     * @param Property[]  $properties
-     * @param Specificity $specificity
-     * @param int         $order
+     * @param  string  $selector
+     * @param  Property[]  $properties
+     * @param  int  $order
      */
     public function __construct($selector, array $properties, Specificity $specificity, $order)
     {

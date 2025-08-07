@@ -6,20 +6,21 @@ use Picqer\Barcode\Exceptions\BarcodeException;
 
 class BarcodeGeneratorJPG extends BarcodeGenerator
 {
-
     /**
      * Return a JPG image representation of barcode (requires GD or Imagick library).
      *
-     * @param string $code code to print
-     * @param string $type type of barcode:
-     * @param int $widthFactor Width of a single bar element in pixels.
-     * @param int $totalHeight Height of a single bar element in pixels.
-     * @param array $color RGB (0-255) foreground color for bar elements (background is transparent).
+     * @param  string  $code  code to print
+     * @param  string  $type  type of barcode:
+     * @param  int  $widthFactor  Width of a single bar element in pixels.
+     * @param  int  $totalHeight  Height of a single bar element in pixels.
+     * @param  array  $color  RGB (0-255) foreground color for bar elements (background is transparent).
      * @return string image data or false in case of error.
+     *
      * @public
+     *
      * @throws BarcodeException
      */
-    public function getBarcode($code, $type, $widthFactor = 2, $totalHeight = 30, $color = array(0, 0, 0))
+    public function getBarcode($code, $type, $widthFactor = 2, $totalHeight = 30, $color = [0, 0, 0])
     {
         $barcodeData = $this->getBarcodeData($code, $type);
 
@@ -36,10 +37,10 @@ class BarcodeGeneratorJPG extends BarcodeGenerator
             $colorForeground = imagecolorallocate($jpg, $color[0], $color[1], $color[2]);
         } elseif (extension_loaded('imagick')) {
             $imagick = true;
-            $colorForeground = new \imagickpixel('rgb(' . $color[0] . ',' . $color[1] . ',' . $color[2] . ')');
-            $jpg = new \Imagick();
+            $colorForeground = new \imagickpixel('rgb('.$color[0].','.$color[1].','.$color[2].')');
+            $jpg = new \Imagick;
             $jpg->newImage($width, $height, 'none', 'jpg');
-            $imageMagickObject = new \imagickdraw();
+            $imageMagickObject = new \imagickdraw;
             $imageMagickObject->setFillColor($colorForeground);
         } else {
             throw new BarcodeException('Neither gd-lib or imagick are installed!');

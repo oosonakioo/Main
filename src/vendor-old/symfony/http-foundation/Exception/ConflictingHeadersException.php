@@ -18,6 +18,4 @@ namespace Symfony\Component\HttpFoundation\Exception;
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  */
-class ConflictingHeadersException extends \RuntimeException
-{
-}
+class ConflictingHeadersException extends \RuntimeException {}

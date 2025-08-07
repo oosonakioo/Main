@@ -1,11 +1,12 @@
 <?php
+
 class MethodCallback
 {
     public static function staticCallback()
     {
         $args = func_get_args();
 
-        if ($args == array('foo', 'bar')) {
+        if ($args == ['foo', 'bar']) {
             return 'pass';
         }
     }
@@ -14,7 +15,7 @@ class MethodCallback
     {
         $args = func_get_args();
 
-        if ($args == array('foo', 'bar')) {
+        if ($args == ['foo', 'bar']) {
             return 'pass';
         }
     }

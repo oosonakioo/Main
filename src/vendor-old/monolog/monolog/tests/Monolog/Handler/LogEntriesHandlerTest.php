@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @author Robert Kaufmann III <rok3@rok3.me>
@@ -29,7 +29,7 @@ class LogEntriesHandlerTest extends TestCase
      */
     private $handler;
 
-    public function testWriteContent()
+    public function test_write_content()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'Critical write test'));
@@ -40,13 +40,13 @@ class LogEntriesHandlerTest extends TestCase
         $this->assertRegexp('/testToken \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] test.CRITICAL: Critical write test/', $content);
     }
 
-    public function testWriteBatchContent()
+    public function test_write_batch_content()
     {
-        $records = array(
+        $records = [
             $this->getRecord(),
             $this->getRecord(),
             $this->getRecord(),
-        );
+        ];
         $this->createHandler();
         $this->handler->handleBatch($records);
 
@@ -59,11 +59,11 @@ class LogEntriesHandlerTest extends TestCase
     private function createHandler()
     {
         $useSSL = extension_loaded('openssl');
-        $args = array('testToken', $useSSL, Logger::DEBUG, true);
+        $args = ['testToken', $useSSL, Logger::DEBUG, true];
         $this->res = fopen('php://memory', 'a');
         $this->handler = $this->getMock(
             '\Monolog\Handler\LogEntriesHandler',
-            array('fsockopen', 'streamSetTimeout', 'closeSocket'),
+            ['fsockopen', 'streamSetTimeout', 'closeSocket'],
             $args
         );
 

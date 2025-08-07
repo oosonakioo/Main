@@ -11,12 +11,13 @@
 
 namespace Symfony\Component\Routing\Tests\Loader;
 
-use Symfony\Component\Routing\Loader\AnnotationDirectoryLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Routing\Loader\AnnotationDirectoryLoader;
 
 class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
 {
     protected $loader;
+
     protected $reader;
 
     protected function setUp()
@@ -24,23 +25,22 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
         parent::setUp();
 
         $this->reader = $this->getReader();
-        $this->loader = new AnnotationDirectoryLoader(new FileLocator(), $this->getClassLoader($this->reader));
+        $this->loader = new AnnotationDirectoryLoader(new FileLocator, $this->getClassLoader($this->reader));
     }
 
-    public function testLoad()
+    public function test_load()
     {
         $this->reader->expects($this->exactly(2))->method('getClassAnnotation');
 
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->will($this->returnValue(array()))
-        ;
+            ->will($this->returnValue([]));
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses');
     }
 
-    public function testSupports()
+    public function test_supports()
     {
         $fixturesDir = __DIR__.'/../Fixtures';
 

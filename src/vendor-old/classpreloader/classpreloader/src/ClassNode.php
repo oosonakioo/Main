@@ -43,9 +43,8 @@ class ClassNode
     /**
      * Create a new class node instance.
      *
-     * @param mixed                          $value
-     * @param \ClassPreloader\ClassNode|null $prev
-     *
+     * @param  mixed  $value
+     * @param  \ClassPreloader\ClassNode|null  $prev
      * @return void
      */
     public function __construct($value = null, $prev = null)

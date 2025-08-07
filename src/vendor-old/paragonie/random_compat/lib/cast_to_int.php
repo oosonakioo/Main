@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -25,8 +26,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-if (!is_callable('RandomCompat_intval')) {
+if (! is_callable('RandomCompat_intval')) {
 
     /**
      * Cast to an integer if we can, safely.
@@ -37,9 +37,8 @@ if (!is_callable('RandomCompat_intval')) {
      * lose precision, so the <= and => operators might accidentally let a float
      * through.
      *
-     * @param int|float $number    The number we want to convert to an int
-     * @param boolean   $fail_open Set to true to not throw an exception
-     *
+     * @param  int|float  $number  The number we want to convert to an int
+     * @param  bool  $fail_open  Set to true to not throw an exception
      * @return float|int
      *
      * @throws TypeError
@@ -64,11 +63,12 @@ if (!is_callable('RandomCompat_intval')) {
 
         if (is_int($number)) {
             return (int) $number;
-        } elseif (!$fail_open) {
+        } elseif (! $fail_open) {
             throw new TypeError(
                 'Expected an integer.'
             );
         }
+
         return $number;
     }
 }

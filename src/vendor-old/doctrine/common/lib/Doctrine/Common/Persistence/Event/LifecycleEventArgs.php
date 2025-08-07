@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Roman Borschel <roman@code-factory.de>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -46,8 +48,7 @@ class LifecycleEventArgs extends EventArgs
     /**
      * Constructor.
      *
-     * @param object        $object
-     * @param ObjectManager $objectManager
+     * @param  object  $object
      */
     public function __construct($object, ObjectManager $objectManager)
     {

@@ -39,7 +39,6 @@ trait ValidatesWhenResolvedTrait
     /**
      * Handle a failed validation attempt.
      *
-     * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      *
      * @throws \Illuminate\Contracts\Validation\ValidationException

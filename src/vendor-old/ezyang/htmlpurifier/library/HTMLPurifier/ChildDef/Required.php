@@ -7,18 +7,20 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
 {
     /**
      * Lookup table of allowed elements.
+     *
      * @type array
      */
-    public $elements = array();
+    public $elements = [];
 
     /**
      * Whether or not the last passed node was all whitespace.
+     *
      * @type bool
      */
     protected $whitespace = false;
 
     /**
-     * @param array|string $elements List of allowed element names (lowercase).
+     * @param  array|string  $elements  List of allowed element names (lowercase).
      */
     public function __construct($elements)
     {
@@ -50,9 +52,9 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
     public $type = 'required';
 
     /**
-     * @param array $children
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $children
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function validateChildren($children, $config, $context)
@@ -66,7 +68,7 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
         }
 
         // the new set of children
-        $result = array();
+        $result = [];
 
         // whether or not parsed character data is allowed
         // this controls whether or not we silently drop a tag
@@ -77,19 +79,21 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
         $all_whitespace = true;
 
         $stack = array_reverse($children);
-        while (!empty($stack)) {
+        while (! empty($stack)) {
             $node = array_pop($stack);
-            if (!empty($node->is_whitespace)) {
+            if (! empty($node->is_whitespace)) {
                 $result[] = $node;
+
                 continue;
             }
             $all_whitespace = false; // phew, we're not talking about whitespace
 
-            if (!isset($this->elements[$node->name])) {
+            if (! isset($this->elements[$node->name])) {
                 // special case text
                 // XXX One of these ought to be redundant or something
                 if ($pcdata_allowed && $node instanceof HTMLPurifier_Node_Text) {
                     $result[] = $node;
+
                     continue;
                 }
                 // spill the child contents in
@@ -98,8 +102,10 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
                     for ($i = count($node->children) - 1; $i >= 0; $i--) {
                         $stack[] = $node->children[$i];
                     }
+
                     continue;
                 }
+
                 continue;
             }
             $result[] = $node;
@@ -109,8 +115,10 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
         }
         if ($all_whitespace) {
             $this->whitespace = true;
+
             return false;
         }
+
         return $result;
     }
 }

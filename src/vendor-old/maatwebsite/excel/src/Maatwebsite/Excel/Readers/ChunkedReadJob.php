@@ -21,19 +21,10 @@ class ChunkedReadJob implements ShouldQueue
      */
     private $callback;
 
-    /**
-     * @var
-     */
     private $chunkSize;
 
-    /**
-     * @var
-     */
     private $startIndex;
 
-    /**
-     * @var
-     */
     private $file;
 
     /**
@@ -49,30 +40,26 @@ class ChunkedReadJob implements ShouldQueue
     /**
      * ChunkedReadJob constructor.
      *
-     * @param          $file
-     * @param null     $sheets
-     * @param int      $startRow
-     * @param          $startIndex
-     * @param          $chunkSize
-     * @param callable $callback
-     * @param bool     $shouldQueue
+     * @param  null  $sheets
+     * @param  int  $startRow
+     * @param  bool  $shouldQueue
      */
     public function __construct(
         $file,
-        $sheets = null,
+        $sheets,
         $startRow,
         $startIndex,
         $chunkSize,
         callable $callback,
         $shouldQueue = true
     ) {
-        $this->startRow   = $startRow;
-        $this->chunkSize  = $chunkSize;
+        $this->startRow = $startRow;
+        $this->chunkSize = $chunkSize;
         $this->startIndex = $startIndex;
-        $this->file       = $file;
+        $this->file = $file;
 
-        $this->callback    = $shouldQueue ? (new Serializer)->serialize($callback) : $callback;
-        $this->sheets      = $sheets;
+        $this->callback = $shouldQueue ? (new Serializer)->serialize($callback) : $callback;
+        $this->sheets = $sheets;
         $this->shouldQueue = $shouldQueue;
     }
 
@@ -85,7 +72,7 @@ class ChunkedReadJob implements ShouldQueue
         $reader->injectExcel(app('phpexcel'));
         $reader->_init($this->file);
 
-        $filter = new ChunkReadFilter();
+        $filter = new ChunkReadFilter;
         $reader->reader->setLoadSheetsOnly($this->sheets);
         $reader->reader->setReadFilter($filter);
         $reader->reader->setReadDataOnly(true);

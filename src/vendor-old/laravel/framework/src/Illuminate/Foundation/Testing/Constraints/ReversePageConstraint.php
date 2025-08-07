@@ -14,7 +14,6 @@ class ReversePageConstraint extends PageConstraint
     /**
      * Create a new reverse page constraint instance.
      *
-     * @param  \Illuminate\Foundation\Testing\Constraints\PageConstraint  $pageConstraint
      * @return void
      */
     public function __construct(PageConstraint $pageConstraint)

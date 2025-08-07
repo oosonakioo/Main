@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use ReflectionProperty;
  * PHP Runtime Reflection Public Property - special overrides for public properties.
  *
  * @author Marco Pivetta <ocramius@gmail.com>
+ *
  * @since  2.4
  */
 class RuntimePublicReflectionProperty extends ReflectionProperty
@@ -58,11 +60,12 @@ class RuntimePublicReflectionProperty extends ReflectionProperty
      *
      * Avoids triggering lazy loading via `__set` if the provided object
      * is a {@see \Doctrine\Common\Proxy\Proxy}.
+     *
      * @link https://bugs.php.net/bug.php?id=63463
      */
     public function setValue($object, $value = null)
     {
-        if ( ! ($object instanceof Proxy && ! $object->__isInitialized())) {
+        if (! ($object instanceof Proxy && ! $object->__isInitialized())) {
             parent::setValue($object, $value);
 
             return;

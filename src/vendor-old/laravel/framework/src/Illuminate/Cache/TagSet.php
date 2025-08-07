@@ -23,8 +23,6 @@ class TagSet
     /**
      * Create a new TagSet instance.
      *
-     * @param  \Illuminate\Contracts\Cache\Store  $store
-     * @param  array  $names
      * @return void
      */
     public function __construct(Store $store, array $names = [])

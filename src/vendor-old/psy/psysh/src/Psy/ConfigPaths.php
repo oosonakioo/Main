@@ -30,7 +30,7 @@ class ConfigPaths
      */
     public static function getConfigDirs()
     {
-        $xdg = new Xdg();
+        $xdg = new Xdg;
 
         return self::getDirNames($xdg->getConfigDirs());
     }
@@ -47,9 +47,9 @@ class ConfigPaths
      */
     public static function getHomeConfigDirs()
     {
-        $xdg = new Xdg();
+        $xdg = new Xdg;
 
-        return self::getDirNames(array($xdg->getHomeConfigDir()));
+        return self::getDirNames([$xdg->getHomeConfigDir()]);
     }
 
     /**
@@ -79,14 +79,13 @@ class ConfigPaths
     /**
      * Find real config files in config directories.
      *
-     * @param string[] $names     Config file names
-     * @param string   $configDir Optionally use a specific config directory
-     *
+     * @param  string[]  $names  Config file names
+     * @param  string  $configDir  Optionally use a specific config directory
      * @return string[]
      */
     public static function getConfigFiles(array $names, $configDir = null)
     {
-        $dirs = ($configDir === null) ? self::getConfigDirs() : array($configDir);
+        $dirs = ($configDir === null) ? self::getConfigDirs() : [$configDir];
 
         return self::getRealFiles($dirs, $names);
     }
@@ -105,7 +104,7 @@ class ConfigPaths
      */
     public static function getDataDirs()
     {
-        $xdg = new Xdg();
+        $xdg = new Xdg;
 
         return self::getDirNames($xdg->getDataDirs());
     }
@@ -113,14 +112,13 @@ class ConfigPaths
     /**
      * Find real data files in config directories.
      *
-     * @param string[] $names   Config file names
-     * @param string   $dataDir Optionally use a specific config directory
-     *
+     * @param  string[]  $names  Config file names
+     * @param  string  $dataDir  Optionally use a specific config directory
      * @return string[]
      */
     public static function getDataFiles(array $names, $dataDir = null)
     {
-        $dirs = ($dataDir === null) ? self::getDataDirs() : array($dataDir);
+        $dirs = ($dataDir === null) ? self::getDataDirs() : [$dataDir];
 
         return self::getRealFiles($dirs, $names);
     }
@@ -134,31 +132,31 @@ class ConfigPaths
      */
     public static function getRuntimeDir()
     {
-        $xdg = new Xdg();
+        $xdg = new Xdg;
 
-        return $xdg->getRuntimeDir(false) . '/psysh';
+        return $xdg->getRuntimeDir(false).'/psysh';
     }
 
     private static function getDirNames(array $baseDirs)
     {
         $dirs = array_map(function ($dir) {
-            return strtr($dir, '\\', '/') . '/psysh';
+            return strtr($dir, '\\', '/').'/psysh';
         }, $baseDirs);
 
         // Add ~/.psysh
         if ($home = getenv('HOME')) {
-            $dirs[] = strtr($home, '\\', '/') . '/.psysh';
+            $dirs[] = strtr($home, '\\', '/').'/.psysh';
         }
 
         // Add some Windows specific ones :)
         if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             if ($appData = getenv('APPDATA')) {
                 // AppData gets preference
-                array_unshift($dirs, strtr($appData, '\\', '/') . '/PsySH');
+                array_unshift($dirs, strtr($appData, '\\', '/').'/PsySH');
             }
 
-            $dir = strtr(getenv('HOMEDRIVE') . '/' . getenv('HOMEPATH'), '\\', '/') . '/.psysh';
-            if (!in_array($dir, $dirs)) {
+            $dir = strtr(getenv('HOMEDRIVE').'/'.getenv('HOMEPATH'), '\\', '/').'/.psysh';
+            if (! in_array($dir, $dirs)) {
                 $dirs[] = $dir;
             }
         }
@@ -168,10 +166,10 @@ class ConfigPaths
 
     private static function getRealFiles(array $dirNames, array $fileNames)
     {
-        $files = array();
+        $files = [];
         foreach ($dirNames as $dir) {
             foreach ($fileNames as $name) {
-                $file = $dir . '/' . $name;
+                $file = $dir.'/'.$name;
                 if (@is_file($file)) {
                     $files[] = $file;
                 }

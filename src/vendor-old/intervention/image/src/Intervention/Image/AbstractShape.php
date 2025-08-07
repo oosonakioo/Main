@@ -21,24 +21,23 @@ abstract class AbstractShape
     /**
      * Border width of shape
      *
-     * @var integer
+     * @var int
      */
     public $border_width = 0;
 
     /**
      * Draws shape to given image on given position
      *
-     * @param  Image   $image
-     * @param  integer $posx
-     * @param  integer $posy
-     * @return boolean
+     * @param  int  $posx
+     * @param  int  $posy
+     * @return bool
      */
     abstract public function applyToImage(Image $image, $posx = 0, $posy = 0);
 
     /**
      * Set text to be written
      *
-     * @param  string $text
+     * @param  string  $text
      * @return void
      */
     public function background($color)
@@ -49,7 +48,7 @@ abstract class AbstractShape
     /**
      * Set border width and color of current shape
      *
-     * @param  integer $width
+     * @param  int  $width
      * @param  string  $color
      * @return void
      */
@@ -62,10 +61,10 @@ abstract class AbstractShape
     /**
      * Determines if current shape has border
      *
-     * @return boolean
+     * @return bool
      */
     public function hasBorder()
     {
-        return ($this->border_width >= 1);
+        return $this->border_width >= 1;
     }
 }

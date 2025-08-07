@@ -15,60 +15,60 @@ use Psy\Readline\Transient;
 
 class TransientTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHistory()
+    public function test_history()
     {
-        $readline = new Transient();
+        $readline = new Transient;
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
-        $this->assertEquals(array('foo'), $readline->listHistory());
+        $this->assertEquals(['foo'], $readline->listHistory());
         $readline->addHistory('bar');
-        $this->assertEquals(array('foo', 'bar'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar'], $readline->listHistory());
         $readline->addHistory('baz');
-        $this->assertEquals(array('foo', 'bar', 'baz'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar', 'baz'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
     /**
-     * @depends testHistory
+     * @depends test_history
      */
-    public function testHistorySize()
+    public function test_history_size()
     {
         $readline = new Transient(null, 2);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
         $readline->addHistory('bar');
-        $this->assertEquals(array('foo', 'bar'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar'], $readline->listHistory());
         $readline->addHistory('baz');
-        $this->assertEquals(array('bar', 'baz'), $readline->listHistory());
+        $this->assertEquals(['bar', 'baz'], $readline->listHistory());
         $readline->addHistory('w00t');
-        $this->assertEquals(array('baz', 'w00t'), $readline->listHistory());
+        $this->assertEquals(['baz', 'w00t'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
     /**
-     * @depends testHistory
+     * @depends test_history
      */
-    public function testHistoryEraseDups()
+    public function test_history_erase_dups()
     {
         $readline = new Transient(null, 0, true);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
         $readline->addHistory('bar');
         $readline->addHistory('foo');
-        $this->assertEquals(array('bar', 'foo'), $readline->listHistory());
+        $this->assertEquals(['bar', 'foo'], $readline->listHistory());
         $readline->addHistory('baz');
         $readline->addHistory('w00t');
         $readline->addHistory('baz');
-        $this->assertEquals(array('bar', 'foo', 'w00t', 'baz'), $readline->listHistory());
+        $this->assertEquals(['bar', 'foo', 'w00t', 'baz'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
-    public function testSomeThingsAreAlwaysTrue()
+    public function test_some_things_are_always_true()
     {
-        $readline = new Transient();
+        $readline = new Transient;
         $this->assertTrue(Transient::isSupported());
         $this->assertTrue($readline->readHistory());
         $this->assertTrue($readline->writeHistory());

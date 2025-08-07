@@ -11,10 +11,10 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
-use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Logger;
 use Monolog\Processor\WebProcessor;
+use Monolog\TestCase;
 
 class AbstractHandlerTest extends TestCase
 {
@@ -27,9 +27,9 @@ class AbstractHandlerTest extends TestCase
      * @covers Monolog\Handler\AbstractHandler::getFormatter
      * @covers Monolog\Handler\AbstractHandler::setFormatter
      */
-    public function testConstructAndGetSet()
+    public function test_construct_and_get_set()
     {
-        $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler', array(Logger::WARNING, false));
+        $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler', [Logger::WARNING, false]);
         $this->assertEquals(Logger::WARNING, $handler->getLevel());
         $this->assertEquals(false, $handler->getBubble());
 
@@ -44,20 +44,20 @@ class AbstractHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\AbstractHandler::handleBatch
      */
-    public function testHandleBatch()
+    public function test_handle_batch()
     {
         $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler');
         $handler->expects($this->exactly(2))
             ->method('handle');
-        $handler->handleBatch(array($this->getRecord(), $this->getRecord()));
+        $handler->handleBatch([$this->getRecord(), $this->getRecord()]);
     }
 
     /**
      * @covers Monolog\Handler\AbstractHandler::isHandling
      */
-    public function testIsHandling()
+    public function test_is_handling()
     {
-        $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler', array(Logger::WARNING, false));
+        $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler', [Logger::WARNING, false]);
         $this->assertTrue($handler->isHandling($this->getRecord()));
         $this->assertFalse($handler->isHandling($this->getRecord(Logger::DEBUG)));
     }
@@ -65,9 +65,9 @@ class AbstractHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\AbstractHandler::__construct
      */
-    public function testHandlesPsrStyleLevels()
+    public function test_handles_psr_style_levels()
     {
-        $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler', array('warning', false));
+        $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler', ['warning', false]);
         $this->assertFalse($handler->isHandling($this->getRecord(Logger::DEBUG)));
         $handler->setLevel('debug');
         $this->assertTrue($handler->isHandling($this->getRecord(Logger::DEBUG)));
@@ -77,7 +77,7 @@ class AbstractHandlerTest extends TestCase
      * @covers Monolog\Handler\AbstractHandler::getFormatter
      * @covers Monolog\Handler\AbstractHandler::getDefaultFormatter
      */
-    public function testGetFormatterInitializesDefault()
+    public function test_get_formatter_initializes_default()
     {
         $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler');
         $this->assertInstanceOf('Monolog\Formatter\LineFormatter', $handler->getFormatter());
@@ -86,9 +86,10 @@ class AbstractHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\AbstractHandler::pushProcessor
      * @covers Monolog\Handler\AbstractHandler::popProcessor
+     *
      * @expectedException LogicException
      */
-    public function testPushPopProcessor()
+    public function test_push_pop_processor()
     {
         $logger = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler');
         $processor1 = new WebProcessor;
@@ -104,12 +105,13 @@ class AbstractHandlerTest extends TestCase
 
     /**
      * @covers Monolog\Handler\AbstractHandler::pushProcessor
+     *
      * @expectedException InvalidArgumentException
      */
-    public function testPushProcessorWithNonCallable()
+    public function test_push_processor_with_non_callable()
     {
         $handler = $this->getMockForAbstractClass('Monolog\Handler\AbstractHandler');
 
-        $handler->pushProcessor(new \stdClass());
+        $handler->pushProcessor(new \stdClass);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Comparator package.
  *
@@ -18,7 +19,7 @@ class Factory
     /**
      * @var Comparator[]
      */
-    private $comparators = array();
+    private $comparators = [];
 
     /**
      * @var Factory
@@ -59,8 +60,8 @@ class Factory
     /**
      * Returns the correct comparator for comparing two values.
      *
-     * @param  mixed      $expected The first value to compare
-     * @param  mixed      $actual   The second value to compare
+     * @param  mixed  $expected  The first value to compare
+     * @param  mixed  $actual  The second value to compare
      * @return Comparator
      */
     public function getComparatorFor($expected, $actual)
@@ -80,7 +81,7 @@ class Factory
      * existing comparators, meaning that its accept() method will be tested
      * before those of the other comparators.
      *
-     * @param Comparator $comparator The registered comparator
+     * @param  Comparator  $comparator  The registered comparator
      */
     public function register(Comparator $comparator)
     {
@@ -94,7 +95,7 @@ class Factory
      *
      * This comparator will no longer be returned by getInstance().
      *
-     * @param Comparator $comparator The unregistered comparator
+     * @param  Comparator  $comparator  The unregistered comparator
      */
     public function unregister(Comparator $comparator)
     {

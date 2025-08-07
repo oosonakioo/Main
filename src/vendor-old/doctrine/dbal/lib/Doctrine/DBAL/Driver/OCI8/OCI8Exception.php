@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,8 +25,7 @@ use Doctrine\DBAL\Driver\AbstractDriverException;
 class OCI8Exception extends AbstractDriverException
 {
     /**
-     * @param array $error
-     *
+     * @param  array  $error
      * @return \Doctrine\DBAL\Driver\OCI8\OCI8Exception
      */
     public static function fromErrorInfo($error)

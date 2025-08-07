@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Diff package.
  *
@@ -18,30 +19,28 @@ class TimeEfficientImplementation implements LongestCommonSubsequence
     /**
      * Calculates the longest common subsequence of two arrays.
      *
-     * @param array $from
-     * @param array $to
      *
      * @return array
      */
     public function calculate(array $from, array $to)
     {
-        $common     = array();
+        $common = [];
         $fromLength = count($from);
-        $toLength   = count($to);
-        $width      = $fromLength + 1;
-        $matrix     = new \SplFixedArray($width * ($toLength + 1));
+        $toLength = count($to);
+        $width = $fromLength + 1;
+        $matrix = new \SplFixedArray($width * ($toLength + 1));
 
-        for ($i = 0; $i <= $fromLength; ++$i) {
+        for ($i = 0; $i <= $fromLength; $i++) {
             $matrix[$i] = 0;
         }
 
-        for ($j = 0; $j <= $toLength; ++$j) {
+        for ($j = 0; $j <= $toLength; $j++) {
             $matrix[$j * $width] = 0;
         }
 
-        for ($i = 1; $i <= $fromLength; ++$i) {
-            for ($j = 1; $j <= $toLength; ++$j) {
-                $o          = ($j * $width) + $i;
+        for ($i = 1; $i <= $fromLength; $i++) {
+            for ($j = 1; $j <= $toLength; $j++) {
+                $o = ($j * $width) + $i;
                 $matrix[$o] = max(
                     $matrix[$o - 1],
                     $matrix[$o - $width],
@@ -54,16 +53,16 @@ class TimeEfficientImplementation implements LongestCommonSubsequence
         $j = $toLength;
 
         while ($i > 0 && $j > 0) {
-            if ($from[$i-1] === $to[$j-1]) {
-                $common[] = $from[$i-1];
-                --$i;
-                --$j;
+            if ($from[$i - 1] === $to[$j - 1]) {
+                $common[] = $from[$i - 1];
+                $i--;
+                $j--;
             } else {
                 $o = ($j * $width) + $i;
                 if ($matrix[$o - $width] > $matrix[$o - 1]) {
-                    --$j;
+                    $j--;
                 } else {
-                    --$i;
+                    $i--;
                 }
             }
         }

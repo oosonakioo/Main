@@ -40,7 +40,7 @@ class WhatFailureGroupHandler extends GroupHandler
             }
         }
 
-        return false === $this->bubble;
+        return $this->bubble === false;
     }
 
     /**

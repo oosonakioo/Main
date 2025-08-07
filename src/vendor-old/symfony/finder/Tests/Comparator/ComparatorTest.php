@@ -15,9 +15,9 @@ use Symfony\Component\Finder\Comparator\Comparator;
 
 class ComparatorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetSetOperator()
+    public function test_get_set_operator()
     {
-        $comparator = new Comparator();
+        $comparator = new Comparator;
         try {
             $comparator->setOperator('foo');
             $this->fail('->setOperator() throws an \InvalidArgumentException if the operator is not valid.');
@@ -25,14 +25,14 @@ class ComparatorTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('InvalidArgumentException', $e, '->setOperator() throws an \InvalidArgumentException if the operator is not valid.');
         }
 
-        $comparator = new Comparator();
+        $comparator = new Comparator;
         $comparator->setOperator('>');
         $this->assertEquals('>', $comparator->getOperator(), '->getOperator() returns the current operator');
     }
 
-    public function testGetSetTarget()
+    public function test_get_set_target()
     {
-        $comparator = new Comparator();
+        $comparator = new Comparator;
         $comparator->setTarget(8);
         $this->assertEquals(8, $comparator->getTarget(), '->getTarget() returns the target');
     }
@@ -40,9 +40,9 @@ class ComparatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTestData
      */
-    public function testTest($operator, $target, $match, $noMatch)
+    public function test_test($operator, $target, $match, $noMatch)
     {
-        $c = new Comparator();
+        $c = new Comparator;
         $c->setOperator($operator);
         $c->setTarget($target);
 
@@ -57,8 +57,8 @@ class ComparatorTest extends \PHPUnit_Framework_TestCase
 
     public function getTestData()
     {
-        return array(
-            array('<', '1000', array('500', '999'), array('1000', '1500')),
-        );
+        return [
+            ['<', '1000', ['500', '999'], ['1000', '1500']],
+        ];
     }
 }

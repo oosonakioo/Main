@@ -1,19 +1,20 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Maillists extends Model
 {
+    protected $fillable = ['docuno, templates_id'];
 
-	protected $fillable = ['docuno, templates_id'];
+    public function getdocuno()
+    {
+        return $this->belongsTo('App\Models\Paymentmasters');
+    }
 
-	public function getdocuno()
-	{
-		return $this->belongsTo('App\Models\Paymentmasters');
-	}
-	public function gettemplates()
-	{
-		return $this->belongsTo('App\Models\Templates');
-	}
+    public function gettemplates()
+    {
+        return $this->belongsTo('App\Models\Templates');
+    }
 }

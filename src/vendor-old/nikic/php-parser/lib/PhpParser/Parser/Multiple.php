@@ -5,9 +5,11 @@ namespace PhpParser\Parser;
 use PhpParser\Error;
 use PhpParser\Parser;
 
-class Multiple implements Parser {
+class Multiple implements Parser
+{
     /** @var Parser[] List of parsers to try, in order of preference */
     private $parsers;
+
     /** @var Error[] Errors collected during last parse */
     private $errors;
 
@@ -18,24 +20,28 @@ class Multiple implements Parser {
      * parsers runs without errors, it's output is returned. Otherwise the errors (and
      * PhpParser\Error exception) of the first parser are used.
      *
-     * @param Parser[] $parsers
+     * @param  Parser[]  $parsers
      */
-    public function __construct(array $parsers) {
+    public function __construct(array $parsers)
+    {
         $this->parsers = $parsers;
         $this->errors = [];
     }
 
-    public function parse($code) {
-        list($firstStmts, $firstErrors, $firstError) = $this->tryParse($this->parsers[0], $code);
+    public function parse($code)
+    {
+        [$firstStmts, $firstErrors, $firstError] = $this->tryParse($this->parsers[0], $code);
         if ($firstErrors === []) {
             $this->errors = [];
+
             return $firstStmts;
         }
 
-        for ($i = 1, $c = count($this->parsers); $i < $c; ++$i) {
-            list($stmts, $errors) = $this->tryParse($this->parsers[$i], $code);
+        for ($i = 1, $c = count($this->parsers); $i < $c; $i++) {
+            [$stmts, $errors] = $this->tryParse($this->parsers[$i], $code);
             if ($errors === []) {
                 $this->errors = [];
+
                 return $stmts;
             }
         }
@@ -44,20 +50,25 @@ class Multiple implements Parser {
         if ($firstError) {
             throw $firstError;
         }
+
         return $firstStmts;
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 
-    private function tryParse(Parser $parser, $code) {
+    private function tryParse(Parser $parser, $code)
+    {
         $stmts = null;
         $error = null;
         try {
             $stmts = $parser->parse($code);
-        } catch (Error $error) {}
+        } catch (Error $error) {
+        }
         $errors = $parser->getErrors();
+
         return [$stmts, $errors, $error];
     }
 }

@@ -16,6 +16,7 @@ use SebastianBergmann\RecursionContext\Context;
 
 /**
  * This class is a modification from sebastianbergmann/exporter
+ *
  * @see https://github.com/sebastianbergmann/exporter
  */
 class ExportUtil
@@ -34,7 +35,7 @@ class ExportUtil
      *  - Recursion and repeated rendering is treated properly
      *
      * @param  mixed  $value
-     * @param  int    $indentation The indentation level of the 2nd+ line
+     * @param  int  $indentation  The indentation level of the 2nd+ line
      * @return string
      */
     public static function export($value, $indentation = 0)
@@ -46,16 +47,16 @@ class ExportUtil
      * Converts an object to an array containing all of its private, protected
      * and public properties.
      *
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return array
      */
     public static function toArray($value)
     {
-        if (!is_object($value)) {
+        if (! is_object($value)) {
             return (array) $value;
         }
 
-        $array = array();
+        $array = [];
 
         foreach ((array) $value as $key => $val) {
             // properties are transformed to keys in the following way:
@@ -91,10 +92,10 @@ class ExportUtil
             }
 
             foreach ($value as $key => $val) {
-                $array[spl_object_hash($val)] = array(
+                $array[spl_object_hash($val)] = [
                     'obj' => $val,
                     'inf' => $value->getInfo(),
-                );
+                ];
             }
         }
 
@@ -104,10 +105,11 @@ class ExportUtil
     /**
      * Recursive implementation of export
      *
-     * @param  mixed                                       $value       The value to export
-     * @param  int                                         $indentation The indentation level of the 2nd+ line
-     * @param  \SebastianBergmann\RecursionContext\Context $processed   Previously processed objects
+     * @param  mixed  $value  The value to export
+     * @param  int  $indentation  The indentation level of the 2nd+ line
+     * @param  \SebastianBergmann\RecursionContext\Context  $processed  Previously processed objects
      * @return string
+     *
      * @see    SebastianBergmann\Exporter\Exporter::export
      */
     protected static function recursiveExport(&$value, $indentation, $processed = null)
@@ -139,40 +141,40 @@ class ExportUtil
         if (is_string($value)) {
             // Match for most non printable chars somewhat taking multibyte chars into account
             if (preg_match('/[^\x09-\x0d\x20-\xff]/', $value)) {
-                return 'Binary String: 0x' . bin2hex($value);
+                return 'Binary String: 0x'.bin2hex($value);
             }
 
-            return "'" .
-            str_replace(array("\r\n", "\n\r", "\r"), array("\n", "\n", "\n"), $value) .
+            return "'".
+            str_replace(["\r\n", "\n\r", "\r"], ["\n", "\n", "\n"], $value).
             "'";
         }
 
         $whitespace = str_repeat(' ', 4 * $indentation);
 
-        if (!$processed) {
+        if (! $processed) {
             $processed = new Context;
         }
 
         if (is_array($value)) {
             if (($key = $processed->contains($value)) !== false) {
-                return 'Array &' . $key;
+                return 'Array &'.$key;
             }
 
-            $array  = $value;
-            $key    = $processed->add($value);
+            $array = $value;
+            $key = $processed->add($value);
             $values = '';
 
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                        '%s    %s => %s' . "\n",
+                        '%s    %s => %s'."\n",
                         $whitespace,
                         self::recursiveExport($k, $indentation),
                         self::recursiveExport($value[$k], $indentation + 1, $processed)
                     );
                 }
 
-                $values = "\n" . $values . $whitespace;
+                $values = "\n".$values.$whitespace;
             }
 
             return sprintf('Array &%s (%s)', $key, $values);
@@ -187,21 +189,21 @@ class ExportUtil
                 return sprintf('%s:%s Object', $class, $hash);
             }
 
-            $hash   = $processed->add($value);
+            $hash = $processed->add($value);
             $values = '';
-            $array  = self::toArray($value);
+            $array = self::toArray($value);
 
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                        '%s    %s => %s' . "\n",
+                        '%s    %s => %s'."\n",
                         $whitespace,
                         self::recursiveExport($k, $indentation),
                         self::recursiveExport($v, $indentation + 1, $processed)
                     );
                 }
 
-                $values = "\n" . $values . $whitespace;
+                $values = "\n".$values.$whitespace;
             }
 
             return sprintf('%s:%s Object (%s)', $class, $hash, $values);

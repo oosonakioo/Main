@@ -22,20 +22,20 @@ class ClassCodeGenerator
     /**
      * Generates PHP code for class node.
      *
-     * @param string         $classname
-     * @param Node\ClassNode $class
-     *
+     * @param  string  $classname
      * @return string
      */
     public function generate($classname, Node\ClassNode $class)
     {
-        $parts     = explode('\\', $classname);
+        $parts = explode('\\', $classname);
         $classname = array_pop($parts);
         $namespace = implode('\\', $parts);
 
         $code = sprintf("class %s extends \%s implements %s {\n",
             $classname, $class->getParentClass(), implode(', ',
-                array_map(function ($interface) {return '\\'.$interface;}, $class->getInterfaces())
+                array_map(function ($interface) {
+                    return '\\'.$interface;
+                }, $class->getInterfaces())
             )
         );
 
@@ -57,7 +57,7 @@ class ClassCodeGenerator
         $php = sprintf("%s %s function %s%s(%s)%s {\n",
             $method->getVisibility(),
             $method->isStatic() ? 'static' : '',
-            $method->returnsReference() ? '&':'',
+            $method->returnsReference() ? '&' : '',
             $method->getName(),
             implode(', ', $this->generateArguments($method->getArguments())),
             $this->getReturnType($method)
@@ -135,7 +135,7 @@ class ClassCodeGenerator
 
             $php .= '$'.$argument->getName();
 
-            if ($argument->isOptional() && !$argument->isVariadic()) {
+            if ($argument->isOptional() && ! $argument->isVariadic()) {
                 $php .= ' = '.var_export($argument->getDefault(), true);
             }
 

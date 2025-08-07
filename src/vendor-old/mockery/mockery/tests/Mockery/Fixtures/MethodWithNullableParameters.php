@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -23,27 +23,15 @@ namespace test\Mockery\Fixtures;
 
 class MethodWithNullableParameters
 {
-    public function nonNullablePrimitive(string $a)
-    {
-    }
+    public function nonNullablePrimitive(string $a) {}
 
-    public function nullablePrimitive(?string $a)
-    {
-    }
+    public function nullablePrimitive(?string $a) {}
 
-    public function nonNullableSelf(self $a)
-    {
-    }
+    public function nonNullableSelf(self $a) {}
 
-    public function nullableSelf(?self $a)
-    {
-    }
+    public function nullableSelf(?self $a) {}
 
-    public function nonNullableClass(MethodWithNullableParameters $a)
-    {
-    }
+    public function nonNullableClass(MethodWithNullableParameters $a) {}
 
-    public function nullableClass(?MethodWithNullableParameters $a)
-    {
-    }
+    public function nullableClass(?MethodWithNullableParameters $a) {}
 }

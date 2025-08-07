@@ -11,12 +11,12 @@ class ZendDataCacheTest extends CacheTest
 {
     protected function setUp()
     {
-        if ('apache2handler' !== php_sapi_name()) {
+        if (php_sapi_name() !== 'apache2handler') {
             $this->markTestSkipped('Zend Data Cache only works in apache2handler SAPI.');
         }
     }
 
-    public function testGetStats()
+    public function test_get_stats()
     {
         $cache = $this->_getCacheDriver();
         $stats = $cache->getStats();
@@ -26,6 +26,6 @@ class ZendDataCacheTest extends CacheTest
 
     protected function _getCacheDriver()
     {
-        return new ZendDataCache();
+        return new ZendDataCache;
     }
 }

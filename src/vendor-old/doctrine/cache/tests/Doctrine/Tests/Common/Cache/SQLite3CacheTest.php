@@ -2,7 +2,6 @@
 
 namespace Doctrine\Tests\Common\Cache;
 
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\SQLite3Cache;
 use SQLite3;
 
@@ -12,6 +11,7 @@ use SQLite3;
 class SQLite3Test extends CacheTest
 {
     private $file;
+
     private $sqlite;
 
     protected function setUp()
@@ -27,7 +27,7 @@ class SQLite3Test extends CacheTest
         unlink($this->file);
     }
 
-    public function testGetStats()
+    public function test_get_stats()
     {
         $this->assertNull($this->_getCacheDriver()->getStats());
     }

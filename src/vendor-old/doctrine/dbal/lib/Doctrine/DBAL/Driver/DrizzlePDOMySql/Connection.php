@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +30,7 @@ class Connection extends \Doctrine\DBAL\Driver\PDOConnection
      */
     public function quote($value, $type = \PDO::PARAM_STR)
     {
-        if (\PDO::PARAM_BOOL === $type) {
+        if ($type === \PDO::PARAM_BOOL) {
             if ($value) {
                 return 'true';
             } else {

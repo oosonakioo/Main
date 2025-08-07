@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -22,16 +24,16 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
  */
 class InterpretingDocBlocksTest extends \PHPUnit_Framework_TestCase
 {
-    public function testInterpretingASimpleDocBlock()
+    public function test_interpreting_a_simple_doc_block()
     {
         /**
-         * @var DocBlock    $docblock
-         * @var string      $summary
+         * @var DocBlock $docblock
+         * @var string $summary
          * @var Description $description
          */
-        include(__DIR__ . '/../../examples/01-interpreting-a-simple-docblock.php');
+        include __DIR__.'/../../examples/01-interpreting-a-simple-docblock.php';
 
-        $descriptionText = <<<DESCRIPTION
+        $descriptionText = <<<'DESCRIPTION'
 This is a Description. A Summary and Description are separated by either
 two subsequent newlines (thus a whiteline in between as can be seen in this
 example), or when the Summary ends with a dot (`.`) and some form of
@@ -45,15 +47,15 @@ DESCRIPTION;
         $this->assertEmpty($docblock->getTags());
     }
 
-    public function testInterpretingTags()
+    public function test_interpreting_tags()
     {
         /**
          * @var DocBlock $docblock
-         * @var boolean  $hasSeeTag
-         * @var Tag[]    $tags
-         * @var See[]    $seeTags
+         * @var bool $hasSeeTag
+         * @var Tag[] $tags
+         * @var See[] $seeTags
          */
-        include(__DIR__ . '/../../examples/02-interpreting-tags.php');
+        include __DIR__.'/../../examples/02-interpreting-tags.php';
 
         $this->assertTrue($hasSeeTag);
         $this->assertCount(1, $tags);
@@ -63,21 +65,21 @@ DESCRIPTION;
         $this->assertInstanceOf(See::class, $seeTags[0]);
 
         $seeTag = $seeTags[0];
-        $this->assertSame('\\' . StandardTagFactory::class, (string)$seeTag->getReference());
-        $this->assertSame('', (string)$seeTag->getDescription());
+        $this->assertSame('\\'.StandardTagFactory::class, (string) $seeTag->getReference());
+        $this->assertSame('', (string) $seeTag->getDescription());
     }
 
-    public function testDescriptionsCanEscapeAtSignsAndClosingBraces()
+    public function test_descriptions_can_escape_at_signs_and_closing_braces()
     {
         /**
-         * @var string      $docComment
-         * @var DocBlock    $docblock
+         * @var string $docComment
+         * @var DocBlock $docblock
          * @var Description $description
-         * @var string      $receivedDocComment
-         * @var string      $foundDescription
+         * @var string $receivedDocComment
+         * @var string $foundDescription
          */
 
-        include(__DIR__ . '/../../examples/playing-with-descriptions/02-escaping.php');
+        include __DIR__.'/../../examples/playing-with-descriptions/02-escaping.php';
         $this->assertSame(<<<'DESCRIPTION'
 You can escape the @-sign by surrounding it with braces, for example: @. And escape a closing brace within an
 inline tag by adding an opening brace in front of it like this: }.
@@ -91,7 +93,6 @@ Do note that an {@internal inline tag that has an opening brace ({) does not bre
 DESCRIPTION
             ,
             $foundDescription
-        )
-        ;
+        );
     }
 }

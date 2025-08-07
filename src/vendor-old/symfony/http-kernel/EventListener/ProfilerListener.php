@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestMatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
-use Symfony\Component\HttpFoundation\RequestMatcherInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * ProfilerListener collects data for the current request by listening to the kernel events.
@@ -28,42 +28,49 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ProfilerListener implements EventSubscriberInterface
 {
     protected $profiler;
+
     protected $matcher;
+
     protected $onlyException;
+
     protected $onlyMasterRequests;
+
     protected $exception;
+
     protected $profiles;
+
     protected $requestStack;
+
     protected $parents;
 
     /**
      * Constructor.
      *
-     * @param Profiler                     $profiler           A Profiler instance
-     * @param RequestStack                 $requestStack       A RequestStack instance
-     * @param RequestMatcherInterface|null $matcher            A RequestMatcher instance
-     * @param bool                         $onlyException      true if the profiler only collects data when an exception occurs, false otherwise
-     * @param bool                         $onlyMasterRequests true if the profiler only collects data when the request is a master request, false otherwise
+     * @param  Profiler  $profiler  A Profiler instance
+     * @param  RequestStack  $requestStack  A RequestStack instance
+     * @param  RequestMatcherInterface|null  $matcher  A RequestMatcher instance
+     * @param  bool  $onlyException  true if the profiler only collects data when an exception occurs, false otherwise
+     * @param  bool  $onlyMasterRequests  true if the profiler only collects data when the request is a master request, false otherwise
      */
-    public function __construct(Profiler $profiler, RequestStack $requestStack, RequestMatcherInterface $matcher = null, $onlyException = false, $onlyMasterRequests = false)
+    public function __construct(Profiler $profiler, RequestStack $requestStack, ?RequestMatcherInterface $matcher = null, $onlyException = false, $onlyMasterRequests = false)
     {
         $this->profiler = $profiler;
         $this->matcher = $matcher;
         $this->onlyException = (bool) $onlyException;
         $this->onlyMasterRequests = (bool) $onlyMasterRequests;
-        $this->profiles = new \SplObjectStorage();
-        $this->parents = new \SplObjectStorage();
+        $this->profiles = new \SplObjectStorage;
+        $this->parents = new \SplObjectStorage;
         $this->requestStack = $requestStack;
     }
 
     /**
      * Handles the onKernelException event.
      *
-     * @param GetResponseForExceptionEvent $event A GetResponseForExceptionEvent instance
+     * @param  GetResponseForExceptionEvent  $event  A GetResponseForExceptionEvent instance
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if ($this->onlyMasterRequests && !$event->isMasterRequest()) {
+        if ($this->onlyMasterRequests && ! $event->isMasterRequest()) {
             return;
         }
 
@@ -73,16 +80,16 @@ class ProfilerListener implements EventSubscriberInterface
     /**
      * Handles the onKernelResponse event.
      *
-     * @param FilterResponseEvent $event A FilterResponseEvent instance
+     * @param  FilterResponseEvent  $event  A FilterResponseEvent instance
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
         $master = $event->isMasterRequest();
-        if ($this->onlyMasterRequests && !$master) {
+        if ($this->onlyMasterRequests && ! $master) {
             return;
         }
 
-        if ($this->onlyException && null === $this->exception) {
+        if ($this->onlyException && $this->exception === null) {
             return;
         }
 
@@ -90,11 +97,11 @@ class ProfilerListener implements EventSubscriberInterface
         $exception = $this->exception;
         $this->exception = null;
 
-        if (null !== $this->matcher && !$this->matcher->matches($request)) {
+        if ($this->matcher !== null && ! $this->matcher->matches($request)) {
             return;
         }
 
-        if (!$profile = $this->profiler->collect($request, $event->getResponse(), $exception)) {
+        if (! $profile = $this->profiler->collect($request, $event->getResponse(), $exception)) {
             return;
         }
 
@@ -120,16 +127,16 @@ class ProfilerListener implements EventSubscriberInterface
             $this->profiler->saveProfile($this->profiles[$request]);
         }
 
-        $this->profiles = new \SplObjectStorage();
-        $this->parents = new \SplObjectStorage();
+        $this->profiles = new \SplObjectStorage;
+        $this->parents = new \SplObjectStorage;
     }
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::RESPONSE => array('onKernelResponse', -100),
+        return [
+            KernelEvents::RESPONSE => ['onKernelResponse', -100],
             KernelEvents::EXCEPTION => 'onKernelException',
-            KernelEvents::TERMINATE => array('onKernelTerminate', -1024),
-        );
+            KernelEvents::TERMINATE => ['onKernelTerminate', -1024],
+        ];
     }
 }

@@ -4,11 +4,12 @@ namespace PhpParser;
 
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstruct() {
-        $attributes = array(
+    public function test_construct()
+    {
+        $attributes = [
             'startLine' => 10,
             'endLine' => 11,
-        );
+        ];
         $error = new Error('Some error', $attributes);
 
         $this->assertSame('Some error', $error->getRawMessage());
@@ -22,9 +23,10 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstruct
+     * @depends test_construct
      */
-    public function testSetMessageAndLine(Error $error) {
+    public function test_set_message_and_line(Error $error)
+    {
         $error->setRawMessage('Some other error');
         $this->assertSame('Some other error', $error->getRawMessage());
 
@@ -37,7 +39,8 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Some other error on line 17', $error->getMessage());
     }
 
-    public function testUnknownLine() {
+    public function test_unknown_line()
+    {
         $error = new Error('Some error');
 
         $this->assertSame(-1, $error->getStartLine());
@@ -47,11 +50,12 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider provideTestColumnInfo */
-    public function testColumnInfo($code, $startPos, $endPos, $startColumn, $endColumn) {
-        $error = new Error('Some error', array(
+    public function test_column_info($code, $startPos, $endPos, $startColumn, $endColumn)
+    {
+        $error = new Error('Some error', [
             'startFilePos' => $startPos,
             'endFilePos' => $endPos,
-        ));
+        ]);
 
         $this->assertSame(true, $error->hasColumnInfo());
         $this->assertSame($startColumn, $error->getStartColumn($code));
@@ -59,28 +63,30 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function provideTestColumnInfo() {
-        return array(
+    public function provideTestColumnInfo()
+    {
+        return [
             // Error at "bar"
-            array("<?php foo bar baz", 10, 12, 11, 13),
-            array("<?php\nfoo bar baz", 10, 12, 5, 7),
-            array("<?php foo\nbar baz", 10, 12, 1, 3),
-            array("<?php foo bar\nbaz", 10, 12, 11, 13),
-            array("<?php\r\nfoo bar baz", 11, 13, 5, 7),
+            ['<?php foo bar baz', 10, 12, 11, 13],
+            ["<?php\nfoo bar baz", 10, 12, 5, 7],
+            ["<?php foo\nbar baz", 10, 12, 1, 3],
+            ["<?php foo bar\nbaz", 10, 12, 11, 13],
+            ["<?php\r\nfoo bar baz", 11, 13, 5, 7],
             // Error at "baz"
-            array("<?php foo bar baz", 14, 16, 15, 17),
-            array("<?php foo bar\nbaz", 14, 16, 1, 3),
+            ['<?php foo bar baz', 14, 16, 15, 17],
+            ["<?php foo bar\nbaz", 14, 16, 1, 3],
             // Error at string literal
-            array("<?php foo 'bar\nbaz' xyz", 10, 18, 11, 4),
-            array("<?php\nfoo 'bar\nbaz' xyz", 10, 18, 5, 4),
-            array("<?php foo\n'\nbarbaz\n'\nxyz", 10, 19, 1, 1),
+            ["<?php foo 'bar\nbaz' xyz", 10, 18, 11, 4],
+            ["<?php\nfoo 'bar\nbaz' xyz", 10, 18, 5, 4],
+            ["<?php foo\n'\nbarbaz\n'\nxyz", 10, 19, 1, 1],
             // Error over full string
-            array("<?php", 0, 4, 1, 5),
-            array("<?\nphp", 0, 5, 1, 3),
-        );
+            ['<?php', 0, 4, 1, 5],
+            ["<?\nphp", 0, 5, 1, 3],
+        ];
     }
 
-    public function testNoColumnInfo() {
+    public function test_no_column_info()
+    {
         $error = new Error('Some error', 3);
 
         $this->assertSame(false, $error->hasColumnInfo());
@@ -100,13 +106,15 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \RuntimeException
+     *
      * @expectedExceptionMessage Invalid position information
      */
-    public function testInvalidPosInfo() {
-        $error = new Error('Some error', array(
+    public function test_invalid_pos_info()
+    {
+        $error = new Error('Some error', [
             'startFilePos' => 10,
             'endFilePos' => 11,
-        ));
+        ]);
         $error->getStartColumn('code');
     }
 }

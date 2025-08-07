@@ -31,8 +31,8 @@ class ElasticaFormatter extends NormalizerFormatter
     protected $type;
 
     /**
-     * @param string $index Elastic Search index name
-     * @param string $type  Elastic Search document type
+     * @param  string  $index  Elastic Search index name
+     * @param  string  $type  Elastic Search document type
      */
     public function __construct($index, $type)
     {
@@ -55,6 +55,7 @@ class ElasticaFormatter extends NormalizerFormatter
 
     /**
      * Getter index
+     *
      * @return string
      */
     public function getIndex()
@@ -64,6 +65,7 @@ class ElasticaFormatter extends NormalizerFormatter
 
     /**
      * Getter type
+     *
      * @return string
      */
     public function getType()
@@ -74,12 +76,12 @@ class ElasticaFormatter extends NormalizerFormatter
     /**
      * Convert a log message into an Elastica Document
      *
-     * @param  array    $record Log message
+     * @param  array  $record  Log message
      * @return Document
      */
     protected function getDocument($record)
     {
-        $document = new Document();
+        $document = new Document;
         $document->setData($record);
         $document->setType($this->type);
         $document->setIndex($this->index);

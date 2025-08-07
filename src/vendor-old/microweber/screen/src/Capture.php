@@ -15,7 +15,6 @@ use Screen\Location\Output;
 /**
  * Class Capture
  *
- * @package Screen
  * @author  André Filipe <andre.r.flip@gmail.com>
  * @license MIT https://github.com/microweber/screen/blob/master/LICENSE
  */
@@ -30,16 +29,18 @@ class Capture
 
     /**
      * dom element top position
+     *
      * @var string
      */
     protected $top;
-    
+
     /**
      * dom element left position
+     *
      * @var string
      */
     protected $left;
-    
+
     /**
      * Width of the page to render
      *
@@ -95,8 +96,8 @@ class Capture
      * @var int
      */
     protected $timeout = 0;
-    
-     /**
+
+    /**
      * Sets the delay period
      *
      * @var int
@@ -143,21 +144,21 @@ class Capture
      *
      * @var array
      */
-    protected $includedJsScripts = array();
+    protected $includedJsScripts = [];
 
     /**
      * List of included JS snippets
      *
      * @var array
      */
-    protected $includedJsSnippets = array();
+    protected $includedJsSnippets = [];
 
     /**
      * List of options which will be passed to phantomjs
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Capture constructor.
@@ -168,11 +169,11 @@ class Capture
             $this->setUrl($url);
         }
 
-        $this->binPath = realpath(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), '..', 'bin'))) . DIRECTORY_SEPARATOR;
-        $this->templatePath = realpath(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), '..', 'templates'))) . DIRECTORY_SEPARATOR;
+        $this->binPath = realpath(implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), '..', 'bin'])).DIRECTORY_SEPARATOR;
+        $this->templatePath = realpath(implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), '..', 'templates'])).DIRECTORY_SEPARATOR;
 
-        $this->jobs = new Jobs();
-        $this->output = new Output();
+        $this->jobs = new Jobs;
+        $this->output = new Output;
 
         $this->setImageType(Types\Jpg::FORMAT);
     }
@@ -180,25 +181,24 @@ class Capture
     /**
      * Saves the screenshot to the requested location
      *
-     * @param string $imageLocation      Image Location
-     * @param bool   $deleteFileIfExists True to delete the file if it exists
-     *
+     * @param  string  $imageLocation  Image Location
+     * @param  bool  $deleteFileIfExists  True to delete the file if it exists
      * @return bool
      */
     public function save($imageLocation, $deleteFileIfExists = true)
     {
-        $this->imageLocation = $this->output->getLocation() . $imageLocation;
+        $this->imageLocation = $this->output->getLocation().$imageLocation;
 
-        if (!pathinfo($this->imageLocation, PATHINFO_EXTENSION)) {
-            $this->imageLocation .= '.' . $this->getImageType()->getFormat();
+        if (! pathinfo($this->imageLocation, PATHINFO_EXTENSION)) {
+            $this->imageLocation .= '.'.$this->getImageType()->getFormat();
         }
 
-        $data = array(
-            'url'           => (string) $this->url,
-            'width'         => $this->width,
-            'height'        => $this->height,
+        $data = [
+            'url' => (string) $this->url,
+            'width' => $this->width,
+            'height' => $this->height,
             'imageLocation' => LocalPath::sanitize($this->imageLocation),
-        );
+        ];
 
         if ($this->clipWidth && $this->clipHeight) {
             $data['clipOptions']['width'] = $this->clipWidth;
@@ -222,7 +222,7 @@ class Capture
         if ($this->timeout) {
             $data['timeout'] = $this->timeout;
         }
-        
+
         if ($this->delay) {
             $data['delay'] = $this->delay;
         }
@@ -240,20 +240,20 @@ class Capture
         }
 
         $jobName = md5(json_encode($data));
-        $jobPath = $this->jobs->getLocation() . $jobName . '.js';
+        $jobPath = $this->jobs->getLocation().$jobName.'.js';
 
-        if (!is_file($jobPath)) {
+        if (! is_file($jobPath)) {
             // Now we write the code to a js file
             $resultString = $this->getTemplateResult('screen-capture', $data);
             file_put_contents($jobPath, $resultString);
         }
 
-        $command = sprintf("%sphantomjs %s %s", $this->binPath, $this->getOptionsString(), $jobPath);
+        $command = sprintf('%sphantomjs %s %s', $this->binPath, $this->getOptionsString(), $jobPath);
 
         // Run the command and ensure it executes successfully
         $returnCode = null;
         $output = [];
-        exec(sprintf("%s 2>&1", escapeshellcmd($command)), $output, $returnCode);
+        exec(sprintf('%s 2>&1', escapeshellcmd($command)), $output, $returnCode);
 
         if ($returnCode !== 0) {
             throw new PhantomJsException($output);
@@ -263,21 +263,20 @@ class Capture
     }
 
     /**
-     * @param string $templateName
-     * @param array $args
-     *
+     * @param  string  $templateName
      * @return string
+     *
      * @throws TemplateNotFoundException
      */
     private function getTemplateResult($templateName, array $args)
     {
-        $templatePath = $this->templatePath . DIRECTORY_SEPARATOR . $templateName . '.php';
-        if (!file_exists($templatePath)) {
+        $templatePath = $this->templatePath.DIRECTORY_SEPARATOR.$templateName.'.php';
+        if (! file_exists($templatePath)) {
             throw new TemplateNotFoundException($templateName);
         }
         ob_start();
         extract($args);
-        include $this->templatePath . DIRECTORY_SEPARATOR . $templateName . '.php';
+        include $this->templatePath.DIRECTORY_SEPARATOR.$templateName.'.php';
 
         return ob_get_clean();
     }
@@ -296,7 +295,7 @@ class Capture
                 $key = substr($key, 2);
             }
 
-            return sprintf("--%s=%s", $key, $value);
+            return sprintf('--%s=%s', $key, $value);
         }, $this->options, array_keys($this->options));
 
         return implode(' ', $mappedOptions);
@@ -305,13 +304,13 @@ class Capture
     /**
      * Sets the path to PhantomJS binary, example: "/usr/bin"
      *
-     * @param string $path
+     * @param  string  $path
      */
     public function setBinPath($binPath)
     {
-        $binPath = rtrim($binPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        if (!file_exists($binPath . 'phantomjs') && !file_exists($binPath . 'phantomjs.exe')) {
-            throw new \Exception("Bin directory should contain phantomjs or phantomjs.exe file!");
+        $binPath = rtrim($binPath, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        if (! file_exists($binPath.'phantomjs') && ! file_exists($binPath.'phantomjs.exe')) {
+            throw new \Exception('Bin directory should contain phantomjs or phantomjs.exe file!');
         }
         $this->binPath = $binPath;
     }
@@ -319,7 +318,7 @@ class Capture
     /**
      * Sets the url to screenshot
      *
-     * @param string $url URL
+     * @param  string  $url  URL
      *
      * @throws \Exception If the url is not valid
      */
@@ -331,8 +330,7 @@ class Capture
     /**
      * Sets the dom top position
      *
-     * @param int $top dom top position
-     *
+     * @param  int  $top  dom top position
      * @return Capture
      */
     public function setTop($top)
@@ -341,12 +339,11 @@ class Capture
 
         return $this;
     }
-    
+
     /**
      * Sets the page width
      *
-     * @param int $left dom left position
-     *
+     * @param  int  $left  dom left position
      * @return Capture
      */
     public function setLeft($left)
@@ -355,12 +352,11 @@ class Capture
 
         return $this;
     }
-    
+
     /**
      * Sets the page width
      *
-     * @param int $width Page Width
-     *
+     * @param  int  $width  Page Width
      * @return Capture
      */
     public function setWidth($width)
@@ -373,8 +369,7 @@ class Capture
     /**
      * Sets the page height
      *
-     * @param int $height Page Height
-     *
+     * @param  int  $height  Page Height
      * @return Capture
      */
     public function setHeight($height)
@@ -387,8 +382,7 @@ class Capture
     /**
      * Sets the width to clip
      *
-     * @param int $clipWidth Page clip width
-     *
+     * @param  int  $clipWidth  Page clip width
      * @return Capture
      */
     public function setClipWidth($clipWidth)
@@ -401,8 +395,7 @@ class Capture
     /**
      * Sets the height to clip
      *
-     * @param int $clipHeight Page clip height
-     *
+     * @param  int  $clipHeight  Page clip height
      * @return Capture
      */
     public function setClipHeight($clipHeight)
@@ -415,8 +408,7 @@ class Capture
     /**
      * Sets the page body background color
      *
-     * @param string $backgroundColor Background Color
-     *
+     * @param  string  $backgroundColor  Background Color
      * @return Capture
      */
     public function setBackgroundColor($backgroundColor)
@@ -429,8 +421,7 @@ class Capture
     /**
      * Sets the image type
      *
-     * @param string $type 'jpg', 'png', etc...
-     *
+     * @param  string  $type  'jpg', 'png', etc...
      * @return Capture
      */
     public function setImageType($type)
@@ -463,8 +454,7 @@ class Capture
     /**
      * Sets the User Agent String to be used on the page request
      *
-     * @param string $userAgentString User Agent String
-     *
+     * @param  string  $userAgentString  User Agent String
      * @return Capture
      */
     public function setUserAgentString($userAgentString)
@@ -477,14 +467,14 @@ class Capture
     /**
      * Sets the timeout period
      *
-     * @param int $timeout Timeout period
-     *
+     * @param  int  $timeout  Timeout period
      * @return Capture
+     *
      * @throws InvalidArgumentException
      */
     public function setTimeout($timeout)
     {
-        if (!is_numeric($timeout)) {
+        if (! is_numeric($timeout)) {
             throw new InvalidArgumentException('The timeout value must be a number.');
         }
         $this->timeout = $timeout;
@@ -495,25 +485,25 @@ class Capture
     /**
      * Sets the delay period
      *
-     * @param int $delay Delay period
-     *
+     * @param  int  $delay  Delay period
      * @return Capture
+     *
      * @throws InvalidArgumentException
      */
     public function setDelay($delay)
     {
-        if (!is_numeric($delay)) {
+        if (! is_numeric($delay)) {
             throw new InvalidArgumentException('The delay value must be a number.');
         }
         $this->delay = $delay;
 
         return $this;
     }
+
     /**
      * Adds a JS script or snippet to the screen shot script
      *
-     * @param string|URL $script Script to include
-     *
+     * @param  string|URL  $script  Script to include
      * @return Capture
      */
     public function includeJs($script)
@@ -530,8 +520,7 @@ class Capture
     /**
      * Sets the options which will be passed to phantomjs
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return $this
      */
     public function setOptions($options)

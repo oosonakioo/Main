@@ -2,6 +2,4 @@
 
 namespace Screen\Exceptions;
 
-class ScreenException extends \Exception
-{
-}
+class ScreenException extends \Exception {}

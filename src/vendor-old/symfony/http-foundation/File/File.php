@@ -13,8 +13,8 @@ namespace Symfony\Component\HttpFoundation\File;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
  * A file in the file system.
@@ -26,14 +26,14 @@ class File extends \SplFileInfo
     /**
      * Constructs a new file from the given path.
      *
-     * @param string $path      The path to the file
-     * @param bool   $checkPath Whether to check the path or not
+     * @param  string  $path  The path to the file
+     * @param  bool  $checkPath  Whether to check the path or not
      *
      * @throws FileNotFoundException If the given path is not a file
      */
     public function __construct($path, $checkPath = true)
     {
-        if ($checkPath && !is_file($path)) {
+        if ($checkPath && ! is_file($path)) {
             throw new FileNotFoundException($path);
         }
 
@@ -82,9 +82,8 @@ class File extends \SplFileInfo
     /**
      * Moves the file to a new location.
      *
-     * @param string $directory The destination folder
-     * @param string $name      The new file name
-     *
+     * @param  string  $directory  The destination folder
+     * @param  string  $name  The new file name
      * @return File A File object representing the new file
      *
      * @throws FileException if the target file could not be created
@@ -93,7 +92,7 @@ class File extends \SplFileInfo
     {
         $target = $this->getTargetFile($directory, $name);
 
-        if (!@rename($this->getPathname(), $target)) {
+        if (! @rename($this->getPathname(), $target)) {
             $error = error_get_last();
             throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s)', $this->getPathname(), $target, strip_tags($error['message'])));
         }
@@ -105,15 +104,15 @@ class File extends \SplFileInfo
 
     protected function getTargetFile($directory, $name = null)
     {
-        if (!is_dir($directory)) {
-            if (false === @mkdir($directory, 0777, true) && !is_dir($directory)) {
+        if (! is_dir($directory)) {
+            if (@mkdir($directory, 0777, true) === false && ! is_dir($directory)) {
                 throw new FileException(sprintf('Unable to create the "%s" directory', $directory));
             }
-        } elseif (!is_writable($directory)) {
+        } elseif (! is_writable($directory)) {
             throw new FileException(sprintf('Unable to write in the "%s" directory', $directory));
         }
 
-        $target = rtrim($directory, '/\\').DIRECTORY_SEPARATOR.(null === $name ? $this->getBasename() : $this->getName($name));
+        $target = rtrim($directory, '/\\').DIRECTORY_SEPARATOR.($name === null ? $this->getBasename() : $this->getName($name));
 
         return new self($target, false);
     }
@@ -121,15 +120,14 @@ class File extends \SplFileInfo
     /**
      * Returns locale independent base name of the given path.
      *
-     * @param string $name The new file name
-     *
+     * @param  string  $name  The new file name
      * @return string containing
      */
     protected function getName($name)
     {
         $originalName = str_replace('\\', '/', $name);
         $pos = strrpos($originalName, '/');
-        $originalName = false === $pos ? $originalName : substr($originalName, $pos + 1);
+        $originalName = $pos === false ? $originalName : substr($originalName, $pos + 1);
 
         return $originalName;
     }

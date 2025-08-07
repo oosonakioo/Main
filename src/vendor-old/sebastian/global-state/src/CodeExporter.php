@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the GlobalState package.
  *
@@ -16,7 +17,6 @@ namespace SebastianBergmann\GlobalState;
 class CodeExporter
 {
     /**
-     * @param  Snapshot $snapshot
      * @return string
      */
     public function constants(Snapshot $snapshot)
@@ -25,7 +25,7 @@ class CodeExporter
 
         foreach ($snapshot->constants() as $name => $value) {
             $result .= sprintf(
-                'if (!defined(\'%s\')) define(\'%s\', %s);' . "\n",
+                'if (!defined(\'%s\')) define(\'%s\', %s);'."\n",
                 $name,
                 $name,
                 $this->exportVariable($value)
@@ -36,7 +36,6 @@ class CodeExporter
     }
 
     /**
-     * @param  Snapshot $snapshot
      * @return string
      */
     public function iniSettings(Snapshot $snapshot)
@@ -45,7 +44,7 @@ class CodeExporter
 
         foreach ($snapshot->iniSettings() as $key => $value) {
             $result .= sprintf(
-                '@ini_set(%s, %s);' . "\n",
+                '@ini_set(%s, %s);'."\n",
                 $this->exportVariable($key),
                 $this->exportVariable($value)
             );
@@ -65,11 +64,10 @@ class CodeExporter
             return var_export($variable, true);
         }
 
-        return 'unserialize(' . var_export(serialize($variable), true) . ')';
+        return 'unserialize('.var_export(serialize($variable), true).')';
     }
 
     /**
-     * @param  array $array
      * @return bool
      */
     private function arrayOnlyContainsScalars(array $array)
@@ -79,7 +77,7 @@ class CodeExporter
         foreach ($array as $element) {
             if (is_array($element)) {
                 $result = self::arrayOnlyContainsScalars($element);
-            } elseif (!is_scalar($element) && !is_null($element)) {
+            } elseif (! is_scalar($element) && ! is_null($element)) {
                 $result = false;
             }
 

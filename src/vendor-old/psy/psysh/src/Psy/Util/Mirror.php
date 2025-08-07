@@ -19,10 +19,13 @@ use Psy\Reflection\ReflectionConstant;
  */
 class Mirror
 {
-    const CONSTANT        = 1;
-    const METHOD          = 2;
+    const CONSTANT = 1;
+
+    const METHOD = 2;
+
     const STATIC_PROPERTY = 4;
-    const PROPERTY        = 8;
+
+    const PROPERTY = 8;
 
     /**
      * Get a Reflector for a function, class or instance, constant, method or property.
@@ -32,14 +35,14 @@ class Mirror
      *
      *    $filter = Mirror::CONSTANT | Mirror::STATIC_PROPERTY
      *
-     * @throws \Psy\Exception\RuntimeException when a $member specified but not present on $value.
-     * @throws \InvalidArgumentException       if $value is something other than an object or class/function name.
      *
-     * @param mixed  $value  Class or function name, or variable instance.
-     * @param string $member Optional: property, constant or method name (default: null)
-     * @param int    $filter (default: CONSTANT | METHOD | PROPERTY | STATIC_PROPERTY)
-     *
+     * @param  mixed  $value  Class or function name, or variable instance.
+     * @param  string  $member  Optional: property, constant or method name (default: null)
+     * @param  int  $filter  (default: CONSTANT | METHOD | PROPERTY | STATIC_PROPERTY)
      * @return Reflector
+     *
+     * @throws \Psy\Exception\RuntimeException when a $member specified but not present on $value.
+     * @throws \InvalidArgumentException if $value is something other than an object or class/function name.
      */
     public static function get($value, $member = null, $filter = 15)
     {
@@ -71,11 +74,11 @@ class Mirror
     /**
      * Get a ReflectionClass (or ReflectionObject) if possible.
      *
-     * @throws \InvalidArgumentException if $value is not a class name or instance.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return \ReflectionClass
+     *
+     * @throws \InvalidArgumentException if $value is not a class name or instance.
      */
     private static function getClass($value)
     {
@@ -83,10 +86,10 @@ class Mirror
             return new \ReflectionObject($value);
         }
 
-        if (!is_string($value)) {
+        if (! is_string($value)) {
             throw new \InvalidArgumentException('Mirror expects an object or class');
-        } elseif (!class_exists($value) && !interface_exists($value) && !(function_exists('trait_exists') && trait_exists($value))) {
-            throw new \InvalidArgumentException('Unknown class or function: ' . $value);
+        } elseif (! class_exists($value) && ! interface_exists($value) && ! (function_exists('trait_exists') && trait_exists($value))) {
+            throw new \InvalidArgumentException('Unknown class or function: '.$value);
         }
 
         return new \ReflectionClass($value);

@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_HTML_Bool extends HTMLPurifier_AttrDef
 {
-
     /**
      * @type bool
      */
@@ -17,7 +16,7 @@ class HTMLPurifier_AttrDef_HTML_Bool extends HTMLPurifier_AttrDef
     public $minimized = true;
 
     /**
-     * @param bool $name
+     * @param  bool  $name
      */
     public function __construct($name = false)
     {
@@ -25,9 +24,9 @@ class HTMLPurifier_AttrDef_HTML_Bool extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -36,7 +35,7 @@ class HTMLPurifier_AttrDef_HTML_Bool extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string Name of attribute
+     * @param  string  $string  Name of attribute
      * @return HTMLPurifier_AttrDef_HTML_Bool
      */
     public function make($string)

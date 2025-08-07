@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -36,7 +37,7 @@ class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Ex
      */
     protected $serializableTrace;
 
-    public function __construct($message = '', $code = 0, Exception $previous = null)
+    public function __construct($message = '', $code = 0, ?Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
@@ -64,7 +65,7 @@ class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Ex
         $string = PHPUnit_Framework_TestFailure::exceptionToString($this);
 
         if ($trace = PHPUnit_Util_Filter::getFilteredStacktrace($this)) {
-            $string .= "\n" . $trace;
+            $string .= "\n".$trace;
         }
 
         return $string;

@@ -12,9 +12,9 @@
 namespace Symfony\Component\Console\Tests\Helper;
 
 use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\FormatterHelper;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -25,14 +25,14 @@ use Symfony\Component\Console\Question\Question;
  */
 class QuestionHelperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAskChoice()
+    public function test_ask_choice()
     {
-        $questionHelper = new QuestionHelper();
+        $questionHelper = new QuestionHelper;
 
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $questionHelper->setHelperSet($helperSet);
 
-        $heroes = array('Superman', 'Batman', 'Spiderman');
+        $heroes = ['Superman', 'Batman', 'Spiderman'];
 
         $questionHelper->setInputStream($this->getInputStream("\n1\n  1  \nFabien\n1\nFabien\n1\n0,2\n 0 , 2  \n\n\n"));
 
@@ -68,26 +68,26 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
         $question->setMaxAttempts(1);
         $question->setMultiselect(true);
 
-        $this->assertEquals(array('Batman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
-        $this->assertEquals(array('Superman', 'Spiderman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
-        $this->assertEquals(array('Superman', 'Spiderman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Batman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Spiderman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Spiderman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
 
         $question = new ChoiceQuestion('What is your favorite superhero?', $heroes, '0,1');
         $question->setMaxAttempts(1);
         $question->setMultiselect(true);
 
-        $this->assertEquals(array('Superman', 'Batman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Batman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
 
         $question = new ChoiceQuestion('What is your favorite superhero?', $heroes, ' 0 , 1 ');
         $question->setMaxAttempts(1);
         $question->setMultiselect(true);
 
-        $this->assertEquals(array('Superman', 'Batman'), $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
+        $this->assertEquals(['Superman', 'Batman'], $questionHelper->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
     }
 
-    public function testAsk()
+    public function test_ask()
     {
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
 
         $dialog->setInputStream($this->getInputStream("\n8AM\n"));
 
@@ -101,9 +101,9 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('What time is it?', stream_get_contents($output->getStream()));
     }
 
-    public function testAskWithAutocomplete()
+    public function test_ask_with_autocomplete()
     {
-        if (!$this->hasSttyAvailable()) {
+        if (! $this->hasSttyAvailable()) {
             $this->markTestSkipped('`stty` is required to test autocomplete functionality');
         }
 
@@ -117,13 +117,13 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
         // F00<BACKSPACE><BACKSPACE>oo<TAB><NEWLINE>
         $inputStream = $this->getInputStream("Acm\nAc\177\177s\tTest\n\n\033[A\033[A\n\033[A\033[A\033[A\033[A\033[A\tTest\n\033[B\nS\177\177\033[B\033[B\nF00\177\177oo\t\n");
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($inputStream);
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $question = new Question('Please select a bundle', 'FrameworkBundle');
-        $question->setAutocompleterValues(array('AcmeDemoBundle', 'AsseticBundle', 'SecurityBundle', 'FooBundle'));
+        $question->setAutocompleterValues(['AcmeDemoBundle', 'AsseticBundle', 'SecurityBundle', 'FooBundle']);
 
         $this->assertEquals('AcmeDemoBundle', $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
         $this->assertEquals('AsseticBundleTest', $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
@@ -135,33 +135,33 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FooBundle', $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
     }
 
-    public function testAskWithAutocompleteWithNonSequentialKeys()
+    public function test_ask_with_autocomplete_with_non_sequential_keys()
     {
-        if (!$this->hasSttyAvailable()) {
+        if (! $this->hasSttyAvailable()) {
             $this->markTestSkipped('`stty` is required to test autocomplete functionality');
         }
 
         // <UP ARROW><UP ARROW><NEWLINE><DOWN ARROW><DOWN ARROW><NEWLINE>
         $inputStream = $this->getInputStream("\033[A\033[A\n\033[B\033[B\n");
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($inputStream);
-        $dialog->setHelperSet(new HelperSet(array(new FormatterHelper())));
+        $dialog->setHelperSet(new HelperSet([new FormatterHelper]));
 
-        $question = new ChoiceQuestion('Please select a bundle', array(1 => 'AcmeDemoBundle', 4 => 'AsseticBundle'));
+        $question = new ChoiceQuestion('Please select a bundle', [1 => 'AcmeDemoBundle', 4 => 'AsseticBundle']);
         $question->setMaxAttempts(1);
 
         $this->assertEquals('AcmeDemoBundle', $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
         $this->assertEquals('AsseticBundle', $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
     }
 
-    public function testAskHiddenResponse()
+    public function test_ask_hidden_response()
     {
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->markTestSkipped('This test is not supported on Windows');
         }
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($this->getInputStream("8AM\n"));
 
         $question = new Question('What time is it?');
@@ -173,9 +173,9 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getAskConfirmationData
      */
-    public function testAskConfirmation($question, $expected, $default = true)
+    public function test_ask_confirmation($question, $expected, $default = true)
     {
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
 
         $dialog->setInputStream($this->getInputStream($question."\n"));
         $question = new ConfirmationQuestion('Do you like French fries?', $default);
@@ -184,19 +184,19 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
 
     public function getAskConfirmationData()
     {
-        return array(
-            array('', true),
-            array('', false, false),
-            array('y', true),
-            array('yes', true),
-            array('n', false),
-            array('no', false),
-        );
+        return [
+            ['', true],
+            ['', false, false],
+            ['y', true],
+            ['yes', true],
+            ['n', false],
+            ['no', false],
+        ];
     }
 
-    public function testAskConfirmationWithCustomTrueAnswer()
+    public function test_ask_confirmation_with_custom_true_answer()
     {
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
 
         $dialog->setInputStream($this->getInputStream("j\ny\n"));
         $question = new ConfirmationQuestion('Do you like French fries?', false, '/^(j|y)/i');
@@ -205,15 +205,15 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question));
     }
 
-    public function testAskAndValidate()
+    public function test_ask_and_validate()
     {
-        $dialog = new QuestionHelper();
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $dialog = new QuestionHelper;
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $error = 'This is not a color!';
         $validator = function ($color) use ($error) {
-            if (!in_array($color, array('white', 'black'))) {
+            if (! in_array($color, ['white', 'black'])) {
                 throw new \InvalidArgumentException($error);
             }
 
@@ -240,17 +240,17 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider simpleAnswerProvider
      */
-    public function testSelectChoiceFromSimpleChoices($providedAnswer, $expectedValue)
+    public function test_select_choice_from_simple_choices($providedAnswer, $expectedValue)
     {
-        $possibleChoices = array(
+        $possibleChoices = [
             'My environment 1',
             'My environment 2',
             'My environment 3',
-        );
+        ];
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($this->getInputStream($providedAnswer."\n"));
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
@@ -262,31 +262,31 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
 
     public function simpleAnswerProvider()
     {
-        return array(
-            array(0, 'My environment 1'),
-            array(1, 'My environment 2'),
-            array(2, 'My environment 3'),
-            array('My environment 1', 'My environment 1'),
-            array('My environment 2', 'My environment 2'),
-            array('My environment 3', 'My environment 3'),
-        );
+        return [
+            [0, 'My environment 1'],
+            [1, 'My environment 2'],
+            [2, 'My environment 3'],
+            ['My environment 1', 'My environment 1'],
+            ['My environment 2', 'My environment 2'],
+            ['My environment 3', 'My environment 3'],
+        ];
     }
 
     /**
      * @dataProvider mixedKeysChoiceListAnswerProvider
      */
-    public function testChoiceFromChoicelistWithMixedKeys($providedAnswer, $expectedValue)
+    public function test_choice_from_choicelist_with_mixed_keys($providedAnswer, $expectedValue)
     {
-        $possibleChoices = array(
+        $possibleChoices = [
             '0' => 'No environment',
             '1' => 'My environment 1',
             'env_2' => 'My environment 2',
             3 => 'My environment 3',
-        );
+        ];
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($this->getInputStream($providedAnswer."\n"));
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
@@ -298,30 +298,30 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
 
     public function mixedKeysChoiceListAnswerProvider()
     {
-        return array(
-            array('0', '0'),
-            array('No environment', '0'),
-            array('1', '1'),
-            array('env_2', 'env_2'),
-            array(3, '3'),
-            array('My environment 1', '1'),
-        );
+        return [
+            ['0', '0'],
+            ['No environment', '0'],
+            ['1', '1'],
+            ['env_2', 'env_2'],
+            [3, '3'],
+            ['My environment 1', '1'],
+        ];
     }
 
     /**
      * @dataProvider answerProvider
      */
-    public function testSelectChoiceFromChoiceList($providedAnswer, $expectedValue)
+    public function test_select_choice_from_choice_list($providedAnswer, $expectedValue)
     {
-        $possibleChoices = array(
+        $possibleChoices = [
             'env_1' => 'My environment 1',
             'env_2' => 'My environment',
             'env_3' => 'My environment',
-        );
+        ];
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($this->getInputStream($providedAnswer."\n"));
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
@@ -333,19 +333,20 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage The provided answer is ambiguous. Value should be one of env_2 or env_3.
      */
-    public function testAmbiguousChoiceFromChoicelist()
+    public function test_ambiguous_choice_from_choicelist()
     {
-        $possibleChoices = array(
+        $possibleChoices = [
             'env_1' => 'My first environment',
             'env_2' => 'My environment',
             'env_3' => 'My environment',
-        );
+        ];
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($this->getInputStream("My environment\n"));
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
@@ -356,17 +357,17 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
 
     public function answerProvider()
     {
-        return array(
-            array('env_1', 'env_1'),
-            array('env_2', 'env_2'),
-            array('env_3', 'env_3'),
-            array('My environment 1', 'env_1'),
-        );
+        return [
+            ['env_1', 'env_1'],
+            ['env_2', 'env_2'],
+            ['env_3', 'env_3'],
+            ['My environment 1', 'env_1'],
+        ];
     }
 
-    public function testNoInteraction()
+    public function test_no_interaction()
     {
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $question = new Question('Do you have a job?', 'not yet');
         $this->assertEquals('not yet', $dialog->ask($this->createInputInterfaceMock(false), $this->createOutputInterface(), $question));
     }
@@ -374,26 +375,26 @@ class QuestionHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @requires function mb_strwidth
      */
-    public function testChoiceOutputFormattingQuestionForUtf8Keys()
+    public function test_choice_output_formatting_question_for_utf8_keys()
     {
         $question = 'Lorem ipsum?';
-        $possibleChoices = array(
+        $possibleChoices = [
             'foo' => 'foo',
             'żółw' => 'bar',
             'łabądź' => 'baz',
-        );
-        $outputShown = array(
+        ];
+        $outputShown = [
             $question,
             '  [<info>foo   </info>] foo',
             '  [<info>żółw  </info>] bar',
             '  [<info>łabądź</info>] baz',
-        );
+        ];
         $output = $this->getMock('\Symfony\Component\Console\Output\OutputInterface');
-        $output->method('getFormatter')->willReturn(new OutputFormatter());
+        $output->method('getFormatter')->willReturn(new OutputFormatter);
 
-        $dialog = new QuestionHelper();
+        $dialog = new QuestionHelper;
         $dialog->setInputStream($this->getInputStream("\n"));
-        $helperSet = new HelperSet(array(new FormatterHelper()));
+        $helperSet = new HelperSet([new FormatterHelper]);
         $dialog->setHelperSet($helperSet);
 
         $output->expects($this->once())->method('writeln')->with($this->equalTo($outputShown));

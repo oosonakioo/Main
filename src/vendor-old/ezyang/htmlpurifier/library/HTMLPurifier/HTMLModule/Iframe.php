@@ -9,7 +9,6 @@
  */
 class HTMLPurifier_HTMLModule_Iframe extends HTMLPurifier_HTMLModule
 {
-
     /**
      * @type string
      */
@@ -21,7 +20,7 @@ class HTMLPurifier_HTMLModule_Iframe extends HTMLPurifier_HTMLModule
     public $safe = false;
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function setup($config)
     {
@@ -33,7 +32,7 @@ class HTMLPurifier_HTMLModule_Iframe extends HTMLPurifier_HTMLModule
             'Inline',
             'Flow',
             'Common',
-            array(
+            [
                 'src' => 'URI#embedded',
                 'width' => 'Length',
                 'height' => 'Length',
@@ -43,7 +42,7 @@ class HTMLPurifier_HTMLModule_Iframe extends HTMLPurifier_HTMLModule
                 'longdesc' => 'URI',
                 'marginheight' => 'Pixels',
                 'marginwidth' => 'Pixels',
-            )
+            ]
         );
     }
 }

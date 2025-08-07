@@ -28,7 +28,9 @@ use Symfony\Component\VarDumper\Caster\Caster;
 class ParseCommand extends Command implements PresenterAware
 {
     private $presenter;
+
     private $parserFactory;
+
     private $parsers;
 
     /**
@@ -36,34 +38,32 @@ class ParseCommand extends Command implements PresenterAware
      */
     public function __construct($name = null)
     {
-        $this->parserFactory = new ParserFactory();
-        $this->parsers = array();
+        $this->parserFactory = new ParserFactory;
+        $this->parsers = [];
 
         parent::__construct($name);
     }
 
     /**
      * PresenterAware interface.
-     *
-     * @param Presenter $presenter
      */
     public function setPresenter(Presenter $presenter)
     {
         $this->presenter = clone $presenter;
-        $this->presenter->addCasters(array(
+        $this->presenter->addCasters([
             'PhpParser\Node' => function (Node $node, array $a) {
-                $a = array(
-                    Caster::PREFIX_VIRTUAL . 'type'       => $node->getType(),
-                    Caster::PREFIX_VIRTUAL . 'attributes' => $node->getAttributes(),
-                );
+                $a = [
+                    Caster::PREFIX_VIRTUAL.'type' => $node->getType(),
+                    Caster::PREFIX_VIRTUAL.'attributes' => $node->getAttributes(),
+                ];
 
                 foreach ($node->getSubNodeNames() as $name) {
-                    $a[Caster::PREFIX_VIRTUAL . $name] = $node->$name;
+                    $a[Caster::PREFIX_VIRTUAL.$name] = $node->$name;
                 }
 
                 return $a;
             },
-        ));
+        ]);
     }
 
     /**
@@ -71,15 +71,15 @@ class ParseCommand extends Command implements PresenterAware
      */
     protected function configure()
     {
-        $definition = array(
+        $definition = [
             new InputArgument('code', InputArgument::REQUIRED, 'PHP code to parse.'),
             new InputOption('depth', '', InputOption::VALUE_REQUIRED, 'Depth to parse', 10),
-        );
+        ];
 
         if ($this->parserFactory->hasKindsSupport()) {
             $msg = 'One of PhpParser\\ParserFactory constants: '
-                . implode(', ', ParserFactory::getPossibleKinds())
-                . " (default is based on current interpreter's version)";
+                .implode(', ', ParserFactory::getPossibleKinds())
+                ." (default is based on current interpreter's version)";
             $defaultKind = $this->parserFactory->getDefaultKind();
 
             $definition[] = new InputOption('kind', '', InputOption::VALUE_REQUIRED, $msg, $defaultKind);
@@ -110,21 +110,19 @@ HELP
     {
         $code = $input->getArgument('code');
         if (strpos('<?', $code) === false) {
-            $code = '<?php ' . $code;
+            $code = '<?php '.$code;
         }
 
         $parserKind = $input->getOption('kind');
-        $depth      = $input->getOption('depth');
-        $nodes      = $this->parse($this->getParser($parserKind), $code);
+        $depth = $input->getOption('depth');
+        $nodes = $this->parse($this->getParser($parserKind), $code);
         $output->page($this->presenter->present($nodes, $depth));
     }
 
     /**
      * Lex and parse a string of code into statements.
      *
-     * @param Parser $parser
-     * @param string $code
-     *
+     * @param  string  $code
      * @return array Statements
      */
     private function parse(Parser $parser, $code)
@@ -137,20 +135,19 @@ HELP
             }
 
             // If we got an unexpected EOF, let's try it again with a semicolon.
-            return $parser->parse($code . ';');
+            return $parser->parse($code.';');
         }
     }
 
     /**
      * Get (or create) the Parser instance.
      *
-     * @param string|null $kind One of Psy\ParserFactory constants (only for PHP parser 2.0 and above).
-     *
+     * @param  string|null  $kind  One of Psy\ParserFactory constants (only for PHP parser 2.0 and above).
      * @return Parser
      */
     private function getParser($kind = null)
     {
-        if (!array_key_exists($kind, $this->parsers)) {
+        if (! array_key_exists($kind, $this->parsers)) {
             $this->parsers[$kind] = $this->parserFactory->createParser($kind);
         }
 

@@ -1,24 +1,19 @@
 <?php
+
 class NotExistingCoveredElementTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers NotExistingClass
      */
-    public function testOne()
-    {
-    }
+    public function test_one() {}
 
     /**
      * @covers NotExistingClass::notExistingMethod
      */
-    public function testTwo()
-    {
-    }
+    public function test_two() {}
 
     /**
      * @covers NotExistingClass::<public>
      */
-    public function testThree()
-    {
-    }
+    public function test_three() {}
 }

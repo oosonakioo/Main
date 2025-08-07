@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\Common\Persistence\Proxy;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
@@ -37,20 +39,17 @@ final class Debug
     /**
      * Private constructor (prevents instantiation).
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Prints a dump of the public, protected and private properties of $var.
      *
      * @link http://xdebug.org/
      *
-     * @param mixed   $var       The variable to dump.
-     * @param integer $maxDepth  The maximum nesting level for object properties.
-     * @param boolean $stripTags Whether output should strip HTML tags.
-     * @param boolean $echo      Send the dumped value to the output buffer
-     *
+     * @param  mixed  $var  The variable to dump.
+     * @param  int  $maxDepth  The maximum nesting level for object properties.
+     * @param  bool  $stripTags  Whether output should strip HTML tags.
+     * @param  bool  $echo  Send the dumped value to the output buffer
      * @return string
      */
     public static function dump($var, $maxDepth = 2, $stripTags = true, $echo = true)
@@ -77,18 +76,17 @@ final class Debug
         $dumpText = ($stripTags ? strip_tags(html_entity_decode($dump)) : $dump);
 
         ini_set('html_errors', $html);
-        
+
         if ($echo) {
             echo $dumpText;
         }
-        
+
         return $dumpText;
     }
 
     /**
-     * @param mixed $var
-     * @param int   $maxDepth
-     *
+     * @param  mixed  $var
+     * @param  int  $maxDepth
      * @return mixed
      */
     public static function export($var, $maxDepth)
@@ -107,10 +105,10 @@ final class Debug
                 foreach ($var as $k => $v) {
                     $return[$k] = self::export($v, $maxDepth - 1);
                 }
-            } else if ($isObj) {
-                $return = new \stdclass();
+            } elseif ($isObj) {
+                $return = new \stdclass;
                 if ($var instanceof \DateTime) {
-                    $return->__CLASS__ = "DateTime";
+                    $return->__CLASS__ = 'DateTime';
                     $return->date = $var->format('c');
                     $return->timezone = $var->getTimeZone()->getName();
                 } else {
@@ -127,7 +125,7 @@ final class Debug
                     }
 
                     foreach ($reflClass->getProperties() as $reflProperty) {
-                        $name  = $reflProperty->getName();
+                        $name = $reflProperty->getName();
 
                         $reflProperty->setAccessible(true);
                         $return->$name = self::export($reflProperty->getValue($var), $maxDepth - 1);
@@ -138,7 +136,7 @@ final class Debug
             }
         } else {
             $return = is_object($var) ? get_class($var)
-                : (is_array($var) ? 'Array(' . count($var) . ')' : $var);
+                : (is_array($var) ? 'Array('.count($var).')' : $var);
         }
 
         return $return;
@@ -147,12 +145,11 @@ final class Debug
     /**
      * Returns a string representation of an object.
      *
-     * @param object $obj
-     *
+     * @param  object  $obj
      * @return string
      */
     public static function toString($obj)
     {
-        return method_exists($obj, '__toString') ? (string) $obj : get_class($obj) . '@' . spl_object_hash($obj);
+        return method_exists($obj, '__toString') ? (string) $obj : get_class($obj).'@'.spl_object_hash($obj);
     }
 }

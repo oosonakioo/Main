@@ -19,17 +19,18 @@ use Symfony\Polyfill\Util\Binary;
 final class Php56
 {
     const LDAP_ESCAPE_FILTER = 1;
+
     const LDAP_ESCAPE_DN = 2;
 
     public static function hash_equals($knownString, $userInput)
     {
-        if (!is_string($knownString)) {
+        if (! is_string($knownString)) {
             trigger_error('Expected known_string to be a string, '.gettype($knownString).' given', E_USER_WARNING);
 
             return false;
         }
 
-        if (!is_string($userInput)) {
+        if (! is_string($userInput)) {
             trigger_error('Expected user_input to be a string, '.gettype($userInput).' given', E_USER_WARNING);
 
             return false;
@@ -44,11 +45,11 @@ final class Php56
 
         $result = 0;
 
-        for ($i = 0; $i < $knownLen; ++$i) {
+        for ($i = 0; $i < $knownLen; $i++) {
             $result |= ord($knownString[$i]) ^ ord($userInput[$i]);
         }
 
-        return 0 === $result;
+        return $result === 0;
     }
 
     /**
@@ -59,10 +60,9 @@ final class Php56
      *
      * @author Chris Wright <ldapi@daverandom.com>
      *
-     * @param string $subject
-     * @param string $ignore
-     * @param int    $flags
-     *
+     * @param  string  $subject
+     * @param  string  $ignore
+     * @param  int  $flags
      * @return string
      *
      * @see http://stackoverflow.com/a/8561604
@@ -71,25 +71,25 @@ final class Php56
     {
         static $charMaps = null;
 
-        if (null === $charMaps) {
-            $charMaps = array(
-                self::LDAP_ESCAPE_FILTER => array('\\', '*', '(', ')', "\x00"),
-                self::LDAP_ESCAPE_DN => array('\\', ',', '=', '+', '<', '>', ';', '"', '#', "\r"),
-            );
+        if ($charMaps === null) {
+            $charMaps = [
+                self::LDAP_ESCAPE_FILTER => ['\\', '*', '(', ')', "\x00"],
+                self::LDAP_ESCAPE_DN => ['\\', ',', '=', '+', '<', '>', ';', '"', '#', "\r"],
+            ];
 
-            $charMaps[0] = array();
+            $charMaps[0] = [];
 
-            for ($i = 0; $i < 256; ++$i) {
+            for ($i = 0; $i < 256; $i++) {
                 $charMaps[0][chr($i)] = sprintf('\\%02x', $i);
             }
 
-            for ($i = 0, $l = count($charMaps[self::LDAP_ESCAPE_FILTER]); $i < $l; ++$i) {
+            for ($i = 0, $l = count($charMaps[self::LDAP_ESCAPE_FILTER]); $i < $l; $i++) {
                 $chr = $charMaps[self::LDAP_ESCAPE_FILTER][$i];
                 unset($charMaps[self::LDAP_ESCAPE_FILTER][$i]);
                 $charMaps[self::LDAP_ESCAPE_FILTER][$chr] = $charMaps[0][$chr];
             }
 
-            for ($i = 0, $l = count($charMaps[self::LDAP_ESCAPE_DN]); $i < $l; ++$i) {
+            for ($i = 0, $l = count($charMaps[self::LDAP_ESCAPE_DN]); $i < $l; $i++) {
                 $chr = $charMaps[self::LDAP_ESCAPE_DN][$i];
                 unset($charMaps[self::LDAP_ESCAPE_DN][$i]);
                 $charMaps[self::LDAP_ESCAPE_DN][$chr] = $charMaps[0][$chr];
@@ -98,7 +98,7 @@ final class Php56
 
         // Create the base char map to escape
         $flags = (int) $flags;
-        $charMap = array();
+        $charMap = [];
 
         if ($flags & self::LDAP_ESCAPE_FILTER) {
             $charMap += $charMaps[self::LDAP_ESCAPE_FILTER];
@@ -108,14 +108,14 @@ final class Php56
             $charMap += $charMaps[self::LDAP_ESCAPE_DN];
         }
 
-        if (!$charMap) {
+        if (! $charMap) {
             $charMap = $charMaps[0];
         }
 
         // Remove any chars to ignore from the list
         $ignore = (string) $ignore;
 
-        for ($i = 0, $l = strlen($ignore); $i < $l; ++$i) {
+        for ($i = 0, $l = strlen($ignore); $i < $l; $i++) {
             unset($charMap[$ignore[$i]]);
         }
 

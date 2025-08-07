@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -31,8 +32,6 @@ class InflateStream implements StreamInterface
     }
 
     /**
-     * @param StreamInterface $stream
-     * @param $header
      * @return int
      */
     private function getLengthOfPossibleFilenameHeader(StreamInterface $stream, $header)

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Support\Traits;
 
-use Closure;
 use BadMethodCallException;
+use Closure;
 
 trait Macroable
 {
@@ -17,8 +17,7 @@ trait Macroable
     /**
      * Register a custom macro.
      *
-     * @param  string    $name
-     * @param  callable  $macro
+     * @param  string  $name
      * @return void
      */
     public static function macro($name, callable $macro)
@@ -41,7 +40,7 @@ trait Macroable
      * Dynamically handle calls to the class.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException
@@ -63,7 +62,7 @@ trait Macroable
      * Dynamically handle calls to the class.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException

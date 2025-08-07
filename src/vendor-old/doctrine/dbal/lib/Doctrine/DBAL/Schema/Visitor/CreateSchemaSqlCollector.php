@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,41 +21,37 @@
 namespace Doctrine\DBAL\Schema\Visitor;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Sequence;
+use Doctrine\DBAL\Schema\Table;
 
 class CreateSchemaSqlCollector extends AbstractVisitor
 {
     /**
      * @var array
      */
-    private $createNamespaceQueries = array();
+    private $createNamespaceQueries = [];
 
     /**
      * @var array
      */
-    private $createTableQueries = array();
+    private $createTableQueries = [];
 
     /**
      * @var array
      */
-    private $createSequenceQueries = array();
+    private $createSequenceQueries = [];
 
     /**
      * @var array
      */
-    private $createFkConstraintQueries = array();
+    private $createFkConstraintQueries = [];
 
     /**
-     *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     private $platform = null;
 
-    /**
-     * @param AbstractPlatform $platform
-     */
     public function __construct(AbstractPlatform $platform)
     {
         $this->platform = $platform;
@@ -112,10 +109,10 @@ class CreateSchemaSqlCollector extends AbstractVisitor
      */
     public function resetQueries()
     {
-        $this->createNamespaceQueries = array();
-        $this->createTableQueries = array();
-        $this->createSequenceQueries = array();
-        $this->createFkConstraintQueries = array();
+        $this->createNamespaceQueries = [];
+        $this->createTableQueries = [];
+        $this->createSequenceQueries = [];
+        $this->createFkConstraintQueries = [];
     }
 
     /**
@@ -125,7 +122,7 @@ class CreateSchemaSqlCollector extends AbstractVisitor
      */
     public function getQueries()
     {
-        $sql = array();
+        $sql = [];
 
         foreach ($this->createNamespaceQueries as $schemaSql) {
             $sql = array_merge($sql, (array) $schemaSql);

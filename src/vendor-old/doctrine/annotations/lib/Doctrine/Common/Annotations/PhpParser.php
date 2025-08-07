@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,8 +33,7 @@ final class PhpParser
     /**
      * Parses a class.
      *
-     * @param \ReflectionClass $class A <code>ReflectionClass</code> object.
-     *
+     * @param  \ReflectionClass  $class  A <code>ReflectionClass</code> object.
      * @return array A list with use statements in the form (Alias => FQN).
      */
     public function parseClass(\ReflectionClass $class)
@@ -43,18 +43,18 @@ final class PhpParser
         }
 
         if (false === $filename = $class->getFileName()) {
-            return array();
+            return [];
         }
 
         $content = $this->getFileContent($filename, $class->getStartLine());
 
-        if (null === $content) {
-            return array();
+        if ($content === null) {
+            return [];
         }
 
         $namespace = preg_quote($class->getNamespaceName());
-        $content = preg_replace('/^.*?(\bnamespace\s+' . $namespace . '\s*[;{].*)$/s', '\\1', $content);
-        $tokenizer = new TokenParser('<?php ' . $content);
+        $content = preg_replace('/^.*?(\bnamespace\s+'.$namespace.'\s*[;{].*)$/s', '\\1', $content);
+        $tokenizer = new TokenParser('<?php '.$content);
 
         $statements = $tokenizer->parseUseStatements($class->getNamespaceName());
 
@@ -64,21 +64,20 @@ final class PhpParser
     /**
      * Gets the content of the file right up to the given line number.
      *
-     * @param string  $filename   The name of the file to load.
-     * @param integer $lineNumber The number of lines to read from file.
-     *
+     * @param  string  $filename  The name of the file to load.
+     * @param  int  $lineNumber  The number of lines to read from file.
      * @return string|null The content of the file or null if the file does not exist.
      */
     private function getFileContent($filename, $lineNumber)
     {
-        if ( ! is_file($filename)) {
+        if (! is_file($filename)) {
             return null;
         }
 
         $content = '';
         $lineCnt = 0;
         $file = new SplFileObject($filename);
-        while (!$file->eof()) {
+        while (! $file->eof()) {
             if ($lineCnt++ == $lineNumber) {
                 break;
             }

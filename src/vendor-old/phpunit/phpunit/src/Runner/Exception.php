@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +12,4 @@
 /**
  * @since Class available since Release 4.0.0
  */
-class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception
-{
-}
+class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception {}

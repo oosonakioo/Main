@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,8 +31,7 @@ use ReflectionClass;
 class InvalidArgumentException extends BaseInvalidArgumentException implements ExceptionInterface
 {
     /**
-     * @param string $className
-     *
+     * @param  string  $className
      * @return self
      */
     public static function fromNonExistingClass($className)
@@ -48,8 +48,6 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements E
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     *
      * @return self
      */
     public static function fromAbstractClass(ReflectionClass $reflectionClass)

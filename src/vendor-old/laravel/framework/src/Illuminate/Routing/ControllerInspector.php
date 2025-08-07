@@ -2,9 +2,9 @@
 
 namespace Illuminate\Routing;
 
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
-use Illuminate\Support\Str;
 
 /**
  * @deprecated since version 5.2.
@@ -60,7 +60,6 @@ class ControllerInspector
     /**
      * Determine if the given controller method is routable.
      *
-     * @param  \ReflectionMethod  $method
      * @return bool
      */
     public function isRoutable(ReflectionMethod $method)
@@ -75,7 +74,6 @@ class ControllerInspector
     /**
      * Get the method data for a given method.
      *
-     * @param  \ReflectionMethod  $method
      * @param  string  $prefix
      * @return array
      */
@@ -91,7 +89,7 @@ class ControllerInspector
     /**
      * Get the routable data for an index method.
      *
-     * @param  array   $data
+     * @param  array  $data
      * @param  string  $prefix
      * @return array
      */

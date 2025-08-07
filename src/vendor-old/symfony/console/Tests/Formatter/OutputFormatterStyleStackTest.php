@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\Console\Tests\Formatter;
 
-use Symfony\Component\Console\Formatter\OutputFormatterStyleStack;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Formatter\OutputFormatterStyleStack;
 
 class OutputFormatterStyleStackTest extends \PHPUnit_Framework_TestCase
 {
-    public function testPush()
+    public function test_push()
     {
-        $stack = new OutputFormatterStyleStack();
+        $stack = new OutputFormatterStyleStack;
         $stack->push($s1 = new OutputFormatterStyle('white', 'black'));
         $stack->push($s2 = new OutputFormatterStyle('yellow', 'blue'));
 
@@ -29,9 +29,9 @@ class OutputFormatterStyleStackTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($s3, $stack->getCurrent());
     }
 
-    public function testPop()
+    public function test_pop()
     {
-        $stack = new OutputFormatterStyleStack();
+        $stack = new OutputFormatterStyleStack;
         $stack->push($s1 = new OutputFormatterStyle('white', 'black'));
         $stack->push($s2 = new OutputFormatterStyle('yellow', 'blue'));
 
@@ -39,17 +39,17 @@ class OutputFormatterStyleStackTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($s1, $stack->pop());
     }
 
-    public function testPopEmpty()
+    public function test_pop_empty()
     {
-        $stack = new OutputFormatterStyleStack();
-        $style = new OutputFormatterStyle();
+        $stack = new OutputFormatterStyleStack;
+        $style = new OutputFormatterStyle;
 
         $this->assertEquals($style, $stack->pop());
     }
 
-    public function testPopNotLast()
+    public function test_pop_not_last()
     {
-        $stack = new OutputFormatterStyleStack();
+        $stack = new OutputFormatterStyleStack;
         $stack->push($s1 = new OutputFormatterStyle('white', 'black'));
         $stack->push($s2 = new OutputFormatterStyle('yellow', 'blue'));
         $stack->push($s3 = new OutputFormatterStyle('green', 'red'));
@@ -61,9 +61,9 @@ class OutputFormatterStyleStackTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidPop()
+    public function test_invalid_pop()
     {
-        $stack = new OutputFormatterStyleStack();
+        $stack = new OutputFormatterStyleStack;
         $stack->push(new OutputFormatterStyle('white', 'black'));
         $stack->pop(new OutputFormatterStyle('yellow', 'blue'));
     }

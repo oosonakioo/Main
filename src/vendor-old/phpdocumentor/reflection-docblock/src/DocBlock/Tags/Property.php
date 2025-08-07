@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -34,11 +36,9 @@ class Property extends BaseTag implements Factory\StaticMethod
     protected $variableName = '';
 
     /**
-     * @param string      $variableName
-     * @param Type        $type
-     * @param Description $description
+     * @param  string  $variableName
      */
-    public function __construct($variableName, Type $type = null, Description $description = null)
+    public function __construct($variableName, ?Type $type = null, ?Description $description = null)
     {
         Assert::string($variableName);
 
@@ -52,9 +52,9 @@ class Property extends BaseTag implements Factory\StaticMethod
      */
     public static function create(
         $body,
-        TypeResolver $typeResolver = null,
-        DescriptionFactory $descriptionFactory = null,
-        TypeContext $context = null
+        ?TypeResolver $typeResolver = null,
+        ?DescriptionFactory $descriptionFactory = null,
+        ?TypeContext $context = null
     ) {
         Assert::stringNotEmpty($body);
         Assert::allNotNull([$typeResolver, $descriptionFactory]);
@@ -111,8 +111,8 @@ class Property extends BaseTag implements Factory\StaticMethod
      */
     public function __toString()
     {
-        return ($this->type ? $this->type . ' ' : '')
-        . '$' . $this->variableName
-        . ($this->description ? ' ' . $this->description : '');
+        return ($this->type ? $this->type.' ' : '')
+        .'$'.$this->variableName
+        .($this->description ? ' '.$this->description : '');
     }
 }

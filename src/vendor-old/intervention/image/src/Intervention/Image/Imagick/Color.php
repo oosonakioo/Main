@@ -14,7 +14,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Initiates color object from integer
      *
-     * @param  integer $value
+     * @param  int  $value
      * @return \Intervention\Image\AbstractColor
      */
     public function initFromInteger($value)
@@ -31,7 +31,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Initiates color object from given array
      *
-     * @param  array $value
+     * @param  array  $value
      * @return \Intervention\Image\AbstractColor
      */
     public function initFromArray($array)
@@ -41,12 +41,12 @@ class Color extends \Intervention\Image\AbstractColor
         if (count($array) == 4) {
 
             // color array with alpha value
-            list($r, $g, $b, $a) = $array;
+            [$r, $g, $b, $a] = $array;
 
         } elseif (count($array) == 3) {
 
             // color array without alpha value
-            list($r, $g, $b) = $array;
+            [$r, $g, $b] = $array;
             $a = 1;
         }
 
@@ -56,8 +56,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Initiates color object from given string
      *
-     * @param  string $value
-     *
+     * @param  string  $value
      * @return \Intervention\Image\AbstractColor
      */
     public function initFromString($value)
@@ -70,8 +69,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Initiates color object from given ImagickPixel object
      *
-     * @param  ImagickPixel $value
-     *
+     * @param  ImagickPixel  $value
      * @return \Intervention\Image\AbstractColor
      */
     public function initFromObject($value)
@@ -84,10 +82,9 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Initiates color object from given R, G and B values
      *
-     * @param  integer $r
-     * @param  integer $g
-     * @param  integer $b
-     *
+     * @param  int  $r
+     * @param  int  $g
+     * @param  int  $b
      * @return \Intervention\Image\AbstractColor
      */
     public function initFromRgb($r, $g, $b)
@@ -98,11 +95,10 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Initiates color object from given R, G, B and A values
      *
-     * @param  integer $r
-     * @param  integer $g
-     * @param  integer $b
-     * @param  float   $a
-     *
+     * @param  int  $r
+     * @param  int  $g
+     * @param  int  $b
+     * @param  float  $a
      * @return \Intervention\Image\AbstractColor
      */
     public function initFromRgba($r, $g, $b, $a)
@@ -113,7 +109,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Calculates integer value of current color instance
      *
-     * @return integer
+     * @return int
      */
     public function getInt()
     {
@@ -128,8 +124,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Calculates hexadecimal value of current color instance
      *
-     * @param  string $prefix
-     *
+     * @param  string  $prefix
      * @return string
      */
     public function getHex($prefix = '')
@@ -148,12 +143,12 @@ class Color extends \Intervention\Image\AbstractColor
      */
     public function getArray()
     {
-        return array(
+        return [
             $this->getRedValue(),
             $this->getGreenValue(),
             $this->getBlueValue(),
-            $this->getAlphaValue()
-        );
+            $this->getAlphaValue(),
+        ];
     }
 
     /**
@@ -174,34 +169,33 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Determines if current color is different from given color
      *
-     * @param  AbstractColor $color
-     * @param  integer       $tolerance
-     * @return boolean
+     * @param  AbstractColor  $color
+     * @param  int  $tolerance
+     * @return bool
      */
     public function differs(\Intervention\Image\AbstractColor $color, $tolerance = 0)
     {
         $color_tolerance = round($tolerance * 2.55);
         $alpha_tolerance = round($tolerance);
 
-        $delta = array(
+        $delta = [
             'r' => abs($color->getRedValue() - $this->getRedValue()),
             'g' => abs($color->getGreenValue() - $this->getGreenValue()),
             'b' => abs($color->getBlueValue() - $this->getBlueValue()),
-            'a' => abs($color->getAlphaValue() - $this->getAlphaValue())
-        );
+            'a' => abs($color->getAlphaValue() - $this->getAlphaValue()),
+        ];
 
-        return (
+        return
             $delta['r'] > $color_tolerance or
             $delta['g'] > $color_tolerance or
             $delta['b'] > $color_tolerance or
-            $delta['a'] > $alpha_tolerance
-        );
+            $delta['a'] > $alpha_tolerance;
     }
 
     /**
      * Returns RGB red value of current color
      *
-     * @return integer
+     * @return int
      */
     public function getRedValue()
     {
@@ -211,7 +205,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Returns RGB green value of current color
      *
-     * @return integer
+     * @return int
      */
     public function getGreenValue()
     {
@@ -221,7 +215,7 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Returns RGB blue value of current color
      *
-     * @return integer
+     * @return int
      */
     public function getBlueValue()
     {
@@ -265,13 +259,12 @@ class Color extends \Intervention\Image\AbstractColor
     /**
      * Calculates RGA integer alpha value into float value
      *
-     * @param  integer $value
+     * @param  int  $value
      * @return float
      */
     private function rgb2alpha($value)
     {
         // (255 -> 1.0) / (0 -> 0.0)
-        return (float) round($value/255, 2);
+        return (float) round($value / 255, 2);
     }
-
 }

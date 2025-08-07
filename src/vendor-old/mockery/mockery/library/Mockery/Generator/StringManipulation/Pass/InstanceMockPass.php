@@ -50,8 +50,9 @@ MOCK;
 
     protected function appendToClass($class, $code)
     {
-        $lastBrace = strrpos($class, "}");
-        $class = substr($class, 0, $lastBrace) . $code . "\n    }\n";
+        $lastBrace = strrpos($class, '}');
+        $class = substr($class, 0, $lastBrace).$code."\n    }\n";
+
         return $class;
     }
 }

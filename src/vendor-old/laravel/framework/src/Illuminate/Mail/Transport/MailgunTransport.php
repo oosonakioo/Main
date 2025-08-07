@@ -2,9 +2,9 @@
 
 namespace Illuminate\Mail\Transport;
 
-use Swift_Mime_Message;
-use GuzzleHttp\Post\PostFile;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Post\PostFile;
+use Swift_Mime_Message;
 
 class MailgunTransport extends Transport
 {
@@ -39,7 +39,6 @@ class MailgunTransport extends Transport
     /**
      * Create a new Mailgun transport instance.
      *
-     * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
      * @param  string  $domain
      * @return void
@@ -82,7 +81,6 @@ class MailgunTransport extends Transport
     /**
      * Get the "to" payload field for the API request.
      *
-     * @param  \Swift_Mime_Message  $message
      * @return array
      */
     protected function getTo(Swift_Mime_Message $message)

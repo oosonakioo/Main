@@ -17,7 +17,7 @@ class TextDescriptorTest extends AbstractDescriptorTest
 {
     protected function getDescriptor()
     {
-        return new TextDescriptor();
+        return new TextDescriptor;
     }
 
     protected function getFormat()

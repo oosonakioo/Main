@@ -20,8 +20,6 @@ class Swift_Mailer
 
     /**
      * Create a new Mailer using $transport for delivery.
-     *
-     * @param Swift_Transport $transport
      */
     public function __construct(Swift_Transport $transport)
     {
@@ -31,7 +29,6 @@ class Swift_Mailer
     /**
      * Create a new Mailer instance.
      *
-     * @param Swift_Transport $transport
      *
      * @return self
      */
@@ -45,8 +42,7 @@ class Swift_Mailer
      *
      * For example 'mimepart' would create a 'message.mimepart' instance
      *
-     * @param string $service
-     *
+     * @param  string  $service
      * @return object
      */
     public function createMessage($service = 'message')
@@ -66,16 +62,14 @@ class Swift_Mailer
      * The return value is the number of recipients who were accepted for
      * delivery.
      *
-     * @param Swift_Mime_Message $message
-     * @param array              $failedRecipients An array of failures by-reference
-     *
+     * @param  array  $failedRecipients  An array of failures by-reference
      * @return int The number of successful recipients. Can be 0 which indicates failure
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
     {
         $failedRecipients = (array) $failedRecipients;
 
-        if (!$this->_transport->isStarted()) {
+        if (! $this->_transport->isStarted()) {
             $this->_transport->start();
         }
 
@@ -94,8 +88,6 @@ class Swift_Mailer
 
     /**
      * Register a plugin using a known unique key (e.g. myPlugin).
-     *
-     * @param Swift_Events_EventListener $plugin
      */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {

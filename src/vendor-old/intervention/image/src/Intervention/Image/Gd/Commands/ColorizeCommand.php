@@ -7,8 +7,8 @@ class ColorizeCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Changes balance of different RGB color channels
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

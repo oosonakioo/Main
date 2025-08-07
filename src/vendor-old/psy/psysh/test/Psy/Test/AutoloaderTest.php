@@ -15,9 +15,9 @@ use Psy\Autoloader;
 
 class AutoloaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRegister()
+    public function test_register()
     {
         Autoloader::register();
-        $this->assertTrue(spl_autoload_unregister(array('Psy\Autoloader', 'autoload')));
+        $this->assertTrue(spl_autoload_unregister(['Psy\Autoloader', 'autoload']));
     }
 }

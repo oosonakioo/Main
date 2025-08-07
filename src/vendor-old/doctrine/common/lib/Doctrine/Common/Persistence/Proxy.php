@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\Common\Persistence;
  * Interface for proxy classes.
  *
  * @author Roman Borschel <roman@code-factory.org>
+ *
  * @since  2.2
  */
 interface Proxy
@@ -37,7 +39,7 @@ interface Proxy
     /**
      * Length of the proxy marker.
      *
-     * @var integer
+     * @var int
      */
     const MARKER_LENGTH = 6;
 

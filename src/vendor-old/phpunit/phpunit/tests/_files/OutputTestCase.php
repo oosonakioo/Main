@@ -1,27 +1,28 @@
 <?php
+
 class OutputTestCase extends PHPUnit_Framework_TestCase
 {
-    public function testExpectOutputStringFooActualFoo()
+    public function test_expect_output_string_foo_actual_foo()
     {
         $this->expectOutputString('foo');
-        print 'foo';
+        echo 'foo';
     }
 
-    public function testExpectOutputStringFooActualBar()
+    public function test_expect_output_string_foo_actual_bar()
     {
         $this->expectOutputString('foo');
-        print 'bar';
+        echo 'bar';
     }
 
-    public function testExpectOutputRegexFooActualFoo()
+    public function test_expect_output_regex_foo_actual_foo()
     {
         $this->expectOutputRegex('/foo/');
-        print 'foo';
+        echo 'foo';
     }
 
-    public function testExpectOutputRegexFooActualBar()
+    public function test_expect_output_regex_foo_actual_bar()
     {
         $this->expectOutputRegex('/foo/');
-        print 'bar';
+        echo 'bar';
     }
 }

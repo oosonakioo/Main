@@ -15,12 +15,12 @@ use Monolog\Handler\TestHandler;
 
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHandleError()
+    public function test_handle_error()
     {
-        $logger = new Logger('test', array($handler = new TestHandler));
+        $logger = new Logger('test', [$handler = new TestHandler]);
         $errHandler = new ErrorHandler($logger);
 
-        $errHandler->registerErrorHandler(array(E_USER_NOTICE => Logger::EMERGENCY), false);
+        $errHandler->registerErrorHandler([E_USER_NOTICE => Logger::EMERGENCY], false);
         trigger_error('Foo', E_USER_ERROR);
         $this->assertCount(1, $handler->getRecords());
         $this->assertTrue($handler->hasErrorRecords());

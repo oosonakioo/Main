@@ -1,4 +1,6 @@
-<?php namespace SuperClosure;
+<?php
+
+namespace SuperClosure;
 
 use Closure;
 use SuperClosure\Exception\ClosureUnserializationException;
@@ -35,13 +37,10 @@ class SerializableClosure implements \Serializable
 
     /**
      * Create a new serializable closure instance.
-     *
-     * @param Closure                  $closure
-     * @param SerializerInterface|null $serializer
      */
     public function __construct(
         \Closure $closure,
-        SerializerInterface $serializer = null
+        ?SerializerInterface $serializer = null
     ) {
         $this->closure = $closure;
         $this->serializer = $serializer ?: new Serializer;
@@ -80,15 +79,15 @@ class SerializableClosure implements \Serializable
      *
      * The method is essentially a wrapped proxy to the Closure::bindTo method.
      *
-     * @param mixed $newthis  The object to which the closure should be bound,
-     *                        or NULL for the closure to be unbound.
-     * @param mixed $newscope The class scope to which the closure is to be
-     *                        associated, or 'static' to keep the current one.
-     *                        If an object is given, the type of the object will
-     *                        be used instead. This determines the visibility of
-     *                        protected and private methods of the bound object.
-     *
+     * @param  mixed  $newthis  The object to which the closure should be bound,
+     *                          or NULL for the closure to be unbound.
+     * @param  mixed  $newscope  The class scope to which the closure is to be
+     *                           associated, or 'static' to keep the current one.
+     *                           If an object is given, the type of the object will
+     *                           be used instead. This determines the visibility of
+     *                           protected and private methods of the bound object.
      * @return SerializableClosure
+     *
      * @link http://www.php.net/manual/en/closure.bindto.php
      */
     public function bindTo($newthis, $newscope = 'static')
@@ -103,18 +102,21 @@ class SerializableClosure implements \Serializable
      * Serializes the code, context, and binding of the closure.
      *
      * @return string|null
+     *
      * @link http://php.net/manual/en/serializable.serialize.php
      */
     public function serialize()
     {
         try {
             $this->data = $this->data ?: $this->serializer->getData($this->closure, true);
+
             return serialize($this->data);
         } catch (\Exception $e) {
             trigger_error(
-                'Serialization of closure failed: ' . $e->getMessage(),
+                'Serialization of closure failed: '.$e->getMessage(),
                 E_USER_NOTICE
             );
+
             // Note: The serialize() method of Serializable must return a string
             // or null and cannot throw exceptions.
             return null;
@@ -129,9 +131,10 @@ class SerializableClosure implements \Serializable
      * extracted into a fresh scope prior to redefining the closure. The
      * closure is also rebound to its former object and scope.
      *
-     * @param string $serialized
+     * @param  string  $serialized
      *
      * @throws ClosureUnserializationException
+     *
      * @link http://php.net/manual/en/serializable.unserialize.php
      */
     public function unserialize($serialized)
@@ -141,7 +144,7 @@ class SerializableClosure implements \Serializable
         $this->closure = __reconstruct_closure($this->data);
 
         // Throw an exception if the closure could not be reconstructed.
-        if (!$this->closure instanceof Closure) {
+        if (! $this->closure instanceof Closure) {
             throw new ClosureUnserializationException(
                 'The closure is corrupted and cannot be unserialized.'
             );
@@ -179,9 +182,9 @@ class SerializableClosure implements \Serializable
  * This is also done inside a plain function instead of a method so that the
  * binding and scope of the closure are null.
  *
- * @param array $__data Unserialized closure data.
- *
+ * @param  array  $__data  Unserialized closure data.
  * @return Closure|null
+ *
  * @internal
  */
 function __reconstruct_closure(array $__data)

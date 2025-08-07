@@ -7,7 +7,7 @@ abstract class AbstractDecoder
     /**
      * Initiates new image from path in filesystem
      *
-     * @param  string $path
+     * @param  string  $path
      * @return \Intervention\Image\Image
      */
     abstract public function initFromPath($path);
@@ -15,7 +15,7 @@ abstract class AbstractDecoder
     /**
      * Initiates new image from binary data
      *
-     * @param  string $data
+     * @param  string  $data
      * @return \Intervention\Image\Image
      */
     abstract public function initFromBinary($data);
@@ -23,7 +23,7 @@ abstract class AbstractDecoder
     /**
      * Initiates new image from GD resource
      *
-     * @param  Resource $resource
+     * @param  resource  $resource
      * @return \Intervention\Image\Image
      */
     abstract public function initFromGdResource($resource);
@@ -31,7 +31,6 @@ abstract class AbstractDecoder
     /**
      * Initiates new image from Imagick object
      *
-     * @param \Imagick $object
      * @return \Intervention\Image\Image
      */
     abstract public function initFromImagick(\Imagick $object);
@@ -46,7 +45,7 @@ abstract class AbstractDecoder
     /**
      * Creates new Decoder with data
      *
-     * @param mixed $data
+     * @param  mixed  $data
      */
     public function __construct($data = null)
     {
@@ -56,36 +55,34 @@ abstract class AbstractDecoder
     /**
      * Init from fiven URL
      *
-     * @param  string $url
+     * @param  string  $url
      * @return \Intervention\Image\Image
      */
     public function initFromUrl($url)
     {
-        
-        $options = array(
-            'http' => array(
-                'method'=>"GET",
-                'header'=>"Accept-language: en\r\n".
-                "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2\r\n"
-          )
-        );
-        
-        $context  = stream_context_create($options);
-        
+
+        $options = [
+            'http' => [
+                'method' => 'GET',
+                'header' => "Accept-language: en\r\n".
+                "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2\r\n",
+            ],
+        ];
+
+        $context = stream_context_create($options);
 
         if ($data = @file_get_contents($url, false, $context)) {
             return $this->initFromBinary($data);
         }
 
         throw new \Intervention\Image\Exception\NotReadableException(
-            "Unable to init from given url (".$url.")."
+            'Unable to init from given url ('.$url.').'
         );
     }
 
     /**
      * Init from given stream
      *
-     * @param $stream
      * @return \Intervention\Image\Image
      */
     public function initFromStream($stream)
@@ -108,31 +105,32 @@ abstract class AbstractDecoder
         }
 
         throw new \Intervention\Image\Exception\NotReadableException(
-            "Unable to init from given stream"
+            'Unable to init from given stream'
         );
     }
 
     /**
      * Checks if we can move the pointer for this stream
      *
-     * @param resource $stream
+     * @param  resource  $stream
      * @return bool
      */
     private function isStreamSeekable($stream)
     {
         $metadata = stream_get_meta_data($stream);
+
         return $metadata['seekable'];
     }
 
     /**
      * Determines if current source data is GD resource
      *
-     * @return boolean
+     * @return bool
      */
     public function isGdResource()
     {
         if (is_resource($this->data)) {
-            return (get_resource_type($this->data) == 'gd');
+            return get_resource_type($this->data) == 'gd';
         }
 
         return false;
@@ -141,7 +139,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is Imagick object
      *
-     * @return boolean
+     * @return bool
      */
     public function isImagick()
     {
@@ -151,7 +149,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is Intervention\Image\Image object
      *
-     * @return boolean
+     * @return bool
      */
     public function isInterventionImage()
     {
@@ -161,7 +159,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current data is SplFileInfo object
      *
-     * @return boolean
+     * @return bool
      */
     public function isSplFileInfo()
     {
@@ -171,7 +169,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current data is Symfony UploadedFile component
      *
-     * @return boolean
+     * @return bool
      */
     public function isSymfonyUpload()
     {
@@ -181,7 +179,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is file path
      *
-     * @return boolean
+     * @return bool
      */
     public function isFilePath()
     {
@@ -199,7 +197,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is url
      *
-     * @return boolean
+     * @return bool
      */
     public function isUrl()
     {
@@ -209,12 +207,16 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is a stream resource
      *
-     * @return boolean
+     * @return bool
      */
     public function isStream()
     {
-        if (!is_resource($this->data)) return false;
-        if (get_resource_type($this->data) !== 'stream') return false;
+        if (! is_resource($this->data)) {
+            return false;
+        }
+        if (get_resource_type($this->data) !== 'stream') {
+            return false;
+        }
 
         return true;
     }
@@ -222,13 +224,14 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is binary data
      *
-     * @return boolean
+     * @return bool
      */
     public function isBinary()
     {
         if (is_string($this->data)) {
             $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $this->data);
-            return (substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty');
+
+            return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
         }
 
         return false;
@@ -237,7 +240,7 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is data-url
      *
-     * @return boolean
+     * @return bool
      */
     public function isDataUrl()
     {
@@ -249,11 +252,11 @@ abstract class AbstractDecoder
     /**
      * Determines if current source data is base64 encoded
      *
-     * @return boolean
+     * @return bool
      */
     public function isBase64()
     {
-        if (!is_string($this->data)) {
+        if (! is_string($this->data)) {
             return false;
         }
 
@@ -263,7 +266,7 @@ abstract class AbstractDecoder
     /**
      * Initiates new Image from Intervention\Image\Image
      *
-     * @param  Image $object
+     * @param  Image  $object
      * @return \Intervention\Image\Image
      */
     public function initFromInterventionImage($object)
@@ -274,12 +277,12 @@ abstract class AbstractDecoder
     /**
      * Parses and decodes binary image data from data-url
      *
-     * @param  string $data_url
+     * @param  string  $data_url
      * @return string
      */
     private function decodeDataUrl($data_url)
     {
-        if (!is_string($data_url)) {
+        if (! is_string($data_url)) {
             return null;
         }
 
@@ -296,7 +299,7 @@ abstract class AbstractDecoder
     /**
      * Initiates new image from mixed data
      *
-     * @param  mixed $data
+     * @param  mixed  $data
      * @return \Intervention\Image\Image
      */
     public function init($data)
@@ -336,7 +339,7 @@ abstract class AbstractDecoder
                 return $this->initFromBinary(base64_decode($this->data));
 
             default:
-                throw new Exception\NotReadableException("Image source not readable");
+                throw new Exception\NotReadableException('Image source not readable');
         }
     }
 

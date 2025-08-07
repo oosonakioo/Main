@@ -1,10 +1,11 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
- * @package   FPDI
  * @copyright Copyright (c) 2015 Setasign - Jan Slabon (http://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
+ *
  * @version   1.6.1
  */
 
@@ -16,7 +17,7 @@ class FilterASCIIHexDecode
     /**
      * Converts an ASCII hexadecimal encoded string into it's binary representation.
      *
-     * @param string $data The input string
+     * @param  string  $data  The input string
      * @return string
      */
     public function decode($data)
@@ -32,12 +33,12 @@ class FilterASCIIHexDecode
     /**
      * Converts a string into ASCII hexadecimal representation.
      *
-     * @param string $data The input string
-     * @param boolean $leaveEOD
+     * @param  string  $data  The input string
+     * @param  bool  $leaveEOD
      * @return string
      */
     public function encode($data, $leaveEOD = false)
     {
-        return current(unpack('H*', $data)) . ($leaveEOD ? '' : '>');
+        return current(unpack('H*', $data)).($leaveEOD ? '' : '>');
     }
 }

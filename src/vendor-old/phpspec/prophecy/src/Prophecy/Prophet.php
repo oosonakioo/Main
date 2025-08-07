@@ -11,16 +11,16 @@
 
 namespace Prophecy;
 
+use Prophecy\Call\CallCenter;
+use Prophecy\Doubler\ClassPatch;
 use Prophecy\Doubler\Doubler;
 use Prophecy\Doubler\LazyDouble;
-use Prophecy\Doubler\ClassPatch;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophecy\RevealerInterface;
-use Prophecy\Prophecy\Revealer;
-use Prophecy\Call\CallCenter;
-use Prophecy\Util\StringUtil;
-use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Exception\Prediction\AggregateException;
+use Prophecy\Exception\Prediction\PredictionException;
+use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Prophecy\Revealer;
+use Prophecy\Prophecy\RevealerInterface;
+use Prophecy\Util\StringUtil;
 
 /**
  * Prophet creates prophecies.
@@ -30,46 +30,43 @@ use Prophecy\Exception\Prediction\AggregateException;
 class Prophet
 {
     private $doubler;
+
     private $revealer;
+
     private $util;
 
     /**
      * @var ObjectProphecy[]
      */
-    private $prophecies = array();
+    private $prophecies = [];
 
     /**
      * Initializes Prophet.
-     *
-     * @param null|Doubler           $doubler
-     * @param null|RevealerInterface $revealer
-     * @param null|StringUtil        $util
      */
-    public function __construct(Doubler $doubler = null, RevealerInterface $revealer = null,
-                                StringUtil $util = null)
+    public function __construct(?Doubler $doubler = null, ?RevealerInterface $revealer = null,
+        ?StringUtil $util = null)
     {
-        if (null === $doubler) {
+        if ($doubler === null) {
             $doubler = new Doubler;
             $doubler->registerClassPatch(new ClassPatch\SplFileInfoPatch);
             $doubler->registerClassPatch(new ClassPatch\TraversablePatch);
             $doubler->registerClassPatch(new ClassPatch\DisableConstructorPatch);
             $doubler->registerClassPatch(new ClassPatch\ProphecySubjectPatch);
             $doubler->registerClassPatch(new ClassPatch\ReflectionClassNewInstancePatch);
-            $doubler->registerClassPatch(new ClassPatch\HhvmExceptionPatch());
+            $doubler->registerClassPatch(new ClassPatch\HhvmExceptionPatch);
             $doubler->registerClassPatch(new ClassPatch\MagicCallPatch);
             $doubler->registerClassPatch(new ClassPatch\KeywordPatch);
         }
 
-        $this->doubler  = $doubler;
+        $this->doubler = $doubler;
         $this->revealer = $revealer ?: new Revealer;
-        $this->util     = $util ?: new StringUtil;
+        $this->util = $util ?: new StringUtil;
     }
 
     /**
      * Creates new object prophecy.
      *
-     * @param null|string $classOrInterface Class or interface name
-     *
+     * @param  null|string  $classOrInterface  Class or interface name
      * @return ObjectProphecy
      */
     public function prophesize($classOrInterface = null)

@@ -47,7 +47,7 @@ interface SessionStorageInterface
     /**
      * Sets the session ID.
      *
-     * @param string $id
+     * @param  string  $id
      */
     public function setId($id);
 
@@ -61,7 +61,7 @@ interface SessionStorageInterface
     /**
      * Sets the session name.
      *
-     * @param string $name
+     * @param  string  $name
      */
     public function setName($name);
 
@@ -84,12 +84,11 @@ interface SessionStorageInterface
      * Otherwise session data could get lost again for concurrent requests with the
      * new ID. One result could be that you get logged out after just logging in.
      *
-     * @param bool $destroy  Destroy session when regenerating?
-     * @param int  $lifetime Sets the cookie lifetime for the session cookie. A null value
-     *                       will leave the system settings unchanged, 0 sets the cookie
-     *                       to expire with browser session. Time is in seconds, and is
-     *                       not a Unix timestamp.
-     *
+     * @param  bool  $destroy  Destroy session when regenerating?
+     * @param  int  $lifetime  Sets the cookie lifetime for the session cookie. A null value
+     *                         will leave the system settings unchanged, 0 sets the cookie
+     *                         to expire with browser session. Time is in seconds, and is
+     *                         not a Unix timestamp.
      * @return bool True if session regenerated, false if error
      *
      * @throws \RuntimeException If an error occurs while regenerating this storage
@@ -117,8 +116,7 @@ interface SessionStorageInterface
     /**
      * Gets a SessionBagInterface by name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return SessionBagInterface
      *
      * @throws \InvalidArgumentException If the bag does not exist
@@ -127,8 +125,6 @@ interface SessionStorageInterface
 
     /**
      * Registers a SessionBagInterface for use.
-     *
-     * @param SessionBagInterface $bag
      */
     public function registerBag(SessionBagInterface $bag);
 

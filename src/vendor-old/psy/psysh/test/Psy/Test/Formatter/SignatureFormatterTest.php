@@ -17,59 +17,58 @@ use Psy\Reflection\ReflectionConstant;
 class SignatureFormatterTest extends \PHPUnit_Framework_TestCase
 {
     const FOO = 'foo value';
+
     private static $bar = 'bar value';
 
-    private function someFakeMethod(array $one, $two = 'TWO', \Reflector $three = null)
-    {
-    }
+    private function someFakeMethod(array $one, $two = 'TWO', ?\Reflector $three = null) {}
 
     /**
      * @dataProvider signatureReflectors
      */
-    public function testFormat($reflector, $expected)
+    public function test_format($reflector, $expected)
     {
         $this->assertEquals($expected, strip_tags(SignatureFormatter::format($reflector)));
     }
 
     public function signatureReflectors()
     {
-        return array(
-            array(
+        return [
+            [
                 new \ReflectionClass($this),
                 "class Psy\Test\Formatter\SignatureFormatterTest "
-                . 'extends PHPUnit_Framework_TestCase implements '
-                . 'Countable, PHPUnit_Framework_SelfDescribing, '
-                . 'PHPUnit_Framework_Test',
-            ),
-            array(
+                .'extends PHPUnit_Framework_TestCase implements '
+                .'Countable, PHPUnit_Framework_SelfDescribing, '
+                .'PHPUnit_Framework_Test',
+            ],
+            [
                 new \ReflectionFunction('implode'),
                 defined('HHVM_VERSION') ? 'function implode($arg1, $arg2 = null)' : 'function implode($glue, $pieces)',
-            ),
-            array(
+            ],
+            [
                 new ReflectionConstant($this, 'FOO'),
                 'const FOO = "foo value"',
-            ),
-            array(
+            ],
+            [
                 new \ReflectionMethod($this, 'someFakeMethod'),
                 'private function someFakeMethod(array $one, $two = \'TWO\', Reflector $three = null)',
-            ),
-            array(
+            ],
+            [
                 new \ReflectionProperty($this, 'bar'),
                 'private static $bar',
-            ),
-            array(
+            ],
+            [
                 new \ReflectionClass('Psy\CodeCleaner\CodeCleanerPass'),
                 'abstract class Psy\CodeCleaner\CodeCleanerPass '
-                . 'extends PhpParser\NodeVisitorAbstract '
-                . 'implements PhpParser\NodeVisitor',
-            ),
-        );
+                .'extends PhpParser\NodeVisitorAbstract '
+                .'implements PhpParser\NodeVisitor',
+            ],
+        ];
     }
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testSignatureFormatterThrowsUnknownReflectorExpeption()
+    public function test_signature_formatter_throws_unknown_reflector_expeption()
     {
         $refl = $this->getMock('Reflector');
         SignatureFormatter::format($refl);

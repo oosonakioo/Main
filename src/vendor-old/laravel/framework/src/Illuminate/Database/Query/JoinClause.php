@@ -184,7 +184,6 @@ class JoinClause
      * Add an "on where in (...)" clause to the join.
      *
      * @param  string  $column
-     * @param  array  $values
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function whereIn($column, array $values)
@@ -196,7 +195,6 @@ class JoinClause
      * Add an "on where not in (...)" clause to the join.
      *
      * @param  string  $column
-     * @param  array  $values
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function whereNotIn($column, array $values)
@@ -208,7 +206,6 @@ class JoinClause
      * Add an "or on where in (...)" clause to the join.
      *
      * @param  string  $column
-     * @param  array  $values
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function orWhereIn($column, array $values)
@@ -220,7 +217,6 @@ class JoinClause
      * Add an "or on where not in (...)" clause to the join.
      *
      * @param  string  $column
-     * @param  array  $values
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function orWhereNotIn($column, array $values)
@@ -231,8 +227,7 @@ class JoinClause
     /**
      * Add a nested where statement to the query.
      *
-     * @param  \Closure  $callback
-     * @param  string   $boolean
+     * @param  string  $boolean
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function nest(Closure $callback, $boolean = 'and')

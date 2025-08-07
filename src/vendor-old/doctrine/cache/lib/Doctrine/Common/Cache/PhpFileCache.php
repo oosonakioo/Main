@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\Common\Cache;
  * Php file cache driver.
  *
  * @since  2.3
+ *
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class PhpFileCache extends FileCache
@@ -80,28 +82,27 @@ class PhpFileCache extends FileCache
 
         if (is_object($data) && ! method_exists($data, '__set_state')) {
             throw new \InvalidArgumentException(
-                "Invalid argument given, PhpFileCache only allows objects that implement __set_state() " .
-                "and fully support var_export(). You can use the FilesystemCache to save arbitrary object " .
-                "graphs using serialize()/deserialize()."
+                'Invalid argument given, PhpFileCache only allows objects that implement __set_state() '.
+                'and fully support var_export(). You can use the FilesystemCache to save arbitrary object '.
+                'graphs using serialize()/deserialize().'
             );
         }
 
-        $filename  = $this->getFilename($id);
+        $filename = $this->getFilename($id);
 
-        $value = array(
-            'lifetime'  => $lifeTime,
-            'data'      => $data
-        );
+        $value = [
+            'lifetime' => $lifeTime,
+            'data' => $data,
+        ];
 
-        $value  = var_export($value, true);
-        $code   = sprintf('<?php return %s;', $value);
+        $value = var_export($value, true);
+        $code = sprintf('<?php return %s;', $value);
 
         return $this->writeFile($filename, $code);
     }
 
     /**
-     * @param string $id
-     *
+     * @param  string  $id
      * @return array|false
      */
     private function includeFileForId($id)

@@ -13,20 +13,20 @@ class PredisCacheTest extends CacheTest
 
     protected function setUp()
     {
-        if (!class_exists('Predis\Client')) {
+        if (! class_exists('Predis\Client')) {
             $this->markTestSkipped('Predis\Client is missing. Make sure to "composer install" to have all dev dependencies.');
         }
 
-        $this->client = new Client();
+        $this->client = new Client;
 
         try {
             $this->client->connect();
         } catch (ConnectionException $e) {
-            $this->markTestSkipped('Cannot connect to Redis because of: ' . $e);
+            $this->markTestSkipped('Cannot connect to Redis because of: '.$e);
         }
     }
 
-    public function testHitMissesStatsAreProvided()
+    public function test_hit_misses_stats_are_provided()
     {
         $cache = $this->_getCacheDriver();
         $stats = $cache->getStats();
@@ -48,12 +48,12 @@ class PredisCacheTest extends CacheTest
      *
      * @dataProvider provideDataToCache
      */
-    public function testSetContainsFetchDelete($value)
+    public function test_set_contains_fetch_delete($value)
     {
-        if (array() === $value) {
+        if ($value === []) {
             $this->markTestIncomplete(
                 'Predis currently doesn\'t support saving empty array values. '
-                . 'See https://github.com/nrk/predis/issues/241'
+                .'See https://github.com/nrk/predis/issues/241'
             );
         }
 
@@ -65,19 +65,19 @@ class PredisCacheTest extends CacheTest
      *
      * @dataProvider provideDataToCache
      */
-    public function testUpdateExistingEntry($value)
+    public function test_update_existing_entry($value)
     {
-        if (array() === $value) {
+        if ($value === []) {
             $this->markTestIncomplete(
                 'Predis currently doesn\'t support saving empty array values. '
-                . 'See https://github.com/nrk/predis/issues/241'
+                .'See https://github.com/nrk/predis/issues/241'
             );
         }
 
         parent::testUpdateExistingEntry($value);
     }
 
-    public function testAllowsGenericPredisClient()
+    public function test_allows_generic_predis_client()
     {
         /* @var $predisClient \Predis\ClientInterface */
         $predisClient = $this->getMock('Predis\\ClientInterface');

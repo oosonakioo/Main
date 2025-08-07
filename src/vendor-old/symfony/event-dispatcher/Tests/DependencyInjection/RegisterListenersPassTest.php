@@ -23,12 +23,12 @@ class RegisterListenersPassTest extends TestCase
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testEventSubscriberWithoutInterface()
+    public function test_event_subscriber_without_interface()
     {
         // one service, not implementing any interface
-        $services = array(
-            'my_event_subscriber' => array(0 => array()),
-        );
+        $services = [
+            'my_event_subscriber' => [0 => []],
+        ];
 
         $definition = $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')->getMock();
         $definition->expects($this->atLeastOnce())
@@ -38,7 +38,7 @@ class RegisterListenersPassTest extends TestCase
             ->method('getClass')
             ->will($this->returnValue('stdClass'));
 
-        $builder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')->setMethods(array('hasDefinition', 'findTaggedServiceIds', 'getDefinition'))->getMock();
+        $builder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')->setMethods(['hasDefinition', 'findTaggedServiceIds', 'getDefinition'])->getMock();
         $builder->expects($this->any())
             ->method('hasDefinition')
             ->will($this->returnValue(true));
@@ -46,21 +46,21 @@ class RegisterListenersPassTest extends TestCase
         // We don't test kernel.event_listener here
         $builder->expects($this->atLeastOnce())
             ->method('findTaggedServiceIds')
-            ->will($this->onConsecutiveCalls(array(), $services));
+            ->will($this->onConsecutiveCalls([], $services));
 
         $builder->expects($this->atLeastOnce())
             ->method('getDefinition')
             ->will($this->returnValue($definition));
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($builder);
     }
 
-    public function testValidEventSubscriber()
+    public function test_valid_event_subscriber()
     {
-        $services = array(
-            'my_event_subscriber' => array(0 => array()),
-        );
+        $services = [
+            'my_event_subscriber' => [0 => []],
+        ];
 
         $definition = $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')->getMock();
         $definition->expects($this->atLeastOnce())
@@ -70,7 +70,7 @@ class RegisterListenersPassTest extends TestCase
             ->method('getClass')
             ->will($this->returnValue('Symfony\Component\EventDispatcher\Tests\DependencyInjection\SubscriberService'));
 
-        $builder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')->setMethods(array('hasDefinition', 'findTaggedServiceIds', 'getDefinition', 'findDefinition'))->getMock();
+        $builder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')->setMethods(['hasDefinition', 'findTaggedServiceIds', 'getDefinition', 'findDefinition'])->getMock();
         $builder->expects($this->any())
             ->method('hasDefinition')
             ->will($this->returnValue(true));
@@ -78,7 +78,7 @@ class RegisterListenersPassTest extends TestCase
         // We don't test kernel.event_listener here
         $builder->expects($this->atLeastOnce())
             ->method('findTaggedServiceIds')
-            ->will($this->onConsecutiveCalls(array(), $services));
+            ->will($this->onConsecutiveCalls([], $services));
 
         $builder->expects($this->atLeastOnce())
             ->method('getDefinition')
@@ -88,108 +88,111 @@ class RegisterListenersPassTest extends TestCase
             ->method('findDefinition')
             ->will($this->returnValue($definition));
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($builder);
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage The service "foo" must be public as event listeners are lazy-loaded.
      */
-    public function testPrivateEventListener()
+    public function test_private_event_listener()
     {
-        $container = new ContainerBuilder();
-        $container->register('foo', 'stdClass')->setPublic(false)->addTag('kernel.event_listener', array());
+        $container = new ContainerBuilder;
+        $container->register('foo', 'stdClass')->setPublic(false)->addTag('kernel.event_listener', []);
         $container->register('event_dispatcher', 'stdClass');
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($container);
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage The service "foo" must be public as event subscribers are lazy-loaded.
      */
-    public function testPrivateEventSubscriber()
+    public function test_private_event_subscriber()
     {
-        $container = new ContainerBuilder();
-        $container->register('foo', 'stdClass')->setPublic(false)->addTag('kernel.event_subscriber', array());
+        $container = new ContainerBuilder;
+        $container->register('foo', 'stdClass')->setPublic(false)->addTag('kernel.event_subscriber', []);
         $container->register('event_dispatcher', 'stdClass');
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($container);
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage The service "foo" must not be abstract as event listeners are lazy-loaded.
      */
-    public function testAbstractEventListener()
+    public function test_abstract_event_listener()
     {
-        $container = new ContainerBuilder();
-        $container->register('foo', 'stdClass')->setAbstract(true)->addTag('kernel.event_listener', array());
+        $container = new ContainerBuilder;
+        $container->register('foo', 'stdClass')->setAbstract(true)->addTag('kernel.event_listener', []);
         $container->register('event_dispatcher', 'stdClass');
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($container);
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage The service "foo" must not be abstract as event subscribers are lazy-loaded.
      */
-    public function testAbstractEventSubscriber()
+    public function test_abstract_event_subscriber()
     {
-        $container = new ContainerBuilder();
-        $container->register('foo', 'stdClass')->setAbstract(true)->addTag('kernel.event_subscriber', array());
+        $container = new ContainerBuilder;
+        $container->register('foo', 'stdClass')->setAbstract(true)->addTag('kernel.event_subscriber', []);
         $container->register('event_dispatcher', 'stdClass');
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($container);
     }
 
-    public function testEventSubscriberResolvableClassName()
+    public function test_event_subscriber_resolvable_class_name()
     {
-        $container = new ContainerBuilder();
+        $container = new ContainerBuilder;
 
         $container->setParameter('subscriber.class', 'Symfony\Component\EventDispatcher\Tests\DependencyInjection\SubscriberService');
-        $container->register('foo', '%subscriber.class%')->addTag('kernel.event_subscriber', array());
+        $container->register('foo', '%subscriber.class%')->addTag('kernel.event_subscriber', []);
         $container->register('event_dispatcher', 'stdClass');
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($container);
 
         $definition = $container->getDefinition('event_dispatcher');
-        $expected_calls = array(
-            array(
+        $expected_calls = [
+            [
                 'addSubscriberService',
-                array(
+                [
                     'foo',
                     'Symfony\Component\EventDispatcher\Tests\DependencyInjection\SubscriberService',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->assertSame($expected_calls, $definition->getMethodCalls());
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage You have requested a non-existent parameter "subscriber.class"
      */
-    public function testEventSubscriberUnresolvableClassName()
+    public function test_event_subscriber_unresolvable_class_name()
     {
-        $container = new ContainerBuilder();
-        $container->register('foo', '%subscriber.class%')->addTag('kernel.event_subscriber', array());
+        $container = new ContainerBuilder;
+        $container->register('foo', '%subscriber.class%')->addTag('kernel.event_subscriber', []);
         $container->register('event_dispatcher', 'stdClass');
 
-        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass = new RegisterListenersPass;
         $registerListenersPass->process($container);
     }
 }
 
 class SubscriberService implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
-    {
-    }
+    public static function getSubscribedEvents() {}
 }

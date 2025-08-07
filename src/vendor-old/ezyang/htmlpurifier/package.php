@@ -8,21 +8,21 @@ PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 $pkg = new PEAR_PackageFileManager2;
 
 $pkg->setOptions(
-    array(
+    [
         'baseinstalldir' => '/',
         'packagefile' => 'package.xml',
-        'packagedirectory' => realpath(dirname(__FILE__) . '/library'),
+        'packagedirectory' => realpath(dirname(__FILE__).'/library'),
         'filelistgenerator' => 'file',
-        'include' => array('*'),
-        'dir_roles' => array('/' => 'php'), // hack to put *.ser files in the right place
-        'ignore' => array(
+        'include' => ['*'],
+        'dir_roles' => ['/' => 'php'], // hack to put *.ser files in the right place
+        'ignore' => [
             'HTMLPurifier.standalone.php',
             'HTMLPurifier.path.php',
             '*.tar.gz',
             '*.tgz',
-            'standalone/'
-        ),
-    )
+            'standalone/',
+        ],
+    ]
 );
 
 $pkg->setPackage('HTMLPurifier');

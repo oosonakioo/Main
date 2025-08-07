@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use Doctrine\DBAL\Schema\TableDiff;
  * Provides the behavior, features and SQL dialect of the MySQL 5.7 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -36,7 +38,7 @@ class MySQL57Platform extends MySqlPlatform
      */
     protected function getPreAlterTableRenameIndexForeignKeySQL(TableDiff $diff)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -44,7 +46,7 @@ class MySQL57Platform extends MySqlPlatform
      */
     protected function getPostAlterTableRenameIndexForeignKeySQL(TableDiff $diff)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -52,9 +54,9 @@ class MySQL57Platform extends MySqlPlatform
      */
     protected function getRenameIndexSQL($oldIndexName, Index $index, $tableName)
     {
-        return array(
-            'ALTER TABLE ' . $tableName . ' RENAME INDEX ' . $oldIndexName . ' TO ' . $index->getQuotedName($this)
-        );
+        return [
+            'ALTER TABLE '.$tableName.' RENAME INDEX '.$oldIndexName.' TO '.$index->getQuotedName($this),
+        ];
     }
 
     /**

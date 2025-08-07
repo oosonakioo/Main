@@ -15,15 +15,15 @@ class PsrResponseCommand extends AbstractCommand
      * streams and more "clean" streaming, however drivers has to be updated
      * first.
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
         $format = $this->argument(0)->value();
         $quality = $this->argument(1)->between(0, 100)->value();
 
-        //Encoded property will be populated at this moment
+        // Encoded property will be populated at this moment
         $stream = $image->stream($format, $quality);
 
         $mimetype = finfo_buffer(
@@ -33,10 +33,10 @@ class PsrResponseCommand extends AbstractCommand
 
         $this->setOutput(new Response(
             200,
-            array(
-                'Content-Type'   => $mimetype,
-                'Content-Length' => strlen($image->getEncoded())
-            ),
+            [
+                'Content-Type' => $mimetype,
+                'Content-Length' => strlen($image->getEncoded()),
+            ],
             $stream
         ));
 

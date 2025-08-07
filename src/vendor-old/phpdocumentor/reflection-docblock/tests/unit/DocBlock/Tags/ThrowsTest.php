@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +23,7 @@ use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Throws
+ *
  * @covers ::<private>
  */
 class ThrowsTest extends \PHPUnit_Framework_TestCase
@@ -28,11 +31,12 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Throws::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned()
+    public function test_if_correct_tag_name_is_returned()
     {
-        $fixture = new Throws(new String_(), new Description('Description'));
+        $fixture = new Throws(new String_, new Description('Description'));
 
         $this->assertSame('throws', $fixture->getName());
     }
@@ -42,12 +46,13 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Throws::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    public function test_if_tag_can_be_rendered_using_default_formatter()
     {
-        $fixture = new Throws(new String_(), new Description('Description'));
+        $fixture = new Throws(new String_, new Description('Description'));
 
         $this->assertSame('@throws string Description', $fixture->render());
     }
@@ -55,11 +60,12 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Throws::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    public function test_if_tag_can_be_rendered_using_specific_formatter()
     {
-        $fixture = new Throws(new String_(), new Description('Description'));
+        $fixture = new Throws(new String_, new Description('Description'));
 
         $formatter = m::mock(Formatter::class);
         $formatter->shouldReceive('format')->with($fixture)->andReturn('Rendered output');
@@ -71,9 +77,9 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getType
      */
-    public function testHasType()
+    public function test_has_type()
     {
-        $expected = new String_();
+        $expected = new String_;
 
         $fixture = new Throws($expected);
 
@@ -83,13 +89,14 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription()
+    public function test_has_description()
     {
         $expected = new Description('Description');
 
-        $fixture = new Throws(new String_(), $expected);
+        $fixture = new Throws(new String_, $expected);
 
         $this->assertSame($expected, $fixture->getDescription());
     }
@@ -97,17 +104,19 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::__toString
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testStringRepresentationIsReturned()
+    public function test_string_representation_is_returned()
     {
-        $fixture = new Throws(new String_(), new Description('Description'));
+        $fixture = new Throws(new String_, new Description('Description'));
 
-        $this->assertSame('string Description', (string)$fixture);
+        $this->assertSame('string Description', (string) $fixture);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Throws::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\TypeResolver
@@ -115,56 +124,60 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
      * @uses \phpDocumentor\Reflection\Types\String_
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod()
+    public function test_factory_method()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $resolver           = new TypeResolver();
-        $context            = new Context('');
+        $resolver = new TypeResolver;
+        $context = new Context('');
 
-        $type        = new String_();
+        $type = new String_;
         $description = new Description('My Description');
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
         $fixture = Throws::create('string My Description', $resolver, $descriptionFactory, $context);
 
-        $this->assertSame('string My Description', (string)$fixture);
+        $this->assertSame('string My Description', (string) $fixture);
         $this->assertEquals($type, $fixture->getType());
         $this->assertSame($description, $fixture->getDescription());
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString()
+    public function test_factory_method_fails_if_body_is_not_string()
     {
         $this->assertNull(Throws::create([]));
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotEmpty()
+    public function test_factory_method_fails_if_body_is_not_empty()
     {
         $this->assertNull(Throws::create(''));
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull()
+    public function test_factory_method_fails_if_resolver_is_null()
     {
         Throws::create('body');
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    public function test_factory_method_fails_if_description_factory_is_null()
     {
-        Throws::create('body', new TypeResolver());
+        Throws::create('body', new TypeResolver);
     }
 }

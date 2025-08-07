@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -41,7 +42,7 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     protected $useErrorHandler = false;
 
     /**
-     * @param string $message
+     * @param  string  $message
      */
     public function __construct($message = '')
     {

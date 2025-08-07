@@ -23,26 +23,27 @@ use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 class LazyLoadingFragmentHandler extends FragmentHandler
 {
     private $container;
-    private $rendererIds = array();
+
+    private $rendererIds = [];
 
     /**
      * Constructor.
      *
-     * @param ContainerInterface $container    A container
-     * @param RequestStack       $requestStack The Request stack that controls the lifecycle of requests
-     * @param bool               $debug        Whether the debug mode is enabled or not
+     * @param  ContainerInterface  $container  A container
+     * @param  RequestStack  $requestStack  The Request stack that controls the lifecycle of requests
+     * @param  bool  $debug  Whether the debug mode is enabled or not
      */
     public function __construct(ContainerInterface $container, RequestStack $requestStack, $debug = false)
     {
         $this->container = $container;
 
-        parent::__construct($requestStack, array(), $debug);
+        parent::__construct($requestStack, [], $debug);
     }
 
     /**
      * Adds a service as a fragment renderer.
      *
-     * @param string $renderer The render service id
+     * @param  string  $renderer  The render service id
      */
     public function addRendererService($name, $renderer)
     {
@@ -52,7 +53,7 @@ class LazyLoadingFragmentHandler extends FragmentHandler
     /**
      * {@inheritdoc}
      */
-    public function render($uri, $renderer = 'inline', array $options = array())
+    public function render($uri, $renderer = 'inline', array $options = [])
     {
         if (isset($this->rendererIds[$renderer])) {
             $this->addRenderer($this->container->get($this->rendererIds[$renderer]));

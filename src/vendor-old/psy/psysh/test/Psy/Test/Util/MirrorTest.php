@@ -16,8 +16,10 @@ use Psy\Util\Mirror;
 
 class MirrorTest extends \PHPUnit_Framework_TestCase
 {
-    const FOO           = 1;
-    private $bar        = 2;
+    const FOO = 1;
+
+    private $bar = 2;
+
     private static $baz = 3;
 
     public function aPublicMethod()
@@ -25,7 +27,7 @@ class MirrorTest extends \PHPUnit_Framework_TestCase
         // nada
     }
 
-    public function testMirror()
+    public function test_mirror()
     {
         $refl = Mirror::get('sort');
         $this->assertTrue($refl instanceof \ReflectionFunction);
@@ -55,26 +57,27 @@ class MirrorTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testMirrorThrowsExceptions()
+    public function test_mirror_throws_exceptions()
     {
         Mirror::get($this, 'notAMethod');
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @dataProvider invalidArguments
      */
-    public function testMirrorThrowsInvalidArgumentExceptions($value)
+    public function test_mirror_throws_invalid_argument_exceptions($value)
     {
         Mirror::get($value);
     }
 
     public function invalidArguments()
     {
-        return array(
-            array('not_a_function_or_class'),
-            array(array()),
-            array(1),
-        );
+        return [
+            ['not_a_function_or_class'],
+            [[]],
+            [1],
+        ];
     }
 }

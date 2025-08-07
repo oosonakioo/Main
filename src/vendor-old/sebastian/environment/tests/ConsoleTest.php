@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Environment package.
  *
@@ -27,7 +28,7 @@ class ConsoleTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectIfStdoutIsInteractiveByDefault()
+    public function test_can_detect_if_stdout_is_interactive_by_default()
     {
         $this->assertInternalType('boolean', $this->console->isInteractive());
     }
@@ -35,25 +36,27 @@ class ConsoleTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectIfFileDescriptorIsInteractive()
+    public function test_can_detect_if_file_descriptor_is_interactive()
     {
         $this->assertInternalType('boolean', $this->console->isInteractive(STDOUT));
     }
 
     /**
      * @covers \SebastianBergmann\Environment\Console::hasColorSupport
+     *
      * @uses   \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectColorSupport()
+    public function test_can_detect_color_support()
     {
         $this->assertInternalType('boolean', $this->console->hasColorSupport());
     }
 
     /**
      * @covers \SebastianBergmann\Environment\Console::getNumberOfColumns
+     *
      * @uses   \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectNumberOfColumns()
+    public function test_can_detect_number_of_columns()
     {
         $this->assertInternalType('integer', $this->console->getNumberOfColumns());
     }

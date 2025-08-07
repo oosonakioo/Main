@@ -9,25 +9,27 @@ use PhpParser\Node\Stmt;
 class Function_ extends FunctionLike
 {
     protected $name;
-    protected $stmts = array();
+
+    protected $stmts = [];
 
     /**
      * Creates a function builder.
      *
-     * @param string $name Name of the function
+     * @param  string  $name  Name of the function
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
     /**
      * Adds a statement.
      *
-     * @param Node|PhpParser\Builder $stmt The statement to add
-     *
+     * @param  Node|PhpParser\Builder  $stmt  The statement to add
      * @return $this The builder instance (for fluid interface)
      */
-    public function addStmt($stmt) {
+    public function addStmt($stmt)
+    {
         $this->stmts[] = $this->normalizeNode($stmt);
 
         return $this;
@@ -38,12 +40,13 @@ class Function_ extends FunctionLike
      *
      * @return Stmt\Function_ The built function node
      */
-    public function getNode() {
-        return new Stmt\Function_($this->name, array(
-            'byRef'      => $this->returnByRef,
-            'params'     => $this->params,
+    public function getNode()
+    {
+        return new Stmt\Function_($this->name, [
+            'byRef' => $this->returnByRef,
+            'params' => $this->params,
             'returnType' => $this->returnType,
-            'stmts'      => $this->stmts,
-        ), $this->attributes);
+            'stmts' => $this->stmts,
+        ], $this->attributes);
     }
 }

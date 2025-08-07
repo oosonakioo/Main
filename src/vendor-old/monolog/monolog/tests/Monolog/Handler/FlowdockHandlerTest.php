@@ -12,11 +12,12 @@
 namespace Monolog\Handler;
 
 use Monolog\Formatter\FlowdockFormatter;
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @author Dominik Liebler <liebler.dominik@gmail.com>
+ *
  * @see    https://www.hipchat.com/docs/api
  */
 class FlowdockHandlerTest extends TestCase
@@ -31,14 +32,14 @@ class FlowdockHandlerTest extends TestCase
      */
     private $handler;
 
-    public function setUp()
+    protected function setUp()
     {
-        if (!extension_loaded('openssl')) {
+        if (! extension_loaded('openssl')) {
             $this->markTestSkipped('This test requires openssl to run');
         }
     }
 
-    public function testWriteHeader()
+    public function test_write_header()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -51,9 +52,9 @@ class FlowdockHandlerTest extends TestCase
     }
 
     /**
-     * @depends testWriteHeader
+     * @depends test_write_header
      */
-    public function testWriteContent($content)
+    public function test_write_content($content)
     {
         $this->assertRegexp('/"source":"test_source"/', $content);
         $this->assertRegexp('/"from_address":"source@test\.com"/', $content);
@@ -61,11 +62,11 @@ class FlowdockHandlerTest extends TestCase
 
     private function createHandler($token = 'myToken')
     {
-        $constructorArgs = array($token, Logger::DEBUG);
+        $constructorArgs = [$token, Logger::DEBUG];
         $this->res = fopen('php://memory', 'a');
         $this->handler = $this->getMock(
             '\Monolog\Handler\FlowdockHandler',
-            array('fsockopen', 'streamSetTimeout', 'closeSocket'),
+            ['fsockopen', 'streamSetTimeout', 'closeSocket'],
             $constructorArgs
         );
 

@@ -23,5 +23,6 @@ class MockRavenClient extends Raven_Client
     }
 
     public $lastData;
+
     public $lastStack;
 }

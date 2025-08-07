@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,7 +23,6 @@ namespace Mockery;
 
 class Configuration
 {
-
     /**
      * Boolean assertion of whether we can mock methods which do not actually
      * exist for the given class or object (ignored for unreal mocks)
@@ -46,7 +46,7 @@ class Configuration
      *
      * @var array
      */
-    protected $_internalClassParamMap = array();
+    protected $_internalClassParamMap = [];
 
     /**
      * Set boolean to allow/prevent mocking of non-existent methods
@@ -92,14 +92,13 @@ class Configuration
      * Set a parameter map (array of param signature strings) for the method
      * of an internal PHP class.
      *
-     * @param string $class
-     * @param string $method
-     * @param array $map
+     * @param  string  $class
+     * @param  string  $method
      */
     public function setInternalClassMethodParamMap($class, $method, array $map)
     {
-        if (!isset($this->_internalClassParamMap[strtolower($class)])) {
-            $this->_internalClassParamMap[strtolower($class)] = array();
+        if (! isset($this->_internalClassParamMap[strtolower($class)])) {
+            $this->_internalClassParamMap[strtolower($class)] = [];
         }
         $this->_internalClassParamMap[strtolower($class)][strtolower($method)] = $map;
     }
@@ -109,7 +108,7 @@ class Configuration
      */
     public function resetInternalClassMethodParamMaps()
     {
-        $this->_internalClassParamMap = array();
+        $this->_internalClassParamMap = [];
     }
 
     /**

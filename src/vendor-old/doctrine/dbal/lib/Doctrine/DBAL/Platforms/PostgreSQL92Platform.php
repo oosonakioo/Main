@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Platforms;
  * Provides the behavior, features and SQL dialect of the PostgreSQL 9.2 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -41,7 +43,7 @@ class PostgreSQL92Platform extends PostgreSQL91Platform
      */
     public function getSmallIntTypeDeclarationSQL(array $field)
     {
-        if ( ! empty($field['autoincrement'])) {
+        if (! empty($field['autoincrement'])) {
             return 'SMALLSERIAL';
         }
 

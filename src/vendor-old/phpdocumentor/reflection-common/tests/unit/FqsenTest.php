@@ -1,4 +1,5 @@
 <?php
+
 /**
  * phpDocumentor
  *
@@ -6,6 +7,7 @@
  *
  * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -13,18 +15,21 @@ namespace phpDocumentor\Reflection;
 
 /**
  * Class FqsenTest
+ *
  * @coversDefaultClass phpDocumentor\Reflection\Fqsen
  */
 class FqsenTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param string $fqsen
+     * @param  string  $fqsen
+     *
      * @covers ::__construct
+     *
      * @dataProvider validFqsenProvider
      */
-    public function testValidFormats($fqsen, $name)
+    public function test_valid_formats($fqsen, $name)
     {
-        $instance  = new Fqsen($fqsen);
+        $instance = new Fqsen($fqsen);
         $this->assertEquals($name, $instance->getName());
     }
 
@@ -51,12 +56,15 @@ class FqsenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $fqsen
+     * @param  string  $fqsen
+     *
      * @covers ::__construct
+     *
      * @dataProvider invalidFqsenProvider
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testInValidFormats($fqsen)
+    public function test_in_valid_formats($fqsen)
     {
         new Fqsen($fqsen);
     }
@@ -79,10 +87,10 @@ class FqsenTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testToString()
+    public function test_to_string()
     {
         $className = new Fqsen('\\phpDocumentor\\Application');
 
-        $this->assertEquals('\\phpDocumentor\\Application', (string)$className);
+        $this->assertEquals('\\phpDocumentor\\Application', (string) $className);
     }
 }

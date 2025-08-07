@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
 {
-
     /**
      * @type HTMLPurifier_Length|string
      */
@@ -17,8 +16,8 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
     protected $max;
 
     /**
-     * @param HTMLPurifier_Length|string $min Minimum length, or null for no bound. String is also acceptable.
-     * @param HTMLPurifier_Length|string $max Maximum length, or null for no bound. String is also acceptable.
+     * @param  HTMLPurifier_Length|string  $min  Minimum length, or null for no bound. String is also acceptable.
+     * @param  HTMLPurifier_Length|string  $max  Maximum length, or null for no bound. String is also acceptable.
      */
     public function __construct($min = null, $max = null)
     {
@@ -27,9 +26,9 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -48,7 +47,7 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
         }
 
         $length = HTMLPurifier_Length::make($string);
-        if (!$length->isValid()) {
+        if (! $length->isValid()) {
             return false;
         }
 
@@ -70,6 +69,7 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
                 return false;
             }
         }
+
         return $length->toString();
     }
 }

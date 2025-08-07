@@ -9,11 +9,11 @@ class __TwigTemplate_VarDumperFixture_u75a09 extends Twig_Template
 
         $this->parent = false;
 
-        $this->blocks = array(
-        );
+        $this->blocks = [
+        ];
     }
 
-    protected function doDisplay(array $context, array $blocks = array())
+    protected function doDisplay(array $context, array $blocks = [])
     {
         // line 2
         throw new \Exception('Foobar');
@@ -26,9 +26,9 @@ class __TwigTemplate_VarDumperFixture_u75a09 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (19 => 2);
+        return [19 => 2];
     }
 }
-/*   foo bar*/
-/*     twig source*/
+/*   foo bar */
+/*     twig source */
 /* */

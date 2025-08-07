@@ -6,10 +6,10 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
 
     protected function setUp()
     {
-        $this->_encoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder();
+        $this->_encoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder;
     }
 
-    public function testNameIsBase64()
+    public function test_name_is_base64()
     {
         $this->assertEquals('base64', $this->_encoder->getName());
     }
@@ -20,7 +20,7 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
     years.
     */
 
-    public function testInputOutputRatioIs3to4Bytes()
+    public function test_input_output_ratio_is3to4_bytes()
     {
         /*
         RFC 2045, 6.8
@@ -34,23 +34,23 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
 
         $os = $this->_createOutputByteStream();
         $is = $this->_createInputByteStream();
-        $collection = new Swift_StreamCollector();
+        $collection = new Swift_StreamCollector;
 
         $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
+            ->zeroOrMoreTimes()
+            ->andReturnUsing($collection);
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('123');
+            ->once()
+            ->andReturn('123');
         $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $this->_encoder->encodeByteStream($os, $is);
         $this->assertEquals('MTIz', $collection->content);
     }
 
-    public function testPadLength()
+    public function test_pad_length()
     {
         /*
         RFC 2045, 6.8
@@ -72,71 +72,71 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
        characters followed by one "=" padding character.
        */
 
-        for ($i = 0; $i < 30; ++$i) {
+        for ($i = 0; $i < 30; $i++) {
             $os = $this->_createOutputByteStream();
             $is = $this->_createInputByteStream();
-            $collection = new Swift_StreamCollector();
+            $collection = new Swift_StreamCollector;
 
             $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
+                ->zeroOrMoreTimes()
+                ->andReturnUsing($collection);
             $os->shouldReceive('read')
-               ->once()
-               ->andReturn(pack('C', rand(0, 255)));
+                ->once()
+                ->andReturn(pack('C', rand(0, 255)));
             $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+                ->zeroOrMoreTimes()
+                ->andReturn(false);
 
             $this->_encoder->encodeByteStream($os, $is);
             $this->assertRegExp('~^[a-zA-Z0-9/\+]{2}==$~', $collection->content,
                 '%s: A single byte should have 2 bytes of padding'
-                );
+            );
         }
 
-        for ($i = 0; $i < 30; ++$i) {
+        for ($i = 0; $i < 30; $i++) {
             $os = $this->_createOutputByteStream();
             $is = $this->_createInputByteStream();
-            $collection = new Swift_StreamCollector();
+            $collection = new Swift_StreamCollector;
 
             $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
+                ->zeroOrMoreTimes()
+                ->andReturnUsing($collection);
             $os->shouldReceive('read')
-               ->once()
-               ->andReturn(pack('C*', rand(0, 255), rand(0, 255)));
+                ->once()
+                ->andReturn(pack('C*', rand(0, 255), rand(0, 255)));
             $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+                ->zeroOrMoreTimes()
+                ->andReturn(false);
 
             $this->_encoder->encodeByteStream($os, $is);
             $this->assertRegExp('~^[a-zA-Z0-9/\+]{3}=$~', $collection->content,
                 '%s: Two bytes should have 1 byte of padding'
-                );
+            );
         }
 
-        for ($i = 0; $i < 30; ++$i) {
+        for ($i = 0; $i < 30; $i++) {
             $os = $this->_createOutputByteStream();
             $is = $this->_createInputByteStream();
-            $collection = new Swift_StreamCollector();
+            $collection = new Swift_StreamCollector;
 
             $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
+                ->zeroOrMoreTimes()
+                ->andReturnUsing($collection);
             $os->shouldReceive('read')
-               ->once()
-               ->andReturn(pack('C*', rand(0, 255), rand(0, 255), rand(0, 255)));
+                ->once()
+                ->andReturn(pack('C*', rand(0, 255), rand(0, 255), rand(0, 255)));
             $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+                ->zeroOrMoreTimes()
+                ->andReturn(false);
 
             $this->_encoder->encodeByteStream($os, $is);
             $this->assertRegExp('~^[a-zA-Z0-9/\+]{4}$~', $collection->content,
                 '%s: Three bytes should have no padding'
-                );
+            );
         }
     }
 
-    public function testMaximumLineLengthIs76Characters()
+    public function test_maximum_line_length_is76_characters()
     {
         /*
          The encoded output stream must be represented in lines of no more
@@ -146,77 +146,77 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
 
         $os = $this->_createOutputByteStream();
         $is = $this->_createInputByteStream();
-        $collection = new Swift_StreamCollector();
+        $collection = new Swift_StreamCollector;
 
         $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
+            ->zeroOrMoreTimes()
+            ->andReturnUsing($collection);
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
+            ->once()
+            ->andReturn('abcdefghijkl'); // 12
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
+            ->once()
+            ->andReturn('mnopqrstuvwx'); // 24
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
+            ->once()
+            ->andReturn('yzabc1234567'); // 36
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
+            ->once()
+            ->andReturn('890ABCDEFGHI'); // 48
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
+            ->once()
+            ->andReturn('JKLMNOPQRSTU'); // 60
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
+            ->once()
+            ->andReturn('VWXYZ1234567'); // 72
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
+            ->once()
+            ->andReturn('abcdefghijkl'); // 84
         $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $this->_encoder->encodeByteStream($os, $is);
         $this->assertEquals(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3ODkwQUJDREVGR0hJSktMTU5PUFFS\r\n".
             'U1RVVldYWVoxMjM0NTY3YWJjZGVmZ2hpamts',
             $collection->content
-            );
+        );
     }
 
-    public function testMaximumLineLengthCanBeDifferent()
+    public function test_maximum_line_length_can_be_different()
     {
         $os = $this->_createOutputByteStream();
         $is = $this->_createInputByteStream();
-        $collection = new Swift_StreamCollector();
+        $collection = new Swift_StreamCollector;
 
         $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
+            ->zeroOrMoreTimes()
+            ->andReturnUsing($collection);
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
+            ->once()
+            ->andReturn('abcdefghijkl'); // 12
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
+            ->once()
+            ->andReturn('mnopqrstuvwx'); // 24
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
+            ->once()
+            ->andReturn('yzabc1234567'); // 36
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
+            ->once()
+            ->andReturn('890ABCDEFGHI'); // 48
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
+            ->once()
+            ->andReturn('JKLMNOPQRSTU'); // 60
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
+            ->once()
+            ->andReturn('VWXYZ1234567'); // 72
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
+            ->once()
+            ->andReturn('abcdefghijkl'); // 84
         $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $this->_encoder->encodeByteStream($os, $is, 0, 50);
         $this->assertEquals(
@@ -224,91 +224,91 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
             "kwQUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVoxMjM0NTY3YWJj\r\n".
             'ZGVmZ2hpamts',
             $collection->content
-            );
+        );
     }
 
-    public function testMaximumLineLengthIsNeverMoreThan76Chars()
+    public function test_maximum_line_length_is_never_more_than76_chars()
     {
         $os = $this->_createOutputByteStream();
         $is = $this->_createInputByteStream();
-        $collection = new Swift_StreamCollector();
+        $collection = new Swift_StreamCollector;
 
         $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
+            ->zeroOrMoreTimes()
+            ->andReturnUsing($collection);
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
+            ->once()
+            ->andReturn('abcdefghijkl'); // 12
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
+            ->once()
+            ->andReturn('mnopqrstuvwx'); // 24
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
+            ->once()
+            ->andReturn('yzabc1234567'); // 36
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
+            ->once()
+            ->andReturn('890ABCDEFGHI'); // 48
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
+            ->once()
+            ->andReturn('JKLMNOPQRSTU'); // 60
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
+            ->once()
+            ->andReturn('VWXYZ1234567'); // 72
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
+            ->once()
+            ->andReturn('abcdefghijkl'); // 84
         $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $this->_encoder->encodeByteStream($os, $is, 0, 100);
         $this->assertEquals(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3ODkwQUJDREVGR0hJSktMTU5PUFFS\r\n".
             'U1RVVldYWVoxMjM0NTY3YWJjZGVmZ2hpamts',
             $collection->content
-            );
+        );
     }
 
-    public function testFirstLineLengthCanBeDifferent()
+    public function test_first_line_length_can_be_different()
     {
         $os = $this->_createOutputByteStream();
         $is = $this->_createInputByteStream();
-        $collection = new Swift_StreamCollector();
+        $collection = new Swift_StreamCollector;
 
         $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
+            ->zeroOrMoreTimes()
+            ->andReturnUsing($collection);
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
+            ->once()
+            ->andReturn('abcdefghijkl'); // 12
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
+            ->once()
+            ->andReturn('mnopqrstuvwx'); // 24
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
+            ->once()
+            ->andReturn('yzabc1234567'); // 36
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
+            ->once()
+            ->andReturn('890ABCDEFGHI'); // 48
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
+            ->once()
+            ->andReturn('JKLMNOPQRSTU'); // 60
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
+            ->once()
+            ->andReturn('VWXYZ1234567'); // 72
         $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
+            ->once()
+            ->andReturn('abcdefghijkl'); // 84
         $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $this->_encoder->encodeByteStream($os, $is, 19);
         $this->assertEquals(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3ODkwQUJDR\r\n".
             'EVGR0hJSktMTU5PUFFSU1RVVldYWVoxMjM0NTY3YWJjZGVmZ2hpamts',
             $collection->content
-            );
+        );
     }
 
     private function _createOutputByteStream($stub = false)

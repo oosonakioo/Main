@@ -1,10 +1,11 @@
 <?php
+
 class NamespaceCoverageNotPublicTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers Foo\CoveredClass::<!public>
      */
-    public function testSomething()
+    public function test_something()
     {
         $o = new Foo\CoveredClass;
         $o->publicMethod();

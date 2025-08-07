@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -12,6 +13,7 @@
  * Driver for PHPDBG's code coverage functionality.
  *
  * @since Class available since Release 2.2.0
+ *
  * @codeCoverageIgnore
  */
 class PHP_CodeCoverage_Driver_PHPDBG implements PHP_CodeCoverage_Driver
@@ -27,7 +29,7 @@ class PHP_CodeCoverage_Driver_PHPDBG implements PHP_CodeCoverage_Driver
             );
         }
 
-        if (!function_exists('phpdbg_start_oplog')) {
+        if (! function_exists('phpdbg_start_oplog')) {
             throw new PHP_CodeCoverage_Exception(
                 'This build of PHPDBG does not support code coverage'
             );
@@ -49,11 +51,11 @@ class PHP_CodeCoverage_Driver_PHPDBG implements PHP_CodeCoverage_Driver
      */
     public function stop()
     {
-        static $fetchedLines = array();
+        static $fetchedLines = [];
 
         $dbgData = phpdbg_end_oplog();
 
-        if ($fetchedLines == array()) {
+        if ($fetchedLines == []) {
             $sourceLines = phpdbg_get_executable();
         } else {
             $newFiles = array_diff(
@@ -63,10 +65,10 @@ class PHP_CodeCoverage_Driver_PHPDBG implements PHP_CodeCoverage_Driver
 
             if ($newFiles) {
                 $sourceLines = phpdbg_get_executable(
-                    array('files' => $newFiles)
+                    ['files' => $newFiles]
                 );
             } else {
-                $sourceLines = array();
+                $sourceLines = [];
             }
         }
 
@@ -84,8 +86,6 @@ class PHP_CodeCoverage_Driver_PHPDBG implements PHP_CodeCoverage_Driver
     /**
      * Convert phpdbg based data into the format CodeCoverage expects
      *
-     * @param  array $sourceLines
-     * @param  array $dbgData
      * @return array
      */
     private function detectExecutedLines(array $sourceLines, array $dbgData)

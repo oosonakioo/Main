@@ -34,8 +34,7 @@ class DirVisitor extends AbstractNodeVisitor
     /**
      * Create a new directory visitor instance.
      *
-     * @param bool $skip
-     *
+     * @param  bool  $skip
      * @return void
      */
     public function __construct($skip = false)
@@ -46,17 +45,16 @@ class DirVisitor extends AbstractNodeVisitor
     /**
      * Enter and modify the node.
      *
-     * @param \PhpParser\Node $node
-     *
-     * @throws \ClassPreloader\Exceptions\DirConstantException
      *
      * @return \PhpParser\Node\Scalar\String_|null
+     *
+     * @throws \ClassPreloader\Exceptions\DirConstantException
      */
     public function enterNode(Node $node)
     {
         if ($node instanceof DirNode) {
             if ($this->skip) {
-                throw new DirConstantException();
+                throw new DirConstantException;
             }
 
             return new StringNode($this->getDir());

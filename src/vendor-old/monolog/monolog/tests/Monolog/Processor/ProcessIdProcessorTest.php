@@ -18,9 +18,9 @@ class ProcessIdProcessorTest extends TestCase
     /**
      * @covers Monolog\Processor\ProcessIdProcessor::__invoke
      */
-    public function testProcessor()
+    public function test_processor()
     {
-        $processor = new ProcessIdProcessor();
+        $processor = new ProcessIdProcessor;
         $record = $processor($this->getRecord());
         $this->assertArrayHasKey('process_id', $record['extra']);
         $this->assertInternalType('int', $record['extra']['process_id']);

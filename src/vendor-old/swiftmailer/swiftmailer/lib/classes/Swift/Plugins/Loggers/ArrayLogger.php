@@ -20,7 +20,7 @@ class Swift_Plugins_Loggers_ArrayLogger implements Swift_Plugins_Logger
      *
      * @var array
      */
-    private $_log = array();
+    private $_log = [];
 
     /**
      * Max size of the log.
@@ -42,7 +42,7 @@ class Swift_Plugins_Loggers_ArrayLogger implements Swift_Plugins_Logger
     /**
      * Add a log entry.
      *
-     * @param string $entry
+     * @param  string  $entry
      */
     public function add($entry)
     {
@@ -57,7 +57,7 @@ class Swift_Plugins_Loggers_ArrayLogger implements Swift_Plugins_Logger
      */
     public function clear()
     {
-        $this->_log = array();
+        $this->_log = [];
     }
 
     /**

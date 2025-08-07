@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,6 +26,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * Type that maps ab SQL BINARY/VARBINARY to a PHP resource stream.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @since  2.5
  */
 class BinaryType extends Type
@@ -42,7 +44,7 @@ class BinaryType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
@@ -53,7 +55,7 @@ class BinaryType extends Type
             $value = $fp;
         }
 
-        if ( ! is_resource($value)) {
+        if (! is_resource($value)) {
             throw ConversionException::conversionFailed($value, self::BINARY);
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Mockery\Adapter\Phpunit;
 
 /**

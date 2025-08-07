@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -28,13 +29,12 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * @var array
      */
-    protected $strings = array();
+    protected $strings = [];
 
     /**
      * Prettifies the name of a test class.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function prettifyTestClass($name)
@@ -61,15 +61,14 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test method.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function prettifyTestMethod($name)
     {
         $buffer = '';
 
-        if (!is_string($name) || strlen($name) == 0) {
+        if (! is_string($name) || strlen($name) == 0) {
             return $buffer;
         }
 
@@ -91,23 +90,23 @@ class PHPUnit_Util_TestDox_NamePrettifier
             return trim(str_replace('_', ' ', $name));
         }
 
-        $max        = strlen($name);
+        $max = strlen($name);
         $wasNumeric = false;
 
         for ($i = 0; $i < $max; $i++) {
             if ($i > 0 &&
                 ord($name[$i]) >= 65 &&
                 ord($name[$i]) <= 90) {
-                $buffer .= ' ' . strtolower($name[$i]);
+                $buffer .= ' '.strtolower($name[$i]);
             } else {
                 $isNumeric = is_numeric($name[$i]);
 
-                if (!$wasNumeric && $isNumeric) {
-                    $buffer    .= ' ';
+                if (! $wasNumeric && $isNumeric) {
+                    $buffer .= ' ';
                     $wasNumeric = true;
                 }
 
-                if ($wasNumeric && !$isNumeric) {
+                if ($wasNumeric && ! $isNumeric) {
                     $wasNumeric = false;
                 }
 
@@ -121,7 +120,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Sets the prefix of test names.
      *
-     * @param string $prefix
+     * @param  string  $prefix
      */
     public function setPrefix($prefix)
     {
@@ -131,7 +130,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Sets the suffix of test names.
      *
-     * @param string $suffix
+     * @param  string  $suffix
      */
     public function setSuffix($suffix)
     {

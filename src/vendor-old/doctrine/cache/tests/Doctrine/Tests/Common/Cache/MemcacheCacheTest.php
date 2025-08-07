@@ -14,7 +14,7 @@ class MemcacheCacheTest extends CacheTest
 
     protected function setUp()
     {
-        $this->memcache = new Memcache();
+        $this->memcache = new Memcache;
 
         if (@$this->memcache->connect('localhost', 11211) === false) {
             unset($this->memcache);
@@ -42,7 +42,7 @@ class MemcacheCacheTest extends CacheTest
         return $ids;
     }
 
-    public function testGetMemcacheReturnsInstanceOfMemcache()
+    public function test_get_memcache_returns_instance_of_memcache()
     {
         $this->assertInstanceOf('Memcache', $this->_getCacheDriver()->getMemcache());
     }
@@ -52,8 +52,9 @@ class MemcacheCacheTest extends CacheTest
      */
     protected function _getCacheDriver()
     {
-        $driver = new MemcacheCache();
+        $driver = new MemcacheCache;
         $driver->setMemcache($this->memcache);
+
         return $driver;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  * MySQL 5.7 reserved keywords list.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -43,7 +45,7 @@ class MySQL57Keywords extends MySQLKeywords
      */
     protected function getKeywords()
     {
-        return array(
+        return [
             'ACCESSIBLE',
             'ADD',
             'ALL',
@@ -276,6 +278,6 @@ class MySQL57Keywords extends MySQLKeywords
             'XOR',
             'YEAR_MONTH',
             'ZEROFILL',
-        );
+        ];
     }
 }

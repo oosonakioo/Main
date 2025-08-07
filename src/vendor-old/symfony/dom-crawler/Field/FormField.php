@@ -22,22 +22,27 @@ abstract class FormField
      * @var \DOMElement
      */
     protected $node;
+
     /**
      * @var string
      */
     protected $name;
+
     /**
      * @var string
      */
     protected $value;
+
     /**
      * @var \DOMDocument
      */
     protected $document;
+
     /**
      * @var \DOMXPath
      */
     protected $xpath;
+
     /**
      * @var bool
      */
@@ -46,7 +51,7 @@ abstract class FormField
     /**
      * Constructor.
      *
-     * @param \DOMElement $node The node associated with this field
+     * @param  \DOMElement  $node  The node associated with this field
      */
     public function __construct(\DOMElement $node)
     {
@@ -80,7 +85,7 @@ abstract class FormField
     /**
      * Sets the value of the field.
      *
-     * @param string $value The value of the field
+     * @param  string  $value  The value of the field
      */
     public function setValue($value)
     {

@@ -16,7 +16,6 @@ class UrlWindow
     /**
      * Create a new URL window instance.
      *
-     * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return void
      */
     public function __construct(PaginatorContract $paginator)
@@ -27,7 +26,6 @@ class UrlWindow
     /**
      * Create a new URL window instance.
      *
-     * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @param  int  $onEachSide
      * @return array
      */
@@ -59,9 +57,9 @@ class UrlWindow
     protected function getSmallSlider()
     {
         return [
-            'first'  => $this->paginator->getUrlRange(1, $this->lastPage()),
+            'first' => $this->paginator->getUrlRange(1, $this->lastPage()),
             'slider' => null,
-            'last'   => null,
+            'last' => null,
         ];
     }
 
@@ -77,9 +75,9 @@ class UrlWindow
 
         if (! $this->hasPages()) {
             return [
-                'first'  => null,
+                'first' => null,
                 'slider' => null,
-                'last'   => null,
+                'last' => null,
             ];
         }
 
@@ -112,9 +110,9 @@ class UrlWindow
     protected function getSliderTooCloseToBeginning($window)
     {
         return [
-            'first'  => $this->paginator->getUrlRange(1, $window + 2),
+            'first' => $this->paginator->getUrlRange(1, $window + 2),
             'slider' => null,
-            'last'   => $this->getFinish(),
+            'last' => $this->getFinish(),
         ];
     }
 
@@ -132,9 +130,9 @@ class UrlWindow
         );
 
         return [
-            'first'  => $this->getStart(),
+            'first' => $this->getStart(),
             'slider' => null,
-            'last'   => $last,
+            'last' => $last,
         ];
     }
 
@@ -147,9 +145,9 @@ class UrlWindow
     protected function getFullSlider($onEachSide)
     {
         return [
-            'first'  => $this->getStart(),
+            'first' => $this->getStart(),
             'slider' => $this->getAdjacentUrlRange($onEachSide),
-            'last'   => $this->getFinish(),
+            'last' => $this->getFinish(),
         ];
     }
 

@@ -64,25 +64,25 @@ class PoFileLoader extends FileLoader
     {
         $stream = fopen($resource, 'r');
 
-        $defaults = array(
-            'ids' => array(),
+        $defaults = [
+            'ids' => [],
             'translated' => null,
-        );
+        ];
 
-        $messages = array();
+        $messages = [];
         $item = $defaults;
-        $flags = array();
+        $flags = [];
 
         while ($line = fgets($stream)) {
             $line = trim($line);
 
             if ($line === '') {
                 // Whitespace indicated current item is done
-                if (!in_array('fuzzy', $flags)) {
+                if (! in_array('fuzzy', $flags)) {
                     $this->addMessage($messages, $item);
                 }
                 $item = $defaults;
-                $flags = array();
+                $flags = [];
             } elseif (substr($line, 0, 2) === '#,') {
                 $flags = array_map('trim', explode(',', substr($line, 2)));
             } elseif (substr($line, 0, 7) === 'msgid "') {
@@ -110,7 +110,7 @@ class PoFileLoader extends FileLoader
             }
         }
         // save last item
-        if (!in_array('fuzzy', $flags)) {
+        if (! in_array('fuzzy', $flags)) {
             $this->addMessage($messages, $item);
         }
         fclose($stream);
@@ -123,9 +123,6 @@ class PoFileLoader extends FileLoader
      *
      * A .po file could contain by error missing plural indexes. We need to
      * fix these before saving them.
-     *
-     * @param array $messages
-     * @param array $item
      */
     private function addMessage(array &$messages, array $item)
     {
@@ -144,7 +141,7 @@ class PoFileLoader extends FileLoader
                 ksort($plurals);
                 $messages[stripcslashes($item['ids']['plural'])] = stripcslashes(implode('|', $plurals));
             }
-        } elseif (!empty($item['ids']['singular'])) {
+        } elseif (! empty($item['ids']['singular'])) {
             $messages[stripcslashes($item['ids']['singular'])] = stripcslashes($item['translated']);
         }
     }

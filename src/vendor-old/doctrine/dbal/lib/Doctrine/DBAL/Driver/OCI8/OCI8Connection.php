@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -36,25 +37,25 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
     protected $dbh;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $executeMode = OCI_COMMIT_ON_SUCCESS;
 
     /**
      * Creates a Connection to an Oracle Database using oci8 extension.
      *
-     * @param string      $username
-     * @param string      $password
-     * @param string      $db
-     * @param string|null $charset
-     * @param integer     $sessionMode
-     * @param boolean     $persistent
+     * @param  string  $username
+     * @param  string  $password
+     * @param  string  $db
+     * @param  string|null  $charset
+     * @param  int  $sessionMode
+     * @param  bool  $persistent
      *
      * @throws OCI8Exception
      */
     public function __construct($username, $password, $db, $charset = null, $sessionMode = OCI_DEFAULT, $persistent = false)
     {
-        if (!defined('OCI_NO_AUTO_COMMIT')) {
+        if (! defined('OCI_NO_AUTO_COMMIT')) {
             define('OCI_NO_AUTO_COMMIT', 0);
         }
 
@@ -62,7 +63,7 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
             ? @oci_pconnect($username, $password, $db, $charset, $sessionMode)
             : @oci_connect($username, $password, $db, $charset, $sessionMode);
 
-        if ( ! $this->dbh) {
+        if (! $this->dbh) {
             throw OCI8Exception::fromErrorInfo(oci_error());
         }
     }
@@ -75,10 +76,10 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
      */
     public function getServerVersion()
     {
-        if ( ! preg_match('/\s+(\d+\.\d+\.\d+\.\d+\.\d+)\s+/', oci_server_version($this->dbh), $version)) {
+        if (! preg_match('/\s+(\d+\.\d+\.\d+\.\d+\.\d+)\s+/', oci_server_version($this->dbh), $version)) {
             throw new \UnexpectedValueException(
                 sprintf(
-                    'Unexpected database version string "%s". Cannot parse an appropriate version number from it. ' .
+                    'Unexpected database version string "%s". Cannot parse an appropriate version number from it. '.
                     'Please report this database version string to the Doctrine team.',
                     oci_server_version($this->dbh)
                 )
@@ -111,7 +112,7 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
     {
         $args = func_get_args();
         $sql = $args[0];
-        //$fetchMode = $args[1];
+        // $fetchMode = $args[1];
         $stmt = $this->prepare($sql);
         $stmt->execute();
 
@@ -121,14 +122,14 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
     /**
      * {@inheritdoc}
      */
-    public function quote($value, $type=\PDO::PARAM_STR)
+    public function quote($value, $type = \PDO::PARAM_STR)
     {
         if (is_int($value) || is_float($value)) {
             return $value;
         }
         $value = str_replace("'", "''", $value);
 
-        return "'" . addcslashes($value, "\000\n\r\\\032") . "'";
+        return "'".addcslashes($value, "\000\n\r\\\032")."'";
     }
 
     /**
@@ -153,12 +154,12 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
 
         OraclePlatform::assertValidIdentifier($name);
 
-        $sql    = 'SELECT ' . $name . '.CURRVAL FROM DUAL';
-        $stmt   = $this->query($sql);
+        $sql = 'SELECT '.$name.'.CURRVAL FROM DUAL';
+        $stmt = $this->query($sql);
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if ($result === false || !isset($result['CURRVAL'])) {
-            throw new OCI8Exception("lastInsertId failed: Query was executed but no result was returned.");
+        if ($result === false || ! isset($result['CURRVAL'])) {
+            throw new OCI8Exception('lastInsertId failed: Query was executed but no result was returned.');
         }
 
         return (int) $result['CURRVAL'];
@@ -167,7 +168,7 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
     /**
      * Returns the current execution mode.
      *
-     * @return integer
+     * @return int
      */
     public function getExecuteMode()
     {
@@ -189,7 +190,7 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
      */
     public function commit()
     {
-        if (!oci_commit($this->dbh)) {
+        if (! oci_commit($this->dbh)) {
             throw OCI8Exception::fromErrorInfo($this->errorInfo());
         }
         $this->executeMode = OCI_COMMIT_ON_SUCCESS;
@@ -202,7 +203,7 @@ class OCI8Connection implements Connection, ServerInfoAwareConnection
      */
     public function rollBack()
     {
-        if (!oci_rollback($this->dbh)) {
+        if (! oci_rollback($this->dbh)) {
             throw OCI8Exception::fromErrorInfo($this->errorInfo());
         }
         $this->executeMode = OCI_COMMIT_ON_SUCCESS;

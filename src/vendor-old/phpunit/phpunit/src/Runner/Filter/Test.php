@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -22,14 +23,14 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
      * @var int
      */
     protected $filterMin;
+
     /**
      * @var int
      */
     protected $filterMax;
 
     /**
-     * @param RecursiveIterator $iterator
-     * @param string            $filter
+     * @param  string  $filter
      */
     public function __construct(RecursiveIterator $iterator, $filter)
     {
@@ -38,7 +39,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     }
 
     /**
-     * @param string $filter
+     * @param  string  $filter
      */
     protected function setFilter($filter)
     {
@@ -107,7 +108,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
         $accepted = @preg_match($this->filter, $name, $matches);
 
         if ($accepted && isset($this->filterMax)) {
-            $set      = end($matches);
+            $set = end($matches);
             $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
         }
 

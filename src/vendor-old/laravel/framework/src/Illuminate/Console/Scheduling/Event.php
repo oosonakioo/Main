@@ -2,15 +2,15 @@
 
 namespace Illuminate\Console\Scheduling;
 
-use Closure;
 use Carbon\Carbon;
-use LogicException;
+use Closure;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Mail\Mailer;
+use LogicException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
-use Illuminate\Contracts\Container\Container;
 
 class Event
 {
@@ -144,7 +144,6 @@ class Event
     /**
      * Run the given event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     public function run(Container $container)
@@ -159,7 +158,6 @@ class Event
     /**
      * Run the command in the foreground.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     protected function runCommandInForeground(Container $container)
@@ -188,7 +186,6 @@ class Event
     /**
      * Call all of the "before" callbacks for the event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     protected function callBeforeCallbacks(Container $container)
@@ -201,7 +198,6 @@ class Event
     /**
      * Call all of the "after" callbacks for the event.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     protected function callAfterCallbacks(Container $container)
@@ -376,7 +372,7 @@ class Event
         $segments = explode(':', $time);
 
         return $this->spliceIntoPosition(2, (int) $segments[0])
-                    ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
+            ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
     }
 
     /**
@@ -391,7 +387,7 @@ class Event
         $hours = $first.','.$second;
 
         return $this->spliceIntoPosition(1, 0)
-                    ->spliceIntoPosition(2, $hours);
+            ->spliceIntoPosition(2, $hours);
     }
 
     /**
@@ -511,8 +507,8 @@ class Event
     /**
      * Schedule the event to run monthly on a given day and time.
      *
-     * @param int  $day
-     * @param string  $time
+     * @param  int  $day
+     * @param  string  $time
      * @return $this
      */
     public function monthlyOn($day = 1, $time = '0:0')
@@ -675,7 +671,6 @@ class Event
     /**
      * Register a callback to further filter the schedule.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function when(Closure $callback)
@@ -688,7 +683,6 @@ class Event
     /**
      * Register a callback to further filter the schedule.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function skip(Closure $callback)
@@ -763,7 +757,6 @@ class Event
     /**
      * E-mail the output of the event to the recipients.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @param  array  $addresses
      * @param  bool  $onlyIfOutputExists
      * @return void
@@ -815,7 +808,6 @@ class Event
     /**
      * Register a callback to be called before the operation.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function before(Closure $callback)
@@ -841,7 +833,6 @@ class Event
     /**
      * Register a callback to be called after the operation.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function after(Closure $callback)
@@ -852,7 +843,6 @@ class Event
     /**
      * Register a callback to be called after the operation.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function then(Closure $callback)

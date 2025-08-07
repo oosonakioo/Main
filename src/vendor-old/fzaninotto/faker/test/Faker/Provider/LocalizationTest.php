@@ -6,21 +6,21 @@ use Faker\Factory;
 
 class LocalizationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLocalizedNameProvidersDoNotThrowErrors()
+    public function test_localized_name_providers_do_not_throw_errors()
     {
-        foreach (glob(__DIR__ . '/../../../src/Faker/Provider/*/Person.php') as $localizedPerson) {
+        foreach (glob(__DIR__.'/../../../src/Faker/Provider/*/Person.php') as $localizedPerson) {
             preg_match('#/([a-zA-Z_]+)/Person\.php#', $localizedPerson, $matches);
             $faker = Factory::create($matches[1]);
-            $this->assertNotNull($faker->name(), 'Localized Name Provider ' . $matches[1] . ' does not throw errors');
+            $this->assertNotNull($faker->name(), 'Localized Name Provider '.$matches[1].' does not throw errors');
         }
     }
 
-    public function testLocalizedAddressProvidersDoNotThrowErrors()
+    public function test_localized_address_providers_do_not_throw_errors()
     {
-        foreach (glob(__DIR__ . '/../../../src/Faker/Provider/*/Address.php') as $localizedAddress) {
+        foreach (glob(__DIR__.'/../../../src/Faker/Provider/*/Address.php') as $localizedAddress) {
             preg_match('#/([a-zA-Z_]+)/Address\.php#', $localizedAddress, $matches);
             $faker = Factory::create($matches[1]);
-            $this->assertNotNull($faker->address(), 'Localized Address Provider ' . $matches[1] . ' does not throw errors');
+            $this->assertNotNull($faker->address(), 'Localized Address Provider '.$matches[1].' does not throw errors');
         }
     }
 }

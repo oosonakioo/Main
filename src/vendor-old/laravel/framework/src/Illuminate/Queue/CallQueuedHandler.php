@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue;
 
-use Illuminate\Contracts\Queue\Job;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Queue\Job;
 
 class CallQueuedHandler
 {
@@ -17,7 +17,6 @@ class CallQueuedHandler
     /**
      * Create a new handler instance.
      *
-     * @param  \Illuminate\Contracts\Bus\Dispatcher  $dispatcher
      * @return void
      */
     public function __construct(Dispatcher $dispatcher)
@@ -28,8 +27,6 @@ class CallQueuedHandler
     /**
      * Handle the queued job.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  array  $data
      * @return void
      */
     public function call(Job $job, array $data)
@@ -48,7 +45,6 @@ class CallQueuedHandler
     /**
      * Set the job instance of the given class if necessary.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  mixed  $instance
      * @return mixed
      */
@@ -64,7 +60,6 @@ class CallQueuedHandler
     /**
      * Call the failed method on the job instance.
      *
-     * @param  array  $data
      * @return void
      */
     public function failed(array $data)

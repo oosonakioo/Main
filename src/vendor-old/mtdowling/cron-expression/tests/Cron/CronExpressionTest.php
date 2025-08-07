@@ -16,7 +16,7 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::factory
      */
-    public function testFactoryRecognizesTemplates()
+    public function test_factory_recognizes_templates()
     {
         $this->assertEquals('0 0 1 1 *', CronExpression::factory('@annually')->getExpression());
         $this->assertEquals('0 0 1 1 *', CronExpression::factory('@yearly')->getExpression());
@@ -28,7 +28,7 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
      * @covers Cron\CronExpression::getExpression
      * @covers Cron\CronExpression::__toString
      */
-    public function testParsesCronSchedule()
+    public function test_parses_cron_schedule()
     {
         // '2010-09-10 12:00:00'
         $cron = CronExpression::factory('1 2-4 * 4,5,6 */3');
@@ -51,9 +51,10 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::__construct
      * @covers Cron\CronExpression::getExpression
+     *
      * @dataProvider scheduleWithDifferentSeparatorsProvider
      */
-    public function testParsesCronScheduleWithAnySpaceCharsAsSeparators($schedule, array $expected)
+    public function test_parses_cron_schedule_with_any_space_chars_as_separators($schedule, array $expected)
     {
         $cron = CronExpression::factory($schedule);
         $this->assertEquals($expected[0], $cron->getExpression(CronExpression::MINUTE));
@@ -71,21 +72,22 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
      */
     public static function scheduleWithDifferentSeparatorsProvider()
     {
-        return array(
-            array("*\t*\t*\t*\t*\t*", array('*', '*', '*', '*', '*', '*')),
-            array("*  *  *  *  *  *", array('*', '*', '*', '*', '*', '*')),
-            array("* \t * \t * \t * \t * \t *", array('*', '*', '*', '*', '*', '*')),
-            array("*\t \t*\t \t*\t \t*\t \t*\t \t*", array('*', '*', '*', '*', '*', '*')),
-        );
+        return [
+            ["*\t*\t*\t*\t*\t*", ['*', '*', '*', '*', '*', '*']],
+            ['*  *  *  *  *  *', ['*', '*', '*', '*', '*', '*']],
+            ["* \t * \t * \t * \t * \t *", ['*', '*', '*', '*', '*', '*']],
+            ["*\t \t*\t \t*\t \t*\t \t*\t \t*", ['*', '*', '*', '*', '*', '*']],
+        ];
     }
 
     /**
      * @covers Cron\CronExpression::__construct
      * @covers Cron\CronExpression::setExpression
      * @covers Cron\CronExpression::setPart
+     *
      * @expectedException InvalidArgumentException
      */
-    public function testInvalidCronsWillFail()
+    public function test_invalid_crons_will_fail()
     {
         // Only four values
         $cron = CronExpression::factory('* * * 1');
@@ -93,9 +95,10 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Cron\CronExpression::setPart
+     *
      * @expectedException InvalidArgumentException
      */
-    public function testInvalidPartsWillFail()
+    public function test_invalid_parts_will_fail()
     {
         // Only four values
         $cron = CronExpression::factory('* * * * *');
@@ -109,72 +112,72 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
      */
     public function scheduleProvider()
     {
-        return array(
-            array('*/2 */2 * * *', '2015-08-10 21:47:27', '2015-08-10 22:00:00', false),
-            array('* * * * *', '2015-08-10 21:50:37', '2015-08-10 21:50:00', true),
-            array('* 20,21,22 * * *', '2015-08-10 21:50:00', '2015-08-10 21:50:00', true),
+        return [
+            ['*/2 */2 * * *', '2015-08-10 21:47:27', '2015-08-10 22:00:00', false],
+            ['* * * * *', '2015-08-10 21:50:37', '2015-08-10 21:50:00', true],
+            ['* 20,21,22 * * *', '2015-08-10 21:50:00', '2015-08-10 21:50:00', true],
             // Handles CSV values
-            array('* 20,22 * * *', '2015-08-10 21:50:00', '2015-08-10 22:00:00', false),
+            ['* 20,22 * * *', '2015-08-10 21:50:00', '2015-08-10 22:00:00', false],
             // CSV values can be complex
-            array('* 5,21-22 * * *', '2015-08-10 21:50:00', '2015-08-10 21:50:00', true),
-            array('7-9 * */9 * *', '2015-08-10 22:02:33', '2015-08-18 00:07:00', false),
+            ['* 5,21-22 * * *', '2015-08-10 21:50:00', '2015-08-10 21:50:00', true],
+            ['7-9 * */9 * *', '2015-08-10 22:02:33', '2015-08-18 00:07:00', false],
             // 15th minute, of the second hour, every 15 days, in January, every Friday
-            array('1 * * * 7', '2015-08-10 21:47:27', '2015-08-16 00:01:00', false),
+            ['1 * * * 7', '2015-08-10 21:47:27', '2015-08-16 00:01:00', false],
             // Test with exact times
-            array('47 21 * * *', strtotime('2015-08-10 21:47:30'), '2015-08-10 21:47:00', true),
+            ['47 21 * * *', strtotime('2015-08-10 21:47:30'), '2015-08-10 21:47:00', true],
             // Test Day of the week (issue #1)
             // According cron implementation, 0|7 = sunday, 1 => monday, etc
-            array('* * * * 0', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false),
-            array('* * * * 7', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false),
-            array('* * * * 1', strtotime('2011-06-15 23:09:00'), '2011-06-20 00:00:00', false),
+            ['* * * * 0', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false],
+            ['* * * * 7', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false],
+            ['* * * * 1', strtotime('2011-06-15 23:09:00'), '2011-06-20 00:00:00', false],
             // Should return the sunday date as 7 equals 0
-            array('0 0 * * MON,SUN', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false),
-            array('0 0 * * 1,7', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false),
-            array('0 0 * * 0-4', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false),
-            array('0 0 * * 7-4', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false),
-            array('0 0 * * 4-7', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false),
-            array('0 0 * * 7-3', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false),
-            array('0 0 * * 3-7', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false),
-            array('0 0 * * 3-7', strtotime('2011-06-18 23:09:00'), '2011-06-19 00:00:00', false),
+            ['0 0 * * MON,SUN', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false],
+            ['0 0 * * 1,7', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false],
+            ['0 0 * * 0-4', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false],
+            ['0 0 * * 7-4', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false],
+            ['0 0 * * 4-7', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false],
+            ['0 0 * * 7-3', strtotime('2011-06-15 23:09:00'), '2011-06-19 00:00:00', false],
+            ['0 0 * * 3-7', strtotime('2011-06-15 23:09:00'), '2011-06-16 00:00:00', false],
+            ['0 0 * * 3-7', strtotime('2011-06-18 23:09:00'), '2011-06-19 00:00:00', false],
             // Test lists of values and ranges (Abhoryo)
-            array('0 0 * * 2-7', strtotime('2011-06-20 23:09:00'), '2011-06-21 00:00:00', false),
-            array('0 0 * * 0,2-6', strtotime('2011-06-20 23:09:00'), '2011-06-21 00:00:00', false),
-            array('0 0 * * 2-7', strtotime('2011-06-18 23:09:00'), '2011-06-19 00:00:00', false),
-            array('0 0 * * 4-7', strtotime('2011-07-19 00:00:00'), '2011-07-21 00:00:00', false),
+            ['0 0 * * 2-7', strtotime('2011-06-20 23:09:00'), '2011-06-21 00:00:00', false],
+            ['0 0 * * 0,2-6', strtotime('2011-06-20 23:09:00'), '2011-06-21 00:00:00', false],
+            ['0 0 * * 2-7', strtotime('2011-06-18 23:09:00'), '2011-06-19 00:00:00', false],
+            ['0 0 * * 4-7', strtotime('2011-07-19 00:00:00'), '2011-07-21 00:00:00', false],
             // Test increments of ranges
-            array('0-12/4 * * * *', strtotime('2011-06-20 12:04:00'), '2011-06-20 12:04:00', true),
-            array('4-59/2 * * * *', strtotime('2011-06-20 12:04:00'), '2011-06-20 12:04:00', true),
-            array('4-59/2 * * * *', strtotime('2011-06-20 12:06:00'), '2011-06-20 12:06:00', true),
-            array('4-59/3 * * * *', strtotime('2011-06-20 12:06:00'), '2011-06-20 12:07:00', false),
-            //array('0 0 * * 0,2-6', strtotime('2011-06-20 23:09:00'), '2011-06-21 00:00:00', false),
+            ['0-12/4 * * * *', strtotime('2011-06-20 12:04:00'), '2011-06-20 12:04:00', true],
+            ['4-59/2 * * * *', strtotime('2011-06-20 12:04:00'), '2011-06-20 12:04:00', true],
+            ['4-59/2 * * * *', strtotime('2011-06-20 12:06:00'), '2011-06-20 12:06:00', true],
+            ['4-59/3 * * * *', strtotime('2011-06-20 12:06:00'), '2011-06-20 12:07:00', false],
+            // array('0 0 * * 0,2-6', strtotime('2011-06-20 23:09:00'), '2011-06-21 00:00:00', false),
             // Test Day of the Week and the Day of the Month (issue #1)
-            array('0 0 1 1 0', strtotime('2011-06-15 23:09:00'), '2012-01-01 00:00:00', false),
-            array('0 0 1 JAN 0', strtotime('2011-06-15 23:09:00'), '2012-01-01 00:00:00', false),
-            array('0 0 1 * 0', strtotime('2011-06-15 23:09:00'), '2012-01-01 00:00:00', false),
-            array('0 0 L * *', strtotime('2011-07-15 00:00:00'), '2011-07-31 00:00:00', false),
+            ['0 0 1 1 0', strtotime('2011-06-15 23:09:00'), '2012-01-01 00:00:00', false],
+            ['0 0 1 JAN 0', strtotime('2011-06-15 23:09:00'), '2012-01-01 00:00:00', false],
+            ['0 0 1 * 0', strtotime('2011-06-15 23:09:00'), '2012-01-01 00:00:00', false],
+            ['0 0 L * *', strtotime('2011-07-15 00:00:00'), '2011-07-31 00:00:00', false],
             // Test the W day of the week modifier for day of the month field
-            array('0 0 2W * *', strtotime('2011-07-01 00:00:00'), '2011-07-01 00:00:00', true),
-            array('0 0 1W * *', strtotime('2011-05-01 00:00:00'), '2011-05-02 00:00:00', false),
-            array('0 0 1W * *', strtotime('2011-07-01 00:00:00'), '2011-07-01 00:00:00', true),
-            array('0 0 3W * *', strtotime('2011-07-01 00:00:00'), '2011-07-04 00:00:00', false),
-            array('0 0 16W * *', strtotime('2011-07-01 00:00:00'), '2011-07-15 00:00:00', false),
-            array('0 0 28W * *', strtotime('2011-07-01 00:00:00'), '2011-07-28 00:00:00', false),
-            array('0 0 30W * *', strtotime('2011-07-01 00:00:00'), '2011-07-29 00:00:00', false),
-            array('0 0 31W * *', strtotime('2011-07-01 00:00:00'), '2011-07-29 00:00:00', false),
+            ['0 0 2W * *', strtotime('2011-07-01 00:00:00'), '2011-07-01 00:00:00', true],
+            ['0 0 1W * *', strtotime('2011-05-01 00:00:00'), '2011-05-02 00:00:00', false],
+            ['0 0 1W * *', strtotime('2011-07-01 00:00:00'), '2011-07-01 00:00:00', true],
+            ['0 0 3W * *', strtotime('2011-07-01 00:00:00'), '2011-07-04 00:00:00', false],
+            ['0 0 16W * *', strtotime('2011-07-01 00:00:00'), '2011-07-15 00:00:00', false],
+            ['0 0 28W * *', strtotime('2011-07-01 00:00:00'), '2011-07-28 00:00:00', false],
+            ['0 0 30W * *', strtotime('2011-07-01 00:00:00'), '2011-07-29 00:00:00', false],
+            ['0 0 31W * *', strtotime('2011-07-01 00:00:00'), '2011-07-29 00:00:00', false],
             // Test the year field
-            array('* * * * * 2012', strtotime('2011-05-01 00:00:00'), '2012-01-01 00:00:00', false),
+            ['* * * * * 2012', strtotime('2011-05-01 00:00:00'), '2012-01-01 00:00:00', false],
             // Test the last weekday of a month
-            array('* * * * 5L', strtotime('2011-07-01 00:00:00'), '2011-07-29 00:00:00', false),
-            array('* * * * 6L', strtotime('2011-07-01 00:00:00'), '2011-07-30 00:00:00', false),
-            array('* * * * 7L', strtotime('2011-07-01 00:00:00'), '2011-07-31 00:00:00', false),
-            array('* * * * 1L', strtotime('2011-07-24 00:00:00'), '2011-07-25 00:00:00', false),
-            array('* * * * TUEL', strtotime('2011-07-24 00:00:00'), '2011-07-26 00:00:00', false),
-            array('* * * 1 5L', strtotime('2011-12-25 00:00:00'), '2012-01-27 00:00:00', false),
+            ['* * * * 5L', strtotime('2011-07-01 00:00:00'), '2011-07-29 00:00:00', false],
+            ['* * * * 6L', strtotime('2011-07-01 00:00:00'), '2011-07-30 00:00:00', false],
+            ['* * * * 7L', strtotime('2011-07-01 00:00:00'), '2011-07-31 00:00:00', false],
+            ['* * * * 1L', strtotime('2011-07-24 00:00:00'), '2011-07-25 00:00:00', false],
+            ['* * * * TUEL', strtotime('2011-07-24 00:00:00'), '2011-07-26 00:00:00', false],
+            ['* * * 1 5L', strtotime('2011-12-25 00:00:00'), '2012-01-27 00:00:00', false],
             // Test the hash symbol for the nth weekday of a given month
-            array('* * * * 5#2', strtotime('2011-07-01 00:00:00'), '2011-07-08 00:00:00', false),
-            array('* * * * 5#1', strtotime('2011-07-01 00:00:00'), '2011-07-01 00:00:00', true),
-            array('* * * * 3#4', strtotime('2011-07-01 00:00:00'), '2011-07-27 00:00:00', false),
-        );
+            ['* * * * 5#2', strtotime('2011-07-01 00:00:00'), '2011-07-08 00:00:00', false],
+            ['* * * * 5#1', strtotime('2011-07-01 00:00:00'), '2011-07-01 00:00:00', true],
+            ['* * * * 3#4', strtotime('2011-07-01 00:00:00'), '2011-07-27 00:00:00', false],
+        ];
     }
 
     /**
@@ -187,9 +190,10 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
      * @covers Cron\MonthField
      * @covers Cron\YearField
      * @covers Cron\CronExpression::getRunDate
+     *
      * @dataProvider scheduleProvider
      */
-    public function testDeterminesIfCronIsDue($schedule, $relativeTime, $nextRun, $isDue)
+    public function test_determines_if_cron_is_due($schedule, $relativeTime, $nextRun, $isDue)
     {
         $relativeTimeString = is_int($relativeTime) ? date('Y-m-d H:i:s', $relativeTime) : $relativeTime;
 
@@ -208,7 +212,7 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::isDue
      */
-    public function testIsDueHandlesDifferentDates()
+    public function test_is_due_handles_different_dates()
     {
         $cron = CronExpression::factory('* * * * *');
         $this->assertTrue($cron->isDue());
@@ -220,12 +224,12 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::isDue
      */
-    public function testIsDueHandlesDifferentTimezones()
+    public function test_is_due_handles_different_timezones()
     {
-        $cron = CronExpression::factory('0 15 * * 3'); //Wednesday at 15:00
-        $date = '2014-01-01 15:00'; //Wednesday
+        $cron = CronExpression::factory('0 15 * * 3'); // Wednesday at 15:00
+        $date = '2014-01-01 15:00'; // Wednesday
         $utc = new DateTimeZone('UTC');
-        $amsterdam =  new DateTimeZone('Europe/Amsterdam');
+        $amsterdam = new DateTimeZone('Europe/Amsterdam');
         $tokyo = new DateTimeZone('Asia/Tokyo');
 
         date_default_timezone_set('UTC');
@@ -247,7 +251,7 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::getPreviousRunDate
      */
-    public function testCanGetPreviousRunDates()
+    public function test_can_get_previous_run_dates()
     {
         $cron = CronExpression::factory('* * * * *');
         $next = $cron->getNextRunDate('now');
@@ -268,26 +272,27 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::getMultipleRunDates
      */
-    public function testProvidesMultipleRunDates()
+    public function test_provides_multiple_run_dates()
     {
         $cron = CronExpression::factory('*/2 * * * *');
-        $this->assertEquals(array(
+        $this->assertEquals([
             new DateTime('2008-11-09 00:00:00'),
             new DateTime('2008-11-09 00:02:00'),
             new DateTime('2008-11-09 00:04:00'),
-            new DateTime('2008-11-09 00:06:00')
-        ), $cron->getMultipleRunDates(4, '2008-11-09 00:00:00', false, true));
+            new DateTime('2008-11-09 00:06:00'),
+        ], $cron->getMultipleRunDates(4, '2008-11-09 00:00:00', false, true));
     }
 
     /**
      * @covers Cron\CronExpression::getMultipleRunDates
      * @covers Cron\CronExpression::setMaxIterationCount
      */
-    public function testProvidesMultipleRunDatesForTheFarFuture() {
+    public function test_provides_multiple_run_dates_for_the_far_future()
+    {
         // Fails with the default 1000 iteration limit
         $cron = CronExpression::factory('0 0 12 1 * */2');
         $cron->setMaxIterationCount(2000);
-        $this->assertEquals(array(
+        $this->assertEquals([
             new DateTime('2016-01-12 00:00:00'),
             new DateTime('2018-01-12 00:00:00'),
             new DateTime('2020-01-12 00:00:00'),
@@ -297,37 +302,37 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
             new DateTime('2028-01-12 00:00:00'),
             new DateTime('2030-01-12 00:00:00'),
             new DateTime('2032-01-12 00:00:00'),
-        ), $cron->getMultipleRunDates(9, '2015-04-28 00:00:00', false, true));
+        ], $cron->getMultipleRunDates(9, '2015-04-28 00:00:00', false, true));
     }
 
     /**
      * @covers Cron\CronExpression
      */
-    public function testCanIterateOverNextRuns()
+    public function test_can_iterate_over_next_runs()
     {
         $cron = CronExpression::factory('@weekly');
-        $nextRun = $cron->getNextRunDate("2008-11-09 08:00:00");
-        $this->assertEquals($nextRun, new DateTime("2008-11-16 00:00:00"));
+        $nextRun = $cron->getNextRunDate('2008-11-09 08:00:00');
+        $this->assertEquals($nextRun, new DateTime('2008-11-16 00:00:00'));
 
         // true is cast to 1
-        $nextRun = $cron->getNextRunDate("2008-11-09 00:00:00", true, true);
-        $this->assertEquals($nextRun, new DateTime("2008-11-16 00:00:00"));
+        $nextRun = $cron->getNextRunDate('2008-11-09 00:00:00', true, true);
+        $this->assertEquals($nextRun, new DateTime('2008-11-16 00:00:00'));
 
         // You can iterate over them
-        $nextRun = $cron->getNextRunDate($cron->getNextRunDate("2008-11-09 00:00:00", 1, true), 1, true);
-        $this->assertEquals($nextRun, new DateTime("2008-11-23 00:00:00"));
+        $nextRun = $cron->getNextRunDate($cron->getNextRunDate('2008-11-09 00:00:00', 1, true), 1, true);
+        $this->assertEquals($nextRun, new DateTime('2008-11-23 00:00:00'));
 
         // You can skip more than one
-        $nextRun = $cron->getNextRunDate("2008-11-09 00:00:00", 2, true);
-        $this->assertEquals($nextRun, new DateTime("2008-11-23 00:00:00"));
-        $nextRun = $cron->getNextRunDate("2008-11-09 00:00:00", 3, true);
-        $this->assertEquals($nextRun, new DateTime("2008-11-30 00:00:00"));
+        $nextRun = $cron->getNextRunDate('2008-11-09 00:00:00', 2, true);
+        $this->assertEquals($nextRun, new DateTime('2008-11-23 00:00:00'));
+        $nextRun = $cron->getNextRunDate('2008-11-09 00:00:00', 3, true);
+        $this->assertEquals($nextRun, new DateTime('2008-11-30 00:00:00'));
     }
 
     /**
      * @covers Cron\CronExpression::getRunDate
      */
-    public function testSkipsCurrentDateByDefault()
+    public function test_skips_current_date_by_default()
     {
         $cron = CronExpression::factory('* * * * *');
         $current = new DateTime('now');
@@ -338,9 +343,10 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Cron\CronExpression::getRunDate
+     *
      * @ticket 7
      */
-    public function testStripsForSeconds()
+    public function test_strips_for_seconds()
     {
         $cron = CronExpression::factory('* * * * *');
         $current = new DateTime('2011-09-27 10:10:54');
@@ -350,13 +356,13 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::getRunDate
      */
-    public function testFixesPhpBugInDateIntervalMonth()
+    public function test_fixes_php_bug_in_date_interval_month()
     {
         $cron = CronExpression::factory('0 0 27 JAN *');
         $this->assertEquals('2011-01-27 00:00:00', $cron->getPreviousRunDate('2011-08-22 00:00:00')->format('Y-m-d H:i:s'));
     }
 
-    public function testIssue29()
+    public function test_issue29()
     {
         $cron = CronExpression::factory('@weekly');
         $this->assertEquals(
@@ -368,7 +374,8 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @see https://github.com/mtdowling/cron-expression/issues/20
      */
-    public function testIssue20() {
+    public function test_issue20()
+    {
         $e = CronExpression::factory('* * * * MON#1');
         $this->assertTrue($e->isDue(new DateTime('2014-04-07 00:00:00')));
         $this->assertFalse($e->isDue(new DateTime('2014-04-14 00:00:00')));
@@ -388,7 +395,7 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\CronExpression::getRunDate
      */
-    public function testKeepOriginalTime()
+    public function test_keep_original_time()
     {
         $now = new \DateTime;
         $strNow = $now->format(DateTime::ISO8601);
@@ -404,7 +411,7 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
      * @covers Cron\CronExpression::setExpression
      * @covers Cron\CronExpression::setPart
      */
-    public function testValidationWorks()
+    public function test_validation_works()
     {
         // Invalid. Only four values
         $this->assertFalse(CronExpression::isValidExpression('* * * 1'));

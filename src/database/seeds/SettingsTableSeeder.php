@@ -13,19 +13,19 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-    	$settings = [
-	    	[
-	            Settings::KEY => Settings::WEB_TITLE,
-	            Settings::VALUE => 'Laravel Starter Kit'
-	        ], 
-	        [
-            	Settings::KEY => Settings::WEB_DESC,
-            	Settings::VALUE => 'Build Website by Laravel Framework'
+        $settings = [
+            [
+                Settings::KEY => Settings::WEB_TITLE,
+                Settings::VALUE => 'Laravel Starter Kit',
             ],
             [
-	            Settings::KEY => Settings::WEB_KEYWORD,
-	            Settings::VALUE => 'website,template,laravel'
-	        ]
+                Settings::KEY => Settings::WEB_DESC,
+                Settings::VALUE => 'Build Website by Laravel Framework',
+            ],
+            [
+                Settings::KEY => Settings::WEB_KEYWORD,
+                Settings::VALUE => 'website,template,laravel',
+            ],
         ];
         DB::table('settings')->insert($settings);
     }

@@ -11,41 +11,41 @@
 
 namespace Symfony\Component\Translation\Tests\Loader;
 
-use Symfony\Component\Translation\Loader\IcuResFileLoader;
 use Symfony\Component\Config\Resource\DirectoryResource;
+use Symfony\Component\Translation\Loader\IcuResFileLoader;
 
 /**
  * @requires extension intl
  */
 class IcuResFileLoaderTest extends LocalizedTestCase
 {
-    public function testLoad()
+    public function test_load()
     {
         // resource is build using genrb command
-        $loader = new IcuResFileLoader();
+        $loader = new IcuResFileLoader;
         $resource = __DIR__.'/../fixtures/resourcebundle/res';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
-        $this->assertEquals(array('foo' => 'bar'), $catalogue->all('domain1'));
+        $this->assertEquals(['foo' => 'bar'], $catalogue->all('domain1'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new DirectoryResource($resource)), $catalogue->getResources());
+        $this->assertEquals([new DirectoryResource($resource)], $catalogue->getResources());
     }
 
     /**
      * @expectedException \Symfony\Component\Translation\Exception\NotFoundResourceException
      */
-    public function testLoadNonExistingResource()
+    public function test_load_non_existing_resource()
     {
-        $loader = new IcuResFileLoader();
+        $loader = new IcuResFileLoader;
         $loader->load(__DIR__.'/../fixtures/non-existing.txt', 'en', 'domain1');
     }
 
     /**
      * @expectedException \Symfony\Component\Translation\Exception\InvalidResourceException
      */
-    public function testLoadInvalidResource()
+    public function test_load_invalid_resource()
     {
-        $loader = new IcuResFileLoader();
+        $loader = new IcuResFileLoader;
         $loader->load(__DIR__.'/../fixtures/resourcebundle/corrupted', 'en', 'domain1');
     }
 }

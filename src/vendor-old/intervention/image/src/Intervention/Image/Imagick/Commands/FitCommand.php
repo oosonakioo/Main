@@ -9,8 +9,8 @@ class FitCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Crops and resized an image at the same time
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -34,7 +34,7 @@ class FitCommand extends \Intervention\Image\Commands\AbstractCommand
 
         // resize image
         $image->getCore()->scaleImage($resized->getWidth(), $resized->getHeight());
-        $image->getCore()->setImagePage(0,0,0,0);
+        $image->getCore()->setImagePage(0, 0, 0, 0);
 
         return true;
     }

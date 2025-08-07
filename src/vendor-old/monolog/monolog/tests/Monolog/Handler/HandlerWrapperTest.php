@@ -25,7 +25,7 @@ class HandlerWrapperTest extends TestCase
 
     private $handler;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->handler = $this->getMock('Monolog\\Handler\\HandlerInterface');
@@ -37,17 +37,16 @@ class HandlerWrapperTest extends TestCase
      */
     public function trueFalseDataProvider()
     {
-        return array(
-            array(true),
-            array(false),
-        );
+        return [
+            [true],
+            [false],
+        ];
     }
 
     /**
-     * @param $result
      * @dataProvider trueFalseDataProvider
      */
-    public function testIsHandling($result)
+    public function test_is_handling($result)
     {
         $record = $this->getRecord();
         $this->handler->expects($this->once())
@@ -59,10 +58,9 @@ class HandlerWrapperTest extends TestCase
     }
 
     /**
-     * @param $result
      * @dataProvider trueFalseDataProvider
      */
-    public function testHandle($result)
+    public function test_handle($result)
     {
         $record = $this->getRecord();
         $this->handler->expects($this->once())
@@ -74,10 +72,9 @@ class HandlerWrapperTest extends TestCase
     }
 
     /**
-     * @param $result
      * @dataProvider trueFalseDataProvider
      */
-    public function testHandleBatch($result)
+    public function test_handle_batch($result)
     {
         $records = $this->getMultipleRecords();
         $this->handler->expects($this->once())
@@ -88,7 +85,7 @@ class HandlerWrapperTest extends TestCase
         $this->assertEquals($result, $this->wrapper->handleBatch($records));
     }
 
-    public function testPushProcessor()
+    public function test_push_processor()
     {
         $processor = function () {};
         $this->handler->expects($this->once())
@@ -98,7 +95,7 @@ class HandlerWrapperTest extends TestCase
         $this->assertEquals($this->wrapper, $this->wrapper->pushProcessor($processor));
     }
 
-    public function testPopProcessor()
+    public function test_pop_processor()
     {
         $processor = function () {};
         $this->handler->expects($this->once())
@@ -108,7 +105,7 @@ class HandlerWrapperTest extends TestCase
         $this->assertEquals($processor, $this->wrapper->popProcessor());
     }
 
-    public function testSetFormatter()
+    public function test_set_formatter()
     {
         $formatter = $this->getMock('Monolog\\Formatter\\FormatterInterface');
         $this->handler->expects($this->once())
@@ -118,7 +115,7 @@ class HandlerWrapperTest extends TestCase
         $this->assertEquals($this->wrapper, $this->wrapper->setFormatter($formatter));
     }
 
-    public function testGetFormatter()
+    public function test_get_formatter()
     {
         $formatter = $this->getMock('Monolog\\Formatter\\FormatterInterface');
         $this->handler->expects($this->once())

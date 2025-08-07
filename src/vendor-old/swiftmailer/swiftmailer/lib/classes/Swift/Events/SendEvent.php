@@ -42,7 +42,7 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject
      *
      * @var string[]
      */
-    private $_failedRecipients = array();
+    private $_failedRecipients = [];
 
     /**
      * The overall result as a bitmask from the class constants.
@@ -53,9 +53,6 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject
 
     /**
      * Create a new SendEvent for $source and $message.
-     *
-     * @param Swift_Transport    $source
-     * @param Swift_Mime_Message $message
      */
     public function __construct(Swift_Transport $source, Swift_Mime_Message $message)
     {
@@ -87,7 +84,7 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject
     /**
      * Set the array of addresses that failed in sending.
      *
-     * @param array $recipients
+     * @param  array  $recipients
      */
     public function setFailedRecipients($recipients)
     {
@@ -107,7 +104,7 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject
     /**
      * Set the result of sending.
      *
-     * @param int $result
+     * @param  int  $result
      */
     public function setResult($result)
     {

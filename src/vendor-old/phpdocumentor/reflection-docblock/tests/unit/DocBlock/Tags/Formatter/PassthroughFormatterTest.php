@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,12 +8,12 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 
-use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 
@@ -23,15 +24,16 @@ class PassthroughFormatterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::format
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testFormatterCallsToStringAndReturnsAStandardRepresentation()
+    public function test_formatter_calls_to_string_and_returns_a_standard_representation()
     {
         $expected = '@unknown-tag This is a description';
 
-        $fixture = new PassthroughFormatter();
+        $fixture = new PassthroughFormatter;
 
         $this->assertSame(
             $expected,

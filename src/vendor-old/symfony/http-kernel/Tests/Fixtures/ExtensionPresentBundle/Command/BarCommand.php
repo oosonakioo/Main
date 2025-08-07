@@ -11,7 +11,5 @@ use Symfony\Component\Console\Command\Command;
  */
 class BarCommand extends Command
 {
-    public function __construct($example, $name = 'bar')
-    {
-    }
+    public function __construct($example, $name = 'bar') {}
 }

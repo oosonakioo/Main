@@ -11,39 +11,39 @@
 
 namespace Symfony\Component\Translation\Tests\Loader;
 
-use Symfony\Component\Translation\Loader\CsvFileLoader;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Translation\Loader\CsvFileLoader;
 
 class CsvFileLoaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLoad()
+    public function test_load()
     {
-        $loader = new CsvFileLoader();
+        $loader = new CsvFileLoader;
         $resource = __DIR__.'/../fixtures/resources.csv';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
-        $this->assertEquals(array('foo' => 'bar'), $catalogue->all('domain1'));
+        $this->assertEquals(['foo' => 'bar'], $catalogue->all('domain1'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource)), $catalogue->getResources());
+        $this->assertEquals([new FileResource($resource)], $catalogue->getResources());
     }
 
-    public function testLoadDoesNothingIfEmpty()
+    public function test_load_does_nothing_if_empty()
     {
-        $loader = new CsvFileLoader();
+        $loader = new CsvFileLoader;
         $resource = __DIR__.'/../fixtures/empty.csv';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
-        $this->assertEquals(array(), $catalogue->all('domain1'));
+        $this->assertEquals([], $catalogue->all('domain1'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource)), $catalogue->getResources());
+        $this->assertEquals([new FileResource($resource)], $catalogue->getResources());
     }
 
     /**
      * @expectedException \Symfony\Component\Translation\Exception\NotFoundResourceException
      */
-    public function testLoadNonExistingResource()
+    public function test_load_non_existing_resource()
     {
-        $loader = new CsvFileLoader();
+        $loader = new CsvFileLoader;
         $resource = __DIR__.'/../fixtures/not-exists.csv';
         $loader->load($resource, 'en', 'domain1');
     }
@@ -51,9 +51,9 @@ class CsvFileLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\Translation\Exception\InvalidResourceException
      */
-    public function testLoadNonLocalResource()
+    public function test_load_non_local_resource()
     {
-        $loader = new CsvFileLoader();
+        $loader = new CsvFileLoader;
         $resource = 'http://example.com/resources.csv';
         $loader->load($resource, 'en', 'domain1');
     }

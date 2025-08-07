@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @covers Monolog\Handler\BrowserConsoleHandlerTest
@@ -32,14 +32,14 @@ class BrowserConsoleHandlerTest extends TestCase
         return $reflMethod->invoke(null);
     }
 
-    public function testStyling()
+    public function test_styling()
     {
-        $handler = new BrowserConsoleHandler();
+        $handler = new BrowserConsoleHandler;
         $handler->setFormatter($this->getIdentityFormatter());
 
         $handler->handle($this->getRecord(Logger::DEBUG, 'foo[[bar]]{color: red}'));
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 (function (c) {if (c && c.groupCollapsed) {
 c.log("%cfoo%cbar%c", "font-weight: normal", "color: red", "font-weight: normal");
 }})(console);
@@ -48,9 +48,9 @@ EOF;
         $this->assertEquals($expected, $this->generateScript());
     }
 
-    public function testEscaping()
+    public function test_escaping()
     {
-        $handler = new BrowserConsoleHandler();
+        $handler = new BrowserConsoleHandler;
         $handler->setFormatter($this->getIdentityFormatter());
 
         $handler->handle($this->getRecord(Logger::DEBUG, "[foo] [[\"bar\n[baz]\"]]{color: red}"));
@@ -64,16 +64,16 @@ EOF;
         $this->assertEquals($expected, $this->generateScript());
     }
 
-    public function testAutolabel()
+    public function test_autolabel()
     {
-        $handler = new BrowserConsoleHandler();
+        $handler = new BrowserConsoleHandler;
         $handler->setFormatter($this->getIdentityFormatter());
 
         $handler->handle($this->getRecord(Logger::DEBUG, '[[foo]]{macro: autolabel}'));
         $handler->handle($this->getRecord(Logger::DEBUG, '[[bar]]{macro: autolabel}'));
         $handler->handle($this->getRecord(Logger::DEBUG, '[[foo]]{macro: autolabel}'));
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 (function (c) {if (c && c.groupCollapsed) {
 c.log("%c%cfoo%c", "font-weight: normal", "background-color: blue; color: white; border-radius: 3px; padding: 0 2px 0 2px", "font-weight: normal");
 c.log("%c%cbar%c", "font-weight: normal", "background-color: green; color: white; border-radius: 3px; padding: 0 2px 0 2px", "font-weight: normal");
@@ -84,14 +84,14 @@ EOF;
         $this->assertEquals($expected, $this->generateScript());
     }
 
-    public function testContext()
+    public function test_context()
     {
-        $handler = new BrowserConsoleHandler();
+        $handler = new BrowserConsoleHandler;
         $handler->setFormatter($this->getIdentityFormatter());
 
-        $handler->handle($this->getRecord(Logger::DEBUG, 'test', array('foo' => 'bar')));
+        $handler->handle($this->getRecord(Logger::DEBUG, 'test', ['foo' => 'bar']));
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 (function (c) {if (c && c.groupCollapsed) {
 c.groupCollapsed("%ctest", "font-weight: normal");
 c.log("%c%s", "font-weight: bold", "Context");
@@ -103,12 +103,12 @@ EOF;
         $this->assertEquals($expected, $this->generateScript());
     }
 
-    public function testConcurrentHandlers()
+    public function test_concurrent_handlers()
     {
-        $handler1 = new BrowserConsoleHandler();
+        $handler1 = new BrowserConsoleHandler;
         $handler1->setFormatter($this->getIdentityFormatter());
 
-        $handler2 = new BrowserConsoleHandler();
+        $handler2 = new BrowserConsoleHandler;
         $handler2->setFormatter($this->getIdentityFormatter());
 
         $handler1->handle($this->getRecord(Logger::DEBUG, 'test1'));
@@ -116,7 +116,7 @@ EOF;
         $handler1->handle($this->getRecord(Logger::DEBUG, 'test3'));
         $handler2->handle($this->getRecord(Logger::DEBUG, 'test4'));
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 (function (c) {if (c && c.groupCollapsed) {
 c.log("%ctest1", "font-weight: normal");
 c.log("%ctest2", "font-weight: normal");

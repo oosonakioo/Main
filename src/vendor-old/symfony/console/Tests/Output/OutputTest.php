@@ -11,28 +11,28 @@
 
 namespace Symfony\Component\Console\Tests\Output;
 
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Output\Output;
 
 class OutputTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstructor()
+    public function test_constructor()
     {
         $output = new TestOutput(Output::VERBOSITY_QUIET, true);
         $this->assertEquals(Output::VERBOSITY_QUIET, $output->getVerbosity(), '__construct() takes the verbosity as its first argument');
         $this->assertTrue($output->isDecorated(), '__construct() takes the decorated flag as its second argument');
     }
 
-    public function testSetIsDecorated()
+    public function test_set_is_decorated()
     {
-        $output = new TestOutput();
+        $output = new TestOutput;
         $output->setDecorated(true);
         $this->assertTrue($output->isDecorated(), 'setDecorated() sets the decorated flag');
     }
 
-    public function testSetGetVerbosity()
+    public function test_set_get_verbosity()
     {
-        $output = new TestOutput();
+        $output = new TestOutput;
         $output->setVerbosity(Output::VERBOSITY_QUIET);
         $this->assertEquals(Output::VERBOSITY_QUIET, $output->getVerbosity(), '->setVerbosity() sets the verbosity');
 
@@ -66,59 +66,59 @@ class OutputTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($output->isDebug());
     }
 
-    public function testWriteWithVerbosityQuiet()
+    public function test_write_with_verbosity_quiet()
     {
         $output = new TestOutput(Output::VERBOSITY_QUIET);
         $output->writeln('foo');
         $this->assertEquals('', $output->output, '->writeln() outputs nothing if verbosity is set to VERBOSITY_QUIET');
     }
 
-    public function testWriteAnArrayOfMessages()
+    public function test_write_an_array_of_messages()
     {
-        $output = new TestOutput();
-        $output->writeln(array('foo', 'bar'));
+        $output = new TestOutput;
+        $output->writeln(['foo', 'bar']);
         $this->assertEquals("foo\nbar\n", $output->output, '->writeln() can take an array of messages to output');
     }
 
     /**
      * @dataProvider provideWriteArguments
      */
-    public function testWriteRawMessage($message, $type, $expectedOutput)
+    public function test_write_raw_message($message, $type, $expectedOutput)
     {
-        $output = new TestOutput();
+        $output = new TestOutput;
         $output->writeln($message, $type);
         $this->assertEquals($expectedOutput, $output->output);
     }
 
     public function provideWriteArguments()
     {
-        return array(
-            array('<info>foo</info>', Output::OUTPUT_RAW, "<info>foo</info>\n"),
-            array('<info>foo</info>', Output::OUTPUT_PLAIN, "foo\n"),
-        );
+        return [
+            ['<info>foo</info>', Output::OUTPUT_RAW, "<info>foo</info>\n"],
+            ['<info>foo</info>', Output::OUTPUT_PLAIN, "foo\n"],
+        ];
     }
 
-    public function testWriteWithDecorationTurnedOff()
+    public function test_write_with_decoration_turned_off()
     {
-        $output = new TestOutput();
+        $output = new TestOutput;
         $output->setDecorated(false);
         $output->writeln('<info>foo</info>');
         $this->assertEquals("foo\n", $output->output, '->writeln() strips decoration tags if decoration is set to false');
     }
 
-    public function testWriteDecoratedMessage()
+    public function test_write_decorated_message()
     {
-        $fooStyle = new OutputFormatterStyle('yellow', 'red', array('blink'));
-        $output = new TestOutput();
+        $fooStyle = new OutputFormatterStyle('yellow', 'red', ['blink']);
+        $output = new TestOutput;
         $output->getFormatter()->setStyle('FOO', $fooStyle);
         $output->setDecorated(true);
         $output->writeln('<foo>foo</foo>');
         $this->assertEquals("\033[33;41;5mfoo\033[39;49;25m\n", $output->output, '->writeln() decorates the output');
     }
 
-    public function testWriteWithInvalidStyle()
+    public function test_write_with_invalid_style()
     {
-        $output = new TestOutput();
+        $output = new TestOutput;
 
         $output->clear();
         $output->write('<bar>foo</bar>');
@@ -132,9 +132,9 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider verbosityProvider
      */
-    public function testWriteWithVerbosityOption($verbosity, $expected, $msg)
+    public function test_write_with_verbosity_option($verbosity, $expected, $msg)
     {
-        $output = new TestOutput();
+        $output = new TestOutput;
 
         $output->setVerbosity($verbosity);
         $output->clear();
@@ -149,13 +149,13 @@ class OutputTest extends \PHPUnit_Framework_TestCase
 
     public function verbosityProvider()
     {
-        return array(
-            array(Output::VERBOSITY_QUIET, '2', '->write() in QUIET mode only outputs when an explicit QUIET verbosity is passed'),
-            array(Output::VERBOSITY_NORMAL, '123', '->write() in NORMAL mode outputs anything below an explicit VERBOSE verbosity'),
-            array(Output::VERBOSITY_VERBOSE, '1234', '->write() in VERBOSE mode outputs anything below an explicit VERY_VERBOSE verbosity'),
-            array(Output::VERBOSITY_VERY_VERBOSE, '12345', '->write() in VERY_VERBOSE mode outputs anything below an explicit DEBUG verbosity'),
-            array(Output::VERBOSITY_DEBUG, '123456', '->write() in DEBUG mode outputs everything'),
-        );
+        return [
+            [Output::VERBOSITY_QUIET, '2', '->write() in QUIET mode only outputs when an explicit QUIET verbosity is passed'],
+            [Output::VERBOSITY_NORMAL, '123', '->write() in NORMAL mode outputs anything below an explicit VERBOSE verbosity'],
+            [Output::VERBOSITY_VERBOSE, '1234', '->write() in VERBOSE mode outputs anything below an explicit VERY_VERBOSE verbosity'],
+            [Output::VERBOSITY_VERY_VERBOSE, '12345', '->write() in VERY_VERBOSE mode outputs anything below an explicit DEBUG verbosity'],
+            [Output::VERBOSITY_DEBUG, '123456', '->write() in DEBUG mode outputs everything'],
+        ];
     }
 }
 

@@ -30,11 +30,11 @@ class Docblock
      *
      * @var array
      */
-    public static $vectors = array(
-        'throws' => array('type', 'desc'),
-        'param'  => array('type', 'var', 'desc'),
-        'return' => array('type', 'desc'),
-    );
+    public static $vectors = [
+        'throws' => ['type', 'desc'],
+        'param' => ['type', 'var', 'desc'],
+        'return' => ['type', 'desc'],
+    ];
 
     protected $reflector;
 
@@ -68,8 +68,6 @@ class Docblock
 
     /**
      * Docblock constructor.
-     *
-     * @param \Reflector $reflector
      */
     public function __construct(\Reflector $reflector)
     {
@@ -80,12 +78,12 @@ class Docblock
     /**
      * Set and parse the docblock comment.
      *
-     * @param string $comment The docblock
+     * @param  string  $comment  The docblock
      */
     protected function setComment($comment)
     {
-        $this->desc    = '';
-        $this->tags    = array();
+        $this->desc = '';
+        $this->tags = [];
         $this->comment = $comment;
 
         $this->parseComment($comment);
@@ -94,7 +92,6 @@ class Docblock
     /**
      * Find the length of the docblock prefix.
      *
-     * @param array $lines
      *
      * @return int Prefix length
      */
@@ -109,7 +106,7 @@ class Docblock
         sort($lines);
 
         $first = reset($lines);
-        $last  = end($lines);
+        $last = end($lines);
 
         // find the longest common substring
         $count = min(strlen($first), strlen($last));
@@ -125,7 +122,7 @@ class Docblock
     /**
      * Parse the comment into the component parts and set the state of the object.
      *
-     * @param string $comment The docblock
+     * @param  string  $comment  The docblock
      */
     protected function parseComment($comment)
     {
@@ -142,15 +139,15 @@ class Docblock
         }, $comment);
 
         // Group the lines together by @tags
-        $blocks = array();
+        $blocks = [];
         $b = -1;
         foreach ($comment as $line) {
             if (self::isTagged($line)) {
                 $b++;
-                $blocks[] = array();
+                $blocks[] = [];
             } elseif ($b === -1) {
                 $b = 0;
-                $blocks[] = array();
+                $blocks[] = [];
             }
             $blocks[$b][] = $line;
         }
@@ -159,12 +156,12 @@ class Docblock
         foreach ($blocks as $block => $body) {
             $body = trim(implode("\n", $body));
 
-            if ($block === 0 && !self::isTagged($body)) {
+            if ($block === 0 && ! self::isTagged($body)) {
                 // This is the description block
                 $this->desc = $body;
             } else {
                 // This block is tagged
-                $tag  = substr(self::strTag($body), 1);
+                $tag = substr(self::strTag($body), 1);
                 $body = ltrim(substr($body, strlen($tag) + 2));
 
                 if (isset(self::$vectors[$tag])) {
@@ -173,7 +170,7 @@ class Docblock
                     if ($body) {
                         $parts = preg_split('/\s+/', $body, $count);
                     } else {
-                        $parts = array();
+                        $parts = [];
                     }
 
                     // Default the trailing values
@@ -192,8 +189,7 @@ class Docblock
     /**
      * Whether or not a docblock contains a given @tag.
      *
-     * @param string $tag The name of the @tag to check for
-     *
+     * @param  string  $tag  The name of the @tag to check for
      * @return bool
      */
     public function hasTag($tag)
@@ -204,8 +200,7 @@ class Docblock
     /**
      * The value of a tag.
      *
-     * @param string $tag
-     *
+     * @param  string  $tag
      * @return array
      */
     public function tag($tag)
@@ -216,8 +211,7 @@ class Docblock
     /**
      * Whether or not a string begins with a @tag.
      *
-     * @param string $str
-     *
+     * @param  string  $str
      * @return bool
      */
     public static function isTagged($str)
@@ -228,8 +222,7 @@ class Docblock
     /**
      * The tag at the beginning of a string.
      *
-     * @param string $str
-     *
+     * @param  string  $str
      * @return string|null
      */
     public static function strTag($str)

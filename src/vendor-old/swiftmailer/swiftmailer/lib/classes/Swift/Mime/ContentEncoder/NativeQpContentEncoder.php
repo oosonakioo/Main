@@ -21,7 +21,7 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
     private $charset;
 
     /**
-     * @param null|string $charset
+     * @param  null|string  $charset
      */
     public function __construct($charset = null)
     {
@@ -31,7 +31,7 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
     /**
      * Notify this observer that the entity's charset has changed.
      *
-     * @param string $charset
+     * @param  string  $charset
      */
     public function charsetChanged($charset)
     {
@@ -41,10 +41,10 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
     /**
      * Encode $in to $out.
      *
-     * @param Swift_OutputByteStream $os              to read from
-     * @param Swift_InputByteStream  $is              to write to
-     * @param int                    $firstLineOffset
-     * @param int                    $maxLineLength   0 indicates the default length for this encoding
+     * @param  Swift_OutputByteStream  $os  to read from
+     * @param  Swift_InputByteStream  $is  to write to
+     * @param  int  $firstLineOffset
+     * @param  int  $maxLineLength  0 indicates the default length for this encoding
      *
      * @throws RuntimeException
      */
@@ -77,13 +77,12 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
     /**
      * Encode a given string to produce an encoded string.
      *
-     * @param string $string
-     * @param int    $firstLineOffset if first line needs to be shorter
-     * @param int    $maxLineLength   0 indicates the default length for this encoding
+     * @param  string  $string
+     * @param  int  $firstLineOffset  if first line needs to be shorter
+     * @param  int  $maxLineLength  0 indicates the default length for this encoding
+     * @return string
      *
      * @throws RuntimeException
-     *
-     * @return string
      */
     public function encodeString($string, $firstLineOffset = 0, $maxLineLength = 0)
     {
@@ -98,8 +97,7 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
     /**
      * Make sure CRLF is correct and HT/SPACE are in valid places.
      *
-     * @param string $string
-     *
+     * @param  string  $string
      * @return string
      */
     protected function _standardize($string)
@@ -107,7 +105,7 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
         // transform CR or LF to CRLF
         $string = preg_replace('~=0D(?!=0A)|(?<!=0D)=0A~', '=0D=0A', $string);
         // transform =0D=0A to CRLF
-        $string = str_replace(array("\t=0D=0A", ' =0D=0A', '=0D=0A'), array("=09\r\n", "=20\r\n", "\r\n"), $string);
+        $string = str_replace(["\t=0D=0A", ' =0D=0A', '=0D=0A'], ["=09\r\n", "=20\r\n", "\r\n"], $string);
 
         switch ($end = ord(substr($string, -1))) {
             case 0x09:

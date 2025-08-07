@@ -7,8 +7,8 @@ class FlipCommand extends ResizeCommand
     /**
      * Mirrors an image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

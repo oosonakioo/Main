@@ -3,9 +3,9 @@
 namespace Illuminate\Database\Migrations;
 
 use Closure;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Filesystem\Filesystem;
 
 class MigrationCreator
 {
@@ -26,7 +26,6 @@ class MigrationCreator
     /**
      * Create a new migration creator instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
     public function __construct(Filesystem $files)
@@ -40,8 +39,9 @@ class MigrationCreator
      * @param  string  $name
      * @param  string  $path
      * @param  string  $table
-     * @param  bool    $create
+     * @param  bool  $create
      * @return string
+     *
      * @throws \Exception
      */
     public function create($name, $path, $table = null, $create = false)
@@ -81,7 +81,7 @@ class MigrationCreator
      * Get the migration stub file.
      *
      * @param  string  $table
-     * @param  bool    $create
+     * @param  bool  $create
      * @return string
      */
     protected function getStub($table, $create)
@@ -148,7 +148,6 @@ class MigrationCreator
     /**
      * Register a post migration create hook.
      *
-     * @param  \Closure  $callback
      * @return void
      */
     public function afterCreate(Closure $callback)

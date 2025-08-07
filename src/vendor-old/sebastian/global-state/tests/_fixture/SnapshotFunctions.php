@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the GlobalState package.
  *
@@ -10,6 +11,4 @@
 
 namespace SebastianBergmann\GlobalState\TestFixture;
 
-function snapshotFunction()
-{
-}
+function snapshotFunction() {}

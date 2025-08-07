@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use Redis;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Osman Ungur <osmanungur@gmail.com>
  */
 class RedisCache extends CacheProvider
@@ -38,7 +40,6 @@ class RedisCache extends CacheProvider
     /**
      * Sets the redis instance to use.
      *
-     * @param Redis $redis
      *
      * @return void
      */
@@ -74,10 +75,10 @@ class RedisCache extends CacheProvider
         $fetchedItems = array_combine($keys, $this->redis->mget($keys));
 
         // Redis mget returns false for keys that do not exist. So we need to filter those out unless it's the real data.
-        $foundItems   = array();
+        $foundItems = [];
 
         foreach ($fetchedItems as $key => $value) {
-            if (false !== $value || $this->redis->exists($key)) {
+            if ($value !== false || $this->redis->exists($key)) {
                 $foundItems[$key] = $value;
             }
         }
@@ -95,7 +96,7 @@ class RedisCache extends CacheProvider
 
             // Keys have lifetime, use SETEX for each of them
             foreach ($keysAndValues as $key => $value) {
-                if (!$this->redis->setex($key, $lifetime, $value)) {
+                if (! $this->redis->setex($key, $lifetime, $value)) {
                     $success = false;
                 }
             }
@@ -149,13 +150,14 @@ class RedisCache extends CacheProvider
     protected function doGetStats()
     {
         $info = $this->redis->info();
-        return array(
-            Cache::STATS_HITS   => $info['keyspace_hits'],
+
+        return [
+            Cache::STATS_HITS => $info['keyspace_hits'],
             Cache::STATS_MISSES => $info['keyspace_misses'],
             Cache::STATS_UPTIME => $info['uptime_in_seconds'],
-            Cache::STATS_MEMORY_USAGE      => $info['used_memory'],
-            Cache::STATS_MEMORY_AVAILABLE  => false
-        );
+            Cache::STATS_MEMORY_USAGE => $info['used_memory'],
+            Cache::STATS_MEMORY_AVAILABLE => false,
+        ];
     }
 
     /**
@@ -163,7 +165,7 @@ class RedisCache extends CacheProvider
      * igbinary support, that is used. Otherwise the default PHP serializer is
      * used.
      *
-     * @return integer One of the Redis::SERIALIZER_* constants
+     * @return int One of the Redis::SERIALIZER_* constants
      */
     protected function getSerializerValue()
     {

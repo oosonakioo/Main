@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -14,6 +15,4 @@
  *
  * @since Interface available since Release 4.0.0
  */
-interface PHPUnit_Framework_RiskyTest
-{
-}
+interface PHPUnit_Framework_RiskyTest {}

@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\HttpFoundation\Tests\Session\Storage\Handler;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Test class for NullSessionHandler.
@@ -21,17 +21,18 @@ use Symfony\Component\HttpFoundation\Session\Session;
  * @author Drak <drak@zikula.org>
  *
  * @runTestsInSeparateProcesses
+ *
  * @preserveGlobalState disabled
  */
 class NullSessionHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSaveHandlers()
+    public function test_save_handlers()
     {
         $storage = $this->getStorage();
         $this->assertEquals('user', ini_get('session.save_handler'));
     }
 
-    public function testSession()
+    public function test_session()
     {
         session_id('nullsessionstorage');
         $storage = $this->getStorage();
@@ -41,7 +42,7 @@ class NullSessionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('unique', $session->get('something'));
     }
 
-    public function testNothingIsPersisted()
+    public function test_nothing_is_persisted()
     {
         session_id('nullsessionstorage');
         $storage = $this->getStorage();
@@ -53,6 +54,6 @@ class NullSessionHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function getStorage()
     {
-        return new NativeSessionStorage(array(), new NullSessionHandler());
+        return new NativeSessionStorage([], new NullSessionHandler);
     }
 }

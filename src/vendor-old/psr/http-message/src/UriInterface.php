@@ -1,4 +1,5 @@
 <?php
+
 namespace Psr\Http\Message;
 
 /**
@@ -35,6 +36,7 @@ interface UriInterface
      * added.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
+     *
      * @return string The URI scheme.
      */
     public function getScheme();
@@ -55,6 +57,7 @@ interface UriInterface
      * scheme, it SHOULD NOT be included.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
+     *
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
     public function getAuthority();
@@ -85,6 +88,7 @@ interface UriInterface
      * Section 3.2.2.
      *
      * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
+     *
      * @return string The URI host.
      */
     public function getHost();
@@ -129,6 +133,7 @@ interface UriInterface
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.3
+     *
      * @return string The URI path.
      */
     public function getPath();
@@ -151,6 +156,7 @@ interface UriInterface
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
+     *
      * @return string The URI query string.
      */
     public function getQuery();
@@ -169,6 +175,7 @@ interface UriInterface
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.5
+     *
      * @return string The URI fragment.
      */
     public function getFragment();
@@ -184,8 +191,9 @@ interface UriInterface
      *
      * An empty scheme is equivalent to removing the scheme.
      *
-     * @param string $scheme The scheme to use with the new instance.
+     * @param  string  $scheme  The scheme to use with the new instance.
      * @return static A new instance with the specified scheme.
+     *
      * @throws \InvalidArgumentException for invalid or unsupported schemes.
      */
     public function withScheme($scheme);
@@ -200,8 +208,8 @@ interface UriInterface
      * user; an empty string for the user is equivalent to removing user
      * information.
      *
-     * @param string $user The user name to use for authority.
-     * @param null|string $password The password associated with $user.
+     * @param  string  $user  The user name to use for authority.
+     * @param  null|string  $password  The password associated with $user.
      * @return static A new instance with the specified user information.
      */
     public function withUserInfo($user, $password = null);
@@ -214,8 +222,9 @@ interface UriInterface
      *
      * An empty host value is equivalent to removing the host.
      *
-     * @param string $host The hostname to use with the new instance.
+     * @param  string  $host  The hostname to use with the new instance.
      * @return static A new instance with the specified host.
+     *
      * @throws \InvalidArgumentException for invalid hostnames.
      */
     public function withHost($host);
@@ -232,9 +241,10 @@ interface UriInterface
      * A null value provided for the port is equivalent to removing the port
      * information.
      *
-     * @param null|int $port The port to use with the new instance; a null value
-     *     removes the port information.
+     * @param  null|int  $port  The port to use with the new instance; a null value
+     *                          removes the port information.
      * @return static A new instance with the specified port.
+     *
      * @throws \InvalidArgumentException for invalid ports.
      */
     public function withPort($port);
@@ -257,8 +267,9 @@ interface UriInterface
      * Users can provide both encoded and decoded path characters.
      * Implementations ensure the correct encoding as outlined in getPath().
      *
-     * @param string $path The path to use with the new instance.
+     * @param  string  $path  The path to use with the new instance.
      * @return static A new instance with the specified path.
+     *
      * @throws \InvalidArgumentException for invalid paths.
      */
     public function withPath($path);
@@ -274,8 +285,9 @@ interface UriInterface
      *
      * An empty query string value is equivalent to removing the query string.
      *
-     * @param string $query The query string to use with the new instance.
+     * @param  string  $query  The query string to use with the new instance.
      * @return static A new instance with the specified query string.
+     *
      * @throws \InvalidArgumentException for invalid query strings.
      */
     public function withQuery($query);
@@ -291,7 +303,7 @@ interface UriInterface
      *
      * An empty fragment value is equivalent to removing the fragment.
      *
-     * @param string $fragment The fragment to use with the new instance.
+     * @param  string  $fragment  The fragment to use with the new instance.
      * @return static A new instance with the specified fragment.
      */
     public function withFragment($fragment);
@@ -317,6 +329,7 @@ interface UriInterface
      * - If a fragment is present, it MUST be prefixed by "#".
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
+     *
      * @return string
      */
     public function __toString();

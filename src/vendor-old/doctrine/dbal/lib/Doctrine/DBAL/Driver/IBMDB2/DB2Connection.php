@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,14 +31,13 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
     private $_conn = null;
 
     /**
-     * @param array  $params
-     * @param string $username
-     * @param string $password
-     * @param array  $driverOptions
+     * @param  string  $username
+     * @param  string  $password
+     * @param  array  $driverOptions
      *
      * @throws \Doctrine\DBAL\Driver\IBMDB2\DB2Exception
      */
-    public function __construct(array $params, $username, $password, $driverOptions = array())
+    public function __construct(array $params, $username, $password, $driverOptions = [])
     {
         $isPersistant = (isset($params['persistent']) && $params['persistent'] == true);
 
@@ -46,7 +46,7 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
         } else {
             $this->_conn = db2_connect($params['dbname'], $username, $password, $driverOptions);
         }
-        if ( ! $this->_conn) {
+        if (! $this->_conn) {
             throw new DB2Exception(db2_conn_errormsg());
         }
     }
@@ -75,7 +75,7 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
     public function prepare($sql)
     {
         $stmt = @db2_prepare($this->_conn, $sql);
-        if ( ! $stmt) {
+        if (! $stmt) {
             throw new DB2Exception(db2_stmt_errormsg());
         }
 
@@ -98,7 +98,7 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
     /**
      * {@inheritdoc}
      */
-    public function quote($input, $type=\PDO::PARAM_STR)
+    public function quote($input, $type = \PDO::PARAM_STR)
     {
         $input = db2_escape_string($input);
         if ($type == \PDO::PARAM_INT) {
@@ -140,7 +140,7 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
      */
     public function commit()
     {
-        if (!db2_commit($this->_conn)) {
+        if (! db2_commit($this->_conn)) {
             throw new DB2Exception(db2_conn_errormsg($this->_conn));
         }
         db2_autocommit($this->_conn, DB2_AUTOCOMMIT_ON);
@@ -151,7 +151,7 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
      */
     public function rollBack()
     {
-        if (!db2_rollback($this->_conn)) {
+        if (! db2_rollback($this->_conn)) {
             throw new DB2Exception(db2_conn_errormsg($this->_conn));
         }
         db2_autocommit($this->_conn, DB2_AUTOCOMMIT_ON);
@@ -170,9 +170,9 @@ class DB2Connection implements Connection, ServerInfoAwareConnection
      */
     public function errorInfo()
     {
-        return array(
+        return [
             0 => db2_conn_errormsg($this->_conn),
             1 => $this->errorCode(),
-        );
+        ];
     }
 }

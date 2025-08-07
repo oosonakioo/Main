@@ -11,8 +11,8 @@
 
 namespace Prophecy\Promise;
 
-use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Promise interface.
@@ -25,9 +25,6 @@ interface PromiseInterface
     /**
      * Evaluates promise.
      *
-     * @param array          $args
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
      *
      * @return mixed
      */

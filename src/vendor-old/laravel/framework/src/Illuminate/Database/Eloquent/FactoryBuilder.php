@@ -48,8 +48,6 @@ class FactoryBuilder
      *
      * @param  string  $class
      * @param  string  $name
-     * @param  array  $definitions
-     * @param  \Faker\Generator  $faker
      * @return void
      */
     public function __construct($class, $name, array $definitions, Faker $faker)
@@ -76,7 +74,6 @@ class FactoryBuilder
     /**
      * Create a collection of models and persist them to the database.
      *
-     * @param  array  $attributes
      * @return mixed
      */
     public function create(array $attributes = [])
@@ -97,7 +94,6 @@ class FactoryBuilder
     /**
      * Create a collection of models.
      *
-     * @param  array  $attributes
      * @return mixed
      */
     public function make(array $attributes = [])
@@ -118,7 +114,6 @@ class FactoryBuilder
     /**
      * Make an instance of the model with the given attributes.
      *
-     * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \InvalidArgumentException
@@ -146,7 +141,6 @@ class FactoryBuilder
     /**
      * Evaluate any Closure attributes on the attribute array.
      *
-     * @param  array  $attributes
      * @return array
      */
     protected function callClosureAttributes(array $attributes)

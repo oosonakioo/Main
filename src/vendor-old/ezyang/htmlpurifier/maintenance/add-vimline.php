@@ -9,16 +9,15 @@ assertCli();
  * @file
  * Adds vimline to files
  */
-
-chdir(dirname(__FILE__) . '/..');
-$FS = new FSTools();
+chdir(dirname(__FILE__).'/..');
+$FS = new FSTools;
 
 $vimline = 'vim: et sw=4 sts=4';
 
 $files = $FS->globr('.', '*');
 foreach ($files as $file) {
     if (
-        !is_file($file) ||
+        ! is_file($file) ||
         prefix_is('./docs/doxygen', $file) ||
         prefix_is('./library/standalone', $file) ||
         prefix_is('./docs/specimens', $file) ||
@@ -47,7 +46,9 @@ foreach ($files as $file) {
 
         $file == './library/HTMLPurifier/Lexer/PH5P.php' ||
         $file == './maintenance/PH5P.php'
-    ) continue;
+    ) {
+        continue;
+    }
     $ext = strrchr($file, '.');
     if (
         postfix_is('README', $file) ||
@@ -58,9 +59,15 @@ foreach ($files as $file) {
         postfix_is('TODO', $file) ||
         postfix_is('WYSIWYG', $file) ||
         postfix_is('Changelog', $file)
-    ) $ext = '.txt';
-    if (postfix_is('Doxyfile', $file)) $ext = 'Doxyfile';
-    if (postfix_is('.php.in', $file)) $ext = '.php';
+    ) {
+        $ext = '.txt';
+    }
+    if (postfix_is('Doxyfile', $file)) {
+        $ext = 'Doxyfile';
+    }
+    if (postfix_is('.php.in', $file)) {
+        $ext = '.php';
+    }
     $no_nl = false;
     switch ($ext) {
         case '.php':
@@ -104,24 +111,31 @@ foreach ($files as $file) {
             $line = '# %s';
             break;
         default:
-            throw new Exception('Unknown file: ' . $file);
+            throw new Exception('Unknown file: '.$file);
     }
 
     echo "$file\n";
     $contents = file_get_contents($file);
 
-    $regex = '~' . str_replace('%s', 'vim: .+', preg_quote($line, '~')) .  '~m';
+    $regex = '~'.str_replace('%s', 'vim: .+', preg_quote($line, '~')).'~m';
     $contents = preg_replace($regex, '', $contents);
 
     $contents = rtrim($contents);
 
-    if (strpos($contents, "\r\n") !== false) $nl = "\r\n";
-    elseif (strpos($contents, "\n") !== false) $nl = "\n";
-    elseif (strpos($contents, "\r") !== false) $nl = "\r";
-    else $nl = PHP_EOL;
+    if (strpos($contents, "\r\n") !== false) {
+        $nl = "\r\n";
+    } elseif (strpos($contents, "\n") !== false) {
+        $nl = "\n";
+    } elseif (strpos($contents, "\r") !== false) {
+        $nl = "\r";
+    } else {
+        $nl = PHP_EOL;
+    }
 
-    if (!$no_nl) $contents .= $nl;
-    $contents .= $nl . str_replace('%s', $vimline, $line) . $nl;
+    if (! $no_nl) {
+        $contents .= $nl;
+    }
+    $contents .= $nl.str_replace('%s', $vimline, $line).$nl;
 
     file_put_contents($file, $contents);
 

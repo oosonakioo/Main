@@ -2,9 +2,9 @@
 
 namespace Illuminate\Auth;
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Request;
 
 class TokenGuard implements Guard
 {
@@ -34,8 +34,6 @@ class TokenGuard implements Guard
     /**
      * Create a new authentication guard.
      *
-     * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
-     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function __construct(UserProvider $provider, Request $request)
@@ -96,7 +94,6 @@ class TokenGuard implements Guard
     /**
      * Validate a user's credentials.
      *
-     * @param  array  $credentials
      * @return bool
      */
     public function validate(array $credentials = [])
@@ -117,7 +114,6 @@ class TokenGuard implements Guard
     /**
      * Set the current request instance.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return $this
      */
     public function setRequest(Request $request)

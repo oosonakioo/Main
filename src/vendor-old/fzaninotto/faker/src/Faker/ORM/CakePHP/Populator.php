@@ -4,15 +4,14 @@ namespace Faker\ORM\CakePHP;
 
 class Populator
 {
-
     protected $generator;
+
     protected $entities = [];
+
     protected $quantities = [];
+
     protected $guessers = [];
 
-    /**
-     * @param \Faker\Generator $generator
-     */
     public function __construct(\Faker\Generator $generator)
     {
         $this->generator = $generator;
@@ -42,35 +41,38 @@ class Populator
         if ($this->guessers[$name]) {
             unset($this->guessers[$name]);
         }
+
         return $this;
     }
 
     /**
      * @return $this
+     *
      * @throws \Exception
      */
     public function addGuesser($class)
     {
-        if (!is_object($class)) {
+        if (! is_object($class)) {
             $class = new $class($this->generator);
         }
 
-        if (!method_exists($class, 'guessFormat')) {
-            throw new \Exception('Missing required custom guesser method: ' . get_class($class) . '::guessFormat()');
+        if (! method_exists($class, 'guessFormat')) {
+            throw new \Exception('Missing required custom guesser method: '.get_class($class).'::guessFormat()');
         }
 
         $this->guessers[get_class($class)] = $class;
+
         return $this;
     }
 
     /**
-     * @param array $customColumnFormatters
-     * @param array $customModifiers
+     * @param  array  $customColumnFormatters
+     * @param  array  $customModifiers
      * @return $this
      */
     public function addEntity($entity, $number, $customColumnFormatters = [], $customModifiers = [])
     {
-        if (!$entity instanceof EntityPopulator) {
+        if (! $entity instanceof EntityPopulator) {
             $entity = new EntityPopulator($entity);
         }
 
@@ -87,11 +89,12 @@ class Populator
         $class = $entity->class;
         $this->entities[$class] = $entity;
         $this->quantities[$class] = $number;
+
         return $this;
     }
 
     /**
-     * @param array $options
+     * @param  array  $options
      * @return array
      */
     public function execute($options = [])

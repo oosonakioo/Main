@@ -10,26 +10,26 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class CallTimesPredictionSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith(2);
     }
 
-    function it_is_prediction()
+    public function it_is_prediction()
     {
         $this->shouldHaveType('Prophecy\Prediction\PredictionInterface');
     }
 
-    function it_does_nothing_if_there_were_exact_amount_of_calls_being_made(
+    public function it_does_nothing_if_there_were_exact_amount_of_calls_being_made(
         ObjectProphecy $object,
         MethodProphecy $method,
         Call $call1,
         Call $call2
     ) {
-        $this->check(array($call1, $call2), $object, $method)->shouldReturn(null);
+        $this->check([$call1, $call2], $object, $method)->shouldReturn(null);
     }
 
-    function it_throws_UnexpectedCallsCountException_if_calls_found(
+    public function it_throws_UnexpectedCallsCountException_if_calls_found(
         ObjectProphecy $object,
         MethodProphecy $method,
         Call $call,
@@ -41,10 +41,10 @@ class CallTimesPredictionSpec extends ObjectBehavior
         $arguments->__toString()->willReturn('123');
 
         $call->getMethodName()->willReturn('getName');
-        $call->getArguments()->willReturn(array(5, 4, 'three'));
+        $call->getArguments()->willReturn([5, 4, 'three']);
         $call->getCallPlace()->willReturn('unknown');
 
         $this->shouldThrow('Prophecy\Exception\Prediction\UnexpectedCallsCountException')
-            ->duringCheck(array($call), $object, $method);
+            ->duringCheck([$call], $object, $method);
     }
 }

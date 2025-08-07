@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 class StreamHandlerTest extends TestCase
 {
@@ -20,7 +20,7 @@ class StreamHandlerTest extends TestCase
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWrite()
+    public function test_write()
     {
         $handle = fopen('php://memory', 'a+');
         $handler = new StreamHandler($handle);
@@ -35,7 +35,7 @@ class StreamHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\StreamHandler::close
      */
-    public function testCloseKeepsExternalHandlersOpen()
+    public function test_close_keeps_external_handlers_open()
     {
         $handle = fopen('php://memory', 'a+');
         $handler = new StreamHandler($handle);
@@ -47,7 +47,7 @@ class StreamHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\StreamHandler::close
      */
-    public function testClose()
+    public function test_close()
     {
         $handler = new StreamHandler('php://memory');
         $handler->handle($this->getRecord(Logger::WARNING, 'test'));
@@ -63,7 +63,7 @@ class StreamHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteCreatesTheStreamResource()
+    public function test_write_creates_the_stream_resource()
     {
         $handler = new StreamHandler('php://memory');
         $handler->handle($this->getRecord());
@@ -73,19 +73,20 @@ class StreamHandlerTest extends TestCase
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteLocking()
+    public function test_write_locking()
     {
-        $temp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'monolog_locked_log';
+        $temp = sys_get_temp_dir().DIRECTORY_SEPARATOR.'monolog_locked_log';
         $handler = new StreamHandler($temp, Logger::DEBUG, true, null, true);
         $handler->handle($this->getRecord());
     }
 
     /**
      * @expectedException LogicException
+     *
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteMissingResource()
+    public function test_write_missing_resource()
     {
         $handler = new StreamHandler(null);
         $handler->handle($this->getRecord());
@@ -93,29 +94,32 @@ class StreamHandlerTest extends TestCase
 
     public function invalidArgumentProvider()
     {
-        return array(
-            array(1),
-            array(array()),
-            array(array('bogus://url')),
-        );
+        return [
+            [1],
+            [[]],
+            [['bogus://url']],
+        ];
     }
 
     /**
      * @dataProvider invalidArgumentProvider
+     *
      * @expectedException InvalidArgumentException
+     *
      * @covers Monolog\Handler\StreamHandler::__construct
      */
-    public function testWriteInvalidArgument($invalidArgument)
+    public function test_write_invalid_argument($invalidArgument)
     {
         $handler = new StreamHandler($invalidArgument);
     }
 
     /**
      * @expectedException UnexpectedValueException
+     *
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteInvalidResource()
+    public function test_write_invalid_resource()
     {
         $handler = new StreamHandler('bogus://url');
         $handler->handle($this->getRecord());
@@ -123,10 +127,11 @@ class StreamHandlerTest extends TestCase
 
     /**
      * @expectedException UnexpectedValueException
+     *
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteNonExistingResource()
+    public function test_write_non_existing_resource()
     {
         $handler = new StreamHandler('ftp://foo/bar/baz/'.rand(0, 10000));
         $handler->handle($this->getRecord());
@@ -136,7 +141,7 @@ class StreamHandlerTest extends TestCase
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteNonExistingPath()
+    public function test_write_non_existing_path()
     {
         $handler = new StreamHandler(sys_get_temp_dir().'/bar/'.rand(0, 10000).DIRECTORY_SEPARATOR.rand(0, 10000));
         $handler->handle($this->getRecord());
@@ -146,7 +151,7 @@ class StreamHandlerTest extends TestCase
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteNonExistingFileResource()
+    public function test_write_non_existing_file_resource()
     {
         $handler = new StreamHandler('file://'.sys_get_temp_dir().'/bar/'.rand(0, 10000).DIRECTORY_SEPARATOR.rand(0, 10000));
         $handler->handle($this->getRecord());
@@ -154,11 +159,13 @@ class StreamHandlerTest extends TestCase
 
     /**
      * @expectedException Exception
+     *
      * @expectedExceptionMessageRegExp /There is no existing directory at/
+     *
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteNonExistingAndNotCreatablePath()
+    public function test_write_non_existing_and_not_creatable_path()
     {
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $this->markTestSkipped('Permissions checks can not run on windows');
@@ -169,11 +176,13 @@ class StreamHandlerTest extends TestCase
 
     /**
      * @expectedException Exception
+     *
      * @expectedExceptionMessageRegExp /There is no existing directory at/
+     *
      * @covers Monolog\Handler\StreamHandler::__construct
      * @covers Monolog\Handler\StreamHandler::write
      */
-    public function testWriteNonExistingAndNotCreatableFileResource()
+    public function test_write_non_existing_and_not_creatable_file_resource()
     {
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $this->markTestSkipped('Permissions checks can not run on windows');

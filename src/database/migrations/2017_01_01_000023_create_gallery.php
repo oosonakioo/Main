@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateGallery extends Migration
 {
@@ -14,7 +14,7 @@ class CreateGallery extends Migration
     {
         Schema::create('gallerys', function (Blueprint $table) {
             $table->increments('id');
-			      $table->integer('gallerys_category_id')->unsigned();
+            $table->integer('gallerys_category_id')->unsigned();
             $table->string('menu', 50);
             $table->string('images', 50);
             $table->integer('sort');

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -40,7 +41,7 @@ class PHPUnit_Util_Printer
     /**
      * Constructor.
      *
-     * @param mixed $out
+     * @param  mixed  $out
      *
      * @throws PHPUnit_Framework_Exception
      */
@@ -51,14 +52,14 @@ class PHPUnit_Util_Printer
                 if (strpos($out, 'socket://') === 0) {
                     $out = explode(':', str_replace('socket://', '', $out));
 
-                    if (sizeof($out) != 2) {
+                    if (count($out) != 2) {
                         throw new PHPUnit_Framework_Exception;
                     }
 
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {
                     if (strpos($out, 'php://') === false &&
-                        !is_dir(dirname($out))) {
+                        ! is_dir(dirname($out))) {
                         mkdir(dirname($out), 0777, true);
                     }
 
@@ -90,7 +91,7 @@ class PHPUnit_Util_Printer
                 $this->outTarget,
                 tidy_repair_file(
                     $this->outTarget,
-                    array('indent' => true, 'wrap' => 0),
+                    ['indent' => true, 'wrap' => 0],
                     'utf8'
                 )
             );
@@ -116,7 +117,7 @@ class PHPUnit_Util_Printer
     }
 
     /**
-     * @param string $buffer
+     * @param  string  $buffer
      */
     public function write($buffer)
     {
@@ -131,7 +132,7 @@ class PHPUnit_Util_Printer
                 $buffer = htmlspecialchars($buffer, ENT_SUBSTITUTE);
             }
 
-            print $buffer;
+            echo $buffer;
 
             if ($this->autoFlush) {
                 $this->incrementalFlush();
@@ -157,7 +158,7 @@ class PHPUnit_Util_Printer
      * If set, *incremental* flushes will be done after each write. This should
      * not be confused with the different effects of this class' flush() method.
      *
-     * @param bool $autoFlush
+     * @param  bool  $autoFlush
      *
      * @since  Method available since Release 3.3.0
      */

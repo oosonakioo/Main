@@ -3,18 +3,18 @@
 namespace Illuminate\Routing;
 
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Routing\Registrar as RegistrarContract;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Container\Container;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Events\Dispatcher;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Illuminate\Contracts\Routing\Registrar as RegistrarContract;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -102,11 +102,9 @@ class Router implements RegistrarContract
     /**
      * Create a new Router instance.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
-    public function __construct(Dispatcher $events, Container $container = null)
+    public function __construct(Dispatcher $events, ?Container $container = null)
     {
         $this->events = $events;
         $this->routes = new RouteCollection;
@@ -219,7 +217,6 @@ class Router implements RegistrarContract
     /**
      * Register an array of controllers with wildcard routing.
      *
-     * @param  array  $controllers
      * @return void
      *
      * @deprecated since version 5.2.
@@ -253,7 +250,7 @@ class Router implements RegistrarContract
         }
 
         $routable = (new ControllerInspector)
-                            ->getRoutable($prepended, $uri);
+            ->getRoutable($prepended, $uri);
 
         // When a controller is routed using this method, we use Reflection to parse
         // out all of the routable methods for the controller, then register each
@@ -270,7 +267,7 @@ class Router implements RegistrarContract
     /**
      * Register an inspected controller route.
      *
-     * @param  array   $route
+     * @param  array  $route
      * @param  string  $controller
      * @param  string  $method
      * @param  array  $names
@@ -319,7 +316,6 @@ class Router implements RegistrarContract
     /**
      * Set the global resource parameter mapping.
      *
-     * @param  array  $parameters
      * @return void
      */
     public function resourceParameters(array $parameters = [])
@@ -330,7 +326,6 @@ class Router implements RegistrarContract
     /**
      * Register an array of resource controllers.
      *
-     * @param  array  $resources
      * @return void
      */
     public function resources(array $resources)
@@ -345,7 +340,6 @@ class Router implements RegistrarContract
      *
      * @param  string  $name
      * @param  string  $controller
-     * @param  array  $options
      * @return void
      */
     public function resource($name, $controller, array $options = [])
@@ -384,8 +378,6 @@ class Router implements RegistrarContract
     /**
      * Create a route group with shared attributes.
      *
-     * @param  array  $attributes
-     * @param  \Closure  $callback
      * @return void
      */
     public function group(array $attributes, Closure $callback)
@@ -403,7 +395,6 @@ class Router implements RegistrarContract
     /**
      * Update the group stack with the given attributes.
      *
-     * @param  array  $attributes
      * @return void
      */
     protected function updateGroupStack(array $attributes)
@@ -564,8 +555,8 @@ class Router implements RegistrarContract
     protected function newRoute($methods, $uri, $action)
     {
         return (new Route($methods, $uri, $action))
-                    ->setRouter($this)
-                    ->setContainer($this->container);
+            ->setRouter($this)
+            ->setContainer($this->container);
     }
 
     /**
@@ -665,7 +656,6 @@ class Router implements RegistrarContract
     /**
      * Dispatch the request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function dispatch(Request $request)
@@ -680,7 +670,6 @@ class Router implements RegistrarContract
     /**
      * Dispatch the request to a route and return the response.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function dispatchToRoute(Request $request)
@@ -704,8 +693,6 @@ class Router implements RegistrarContract
     /**
      * Run the given route within a Stack "onion" instance.
      *
-     * @param  \Illuminate\Routing\Route  $route
-     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     protected function runRouteWithinStack(Route $route, Request $request)
@@ -716,20 +703,19 @@ class Router implements RegistrarContract
         $middleware = $shouldSkipMiddleware ? [] : $this->gatherRouteMiddlewares($route);
 
         return (new Pipeline($this->container))
-                        ->send($request)
-                        ->through($middleware)
-                        ->then(function ($request) use ($route) {
-                            return $this->prepareResponse(
-                                $request,
-                                $route->run($request)
-                            );
-                        });
+            ->send($request)
+            ->through($middleware)
+            ->then(function ($request) use ($route) {
+                return $this->prepareResponse(
+                    $request,
+                    $route->run($request)
+                );
+            });
     }
 
     /**
      * Gather the middleware for the given route.
      *
-     * @param  \Illuminate\Routing\Route  $route
      * @return array
      */
     public function gatherRouteMiddlewares(Route $route)
@@ -737,7 +723,7 @@ class Router implements RegistrarContract
         return Collection::make($route->middleware())->map(function ($name) {
             return Collection::make($this->resolveMiddlewareClassName($name));
         })
-        ->flatten()->all();
+            ->flatten()->all();
     }
 
     /**
@@ -755,16 +741,16 @@ class Router implements RegistrarContract
         // set of middleware under single keys that can be conveniently referenced.
         if (isset($this->middlewareGroups[$name])) {
             return $this->parseMiddlewareGroup($name);
-        // When the middleware is simply a Closure, we will return this Closure instance
-        // directly so that Closures can be registered as middleware inline, which is
-        // convenient on occasions when the developers are experimenting with them.
+            // When the middleware is simply a Closure, we will return this Closure instance
+            // directly so that Closures can be registered as middleware inline, which is
+            // convenient on occasions when the developers are experimenting with them.
         } elseif (isset($map[$name]) && $map[$name] instanceof Closure) {
             return $map[$name];
-        // Finally, when the middleware is simply a string mapped to a class name the
-        // middleware name will get parsed into the full class name and parameters
-        // which may be run using the Pipeline which accepts this string format.
+            // Finally, when the middleware is simply a string mapped to a class name the
+            // middleware name will get parsed into the full class name and parameters
+            // which may be run using the Pipeline which accepts this string format.
         } else {
-            list($name, $parameters) = array_pad(explode(':', $name, 2), 2, null);
+            [$name, $parameters] = array_pad(explode(':', $name, 2), 2, null);
 
             return (isset($map[$name]) ? $map[$name] : $name).
                    ($parameters !== null ? ':'.$parameters : '');
@@ -793,7 +779,7 @@ class Router implements RegistrarContract
                 continue;
             }
 
-            list($middleware, $parameters) = array_pad(
+            [$middleware, $parameters] = array_pad(
                 explode(':', $middleware, 2), 2, null
             );
 
@@ -924,7 +910,6 @@ class Router implements RegistrarContract
      * Register a group of middleware.
      *
      * @param  string  $name
-     * @param  array  $middleware
      * @return $this
      */
     public function middlewareGroup($name, array $middleware)
@@ -975,12 +960,11 @@ class Router implements RegistrarContract
      *
      * @param  string  $key
      * @param  string  $class
-     * @param  \Closure|null  $callback
      * @return void
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function model($key, $class, Closure $callback = null)
+    public function model($key, $class, ?Closure $callback = null)
     {
         $this->bind($key, function ($value) use ($class, $callback) {
             if (is_null($value)) {
@@ -1256,7 +1240,6 @@ class Router implements RegistrarContract
     /**
      * Set the route collection instance.
      *
-     * @param  \Illuminate\Routing\RouteCollection  $routes
      * @return void
      */
     public function setRoutes(RouteCollection $routes)

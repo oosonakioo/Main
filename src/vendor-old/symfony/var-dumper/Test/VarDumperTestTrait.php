@@ -32,7 +32,7 @@ trait VarDumperTestTrait
     protected function getDump($data)
     {
         $h = fopen('php://memory', 'r+b');
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
         $cloner->setMaxItems(-1);
         $dumper = new CliDumper($h);
         $dumper->setColors(false);

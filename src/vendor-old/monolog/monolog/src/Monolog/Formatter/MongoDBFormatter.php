@@ -19,11 +19,12 @@ namespace Monolog\Formatter;
 class MongoDBFormatter implements FormatterInterface
 {
     private $exceptionTraceAsString;
+
     private $maxNestingLevel;
 
     /**
-     * @param int  $maxNestingLevel        0 means infinite nesting, the $record itself is level 1, $record['context'] is 2
-     * @param bool $exceptionTraceAsString set to false to log exception traces as a sub documents instead of strings
+     * @param  int  $maxNestingLevel  0 means infinite nesting, the $record itself is level 1, $record['context'] is 2
+     * @param  bool  $exceptionTraceAsString  set to false to log exception traces as a sub documents instead of strings
      */
     public function __construct($maxNestingLevel = 3, $exceptionTraceAsString = true)
     {
@@ -82,12 +83,12 @@ class MongoDBFormatter implements FormatterInterface
 
     protected function formatException(\Exception $exception, $nestingLevel)
     {
-        $formattedException = array(
+        $formattedException = [
             'class' => get_class($exception),
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),
-            'file' => $exception->getFile() . ':' . $exception->getLine(),
-        );
+            'file' => $exception->getFile().':'.$exception->getLine(),
+        ];
 
         if ($this->exceptionTraceAsString === true) {
             $formattedException['trace'] = $exception->getTraceAsString();

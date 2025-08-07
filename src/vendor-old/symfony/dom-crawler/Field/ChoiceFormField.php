@@ -24,14 +24,17 @@ class ChoiceFormField extends FormField
      * @var string
      */
     private $type;
+
     /**
      * @var bool
      */
     private $multiple;
+
     /**
      * @var array
      */
     private $options;
+
     /**
      * @var bool
      */
@@ -45,7 +48,7 @@ class ChoiceFormField extends FormField
     public function hasValue()
     {
         // don't send a value for unchecked checkboxes
-        if (in_array($this->type, array('checkbox', 'radio')) && null === $this->value) {
+        if (in_array($this->type, ['checkbox', 'radio']) && $this->value === null) {
             return false;
         }
 
@@ -59,7 +62,7 @@ class ChoiceFormField extends FormField
      */
     public function isDisabled()
     {
-        if (parent::isDisabled() && 'select' === $this->type) {
+        if (parent::isDisabled() && $this->type === 'select') {
             return true;
         }
 
@@ -75,7 +78,7 @@ class ChoiceFormField extends FormField
     /**
      * Sets the value of the field.
      *
-     * @param string $value The value of the field
+     * @param  string  $value  The value of the field
      */
     public function select($value)
     {
@@ -89,7 +92,7 @@ class ChoiceFormField extends FormField
      */
     public function tick()
     {
-        if ('checkbox' !== $this->type) {
+        if ($this->type !== 'checkbox') {
             throw new \LogicException(sprintf('You cannot tick "%s" as it is not a checkbox (%s).', $this->name, $this->type));
         }
 
@@ -103,7 +106,7 @@ class ChoiceFormField extends FormField
      */
     public function untick()
     {
-        if ('checkbox' !== $this->type) {
+        if ($this->type !== 'checkbox') {
             throw new \LogicException(sprintf('You cannot tick "%s" as it is not a checkbox (%s).', $this->name, $this->type));
         }
 
@@ -113,30 +116,30 @@ class ChoiceFormField extends FormField
     /**
      * Sets the value of the field.
      *
-     * @param string $value The value of the field
+     * @param  string  $value  The value of the field
      *
      * @throws \InvalidArgumentException When value type provided is not correct
      */
     public function setValue($value)
     {
-        if ('checkbox' === $this->type && false === $value) {
+        if ($this->type === 'checkbox' && $value === false) {
             // uncheck
             $this->value = null;
-        } elseif ('checkbox' === $this->type && true === $value) {
+        } elseif ($this->type === 'checkbox' && $value === true) {
             // check
             $this->value = $this->options[0]['value'];
         } else {
             if (is_array($value)) {
-                if (!$this->multiple) {
+                if (! $this->multiple) {
                     throw new \InvalidArgumentException(sprintf('The value for "%s" cannot be an array.', $this->name));
                 }
 
                 foreach ($value as $v) {
-                    if (!$this->containsOption($v, $this->options)) {
+                    if (! $this->containsOption($v, $this->options)) {
                         throw new \InvalidArgumentException(sprintf('Input "%s" cannot take "%s" as a value (possible values: %s).', $this->name, $v, implode(', ', $this->availableOptionValues())));
                     }
                 }
-            } elseif (!$this->containsOption($value, $this->options)) {
+            } elseif (! $this->containsOption($value, $this->options)) {
                 throw new \InvalidArgumentException(sprintf('Input "%s" cannot take "%s" as a value (possible values: %s).', $this->name, $value, implode(', ', $this->availableOptionValues())));
             }
 
@@ -157,13 +160,12 @@ class ChoiceFormField extends FormField
      *
      * This method should only be used internally.
      *
-     * @param \DOMElement $node
      *
      * @throws \LogicException When choice provided is not multiple nor radio
      */
     public function addChoice(\DOMElement $node)
     {
-        if (!$this->multiple && 'radio' !== $this->type) {
+        if (! $this->multiple && $this->type !== 'radio') {
             throw new \LogicException(sprintf('Unable to add a choice for "%s" as it is not multiple or is not a radio button.', $this->name));
         }
 
@@ -202,19 +204,19 @@ class ChoiceFormField extends FormField
      */
     protected function initialize()
     {
-        if ('input' !== $this->node->nodeName && 'select' !== $this->node->nodeName) {
+        if ($this->node->nodeName !== 'input' && $this->node->nodeName !== 'select') {
             throw new \LogicException(sprintf('A ChoiceFormField can only be created from an input or select tag (%s given).', $this->node->nodeName));
         }
 
-        if ('input' === $this->node->nodeName && 'checkbox' !== strtolower($this->node->getAttribute('type')) && 'radio' !== strtolower($this->node->getAttribute('type'))) {
+        if ($this->node->nodeName === 'input' && strtolower($this->node->getAttribute('type')) !== 'checkbox' && strtolower($this->node->getAttribute('type')) !== 'radio') {
             throw new \LogicException(sprintf('A ChoiceFormField can only be created from an input tag with a type of checkbox or radio (given type is %s).', $this->node->getAttribute('type')));
         }
 
         $this->value = null;
-        $this->options = array();
+        $this->options = [];
         $this->multiple = false;
 
-        if ('input' == $this->node->nodeName) {
+        if ($this->node->nodeName == 'input') {
             $this->type = strtolower($this->node->getAttribute('type'));
             $optionValue = $this->buildOptionValue($this->node);
             $this->options[] = $optionValue;
@@ -226,7 +228,7 @@ class ChoiceFormField extends FormField
             $this->type = 'select';
             if ($this->node->hasAttribute('multiple')) {
                 $this->multiple = true;
-                $this->value = array();
+                $this->value = [];
                 $this->name = str_replace('[]', '', $this->name);
             }
 
@@ -246,7 +248,7 @@ class ChoiceFormField extends FormField
             }
 
             // if no option is selected and if it is a simple select box, take the first option as the value
-            if (!$found && !$this->multiple && !empty($this->options)) {
+            if (! $found && ! $this->multiple && ! empty($this->options)) {
                 $this->value = $this->options[0]['value'];
             }
         }
@@ -255,16 +257,15 @@ class ChoiceFormField extends FormField
     /**
      * Returns option value with associated disabled flag.
      *
-     * @param \DOMElement $node
      *
      * @return array
      */
     private function buildOptionValue(\DOMElement $node)
     {
-        $option = array();
+        $option = [];
 
-        $defaultDefaultValue = 'select' === $this->node->nodeName ? '' : 'on';
-        $defaultValue = (isset($node->nodeValue) && !empty($node->nodeValue)) ? $node->nodeValue : $defaultDefaultValue;
+        $defaultDefaultValue = $this->node->nodeName === 'select' ? '' : 'on';
+        $defaultValue = (isset($node->nodeValue) && ! empty($node->nodeValue)) ? $node->nodeValue : $defaultDefaultValue;
         $option['value'] = $node->hasAttribute('value') ? $node->getAttribute('value') : $defaultValue;
         $option['disabled'] = $node->hasAttribute('disabled');
 
@@ -274,9 +275,8 @@ class ChoiceFormField extends FormField
     /**
      * Checks whether given value is in the existing options.
      *
-     * @param string $optionValue
-     * @param array  $options
-     *
+     * @param  string  $optionValue
+     * @param  array  $options
      * @return bool
      */
     public function containsOption($optionValue, $options)
@@ -301,7 +301,7 @@ class ChoiceFormField extends FormField
      */
     public function availableOptionValues()
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->options as $option) {
             $values[] = $option['value'];

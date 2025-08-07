@@ -3,15 +3,16 @@
 class Swift_Encoder_Rfc2231EncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
 {
     private $_samplesDir;
+
     private $_factory;
 
     protected function setUp()
     {
         $this->_samplesDir = realpath(__DIR__.'/../../../_samples/charsets');
-        $this->_factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory();
+        $this->_factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory;
     }
 
-    public function testEncodingAndDecodingSamples()
+    public function test_encoding_and_decoding_samples()
     {
         $sampleFp = opendir($this->_samplesDir);
         while (false !== $encodingDir = readdir($sampleFp)) {
@@ -40,7 +41,7 @@ class Swift_Encoder_Rfc2231EncoderAcceptanceTest extends \PHPUnit_Framework_Test
                         urldecode(implode('', explode("\r\n", $encodedText))), $text,
                         '%s: Encoded string should decode back to original string for sample '.
                         $sampleDir.'/'.$sampleFile
-                        );
+                    );
                 }
                 closedir($fileFp);
             }

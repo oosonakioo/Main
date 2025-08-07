@@ -11,40 +11,40 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 class MongoDBHandlerTest extends TestCase
 {
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testConstructorShouldThrowExceptionForInvalidMongo()
+    public function test_constructor_should_throw_exception_for_invalid_mongo()
     {
-        new MongoDBHandler(new \stdClass(), 'DB', 'Collection');
+        new MongoDBHandler(new \stdClass, 'DB', 'Collection');
     }
 
-    public function testHandle()
+    public function test_handle()
     {
-        $mongo = $this->getMock('Mongo', array('selectCollection'), array(), '', false);
-        $collection = $this->getMock('stdClass', array('save'));
+        $mongo = $this->getMock('Mongo', ['selectCollection'], [], '', false);
+        $collection = $this->getMock('stdClass', ['save']);
 
         $mongo->expects($this->once())
             ->method('selectCollection')
             ->with('DB', 'Collection')
             ->will($this->returnValue($collection));
 
-        $record = $this->getRecord(Logger::WARNING, 'test', array('data' => new \stdClass, 'foo' => 34));
+        $record = $this->getRecord(Logger::WARNING, 'test', ['data' => new \stdClass, 'foo' => 34]);
 
-        $expected = array(
+        $expected = [
             'message' => 'test',
-            'context' => array('data' => '[object] (stdClass: {})', 'foo' => 34),
+            'context' => ['data' => '[object] (stdClass: {})', 'foo' => 34],
             'level' => Logger::WARNING,
             'level_name' => 'WARNING',
             'channel' => 'test',
             'datetime' => $record['datetime']->format('Y-m-d H:i:s'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
         $collection->expects($this->once())
             ->method('save')
@@ -55,11 +55,9 @@ class MongoDBHandlerTest extends TestCase
     }
 }
 
-if (!class_exists('Mongo')) {
+if (! class_exists('Mongo')) {
     class Mongo
     {
-        public function selectCollection()
-        {
-        }
+        public function selectCollection() {}
     }
 }

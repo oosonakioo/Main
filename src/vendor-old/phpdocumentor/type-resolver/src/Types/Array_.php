@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -34,17 +36,14 @@ final class Array_ implements Type
 
     /**
      * Initializes this representation of an array with the given Type or Fqsen.
-     *
-     * @param Type $valueType
-     * @param Type $keyType
      */
-    public function __construct(Type $valueType = null, Type $keyType = null)
+    public function __construct(?Type $valueType = null, ?Type $keyType = null)
     {
         if ($keyType === null) {
-            $keyType = new Compound([ new String_(), new Integer() ]);
+            $keyType = new Compound([new String_, new Integer]);
         }
         if ($valueType === null) {
-            $valueType = new Mixed();
+            $valueType = new Mixed;
         }
 
         $this->valueType = $valueType;
@@ -82,6 +81,6 @@ final class Array_ implements Type
             return 'array';
         }
 
-        return $this->valueType . '[]';
+        return $this->valueType.'[]';
     }
 }

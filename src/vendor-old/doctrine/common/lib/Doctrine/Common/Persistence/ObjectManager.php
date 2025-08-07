@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Persistence;
  *
  * @link   www.doctrine-project.org
  * @since  2.1
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Jonathan Wage <jonwage@gmail.com>
  */
@@ -34,9 +36,8 @@ interface ObjectManager
      *
      * This is just a convenient shortcut for getRepository($className)->find($id).
      *
-     * @param string $className The class name of the object to find.
-     * @param mixed  $id        The identity of the object to find.
-     *
+     * @param  string  $className  The class name of the object to find.
+     * @param  mixed  $id  The identity of the object to find.
      * @return object The found object.
      */
     public function find($className, $id);
@@ -49,8 +50,7 @@ interface ObjectManager
      * NOTE: The persist operation always considers objects that are not yet known to
      * this ObjectManager as NEW. Do not pass detached objects to the persist operation.
      *
-     * @param object $object The instance to make managed and persistent.
-     *
+     * @param  object  $object  The instance to make managed and persistent.
      * @return void
      */
     public function persist($object);
@@ -60,8 +60,7 @@ interface ObjectManager
      *
      * A removed object will be removed from the database as a result of the flush operation.
      *
-     * @param object $object The object instance to remove.
-     *
+     * @param  object  $object  The object instance to remove.
      * @return void
      */
     public function remove($object);
@@ -71,8 +70,7 @@ interface ObjectManager
      * of this ObjectManager and returns the managed copy of the object.
      * The object passed to merge will not become associated/managed with this ObjectManager.
      *
-     * @param object $object
-     *
+     * @param  object  $object
      * @return object
      */
     public function merge($object);
@@ -81,8 +79,7 @@ interface ObjectManager
      * Clears the ObjectManager. All objects that are currently managed
      * by this ObjectManager become detached.
      *
-     * @param string|null $objectName if given, only objects of this type will get detached.
-     *
+     * @param  string|null  $objectName  if given, only objects of this type will get detached.
      * @return void
      */
     public function clear($objectName = null);
@@ -94,8 +91,7 @@ interface ObjectManager
      * Objects which previously referenced the detached object will continue to
      * reference it.
      *
-     * @param object $object The object to detach.
-     *
+     * @param  object  $object  The object to detach.
      * @return void
      */
     public function detach($object);
@@ -104,8 +100,7 @@ interface ObjectManager
      * Refreshes the persistent state of an object from the database,
      * overriding any local changes that have not yet been persisted.
      *
-     * @param object $object The object to refresh.
-     *
+     * @param  object  $object  The object to refresh.
      * @return void
      */
     public function refresh($object);
@@ -122,8 +117,7 @@ interface ObjectManager
     /**
      * Gets the repository for a class.
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository($className);
@@ -134,8 +128,7 @@ interface ObjectManager
      * The class name must be the fully-qualified class name without a leading backslash
      * (as it is returned by get_class($obj)).
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return \Doctrine\Common\Persistence\Mapping\ClassMetadata
      */
     public function getClassMetadata($className);
@@ -152,8 +145,7 @@ interface ObjectManager
      *
      * This method is a no-op for other objects.
      *
-     * @param object $obj
-     *
+     * @param  object  $obj
      * @return void
      */
     public function initializeObject($obj);
@@ -161,8 +153,7 @@ interface ObjectManager
     /**
      * Checks if the object is part of the current UnitOfWork and therefore managed.
      *
-     * @param object $object
-     *
+     * @param  object  $object
      * @return bool
      */
     public function contains($object);

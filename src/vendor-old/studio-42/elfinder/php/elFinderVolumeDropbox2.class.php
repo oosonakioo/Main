@@ -1,11 +1,11 @@
 <?php
 
-use \Kunnu\Dropbox\DropboxApp;
-use \Kunnu\Dropbox\Dropbox;
-use \Kunnu\Dropbox\DropboxFile;
-use \Kunnu\Dropbox\Models\FolderMetadata;
-use \Kunnu\Dropbox\Models\FileMetadata;
-use \Kunnu\Dropbox\Exceptions\DropboxClientException;
+use Kunnu\Dropbox\Dropbox;
+use Kunnu\Dropbox\DropboxApp;
+use Kunnu\Dropbox\DropboxFile;
+use Kunnu\Dropbox\Exceptions\DropboxClientException;
+use Kunnu\Dropbox\Models\FileMetadata;
+use Kunnu\Dropbox\Models\FolderMetadata;
 
 elFinder::$netDrivers['dropbox2'] = 'Dropbox2';
 
@@ -74,8 +74,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             'rootCssClass' => 'elfinder-navbar-root-dropbox',
             'publishPermission' => [
                 'requested_visibility' => 'public',
-                //'link_password' => '',
-                //'expires' => '',
+                // 'link_password' => '',
+                // 'expires' => '',
             ],
             'getThumbSize' => 'medium', // Available sizes: 'thumb', 'small', 'medium', 'large', 'huge'
         ];
@@ -84,14 +84,13 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     }
 
     /*********************************************************************/
-    /*                        ORIGINAL FUNCTIONS                         */
+    /*                        ORIGINAL FUNCTIONS */
     /*********************************************************************/
 
     /**
      * Get Parent ID, Item ID, Parent Path as an array from path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return array
      */
     protected function _db_splitPath($path)
@@ -117,8 +116,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Get dat(Dropbox metadata) from Dropbox.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return object Dropbox metadata
      */
     private function _db_getFile($path, $fields = '')
@@ -143,8 +141,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Parse line from Dropbox metadata output and return file stat (array).
      *
-     * @param string $raw line from ftp_rawlist() output
-     *
+     * @param  string  $raw  line from ftp_rawlist() output
      * @return array
      *
      * @author Naoki Sawada
@@ -204,10 +201,9 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Get thumbnail from Dropbox.
      *
-     * @param string $path
-     * @param string $size
-     *
-     * @return string | boolean
+     * @param  string  $path
+     * @param  string  $size
+     * @return string | bool
      */
     protected function _db_getThumbnail($path)
     {
@@ -221,9 +217,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Join dir name and file name(display name) and retur full path.
      *
-     * @param unknown $dir
-     * @param unknown $displayName
-     *
+     * @param  unknown  $dir
+     * @param  unknown  $displayName
      * @return string
      */
     protected function _db_joinName($dir, $displayName)
@@ -232,7 +227,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     }
 
     /*********************************************************************/
-    /*                        EXTENDED FUNCTIONS                         */
+    /*                        EXTENDED FUNCTIONS */
     /*********************************************************************/
 
     /**
@@ -252,7 +247,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             $options['app_secret'] = ELFINDER_DROPBOX_APPSECRET;
         }
 
-        if (!isset($options['pass'])) {
+        if (! isset($options['pass'])) {
             $options['pass'] = '';
         }
 
@@ -271,12 +266,12 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
 
             $options = array_merge($this->session->get('Dropbox2AuthParams', []), $options);
 
-            if (!isset($options['tokens'])) {
+            if (! isset($options['tokens'])) {
                 $options['tokens'] = $this->session->get('Dropbox2Tokens', []);
                 $this->session->remove('Dropbox2Tokens');
             }
             $aToken = $options['tokens'];
-            if (!is_array($aToken) || !isset($aToken['access_token'])) {
+            if (! is_array($aToken) || ! isset($aToken['access_token'])) {
                 $aToken = [];
             }
 
@@ -304,7 +299,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
                 $callback = $options['url']
                            .'?cmd=netmount&protocol=dropbox2&host=1';
 
-                if (!$aToken && empty($_GET['code'])) {
+                if (! $aToken && empty($_GET['code'])) {
                     $url = $authHelper->getAuthUrl($callback);
 
                     $html = '<input id="elf-volumedriver-dropbox2-host-btn" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="{msg:btnApprove}" type="button" onclick="window.open(\''.$url.'\')">';
@@ -326,7 +321,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
                         return ['exit' => 'callback', 'out' => $out];
                     }
                 } else {
-                    if (!empty($_GET['code']) && isset($_GET['state'])) {
+                    if (! empty($_GET['code']) && isset($_GET['state'])) {
                         $tokenObj = $authHelper->getAccessToken($_GET['code'], $_GET['state'], $callback);
                         $options['tokens'] = [
                             'access_token' => $tokenObj->getToken(),
@@ -379,7 +374,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             }
         }
 
-        if (!$aToken) {
+        if (! $aToken) {
             return ['exit' => true, 'error' => elFinder::ERROR_REAUTH_REQUIRE];
         }
 
@@ -410,8 +405,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      * process of on netunmount
      * Drop `Dropbox` & rm thumbs.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return bool
      */
     public function netunmount($netVolumes, $key)
@@ -426,7 +420,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     }
 
     /*********************************************************************/
-    /*                        INIT AND CONFIGURE                         */
+    /*                        INIT AND CONFIGURE */
     /*********************************************************************/
 
     /**
@@ -453,10 +447,10 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
                 return $this->setError('Required option "app_secret" is undefined.');
             }
         }
-        if (isset($this->options['tokens']) && is_array($this->options['tokens']) && !empty($this->options['tokens']['access_token'])) {
+        if (isset($this->options['tokens']) && is_array($this->options['tokens']) && ! empty($this->options['tokens']['access_token'])) {
             $this->options['access_token'] = $this->options['tokens']['access_token'];
         }
-        if (!$this->options['access_token']) {
+        if (! $this->options['access_token']) {
             return $this->setError('Required option "access_token" or "refresh_token" is undefined.');
         }
 
@@ -466,7 +460,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             $this->netMountKey = md5($aToken.'-'.$this->options['path']);
 
             $errors = [];
-            if (!$this->service) {
+            if (! $this->service) {
                 $app = new DropboxApp($this->options['app_key'], $this->options['app_secret'], $aToken);
                 $this->service = new Dropbox($app);
             }
@@ -476,7 +470,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             $errors[] = $e->getMessage();
         }
 
-        if (!$this->service) {
+        if (! $this->service) {
             $errors[] = 'Dropbox Service could not be loaded.';
 
             return $this->setError($errors);
@@ -495,16 +489,16 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
 
         $this->rootName = $this->options['alias'];
 
-        if (!empty($this->options['tmpPath'])) {
+        if (! empty($this->options['tmpPath'])) {
             if ((is_dir($this->options['tmpPath']) || mkdir($this->options['tmpPath'])) && is_writable($this->options['tmpPath'])) {
                 $this->tmp = $this->options['tmpPath'];
             }
         }
 
-        if (!$this->tmp && is_writable($this->options['tmbPath'])) {
+        if (! $this->tmp && is_writable($this->options['tmbPath'])) {
             $this->tmp = $this->options['tmbPath'];
         }
-        if (!$this->tmp && ($tmp = elFinder::getStaticVar('commonTempPath'))) {
+        if (! $this->tmp && ($tmp = elFinder::getStaticVar('commonTempPath'))) {
             $this->tmp = $tmp;
         }
 
@@ -530,25 +524,23 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
         $this->disabled[] = 'extract';
 
         if ($this->isMyReload()) {
-            //$this->_db_getDirectoryData(false);
+            // $this->_db_getDirectoryData(false);
         }
     }
 
     /*********************************************************************/
-    /*                               FS API                              */
+    /*                               FS API */
     /*********************************************************************/
 
     /**
      * Close opened connection.
      **/
-    public function umount()
-    {
-    }
+    public function umount() {}
 
     /**
      * Cache dir contents.
      *
-     * @param string $path dir path
+     * @param  string  $path  dir path
      *
      * @author Naoki Sawada
      **/
@@ -566,7 +558,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
                     $mountPath = $this->_joinPath($path, $stat['name']);
                     $stat = $this->updateCache($mountPath, $stat);
                     if (empty($stat['hidden']) && $path !== $mountPath) {
-                        if (!$hasDir && $stat['mime'] === 'directory') {
+                        if (! $hasDir && $stat['mime'] === 'directory') {
                             $hasDir = true;
                         }
                         $this->dirsCache[$path][] = $mountPath;
@@ -585,10 +577,9 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Recursive files search.
      *
-     * @param string $path  dir path
-     * @param string $q     search string
-     * @param array  $mimes
-     *
+     * @param  string  $path  dir path
+     * @param  string  $q  search string
+     * @param  array  $mimes
      * @return array
      *
      * @author Naoki Sawada
@@ -631,10 +622,9 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      * Copy file/recursive copy dir only in current volume.
      * Return new file path or false.
      *
-     * @param string $src  source path
-     * @param string $dst  destination dir path
-     * @param string $name new file name (optionaly)
-     *
+     * @param  string  $src  source path
+     * @param  string  $dst  destination dir path
+     * @param  string  $name  new file name (optionaly)
      * @return string|false
      *
      * @author Naoki Sawada
@@ -663,9 +653,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Remove file/ recursive remove dir.
      *
-     * @param string $path  file path
-     * @param bool   $force try to remove even if file locked
-     *
+     * @param  string  $path  file path
+     * @param  bool  $force  try to remove even if file locked
      * @return bool
      *
      * @author Naoki Sawada
@@ -681,16 +670,16 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_RM, $this->_path($path), elFinder::ERROR_FILE_NOT_FOUND);
         }
 
-        if (!$force && !empty($stat['locked'])) {
+        if (! $force && ! empty($stat['locked'])) {
             return $this->setError(elFinder::ERROR_LOCKED, $this->_path($path));
         }
 
         if ($stat['mime'] == 'directory') {
-            if (!$recursive && !$this->_rmdir($path)) {
+            if (! $recursive && ! $this->_rmdir($path)) {
                 return $this->setError(elFinder::ERROR_RM, $this->_path($path));
             }
         } else {
-            if (!$recursive && !$this->_unlink($path)) {
+            if (! $recursive && ! $this->_unlink($path)) {
                 return $this->setError(elFinder::ERROR_RM, $this->_path($path));
             }
         }
@@ -703,16 +692,15 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Create thumnbnail and return it's URL on success.
      *
-     * @param string $path file path
-     * @param string $mime file mime type
-     *
+     * @param  string  $path  file path
+     * @param  string  $mime  file mime type
      * @return string|false
      *
      * @author Naoki Sawada
      **/
     protected function createTmb($path, $stat)
     {
-        if (!$stat || !$this->canCreateTmb($path, $stat)) {
+        if (! $stat || ! $this->canCreateTmb($path, $stat)) {
             return false;
         }
 
@@ -720,10 +708,10 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
         $tmb = $this->tmbPath.DIRECTORY_SEPARATOR.$name;
 
         // copy image into tmbPath so some drivers does not store files on local fs
-        if (!$data = $this->_db_getThumbnail($path)) {
+        if (! $data = $this->_db_getThumbnail($path)) {
             return false;
         }
-        if (!file_put_contents($tmb, $data)) {
+        if (! file_put_contents($tmb, $data)) {
             return false;
         }
 
@@ -742,7 +730,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             if ($this->options['tmbCrop']) {
 
                 /* Resize and crop if image bigger than thumbnail */
-                if (!(($s[0] > $tmbSize && $s[1] <= $tmbSize) || ($s[0] <= $tmbSize && $s[1] > $tmbSize)) || ($s[0] > $tmbSize && $s[1] > $tmbSize)) {
+                if (! (($s[0] > $tmbSize && $s[1] <= $tmbSize) || ($s[0] <= $tmbSize && $s[1] > $tmbSize)) || ($s[0] > $tmbSize && $s[1] > $tmbSize)) {
                     $result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
                 }
 
@@ -758,7 +746,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             $result = $this->imgSquareFit($tmb, $tmbSize, $tmbSize, 'center', 'middle', $this->options['tmbBgColor'], 'png');
         }
 
-        if (!$result) {
+        if (! $result) {
             unlink($tmb);
 
             return false;
@@ -770,8 +758,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return thumbnail file name for required file.
      *
-     * @param array $stat file stat
-     *
+     * @param  array  $stat  file stat
      * @return string
      *
      * @author Naoki Sawada
@@ -790,9 +777,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      * Return content URL (for netmout volume driver)
      * If file.url == 1 requests from JavaScript client with XHR.
      *
-     * @param string $hash    file hash
-     * @param array  $options options array
-     *
+     * @param  string  $hash  file hash
+     * @param  array  $options  options array
      * @return bool|string
      *
      * @author Naoki Sawada
@@ -800,12 +786,12 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     public function getContentUrl($hash, $options = [])
     {
         $file = $this->file($hash);
-        if (($file = $this->file($hash)) !== false && (!$file['url'] || $file['url'] == 1)) {
+        if (($file = $this->file($hash)) !== false && (! $file['url'] || $file['url'] == 1)) {
             $path = $this->decode($hash);
             $url = '';
             try {
                 $res = $this->service->postToAPI('/sharing/list_shared_links', ['path' => $path, 'direct_only' => true])->getDecodedBody();
-                if ($res && !empty($res['links'])) {
+                if ($res && ! empty($res['links'])) {
                     foreach ($res['links'] as $link) {
                         if (isset($link['link_permissions'])
                                 && isset($link['link_permissions']['requested_visibility'])
@@ -815,7 +801,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
                         }
                     }
                 }
-                if (!$url) {
+                if (! $url) {
                     $res = $this->service->postToAPI('/sharing/create_shared_link_with_settings', ['path' => $path, 'settings' => $this->options['publishPermission']])->getDecodedBody();
                     if (isset($res['url'])) {
                         $url = $res['url'];
@@ -843,7 +829,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     public function debug()
     {
         $res = parent::debug();
-        if (isset($this->options['tokens']) && !empty($this->options['tokens']['uid'])) {
+        if (isset($this->options['tokens']) && ! empty($this->options['tokens']['uid'])) {
             $res['Dropbox uid'] = $this->options['tokens']['uid'];
             $res['access_token'] = $this->options['tokens']['access_token'];
         }
@@ -856,15 +842,14 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return parent directory path.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Naoki Sawada
      **/
     protected function _dirname($path)
     {
-        list($dirname) = $this->_db_splitPath($path);
+        [$dirname] = $this->_db_splitPath($path);
 
         return $dirname;
     }
@@ -872,15 +857,14 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return file name.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Naoki Sawada
      **/
     protected function _basename($path)
     {
-        list(, $basename) = $this->_db_splitPath($path);
+        [, $basename] = $this->_db_splitPath($path);
 
         return $basename;
     }
@@ -888,9 +872,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Join dir name and file name and retur full path.
      *
-     * @param string $dir
-     * @param string $name
-     *
+     * @param  string  $dir
+     * @param  string  $name
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -903,8 +886,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return normalized path, this works the same as os.path.normpath() in Python.
      *
-     * @param string $path path
-     *
+     * @param  string  $path  path
      * @return string
      *
      * @author Naoki Sawada
@@ -917,8 +899,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return file path related to root dir.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Dmitry (dio) Levashov
@@ -935,8 +916,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Convert path related to root dir into real path.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Naoki Sawada
@@ -953,8 +933,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return fake path started from root dir.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string
      *
      * @author Naoki Sawada
@@ -969,9 +948,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return true if $path is children of $parent.
      *
-     * @param string $path   path to check
-     * @param string $parent parent path
-     *
+     * @param  string  $path  path to check
+     * @param  string  $parent  parent path
      * @return bool
      *
      * @author Naoki Sawada
@@ -997,8 +975,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      *
      * If file does not exists - returns empty array or false.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return array|false
      *
      * @author Dmitry (dio) Levashov
@@ -1015,8 +992,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return true if path is dir and has at least one childs directory.
      *
-     * @param string $path dir path
-     *
+     * @param  string  $path  dir path
      * @return bool
      *
      * @author Naoki Sawada
@@ -1047,9 +1023,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      * Return object width and height
      * Ususaly used for images, but can be realize for video etc...
      *
-     * @param string $path file path
-     * @param string $mime file mime type
-     *
+     * @param  string  $path  file path
+     * @param  string  $mime  file mime type
      * @return string
      *
      * @author Naoki Sawada
@@ -1078,8 +1053,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Return files list in directory.
      *
-     * @param string $path dir path
-     *
+     * @param  string  $path  dir path
      * @return array
      *
      * @author Naoki Sawada
@@ -1094,9 +1068,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Open file and return file pointer.
      *
-     * @param string $path  file path
-     * @param bool   $write open file for writing
-     *
+     * @param  string  $path  file path
+     * @param  bool  $write  open file for writing
      * @return resource|false
      *
      * @author Naoki Sawada
@@ -1107,10 +1080,10 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
             if ($link = $this->service->getTemporaryLink($path)) {
                 $access_token = $this->service->getAccessToken();
                 if ($access_token) {
-                    $data = array(
-                                'target' => $link->getLink(),
-                                'headers' => array('Authorization: Bearer '.$access_token),
-                        );
+                    $data = [
+                        'target' => $link->getLink(),
+                        'headers' => ['Authorization: Bearer '.$access_token],
+                    ];
 
                     return elFinder::getStreamByUrl($data);
                 }
@@ -1123,8 +1096,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Close opened file.
      *
-     * @param resource $fp file pointer
-     *
+     * @param  resource  $fp  file pointer
      * @return bool
      *
      * @author Naoki Sawada
@@ -1139,9 +1111,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Create dir and return created dir path or false on failed.
      *
-     * @param string $path parent dir path
-     * @param string $name new directory name
-     *
+     * @param  string  $path  parent dir path
+     * @param  string  $name  new directory name
      * @return string|bool
      *
      * @author Naoki Sawada
@@ -1158,9 +1129,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Create file and return it's path or false on failed.
      *
-     * @param string $path parent dir path
-     * @param string $name new file name
-     *
+     * @param  string  $path  parent dir path
+     * @param  string  $name  new file name
      * @return string|bool
      *
      * @author Naoki Sawada
@@ -1173,9 +1143,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Create symlink. FTP driver does not support symlinks.
      *
-     * @param string $target link target
-     * @param string $path   symlink path
-     *
+     * @param  string  $target  link target
+     * @param  string  $path  symlink path
      * @return bool
      *
      * @author Naoki Sawada
@@ -1188,10 +1157,9 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Copy file into another file.
      *
-     * @param string $source    source file path
-     * @param string $targetDir target directory path
-     * @param string $name      new file name
-     *
+     * @param  string  $source  source file path
+     * @param  string  $targetDir  target directory path
+     * @param  string  $name  new file name
      * @return bool
      *
      * @author Naoki Sawada
@@ -1211,10 +1179,9 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      * Move file into another parent dir.
      * Return new file path or false.
      *
-     * @param string $source source file path
-     * @param string $target target dir path
-     * @param string $name   file name
-     *
+     * @param  string  $source  source file path
+     * @param  string  $target  target dir path
+     * @param  string  $name  file name
      * @return string|bool
      *
      * @author Naoki Sawada
@@ -1231,8 +1198,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Remove file.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return bool
      *
      * @author Naoki Sawada
@@ -1253,8 +1219,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Remove dir.
      *
-     * @param string $path dir path
-     *
+     * @param  string  $path  dir path
      * @return bool
      *
      * @author Naoki Sawada
@@ -1268,11 +1233,10 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      * Create new file and write into it from file pointer.
      * Return new file path or false on error.
      *
-     * @param resource $fp   file pointer
-     * @param string   $dir  target dir path
-     * @param string   $name file name
-     * @param array    $stat file stat (required by some virtual fs)
-     *
+     * @param  resource  $fp  file pointer
+     * @param  string  $dir  target dir path
+     * @param  string  $name  file name
+     * @param  array  $stat  file stat (required by some virtual fs)
      * @return bool|string
      *
      * @author Naoki Sawada
@@ -1309,8 +1273,7 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Get file contents.
      *
-     * @param string $path file path
-     *
+     * @param  string  $path  file path
      * @return string|false
      *
      * @author Naoki Sawada
@@ -1332,9 +1295,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Write a string to a file.
      *
-     * @param string $path    file path
-     * @param string $content new file content
-     *
+     * @param  string  $path  file path
+     * @param  string  $content  new file content
      * @return bool
      *
      * @author Naoki Sawada
@@ -1378,9 +1340,8 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
     /**
      * Unpack archive.
      *
-     * @param string $path archive path
-     * @param array  $arc  archiver command and arguments (same as in $this->archivers)
-     *
+     * @param  string  $path  archive path
+     * @param  array  $arc  archiver command and arguments (same as in $this->archivers)
      * @return true
      *
      * @author Dmitry (dio) Levashov
@@ -1388,30 +1349,28 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      **/
     protected function _unpack($path, $arc)
     {
-        die('Not yet implemented. (_unpack)');
-        //return false;
+        exit('Not yet implemented. (_unpack)');
+        // return false;
     }
 
     /**
      * Recursive symlinks search.
      *
-     * @param string $path file/dir path
-     *
+     * @param  string  $path  file/dir path
      * @return bool
      *
      * @author Dmitry (dio) Levashov
      **/
     protected function _findSymlinks($path)
     {
-        die('Not yet implemented. (_findSymlinks)');
+        exit('Not yet implemented. (_findSymlinks)');
     }
 
     /**
      * Extract files from archive.
      *
-     * @param string $path archive path
-     * @param array  $arc  archiver command and arguments (same as in $this->archivers)
-     *
+     * @param  string  $path  archive path
+     * @param  array  $arc  archiver command and arguments (same as in $this->archivers)
      * @return true
      *
      * @author Dmitry (dio) Levashov,
@@ -1419,17 +1378,16 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      **/
     protected function _extract($path, $arc)
     {
-        die('Not yet implemented. (_extract)');
+        exit('Not yet implemented. (_extract)');
     }
 
     /**
      * Create archive and return its path.
      *
-     * @param string $dir   target dir
-     * @param array  $files files names list
-     * @param string $name  archive name
-     * @param array  $arc   archiver options
-     *
+     * @param  string  $dir  target dir
+     * @param  array  $files  files names list
+     * @param  string  $name  archive name
+     * @param  array  $arc  archiver options
      * @return string|bool
      *
      * @author Dmitry (dio) Levashov,
@@ -1437,6 +1395,6 @@ class elFinderVolumeDropbox2 extends elFinderVolumeDriver
      **/
     protected function _archive($dir, $files, $name, $arc)
     {
-        die('Not yet implemented. (_archive)');
+        exit('Not yet implemented. (_archive)');
     }
 } // END class

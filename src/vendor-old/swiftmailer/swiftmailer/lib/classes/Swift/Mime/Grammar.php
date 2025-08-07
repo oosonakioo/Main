@@ -21,14 +21,14 @@ class Swift_Mime_Grammar
      *
      * @var string[]
      */
-    private static $_specials = array();
+    private static $_specials = [];
 
     /**
      * Tokens defined in RFC 2822 (and some related RFCs).
      *
      * @var string[]
      */
-    private static $_grammar = array();
+    private static $_grammar = [];
 
     /**
      * Initialize some RFC 2822 (and friends) ABNF grammar definitions.
@@ -49,10 +49,10 @@ class Swift_Mime_Grammar
             return;
         }
 
-        self::$_specials = array(
+        self::$_specials = [
             '(', ')', '<', '>', '[', ']',
             ':', ';', '@', ',', '.', '"',
-            );
+        ];
 
         /*** Refer to RFC 2822 for ABNF grammar ***/
 
@@ -121,8 +121,7 @@ class Swift_Mime_Grammar
     /**
      * Get the grammar defined for $name token.
      *
-     * @param string $name exactly as written in the RFC
-     *
+     * @param  string  $name  exactly as written in the RFC
      * @return string
      */
     public function getDefinition($name)
@@ -159,15 +158,14 @@ class Swift_Mime_Grammar
     /**
      * Escape special characters in a string (convert to quoted-pairs).
      *
-     * @param string   $token
-     * @param string[] $include additional chars to escape
-     * @param string[] $exclude chars from escaping
-     *
+     * @param  string  $token
+     * @param  string[]  $include  additional chars to escape
+     * @param  string[]  $exclude  chars from escaping
      * @return string
      */
-    public function escapeSpecials($token, $include = array(), $exclude = array())
+    public function escapeSpecials($token, $include = [], $exclude = [])
     {
-        foreach (array_merge(array('\\'), array_diff(self::$_specials, $exclude), $include) as $char) {
+        foreach (array_merge(['\\'], array_diff(self::$_specials, $exclude), $include) as $char) {
             $token = str_replace($char, '\\'.$char, $token);
         }
 

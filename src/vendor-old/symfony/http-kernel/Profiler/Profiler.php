@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\HttpKernel\Profiler;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Profiler.
@@ -33,7 +33,7 @@ class Profiler
     /**
      * @var DataCollectorInterface[]
      */
-    private $collectors = array();
+    private $collectors = [];
 
     /**
      * @var LoggerInterface
@@ -48,10 +48,10 @@ class Profiler
     /**
      * Constructor.
      *
-     * @param ProfilerStorageInterface $storage A ProfilerStorageInterface instance
-     * @param LoggerInterface          $logger  A LoggerInterface instance
+     * @param  ProfilerStorageInterface  $storage  A ProfilerStorageInterface instance
+     * @param  LoggerInterface  $logger  A LoggerInterface instance
      */
-    public function __construct(ProfilerStorageInterface $storage, LoggerInterface $logger = null)
+    public function __construct(ProfilerStorageInterface $storage, ?LoggerInterface $logger = null)
     {
         $this->storage = $storage;
         $this->logger = $logger;
@@ -76,13 +76,12 @@ class Profiler
     /**
      * Loads the Profile for the given Response.
      *
-     * @param Response $response A Response instance
-     *
+     * @param  Response  $response  A Response instance
      * @return Profile A Profile instance
      */
     public function loadProfileFromResponse(Response $response)
     {
-        if (!$token = $response->headers->get('X-Debug-Token')) {
+        if (! $token = $response->headers->get('X-Debug-Token')) {
             return false;
         }
 
@@ -92,8 +91,7 @@ class Profiler
     /**
      * Loads the Profile for the given token.
      *
-     * @param string $token A token
-     *
+     * @param  string  $token  A token
      * @return Profile A Profile instance
      */
     public function loadProfile($token)
@@ -104,8 +102,7 @@ class Profiler
     /**
      * Saves a Profile.
      *
-     * @param Profile $profile A Profile instance
-     *
+     * @param  Profile  $profile  A Profile instance
      * @return bool
      */
     public function saveProfile(Profile $profile)
@@ -117,8 +114,8 @@ class Profiler
             }
         }
 
-        if (!($ret = $this->storage->write($profile)) && null !== $this->logger) {
-            $this->logger->warning('Unable to store the profiler information.', array('configured_storage' => get_class($this->storage)));
+        if (! ($ret = $this->storage->write($profile)) && $this->logger !== null) {
+            $this->logger->warning('Unable to store the profiler information.', ['configured_storage' => get_class($this->storage)]);
         }
 
         return $ret;
@@ -135,13 +132,12 @@ class Profiler
     /**
      * Finds profiler tokens for the given criteria.
      *
-     * @param string $ip     The IP
-     * @param string $url    The URL
-     * @param string $limit  The maximum number of tokens to return
-     * @param string $method The request method
-     * @param string $start  The start date to search from
-     * @param string $end    The end date to search to
-     *
+     * @param  string  $ip  The IP
+     * @param  string  $url  The URL
+     * @param  string  $limit  The maximum number of tokens to return
+     * @param  string  $method  The request method
+     * @param  string  $start  The start date to search from
+     * @param  string  $end  The end date to search to
      * @return array An array of tokens
      *
      * @see http://php.net/manual/en/datetime.formats.php for the supported date/time formats
@@ -154,15 +150,14 @@ class Profiler
     /**
      * Collects data for the given Response.
      *
-     * @param Request    $request   A Request instance
-     * @param Response   $response  A Response instance
-     * @param \Exception $exception An exception instance if the request threw one
-     *
+     * @param  Request  $request  A Request instance
+     * @param  Response  $response  A Response instance
+     * @param  \Exception  $exception  An exception instance if the request threw one
      * @return Profile|null A Profile instance or null if the profiler is disabled
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, ?\Exception $exception = null)
     {
-        if (false === $this->enabled) {
+        if ($this->enabled === false) {
             return;
         }
 
@@ -202,11 +197,11 @@ class Profiler
     /**
      * Sets the Collectors associated with this profiler.
      *
-     * @param DataCollectorInterface[] $collectors An array of collectors
+     * @param  DataCollectorInterface[]  $collectors  An array of collectors
      */
-    public function set(array $collectors = array())
+    public function set(array $collectors = [])
     {
-        $this->collectors = array();
+        $this->collectors = [];
         foreach ($collectors as $collector) {
             $this->add($collector);
         }
@@ -215,7 +210,7 @@ class Profiler
     /**
      * Adds a Collector.
      *
-     * @param DataCollectorInterface $collector A DataCollectorInterface instance
+     * @param  DataCollectorInterface  $collector  A DataCollectorInterface instance
      */
     public function add(DataCollectorInterface $collector)
     {
@@ -225,8 +220,7 @@ class Profiler
     /**
      * Returns true if a Collector for the given name exists.
      *
-     * @param string $name A collector name
-     *
+     * @param  string  $name  A collector name
      * @return bool
      */
     public function has($name)
@@ -237,15 +231,14 @@ class Profiler
     /**
      * Gets a Collector by name.
      *
-     * @param string $name A collector name
-     *
+     * @param  string  $name  A collector name
      * @return DataCollectorInterface A DataCollectorInterface instance
      *
      * @throws \InvalidArgumentException if the collector does not exist
      */
     public function get($name)
     {
-        if (!isset($this->collectors[$name])) {
+        if (! isset($this->collectors[$name])) {
             throw new \InvalidArgumentException(sprintf('Collector "%s" does not exist.', $name));
         }
 
@@ -254,7 +247,7 @@ class Profiler
 
     private function getTimestamp($value)
     {
-        if (null === $value || '' == $value) {
+        if ($value === null || $value == '') {
             return;
         }
 

@@ -15,20 +15,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RedirectResponseTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGenerateMetaRedirect()
+    public function test_generate_meta_redirect()
     {
         $response = new RedirectResponse('foo.bar');
 
         $this->assertEquals(1, preg_match(
             '#<meta http-equiv="refresh" content="\d+;url=foo\.bar" />#',
-            preg_replace(array('/\s+/', '/\'/'), array(' ', '"'), $response->getContent())
+            preg_replace(['/\s+/', '/\'/'], [' ', '"'], $response->getContent())
         ));
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testRedirectResponseConstructorNullUrl()
+    public function test_redirect_response_constructor_null_url()
     {
         $response = new RedirectResponse(null);
     }
@@ -36,12 +36,12 @@ class RedirectResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testRedirectResponseConstructorWrongStatusCode()
+    public function test_redirect_response_constructor_wrong_status_code()
     {
         $response = new RedirectResponse('foo.bar', 404);
     }
 
-    public function testGenerateLocationHeader()
+    public function test_generate_location_header()
     {
         $response = new RedirectResponse('foo.bar');
 
@@ -49,14 +49,14 @@ class RedirectResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo.bar', $response->headers->get('Location'));
     }
 
-    public function testGetTargetUrl()
+    public function test_get_target_url()
     {
         $response = new RedirectResponse('foo.bar');
 
         $this->assertEquals('foo.bar', $response->getTargetUrl());
     }
 
-    public function testSetTargetUrl()
+    public function test_set_target_url()
     {
         $response = new RedirectResponse('foo.bar');
         $response->setTargetUrl('baz.beep');
@@ -67,13 +67,13 @@ class RedirectResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testSetTargetUrlNull()
+    public function test_set_target_url_null()
     {
         $response = new RedirectResponse('foo.bar');
         $response->setTargetUrl(null);
     }
 
-    public function testCreate()
+    public function test_create()
     {
         $response = RedirectResponse::create('foo', 301);
 

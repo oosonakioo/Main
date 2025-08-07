@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '1 ปี|:count ปี',
     'y' => '1 ปี|:count ปี',
     'month' => '1 เดือน|:count เดือน',
@@ -28,4 +28,4 @@ return array(
     'from_now' => ':time จากนี้',
     'after' => 'หลัง:time',
     'before' => 'ก่อน:time',
-);
+];

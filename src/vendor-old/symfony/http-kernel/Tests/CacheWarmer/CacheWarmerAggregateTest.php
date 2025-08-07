@@ -27,39 +27,39 @@ class CacheWarmerAggregateTest extends \PHPUnit_Framework_TestCase
         @unlink(self::$cacheDir);
     }
 
-    public function testInjectWarmersUsingConstructor()
+    public function test_inject_warmers_using_constructor()
     {
         $warmer = $this->getCacheWarmerMock();
         $warmer
             ->expects($this->once())
             ->method('warmUp');
-        $aggregate = new CacheWarmerAggregate(array($warmer));
+        $aggregate = new CacheWarmerAggregate([$warmer]);
         $aggregate->warmUp(self::$cacheDir);
     }
 
-    public function testInjectWarmersUsingAdd()
+    public function test_inject_warmers_using_add()
     {
         $warmer = $this->getCacheWarmerMock();
         $warmer
             ->expects($this->once())
             ->method('warmUp');
-        $aggregate = new CacheWarmerAggregate();
+        $aggregate = new CacheWarmerAggregate;
         $aggregate->add($warmer);
         $aggregate->warmUp(self::$cacheDir);
     }
 
-    public function testInjectWarmersUsingSetWarmers()
+    public function test_inject_warmers_using_set_warmers()
     {
         $warmer = $this->getCacheWarmerMock();
         $warmer
             ->expects($this->once())
             ->method('warmUp');
-        $aggregate = new CacheWarmerAggregate();
-        $aggregate->setWarmers(array($warmer));
+        $aggregate = new CacheWarmerAggregate;
+        $aggregate->setWarmers([$warmer]);
         $aggregate->warmUp(self::$cacheDir);
     }
 
-    public function testWarmupDoesCallWarmupOnOptionalWarmersWhenEnableOptionalWarmersIsEnabled()
+    public function test_warmup_does_call_warmup_on_optional_warmers_when_enable_optional_warmers_is_enabled()
     {
         $warmer = $this->getCacheWarmerMock();
         $warmer
@@ -69,12 +69,12 @@ class CacheWarmerAggregateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('warmUp');
 
-        $aggregate = new CacheWarmerAggregate(array($warmer));
+        $aggregate = new CacheWarmerAggregate([$warmer]);
         $aggregate->enableOptionalWarmers();
         $aggregate->warmUp(self::$cacheDir);
     }
 
-    public function testWarmupDoesNotCallWarmupOnOptionalWarmersWhenEnableOptionalWarmersIsNotEnabled()
+    public function test_warmup_does_not_call_warmup_on_optional_warmers_when_enable_optional_warmers_is_not_enabled()
     {
         $warmer = $this->getCacheWarmerMock();
         $warmer
@@ -85,7 +85,7 @@ class CacheWarmerAggregateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('warmUp');
 
-        $aggregate = new CacheWarmerAggregate(array($warmer));
+        $aggregate = new CacheWarmerAggregate([$warmer]);
         $aggregate->warmUp(self::$cacheDir);
     }
 

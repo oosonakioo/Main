@@ -1,40 +1,40 @@
 <?php
+
 namespace Hamcrest\Arrays;
 
 use Hamcrest\AbstractMatcherTest;
 
 class IsArrayContainingTest extends AbstractMatcherTest
 {
-
     protected function createMatcher()
     {
         return IsArrayContaining::hasItemInArray('irrelevant');
     }
 
-    public function testMatchesAnArrayThatContainsAnElementMatchingTheGivenMatcher()
+    public function test_matches_an_array_that_contains_an_element_matching_the_given_matcher()
     {
         $this->assertMatches(
             hasItemInArray('a'),
-            array('a', 'b', 'c'),
+            ['a', 'b', 'c'],
             "should matches array that contains 'a'"
         );
     }
 
-    public function testDoesNotMatchAnArrayThatDoesntContainAnElementMatchingTheGivenMatcher()
+    public function test_does_not_match_an_array_that_doesnt_contain_an_element_matching_the_given_matcher()
     {
         $this->assertDoesNotMatch(
             hasItemInArray('a'),
-            array('b', 'c'),
+            ['b', 'c'],
             "should not matches array that doesn't contain 'a'"
         );
         $this->assertDoesNotMatch(
             hasItemInArray('a'),
-            array(),
+            [],
             'should not match empty array'
         );
     }
 
-    public function testDoesNotMatchNull()
+    public function test_does_not_match_null()
     {
         $this->assertDoesNotMatch(
             hasItemInArray('a'),
@@ -43,7 +43,7 @@ class IsArrayContainingTest extends AbstractMatcherTest
         );
     }
 
-    public function testHasAReadableDescription()
+    public function test_has_a_readable_description()
     {
         $this->assertDescription('an array containing "a"', hasItemInArray('a'));
     }

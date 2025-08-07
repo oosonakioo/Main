@@ -20,23 +20,22 @@ class DocblockFormatterTest extends \PHPUnit_Framework_TestCase
      *
      * @author Justin Hileman <justin@justinhileman.info>
      *
-     * @throws InvalidArgumentException if $foo is empty.
-     *
-     * @param mixed $foo It's a foo thing.
-     * @param int   $bar This is definitely bar.
-     *
+     * @param  mixed  $foo  It's a foo thing.
+     * @param  int  $bar  This is definitely bar.
      * @return string A string of no consequence.
+     *
+     * @throws InvalidArgumentException if $foo is empty.
      */
     private function methodWithDocblock($foo, $bar = 1)
     {
         if (empty($foo)) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException;
         }
 
         return 'method called';
     }
 
-    public function testFormat()
+    public function test_format()
     {
         $expected = <<<EOS
 <comment>Description:</comment>

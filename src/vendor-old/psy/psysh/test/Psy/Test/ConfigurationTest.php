@@ -19,9 +19,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDefaults()
+    public function test_defaults()
     {
-        $config = new Configuration();
+        $config = new Configuration;
 
         $this->assertEquals(function_exists('readline'), $config->hasReadline());
         $this->assertEquals(function_exists('readline'), $config->useReadline());
@@ -31,9 +31,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Configuration::COLOR_MODE_AUTO, $config->colorMode());
     }
 
-    public function testGettersAndSetters()
+    public function test_getters_and_setters()
     {
-        $config = new Configuration();
+        $config = new Configuration;
 
         $this->assertNull($config->getDataDir());
         $config->setDataDir('wheee');
@@ -47,14 +47,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider directories
      */
-    public function testFilesAndDirectories($home, $configFile, $historyFile, $manualDbFile)
+    public function test_files_and_directories($home, $configFile, $historyFile, $manualDbFile)
     {
         $oldHome = getenv('HOME');
         putenv("HOME=$home");
 
-        $config = new Configuration();
-        $this->assertEquals(realpath($configFile),   realpath($config->getConfigFile()));
-        $this->assertEquals(realpath($historyFile),  realpath($config->getHistoryFile()));
+        $config = new Configuration;
+        $this->assertEquals(realpath($configFile), realpath($config->getConfigFile()));
+        $this->assertEquals(realpath($historyFile), realpath($config->getHistoryFile()));
         $this->assertEquals(realpath($manualDbFile), realpath($config->getManualDbFile()));
 
         putenv("HOME=$oldHome");
@@ -62,47 +62,47 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function directories()
     {
-        $base = realpath(__DIR__ . '/../../fixtures');
+        $base = realpath(__DIR__.'/../../fixtures');
 
-        return array(
-            array(
-                $base . '/default',
-                $base . '/default/.config/psysh/config.php',
-                $base . '/default/.config/psysh/psysh_history',
-                $base . '/default/.local/share/psysh/php_manual.sqlite',
-            ),
-            array(
-                $base . '/legacy',
-                $base . '/legacy/.psysh/rc.php',
-                $base . '/legacy/.psysh/history',
-                $base . '/legacy/.psysh/php_manual.sqlite',
-            ),
-            array(
-                $base . '/mixed',
-                $base . '/mixed/.psysh/config.php',
-                $base . '/mixed/.psysh/psysh_history',
+        return [
+            [
+                $base.'/default',
+                $base.'/default/.config/psysh/config.php',
+                $base.'/default/.config/psysh/psysh_history',
+                $base.'/default/.local/share/psysh/php_manual.sqlite',
+            ],
+            [
+                $base.'/legacy',
+                $base.'/legacy/.psysh/rc.php',
+                $base.'/legacy/.psysh/history',
+                $base.'/legacy/.psysh/php_manual.sqlite',
+            ],
+            [
+                $base.'/mixed',
+                $base.'/mixed/.psysh/config.php',
+                $base.'/mixed/.psysh/psysh_history',
                 null,
-            ),
-        );
+            ],
+        ];
     }
 
-    public function testLoadConfig()
+    public function test_load_config()
     {
-        $config  = new Configuration();
-        $cleaner = new CodeCleaner();
-        $pager   = new PassthruPager(new ConsoleOutput());
-        $loop    = new Loop($config);
+        $config = new Configuration;
+        $cleaner = new CodeCleaner;
+        $pager = new PassthruPager(new ConsoleOutput);
+        $loop = new Loop($config);
 
-        $config->loadConfig(array(
-            'useReadline'       => false,
-            'usePcntl'          => false,
-            'codeCleaner'       => $cleaner,
-            'pager'             => $pager,
-            'loop'              => $loop,
+        $config->loadConfig([
+            'useReadline' => false,
+            'usePcntl' => false,
+            'codeCleaner' => $cleaner,
+            'pager' => $pager,
+            'loop' => $loop,
             'requireSemicolons' => true,
             'errorLoggingLevel' => E_ERROR | E_WARNING,
-            'colorMode'         => Configuration::COLOR_MODE_FORCED,
-        ));
+            'colorMode' => Configuration::COLOR_MODE_FORCED,
+        ]);
 
         $this->assertFalse($config->useReadline());
         $this->assertFalse($config->usePcntl());
@@ -114,9 +114,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Configuration::COLOR_MODE_FORCED, $config->colorMode());
     }
 
-    public function testLoadConfigFile()
+    public function test_load_config_file()
     {
-        $config = new Configuration(array('configFile' => __DIR__ . '/../../fixtures/config.php'));
+        $config = new Configuration(['configFile' => __DIR__.'/../../fixtures/config.php']);
 
         $runtimeDir = $this->joinPath(realpath(sys_get_temp_dir()), 'psysh_test', 'withconfig', 'temp');
 
@@ -129,18 +129,18 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(E_ALL & ~E_NOTICE, $config->errorLoggingLevel());
     }
 
-    public function testLoadLocalConfigFile()
+    public function test_load_local_config_file()
     {
         $oldPwd = getenv('PWD');
-        putenv('PWD=' . realpath(__DIR__ . '/../../fixtures/project/'));
+        putenv('PWD='.realpath(__DIR__.'/../../fixtures/project/'));
 
-        $config = new Configuration();
+        $config = new Configuration;
 
         // When no configuration file is specified local project config is merged
         $this->assertFalse($config->useReadline());
         $this->assertTrue($config->usePcntl());
 
-        $config = new Configuration(array('configFile' => __DIR__ . '/../../fixtures/config.php'));
+        $config = new Configuration(['configFile' => __DIR__.'/../../fixtures/config.php']);
 
         // Defining a configuration file skips loading local project config
         $this->assertTrue($config->useReadline());
@@ -152,9 +152,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Psy\Exception\DeprecatedException
      */
-    public function testBaseDirConfigIsDeprecated()
+    public function test_base_dir_config_is_deprecated()
     {
-        $config = new Configuration(array('baseDir' => 'fake'));
+        $config = new Configuration(['baseDir' => 'fake']);
     }
 
     private function joinPath()
@@ -162,21 +162,21 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         return implode(DIRECTORY_SEPARATOR, func_get_args());
     }
 
-    public function testConfigIncludes()
+    public function test_config_includes()
     {
-        $config = new Configuration(array(
-            'defaultIncludes' => array('/file.php'),
-            'configFile'      => __DIR__ . '/../../fixtures/empty.php',
-        ));
+        $config = new Configuration([
+            'defaultIncludes' => ['/file.php'],
+            'configFile' => __DIR__.'/../../fixtures/empty.php',
+        ]);
 
         $includes = $config->getDefaultIncludes();
         $this->assertCount(1, $includes);
         $this->assertEquals('/file.php', $includes[0]);
     }
 
-    public function testGetOutput()
+    public function test_get_output()
     {
-        $config = new Configuration();
+        $config = new Configuration;
         $output = $config->getOutput();
 
         $this->assertInstanceOf('\Psy\Output\ShellOutput', $output);
@@ -184,26 +184,26 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function getOutputDecoratedProvider()
     {
-        return array(
-            'auto' => array(
+        return [
+            'auto' => [
                 null,
                 Configuration::COLOR_MODE_AUTO,
-            ),
-            'forced' => array(
+            ],
+            'forced' => [
                 true,
                 Configuration::COLOR_MODE_FORCED,
-            ),
-            'disabled' => array(
+            ],
+            'disabled' => [
                 false,
                 Configuration::COLOR_MODE_DISABLED,
-            ),
-        );
+            ],
+        ];
     }
 
     /** @dataProvider getOutputDecoratedProvider */
-    public function testGetOutputDecorated($expectation, $colorMode)
+    public function test_get_output_decorated($expectation, $colorMode)
     {
-        $config = new Configuration();
+        $config = new Configuration;
         $config->setColorMode($colorMode);
 
         $this->assertSame($expectation, $config->getOutputDecorated());
@@ -211,25 +211,25 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function setColorModeValidProvider()
     {
-        return array(
-            'auto'     => array(Configuration::COLOR_MODE_AUTO),
-            'forced'   => array(Configuration::COLOR_MODE_FORCED),
-            'disabled' => array(Configuration::COLOR_MODE_DISABLED),
-        );
+        return [
+            'auto' => [Configuration::COLOR_MODE_AUTO],
+            'forced' => [Configuration::COLOR_MODE_FORCED],
+            'disabled' => [Configuration::COLOR_MODE_DISABLED],
+        ];
     }
 
     /** @dataProvider setColorModeValidProvider */
-    public function testSetColorModeValid($colorMode)
+    public function test_set_color_mode_valid($colorMode)
     {
-        $config = new Configuration();
+        $config = new Configuration;
         $config->setColorMode($colorMode);
 
         $this->assertEquals($colorMode, $config->colorMode());
     }
 
-    public function testSetColorModeInvalid()
+    public function test_set_color_mode_invalid()
     {
-        $config = new Configuration();
+        $config = new Configuration;
         $colorMode = 'some invalid mode';
 
         $this->setExpectedException(

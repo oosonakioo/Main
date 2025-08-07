@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -19,7 +20,7 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
     protected $className;
 
     /**
-     * @param string $className
+     * @param  string  $className
      */
     public function __construct($className)
     {
@@ -31,8 +32,7 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     *
+     * @param  mixed  $other  Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)
@@ -46,8 +46,7 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
-     *
+     * @param  mixed  $other  Evaluated value or object.
      * @return string
      */
     protected function failureDescription($other)
@@ -55,8 +54,8 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
         if ($other !== null) {
             $message = '';
             if ($other instanceof Exception) {
-                $message = '. Message was: "' . $other->getMessage() . '" at'
-                        . "\n" . $other->getTraceAsString();
+                $message = '. Message was: "'.$other->getMessage().'" at'
+                        ."\n".$other->getTraceAsString();
             }
 
             return sprintf(

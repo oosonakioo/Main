@@ -26,7 +26,7 @@ class Swift_CharacterReader_GenericFixedWidthReader implements Swift_CharacterRe
     /**
      * Creates a new GenericFixedWidthReader using $width bytes per character.
      *
-     * @param int $width
+     * @param  int  $width
      */
     public function __construct($width)
     {
@@ -36,11 +36,10 @@ class Swift_CharacterReader_GenericFixedWidthReader implements Swift_CharacterRe
     /**
      * Returns the complete character map.
      *
-     * @param string $string
-     * @param int    $startOffset
-     * @param array  $currentMap
-     * @param mixed  $ignoredChars
-     *
+     * @param  string  $string
+     * @param  int  $startOffset
+     * @param  array  $currentMap
+     * @param  mixed  $ignoredChars
      * @return int
      */
     public function getCharPositions($string, $startOffset, &$currentMap, &$ignoredChars)
@@ -73,9 +72,8 @@ class Swift_CharacterReader_GenericFixedWidthReader implements Swift_CharacterRe
      * A value of zero means this is already a valid character.
      * A value of -1 means this cannot possibly be a valid character.
      *
-     * @param string $bytes
-     * @param int    $size
-     *
+     * @param  string  $bytes
+     * @param  int  $size
      * @return int
      */
     public function validateByteSequence($bytes, $size)

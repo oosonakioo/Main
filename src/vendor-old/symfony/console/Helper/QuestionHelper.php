@@ -13,12 +13,12 @@ namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * The QuestionHelper class provides helpers to interact with the user.
@@ -28,16 +28,17 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 class QuestionHelper extends Helper
 {
     private $inputStream;
+
     private static $shell;
+
     private static $stty;
 
     /**
      * Asks a question to the user.
      *
-     * @param InputInterface  $input    An InputInterface instance
-     * @param OutputInterface $output   An OutputInterface instance
-     * @param Question        $question The question to ask
-     *
+     * @param  InputInterface  $input  An InputInterface instance
+     * @param  OutputInterface  $output  An OutputInterface instance
+     * @param  Question  $question  The question to ask
      * @return string The user answer
      *
      * @throws RuntimeException If there is no data to read in the input stream
@@ -48,11 +49,11 @@ class QuestionHelper extends Helper
             $output = $output->getErrorOutput();
         }
 
-        if (!$input->isInteractive()) {
+        if (! $input->isInteractive()) {
             return $question->getDefault();
         }
 
-        if (!$question->getValidator()) {
+        if (! $question->getValidator()) {
             return $this->doAsk($output, $question);
         }
 
@@ -68,13 +69,13 @@ class QuestionHelper extends Helper
      *
      * This is mainly useful for testing purpose.
      *
-     * @param resource $stream The input stream
+     * @param  resource  $stream  The input stream
      *
      * @throws InvalidArgumentException In case the stream is not a resource
      */
     public function setInputStream($stream)
     {
-        if (!is_resource($stream)) {
+        if (! is_resource($stream)) {
             throw new InvalidArgumentException('Input stream must be a valid resource.');
         }
 
@@ -102,8 +103,6 @@ class QuestionHelper extends Helper
     /**
      * Asks the question to the user.
      *
-     * @param OutputInterface $output
-     * @param Question        $question
      *
      * @return bool|mixed|null|string
      *
@@ -117,21 +116,21 @@ class QuestionHelper extends Helper
         $inputStream = $this->inputStream ?: STDIN;
         $autocomplete = $question->getAutocompleterValues();
 
-        if (null === $autocomplete || !$this->hasSttyAvailable()) {
+        if ($autocomplete === null || ! $this->hasSttyAvailable()) {
             $ret = false;
             if ($question->isHidden()) {
                 try {
                     $ret = trim($this->getHiddenResponse($output, $inputStream));
                 } catch (\RuntimeException $e) {
-                    if (!$question->isHiddenFallback()) {
+                    if (! $question->isHiddenFallback()) {
                         throw $e;
                     }
                 }
             }
 
-            if (false === $ret) {
+            if ($ret === false) {
                 $ret = fgets($inputStream, 4096);
-                if (false === $ret) {
+                if ($ret === false) {
                     throw new \RuntimeException('Aborted');
                 }
                 $ret = trim($ret);
@@ -151,16 +150,13 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs the question prompt.
-     *
-     * @param OutputInterface $output
-     * @param Question        $question
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
         $message = $question->getQuestion();
 
         if ($question instanceof ChoiceQuestion) {
-            $maxWidth = max(array_map(array($this, 'strlen'), array_keys($question->getChoices())));
+            $maxWidth = max(array_map([$this, 'strlen'], array_keys($question->getChoices())));
 
             $messages = (array) $question->getQuestion();
             foreach ($question->getChoices() as $key => $value) {
@@ -178,13 +174,10 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs an error message.
-     *
-     * @param OutputInterface $output
-     * @param \Exception      $error
      */
     protected function writeError(OutputInterface $output, \Exception $error)
     {
-        if (null !== $this->getHelperSet() && $this->getHelperSet()->has('formatter')) {
+        if ($this->getHelperSet() !== null && $this->getHelperSet()->has('formatter')) {
             $message = $this->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error');
         } else {
             $message = '<error>'.$error->getMessage().'</error>';
@@ -196,8 +189,6 @@ class QuestionHelper extends Helper
     /**
      * Autocompletes a question.
      *
-     * @param OutputInterface $output
-     * @param Question        $question
      *
      * @return string
      */
@@ -220,13 +211,13 @@ class QuestionHelper extends Helper
         $output->getFormatter()->setStyle('hl', new OutputFormatterStyle('black', 'white'));
 
         // Read a keypress
-        while (!feof($inputStream)) {
+        while (! feof($inputStream)) {
             $c = fread($inputStream, 1);
 
             // Backspace Character
-            if ("\177" === $c) {
-                if (0 === $numMatches && 0 !== $i) {
-                    --$i;
+            if ($c === "\177") {
+                if ($numMatches === 0 && $i !== 0) {
+                    $i--;
                     // Move cursor backwards
                     $output->write("\033[1D");
                 }
@@ -241,33 +232,33 @@ class QuestionHelper extends Helper
 
                 // Pop the last character off the end of our string
                 $ret = substr($ret, 0, $i);
-            } elseif ("\033" === $c) {
+            } elseif ($c === "\033") {
                 // Did we read an escape sequence?
                 $c .= fread($inputStream, 2);
 
                 // A = Up Arrow. B = Down Arrow
-                if (isset($c[2]) && ('A' === $c[2] || 'B' === $c[2])) {
-                    if ('A' === $c[2] && -1 === $ofs) {
+                if (isset($c[2]) && ($c[2] === 'A' || $c[2] === 'B')) {
+                    if ($c[2] === 'A' && $ofs === -1) {
                         $ofs = 0;
                     }
 
-                    if (0 === $numMatches) {
+                    if ($numMatches === 0) {
                         continue;
                     }
 
-                    $ofs += ('A' === $c[2]) ? -1 : 1;
+                    $ofs += ($c[2] === 'A') ? -1 : 1;
                     $ofs = ($numMatches + $ofs) % $numMatches;
                 }
             } elseif (ord($c) < 32) {
-                if ("\t" === $c || "\n" === $c) {
-                    if ($numMatches > 0 && -1 !== $ofs) {
+                if ($c === "\t" || $c === "\n") {
+                    if ($numMatches > 0 && $ofs !== -1) {
                         $ret = $matches[$ofs];
                         // Echo out remaining chars for current match
                         $output->write(substr($ret, $i));
                         $i = strlen($ret);
                     }
 
-                    if ("\n" === $c) {
+                    if ($c === "\n") {
                         $output->write($c);
                         break;
                     }
@@ -279,14 +270,14 @@ class QuestionHelper extends Helper
             } else {
                 $output->write($c);
                 $ret .= $c;
-                ++$i;
+                $i++;
 
                 $numMatches = 0;
                 $ofs = 0;
 
                 foreach ($autocomplete as $value) {
                     // If typed characters match the beginning chunk of value (e.g. [AcmeDe]moBundle)
-                    if (0 === strpos($value, $ret) && $i !== strlen($value)) {
+                    if (strpos($value, $ret) === 0 && $i !== strlen($value)) {
                         $matches[$numMatches++] = $value;
                     }
                 }
@@ -295,7 +286,7 @@ class QuestionHelper extends Helper
             // Erase characters from cursor to end of line
             $output->write("\033[K");
 
-            if ($numMatches > 0 && -1 !== $ofs) {
+            if ($numMatches > 0 && $ofs !== -1) {
                 // Save cursor position
                 $output->write("\0337");
                 // Write highlighted text
@@ -314,8 +305,7 @@ class QuestionHelper extends Helper
     /**
      * Gets a hidden response from user.
      *
-     * @param OutputInterface $output An Output instance
-     *
+     * @param  OutputInterface  $output  An Output instance
      * @return string The answer
      *
      * @throws RuntimeException In case the fallback is deactivated and the response cannot be hidden
@@ -326,7 +316,7 @@ class QuestionHelper extends Helper
             $exe = __DIR__.'/../Resources/bin/hiddeninput.exe';
 
             // handle code running from a phar
-            if ('phar:' === substr(__FILE__, 0, 5)) {
+            if (substr(__FILE__, 0, 5) === 'phar:') {
                 $tmpExe = sys_get_temp_dir().'/hiddeninput.exe';
                 copy($exe, $tmpExe);
                 $exe = $tmpExe;
@@ -349,7 +339,7 @@ class QuestionHelper extends Helper
             $value = fgets($inputStream, 4096);
             shell_exec(sprintf('stty %s', $sttyMode));
 
-            if (false === $value) {
+            if ($value === false) {
                 throw new RuntimeException('Aborted');
             }
 
@@ -374,10 +364,9 @@ class QuestionHelper extends Helper
     /**
      * Validates an attempt.
      *
-     * @param callable        $interviewer A callable that will ask for a question and return the result
-     * @param OutputInterface $output      An Output instance
-     * @param Question        $question    A Question instance
-     *
+     * @param  callable  $interviewer  A callable that will ask for a question and return the result
+     * @param  OutputInterface  $output  An Output instance
+     * @param  Question  $question  A Question instance
      * @return string The validated response
      *
      * @throws \Exception In case the max number of attempts has been reached and no valid response has been given
@@ -386,8 +375,8 @@ class QuestionHelper extends Helper
     {
         $error = null;
         $attempts = $question->getMaxAttempts();
-        while (null === $attempts || $attempts--) {
-            if (null !== $error) {
+        while ($attempts === null || $attempts--) {
+            if ($error !== null) {
                 $this->writeError($output, $error);
             }
 
@@ -407,7 +396,7 @@ class QuestionHelper extends Helper
      */
     private function getShell()
     {
-        if (null !== self::$shell) {
+        if (self::$shell !== null) {
             return self::$shell;
         }
 
@@ -416,8 +405,8 @@ class QuestionHelper extends Helper
         if (file_exists('/usr/bin/env')) {
             // handle other OSs with bash/zsh/ksh/csh if available to hide the answer
             $test = "/usr/bin/env %s -c 'echo OK' 2> /dev/null";
-            foreach (array('bash', 'zsh', 'ksh', 'csh') as $sh) {
-                if ('OK' === rtrim(shell_exec(sprintf($test, $sh)))) {
+            foreach (['bash', 'zsh', 'ksh', 'csh'] as $sh) {
+                if (rtrim(shell_exec(sprintf($test, $sh))) === 'OK') {
                     self::$shell = $sh;
                     break;
                 }
@@ -434,7 +423,7 @@ class QuestionHelper extends Helper
      */
     private function hasSttyAvailable()
     {
-        if (null !== self::$stty) {
+        if (self::$stty !== null) {
             return self::$stty;
         }
 

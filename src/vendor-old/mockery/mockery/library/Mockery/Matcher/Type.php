@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,22 +23,22 @@ namespace Mockery\Matcher;
 
 class Type extends MatcherAbstract
 {
-
     /**
      * Check if the actual value matches the expected.
      *
-     * @param mixed $actual
+     * @param  mixed  $actual
      * @return bool
      */
     public function match(&$actual)
     {
-        $function = 'is_' . strtolower($this->_expected);
+        $function = 'is_'.strtolower($this->_expected);
         if (function_exists($function)) {
             return $function($actual);
         } elseif (is_string($this->_expected)
         && (class_exists($this->_expected) || interface_exists($this->_expected))) {
             return $actual instanceof $this->_expected;
         }
+
         return false;
     }
 
@@ -48,6 +49,6 @@ class Type extends MatcherAbstract
      */
     public function __toString()
     {
-        return '<' . ucfirst($this->_expected) . '>';
+        return '<'.ucfirst($this->_expected).'>';
     }
 }

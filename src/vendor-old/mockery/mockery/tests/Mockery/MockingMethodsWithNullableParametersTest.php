@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,8 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
- * @subpackage UnitTests
+ *
  * @copyright  Copyright (c) 2010 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,7 +22,6 @@
 namespace test\Mockery;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use test\Mockery\Fixtures\MethodWithNullableReturnType;
 
 /**
  * @requires PHP 7.1.0RC3
@@ -36,7 +35,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
 
     protected function setUp()
     {
-        require_once __DIR__."/Fixtures/MethodWithNullableParameters.php";
+        require_once __DIR__.'/Fixtures/MethodWithNullableParameters.php';
 
         $this->container = new \Mockery\Container;
     }
@@ -49,7 +48,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowNonNullableTypeToBeSet()
+    public function it_should_allow_non_nullable_type_to_be_set()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
@@ -59,9 +58,10 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
 
     /**
      * @test
+     *
      * @expectedException \TypeError
      */
-    public function itShouldNotAllowNonNullToBeNull()
+    public function it_should_not_allow_non_null_to_be_null()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
@@ -71,7 +71,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowPrimitiveNullableToBeNull()
+    public function it_should_allow_primitive_nullable_to_be_null()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
@@ -82,17 +82,18 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowPrimitiveNullabeToBeSet()
+    public function it_should_allow_primitive_nullabe_to_be_set()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
         $mock->shouldReceive('nullablePrimitive')->with('a string');
         $mock->nullablePrimitive('a string');
     }
+
     /**
      * @test
      */
-    public function itShouldAllowSelfToBeSet()
+    public function it_should_allow_self_to_be_set()
     {
         $obj = new \test\Mockery\Fixtures\MethodWithNullableParameters;
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
@@ -103,9 +104,10 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
 
     /**
      * @test
+     *
      * @expectedException \TypeError
      */
-    public function itShouldNotAllowSelfToBeNull()
+    public function it_should_not_allow_self_to_be_null()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
@@ -115,7 +117,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowNullalbeSelfToBeSet()
+    public function it_should_allow_nullalbe_self_to_be_set()
     {
         $obj = new \test\Mockery\Fixtures\MethodWithNullableParameters;
 
@@ -128,7 +130,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowNullableSelfToBeNull()
+    public function it_should_allow_nullable_self_to_be_null()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
@@ -139,7 +141,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowClassToBeSet()
+    public function it_should_allow_class_to_be_set()
     {
         $obj = new \test\Mockery\Fixtures\MethodWithNullableParameters;
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
@@ -150,9 +152,10 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
 
     /**
      * @test
+     *
      * @expectedException \TypeError
      */
-    public function itShouldNotAllowClassToBeNull()
+    public function it_should_not_allow_class_to_be_null()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 
@@ -162,7 +165,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowNullalbeClassToBeSet()
+    public function it_should_allow_nullalbe_class_to_be_set()
     {
         $obj = new \test\Mockery\Fixtures\MethodWithNullableParameters;
 
@@ -175,7 +178,7 @@ class MockingMethodsWithNullableParametersTest extends MockeryTestCase
     /**
      * @test
      */
-    public function itShouldAllowNullableClassToBeNull()
+    public function it_should_allow_nullable_class_to_be_null()
     {
         $mock = $this->container->mock('test\Mockery\Fixtures\MethodWithNullableParameters');
 

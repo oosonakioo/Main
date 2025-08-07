@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,12 +27,13 @@ use Doctrine\Common\EventArgs;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaEventArgs extends EventArgs
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $_preventDefault = false;
 
@@ -46,7 +48,7 @@ class SchemaEventArgs extends EventArgs
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDefaultPrevented()
     {

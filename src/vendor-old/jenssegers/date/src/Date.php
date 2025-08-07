@@ -1,4 +1,6 @@
-<?php namespace Jenssegers\Date;
+<?php
+
+namespace Jenssegers\Date;
 
 use Carbon\Carbon;
 use DateInterval;
@@ -33,8 +35,8 @@ class Date extends Carbon
     /**
      * Returns new DateTime object.
      *
-     * @param  string              $time
-     * @param  string|DateTimeZone $timezone
+     * @param  string  $time
+     * @param  string|DateTimeZone  $timezone
      * @return Date
      */
     public function __construct($time = null, $timezone = null)
@@ -56,8 +58,8 @@ class Date extends Carbon
     /**
      * Create and return new Date instance.
      *
-     * @param  string              $time
-     * @param  string|DateTimeZone $timezone
+     * @param  string  $time
+     * @param  string|DateTimeZone  $timezone
      * @return Date
      */
     public static function make($time = null, $timezone = null)
@@ -68,8 +70,8 @@ class Date extends Carbon
     /**
      * Create a Date instance from a string.
      *
-     * @param  string              $time
-     * @param  string|DateTimeZone $timezone
+     * @param  string  $time
+     * @param  string|DateTimeZone  $timezone
      * @return Date
      */
     public static function parse($time = null, $timezone = null)
@@ -89,7 +91,7 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function createFromFormat($format, $time, $timezone = null)
     {
@@ -99,9 +101,9 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function diffForHumans(Carbon $since = null, $absolute = false, $short = false)
+    public function diffForHumans(?Carbon $since = null, $absolute = false, $short = false)
     {
         // Are we comparing against another date?
         $relative = ! is_null($since);
@@ -182,8 +184,8 @@ class Date extends Carbon
     /**
      * Alias for diffForHumans.
      *
-     * @param  Date $since
-     * @param  bool $absolute Removes time difference modifiers ago, after, etc
+     * @param  Date  $since
+     * @param  bool  $absolute  Removes time difference modifiers ago, after, etc
      * @return string
      */
     public function ago($since = null, $absolute = false)
@@ -194,7 +196,7 @@ class Date extends Carbon
     /**
      * Alias for diffForHumans.
      *
-     * @param  Date $since
+     * @param  Date  $since
      * @return string
      */
     public function until($since = null)
@@ -203,7 +205,7 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function format($format)
     {
@@ -279,8 +281,8 @@ class Date extends Carbon
     /**
      * Gets the timespan between this date and another date.
      *
-     * @param  Date                $time
-     * @param  string|DateTimeZone $timezone
+     * @param  Date  $time
+     * @param  string|DateTimeZone  $timezone
      * @return int
      */
     public function timespan($time = null, $timezone = null)
@@ -326,7 +328,7 @@ class Date extends Carbon
     /**
      * Adds an amount of days, months, years, hours, minutes and seconds to a Date object.
      *
-     * @param DateInterval|string $interval
+     * @param  DateInterval|string  $interval
      * @return Date|bool
      */
     public function add($interval)
@@ -346,7 +348,7 @@ class Date extends Carbon
     /**
      * Subtracts an amount of days, months, years, hours, minutes and seconds from a DateTime object.
      *
-     * @param DateInterval|string $interval
+     * @param  DateInterval|string  $interval
      * @return Date|bool
      */
     public function sub($interval)
@@ -364,7 +366,7 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getLocale()
     {
@@ -372,7 +374,7 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function setLocale($locale)
     {
@@ -396,7 +398,7 @@ class Date extends Carbon
     /**
      * Set the fallback locale.
      *
-     * @param  string $locale
+     * @param  string  $locale
      * @return void
      */
     public static function setFallbackLocale($locale)
@@ -416,13 +418,13 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getTranslator()
     {
         if (static::$translator === null) {
             static::$translator = new Translator('en');
-            static::$translator->addLoader('array', new ArrayLoader());
+            static::$translator->addLoader('array', new ArrayLoader);
             static::setLocale('en');
         }
 
@@ -430,7 +432,7 @@ class Date extends Carbon
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function setTranslator(TranslatorInterface $translator)
     {
@@ -440,7 +442,7 @@ class Date extends Carbon
     /**
      * Translate a locale based time string to its english equivalent.
      *
-     * @param  string $time
+     * @param  string  $time
      * @return string
      */
     public static function translateTimeString($time)

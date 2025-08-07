@@ -10,35 +10,36 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ContentController extends AdminController
 {
-	public function index($menu)
-	{
-		$title = trans('admin.content-' . $menu);
-		$content = Contents::firstOrNew([Contents::MENU => $menu]);
-		return view('admin.contents', [
-			'title' => $title,
-			'content' => $content
-		]);
-	}
+    public function index($menu)
+    {
+        $title = trans('admin.content-'.$menu);
+        $content = Contents::firstOrNew([Contents::MENU => $menu]);
 
-	public function update(Request $request, $menu)
-	{
-		$content = Contents::firstOrNew([Contents::MENU => $menu]);
+        return view('admin.contents', [
+            'title' => $title,
+            'content' => $content,
+        ]);
+    }
 
-		$validate = [];
-		foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
-			$title = 'title_' . $locale;
-			$detail = 'detail_' . $locale;
+    public function update(Request $request, $menu)
+    {
+        $content = Contents::firstOrNew([Contents::MENU => $menu]);
 
-			$validate[$title] = 'required';
-			$validate[$detail] = 'required';
+        $validate = [];
+        foreach (LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            $title = 'title_'.$locale;
+            $detail = 'detail_'.$locale;
 
-			$content->translateOrNew($locale)->title = $request[$title];
-			$content->translateOrNew($locale)->detail = $request[$detail];
-		}
+            $validate[$title] = 'required';
+            $validate[$detail] = 'required';
 
-		$this->validate($request, $validate);
-		$content->save();
+            $content->translateOrNew($locale)->title = $request[$title];
+            $content->translateOrNew($locale)->detail = $request[$detail];
+        }
 
-		return Helper::redirect('admin/content/' . $menu);
-	}
+        $this->validate($request, $validate);
+        $content->save();
+
+        return Helper::redirect('admin/content/'.$menu);
+    }
 }

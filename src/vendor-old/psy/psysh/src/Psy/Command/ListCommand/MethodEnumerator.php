@@ -21,7 +21,7 @@ class MethodEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null)
     {
         // only list methods when a Reflector is present.
 
@@ -30,12 +30,12 @@ class MethodEnumerator extends Enumerator
         }
 
         // We can only list methods on actual class (or object) reflectors.
-        if (!$reflector instanceof \ReflectionClass) {
+        if (! $reflector instanceof \ReflectionClass) {
             return;
         }
 
         // only list methods if we are specifically asked
-        if (!$input->getOption('methods')) {
+        if (! $input->getOption('methods')) {
             return;
         }
 
@@ -46,7 +46,7 @@ class MethodEnumerator extends Enumerator
             return;
         }
 
-        $ret = array();
+        $ret = [];
         $ret[$this->getKindLabel($reflector)] = $methods;
 
         return $ret;
@@ -55,14 +55,12 @@ class MethodEnumerator extends Enumerator
     /**
      * Get defined methods for the given class or object Reflector.
      *
-     * @param bool       $showAll   Include private and protected methods.
-     * @param \Reflector $reflector
-     *
+     * @param  bool  $showAll  Include private and protected methods.
      * @return array
      */
     protected function getMethods($showAll, \Reflector $reflector)
     {
-        $methods = array();
+        $methods = [];
         foreach ($reflector->getMethods() as $name => $method) {
             if ($showAll || $method->isPublic()) {
                 $methods[$method->getName()] = $method;
@@ -78,22 +76,21 @@ class MethodEnumerator extends Enumerator
     /**
      * Prepare formatted method array.
      *
-     * @param array $methods
      *
      * @return array
      */
     protected function prepareMethods(array $methods)
     {
         // My kingdom for a generator.
-        $ret = array();
+        $ret = [];
 
         foreach ($methods as $name => $method) {
             if ($this->showItem($name)) {
-                $ret[$name] = array(
-                    'name'  => $name,
+                $ret[$name] = [
+                    'name' => $name,
                     'style' => $this->getVisibilityStyle($method),
                     'value' => $this->presentSignature($method),
-                );
+                ];
             }
         }
 
@@ -103,7 +100,6 @@ class MethodEnumerator extends Enumerator
     /**
      * Get a label for the particular kind of "class" represented.
      *
-     * @param \ReflectionClass $reflector
      *
      * @return string
      */
@@ -121,7 +117,6 @@ class MethodEnumerator extends Enumerator
     /**
      * Get output style for the given method's visibility.
      *
-     * @param \ReflectionMethod $method
      *
      * @return string
      */

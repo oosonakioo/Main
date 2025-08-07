@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -16,7 +17,6 @@
  * state but only the current run-time value of the invocation itself.
  *
  * @since Class available since Release 1.0.0
- * @abstract
  */
 abstract class PHPUnit_Framework_MockObject_Matcher_StatelessInvocation implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
@@ -31,26 +31,22 @@ abstract class PHPUnit_Framework_MockObject_Matcher_StatelessInvocation implemen
      *
      * If the matcher is a stub it will also have a return value.
      *
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
-     *                                                             Object containing information on a mocked or stubbed method which
-     *                                                             was invoked.
+     * @param  PHPUnit_Framework_MockObject_Invocation  $invocation
+     *                                                               Object containing information on a mocked or stubbed method which
+     *                                                               was invoked.
      * @return mixed
      */
-    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
-    {
-    }
+    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation) {}
 
     /**
      * Checks if the invocation $invocation matches the current rules. If it does
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
      *
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
-     *                                                             Object containing information on a mocked or stubbed method which
-     *                                                             was invoked.
+     * @param  PHPUnit_Framework_MockObject_Invocation  $invocation
+     *                                                               Object containing information on a mocked or stubbed method which
+     *                                                               was invoked.
      * @return bool
      */
-    public function verify()
-    {
-    }
+    public function verify() {}
 }

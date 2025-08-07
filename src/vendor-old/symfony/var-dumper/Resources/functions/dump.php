@@ -11,7 +11,7 @@
 
 use Symfony\Component\VarDumper\VarDumper;
 
-if (!function_exists('dump')) {
+if (! function_exists('dump')) {
     /**
      * @author Nicolas Grekas <p@tchwork.com>
      */

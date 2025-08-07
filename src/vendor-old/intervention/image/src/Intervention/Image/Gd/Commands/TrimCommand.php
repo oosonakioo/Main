@@ -9,8 +9,8 @@ class TrimCommand extends ResizeCommand
     /**
      * Trims away parts of an image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -27,9 +27,9 @@ class TrimCommand extends ResizeCommand
 
         // define borders to trim away
         if (is_null($away)) {
-            $away = array('top', 'right', 'bottom', 'left');
+            $away = ['top', 'right', 'bottom', 'left'];
         } elseif (is_string($away)) {
-            $away = array($away);
+            $away = [$away];
         }
 
         // lower border names
@@ -75,8 +75,8 @@ class TrimCommand extends ResizeCommand
         // search upper part of image for colors to trim away
         if (in_array('top', $away)) {
 
-            for ($y=0; $y < ceil($height/2); $y++) {
-                for ($x=0; $x < $width; $x++) {
+            for ($y = 0; $y < ceil($height / 2); $y++) {
+                for ($x = 0; $x < $width; $x++) {
 
                     $checkColor = $image->pickColor($x, $y, 'object');
 
@@ -99,8 +99,8 @@ class TrimCommand extends ResizeCommand
         // search left part of image for colors to trim away
         if (in_array('left', $away)) {
 
-            for ($x=0; $x < ceil($width/2); $x++) {
-                for ($y=$top_y; $y < $height; $y++) {
+            for ($x = 0; $x < ceil($width / 2); $x++) {
+                for ($y = $top_y; $y < $height; $y++) {
 
                     $checkColor = $image->pickColor($x, $y, 'object');
 
@@ -123,8 +123,8 @@ class TrimCommand extends ResizeCommand
         // search lower part of image for colors to trim away
         if (in_array('bottom', $away)) {
 
-            for ($y=($height-1); $y >= floor($height/2)-1; $y--) {
-                for ($x=$top_x; $x < $width; $x++) {
+            for ($y = ($height - 1); $y >= floor($height / 2) - 1; $y--) {
+                for ($x = $top_x; $x < $width; $x++) {
 
                     $checkColor = $image->pickColor($x, $y, 'object');
 
@@ -135,7 +135,7 @@ class TrimCommand extends ResizeCommand
                     }
 
                     if ($color->differs($checkColor, $tolerance)) {
-                        $bottom_y = min($height, $y+1 + $feather);
+                        $bottom_y = min($height, $y + 1 + $feather);
                         break 2;
                     }
 
@@ -147,8 +147,8 @@ class TrimCommand extends ResizeCommand
         // search right part of image for colors to trim away
         if (in_array('right', $away)) {
 
-            for ($x=($width-1); $x >= floor($width/2)-1; $x--) {
-                for ($y=$top_y; $y < $bottom_y; $y++) {
+            for ($x = ($width - 1); $x >= floor($width / 2) - 1; $x--) {
+                for ($y = $top_y; $y < $bottom_y; $y++) {
 
                     $checkColor = $image->pickColor($x, $y, 'object');
 
@@ -159,7 +159,7 @@ class TrimCommand extends ResizeCommand
                     }
 
                     if ($color->differs($checkColor, $tolerance)) {
-                        $bottom_x = min($width, $x+1 + $feather);
+                        $bottom_x = min($width, $x + 1 + $feather);
                         break 2;
                     }
 
@@ -168,9 +168,8 @@ class TrimCommand extends ResizeCommand
 
         }
 
-
         // trim parts of image
-        return $this->modify($image, 0, 0, $top_x, $top_y, ($bottom_x-$top_x), ($bottom_y-$top_y), ($bottom_x-$top_x), ($bottom_y-$top_y));
+        return $this->modify($image, 0, 0, $top_x, $top_y, ($bottom_x - $top_x), ($bottom_y - $top_y), ($bottom_x - $top_x), ($bottom_y - $top_y));
 
     }
 }

@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\HttpKernel\Event;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows to create a response for the return value of a controller.
@@ -52,7 +52,7 @@ class GetResponseForControllerResultEvent extends GetResponseEvent
     /**
      * Assigns the return value of the controller.
      *
-     * @param mixed $controllerResult The controller return value
+     * @param  mixed  $controllerResult  The controller return value
      */
     public function setControllerResult($controllerResult)
     {

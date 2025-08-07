@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-return array(
+return [
     'year' => '1 Jahr|:count Jahre',
     'y' => '1J|:countJ',
     'month' => '1 Monat|:count Monate',
@@ -37,4 +37,4 @@ return array(
     'month_ago' => '1 Monat|:count Monaten',
     'week_ago' => '1 Woche|:count Wochen',
     'day_ago' => '1 Tag|:count Tagen',
-);
+];

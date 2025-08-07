@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -13,6 +14,4 @@
  *
  * @since Class available since Release 1.1.0
  */
-class PHP_CodeCoverage_Exception extends RuntimeException
-{
-}
+class PHP_CodeCoverage_Exception extends RuntimeException {}

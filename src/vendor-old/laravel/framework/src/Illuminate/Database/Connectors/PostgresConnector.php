@@ -21,7 +21,6 @@ class PostgresConnector extends Connector implements ConnectorInterface
     /**
      * Establish a database connection.
      *
-     * @param  array  $config
      * @return \PDO
      */
     public function connect(array $config)
@@ -72,7 +71,6 @@ class PostgresConnector extends Connector implements ConnectorInterface
     /**
      * Create a DSN string from a configuration.
      *
-     * @param  array   $config
      * @return string
      */
     protected function getDsn(array $config)

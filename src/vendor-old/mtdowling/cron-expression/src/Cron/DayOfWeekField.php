@@ -5,7 +5,6 @@ namespace Cron;
 use DateTime;
 use InvalidArgumentException;
 
-
 /**
  * Day of week field.  Allows: * / , - ? L #
  *
@@ -40,7 +39,7 @@ class DayOfWeekField extends AbstractField
             $tdate = clone $date;
             $tdate->setDate($currentYear, $currentMonth, $lastDayOfMonth);
             while ($tdate->format('w') != $weekday) {
-                $tdateClone = new DateTime();
+                $tdateClone = new DateTime;
                 $tdate = $tdateClone
                     ->setTimezone($tdate->getTimezone())
                     ->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
@@ -51,7 +50,7 @@ class DayOfWeekField extends AbstractField
 
         // Handle # hash tokens
         if (strpos($value, '#')) {
-            list($weekday, $nth) = explode('#', $value);
+            [$weekday, $nth] = explode('#', $value);
 
             // 0 and 7 are both Sunday, however 7 matches date('N') format ISO-8601
             if ($weekday === '0') {
@@ -122,7 +121,7 @@ class DayOfWeekField extends AbstractField
         $value = $this->convertLiterals($value);
 
         foreach (explode(',', $value) as $expr) {
-            if (!preg_match('/^(\*|[0-7](L?|#[1-5]))([\/\,\-][0-7]+)*$/', $expr)) {
+            if (! preg_match('/^(\*|[0-7](L?|#[1-5]))([\/\,\-][0-7]+)*$/', $expr)) {
                 return false;
             }
         }
@@ -133,7 +132,7 @@ class DayOfWeekField extends AbstractField
     private function convertLiterals($string)
     {
         return str_ireplace(
-            array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'),
+            ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
             range(0, 6),
             $string
         );

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Environment package.
  *
@@ -45,7 +46,7 @@ class Runtime
                 self::$binary = PHP_BINARY;
             }
 
-            self::$binary = escapeshellarg(self::$binary) . ' --php';
+            self::$binary = escapeshellarg(self::$binary).' --php';
         }
 
         // PHP >= 5.4.0
@@ -62,7 +63,7 @@ class Runtime
                     $file = file($_SERVER['_']);
 
                     if (strpos($file[0], ' ') !== false) {
-                        $tmp          = explode(' ', $file[0]);
+                        $tmp = explode(' ', $file[0]);
                         self::$binary = escapeshellarg(trim($tmp[1]));
                     } else {
                         self::$binary = escapeshellarg(ltrim(trim($file[0]), '#!'));
@@ -74,11 +75,11 @@ class Runtime
         }
 
         if (self::$binary === null) {
-            $possibleBinaryLocations = array(
-                PHP_BINDIR . '/php',
-                PHP_BINDIR . '/php-cli.exe',
-                PHP_BINDIR . '/php.exe'
-            );
+            $possibleBinaryLocations = [
+                PHP_BINDIR.'/php',
+                PHP_BINDIR.'/php-cli.exe',
+                PHP_BINDIR.'/php.exe',
+            ];
 
             foreach ($possibleBinaryLocations as $binary) {
                 if (is_readable($binary)) {
@@ -100,7 +101,7 @@ class Runtime
      */
     public function getNameWithVersion()
     {
-        return $this->getName() . ' ' . $this->getVersion();
+        return $this->getName().' '.$this->getVersion();
     }
 
     /**
@@ -168,7 +169,7 @@ class Runtime
      */
     public function isPHP()
     {
-        return !$this->isHHVM() && !$this->isPHPDBG();
+        return ! $this->isHHVM() && ! $this->isPHPDBG();
     }
 
     /**
@@ -178,7 +179,7 @@ class Runtime
      */
     public function isPHPDBG()
     {
-        return PHP_SAPI === 'phpdbg' && !$this->isHHVM();
+        return PHP_SAPI === 'phpdbg' && ! $this->isHHVM();
     }
 
     /**

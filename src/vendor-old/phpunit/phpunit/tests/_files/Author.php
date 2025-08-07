@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,7 +17,7 @@
 class Author
 {
     // the order of properties is important for testing the cycle!
-    public $books = array();
+    public $books = [];
 
     private $name = '';
 

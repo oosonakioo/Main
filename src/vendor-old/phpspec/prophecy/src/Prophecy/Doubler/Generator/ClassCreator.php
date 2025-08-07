@@ -25,10 +25,8 @@ class ClassCreator
 
     /**
      * Initializes creator.
-     *
-     * @param ClassCodeGenerator $generator
      */
-    public function __construct(ClassCodeGenerator $generator = null)
+    public function __construct(?ClassCodeGenerator $generator = null)
     {
         $this->generator = $generator ?: new ClassCodeGenerator;
     }
@@ -36,9 +34,7 @@ class ClassCreator
     /**
      * Creates class.
      *
-     * @param string         $classname
-     * @param Node\ClassNode $class
-     *
+     * @param  string  $classname
      * @return mixed
      *
      * @throws \Prophecy\Exception\Doubler\ClassCreatorException
@@ -48,7 +44,7 @@ class ClassCreator
         $code = $this->generator->generate($classname, $class);
         $return = eval($code);
 
-        if (!class_exists($classname, false)) {
+        if (! class_exists($classname, false)) {
             if (count($class->getInterfaces())) {
                 throw new ClassCreatorException(sprintf(
                     'Could not double `%s` and implement interfaces: [%s].',

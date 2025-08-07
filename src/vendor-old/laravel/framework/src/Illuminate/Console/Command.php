@@ -3,15 +3,15 @@
 namespace Illuminate\Console;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Question\Question;
 
 class Command extends SymfonyCommand
 {
@@ -70,10 +70,10 @@ class Command extends SymfonyCommand
      * @var array
      */
     protected $verbosityMap = [
-        'v'      => OutputInterface::VERBOSITY_VERBOSE,
-        'vv'     => OutputInterface::VERBOSITY_VERY_VERBOSE,
-        'vvv'    => OutputInterface::VERBOSITY_DEBUG,
-        'quiet'  => OutputInterface::VERBOSITY_QUIET,
+        'v' => OutputInterface::VERBOSITY_VERBOSE,
+        'vv' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+        'vvv' => OutputInterface::VERBOSITY_DEBUG,
+        'quiet' => OutputInterface::VERBOSITY_QUIET,
         'normal' => OutputInterface::VERBOSITY_NORMAL,
     ];
 
@@ -107,7 +107,7 @@ class Command extends SymfonyCommand
      */
     protected function configureUsingFluentDefinition()
     {
-        list($name, $arguments, $options) = Parser::parse($this->signature);
+        [$name, $arguments, $options] = Parser::parse($this->signature);
 
         parent::__construct($name);
 
@@ -142,8 +142,6 @@ class Command extends SymfonyCommand
     /**
      * Run the console command.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return int
      */
     public function run(InputInterface $input, OutputInterface $output)
@@ -158,8 +156,6 @@ class Command extends SymfonyCommand
     /**
      * Execute the console command.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return mixed
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -173,7 +169,6 @@ class Command extends SymfonyCommand
      * Call another console command.
      *
      * @param  string  $command
-     * @param  array   $arguments
      * @return int
      */
     public function call($command, array $arguments = [])
@@ -189,7 +184,6 @@ class Command extends SymfonyCommand
      * Call another console command silently.
      *
      * @param  string  $command
-     * @param  array   $arguments
      * @return int
      */
     public function callSilent($command, array $arguments = [])
@@ -257,7 +251,7 @@ class Command extends SymfonyCommand
      * Confirm a question with the user.
      *
      * @param  string  $question
-     * @param  bool    $default
+     * @param  bool  $default
      * @return bool
      */
     public function confirm($question, $default = false)
@@ -281,7 +275,6 @@ class Command extends SymfonyCommand
      * Prompt the user for input with auto completion.
      *
      * @param  string  $question
-     * @param  array   $choices
      * @param  string  $default
      * @return string
      */
@@ -294,7 +287,6 @@ class Command extends SymfonyCommand
      * Prompt the user for input with auto completion.
      *
      * @param  string  $question
-     * @param  array   $choices
      * @param  string  $default
      * @return string
      */
@@ -311,7 +303,7 @@ class Command extends SymfonyCommand
      * Prompt the user for input but hide the answer from the console.
      *
      * @param  string  $question
-     * @param  bool    $fallback
+     * @param  bool  $fallback
      * @return string
      */
     public function secret($question, $fallback = true)
@@ -327,10 +319,9 @@ class Command extends SymfonyCommand
      * Give the user a single choice from an array of answers.
      *
      * @param  string  $question
-     * @param  array   $choices
      * @param  string  $default
-     * @param  mixed   $attempts
-     * @param  bool    $multiple
+     * @param  mixed  $attempts
+     * @param  bool  $multiple
      * @return string
      */
     public function choice($question, array $choices, $default = null, $attempts = null, $multiple = null)
@@ -345,7 +336,6 @@ class Command extends SymfonyCommand
     /**
      * Format input to textual table.
      *
-     * @param  array   $headers
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $rows
      * @param  string  $style
      * @return void
@@ -462,7 +452,7 @@ class Command extends SymfonyCommand
     /**
      * Set the verbosity level.
      *
-     * @param string|int $level
+     * @param  string|int  $level
      * @return void
      */
     protected function setVerbosity($level)

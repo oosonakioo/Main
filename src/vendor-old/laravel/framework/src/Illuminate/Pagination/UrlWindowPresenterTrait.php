@@ -33,7 +33,6 @@ trait UrlWindowPresenterTrait
     /**
      * Get the links for the URLs in the given array.
      *
-     * @param  array  $urls
      * @return string
      */
     protected function getUrlLinks(array $urls)

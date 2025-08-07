@@ -2,11 +2,11 @@
 
 namespace Illuminate\Queue;
 
-use DateTime;
 use Carbon\Carbon;
+use DateTime;
+use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Database\Connection;
 use Illuminate\Queue\Jobs\DatabaseJob;
-use Illuminate\Contracts\Queue\Queue as QueueContract;
 
 class DatabaseQueue extends Queue implements QueueContract
 {
@@ -41,7 +41,6 @@ class DatabaseQueue extends Queue implements QueueContract
     /**
      * Create a new database queue instance.
      *
-     * @param  \Illuminate\Database\Connection  $database
      * @param  string  $table
      * @param  string  $default
      * @param  int  $expire
@@ -59,7 +58,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * Push a new job onto the queue.
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -73,7 +72,6 @@ class DatabaseQueue extends Queue implements QueueContract
      *
      * @param  string  $payload
      * @param  string  $queue
-     * @param  array   $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = [])
@@ -86,7 +84,7 @@ class DatabaseQueue extends Queue implements QueueContract
      *
      * @param  \DateTime|int  $delay
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return void
      */
@@ -98,8 +96,8 @@ class DatabaseQueue extends Queue implements QueueContract
     /**
      * Push an array of jobs onto the queue.
      *
-     * @param  array   $jobs
-     * @param  mixed   $data
+     * @param  array  $jobs
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -183,14 +181,14 @@ class DatabaseQueue extends Queue implements QueueContract
     protected function getNextAvailableJob($queue)
     {
         $job = $this->database->table($this->table)
-                    ->lockForUpdate()
-                    ->where('queue', $this->getQueue($queue))
-                    ->where(function ($query) {
-                        $this->isAvailable($query);
-                        $this->isReservedButExpired($query);
-                    })
-                    ->orderBy('id', 'asc')
-                    ->first();
+            ->lockForUpdate()
+            ->where('queue', $this->getQueue($queue))
+            ->where(function ($query) {
+                $this->isAvailable($query);
+                $this->isReservedButExpired($query);
+            })
+            ->orderBy('id', 'asc')
+            ->first();
 
         return $job ? (object) $job : null;
     }
@@ -228,7 +226,7 @@ class DatabaseQueue extends Queue implements QueueContract
     /**
      * Mark the given job ID as reserved.
      *
-     * @param \stdClass $job
+     * @param  \stdClass  $job
      * @return \stdClass
      */
     protected function markJobAsReserved($job)

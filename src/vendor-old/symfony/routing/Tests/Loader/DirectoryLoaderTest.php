@@ -11,40 +11,41 @@
 
 namespace Symfony\Component\Routing\Tests\Loader;
 
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\Routing\Loader\AnnotationFileLoader;
 use Symfony\Component\Routing\Loader\DirectoryLoader;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
-use Symfony\Component\Routing\Loader\AnnotationFileLoader;
-use Symfony\Component\Config\Loader\LoaderResolver;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\RouteCollection;
 
 class DirectoryLoaderTest extends AbstractAnnotationLoaderTest
 {
     private $loader;
+
     private $reader;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $locator = new FileLocator();
+        $locator = new FileLocator;
         $this->reader = $this->getReader();
         $this->loader = new DirectoryLoader($locator);
-        $resolver = new LoaderResolver(array(
+        $resolver = new LoaderResolver([
             new YamlFileLoader($locator),
             new AnnotationFileLoader($locator, $this->getClassLoader($this->reader)),
             $this->loader,
-        ));
+        ]);
         $this->loader->setResolver($resolver);
     }
 
-    public function testLoadDirectory()
+    public function test_load_directory()
     {
         $collection = $this->loader->load(__DIR__.'/../Fixtures/directory', 'directory');
         $this->verifyCollection($collection);
     }
 
-    public function testImportDirectory()
+    public function test_import_directory()
     {
         $collection = $this->loader->load(__DIR__.'/../Fixtures/directory_import', 'directory');
         $this->verifyCollection($collection);
@@ -57,12 +58,12 @@ class DirectoryLoaderTest extends AbstractAnnotationLoaderTest
         $this->assertCount(3, $routes, 'Three routes are loaded');
         $this->assertContainsOnly('Symfony\Component\Routing\Route', $routes);
 
-        for ($i = 1; $i <= 3; ++$i) {
+        for ($i = 1; $i <= 3; $i++) {
             $this->assertSame('/route/'.$i, $routes['route'.$i]->getPath());
         }
     }
 
-    public function testSupports()
+    public function test_supports()
     {
         $fixturesDir = __DIR__.'/../Fixtures';
 

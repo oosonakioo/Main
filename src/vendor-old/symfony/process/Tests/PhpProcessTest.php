@@ -16,7 +16,7 @@ use Symfony\Component\Process\PhpProcess;
 
 class PhpProcessTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNonBlockingWorks()
+    public function test_non_blocking_works()
     {
         $expected = 'hello world!';
         $process = new PhpProcess(<<<PHP
@@ -28,7 +28,7 @@ PHP
         $this->assertEquals($expected, $process->getOutput());
     }
 
-    public function testCommandLine()
+    public function test_command_line()
     {
         $process = new PhpProcess(<<<'PHP'
 <?php echo 'foobar';
@@ -37,7 +37,7 @@ PHP
 
         $commandLine = $process->getCommandLine();
 
-        $f = new PhpExecutableFinder();
+        $f = new PhpExecutableFinder;
         $this->assertContains($f->find(), $commandLine, '::getCommandLine() returns the command line of PHP before start');
 
         $process->start();

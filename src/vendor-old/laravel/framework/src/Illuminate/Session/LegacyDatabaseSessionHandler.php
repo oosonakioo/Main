@@ -3,13 +3,13 @@
 namespace Illuminate\Session;
 
 use Carbon\Carbon;
-use SessionHandlerInterface;
 use Illuminate\Database\ConnectionInterface;
+use SessionHandlerInterface;
 
 /**
  * @deprecated since version 5.2. Use Illuminate\Session\DatabaseSessionHandler.
  */
-class LegacyDatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareInterface
+class LegacyDatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerInterface
 {
     /**
      * The database connection instance.
@@ -42,7 +42,6 @@ class LegacyDatabaseSessionHandler implements SessionHandlerInterface, Existence
     /**
      * Create a new database session handler instance.
      *
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
      * @param  int  $minutes
      * @return void

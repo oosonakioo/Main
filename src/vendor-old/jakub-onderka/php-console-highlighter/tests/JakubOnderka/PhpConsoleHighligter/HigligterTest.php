@@ -1,4 +1,5 @@
 <?php
+
 namespace JakubOnderka\PhpConsoleHighlighter;
 
 class HighlighterTest extends \PHPUnit_Framework_TestCase
@@ -34,126 +35,126 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $output);
     }
 
-    public function testVariable()
+    public function test_variable()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
-echo \$a;
+echo $a;
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
-<token_keyword>echo </token_keyword><token_default>\$a</token_default><token_keyword>;</token_keyword>
+<token_keyword>echo </token_keyword><token_default>$a</token_default><token_keyword>;</token_keyword>
 EOL
         );
     }
 
-    public function testInteger()
+    public function test_integer()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 echo 43;
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_keyword>echo </token_keyword><token_default>43</token_default><token_keyword>;</token_keyword>
 EOL
         );
     }
 
-    public function testFloat()
+    public function test_float()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 echo 43.3;
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_keyword>echo </token_keyword><token_default>43.3</token_default><token_keyword>;</token_keyword>
 EOL
         );
     }
 
-    public function testHex()
+    public function test_hex()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 echo 0x43;
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_keyword>echo </token_keyword><token_default>0x43</token_default><token_keyword>;</token_keyword>
 EOL
         );
     }
 
-    public function testBasicFunction()
+    public function test_basic_function()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
-function plus(\$a, \$b) {
-    return \$a + \$b;
+function plus($a, $b) {
+    return $a + $b;
 }
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
-<token_keyword>function </token_keyword><token_default>plus</token_default><token_keyword>(</token_keyword><token_default>\$a</token_default><token_keyword>, </token_keyword><token_default>\$b</token_default><token_keyword>) {</token_keyword>
-<token_keyword>    return </token_keyword><token_default>\$a </token_default><token_keyword>+ </token_keyword><token_default>\$b</token_default><token_keyword>;</token_keyword>
+<token_keyword>function </token_keyword><token_default>plus</token_default><token_keyword>(</token_keyword><token_default>$a</token_default><token_keyword>, </token_keyword><token_default>$b</token_default><token_keyword>) {</token_keyword>
+<token_keyword>    return </token_keyword><token_default>$a </token_default><token_keyword>+ </token_keyword><token_default>$b</token_default><token_keyword>;</token_keyword>
 <token_keyword>}</token_keyword>
 EOL
         );
     }
 
-    public function testStringNormal()
+    public function test_string_normal()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 echo 'Ahoj světe';
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_keyword>echo </token_keyword><token_string>'Ahoj světe'</token_string><token_keyword>;</token_keyword>
 EOL
         );
     }
 
-    public function testStringDouble()
+    public function test_string_double()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 echo "Ahoj světe";
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_keyword>echo </token_keyword><token_string>"Ahoj světe"</token_string><token_keyword>;</token_keyword>
 EOL
         );
     }
 
-    public function testInstanceof()
+    public function test_instanceof()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
-\$a instanceof stdClass;
+$a instanceof stdClass;
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
-<token_default>\$a </token_default><token_keyword>instanceof </token_keyword><token_default>stdClass</token_default><token_keyword>;</token_keyword>
+<token_default>$a </token_default><token_keyword>instanceof </token_keyword><token_default>stdClass</token_default><token_keyword>;</token_keyword>
 EOL
         );
     }
@@ -161,9 +162,9 @@ EOL
     /*
      * Constants
      */
-    public function testConstant()
+    public function test_constant()
     {
-        $constants = array(
+        $constants = [
             '__FILE__',
             '__LINE__',
             '__CLASS__',
@@ -171,8 +172,8 @@ EOL
             '__METHOD__',
             '__TRAIT__',
             '__DIR__',
-            '__NAMESPACE__'
-        );
+            '__NAMESPACE__',
+        ];
 
         foreach ($constants as $constant) {
             $this->compare(
@@ -192,71 +193,70 @@ EOL
     /*
      * Comments
      */
-    public function testComment()
+    public function test_comment()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 /* Ahoj */
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_comment>/* Ahoj */</token_comment>
 EOL
         );
     }
 
-    public function testDocComment()
+    public function test_doc_comment()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 /** Ahoj */
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_comment>/** Ahoj */</token_comment>
 EOL
         );
     }
 
-    public function testInlineComment()
+    public function test_inline_comment()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 // Ahoj
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_comment>// Ahoj</token_comment>
 EOL
         );
     }
 
-    public function testHashComment()
+    public function test_hash_comment()
     {
         $this->compare(
-            <<<EOL
+            <<<'EOL'
 <?php
 # Ahoj
 EOL
             ,
-            <<<EOL
+            <<<'EOL'
 <token_default><?php</token_default>
 <token_comment># Ahoj</token_comment>
 EOL
         );
     }
 
-    public function testEmpty()
+    public function test_empty()
     {
         $this->compare(
-            ''
-            ,
+            '',
             ''
         );
     }

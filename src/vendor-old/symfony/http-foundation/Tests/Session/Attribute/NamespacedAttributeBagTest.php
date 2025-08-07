@@ -32,21 +32,21 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->array = array(
+        $this->array = [
             'hello' => 'world',
             'always' => 'be happy',
             'user.login' => 'drak',
-            'csrf.token' => array(
+            'csrf.token' => [
                 'a' => '1234',
                 'b' => '4321',
-            ),
-            'category' => array(
-                'fishing' => array(
+            ],
+            'category' => [
+                'fishing' => [
                     'first' => 'cod',
                     'second' => 'sole',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->bag = new NamespacedAttributeBag('_sf2', '/');
         $this->bag->initialize($this->array);
     }
@@ -54,22 +54,22 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->bag = null;
-        $this->array = array();
+        $this->array = [];
     }
 
-    public function testInitialize()
+    public function test_initialize()
     {
-        $bag = new NamespacedAttributeBag();
+        $bag = new NamespacedAttributeBag;
         $bag->initialize($this->array);
         $this->assertEquals($this->array, $this->bag->all());
-        $array = array('should' => 'not stick');
+        $array = ['should' => 'not stick'];
         $bag->initialize($array);
 
         // should have remained the same
         $this->assertEquals($this->array, $this->bag->all());
     }
 
-    public function testGetStorageKey()
+    public function test_get_storage_key()
     {
         $this->assertEquals('_sf2', $this->bag->getStorageKey());
         $attributeBag = new NamespacedAttributeBag('test');
@@ -79,7 +79,7 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testHas($key, $value, $exists)
+    public function test_has($key, $value, $exists)
     {
         $this->assertEquals($exists, $this->bag->has($key));
     }
@@ -87,12 +87,12 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testGet($key, $value, $expected)
+    public function test_get($key, $value, $expected)
     {
         $this->assertEquals($value, $this->bag->get($key));
     }
 
-    public function testGetDefaults()
+    public function test_get_defaults()
     {
         $this->assertNull($this->bag->get('user2.login'));
         $this->assertEquals('default', $this->bag->get('user2.login', 'default'));
@@ -101,13 +101,13 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider attributesProvider
      */
-    public function testSet($key, $value, $expected)
+    public function test_set($key, $value, $expected)
     {
         $this->bag->set($key, $value);
         $this->assertEquals($value, $this->bag->get($key));
     }
 
-    public function testAll()
+    public function test_all()
     {
         $this->assertEquals($this->array, $this->bag->all());
 
@@ -117,9 +117,9 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($array, $this->bag->all());
     }
 
-    public function testReplace()
+    public function test_replace()
     {
-        $array = array();
+        $array = [];
         $array['name'] = 'jack';
         $array['foo.bar'] = 'beep';
         $this->bag->replace($array);
@@ -129,7 +129,7 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->bag->get('user.login'));
     }
 
-    public function testRemove()
+    public function test_remove()
     {
         $this->assertEquals('world', $this->bag->get('hello'));
         $this->bag->remove('hello');
@@ -144,41 +144,41 @@ class NamespacedAttributeBagTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->bag->get('user.login'));
     }
 
-    public function testRemoveExistingNamespacedAttribute()
+    public function test_remove_existing_namespaced_attribute()
     {
         $this->assertSame('cod', $this->bag->remove('category/fishing/first'));
     }
 
-    public function testRemoveNonexistingNamespacedAttribute()
+    public function test_remove_nonexisting_namespaced_attribute()
     {
         $this->assertNull($this->bag->remove('foo/bar/baz'));
     }
 
-    public function testClear()
+    public function test_clear()
     {
         $this->bag->clear();
-        $this->assertEquals(array(), $this->bag->all());
+        $this->assertEquals([], $this->bag->all());
     }
 
     public function attributesProvider()
     {
-        return array(
-            array('hello', 'world', true),
-            array('always', 'be happy', true),
-            array('user.login', 'drak', true),
-            array('csrf.token', array('a' => '1234', 'b' => '4321'), true),
-            array('csrf.token/a', '1234', true),
-            array('csrf.token/b', '4321', true),
-            array('category', array('fishing' => array('first' => 'cod', 'second' => 'sole')), true),
-            array('category/fishing', array('first' => 'cod', 'second' => 'sole'), true),
-            array('category/fishing/missing/first', null, false),
-            array('category/fishing/first', 'cod', true),
-            array('category/fishing/second', 'sole', true),
-            array('category/fishing/missing/second', null, false),
-            array('user2.login', null, false),
-            array('never', null, false),
-            array('bye', null, false),
-            array('bye/for/now', null, false),
-        );
+        return [
+            ['hello', 'world', true],
+            ['always', 'be happy', true],
+            ['user.login', 'drak', true],
+            ['csrf.token', ['a' => '1234', 'b' => '4321'], true],
+            ['csrf.token/a', '1234', true],
+            ['csrf.token/b', '4321', true],
+            ['category', ['fishing' => ['first' => 'cod', 'second' => 'sole']], true],
+            ['category/fishing', ['first' => 'cod', 'second' => 'sole'], true],
+            ['category/fishing/missing/first', null, false],
+            ['category/fishing/first', 'cod', true],
+            ['category/fishing/second', 'sole', true],
+            ['category/fishing/missing/second', null, false],
+            ['user2.login', null, false],
+            ['never', null, false],
+            ['bye', null, false],
+            ['bye/for/now', null, false],
+        ];
     }
 }

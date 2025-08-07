@@ -2,10 +2,10 @@
 
 namespace Illuminate\Http;
 
-use JsonSerializable;
-use InvalidArgumentException;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use InvalidArgumentException;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 class JsonResponse extends BaseJsonResponse
@@ -16,9 +16,9 @@ class JsonResponse extends BaseJsonResponse
      * Constructor.
      *
      * @param  mixed  $data
-     * @param  int    $status
+     * @param  int  $status
      * @param  array  $headers
-     * @param  int    $options
+     * @param  int  $options
      */
     public function __construct($data = null, $status = 200, $headers = [], $options = 0)
     {
@@ -31,7 +31,7 @@ class JsonResponse extends BaseJsonResponse
      * Get the json_decoded data from the response.
      *
      * @param  bool  $assoc
-     * @param  int   $depth
+     * @param  int  $depth
      * @return mixed
      */
     public function getData($assoc = false, $depth = 512)
@@ -54,7 +54,7 @@ class JsonResponse extends BaseJsonResponse
             $this->data = json_encode($data, $this->encodingOptions);
         }
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidArgumentException(json_last_error_msg());
         }
 

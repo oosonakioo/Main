@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -19,11 +20,11 @@ class PHP_CodeCoverage_Report_Crap4j
     private $threshold;
 
     /**
-     * @param int $threshold
+     * @param  int  $threshold
      */
     public function __construct($threshold = 30)
     {
-        if (!is_int($threshold)) {
+        if (! is_int($threshold)) {
             throw PHP_CodeCoverage_Util_InvalidArgumentHelper::factory(
                 1,
                 'integer'
@@ -34,14 +35,13 @@ class PHP_CodeCoverage_Report_Crap4j
     }
 
     /**
-     * @param  PHP_CodeCoverage $coverage
-     * @param  string           $target
-     * @param  string           $name
+     * @param  string  $target
+     * @param  string  $name
      * @return string
      */
     public function process(PHP_CodeCoverage $coverage, $target = null, $name = null)
     {
-        $document               = new DOMDocument('1.0', 'UTF-8');
+        $document = new DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = true;
 
         $root = $document->createElement('crap_result');
@@ -51,21 +51,21 @@ class PHP_CodeCoverage_Report_Crap4j
         $root->appendChild($project);
         $root->appendChild($document->createElement('timestamp', date('Y-m-d H:i:s', (int) $_SERVER['REQUEST_TIME'])));
 
-        $stats       = $document->createElement('stats');
+        $stats = $document->createElement('stats');
         $methodsNode = $document->createElement('methods');
 
         $report = $coverage->getReport();
         unset($coverage);
 
-        $fullMethodCount     = 0;
+        $fullMethodCount = 0;
         $fullCrapMethodCount = 0;
-        $fullCrapLoad        = 0;
-        $fullCrap            = 0;
+        $fullCrapLoad = 0;
+        $fullCrap = 0;
 
         foreach ($report as $item) {
             $namespace = 'global';
 
-            if (!$item instanceof PHP_CodeCoverage_Report_Node_File) {
+            if (! $item instanceof PHP_CodeCoverage_Report_Node_File) {
                 continue;
             }
 
@@ -78,7 +78,7 @@ class PHP_CodeCoverage_Report_Crap4j
                 foreach ($class['methods'] as $methodName => $method) {
                     $crapLoad = $this->getCrapLoad($method['crap'], $method['ccn'], $method['coverage']);
 
-                    $fullCrap     += $method['crap'];
+                    $fullCrap += $method['crap'];
                     $fullCrapLoad += $crapLoad;
                     $fullMethodCount++;
 
@@ -88,7 +88,7 @@ class PHP_CodeCoverage_Report_Crap4j
 
                     $methodNode = $document->createElement('method');
 
-                    if (!empty($class['package']['namespace'])) {
+                    if (! empty($class['package']['namespace'])) {
                         $namespace = $class['package']['namespace'];
                     }
 
@@ -125,7 +125,7 @@ class PHP_CodeCoverage_Report_Crap4j
         $root->appendChild($methodsNode);
 
         if ($target !== null) {
-            if (!is_dir(dirname($target))) {
+            if (! is_dir(dirname($target))) {
                 mkdir(dirname($target), 0777, true);
             }
 
@@ -136,9 +136,9 @@ class PHP_CodeCoverage_Report_Crap4j
     }
 
     /**
-     * @param  float $crapValue
-     * @param  int   $cyclomaticComplexity
-     * @param  float $coveragePercent
+     * @param  float  $crapValue
+     * @param  int  $cyclomaticComplexity
+     * @param  float  $coveragePercent
      * @return float
      */
     private function getCrapLoad($crapValue, $cyclomaticComplexity, $coveragePercent)
@@ -154,7 +154,7 @@ class PHP_CodeCoverage_Report_Crap4j
     }
 
     /**
-     * @param  float $value
+     * @param  float  $value
      * @return float
      */
     private function roundValue($value)

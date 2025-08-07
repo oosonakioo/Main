@@ -28,17 +28,13 @@ class TokenizerEscaping
      */
     private $patterns;
 
-    /**
-     * @param TokenizerPatterns $patterns
-     */
     public function __construct(TokenizerPatterns $patterns)
     {
         $this->patterns = $patterns;
     }
 
     /**
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string
      */
     public function escapeUnicode($value)
@@ -49,8 +45,7 @@ class TokenizerEscaping
     }
 
     /**
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string
      */
     public function escapeUnicodeAndNewLine($value)
@@ -61,8 +56,7 @@ class TokenizerEscaping
     }
 
     /**
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string
      */
     private function replaceUnicodeSequences($value)
@@ -73,10 +67,10 @@ class TokenizerEscaping
             if (0x80 > $c %= 0x200000) {
                 return chr($c);
             }
-            if (0x800 > $c) {
+            if ($c < 0x800) {
                 return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
             }
-            if (0x10000 > $c) {
+            if ($c < 0x10000) {
                 return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
             }
         }, $value);

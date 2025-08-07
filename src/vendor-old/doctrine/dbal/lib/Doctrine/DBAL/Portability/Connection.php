@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,32 +27,44 @@ use Doctrine\DBAL\Cache\QueryCacheProfile;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class Connection extends \Doctrine\DBAL\Connection
 {
-    const PORTABILITY_ALL               = 255;
-    const PORTABILITY_NONE              = 0;
-    const PORTABILITY_RTRIM             = 1;
-    const PORTABILITY_EMPTY_TO_NULL     = 4;
-    const PORTABILITY_FIX_CASE          = 8;
+    const PORTABILITY_ALL = 255;
 
-    const PORTABILITY_DB2               = 13;
-    const PORTABILITY_ORACLE            = 9;
-    const PORTABILITY_POSTGRESQL        = 13;
-    const PORTABILITY_SQLITE            = 13;
-    const PORTABILITY_OTHERVENDORS      = 12;
-    const PORTABILITY_DRIZZLE           = 13;
-    const PORTABILITY_SQLANYWHERE       = 13;
-    const PORTABILITY_SQLSRV            = 13;
+    const PORTABILITY_NONE = 0;
+
+    const PORTABILITY_RTRIM = 1;
+
+    const PORTABILITY_EMPTY_TO_NULL = 4;
+
+    const PORTABILITY_FIX_CASE = 8;
+
+    const PORTABILITY_DB2 = 13;
+
+    const PORTABILITY_ORACLE = 9;
+
+    const PORTABILITY_POSTGRESQL = 13;
+
+    const PORTABILITY_SQLITE = 13;
+
+    const PORTABILITY_OTHERVENDORS = 12;
+
+    const PORTABILITY_DRIZZLE = 13;
+
+    const PORTABILITY_SQLANYWHERE = 13;
+
+    const PORTABILITY_SQLSRV = 13;
 
     /**
-     * @var integer
+     * @var int
      */
     private $portability = self::PORTABILITY_NONE;
 
     /**
-     * @var integer
+     * @var int
      */
     private $case;
 
@@ -64,13 +77,13 @@ class Connection extends \Doctrine\DBAL\Connection
         if ($ret) {
             $params = $this->getParams();
             if (isset($params['portability'])) {
-                if ($this->getDatabasePlatform()->getName() === "oracle") {
+                if ($this->getDatabasePlatform()->getName() === 'oracle') {
                     $params['portability'] = $params['portability'] & self::PORTABILITY_ORACLE;
-                } elseif ($this->getDatabasePlatform()->getName() === "postgresql") {
+                } elseif ($this->getDatabasePlatform()->getName() === 'postgresql') {
                     $params['portability'] = $params['portability'] & self::PORTABILITY_POSTGRESQL;
-                } elseif ($this->getDatabasePlatform()->getName() === "sqlite") {
+                } elseif ($this->getDatabasePlatform()->getName() === 'sqlite') {
                     $params['portability'] = $params['portability'] & self::PORTABILITY_SQLITE;
-                } elseif ($this->getDatabasePlatform()->getName() === "drizzle") {
+                } elseif ($this->getDatabasePlatform()->getName() === 'drizzle') {
                     $params['portability'] = self::PORTABILITY_DRIZZLE;
                 } elseif ($this->getDatabasePlatform()->getName() === 'sqlanywhere') {
                     $params['portability'] = self::PORTABILITY_SQLANYWHERE;
@@ -97,7 +110,7 @@ class Connection extends \Doctrine\DBAL\Connection
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getPortability()
     {
@@ -105,7 +118,7 @@ class Connection extends \Doctrine\DBAL\Connection
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getFetchCase()
     {
@@ -115,7 +128,7 @@ class Connection extends \Doctrine\DBAL\Connection
     /**
      * {@inheritdoc}
      */
-    public function executeQuery($query, array $params = array(), $types = array(), QueryCacheProfile $qcp = null)
+    public function executeQuery($query, array $params = [], $types = [], ?QueryCacheProfile $qcp = null)
     {
         $stmt = new Statement(parent::executeQuery($query, $params, $types, $qcp), $this);
         $stmt->setFetchMode($this->defaultFetchMode);
@@ -141,7 +154,7 @@ class Connection extends \Doctrine\DBAL\Connection
     {
         $this->connect();
 
-        $stmt = call_user_func_array(array($this->_conn, 'query'), func_get_args());
+        $stmt = call_user_func_array([$this->_conn, 'query'], func_get_args());
         $stmt = new Statement($stmt, $this);
         $stmt->setFetchMode($this->defaultFetchMode);
 

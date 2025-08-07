@@ -50,7 +50,7 @@ class ClassList
      */
     public function clear()
     {
-        $this->head = new ClassNode();
+        $this->head = new ClassNode;
         $this->current = $this->head;
     }
 
@@ -75,13 +75,12 @@ class ClassList
      * Any currently set value at this position will be pushed back in the list
      * after the new value.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return void
      */
     public function push($value)
     {
-        if (!$this->current->value) {
+        if (! $this->current->value) {
             $this->current->value = $value;
         } else {
             $temp = $this->current;

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Diff package.
  *
@@ -24,9 +25,9 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->parser = new Parser;
     }
 
-    public function testParse()
+    public function test_parse()
     {
-        $content = file_get_contents(__DIR__ . '/fixtures/patch.txt');
+        $content = file_get_contents(__DIR__.'/fixtures/patch.txt');
 
         $diffs = $this->parser->parse($content);
 
@@ -40,9 +41,9 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertCount(5, $chunks[0]->getLines());
     }
 
-    public function testParseWithMultipleChunks()
+    public function test_parse_with_multiple_chunks()
     {
-        $content = file_get_contents(__DIR__ . '/fixtures/patch2.txt');
+        $content = file_get_contents(__DIR__.'/fixtures/patch2.txt');
 
         $diffs = $this->parser->parse($content);
 

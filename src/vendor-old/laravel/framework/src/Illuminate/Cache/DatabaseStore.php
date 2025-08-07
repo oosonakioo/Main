@@ -5,8 +5,8 @@ namespace Illuminate\Cache;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
-use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
+use Illuminate\Database\ConnectionInterface;
 
 class DatabaseStore implements Store
 {
@@ -43,8 +43,6 @@ class DatabaseStore implements Store
     /**
      * Create a new database store.
      *
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @param  string  $table
      * @param  string  $prefix
      * @return void
@@ -91,8 +89,8 @@ class DatabaseStore implements Store
      * Store an item in the cache for a given number of minutes.
      *
      * @param  string  $key
-     * @param  mixed   $value
-     * @param  int     $minutes
+     * @param  mixed  $value
+     * @param  int  $minutes
      * @return void
      */
     public function put($key, $value, $minutes)
@@ -117,7 +115,7 @@ class DatabaseStore implements Store
      * Increment the value of an item in the cache.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function increment($key, $value = 1)
@@ -131,7 +129,7 @@ class DatabaseStore implements Store
      * Decrement the value of an item in the cache.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function decrement($key, $value = 1)
@@ -146,7 +144,6 @@ class DatabaseStore implements Store
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @param  \Closure  $callback
      * @return int|bool
      */
     protected function incrementOrDecrement($key, $value, Closure $callback)
@@ -193,7 +190,7 @@ class DatabaseStore implements Store
      * Store an item in the cache indefinitely.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function forever($key, $value)

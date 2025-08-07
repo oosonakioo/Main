@@ -23,9 +23,9 @@ class Arr
     /**
      * Add an element to an array using "dot" notation if it doesn't exist.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return array
      */
     public static function add($array, $key, $value)
@@ -41,7 +41,6 @@ class Arr
      * Build a new array using a callback.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      *
      * @deprecated since version 5.2.
@@ -51,7 +50,7 @@ class Arr
         $results = [];
 
         foreach ($array as $key => $value) {
-            list($innerKey, $innerValue) = call_user_func($callback, $key, $value);
+            [$innerKey, $innerValue] = call_user_func($callback, $key, $value);
 
             $results[$innerKey] = $innerValue;
         }
@@ -96,7 +95,7 @@ class Arr
     /**
      * Flatten a multi-dimensional associative array with dots.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $prepend
      * @return array
      */
@@ -149,11 +148,10 @@ class Arr
      * Return the first element in an array passing a given truth test.
      *
      * @param  array  $array
-     * @param  callable|null  $callback
      * @param  mixed  $default
      * @return mixed
      */
-    public static function first($array, callable $callback = null, $default = null)
+    public static function first($array, ?callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
             return empty($array) ? value($default) : reset($array);
@@ -172,11 +170,10 @@ class Arr
      * Return the last element in an array passing a given truth test.
      *
      * @param  array  $array
-     * @param  callable|null  $callback
      * @param  mixed  $default
      * @return mixed
      */
-    public static function last($array, callable $callback = null, $default = null)
+    public static function last($array, ?callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
             return empty($array) ? value($default) : end($array);
@@ -202,10 +199,12 @@ class Arr
             if (is_array($item)) {
                 if ($depth === 1) {
                     $result = array_merge($result, $item);
+
                     continue;
                 }
 
                 $result = array_merge($result, static::flatten($item, $depth - 1));
+
                 continue;
             }
 
@@ -264,7 +263,7 @@ class Arr
      *
      * @param  \ArrayAccess|array  $array
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     public static function get($array, $key, $default = null)
@@ -329,7 +328,6 @@ class Arr
      *
      * An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
      *
-     * @param  array  $array
      * @return bool
      */
     public static function isAssoc(array $array)
@@ -363,7 +361,7 @@ class Arr
     {
         $results = [];
 
-        list($value, $key) = static::explodePluckParameters($value, $key);
+        [$value, $key] = static::explodePluckParameters($value, $key);
 
         foreach ($array as $item) {
             $itemValue = data_get($item, $value);
@@ -421,9 +419,9 @@ class Arr
     /**
      * Get a value from the array, and remove it.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     public static function pull(&$array, $key, $default = null)
@@ -440,9 +438,9 @@ class Arr
      *
      * If no key is given to the method, the entire array will be replaced.
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return array
      */
     public static function set(&$array, $key, $value)
@@ -475,7 +473,6 @@ class Arr
      * Sort the array using the given callback.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      */
     public static function sort($array, callable $callback)
@@ -510,7 +507,6 @@ class Arr
      * Filter the array using the given callback.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      */
     public static function where($array, callable $callback)

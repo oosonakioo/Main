@@ -2,8 +2,8 @@
 
 namespace Illuminate\Session;
 
-use SessionHandlerInterface;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use SessionHandlerInterface;
 
 class CacheBasedSessionHandler implements SessionHandlerInterface
 {
@@ -24,7 +24,6 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
     /**
      * Create a new cache driven handler instance.
      *
-     * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @param  int  $minutes
      * @return void
      */

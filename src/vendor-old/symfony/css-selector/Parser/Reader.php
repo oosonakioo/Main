@@ -39,7 +39,7 @@ class Reader
     private $position = 0;
 
     /**
-     * @param string $source
+     * @param  string  $source
      */
     public function __construct($source)
     {
@@ -72,9 +72,8 @@ class Reader
     }
 
     /**
-     * @param int $length
-     * @param int $offset
-     *
+     * @param  int  $length
+     * @param  int  $offset
      * @return string
      */
     public function getSubstring($length, $offset = 0)
@@ -83,20 +82,18 @@ class Reader
     }
 
     /**
-     * @param string $string
-     *
+     * @param  string  $string
      * @return int
      */
     public function getOffset($string)
     {
         $position = strpos($this->source, $string, $this->position);
 
-        return false === $position ? false : $position - $this->position;
+        return $position === false ? false : $position - $this->position;
     }
 
     /**
-     * @param string $pattern
-     *
+     * @param  string  $pattern
      * @return bool
      */
     public function findPattern($pattern)
@@ -111,15 +108,13 @@ class Reader
     }
 
     /**
-     * @param int $length
+     * @param  int  $length
      */
     public function moveForward($length)
     {
         $this->position += $length;
     }
 
-    /**
-     */
     public function moveToEnd()
     {
         $this->position = $this->length;

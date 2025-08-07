@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -30,7 +31,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
      *
      * @see https://bugs.php.net/bug.php?id=51800
      */
-    public function runJob($job, array $settings = array())
+    public function runJob($job, array $settings = [])
     {
         $runtime = new Runtime;
 
@@ -41,16 +42,16 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
         }
 
         $process = proc_open(
-            $runtime->getBinary() . $this->settingsToParameters($settings),
-            array(
-            0 => array('pipe', 'r'),
-            1 => $stdout_handle,
-            2 => array('pipe', 'w')
-            ),
+            $runtime->getBinary().$this->settingsToParameters($settings),
+            [
+                0 => ['pipe', 'r'],
+                1 => $stdout_handle,
+                2 => ['pipe', 'w'],
+            ],
             $pipes
         );
 
-        if (!is_resource($process)) {
+        if (! is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
                 'Unable to spawn worker process'
             );
@@ -70,12 +71,12 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 
         $this->cleanup();
 
-        return array('stdout' => $stdout, 'stderr' => $stderr);
+        return ['stdout' => $stdout, 'stderr' => $stderr];
     }
 
     /**
-     * @param resource $pipe
-     * @param string   $job
+     * @param  resource  $pipe
+     * @param  string  $job
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -83,7 +84,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
      */
     protected function process($pipe, $job)
     {
-        if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+        if (! ($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
             file_put_contents($this->tempFile, $job) === false) {
             throw new PHPUnit_Framework_Exception(
                 'Unable to write temporary file'
@@ -92,7 +93,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 
         fwrite(
             $pipe,
-            '<?php require_once ' . var_export($this->tempFile, true) .  '; ?>'
+            '<?php require_once '.var_export($this->tempFile, true).'; ?>'
         );
     }
 

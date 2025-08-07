@@ -1,18 +1,19 @@
 <?php
+
 class Issue1149Test extends PHPUnit_Framework_TestCase
 {
-    public function testOne()
+    public function test_one()
     {
         $this->assertTrue(true);
-        print '1';
+        echo '1';
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function testTwo()
+    public function test_two()
     {
         $this->assertTrue(true);
-        print '2';
+        echo '2';
     }
 }

@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\Routing\Loader;
 
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Config\Loader\FileLoader;
+use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * AnnotationFileLoader loads routing information from annotations set
@@ -29,14 +29,14 @@ class AnnotationFileLoader extends FileLoader
     /**
      * Constructor.
      *
-     * @param FileLocatorInterface  $locator A FileLocator instance
-     * @param AnnotationClassLoader $loader  An AnnotationClassLoader instance
+     * @param  FileLocatorInterface  $locator  A FileLocator instance
+     * @param  AnnotationClassLoader  $loader  An AnnotationClassLoader instance
      *
      * @throws \RuntimeException
      */
     public function __construct(FileLocatorInterface $locator, AnnotationClassLoader $loader)
     {
-        if (!function_exists('token_get_all')) {
+        if (! function_exists('token_get_all')) {
             throw new \RuntimeException('The Tokenizer extension is required for the routing annotation loaders.');
         }
 
@@ -48,9 +48,8 @@ class AnnotationFileLoader extends FileLoader
     /**
      * Loads from annotations from a file.
      *
-     * @param string      $file A PHP file path
-     * @param string|null $type The resource type
-     *
+     * @param  string  $file  A PHP file path
+     * @param  string|null  $type  The resource type
      * @return RouteCollection A RouteCollection instance
      *
      * @throws \InvalidArgumentException When the file does not exist or its routes cannot be parsed
@@ -59,7 +58,7 @@ class AnnotationFileLoader extends FileLoader
     {
         $path = $this->locator->locate($file);
 
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         if ($class = $this->findClass($path)) {
             $collection->addResource(new FileResource($path));
             $collection->addCollection($this->loader->load($class, $type));
@@ -77,14 +76,13 @@ class AnnotationFileLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'annotation' === $type);
+        return is_string($resource) && pathinfo($resource, PATHINFO_EXTENSION) === 'php' && (! $type || $type === 'annotation');
     }
 
     /**
      * Returns the full class name for the first class in the file.
      *
-     * @param string $file A PHP file path
-     *
+     * @param  string  $file  A PHP file path
      * @return string|false Full class name if found, false otherwise
      */
     protected function findClass($file)
@@ -92,47 +90,47 @@ class AnnotationFileLoader extends FileLoader
         $class = false;
         $namespace = false;
         $tokens = token_get_all(file_get_contents($file));
-        for ($i = 0; isset($tokens[$i]); ++$i) {
+        for ($i = 0; isset($tokens[$i]); $i++) {
             $token = $tokens[$i];
 
-            if (!isset($token[1])) {
+            if (! isset($token[1])) {
                 continue;
             }
 
-            if (true === $class && T_STRING === $token[0]) {
+            if ($class === true && $token[0] === T_STRING) {
                 return $namespace.'\\'.$token[1];
             }
 
-            if (true === $namespace && T_STRING === $token[0]) {
+            if ($namespace === true && $token[0] === T_STRING) {
                 $namespace = $token[1];
-                while (isset($tokens[++$i][1]) && in_array($tokens[$i][0], array(T_NS_SEPARATOR, T_STRING))) {
+                while (isset($tokens[++$i][1]) && in_array($tokens[$i][0], [T_NS_SEPARATOR, T_STRING])) {
                     $namespace .= $tokens[$i][1];
                 }
                 $token = $tokens[$i];
             }
 
-            if (T_CLASS === $token[0]) {
+            if ($token[0] === T_CLASS) {
                 // Skip usage of ::class constant
                 $isClassConstant = false;
-                for ($j = $i - 1; $j > 0; --$j) {
-                    if (!isset($tokens[$j][1])) {
+                for ($j = $i - 1; $j > 0; $j--) {
+                    if (! isset($tokens[$j][1])) {
                         break;
                     }
 
-                    if (T_DOUBLE_COLON === $tokens[$j][0]) {
+                    if ($tokens[$j][0] === T_DOUBLE_COLON) {
                         $isClassConstant = true;
                         break;
-                    } elseif (!in_array($tokens[$j][0], array(T_WHITESPACE, T_DOC_COMMENT, T_COMMENT))) {
+                    } elseif (! in_array($tokens[$j][0], [T_WHITESPACE, T_DOC_COMMENT, T_COMMENT])) {
                         break;
                     }
                 }
 
-                if (!$isClassConstant) {
+                if (! $isClassConstant) {
                     $class = true;
                 }
             }
 
-            if (T_NAMESPACE === $token[0]) {
+            if ($token[0] === T_NAMESPACE) {
                 $namespace = true;
             }
         }

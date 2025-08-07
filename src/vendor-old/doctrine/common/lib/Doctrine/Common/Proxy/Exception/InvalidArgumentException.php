@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use InvalidArgumentException as BaseInvalidArgumentException;
  *
  * @link   www.doctrine-project.org
  * @since  2.4
+ *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
 class InvalidArgumentException extends BaseInvalidArgumentException implements ProxyException
@@ -40,9 +42,8 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements P
     }
 
     /**
-     * @param string $className
-     * @param string $proxyNamespace
-     *
+     * @param  string  $className
+     * @param  string  $proxyNamespace
      * @return self
      */
     public static function notProxyClass($className, $proxyNamespace)
@@ -51,8 +52,7 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements P
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return self
      */
     public static function invalidPlaceholder($name)
@@ -69,8 +69,6 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements P
     }
 
     /**
-     * @param Proxy $proxy
-     *
      * @return self
      */
     public static function unitializedProxyExpected(Proxy $proxy)
@@ -79,8 +77,7 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements P
     }
 
     /**
-     * @param mixed $callback
-     *
+     * @param  mixed  $callback
      * @return self
      */
     public static function invalidClassNotFoundCallback($callback)

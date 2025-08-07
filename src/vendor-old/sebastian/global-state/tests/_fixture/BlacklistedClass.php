@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the GlobalState package.
  *
@@ -10,8 +11,6 @@
 
 namespace SebastianBergmann\GlobalState\TestFixture;
 
-/**
- */
 class BlacklistedClass
 {
     private static $attribute;

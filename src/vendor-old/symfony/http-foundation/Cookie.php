@@ -19,23 +19,29 @@ namespace Symfony\Component\HttpFoundation;
 class Cookie
 {
     protected $name;
+
     protected $value;
+
     protected $domain;
+
     protected $expire;
+
     protected $path;
+
     protected $secure;
+
     protected $httpOnly;
 
     /**
      * Constructor.
      *
-     * @param string                        $name     The name of the cookie
-     * @param string                        $value    The value of the cookie
-     * @param int|string|\DateTimeInterface $expire   The time the cookie expires
-     * @param string                        $path     The path on the server in which the cookie will be available on
-     * @param string                        $domain   The domain that the cookie is available to
-     * @param bool                          $secure   Whether the cookie should only be transmitted over a secure HTTPS connection from the client
-     * @param bool                          $httpOnly Whether the cookie will be made accessible only through the HTTP protocol
+     * @param  string  $name  The name of the cookie
+     * @param  string  $value  The value of the cookie
+     * @param  int|string|\DateTimeInterface  $expire  The time the cookie expires
+     * @param  string  $path  The path on the server in which the cookie will be available on
+     * @param  string  $domain  The domain that the cookie is available to
+     * @param  bool  $secure  Whether the cookie should only be transmitted over a secure HTTPS connection from the client
+     * @param  bool  $httpOnly  Whether the cookie will be made accessible only through the HTTP protocol
      *
      * @throws \InvalidArgumentException
      */
@@ -53,10 +59,10 @@ class Cookie
         // convert expiration time to a Unix timestamp
         if ($expire instanceof \DateTimeInterface) {
             $expire = $expire->format('U');
-        } elseif (!is_numeric($expire)) {
+        } elseif (! is_numeric($expire)) {
             $expire = strtotime($expire);
 
-            if (false === $expire || -1 === $expire) {
+            if ($expire === false || $expire === -1) {
                 throw new \InvalidArgumentException('The cookie expiration time is not valid.');
             }
         }
@@ -79,7 +85,7 @@ class Cookie
     {
         $str = urlencode($this->getName()).'=';
 
-        if ('' === (string) $this->getValue()) {
+        if ((string) $this->getValue() === '') {
             $str .= 'deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001);
         } else {
             $str .= urlencode($this->getValue());
@@ -97,11 +103,11 @@ class Cookie
             $str .= '; domain='.$this->getDomain();
         }
 
-        if (true === $this->isSecure()) {
+        if ($this->isSecure() === true) {
             $str .= '; secure';
         }
 
-        if (true === $this->isHttpOnly()) {
+        if ($this->isHttpOnly() === true) {
             $str .= '; httponly';
         }
 

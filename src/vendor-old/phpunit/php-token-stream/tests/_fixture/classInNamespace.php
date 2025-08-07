@@ -1,6 +1,5 @@
 <?php
+
 namespace Foo\Bar;
 
-class TestClass
-{
-}
+class TestClass {}

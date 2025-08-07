@@ -23,7 +23,7 @@ class StringContainsToken implements TokenInterface
     /**
      * Initializes token.
      *
-     * @param string $value
+     * @param  string  $value
      */
     public function __construct($value)
     {

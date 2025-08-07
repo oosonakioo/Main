@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\HttpKernel\Event;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows filtering of a controller callable.
@@ -52,7 +52,6 @@ class FilterControllerEvent extends KernelEvent
     /**
      * Sets a new controller.
      *
-     * @param callable $controller
      *
      * @throws \LogicException
      */

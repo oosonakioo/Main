@@ -19,9 +19,7 @@ class Swift_Preferences
     private static $_instance = null;
 
     /** Constructor not to be used */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Gets the instance of Preferences.
@@ -30,8 +28,8 @@ class Swift_Preferences
      */
     public static function getInstance()
     {
-        if (!isset(self::$_instance)) {
-            self::$_instance = new self();
+        if (! isset(self::$_instance)) {
+            self::$_instance = new self;
         }
 
         return self::$_instance;
@@ -40,8 +38,7 @@ class Swift_Preferences
     /**
      * Set the default charset used.
      *
-     * @param string $charset
-     *
+     * @param  string  $charset
      * @return $this
      */
     public function setCharset($charset)
@@ -54,8 +51,7 @@ class Swift_Preferences
     /**
      * Set the directory where temporary files can be saved.
      *
-     * @param string $dir
-     *
+     * @param  string  $dir
      * @return $this
      */
     public function setTempDir($dir)
@@ -68,8 +64,7 @@ class Swift_Preferences
     /**
      * Set the type of cache to use (i.e. "disk" or "array").
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return $this
      */
     public function setCacheType($type)
@@ -82,17 +77,16 @@ class Swift_Preferences
     /**
      * Set the QuotedPrintable dot escaper preference.
      *
-     * @param bool $dotEscape
-     *
+     * @param  bool  $dotEscape
      * @return $this
      */
     public function setQPDotEscape($dotEscape)
     {
-        $dotEscape = !empty($dotEscape);
+        $dotEscape = ! empty($dotEscape);
         Swift_DependencyContainer::getInstance()
             ->register('mime.qpcontentencoder')
             ->asNewInstanceOf('Swift_Mime_ContentEncoder_QpContentEncoder')
-            ->withDependencies(array('mime.charstream', 'mime.bytecanonicalizer'))
+            ->withDependencies(['mime.charstream', 'mime.bytecanonicalizer'])
             ->addConstructorValue($dotEscape);
 
         return $this;

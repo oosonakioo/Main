@@ -2,11 +2,11 @@
 
 namespace Illuminate\Http;
 
-use Exception;
 use ArrayObject;
-use JsonSerializable;
+use Exception;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 class Response extends BaseResponse
@@ -59,7 +59,7 @@ class Response extends BaseResponse
     /**
      * Morph the given content into JSON.
      *
-     * @param  mixed   $content
+     * @param  mixed  $content
      * @return string
      */
     protected function morphToJson($content)
@@ -98,7 +98,6 @@ class Response extends BaseResponse
     /**
      * Set the exception to attach to the response.
      *
-     * @param  \Exception  $e
      * @return $this
      */
     public function withException(Exception $e)

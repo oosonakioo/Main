@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 interface Constraint
@@ -36,8 +38,6 @@ interface Constraint
     public function getName();
 
     /**
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
      * @return string
      */
     public function getQuotedName(AbstractPlatform $platform);
@@ -58,8 +58,7 @@ interface Constraint
      * is a keyword reserved by the platform.
      * Otherwise the plain unquoted value as inserted is returned.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The platform to use for quotation.
-     *
+     * @param  \Doctrine\DBAL\Platforms\AbstractPlatform  $platform  The platform to use for quotation.
      * @return array
      */
     public function getQuotedColumns(AbstractPlatform $platform);

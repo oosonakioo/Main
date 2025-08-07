@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateIssues extends Migration
 {
@@ -17,7 +17,7 @@ class CreateIssues extends Migration
             $table->integer('issue_topic_id')->unsigned();
             $table->string('issue', 500);
             $table->string('name', 500);
-			      $table->string('company', 500);
+            $table->string('company', 500);
             $table->string('tel', 50);
             $table->string('email', 100);
             $table->string('detail', 2000);

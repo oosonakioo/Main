@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,14 +30,14 @@ class ChainCache extends CacheProvider
     /**
      * @var CacheProvider[]
      */
-    private $cacheProviders = array();
+    private $cacheProviders = [];
 
     /**
      * Constructor
      *
-     * @param CacheProvider[] $cacheProviders
+     * @param  CacheProvider[]  $cacheProviders
      */
-    public function __construct($cacheProviders = array())
+    public function __construct($cacheProviders = [])
     {
         $this->cacheProviders = $cacheProviders;
     }
@@ -63,7 +64,7 @@ class ChainCache extends CacheProvider
                 $value = $cacheProvider->doFetch($id);
 
                 // We populate all the previous cache layers (that are assumed to be faster)
-                for ($subKey = $key - 1 ; $subKey >= 0 ; $subKey--) {
+                for ($subKey = $key - 1; $subKey >= 0; $subKey--) {
                     $this->cacheProviders[$subKey]->doSave($id, $value);
                 }
 
@@ -136,7 +137,7 @@ class ChainCache extends CacheProvider
     protected function doGetStats()
     {
         // We return all the stats from all adapters
-        $stats = array();
+        $stats = [];
 
         foreach ($this->cacheProviders as $cacheProvider) {
             $stats[] = $cacheProvider->doGetStats();

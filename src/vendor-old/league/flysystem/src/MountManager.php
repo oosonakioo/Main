@@ -3,7 +3,6 @@
 namespace League\Flysystem;
 
 use InvalidArgumentException;
-use League\Flysystem\FilesystemNotFoundException;
 use League\Flysystem\Plugin\PluggableTrait;
 use League\Flysystem\Plugin\PluginNotFoundException;
 
@@ -55,7 +54,7 @@ class MountManager
     /**
      * Constructor.
      *
-     * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
+     * @param  FilesystemInterface[]  $filesystems  [:prefix => Filesystem,]
      *
      * @throws InvalidArgumentException
      */
@@ -67,11 +66,10 @@ class MountManager
     /**
      * Mount filesystems.
      *
-     * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
+     * @param  FilesystemInterface[]  $filesystems  [:prefix => Filesystem,]
+     * @return $this
      *
      * @throws InvalidArgumentException
-     *
-     * @return $this
      */
     public function mountFilesystems(array $filesystems)
     {
@@ -85,17 +83,15 @@ class MountManager
     /**
      * Mount filesystems.
      *
-     * @param string              $prefix
-     * @param FilesystemInterface $filesystem
+     * @param  string  $prefix
+     * @return $this
      *
      * @throws InvalidArgumentException
-     *
-     * @return $this
      */
     public function mountFilesystem($prefix, FilesystemInterface $filesystem)
     {
-        if ( ! is_string($prefix)) {
-            throw new InvalidArgumentException(__METHOD__ . ' expects argument #1 to be a string.');
+        if (! is_string($prefix)) {
+            throw new InvalidArgumentException(__METHOD__.' expects argument #1 to be a string.');
         }
 
         $this->filesystems[$prefix] = $filesystem;
@@ -106,16 +102,15 @@ class MountManager
     /**
      * Get the filesystem with the corresponding prefix.
      *
-     * @param string $prefix
+     * @param  string  $prefix
+     * @return FilesystemInterface
      *
      * @throws FilesystemNotFoundException
-     *
-     * @return FilesystemInterface
      */
     public function getFilesystem($prefix)
     {
-        if ( ! isset($this->filesystems[$prefix])) {
-            throw new FilesystemNotFoundException('No filesystem mounted with prefix ' . $prefix);
+        if (! isset($this->filesystems[$prefix])) {
+            throw new FilesystemNotFoundException('No filesystem mounted with prefix '.$prefix);
         }
 
         return $this->filesystems[$prefix];
@@ -124,11 +119,10 @@ class MountManager
     /**
      * Retrieve the prefix from an arguments array.
      *
-     * @param array $arguments
-     *
-     * @throws InvalidArgumentException
      *
      * @return array [:prefix, :arguments]
+     *
+     * @throws InvalidArgumentException
      */
     public function filterPrefix(array $arguments)
     {
@@ -138,28 +132,27 @@ class MountManager
 
         $path = array_shift($arguments);
 
-        if ( ! is_string($path)) {
+        if (! is_string($path)) {
             throw new InvalidArgumentException('First argument should be a string');
         }
 
-        list($prefix, $path) = $this->getPrefixAndPath($path);
+        [$prefix, $path] = $this->getPrefixAndPath($path);
         array_unshift($arguments, $path);
 
         return [$prefix, $arguments];
     }
 
     /**
-     * @param string $directory
-     * @param bool   $recursive
+     * @param  string  $directory
+     * @param  bool  $recursive
+     * @return array
      *
      * @throws InvalidArgumentException
      * @throws FilesystemNotFoundException
-     *
-     * @return array
      */
     public function listContents($directory = '', $recursive = false)
     {
-        list($prefix, $directory) = $this->getPrefixAndPath($directory);
+        [$prefix, $directory] = $this->getPrefixAndPath($directory);
         $filesystem = $this->getFilesystem($prefix);
         $result = $filesystem->listContents($directory, $recursive);
 
@@ -173,34 +166,31 @@ class MountManager
     /**
      * Call forwarder.
      *
-     * @param string $method
-     * @param array  $arguments
+     * @param  string  $method
+     * @param  array  $arguments
+     * @return mixed
      *
      * @throws InvalidArgumentException
      * @throws FilesystemNotFoundException
-     *
-     * @return mixed
      */
     public function __call($method, $arguments)
     {
-        list($prefix, $arguments) = $this->filterPrefix($arguments);
+        [$prefix, $arguments] = $this->filterPrefix($arguments);
 
         return $this->invokePluginOnFilesystem($method, $arguments, $prefix);
     }
 
     /**
-     * @param string $from
-     * @param string $to
-     * @param array  $config
+     * @param  string  $from
+     * @param  string  $to
+     * @return bool
      *
      * @throws InvalidArgumentException
      * @throws FilesystemNotFoundException
-     *
-     * @return bool
      */
     public function copy($from, $to, array $config = [])
     {
-        list($prefixFrom, $from) = $this->getPrefixAndPath($from);
+        [$prefixFrom, $from] = $this->getPrefixAndPath($from);
 
         $buffer = $this->getFilesystem($prefixFrom)->readStream($from);
 
@@ -208,7 +198,7 @@ class MountManager
             return false;
         }
 
-        list($prefixTo, $to) = $this->getPrefixAndPath($to);
+        [$prefixTo, $to] = $this->getPrefixAndPath($to);
 
         $result = $this->getFilesystem($prefixTo)->writeStream($to, $buffer, $config);
 
@@ -222,18 +212,16 @@ class MountManager
     /**
      * List with plugin adapter.
      *
-     * @param array  $keys
-     * @param string $directory
-     * @param bool   $recursive
+     * @param  string  $directory
+     * @param  bool  $recursive
+     * @return array
      *
      * @throws InvalidArgumentException
      * @throws FilesystemNotFoundException
-     *
-     * @return array
      */
     public function listWith(array $keys = [], $directory = '', $recursive = false)
     {
-        list($prefix, $directory) = $this->getPrefixAndPath($directory);
+        [$prefix, $directory] = $this->getPrefixAndPath($directory);
         $arguments = [$keys, $directory, $recursive];
 
         return $this->invokePluginOnFilesystem('listWith', $arguments, $prefix);
@@ -242,14 +230,12 @@ class MountManager
     /**
      * Move a file.
      *
-     * @param string $from
-     * @param string $to
-     * @param array  $config
+     * @param  string  $from
+     * @param  string  $to
+     * @return bool
      *
      * @throws InvalidArgumentException
      * @throws FilesystemNotFoundException
-     *
-     * @return bool
      */
     public function move($from, $to, array $config = [])
     {
@@ -265,13 +251,12 @@ class MountManager
     /**
      * Invoke a plugin on a filesystem mounted on a given prefix.
      *
-     * @param string $method
-     * @param array  $arguments
-     * @param string $prefix
+     * @param  string  $method
+     * @param  array  $arguments
+     * @param  string  $prefix
+     * @return mixed
      *
      * @throws FilesystemNotFoundException
-     *
-     * @return mixed
      */
     public function invokePluginOnFilesystem($method, $arguments, $prefix)
     {
@@ -289,16 +274,15 @@ class MountManager
     }
 
     /**
-     * @param string $path
+     * @param  string  $path
+     * @return string[] [:prefix, :path]
      *
      * @throws InvalidArgumentException
-     *
-     * @return string[] [:prefix, :path]
      */
     protected function getPrefixAndPath($path)
     {
         if (strpos($path, '://') < 1) {
-            throw new InvalidArgumentException('No prefix detected in path: ' . $path);
+            throw new InvalidArgumentException('No prefix detected in path: '.$path);
         }
 
         return explode('://', $path, 2);

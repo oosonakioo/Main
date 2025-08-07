@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -29,9 +31,9 @@ final class Throws extends BaseTag implements Factory\StaticMethod
     /** @var Type */
     private $type;
 
-    public function __construct(Type $type, Description $description = null)
+    public function __construct(Type $type, ?Description $description = null)
     {
-        $this->type        = $type;
+        $this->type = $type;
         $this->description = $description;
     }
 
@@ -40,19 +42,19 @@ final class Throws extends BaseTag implements Factory\StaticMethod
      */
     public static function create(
         $body,
-        TypeResolver $typeResolver = null,
-        DescriptionFactory $descriptionFactory = null,
-        TypeContext $context = null
+        ?TypeResolver $typeResolver = null,
+        ?DescriptionFactory $descriptionFactory = null,
+        ?TypeContext $context = null
     ) {
         Assert::string($body);
         Assert::allNotNull([$typeResolver, $descriptionFactory]);
 
         $parts = preg_split('/\s+/Su', $body, 2);
 
-        $type        = $typeResolver->resolve(isset($parts[0]) ? $parts[0] : '', $context);
+        $type = $typeResolver->resolve(isset($parts[0]) ? $parts[0] : '', $context);
         $description = $descriptionFactory->create(isset($parts[1]) ? $parts[1] : '', $context);
 
-        return new static($type, $description);
+        return new self($type, $description);
     }
 
     /**
@@ -67,6 +69,6 @@ final class Throws extends BaseTag implements Factory\StaticMethod
 
     public function __toString()
     {
-        return $this->type . ' ' . $this->description;
+        return $this->type.' '.$this->description;
     }
 }

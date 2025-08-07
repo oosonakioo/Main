@@ -11,9 +11,9 @@
 
 namespace Monolog\Handler;
 
-use Monolog\Logger;
 use Monolog\Formatter\FlowdockFormatter;
 use Monolog\Formatter\FormatterInterface;
+use Monolog\Logger;
 
 /**
  * Sends notifications through the Flowdock push API
@@ -24,6 +24,7 @@ use Monolog\Formatter\FormatterInterface;
  * API token - Flowdock API token
  *
  * @author Dominik Liebler <liebler.dominik@gmail.com>
+ *
  * @see https://www.flowdock.com/api/push
  */
 class FlowdockHandler extends SocketHandler
@@ -34,15 +35,15 @@ class FlowdockHandler extends SocketHandler
     protected $apiToken;
 
     /**
-     * @param string   $apiToken
-     * @param bool|int $level    The minimum logging level at which this handler will be triggered
-     * @param bool     $bubble   Whether the messages that are handled can bubble up the stack or not
+     * @param  string  $apiToken
+     * @param  bool|int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
      *
      * @throws MissingExtensionException if OpenSSL is missing
      */
     public function __construct($apiToken, $level = Logger::DEBUG, $bubble = true)
     {
-        if (!extension_loaded('openssl')) {
+        if (! extension_loaded('openssl')) {
             throw new MissingExtensionException('The OpenSSL PHP extension is required to use the FlowdockHandler');
         }
 
@@ -55,7 +56,7 @@ class FlowdockHandler extends SocketHandler
      */
     public function setFormatter(FormatterInterface $formatter)
     {
-        if (!$formatter instanceof FlowdockFormatter) {
+        if (! $formatter instanceof FlowdockFormatter) {
             throw new \InvalidArgumentException('The FlowdockHandler requires an instance of Monolog\Formatter\FlowdockFormatter to function correctly');
         }
 
@@ -74,8 +75,6 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * {@inheritdoc}
-     *
-     * @param array $record
      */
     protected function write(array $record)
     {
@@ -94,7 +93,7 @@ class FlowdockHandler extends SocketHandler
     {
         $content = $this->buildContent($record);
 
-        return $this->buildHeader($content) . $content;
+        return $this->buildHeader($content).$content;
     }
 
     /**
@@ -111,15 +110,15 @@ class FlowdockHandler extends SocketHandler
     /**
      * Builds the header of the API Call
      *
-     * @param  string $content
+     * @param  string  $content
      * @return string
      */
     private function buildHeader($content)
     {
-        $header = "POST /v1/messages/team_inbox/" . $this->apiToken . " HTTP/1.1\r\n";
+        $header = 'POST /v1/messages/team_inbox/'.$this->apiToken." HTTP/1.1\r\n";
         $header .= "Host: api.flowdock.com\r\n";
         $header .= "Content-Type: application/json\r\n";
-        $header .= "Content-Length: " . strlen($content) . "\r\n";
+        $header .= 'Content-Length: '.strlen($content)."\r\n";
         $header .= "\r\n";
 
         return $header;

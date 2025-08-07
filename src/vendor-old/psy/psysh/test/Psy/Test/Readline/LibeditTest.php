@@ -17,15 +17,15 @@ class LibeditTest extends \PHPUnit_Framework_TestCase
 {
     private $historyFile;
 
-    public function setUp()
+    protected function setUp()
     {
-        if (!Libedit::isSupported()) {
+        if (! Libedit::isSupported()) {
             $this->markTestSkipped('Libedit not enabled');
         }
 
         $this->historyFile = tempnam(sys_get_temp_dir(), 'psysh_test_history');
-        if (false === file_put_contents($this->historyFile, "_HiStOrY_V2_\n")) {
-            $this->fail('Unable to write history file: ' . $this->historyFile);
+        if (file_put_contents($this->historyFile, "_HiStOrY_V2_\n") === false) {
+            $this->fail('Unable to write history file: '.$this->historyFile);
         }
         // Calling readline_read_history before readline_clear_history
         // avoids segfault with PHP 5.5.7 & libedit v3.1
@@ -33,65 +33,65 @@ class LibeditTest extends \PHPUnit_Framework_TestCase
         readline_clear_history();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         if (is_file($this->historyFile)) {
             unlink($this->historyFile);
         }
     }
 
-    public function testHistory()
+    public function test_history()
     {
         $readline = new Libedit($this->historyFile);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
-        $this->assertEquals(array('foo'), $readline->listHistory());
+        $this->assertEquals(['foo'], $readline->listHistory());
         $readline->addHistory('bar');
-        $this->assertEquals(array('foo', 'bar'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar'], $readline->listHistory());
         $readline->addHistory('baz');
-        $this->assertEquals(array('foo', 'bar', 'baz'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar', 'baz'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
     /**
-     * @depends testHistory
+     * @depends test_history
      */
-    public function testHistorySize()
+    public function test_history_size()
     {
         $readline = new Libedit($this->historyFile, 2);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
         $readline->addHistory('bar');
-        $this->assertEquals(array('foo', 'bar'), $readline->listHistory());
+        $this->assertEquals(['foo', 'bar'], $readline->listHistory());
         $readline->addHistory('baz');
-        $this->assertEquals(array('bar', 'baz'), $readline->listHistory());
+        $this->assertEquals(['bar', 'baz'], $readline->listHistory());
         $readline->addHistory('w00t');
-        $this->assertEquals(array('baz', 'w00t'), $readline->listHistory());
+        $this->assertEquals(['baz', 'w00t'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
     /**
-     * @depends testHistory
+     * @depends test_history
      */
-    public function testHistoryEraseDups()
+    public function test_history_erase_dups()
     {
         $readline = new Libedit($this->historyFile, 0, true);
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
         $readline->addHistory('bar');
         $readline->addHistory('foo');
-        $this->assertEquals(array('bar', 'foo'), $readline->listHistory());
+        $this->assertEquals(['bar', 'foo'], $readline->listHistory());
         $readline->addHistory('baz');
         $readline->addHistory('w00t');
         $readline->addHistory('baz');
-        $this->assertEquals(array('bar', 'foo', 'w00t', 'baz'), $readline->listHistory());
+        $this->assertEquals(['bar', 'foo', 'w00t', 'baz'], $readline->listHistory());
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
 
-    public function testListHistory()
+    public function test_list_history()
     {
         $readline = new Libedit($this->historyFile);
         file_put_contents(
@@ -99,10 +99,10 @@ class LibeditTest extends \PHPUnit_Framework_TestCase
             "This is an entry\n\0This is a comment\nThis is an entry\0With a comment\n",
             FILE_APPEND
         );
-        $this->assertEquals(array(
+        $this->assertEquals([
             'This is an entry',
             'This is an entry',
-        ), $readline->listHistory());
+        ], $readline->listHistory());
         $readline->clearHistory();
     }
 
@@ -110,7 +110,7 @@ class LibeditTest extends \PHPUnit_Framework_TestCase
      * Libedit being a BSD library,
      * it doesn't support non-unix line separators.
      */
-    public function testLinebreaksSupport()
+    public function test_linebreaks_support()
     {
         $readline = new Libedit($this->historyFile);
         file_put_contents(
@@ -118,11 +118,11 @@ class LibeditTest extends \PHPUnit_Framework_TestCase
             "foo\rbar\nbaz\r\nw00t",
             FILE_APPEND
         );
-        $this->assertEquals(array(
+        $this->assertEquals([
             "foo\rbar",
             "baz\r",
             'w00t',
-        ), $readline->listHistory());
+        ], $readline->listHistory());
         $readline->clearHistory();
     }
 }

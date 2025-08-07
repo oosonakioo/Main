@@ -1,4 +1,5 @@
 <?php
+
 class Issue1351Test extends PHPUnit_Framework_TestCase
 {
     protected $instance;
@@ -6,13 +7,13 @@ class Issue1351Test extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testFailurePre()
+    public function test_failure_pre()
     {
-        $this->instance = new ChildProcessClass1351();
+        $this->instance = new ChildProcessClass1351;
         $this->assertFalse(true, 'Expected failure.');
     }
 
-    public function testFailurePost()
+    public function test_failure_post()
     {
         $this->assertNull($this->instance);
         $this->assertFalse(class_exists('ChildProcessClass1351', false), 'ChildProcessClass1351 is not loaded.');
@@ -21,9 +22,9 @@ class Issue1351Test extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testExceptionPre()
+    public function test_exception_pre()
     {
-        $this->instance = new ChildProcessClass1351();
+        $this->instance = new ChildProcessClass1351;
         try {
             throw new LogicException('Expected exception.');
         } catch (LogicException $e) {
@@ -31,13 +32,13 @@ class Issue1351Test extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testExceptionPost()
+    public function test_exception_post()
     {
         $this->assertNull($this->instance);
         $this->assertFalse(class_exists('ChildProcessClass1351', false), 'ChildProcessClass1351 is not loaded.');
     }
 
-    public function testPhpCoreLanguageException()
+    public function test_php_core_language_exception()
     {
         // User-space code cannot instantiate a PDOException with a string code,
         // so trigger a real one.

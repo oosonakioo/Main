@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Cache;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -95,15 +97,15 @@ class WinCacheCache extends CacheProvider
      */
     protected function doGetStats()
     {
-        $info    = wincache_ucache_info();
+        $info = wincache_ucache_info();
         $meminfo = wincache_ucache_meminfo();
 
-        return array(
-            Cache::STATS_HITS             => $info['total_hit_count'],
-            Cache::STATS_MISSES           => $info['total_miss_count'],
-            Cache::STATS_UPTIME           => $info['total_cache_uptime'],
-            Cache::STATS_MEMORY_USAGE     => $meminfo['memory_total'],
+        return [
+            Cache::STATS_HITS => $info['total_hit_count'],
+            Cache::STATS_MISSES => $info['total_miss_count'],
+            Cache::STATS_UPTIME => $info['total_cache_uptime'],
+            Cache::STATS_MEMORY_USAGE => $meminfo['memory_total'],
             Cache::STATS_MEMORY_AVAILABLE => $meminfo['memory_free'],
-        );
+        ];
     }
 }

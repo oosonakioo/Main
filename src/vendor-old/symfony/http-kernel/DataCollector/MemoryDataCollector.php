@@ -23,16 +23,16 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
 {
     public function __construct()
     {
-        $this->data = array(
+        $this->data = [
             'memory' => 0,
             'memory_limit' => $this->convertToBytes(ini_get('memory_limit')),
-        );
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, ?\Exception $exception = null)
     {
         $this->updateMemoryUsage();
     }
@@ -83,15 +83,15 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
 
     private function convertToBytes($memoryLimit)
     {
-        if ('-1' === $memoryLimit) {
+        if ($memoryLimit === '-1') {
             return -1;
         }
 
         $memoryLimit = strtolower($memoryLimit);
         $max = strtolower(ltrim($memoryLimit, '+'));
-        if (0 === strpos($max, '0x')) {
+        if (strpos($max, '0x') === 0) {
             $max = intval($max, 16);
-        } elseif (0 === strpos($max, '0')) {
+        } elseif (strpos($max, '0') === 0) {
             $max = intval($max, 8);
         } else {
             $max = (int) $max;

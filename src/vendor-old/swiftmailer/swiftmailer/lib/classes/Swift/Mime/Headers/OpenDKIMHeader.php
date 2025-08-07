@@ -30,7 +30,7 @@ class Swift_Mime_Headers_OpenDKIMHeader implements Swift_Mime_Header
     private $_fieldName;
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function __construct($name)
     {
@@ -55,7 +55,7 @@ class Swift_Mime_Headers_OpenDKIMHeader implements Swift_Mime_Header
      *
      * This method takes a string for the field value.
      *
-     * @param string $model
+     * @param  string  $model
      */
     public function setFieldBodyModel($model)
     {
@@ -87,7 +87,7 @@ class Swift_Mime_Headers_OpenDKIMHeader implements Swift_Mime_Header
     /**
      * Set the (unencoded) value of this header.
      *
-     * @param string $value
+     * @param  string  $value
      */
     public function setValue($value)
     {
@@ -127,7 +127,5 @@ class Swift_Mime_Headers_OpenDKIMHeader implements Swift_Mime_Header
     /**
      * Ignored.
      */
-    public function setCharset($charset)
-    {
-    }
+    public function setCharset($charset) {}
 }

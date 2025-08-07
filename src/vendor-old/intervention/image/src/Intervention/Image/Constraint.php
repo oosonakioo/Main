@@ -24,14 +24,12 @@ class Constraint
     /**
      * Integer value of fixed parameters
      *
-     * @var integer
+     * @var int
      */
     private $fixed = 0;
 
     /**
      * Create a new constraint based on size
-     *
-     * @param Size $size
      */
     public function __construct(Size $size)
     {
@@ -50,7 +48,8 @@ class Constraint
 
     /**
      * Fix the given argument in current constraint
-     * @param  integer $type
+     *
+     * @param  int  $type
      * @return void
      */
     public function fix($type)
@@ -61,8 +60,8 @@ class Constraint
     /**
      * Checks if given argument is fixed in current constraint
      *
-     * @param  integer  $type
-     * @return boolean
+     * @param  int  $type
+     * @return bool
      */
     public function isFixed($type)
     {

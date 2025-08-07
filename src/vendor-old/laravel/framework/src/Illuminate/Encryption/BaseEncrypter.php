@@ -65,7 +65,6 @@ abstract class BaseEncrypter
     /**
      * Determine if the MAC for the given payload is valid.
      *
-     * @param  array  $payload
      * @return bool
      *
      * @throws \RuntimeException

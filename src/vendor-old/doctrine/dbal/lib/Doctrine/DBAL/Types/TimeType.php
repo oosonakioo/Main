@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -62,8 +63,8 @@ class TimeType extends Type
             return $value;
         }
 
-        $val = \DateTime::createFromFormat('!' . $platform->getTimeFormatString(), $value);
-        if ( ! $val) {
+        $val = \DateTime::createFromFormat('!'.$platform->getTimeFormatString(), $value);
+        if (! $val) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getTimeFormatString());
         }
 

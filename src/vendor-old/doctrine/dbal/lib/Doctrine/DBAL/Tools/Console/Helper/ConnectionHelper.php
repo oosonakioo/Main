@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,14 +20,15 @@
 
 namespace Doctrine\DBAL\Tools\Console\Helper;
 
-use Symfony\Component\Console\Helper\Helper;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Helper\Helper;
 
 /**
  * Doctrine CLI Connection Helper.
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -44,7 +46,7 @@ class ConnectionHelper extends Helper
     /**
      * Constructor.
      *
-     * @param \Doctrine\DBAL\Connection $connection The Doctrine database Connection.
+     * @param  \Doctrine\DBAL\Connection  $connection  The Doctrine database Connection.
      */
     public function __construct(Connection $connection)
     {

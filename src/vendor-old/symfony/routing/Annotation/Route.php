@@ -15,6 +15,7 @@ namespace Symfony\Component\Routing\Annotation;
  * Annotation class for @Route().
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD"})
  *
  * @author Fabien Potencier <fabien@symfony.com>
@@ -22,19 +23,27 @@ namespace Symfony\Component\Routing\Annotation;
 class Route
 {
     private $path;
+
     private $name;
-    private $requirements = array();
-    private $options = array();
-    private $defaults = array();
+
+    private $requirements = [];
+
+    private $options = [];
+
+    private $defaults = [];
+
     private $host;
-    private $methods = array();
-    private $schemes = array();
+
+    private $methods = [];
+
+    private $schemes = [];
+
     private $condition;
 
     /**
      * Constructor.
      *
-     * @param array $data An array of key/value parameters
+     * @param  array  $data  An array of key/value parameters
      *
      * @throws \BadMethodCallException
      */
@@ -47,7 +56,7 @@ class Route
 
         foreach ($data as $key => $value) {
             $method = 'set'.str_replace('_', '', $key);
-            if (!method_exists($this, $method)) {
+            if (! method_exists($this, $method)) {
                 throw new \BadMethodCallException(sprintf('Unknown property "%s" on annotation "%s".', $key, get_class($this)));
             }
             $this->$method($value);
@@ -116,7 +125,7 @@ class Route
 
     public function setSchemes($schemes)
     {
-        $this->schemes = is_array($schemes) ? $schemes : array($schemes);
+        $this->schemes = is_array($schemes) ? $schemes : [$schemes];
     }
 
     public function getSchemes()
@@ -126,7 +135,7 @@ class Route
 
     public function setMethods($methods)
     {
-        $this->methods = is_array($methods) ? $methods : array($methods);
+        $this->methods = is_array($methods) ? $methods : [$methods];
     }
 
     public function getMethods()

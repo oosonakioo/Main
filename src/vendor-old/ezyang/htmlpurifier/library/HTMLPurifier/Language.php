@@ -6,42 +6,48 @@
  */
 class HTMLPurifier_Language
 {
-
     /**
      * ISO 639 language code of language. Prefers shortest possible version.
+     *
      * @type string
      */
     public $code = 'en';
 
     /**
      * Fallback language code.
+     *
      * @type bool|string
      */
     public $fallback = false;
 
     /**
      * Array of localizable messages.
+     *
      * @type array
      */
-    public $messages = array();
+    public $messages = [];
 
     /**
      * Array of localizable error codes.
+     *
      * @type array
      */
-    public $errorNames = array();
+    public $errorNames = [];
 
     /**
      * True if no message file was found for this language, so English
      * is being used instead. Check this if you'd like to notify the
      * user that they've used a non-supported language.
+     *
      * @type bool
      */
     public $error = false;
 
     /**
      * Has the language object been loaded yet?
+     *
      * @type bool
+     *
      * @todo Make it private, fix usage in HTMLPurifier_LanguageTest
      */
     public $_loaded = false;
@@ -57,17 +63,18 @@ class HTMLPurifier_Language
     protected $context;
 
     /**
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      */
     public function __construct($config, $context)
     {
-        $this->config  = $config;
+        $this->config = $config;
         $this->context = $context;
     }
 
     /**
      * Loads language object with necessary info from factory cache
+     *
      * @note This is a lazy loader
      */
     public function load()
@@ -85,44 +92,49 @@ class HTMLPurifier_Language
 
     /**
      * Retrieves a localised message.
-     * @param string $key string identifier of message
+     *
+     * @param  string  $key  string identifier of message
      * @return string localised message
      */
     public function getMessage($key)
     {
-        if (!$this->_loaded) {
+        if (! $this->_loaded) {
             $this->load();
         }
-        if (!isset($this->messages[$key])) {
+        if (! isset($this->messages[$key])) {
             return "[$key]";
         }
+
         return $this->messages[$key];
     }
 
     /**
      * Retrieves a localised error name.
-     * @param int $int error number, corresponding to PHP's error reporting
+     *
+     * @param  int  $int  error number, corresponding to PHP's error reporting
      * @return string localised message
      */
     public function getErrorName($int)
     {
-        if (!$this->_loaded) {
+        if (! $this->_loaded) {
             $this->load();
         }
-        if (!isset($this->errorNames[$int])) {
+        if (! isset($this->errorNames[$int])) {
             return "[Error: $int]";
         }
+
         return $this->errorNames[$int];
     }
 
     /**
      * Converts an array list into a string readable representation
-     * @param array $array
+     *
+     * @param  array  $array
      * @return string
      */
     public function listify($array)
     {
-        $sep      = $this->getMessage('Item separator');
+        $sep = $this->getMessage('Item separator');
         $sep_last = $this->getMessage('Item separator last');
         $ret = '';
         for ($i = 0, $c = count($array); $i < $c; $i++) {
@@ -134,33 +146,36 @@ class HTMLPurifier_Language
             }
             $ret .= $array[$i];
         }
+
         return $ret;
     }
 
     /**
      * Formats a localised message with passed parameters
-     * @param string $key string identifier of message
-     * @param array $args Parameters to substitute in
+     *
+     * @param  string  $key  string identifier of message
+     * @param  array  $args  Parameters to substitute in
      * @return string localised message
+     *
      * @todo Implement conditionals? Right now, some messages make
      *     reference to line numbers, but those aren't always available
      */
-    public function formatMessage($key, $args = array())
+    public function formatMessage($key, $args = [])
     {
-        if (!$this->_loaded) {
+        if (! $this->_loaded) {
             $this->load();
         }
-        if (!isset($this->messages[$key])) {
+        if (! isset($this->messages[$key])) {
             return "[$key]";
         }
         $raw = $this->messages[$key];
-        $subst = array();
+        $subst = [];
         $generator = false;
         foreach ($args as $i => $value) {
             if (is_object($value)) {
                 if ($value instanceof HTMLPurifier_Token) {
                     // factor this out some time
-                    if (!$generator) {
+                    if (! $generator) {
                         $generator = $this->context->get('Generator');
                     }
                     if (isset($value->name)) {
@@ -174,13 +189,14 @@ class HTMLPurifier_Language
                     // a more complex algorithm for compact representation
                     // could be introduced for all types of tokens. This
                     // may need to be factored out into a dedicated class
-                    if (!empty($value->attr)) {
+                    if (! empty($value->attr)) {
                         $stripped_token = clone $value;
-                        $stripped_token->attr = array();
+                        $stripped_token->attr = [];
                         $subst['$'.$i.'.Compact'] = $generator->generateFromToken($stripped_token);
                     }
                     $subst['$'.$i.'.Line'] = $value->line ? $value->line : 'unknown';
                 }
+
                 continue;
             } elseif (is_array($value)) {
                 $keys = array_keys($value);
@@ -193,10 +209,12 @@ class HTMLPurifier_Language
                     $subst['$'.$i.'.Keys'] = $this->listify($keys);
                     $subst['$'.$i.'.Values'] = $this->listify(array_values($value));
                 }
+
                 continue;
             }
-            $subst['$' . $i] = $value;
+            $subst['$'.$i] = $value;
         }
+
         return strtr($raw, $subst);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,18 +31,17 @@ use PDO;
 class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
 {
     /**
-     * @param string      $dsn
-     * @param string|null $user
-     * @param string|null $password
-     * @param array|null  $options
+     * @param  string  $dsn
+     * @param  string|null  $user
+     * @param  string|null  $password
      *
      * @throws PDOException in case of an error.
      */
-    public function __construct($dsn, $user = null, $password = null, array $options = null)
+    public function __construct($dsn, $user = null, $password = null, ?array $options = null)
     {
         try {
             parent::__construct($dsn, $user, $password, $options);
-            $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('Doctrine\DBAL\Driver\PDOStatement', array()));
+            $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, ['Doctrine\DBAL\Driver\PDOStatement', []]);
             $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
@@ -71,7 +71,7 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     /**
      * {@inheritdoc}
      */
-    public function prepare($prepareString, $driverOptions = array())
+    public function prepare($prepareString, $driverOptions = [])
     {
         try {
             return parent::prepare($prepareString, $driverOptions);

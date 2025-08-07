@@ -12,7 +12,6 @@
 namespace Psy\Test\CodeCleaner;
 
 use PhpParser\NodeTraverser;
-use PhpParser\Parser;
 use PhpParser\PrettyPrinter\Standard as Printer;
 use Psy\CodeCleaner\CodeCleanerPass;
 use Psy\Exception\ParseErrorException;
@@ -21,32 +20,35 @@ use Psy\ParserFactory;
 class CodeCleanerTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $pass;
+
     protected $traverser;
+
     private $parser;
+
     private $printer;
 
     protected function setPass(CodeCleanerPass $pass)
     {
         $this->pass = $pass;
-        if (!isset($this->traverser)) {
-            $this->traverser = new NodeTraverser();
+        if (! isset($this->traverser)) {
+            $this->traverser = new NodeTraverser;
         }
         $this->traverser->addVisitor($this->pass);
     }
 
     protected function parse($code, $prefix = '<?php ')
     {
-        $code = $prefix . $code;
+        $code = $prefix.$code;
         try {
             return $this->getParser()->parse($code);
         } catch (\PhpParser\Error $e) {
-            if (!$this->parseErrorIsEOF($e)) {
+            if (! $this->parseErrorIsEOF($e)) {
                 throw ParseErrorException::fromParseError($e);
             }
 
             try {
                 // Unexpected EOF, try again with an implicit semicolon
-                return $this->getParser()->parse($code . ';');
+                return $this->getParser()->parse($code.';');
             } catch (\PhpParser\Error $e) {
                 return false;
             }
@@ -72,9 +74,9 @@ class CodeCleanerTestCase extends \PHPUnit_Framework_TestCase
 
     private function getParser()
     {
-        if (!isset($this->parser)) {
-            $parserFactory = new ParserFactory();
-            $this->parser  = $parserFactory->createParser();
+        if (! isset($this->parser)) {
+            $parserFactory = new ParserFactory;
+            $this->parser = $parserFactory->createParser();
         }
 
         return $this->parser;
@@ -82,8 +84,8 @@ class CodeCleanerTestCase extends \PHPUnit_Framework_TestCase
 
     private function getPrinter()
     {
-        if (!isset($this->printer)) {
-            $this->printer = new Printer();
+        if (! isset($this->printer)) {
+            $this->printer = new Printer;
         }
 
         return $this->printer;

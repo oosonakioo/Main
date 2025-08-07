@@ -2,20 +2,19 @@
 
 namespace Barryvdh\elFinderFlysystemDriver\Plugin;
 
-use League\Flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\Plugin\AbstractPlugin;
-use League\Flysystem\Cached\CachedAdapter;
 
 class GetUrl extends AbstractPlugin
 {
-
     /**
      * @var AdapterInterface
      */
     protected $adapter;
-    
+
     /**
      * @var Adapter has method getUrl()
      */
@@ -23,14 +22,12 @@ class GetUrl extends AbstractPlugin
 
     /**
      * Set the Filesystem object.
-     *
-     * @param FilesystemInterface $filesystem
      */
     public function setFilesystem(FilesystemInterface $filesystem)
     {
         parent::setFilesystem($filesystem);
 
-        if ( $filesystem instanceof Filesystem) {
+        if ($filesystem instanceof Filesystem) {
             $this->adapter = $filesystem->getAdapter();
 
             // For a cached adapter, get the underlying instance
@@ -38,7 +35,7 @@ class GetUrl extends AbstractPlugin
                 $this->adapter = $this->adapter->getAdapter();
             }
 
-            //TODO: Check on actual implementations, not just an existing method
+            // TODO: Check on actual implementations, not just an existing method
             $this->hasMethod = method_exists($this->adapter, 'getUrl');
         }
 
@@ -57,8 +54,7 @@ class GetUrl extends AbstractPlugin
     /**
      * Get the public url
      *
-     * @param string $path  path to file
-     *
+     * @param  string  $path  path to file
      * @return string|false
      */
     public function handle($path = null)
@@ -67,7 +63,7 @@ class GetUrl extends AbstractPlugin
             return $this->hasMethod;
         }
 
-        if ( ! $this->hasMethod) {
+        if (! $this->hasMethod) {
             return false;
         }
 
@@ -77,12 +73,11 @@ class GetUrl extends AbstractPlugin
     /**
      * Get the URL using a `getUrl()` method on the adapter.
      *
-     * @param  string $path
+     * @param  string  $path
      * @return string
      */
     protected function getFromMethod($path)
     {
         return $this->adapter->getUrl($path);
     }
-
 }

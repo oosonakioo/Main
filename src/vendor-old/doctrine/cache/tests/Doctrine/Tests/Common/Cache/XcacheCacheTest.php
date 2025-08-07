@@ -11,6 +11,6 @@ class XcacheCacheTest extends CacheTest
 {
     protected function _getCacheDriver()
     {
-        return new XcacheCache();
+        return new XcacheCache;
     }
 }

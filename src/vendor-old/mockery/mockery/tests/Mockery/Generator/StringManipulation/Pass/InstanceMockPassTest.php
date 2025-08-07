@@ -2,7 +2,6 @@
 
 namespace Mockery\Test\Generator\StringManipulation\Pass;
 
-use Mockery as m;
 use Mockery\Generator\MockConfigurationBuilder;
 use Mockery\Generator\StringManipulation\Pass\InstanceMockPass;
 
@@ -11,7 +10,7 @@ class InstanceMockPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldAppendConstructorAndPropertyForInstanceMock()
+    public function should_append_constructor_and_property_for_instance_mock()
     {
         $builder = new MockConfigurationBuilder;
         $builder->setInstanceMock(true);

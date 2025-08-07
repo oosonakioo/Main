@@ -1,32 +1,31 @@
 <?php
+
 class StatusTest extends PHPUnit_Framework_TestCase
 {
-    public function testSuccess()
+    public function test_success()
     {
         $this->assertTrue(true);
     }
 
-    public function testFailure()
+    public function test_failure()
     {
         $this->assertTrue(false);
     }
 
-    public function testError()
+    public function test_error()
     {
         throw new \Exception;
     }
 
-    public function testIncomplete()
+    public function test_incomplete()
     {
         $this->markTestIncomplete();
     }
 
-    public function testSkipped()
+    public function test_skipped()
     {
         $this->markTestSkipped();
     }
 
-    public function testRisky()
-    {
-    }
+    public function test_risky() {}
 }

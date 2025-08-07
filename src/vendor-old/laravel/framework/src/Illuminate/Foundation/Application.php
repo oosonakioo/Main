@@ -3,20 +3,20 @@
 namespace Illuminate\Foundation;
 
 use Closure;
-use RuntimeException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Events\EventServiceProvider;
-use Illuminate\Routing\RoutingServiceProvider;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Events\EventServiceProvider;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
+use Illuminate\Routing\RoutingServiceProvider;
+use Illuminate\Support\Arr;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
@@ -190,7 +190,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Run the given array of bootstrap classes.
      *
-     * @param  array  $bootstrappers
      * @return void
      */
     public function bootstrapWith(array $bootstrappers)
@@ -209,7 +208,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a callback to run after loading the environment.
      *
-     * @param  \Closure  $callback
      * @return void
      */
     public function afterLoadingEnvironment(Closure $callback)
@@ -223,7 +221,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a callback to run before a bootstrapper.
      *
      * @param  string  $bootstrapper
-     * @param  Closure  $callback
      * @return void
      */
     public function beforeBootstrapping($bootstrapper, Closure $callback)
@@ -235,7 +232,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a callback to run after a bootstrapper.
      *
      * @param  string  $bootstrapper
-     * @param  Closure  $callback
      * @return void
      */
     public function afterBootstrapping($bootstrapper, Closure $callback)
@@ -487,14 +483,13 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Detect the application's current environment.
      *
-     * @param  \Closure  $callback
      * @return string
      */
     public function detectEnvironment(Closure $callback)
     {
         $args = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
 
-        return $this['env'] = (new EnvironmentDetector())->detect($callback, $args);
+        return $this['env'] = (new EnvironmentDetector)->detect($callback, $args);
     }
 
     /**
@@ -527,7 +522,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $manifestPath = $this->getCachedServicesPath();
 
         (new ProviderRepository($this, new Filesystem, $manifestPath))
-                    ->load($this->config['app.providers']);
+            ->load($this->config['app.providers']);
     }
 
     /**
@@ -535,7 +530,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
      * @param  array  $options
-     * @param  bool   $force
+     * @param  bool  $force
      * @return \Illuminate\Support\ServiceProvider
      */
     public function register($provider, $options = [], $force = false)
@@ -683,7 +678,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * (Overriding Container::make)
      *
      * @param  string  $abstract
-     * @param  array   $parameters
      * @return mixed
      */
     public function make($abstract, array $parameters = [])
@@ -748,7 +742,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Boot the given service provider.
      *
-     * @param  \Illuminate\Support\ServiceProvider  $provider
      * @return mixed
      */
     protected function bootProvider(ServiceProvider $provider)
@@ -787,7 +780,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Call the booting callbacks for the application.
      *
-     * @param  array  $callbacks
      * @return void
      */
     protected function fireAppCallbacks(array $callbacks)
@@ -889,9 +881,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Throw an HttpException with the given data.
      *
-     * @param  int     $code
+     * @param  int  $code
      * @param  string  $message
-     * @param  array   $headers
      * @return void
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
@@ -908,7 +899,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a terminating callback with the application.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function terminating(Closure $callback)
@@ -953,7 +943,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Set the application's deferred services.
      *
-     * @param  array  $services
      * @return void
      */
     public function setDeferredServices(array $services)
@@ -964,7 +953,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Add an array of services to the application's deferred services.
      *
-     * @param  array  $services
      * @return void
      */
     public function addDeferredServices(array $services)
@@ -986,7 +974,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Define a callback to be used to configure Monolog.
      *
-     * @param  callable  $callback
      * @return $this
      */
     public function configureMonologUsing(callable $callback)
@@ -1060,40 +1047,40 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function registerCoreContainerAliases()
     {
         $aliases = [
-            'app'                  => ['Illuminate\Foundation\Application', 'Illuminate\Contracts\Container\Container', 'Illuminate\Contracts\Foundation\Application'],
-            'auth'                 => ['Illuminate\Auth\AuthManager', 'Illuminate\Contracts\Auth\Factory'],
-            'auth.driver'          => ['Illuminate\Contracts\Auth\Guard'],
-            'blade.compiler'       => ['Illuminate\View\Compilers\BladeCompiler'],
-            'cache'                => ['Illuminate\Cache\CacheManager', 'Illuminate\Contracts\Cache\Factory'],
-            'cache.store'          => ['Illuminate\Cache\Repository', 'Illuminate\Contracts\Cache\Repository'],
-            'config'               => ['Illuminate\Config\Repository', 'Illuminate\Contracts\Config\Repository'],
-            'cookie'               => ['Illuminate\Cookie\CookieJar', 'Illuminate\Contracts\Cookie\Factory', 'Illuminate\Contracts\Cookie\QueueingFactory'],
-            'encrypter'            => ['Illuminate\Encryption\Encrypter', 'Illuminate\Contracts\Encryption\Encrypter'],
-            'db'                   => ['Illuminate\Database\DatabaseManager'],
-            'db.connection'        => ['Illuminate\Database\Connection', 'Illuminate\Database\ConnectionInterface'],
-            'events'               => ['Illuminate\Events\Dispatcher', 'Illuminate\Contracts\Events\Dispatcher'],
-            'files'                => ['Illuminate\Filesystem\Filesystem'],
-            'filesystem'           => ['Illuminate\Filesystem\FilesystemManager', 'Illuminate\Contracts\Filesystem\Factory'],
-            'filesystem.disk'      => ['Illuminate\Contracts\Filesystem\Filesystem'],
-            'filesystem.cloud'     => ['Illuminate\Contracts\Filesystem\Cloud'],
-            'hash'                 => ['Illuminate\Contracts\Hashing\Hasher'],
-            'translator'           => ['Illuminate\Translation\Translator', 'Symfony\Component\Translation\TranslatorInterface'],
-            'log'                  => ['Illuminate\Log\Writer', 'Illuminate\Contracts\Logging\Log', 'Psr\Log\LoggerInterface'],
-            'mailer'               => ['Illuminate\Mail\Mailer', 'Illuminate\Contracts\Mail\Mailer', 'Illuminate\Contracts\Mail\MailQueue'],
-            'auth.password'        => ['Illuminate\Auth\Passwords\PasswordBrokerManager', 'Illuminate\Contracts\Auth\PasswordBrokerFactory'],
+            'app' => ['Illuminate\Foundation\Application', 'Illuminate\Contracts\Container\Container', 'Illuminate\Contracts\Foundation\Application'],
+            'auth' => ['Illuminate\Auth\AuthManager', 'Illuminate\Contracts\Auth\Factory'],
+            'auth.driver' => ['Illuminate\Contracts\Auth\Guard'],
+            'blade.compiler' => ['Illuminate\View\Compilers\BladeCompiler'],
+            'cache' => ['Illuminate\Cache\CacheManager', 'Illuminate\Contracts\Cache\Factory'],
+            'cache.store' => ['Illuminate\Cache\Repository', 'Illuminate\Contracts\Cache\Repository'],
+            'config' => ['Illuminate\Config\Repository', 'Illuminate\Contracts\Config\Repository'],
+            'cookie' => ['Illuminate\Cookie\CookieJar', 'Illuminate\Contracts\Cookie\Factory', 'Illuminate\Contracts\Cookie\QueueingFactory'],
+            'encrypter' => ['Illuminate\Encryption\Encrypter', 'Illuminate\Contracts\Encryption\Encrypter'],
+            'db' => ['Illuminate\Database\DatabaseManager'],
+            'db.connection' => ['Illuminate\Database\Connection', 'Illuminate\Database\ConnectionInterface'],
+            'events' => ['Illuminate\Events\Dispatcher', 'Illuminate\Contracts\Events\Dispatcher'],
+            'files' => ['Illuminate\Filesystem\Filesystem'],
+            'filesystem' => ['Illuminate\Filesystem\FilesystemManager', 'Illuminate\Contracts\Filesystem\Factory'],
+            'filesystem.disk' => ['Illuminate\Contracts\Filesystem\Filesystem'],
+            'filesystem.cloud' => ['Illuminate\Contracts\Filesystem\Cloud'],
+            'hash' => ['Illuminate\Contracts\Hashing\Hasher'],
+            'translator' => ['Illuminate\Translation\Translator', 'Symfony\Component\Translation\TranslatorInterface'],
+            'log' => ['Illuminate\Log\Writer', 'Illuminate\Contracts\Logging\Log', 'Psr\Log\LoggerInterface'],
+            'mailer' => ['Illuminate\Mail\Mailer', 'Illuminate\Contracts\Mail\Mailer', 'Illuminate\Contracts\Mail\MailQueue'],
+            'auth.password' => ['Illuminate\Auth\Passwords\PasswordBrokerManager', 'Illuminate\Contracts\Auth\PasswordBrokerFactory'],
             'auth.password.broker' => ['Illuminate\Auth\Passwords\PasswordBroker', 'Illuminate\Contracts\Auth\PasswordBroker'],
-            'queue'                => ['Illuminate\Queue\QueueManager', 'Illuminate\Contracts\Queue\Factory', 'Illuminate\Contracts\Queue\Monitor'],
-            'queue.connection'     => ['Illuminate\Contracts\Queue\Queue'],
-            'queue.failer'         => ['Illuminate\Queue\Failed\FailedJobProviderInterface'],
-            'redirect'             => ['Illuminate\Routing\Redirector'],
-            'redis'                => ['Illuminate\Redis\Database', 'Illuminate\Contracts\Redis\Database'],
-            'request'              => ['Illuminate\Http\Request', 'Symfony\Component\HttpFoundation\Request'],
-            'router'               => ['Illuminate\Routing\Router', 'Illuminate\Contracts\Routing\Registrar'],
-            'session'              => ['Illuminate\Session\SessionManager'],
-            'session.store'        => ['Illuminate\Session\Store', 'Symfony\Component\HttpFoundation\Session\SessionInterface'],
-            'url'                  => ['Illuminate\Routing\UrlGenerator', 'Illuminate\Contracts\Routing\UrlGenerator'],
-            'validator'            => ['Illuminate\Validation\Factory', 'Illuminate\Contracts\Validation\Factory'],
-            'view'                 => ['Illuminate\View\Factory', 'Illuminate\Contracts\View\Factory'],
+            'queue' => ['Illuminate\Queue\QueueManager', 'Illuminate\Contracts\Queue\Factory', 'Illuminate\Contracts\Queue\Monitor'],
+            'queue.connection' => ['Illuminate\Contracts\Queue\Queue'],
+            'queue.failer' => ['Illuminate\Queue\Failed\FailedJobProviderInterface'],
+            'redirect' => ['Illuminate\Routing\Redirector'],
+            'redis' => ['Illuminate\Redis\Database', 'Illuminate\Contracts\Redis\Database'],
+            'request' => ['Illuminate\Http\Request', 'Symfony\Component\HttpFoundation\Request'],
+            'router' => ['Illuminate\Routing\Router', 'Illuminate\Contracts\Routing\Registrar'],
+            'session' => ['Illuminate\Session\SessionManager'],
+            'session.store' => ['Illuminate\Session\Store', 'Symfony\Component\HttpFoundation\Session\SessionInterface'],
+            'url' => ['Illuminate\Routing\UrlGenerator', 'Illuminate\Contracts\Routing\UrlGenerator'],
+            'validator' => ['Illuminate\Validation\Factory', 'Illuminate\Contracts\Validation\Factory'],
+            'view' => ['Illuminate\View\Factory', 'Illuminate\Contracts\View\Factory'],
         ];
 
         foreach ($aliases as $key => $aliases) {

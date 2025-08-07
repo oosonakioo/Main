@@ -7,8 +7,8 @@ class MaskCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Applies an alpha mask to an image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -18,7 +18,7 @@ class MaskCommand extends \Intervention\Image\Commands\AbstractCommand
         $image_size = $image->getSize();
 
         // create empty canvas
-        $canvas = $image->getDriver()->newImage($image_size->width, $image_size->height, array(0,0,0,0));
+        $canvas = $image->getDriver()->newImage($image_size->width, $image_size->height, [0, 0, 0, 0]);
 
         // build mask image from source
         $mask = $image->getDriver()->init($mask_source);
@@ -31,14 +31,14 @@ class MaskCommand extends \Intervention\Image\Commands\AbstractCommand
 
         imagealphablending($canvas->getCore(), false);
 
-        if ( ! $mask_w_alpha) {
+        if (! $mask_w_alpha) {
             // mask from greyscale image
             imagefilter($mask->getCore(), IMG_FILTER_GRAYSCALE);
         }
 
         // redraw old image pixel by pixel considering alpha map
-        for ($x=0; $x < $image_size->width; $x++) {
-            for ($y=0; $y < $image_size->height; $y++) {
+        for ($x = 0; $x < $image_size->width; $x++) {
+            for ($y = 0; $y < $image_size->height; $y++) {
 
                 $color = $image->pickColor($x, $y, 'array');
                 $alpha = $mask->pickColor($x, $y, 'array');
@@ -71,7 +71,6 @@ class MaskCommand extends \Intervention\Image\Commands\AbstractCommand
                 $canvas->pixel($color, $x, $y);
             }
         }
-
 
         // replace current image with masked instance
         $image->setCore($canvas->getCore());

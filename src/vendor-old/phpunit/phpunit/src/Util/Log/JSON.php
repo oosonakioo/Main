@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -33,9 +34,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * An error occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -53,9 +52,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param  float  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -73,9 +70,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * Incomplete test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -83,7 +78,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'error',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            'Incomplete Test: ' . $e->getMessage(),
+            'Incomplete Test: '.$e->getMessage(),
             $test
         );
 
@@ -93,9 +88,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * Risky test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      *
      * @since  Method available since Release 4.0.0
      */
@@ -105,7 +98,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'error',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            'Risky Test: ' . $e->getMessage(),
+            'Risky Test: '.$e->getMessage(),
             $test
         );
 
@@ -115,9 +108,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * Skipped test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param  float  $time
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -125,7 +116,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'error',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            'Skipped Test: ' . $e->getMessage(),
+            'Skipped Test: '.$e->getMessage(),
             $test
         );
 
@@ -134,38 +125,32 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
 
     /**
      * A testsuite started.
-     *
-     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->currentTestSuiteName = $suite->getName();
-        $this->currentTestName      = '';
+        $this->currentTestName = '';
 
         $this->write(
-            array(
-            'event' => 'suiteStart',
-            'suite' => $this->currentTestSuiteName,
-            'tests' => count($suite)
-            )
+            [
+                'event' => 'suiteStart',
+                'suite' => $this->currentTestSuiteName,
+                'tests' => count($suite),
+            ]
         );
     }
 
     /**
      * A testsuite ended.
-     *
-     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->currentTestSuiteName = '';
-        $this->currentTestName      = '';
+        $this->currentTestName = '';
     }
 
     /**
      * A test started.
-     *
-     * @param PHPUnit_Framework_Test $test
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -173,35 +158,33 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestPass = true;
 
         $this->write(
-            array(
-            'event' => 'testStart',
-            'suite' => $this->currentTestSuiteName,
-            'test'  => $this->currentTestName
-            )
+            [
+                'event' => 'testStart',
+                'suite' => $this->currentTestSuiteName,
+                'test' => $this->currentTestName,
+            ]
         );
     }
 
     /**
      * A test ended.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param float                  $time
+     * @param  float  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestPass) {
-            $this->writeCase('pass', $time, array(), '', $test);
+            $this->writeCase('pass', $time, [], '', $test);
         }
     }
 
     /**
-     * @param string                          $status
-     * @param float                           $time
-     * @param array                           $trace
-     * @param string                          $message
-     * @param PHPUnit_Framework_TestCase|null $test
+     * @param  string  $status
+     * @param  float  $time
+     * @param  string  $message
+     * @param  PHPUnit_Framework_TestCase|null  $test
      */
-    protected function writeCase($status, $time, array $trace = array(), $message = '', $test = null)
+    protected function writeCase($status, $time, array $trace = [], $message = '', $test = null)
     {
         $output = '';
         // take care of TestSuite producing error (e.g. by running into exception) as TestSuite doesn't have hasOutput
@@ -209,21 +192,21 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             $output = $test->getActualOutput();
         }
         $this->write(
-            array(
-            'event'   => 'test',
-            'suite'   => $this->currentTestSuiteName,
-            'test'    => $this->currentTestName,
-            'status'  => $status,
-            'time'    => $time,
-            'trace'   => $trace,
-            'message' => PHPUnit_Util_String::convertToUtf8($message),
-            'output'  => $output,
-            )
+            [
+                'event' => 'test',
+                'suite' => $this->currentTestSuiteName,
+                'test' => $this->currentTestName,
+                'status' => $status,
+                'time' => $time,
+                'trace' => $trace,
+                'message' => PHPUnit_Util_String::convertToUtf8($message),
+                'output' => $output,
+            ]
         );
     }
 
     /**
-     * @param string $buffer
+     * @param  string  $buffer
      */
     public function write($buffer)
     {

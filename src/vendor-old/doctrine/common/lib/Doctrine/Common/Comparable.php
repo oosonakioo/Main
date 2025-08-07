@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
@@ -38,8 +40,7 @@ interface Comparable
      * This method should not check for identity using ===, only for semantical equality for example
      * when two different DateTime instances point to the exact same Date + TZ.
      *
-     * @param mixed $other
-     *
+     * @param  mixed  $other
      * @return int
      */
     public function compareTo($other);

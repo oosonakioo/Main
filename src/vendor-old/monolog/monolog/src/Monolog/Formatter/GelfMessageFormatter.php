@@ -11,11 +11,12 @@
 
 namespace Monolog\Formatter;
 
-use Monolog\Logger;
 use Gelf\Message;
+use Monolog\Logger;
 
 /**
  * Serializes a log message to GELF
+ *
  * @see http://www.graylog2.org/about/gelf
  *
  * @author Matt Lehner <mlehner@gmail.com>
@@ -42,16 +43,16 @@ class GelfMessageFormatter extends NormalizerFormatter
     /**
      * Translates Monolog log levels to Graylog2 log priorities.
      */
-    private $logLevels = array(
-        Logger::DEBUG     => 7,
-        Logger::INFO      => 6,
-        Logger::NOTICE    => 5,
-        Logger::WARNING   => 4,
-        Logger::ERROR     => 3,
-        Logger::CRITICAL  => 2,
-        Logger::ALERT     => 1,
+    private $logLevels = [
+        Logger::DEBUG => 7,
+        Logger::INFO => 6,
+        Logger::NOTICE => 5,
+        Logger::WARNING => 4,
+        Logger::ERROR => 3,
+        Logger::CRITICAL => 2,
+        Logger::ALERT => 1,
         Logger::EMERGENCY => 0,
-    );
+    ];
 
     public function __construct($systemName = null, $extraPrefix = null, $contextPrefix = 'ctxt_')
     {
@@ -70,11 +71,11 @@ class GelfMessageFormatter extends NormalizerFormatter
     {
         $record = parent::format($record);
 
-        if (!isset($record['datetime'], $record['message'], $record['level'])) {
+        if (! isset($record['datetime'], $record['message'], $record['level'])) {
             throw new \InvalidArgumentException('The record should at least contain datetime, message and level keys, '.var_export($record, true).' given');
         }
 
-        $message = new Message();
+        $message = new Message;
         $message
             ->setTimestamp($record['datetime'])
             ->setShortMessage((string) $record['message'])
@@ -106,27 +107,27 @@ class GelfMessageFormatter extends NormalizerFormatter
         }
 
         foreach ($record['extra'] as $key => $val) {
-            $val = is_scalar($val) || null === $val ? $val : $this->toJson($val);
-            $len += strlen($this->extraPrefix . $key . $val);
+            $val = is_scalar($val) || $val === null ? $val : $this->toJson($val);
+            $len += strlen($this->extraPrefix.$key.$val);
             if ($len > self::MAX_LENGTH) {
-                $message->setAdditional($this->extraPrefix . $key, substr($val, 0, self::MAX_LENGTH - $len));
+                $message->setAdditional($this->extraPrefix.$key, substr($val, 0, self::MAX_LENGTH - $len));
                 break;
             }
-            $message->setAdditional($this->extraPrefix . $key, $val);
+            $message->setAdditional($this->extraPrefix.$key, $val);
         }
 
         foreach ($record['context'] as $key => $val) {
-            $val = is_scalar($val) || null === $val ? $val : $this->toJson($val);
-            $len += strlen($this->contextPrefix . $key . $val);
+            $val = is_scalar($val) || $val === null ? $val : $this->toJson($val);
+            $len += strlen($this->contextPrefix.$key.$val);
             if ($len > self::MAX_LENGTH) {
-                $message->setAdditional($this->contextPrefix . $key, substr($val, 0, self::MAX_LENGTH - $len));
+                $message->setAdditional($this->contextPrefix.$key, substr($val, 0, self::MAX_LENGTH - $len));
                 break;
             }
-            $message->setAdditional($this->contextPrefix . $key, $val);
+            $message->setAdditional($this->contextPrefix.$key, $val);
         }
 
-        if (null === $message->getFile() && isset($record['context']['exception']['file'])) {
-            if (preg_match("/^(.+):([0-9]+)$/", $record['context']['exception']['file'], $matches)) {
+        if ($message->getFile() === null && isset($record['context']['exception']['file'])) {
+            if (preg_match('/^(.+):([0-9]+)$/', $record['context']['exception']['file'], $matches)) {
                 $message->setFile($matches[1]);
                 $message->setLine($matches[2]);
             }

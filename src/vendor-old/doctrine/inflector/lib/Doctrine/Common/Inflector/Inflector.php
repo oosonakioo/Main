@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,6 +31,7 @@ namespace Doctrine\Common\Inflector;
  *
  * @link   www.doctrine-project.org
  * @since  1.0
+ *
  * @author Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author Jonathan H. Wage <jonwage@gmail.com>
  */
@@ -40,8 +42,8 @@ class Inflector
      *
      * @var array
      */
-    private static $plural = array(
-        'rules' => array(
+    private static $plural = [
+        'rules' => [
             '/(s)tatus$/i' => '\1\2tatuses',
             '/(quiz)$/i' => '\1zes',
             '/^(ox)$/i' => '\1\2en',
@@ -65,11 +67,11 @@ class Inflector
             '/s$/' => 's',
             '/^$/' => '',
             '/$/' => 's',
-        ),
-        'uninflected' => array(
-            '.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox', '.*sheep', 'people', 'cookie'
-        ),
-        'irregular' => array(
+        ],
+        'uninflected' => [
+            '.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox', '.*sheep', 'people', 'cookie',
+        ],
+        'irregular' => [
             'atlas' => 'atlases',
             'axe' => 'axes',
             'beef' => 'beefs',
@@ -127,16 +129,16 @@ class Inflector
             'trilby' => 'trilbys',
             'turf' => 'turfs',
             'volcano' => 'volcanoes',
-        )
-    );
+        ],
+    ];
 
     /**
      * Singular inflector rules.
      *
      * @var array
      */
-    private static $singular = array(
-        'rules' => array(
+    private static $singular = [
+        'rules' => [
             '/(s)tatuses$/i' => '\1\2tatus',
             '/^(.*)(menu)s$/i' => '\1\2',
             '/(quiz)zes$/i' => '\\1',
@@ -173,8 +175,8 @@ class Inflector
             '/eaus$/' => 'eau',
             '/^(.*us)$/' => '\\1',
             '/s$/i' => '',
-        ),
-        'uninflected' => array(
+        ],
+        'uninflected' => [
             '.*[nrlm]ese',
             '.*deer',
             '.*fish',
@@ -183,26 +185,26 @@ class Inflector
             '.*pox',
             '.*sheep',
             '.*ss',
-        ),
-        'irregular' => array(
-            'criteria'  => 'criterion',
-            'curves'    => 'curve',
-            'emphases'  => 'emphasis',
-            'foes'      => 'foe',
-            'hoaxes'    => 'hoax',
-            'media'     => 'medium',
-            'neuroses'  => 'neurosis',
-            'waves'     => 'wave',
-            'oases'     => 'oasis',
-        )
-    );
+        ],
+        'irregular' => [
+            'criteria' => 'criterion',
+            'curves' => 'curve',
+            'emphases' => 'emphasis',
+            'foes' => 'foe',
+            'hoaxes' => 'hoax',
+            'media' => 'medium',
+            'neuroses' => 'neurosis',
+            'waves' => 'wave',
+            'oases' => 'oasis',
+        ],
+    ];
 
     /**
      * Words that should not be inflected.
      *
      * @var array
      */
-    private static $uninflected = array(
+    private static $uninflected = [
         'Amoyese', 'bison', 'Borghese', 'bream', 'breeches', 'britches', 'buffalo', 'cantus',
         'carp', 'chassis', 'clippers', 'cod', 'coitus', 'Congoese', 'contretemps', 'corps',
         'debris', 'diabetes', 'djinn', 'eland', 'elk', 'equipment', 'Faroese', 'flounder',
@@ -214,28 +216,27 @@ class Inflector
         'proceedings', 'rabies', 'rice', 'rhinoceros', 'salmon', 'Sarawakese', 'scissors',
         'sea[- ]bass', 'series', 'Shavese', 'shears', 'siemens', 'species', 'staff', 'swine',
         'testes', 'trousers', 'trout', 'tuna', 'Vermontese', 'Wenchowese', 'whiting',
-        'wildebeest', 'Yengeese'
-    );
+        'wildebeest', 'Yengeese',
+    ];
 
     /**
      * Method cache array.
      *
      * @var array
      */
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * The initial state of Inflector so reset() works.
      *
      * @var array
      */
-    private static $initialState = array();
+    private static $initialState = [];
 
     /**
      * Converts a word into the format for a Doctrine table name. Converts 'ModelName' to 'model_name'.
      *
-     * @param string $word The word to tableize.
-     *
+     * @param  string  $word  The word to tableize.
      * @return string The tableized word.
      */
     public static function tableize($word)
@@ -246,20 +247,18 @@ class Inflector
     /**
      * Converts a word into the format for a Doctrine class name. Converts 'table_name' to 'TableName'.
      *
-     * @param string $word The word to classify.
-     *
+     * @param  string  $word  The word to classify.
      * @return string The classified word.
      */
     public static function classify($word)
     {
-        return str_replace(" ", "", ucwords(strtr($word, "_-", "  ")));
+        return str_replace(' ', '', ucwords(strtr($word, '_-', '  ')));
     }
 
     /**
      * Camelizes a word. This uses the classify() method and turns the first character to lowercase.
      *
-     * @param string $word The word to camelize.
-     *
+     * @param  string  $word  The word to camelize.
      * @return string The camelized word.
      */
     public static function camelize($word)
@@ -287,16 +286,15 @@ class Inflector
      * ?>
      * </code>
      *
-     * @param string $string The string to operate on.
-     * @param string $delimiters A list of word separators.
-     *
+     * @param  string  $string  The string to operate on.
+     * @param  string  $delimiters  A list of word separators.
      * @return string The string with all delimeter-separated words capitalized.
      */
     public static function ucwords($string, $delimiters = " \n\t\r\0\x0B-")
     {
         return preg_replace_callback(
-            '/[^' . preg_quote($delimiters, '/') . ']+/',
-            function($matches) {
+            '/[^'.preg_quote($delimiters, '/').']+/',
+            function ($matches) {
                 return ucfirst($matches[0]);
             },
             $string
@@ -338,17 +336,16 @@ class Inflector
      * ));
      * }}}
      *
-     * @param string  $type  The type of inflection, either 'plural' or 'singular'
-     * @param array   $rules An array of rules to be added.
-     * @param boolean $reset If true, will unset default inflections for all
+     * @param  string  $type  The type of inflection, either 'plural' or 'singular'
+     * @param  array  $rules  An array of rules to be added.
+     * @param  bool  $reset  If true, will unset default inflections for all
      *                       new rules that are being defined in $rules.
-     *
      * @return void
      */
     public static function rules($type, $rules, $reset = false)
     {
         foreach ($rules as $rule => $pattern) {
-            if ( ! is_array($pattern)) {
+            if (! is_array($pattern)) {
                 continue;
             }
 
@@ -360,16 +357,16 @@ class Inflector
                     : $pattern + self::${$type}[$rule];
             }
 
-            unset($rules[$rule], self::${$type}['cache' . ucfirst($rule)]);
+            unset($rules[$rule], self::${$type}['cache'.ucfirst($rule)]);
 
             if (isset(self::${$type}['merged'][$rule])) {
                 unset(self::${$type}['merged'][$rule]);
             }
 
             if ($type === 'plural') {
-                self::$cache['pluralize'] = self::$cache['tableize'] = array();
+                self::$cache['pluralize'] = self::$cache['tableize'] = [];
             } elseif ($type === 'singular') {
-                self::$cache['singularize'] = array();
+                self::$cache['singularize'] = [];
             }
         }
 
@@ -379,8 +376,7 @@ class Inflector
     /**
      * Returns a word in plural form.
      *
-     * @param string $word The word in singular form.
-     *
+     * @param  string  $word  The word in singular form.
      * @return string The word in plural form.
      */
     public static function pluralize($word)
@@ -389,26 +385,26 @@ class Inflector
             return self::$cache['pluralize'][$word];
         }
 
-        if (!isset(self::$plural['merged']['irregular'])) {
+        if (! isset(self::$plural['merged']['irregular'])) {
             self::$plural['merged']['irregular'] = self::$plural['irregular'];
         }
 
-        if (!isset(self::$plural['merged']['uninflected'])) {
+        if (! isset(self::$plural['merged']['uninflected'])) {
             self::$plural['merged']['uninflected'] = array_merge(self::$plural['uninflected'], self::$uninflected);
         }
 
-        if (!isset(self::$plural['cacheUninflected']) || !isset(self::$plural['cacheIrregular'])) {
-            self::$plural['cacheUninflected'] = '(?:' . implode('|', self::$plural['merged']['uninflected']) . ')';
-            self::$plural['cacheIrregular']   = '(?:' . implode('|', array_keys(self::$plural['merged']['irregular'])) . ')';
+        if (! isset(self::$plural['cacheUninflected']) || ! isset(self::$plural['cacheIrregular'])) {
+            self::$plural['cacheUninflected'] = '(?:'.implode('|', self::$plural['merged']['uninflected']).')';
+            self::$plural['cacheIrregular'] = '(?:'.implode('|', array_keys(self::$plural['merged']['irregular'])).')';
         }
 
-        if (preg_match('/(.*)\\b(' . self::$plural['cacheIrregular'] . ')$/i', $word, $regs)) {
-            self::$cache['pluralize'][$word] = $regs[1] . substr($word, 0, 1) . substr(self::$plural['merged']['irregular'][strtolower($regs[2])], 1);
-            
+        if (preg_match('/(.*)\\b('.self::$plural['cacheIrregular'].')$/i', $word, $regs)) {
+            self::$cache['pluralize'][$word] = $regs[1].substr($word, 0, 1).substr(self::$plural['merged']['irregular'][strtolower($regs[2])], 1);
+
             return self::$cache['pluralize'][$word];
         }
 
-        if (preg_match('/^(' . self::$plural['cacheUninflected'] . ')$/i', $word, $regs)) {
+        if (preg_match('/^('.self::$plural['cacheUninflected'].')$/i', $word, $regs)) {
             self::$cache['pluralize'][$word] = $word;
 
             return $word;
@@ -426,8 +422,7 @@ class Inflector
     /**
      * Returns a word in singular form.
      *
-     * @param string $word The word in plural form.
-     *
+     * @param  string  $word  The word in plural form.
      * @return string The word in singular form.
      */
     public static function singularize($word)
@@ -436,32 +431,32 @@ class Inflector
             return self::$cache['singularize'][$word];
         }
 
-        if (!isset(self::$singular['merged']['uninflected'])) {
+        if (! isset(self::$singular['merged']['uninflected'])) {
             self::$singular['merged']['uninflected'] = array_merge(
                 self::$singular['uninflected'],
                 self::$uninflected
             );
         }
 
-        if (!isset(self::$singular['merged']['irregular'])) {
+        if (! isset(self::$singular['merged']['irregular'])) {
             self::$singular['merged']['irregular'] = array_merge(
                 self::$singular['irregular'],
                 array_flip(self::$plural['irregular'])
             );
         }
 
-        if (!isset(self::$singular['cacheUninflected']) || !isset(self::$singular['cacheIrregular'])) {
-            self::$singular['cacheUninflected'] = '(?:' . join('|', self::$singular['merged']['uninflected']) . ')';
-            self::$singular['cacheIrregular'] = '(?:' . join('|', array_keys(self::$singular['merged']['irregular'])) . ')';
+        if (! isset(self::$singular['cacheUninflected']) || ! isset(self::$singular['cacheIrregular'])) {
+            self::$singular['cacheUninflected'] = '(?:'.implode('|', self::$singular['merged']['uninflected']).')';
+            self::$singular['cacheIrregular'] = '(?:'.implode('|', array_keys(self::$singular['merged']['irregular'])).')';
         }
 
-        if (preg_match('/(.*)\\b(' . self::$singular['cacheIrregular'] . ')$/i', $word, $regs)) {
-            self::$cache['singularize'][$word] = $regs[1] . substr($word, 0, 1) . substr(self::$singular['merged']['irregular'][strtolower($regs[2])], 1);
-            
+        if (preg_match('/(.*)\\b('.self::$singular['cacheIrregular'].')$/i', $word, $regs)) {
+            self::$cache['singularize'][$word] = $regs[1].substr($word, 0, 1).substr(self::$singular['merged']['irregular'][strtolower($regs[2])], 1);
+
             return self::$cache['singularize'][$word];
         }
 
-        if (preg_match('/^(' . self::$singular['cacheUninflected'] . ')$/i', $word, $regs)) {
+        if (preg_match('/^('.self::$singular['cacheUninflected'].')$/i', $word, $regs)) {
             self::$cache['singularize'][$word] = $word;
 
             return $word;

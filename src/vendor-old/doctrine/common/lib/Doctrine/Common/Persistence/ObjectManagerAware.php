@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -42,8 +43,6 @@ interface ObjectManagerAware
     /**
      * Injects responsible ObjectManager and the ClassMetadata into this persistent object.
      *
-     * @param ObjectManager $objectManager
-     * @param ClassMetadata $classMetadata
      *
      * @return void
      */

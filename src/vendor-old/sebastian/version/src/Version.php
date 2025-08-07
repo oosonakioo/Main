@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Version package.
  *
@@ -16,17 +17,19 @@ namespace SebastianBergmann;
 class Version
 {
     private $path;
+
     private $release;
+
     private $version;
 
     /**
-     * @param string $release
-     * @param string $path
+     * @param  string  $release
+     * @param  string  $path
      */
     public function __construct($release, $path)
     {
         $this->release = $release;
-        $this->path    = $path;
+        $this->path = $path;
     }
 
     /**
@@ -38,7 +41,7 @@ class Version
             if (count(explode('.', $this->release)) == 3) {
                 $this->version = $this->release;
             } else {
-                $this->version = $this->release . '-dev';
+                $this->version = $this->release.'-dev';
             }
 
             $git = $this->getGitInformation($this->path);
@@ -49,7 +52,7 @@ class Version
                 } else {
                     $git = explode('-', $git);
 
-                    $this->version = $this->release . '-' . end($git);
+                    $this->version = $this->release.'-'.end($git);
                 }
             }
         }
@@ -58,19 +61,19 @@ class Version
     }
 
     /**
-     * @param  string      $path
+     * @param  string  $path
      * @return bool|string
      */
     private function getGitInformation($path)
     {
-        if (!is_dir($path . DIRECTORY_SEPARATOR . '.git')) {
+        if (! is_dir($path.DIRECTORY_SEPARATOR.'.git')) {
             return false;
         }
 
         $dir = getcwd();
         chdir($path);
         $returnCode = 1;
-        $result     = @exec('git describe --tags 2>&1', $output, $returnCode);
+        $result = @exec('git describe --tags 2>&1', $output, $returnCode);
         chdir($dir);
 
         if ($returnCode !== 0) {

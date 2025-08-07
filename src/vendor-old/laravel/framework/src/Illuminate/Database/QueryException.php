@@ -24,8 +24,7 @@ class QueryException extends PDOException
      * Create a new query exception instance.
      *
      * @param  string  $sql
-     * @param  array  $bindings
-     * @param  \Exception $previous
+     * @param  \Exception  $previous
      * @return void
      */
     public function __construct($sql, array $bindings, $previous)
@@ -48,7 +47,7 @@ class QueryException extends PDOException
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Exception $previous
+     * @param  \Exception  $previous
      * @return string
      */
     protected function formatMessage($sql, $bindings, $previous)

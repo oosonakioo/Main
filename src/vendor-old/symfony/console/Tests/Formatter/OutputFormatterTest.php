@@ -16,13 +16,13 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class OutputFormatterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testEmptyTag()
+    public function test_empty_tag()
     {
         $formatter = new OutputFormatter(true);
         $this->assertEquals('foo<>bar', $formatter->format('foo<>bar'));
     }
 
-    public function testLGCharEscaping()
+    public function test_lg_char_escaping()
     {
         $formatter = new OutputFormatter(true);
 
@@ -36,7 +36,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testBundledStyles()
+    public function test_bundled_styles()
     {
         $formatter = new OutputFormatter(true);
 
@@ -63,7 +63,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testNestedStyles()
+    public function test_nested_styles()
     {
         $formatter = new OutputFormatter(true);
 
@@ -73,7 +73,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAdjacentStyles()
+    public function test_adjacent_styles()
     {
         $formatter = new OutputFormatter(true);
 
@@ -83,7 +83,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testStyleMatchingNotGreedy()
+    public function test_style_matching_not_greedy()
     {
         $formatter = new OutputFormatter(true);
 
@@ -93,7 +93,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testStyleEscaping()
+    public function test_style_escaping()
     {
         $formatter = new OutputFormatter(true);
 
@@ -108,7 +108,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDeepNestedStyles()
+    public function test_deep_nested_styles()
     {
         $formatter = new OutputFormatter(true);
 
@@ -118,7 +118,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testNewStyle()
+    public function test_new_style()
     {
         $formatter = new OutputFormatter(true);
 
@@ -134,7 +134,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("\033[34;47msome \033[39;49m\033[34;47mcustom\033[39;49m\033[34;47m msg\033[39;49m", $formatter->format('<test>some <b>custom</b> msg</test>'));
     }
 
-    public function testRedefineStyle()
+    public function test_redefine_style()
     {
         $formatter = new OutputFormatter(true);
 
@@ -144,7 +144,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("\033[34;47msome custom msg\033[39;49m", $formatter->format('<info>some custom msg</info>'));
     }
 
-    public function testInlineStyle()
+    public function test_inline_style()
     {
         $formatter = new OutputFormatter(true);
 
@@ -152,29 +152,29 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("\033[34;41msome text\033[39;49m", $formatter->format('<fg=blue;bg=red>some text</fg=blue;bg=red>'));
     }
 
-    public function testNonStyleTag()
+    public function test_non_style_tag()
     {
         $formatter = new OutputFormatter(true);
 
         $this->assertEquals("\033[32msome \033[39m\033[32m<tag>\033[39m\033[32m \033[39m\033[32m<setting=value>\033[39m\033[32m styled \033[39m\033[32m<p>\033[39m\033[32msingle-char tag\033[39m\033[32m</p>\033[39m", $formatter->format('<info>some <tag> <setting=value> styled <p>single-char tag</p></info>'));
     }
 
-    public function testFormatLongString()
+    public function test_format_long_string()
     {
         $formatter = new OutputFormatter(true);
         $long = str_repeat('\\', 14000);
         $this->assertEquals("\033[37;41msome error\033[39;49m".$long, $formatter->format('<error>some error</error>'.$long));
     }
 
-    public function testFormatToStringObject()
+    public function test_format_to_string_object()
     {
         $formatter = new OutputFormatter(false);
         $this->assertEquals(
-            'some info', $formatter->format(new TableCell())
+            'some info', $formatter->format(new TableCell)
         );
     }
 
-    public function testNotDecoratedFormatter()
+    public function test_not_decorated_formatter()
     {
         $formatter = new OutputFormatter(false);
 
@@ -212,7 +212,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testContentWithLineBreaks()
+    public function test_content_with_line_breaks()
     {
         $formatter = new OutputFormatter(true);
 
@@ -224,7 +224,7 @@ EOF
 <info>
 some text</info>
 EOF
-        ));
+            ));
 
         $this->assertEquals(<<<EOF
 \033[32msome text
@@ -234,7 +234,7 @@ EOF
 <info>some text
 </info>
 EOF
-        ));
+            ));
 
         $this->assertEquals(<<<EOF
 \033[32m
@@ -246,7 +246,7 @@ EOF
 some text
 </info>
 EOF
-        ));
+            ));
 
         $this->assertEquals(<<<EOF
 \033[32m
@@ -260,7 +260,7 @@ some text
 more text
 </info>
 EOF
-        ));
+            ));
     }
 }
 

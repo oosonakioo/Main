@@ -6,10 +6,10 @@ class Swift_Mime_HeaderEncoder_Base64HeaderEncoderAcceptanceTest extends \PHPUni
 
     protected function setUp()
     {
-        $this->_encoder = new Swift_Mime_HeaderEncoder_Base64HeaderEncoder();
+        $this->_encoder = new Swift_Mime_HeaderEncoder_Base64HeaderEncoder;
     }
 
-    public function testEncodingJIS()
+    public function test_encoding_jis()
     {
         if (function_exists('mb_convert_encoding')) {
             // base64_encode and split cannot handle long JIS text to fold

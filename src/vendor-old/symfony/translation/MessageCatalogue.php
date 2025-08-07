@@ -20,20 +20,25 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  */
 class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterface
 {
-    private $messages = array();
-    private $metadata = array();
-    private $resources = array();
+    private $messages = [];
+
+    private $metadata = [];
+
+    private $resources = [];
+
     private $locale;
+
     private $fallbackCatalogue;
+
     private $parent;
 
     /**
      * Constructor.
      *
-     * @param string $locale   The locale
-     * @param array  $messages An array of messages classified by domain
+     * @param  string  $locale  The locale
+     * @param  array  $messages  An array of messages classified by domain
      */
-    public function __construct($locale, array $messages = array())
+    public function __construct($locale, array $messages = [])
     {
         $this->locale = $locale;
         $this->messages = $messages;
@@ -60,11 +65,11 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function all($domain = null)
     {
-        if (null === $domain) {
+        if ($domain === null) {
             return $this->messages;
         }
 
-        return isset($this->messages[$domain]) ? $this->messages[$domain] : array();
+        return isset($this->messages[$domain]) ? $this->messages[$domain] : [];
     }
 
     /**
@@ -72,7 +77,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function set($id, $translation, $domain = 'messages')
     {
-        $this->add(array($id => $translation), $domain);
+        $this->add([$id => $translation], $domain);
     }
 
     /**
@@ -84,7 +89,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
             return true;
         }
 
-        if (null !== $this->fallbackCatalogue) {
+        if ($this->fallbackCatalogue !== null) {
             return $this->fallbackCatalogue->has($id, $domain);
         }
 
@@ -108,7 +113,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
             return $this->messages[$domain][$id];
         }
 
-        if (null !== $this->fallbackCatalogue) {
+        if ($this->fallbackCatalogue !== null) {
             return $this->fallbackCatalogue->get($id, $domain);
         }
 
@@ -120,7 +125,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function replace($messages, $domain = 'messages')
     {
-        $this->messages[$domain] = array();
+        $this->messages[$domain] = [];
 
         $this->add($messages, $domain);
     }
@@ -130,7 +135,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function add($messages, $domain = 'messages')
     {
-        if (!isset($this->messages[$domain])) {
+        if (! isset($this->messages[$domain])) {
             $this->messages[$domain] = $messages;
         } else {
             $this->messages[$domain] = array_replace($this->messages[$domain], $messages);
@@ -217,12 +222,12 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function getMetadata($key = '', $domain = 'messages')
     {
-        if ('' == $domain) {
+        if ($domain == '') {
             return $this->metadata;
         }
 
         if (isset($this->metadata[$domain])) {
-            if ('' == $key) {
+            if ($key == '') {
                 return $this->metadata[$domain];
             }
 
@@ -245,9 +250,9 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function deleteMetadata($key = '', $domain = 'messages')
     {
-        if ('' == $domain) {
-            $this->metadata = array();
-        } elseif ('' == $key) {
+        if ($domain == '') {
+            $this->metadata = [];
+        } elseif ($key == '') {
             unset($this->metadata[$domain]);
         } else {
             unset($this->metadata[$domain][$key]);
@@ -257,7 +262,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
     /**
      * Adds current values with the new values.
      *
-     * @param array $values Values to add
+     * @param  array  $values  Values to add
      */
     private function addMetadata(array $values)
     {

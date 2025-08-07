@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Cache;
  *
  * @link   www.doctrine-project.org
  * @since  1.5
+ *
  * @author Kotlyar Maksim <kotlyar.maksim@gmail.com>
  */
 class VoidCache extends CacheProvider
@@ -71,8 +73,5 @@ class VoidCache extends CacheProvider
     /**
      * {@inheritDoc}
      */
-    protected function doGetStats()
-    {
-        return;
-    }
+    protected function doGetStats() {}
 }

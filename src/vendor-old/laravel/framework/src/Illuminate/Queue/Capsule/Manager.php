@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Capsule;
 
-use Illuminate\Queue\QueueManager;
 use Illuminate\Container\Container;
+use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\QueueServiceProvider;
 use Illuminate\Support\Traits\CapsuleManagerTrait;
 
@@ -21,10 +21,9 @@ class Manager
     /**
      * Create a new queue capsule manager.
      *
-     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
-    public function __construct(Container $container = null)
+    public function __construct(?Container $container = null)
     {
         $this->setupContainer($container ?: new Container);
 
@@ -85,7 +84,7 @@ class Manager
      * Push a new job onto the queue.
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @param  string  $connection
      * @return mixed
@@ -98,8 +97,8 @@ class Manager
     /**
      * Push a new an array of jobs onto the queue.
      *
-     * @param  array   $jobs
-     * @param  mixed   $data
+     * @param  array  $jobs
+     * @param  mixed  $data
      * @param  string  $queue
      * @param  string  $connection
      * @return mixed
@@ -114,7 +113,7 @@ class Manager
      *
      * @param  \DateTime|int  $delay
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @param  string  $connection
      * @return mixed
@@ -138,7 +137,6 @@ class Manager
     /**
      * Register a connection with the manager.
      *
-     * @param  array   $config
      * @param  string  $name
      * @return void
      */
@@ -173,7 +171,7 @@ class Manager
      * Dynamically pass methods to the default connection.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public static function __callStatic($method, $parameters)

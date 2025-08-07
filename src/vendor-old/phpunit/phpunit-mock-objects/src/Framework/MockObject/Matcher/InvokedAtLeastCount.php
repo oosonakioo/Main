@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -22,7 +23,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount extends PHPUnit_F
     private $requiredInvocations;
 
     /**
-     * @param int $requiredInvocations
+     * @param  int  $requiredInvocations
      */
     public function __construct($requiredInvocations)
     {
@@ -34,7 +35,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount extends PHPUnit_F
      */
     public function toString()
     {
-        return 'invoked at least ' . $this->requiredInvocations . ' times';
+        return 'invoked at least '.$this->requiredInvocations.' times';
     }
 
     /**
@@ -49,8 +50,8 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount extends PHPUnit_F
 
         if ($count < $this->requiredInvocations) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-                'Expected invocation at least ' . $this->requiredInvocations .
-                ' times but it occured ' . $count . ' time(s).'
+                'Expected invocation at least '.$this->requiredInvocations.
+                ' times but it occured '.$count.' time(s).'
             );
         }
     }

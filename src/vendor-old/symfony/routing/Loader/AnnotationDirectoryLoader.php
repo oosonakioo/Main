@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\Routing\Loader;
 
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\Resource\DirectoryResource;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * AnnotationDirectoryLoader loads routing information from annotations set
@@ -25,9 +25,8 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
     /**
      * Loads from annotations from a directory.
      *
-     * @param string      $path A directory path
-     * @param string|null $type The resource type
-     *
+     * @param  string  $path  A directory path
+     * @param  string|null  $type  The resource type
      * @return RouteCollection A RouteCollection instance
      *
      * @throws \InvalidArgumentException When the directory does not exist or its routes cannot be parsed
@@ -36,7 +35,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
     {
         $dir = $this->locator->locate($path);
 
-        $collection = new RouteCollection();
+        $collection = new RouteCollection;
         $collection->addResource(new DirectoryResource($dir, '/\.php$/'));
         $files = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::LEAVES_ONLY));
         usort($files, function (\SplFileInfo $a, \SplFileInfo $b) {
@@ -44,7 +43,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
         });
 
         foreach ($files as $file) {
-            if (!$file->isFile() || '.php' !== substr($file->getFilename(), -4)) {
+            if (! $file->isFile() || substr($file->getFilename(), -4) !== '.php') {
                 continue;
             }
 
@@ -66,7 +65,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
      */
     public function supports($resource, $type = null)
     {
-        if (!is_string($resource)) {
+        if (! is_string($resource)) {
             return false;
         }
 
@@ -76,6 +75,6 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
             return false;
         }
 
-        return is_dir($path) && (!$type || 'annotation' === $type);
+        return is_dir($path) && (! $type || $type === 'annotation');
     }
 }

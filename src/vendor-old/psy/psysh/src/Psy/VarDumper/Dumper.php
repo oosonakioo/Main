@@ -34,7 +34,7 @@ class Dumper extends CliDumper
      */
     public function enterHash(Cursor $cursor, $type, $class, $hasChild)
     {
-        if (Cursor::HASH_INDEXED === $type || Cursor::HASH_ASSOC === $type) {
+        if ($type === Cursor::HASH_INDEXED || $type === Cursor::HASH_ASSOC) {
             $class = 0;
         }
         parent::enterHash($cursor, $type, $class, $hasChild);
@@ -45,18 +45,18 @@ class Dumper extends CliDumper
      */
     protected function dumpKey(Cursor $cursor)
     {
-        if (Cursor::HASH_INDEXED !== $cursor->hashType) {
+        if ($cursor->hashType !== Cursor::HASH_INDEXED) {
             parent::dumpKey($cursor);
         }
     }
 
-    protected function style($style, $value, $attr = array())
+    protected function style($style, $value, $attr = [])
     {
-        if ('ref' === $style) {
+        if ($style === 'ref') {
             $value = strtr($value, '@', '#');
         }
         $style = $this->styles[$style];
-        $value = "<{$style}>" . $this->formatter->escape($value) . "</{$style}>";
+        $value = "<{$style}>".$this->formatter->escape($value)."</{$style}>";
         $cchr = $this->styles['cchr'];
         $value = preg_replace_callback(self::$controlCharsRx, function ($c) use ($cchr) {
             switch ($c[0]) {
@@ -94,7 +94,7 @@ class Dumper extends CliDumper
      */
     protected function dumpLine($depth, $endOfValue = false)
     {
-        if ($endOfValue && 0 < $depth) {
+        if ($endOfValue && $depth > 0) {
             $this->line .= ',';
         }
         $this->line = $this->formatter->format($this->line);

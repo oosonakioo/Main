@@ -16,18 +16,18 @@ class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier_AttrTransform
 
     public function __construct()
     {
-        $this->parser = new HTMLPurifier_URIParser();
+        $this->parser = new HTMLPurifier_URIParser;
     }
 
     /**
-     * @param array $attr
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $attr
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function transform($attr, $config, $context)
     {
-        if (!isset($attr['href'])) {
+        if (! isset($attr['href'])) {
             return $attr;
         }
 
@@ -35,9 +35,10 @@ class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier_AttrTransform
         $url = $this->parser->parse($attr['href']);
         $scheme = $url->getSchemeObj($config, $context);
 
-        if ($scheme->browsable && !$url->isBenign($config, $context)) {
+        if ($scheme->browsable && ! $url->isBenign($config, $context)) {
             $attr['target'] = '_blank';
         }
+
         return $attr;
     }
 }

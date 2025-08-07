@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,7 +23,6 @@ namespace Mockery;
 
 class Recorder
 {
-
     /**
      * Mock object on which all recorded interactions will be set as
      * expectations
@@ -53,8 +53,7 @@ class Recorder
      * recorded. The second parameter is the subject object, passed into
      * a \Mockery::mock() call in the same way as a partial mock requires.
      *
-     * @param \Mockery\MockInterface $mock
-     * @param object $subject
+     * @param  object  $subject
      * @return void
      */
     public function __construct(\Mockery\MockInterface $mock, $subject)
@@ -80,24 +79,24 @@ class Recorder
      * a new expectation. The actual return value is then returned after being
      * recorded.
      *
-     * @param string $method
-     * @param array $args
+     * @param  string  $method
      * @return mixed
      */
     public function __call($method, array $args)
     {
-        $return = call_user_func_array(array($this->_subject, $method), $args);
+        $return = call_user_func_array([$this->_subject, $method], $args);
         $expectation = $this->_mock->shouldReceive($method)->andReturn($return);
         if ($this->_strict) {
-            $exactArgs = array();
+            $exactArgs = [];
             foreach ($args as $arg) {
                 $exactArgs[] = \Mockery::mustBe($arg);
             }
             $expectation->once()->ordered();
-            call_user_func_array(array($expectation, 'with'), $exactArgs);
+            call_user_func_array([$expectation, 'with'], $exactArgs);
         } else {
-            call_user_func_array(array($expectation, 'with'), $args);
+            call_user_func_array([$expectation, 'with'], $args);
         }
+
         return $return;
     }
 }

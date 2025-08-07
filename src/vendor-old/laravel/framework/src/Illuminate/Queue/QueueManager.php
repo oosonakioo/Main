@@ -3,9 +3,9 @@
 namespace Illuminate\Queue;
 
 use Closure;
-use InvalidArgumentException;
 use Illuminate\Contracts\Queue\Factory as FactoryContract;
 use Illuminate\Contracts\Queue\Monitor as MonitorContract;
+use InvalidArgumentException;
 
 class QueueManager implements FactoryContract, MonitorContract
 {
@@ -175,8 +175,7 @@ class QueueManager implements FactoryContract, MonitorContract
     /**
      * Add a queue connection resolver.
      *
-     * @param  string    $driver
-     * @param  \Closure  $resolver
+     * @param  string  $driver
      * @return void
      */
     public function extend($driver, Closure $resolver)
@@ -187,8 +186,7 @@ class QueueManager implements FactoryContract, MonitorContract
     /**
      * Add a queue connection resolver.
      *
-     * @param  string    $driver
-     * @param  \Closure  $resolver
+     * @param  string  $driver
      * @return void
      */
     public function addConnector($driver, Closure $resolver)
@@ -257,7 +255,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Dynamically pass calls to the default connection.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

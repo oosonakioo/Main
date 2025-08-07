@@ -13,7 +13,7 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
     /**
      * @type array
      */
-    public $needed = array('span');
+    public $needed = ['span'];
 
     /**
      * @type HTMLPurifier_AttrValidator
@@ -22,6 +22,7 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
 
     /**
      * Used by AttrValidator.
+     *
      * @type HTMLPurifier_Config
      */
     private $config;
@@ -33,18 +34,19 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
 
     public function prepare($config, $context)
     {
-        $this->attrValidator = new HTMLPurifier_AttrValidator();
+        $this->attrValidator = new HTMLPurifier_AttrValidator;
         $this->config = $config;
         $this->context = $context;
+
         return parent::prepare($config, $context);
     }
 
     /**
-     * @param HTMLPurifier_Token $token
+     * @param  HTMLPurifier_Token  $token
      */
     public function handleElement(&$token)
     {
-        if ($token->name !== 'span' || !$token instanceof HTMLPurifier_Token_Start) {
+        if ($token->name !== 'span' || ! $token instanceof HTMLPurifier_Token_Start) {
             return;
         }
 
@@ -54,7 +56,7 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
         $this->attrValidator->validateToken($token, $this->config, $this->context);
         $token->armor['ValidateAttributes'] = true;
 
-        if (!empty($token->attr)) {
+        if (! empty($token->attr)) {
             return;
         }
 
@@ -71,7 +73,7 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
     }
 
     /**
-     * @param HTMLPurifier_Token $token
+     * @param  HTMLPurifier_Token  $token
      */
     public function handleEnd(&$token)
     {

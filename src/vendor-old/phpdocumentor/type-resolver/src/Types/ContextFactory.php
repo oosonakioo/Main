@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -32,7 +34,7 @@ final class ContextFactory
     /**
      * Build a Context given a Class Reflection.
      *
-     * @param \ReflectionClass $reflector
+     * @param  \ReflectionClass  $reflector
      *
      * @see Context for more information on Contexts.
      *
@@ -57,8 +59,8 @@ final class ContextFactory
     /**
      * Build a Context for a namespace in the provided file contents.
      *
-     * @param string $namespace It does not matter if a `\` precedes the namespace name, this method first normalizes.
-     * @param string $fileContents the file's contents to retrieve the aliases from with the given namespace.
+     * @param  string  $namespace  It does not matter if a `\` precedes the namespace name, this method first normalizes.
+     * @param  string  $fileContents  the file's contents to retrieve the aliases from with the given namespace.
      *
      * @see Context for more information on Contexts.
      *
@@ -82,11 +84,11 @@ final class ContextFactory
                     // valid namespace use statements so should be ignored.
                     $braceLevel = 0;
                     $firstBraceFound = false;
-                    while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
+                    while ($tokens->valid() && ($braceLevel > 0 || ! $firstBraceFound)) {
                         if ($tokens->current() === '{'
                             || $tokens->current()[0] === T_CURLY_OPEN
                             || $tokens->current()[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
-                            if (!$firstBraceFound) {
+                            if (! $firstBraceFound) {
                                 $firstBraceFound = true;
                             }
                             $braceLevel++;
@@ -113,7 +115,6 @@ final class ContextFactory
     /**
      * Deduce the name from tokens when we are at the T_NAMESPACE token.
      *
-     * @param \ArrayIterator $tokens
      *
      * @return string
      */
@@ -135,7 +136,6 @@ final class ContextFactory
     /**
      * Deduce the names of all imports when we are at the T_USE token.
      *
-     * @param \ArrayIterator $tokens
      *
      * @return string[]
      */
@@ -147,7 +147,7 @@ final class ContextFactory
         while ($continue) {
             $this->skipToNextStringOrNamespaceSeparator($tokens);
 
-            list($alias, $fqnn) = $this->extractUseStatement($tokens);
+            [$alias, $fqnn] = $this->extractUseStatement($tokens);
             $uses[$alias] = $fqnn;
             if ($tokens->current()[0] === self::T_LITERAL_END_OF_USE) {
                 $continue = false;
@@ -160,7 +160,6 @@ final class ContextFactory
     /**
      * Fast-forwards the iterator as longs as we don't encounter a T_STRING or T_NS_SEPARATOR token.
      *
-     * @param \ArrayIterator $tokens
      *
      * @return void
      */
@@ -175,7 +174,6 @@ final class ContextFactory
      * Deduce the namespace name and alias of an import when we are at the T_USE token or have not reached the end of
      * a USE statement yet.
      *
-     * @param \ArrayIterator $tokens
      *
      * @return string
      */
@@ -198,7 +196,7 @@ final class ContextFactory
         if (count($result) == 1) {
             $backslashPos = strrpos($result[0], '\\');
 
-            if (false !== $backslashPos) {
+            if ($backslashPos !== false) {
                 $result[] = substr($result[0], $backslashPos + 1);
             } else {
                 $result[] = $result[0];

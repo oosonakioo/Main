@@ -98,7 +98,6 @@ abstract class ServiceProvider
     /**
      * Register paths to be published by the publish command.
      *
-     * @param  array  $paths
      * @param  string  $group
      * @return void
      */

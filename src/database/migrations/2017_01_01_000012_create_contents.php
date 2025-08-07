@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateContents extends Migration
 {
@@ -14,19 +14,18 @@ class CreateContents extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->increments('id');
-			      $table->string('menu', 50)->index();
+            $table->string('menu', 50)->index();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
 
-        Schema::create('contents_translations', function(Blueprint $table)
-        {
+        Schema::create('contents_translations', function (Blueprint $table) {
             $table->increments('id');
-			      $table->integer('contents_id')->unsigned();
-			      $table->string('title', 250);
+            $table->integer('contents_id')->unsigned();
+            $table->string('title', 250);
             $table->text('detail');
             $table->string('locale')->index();
-            $table->unique(['contents_id','locale']);
+            $table->unique(['contents_id', 'locale']);
             $table->foreign('contents_id')->references('id')->on('contents')->onDelete('cascade');
         });
     }

@@ -27,9 +27,9 @@ class VarDumper
 
     public static function dump($var)
     {
-        if (null === self::$handler) {
-            $cloner = new VarCloner();
-            $dumper = 'cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper();
+        if (self::$handler === null) {
+            $cloner = new VarCloner;
+            $dumper = 'cli' === PHP_SAPI ? new CliDumper : new HtmlDumper;
             self::$handler = function ($var) use ($cloner, $dumper) {
                 $dumper->dump($cloner->cloneVar($var));
             };
@@ -38,7 +38,7 @@ class VarDumper
         return call_user_func(self::$handler, $var);
     }
 
-    public static function setHandler(callable $callable = null)
+    public static function setHandler(?callable $callable = null)
     {
         $prevHandler = self::$handler;
         self::$handler = $callable;

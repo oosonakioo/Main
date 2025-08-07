@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,9 +21,9 @@
 namespace Mockery;
 
 use Closure;
+use InvalidArgumentException;
 use ReflectionClass;
 use UnexpectedValueException;
-use InvalidArgumentException;
 
 /**
  * This is a trimmed down version of https://github.com/doctrine/instantiator,
@@ -37,16 +38,14 @@ final class Instantiator
      * the method {@see \Serializable::unserialize()} when dealing with classes implementing
      * the {@see \Serializable} interface.
      */
-    const SERIALIZATION_FORMAT_USE_UNSERIALIZER   = 'C';
+    const SERIALIZATION_FORMAT_USE_UNSERIALIZER = 'C';
+
     const SERIALIZATION_FORMAT_AVOID_UNSERIALIZER = 'O';
 
-    /**
-     * {@inheritDoc}
-     */
     public function instantiate($className)
     {
-        $factory    = $this->buildFactory($className);
-        $instance   = $factory();
+        $factory = $this->buildFactory($className);
+        $instance = $factory();
         $reflection = new ReflectionClass($instance);
 
         return $instance;
@@ -54,6 +53,7 @@ final class Instantiator
 
     /**
      * @internal
+     *
      * @private
      *
      * Builds a {@see \Closure} capable of instantiating the given $className without
@@ -61,8 +61,7 @@ final class Instantiator
      * This method is only exposed as public because of PHP 5.3 compatibility. Do not
      * use this method in your own code
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return Closure
      */
     public function buildFactory($className)
@@ -90,8 +89,7 @@ final class Instantiator
     }
 
     /**
-     * @param string $className
-     *
+     * @param  string  $className
      * @return ReflectionClass
      *
      * @throws InvalidArgumentException
@@ -112,16 +110,14 @@ final class Instantiator
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param string          $serializedString
+     * @param  string  $serializedString
+     * @return void
      *
      * @throws UnexpectedValueException
-     *
-     * @return void
      */
     private function attemptInstantiationViaUnSerialization(ReflectionClass $reflectionClass, $serializedString)
     {
-        set_error_handler(function ($code, $message, $file, $line) use ($reflectionClass, & $error) {
+        set_error_handler(function ($code, $message, $file, $line) use ($reflectionClass, &$error) {
             $msg = sprintf(
                 'Could not produce an instance of "%s" via un-serialization, since an error was triggered in file "%s" at line "%d"',
                 $reflectionClass->getName(),
@@ -148,8 +144,6 @@ final class Instantiator
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     *
      * @return bool
      */
     private function isInstantiableViaReflection(ReflectionClass $reflectionClass)
@@ -164,7 +158,6 @@ final class Instantiator
     /**
      * Verifies whether the given class is to be considered internal
      *
-     * @param ReflectionClass $reflectionClass
      *
      * @return bool
      */
@@ -185,8 +178,6 @@ final class Instantiator
      * "C" instead of "O".
      *
      * @link http://news.php.net/php.internals/74654
-     *
-     * @param ReflectionClass $reflectionClass
      *
      * @return string the serialization format marker, either self::SERIALIZATION_FORMAT_USE_UNSERIALIZER
      *                or self::SERIALIZATION_FORMAT_AVOID_UNSERIALIZER

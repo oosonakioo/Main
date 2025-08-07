@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ use SQLite3Result;
  * SQLite3 cache provider.
  *
  * @since  1.4
+ *
  * @author Jake Bell <jake@theunraveler.com>
  */
 class SQLite3Cache extends CacheProvider
@@ -59,18 +61,17 @@ class SQLite3Cache extends CacheProvider
     /**
      * Constructor.
      *
-     * Calling the constructor will ensure that the database file and table 
+     * Calling the constructor will ensure that the database file and table
      * exist and will create both if they don't.
      *
-     * @param SQLite3 $sqlite
-     * @param string $table
+     * @param  string  $table
      */
     public function __construct(SQLite3 $sqlite, $table)
     {
         $this->sqlite = $sqlite;
-        $this->table  = (string) $table;
+        $this->table = (string) $table;
 
-        list($id, $data, $exp) = $this->getFields();
+        [$id, $data, $exp] = $this->getFields();
 
         return $this->sqlite->exec(sprintf(
             'CREATE TABLE IF NOT EXISTS %s(%s TEXT PRIMARY KEY NOT NULL, %s BLOB, %s INTEGER)',
@@ -98,7 +99,7 @@ class SQLite3Cache extends CacheProvider
      */
     protected function doContains($id)
     {
-        return null !== $this->findById($id, false);
+        return $this->findById($id, false) !== null;
     }
 
     /**
@@ -124,7 +125,7 @@ class SQLite3Cache extends CacheProvider
      */
     protected function doDelete($id)
     {
-        list($idField) = $this->getFields();
+        [$idField] = $this->getFields();
 
         $statement = $this->sqlite->prepare(sprintf(
             'DELETE FROM %s WHERE %s = :id',
@@ -156,16 +157,15 @@ class SQLite3Cache extends CacheProvider
     /**
      * Find a single row by ID.
      *
-     * @param mixed $id
-     * @param bool $includeData
-     *
+     * @param  mixed  $id
+     * @param  bool  $includeData
      * @return array|null
      */
     private function findById($id, $includeData = true)
     {
-        list($idField) = $fields = $this->getFields();
+        [$idField] = $fields = $this->getFields();
 
-        if (!$includeData) {
+        if (! $includeData) {
             $key = array_search(static::DATA_FIELD, $fields);
             unset($fields[$key]);
         }
@@ -201,13 +201,12 @@ class SQLite3Cache extends CacheProvider
      */
     private function getFields()
     {
-        return array(static::ID_FIELD, static::DATA_FIELD, static::EXPIRATION_FIELD);
+        return [static::ID_FIELD, static::DATA_FIELD, static::EXPIRATION_FIELD];
     }
 
     /**
      * Check if the item is expired.
      *
-     * @param array $item
      *
      * @return bool
      */

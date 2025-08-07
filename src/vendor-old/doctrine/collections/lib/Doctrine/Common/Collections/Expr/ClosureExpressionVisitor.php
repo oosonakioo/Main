@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,6 +27,7 @@ namespace Doctrine\Common\Collections\Expr;
  * by {@ArrayCollection#select()}.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 class ClosureExpressionVisitor extends ExpressionVisitor
@@ -35,9 +37,8 @@ class ClosureExpressionVisitor extends ExpressionVisitor
      * directly or indirectly (through an accessor get*, is*, or a magic
      * method, __get, __call).
      *
-     * @param object $object
-     * @param string $field
-     *
+     * @param  object  $object
+     * @param  string  $field
      * @return mixed
      */
     public static function getObjectFieldValue($object, $field)
@@ -46,12 +47,12 @@ class ClosureExpressionVisitor extends ExpressionVisitor
             return $object[$field];
         }
 
-        $accessors = array('get', 'is');
+        $accessors = ['get', 'is'];
 
         foreach ($accessors as $accessor) {
             $accessor .= $field;
 
-            if ( ! method_exists($object, $accessor)) {
+            if (! method_exists($object, $accessor)) {
                 continue;
             }
 
@@ -59,7 +60,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
         }
 
         // __call should be triggered for get.
-        $accessor = $accessors[0] . $field;
+        $accessor = $accessors[0].$field;
 
         if (method_exists($object, '__call')) {
             return $object->$accessor();
@@ -74,13 +75,14 @@ class ClosureExpressionVisitor extends ExpressionVisitor
         }
 
         // camelcase field name to support different variable naming conventions
-        $ccField   = preg_replace_callback('/_(.?)/', function($matches) { return strtoupper($matches[1]); }, $field);
+        $ccField = preg_replace_callback('/_(.?)/', function ($matches) {
+            return strtoupper($matches[1]);
+        }, $field);
 
         foreach ($accessors as $accessor) {
             $accessor .= $ccField;
 
-
-            if ( ! method_exists($object, $accessor)) {
+            if (! method_exists($object, $accessor)) {
                 continue;
             }
 
@@ -93,16 +95,14 @@ class ClosureExpressionVisitor extends ExpressionVisitor
     /**
      * Helper for sorting arrays of objects based on multiple fields + orientations.
      *
-     * @param string   $name
-     * @param int      $orientation
-     * @param \Closure $next
-     *
+     * @param  string  $name
+     * @param  int  $orientation
      * @return \Closure
      */
-    public static function sortByField($name, $orientation = 1, \Closure $next = null)
+    public static function sortByField($name, $orientation = 1, ?\Closure $next = null)
     {
-        if ( ! $next) {
-            $next = function() {
+        if (! $next) {
+            $next = function () {
                 return 0;
             };
         }
@@ -170,21 +170,22 @@ class ClosureExpressionVisitor extends ExpressionVisitor
 
             case Comparison::CONTAINS:
                 return function ($object) use ($field, $value) {
-                    return false !== strpos(ClosureExpressionVisitor::getObjectFieldValue($object, $field), $value);
+                    return strpos(ClosureExpressionVisitor::getObjectFieldValue($object, $field), $value) !== false;
                 };
 
             case Comparison::MEMBER_OF:
                 return function ($object) use ($field, $value) {
                     $fieldValues = ClosureExpressionVisitor::getObjectFieldValue($object, $field);
-                    if (!is_array($fieldValues)) {
+                    if (! is_array($fieldValues)) {
                         $fieldValues = iterator_to_array($fieldValues);
                     }
+
                     return in_array($value, $fieldValues);
                 };
 
             case Comparison::STARTS_WITH:
                 return function ($object) use ($field, $value) {
-                    return 0 === strpos(ClosureExpressionVisitor::getObjectFieldValue($object, $field), $value);
+                    return strpos(ClosureExpressionVisitor::getObjectFieldValue($object, $field), $value) === 0;
                 };
 
             case Comparison::ENDS_WITH:
@@ -192,9 +193,8 @@ class ClosureExpressionVisitor extends ExpressionVisitor
                     return $value === substr(ClosureExpressionVisitor::getObjectFieldValue($object, $field), -strlen($value));
                 };
 
-
             default:
-                throw new \RuntimeException("Unknown comparison operator: " . $comparison->getOperator());
+                throw new \RuntimeException('Unknown comparison operator: '.$comparison->getOperator());
         }
     }
 
@@ -211,13 +211,13 @@ class ClosureExpressionVisitor extends ExpressionVisitor
      */
     public function walkCompositeExpression(CompositeExpression $expr)
     {
-        $expressionList = array();
+        $expressionList = [];
 
         foreach ($expr->getExpressionList() as $child) {
             $expressionList[] = $this->dispatch($child);
         }
 
-        switch($expr->getType()) {
+        switch ($expr->getType()) {
             case CompositeExpression::TYPE_AND:
                 return $this->andExpressions($expressionList);
 
@@ -225,30 +225,29 @@ class ClosureExpressionVisitor extends ExpressionVisitor
                 return $this->orExpressions($expressionList);
 
             default:
-                throw new \RuntimeException("Unknown composite " . $expr->getType());
+                throw new \RuntimeException('Unknown composite '.$expr->getType());
         }
     }
 
     /**
-     * @param array $expressions
-     *
+     * @param  array  $expressions
      * @return callable
      */
     private function andExpressions($expressions)
     {
         return function ($object) use ($expressions) {
             foreach ($expressions as $expression) {
-                if ( ! $expression($object)) {
+                if (! $expression($object)) {
                     return false;
                 }
             }
+
             return true;
         };
     }
 
     /**
-     * @param array $expressions
-     *
+     * @param  array  $expressions
      * @return callable
      */
     private function orExpressions($expressions)
@@ -259,6 +258,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
                     return true;
                 }
             }
+
             return false;
         };
     }

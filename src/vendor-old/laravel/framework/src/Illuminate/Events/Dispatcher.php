@@ -3,13 +3,13 @@
 namespace Illuminate\Events;
 
 use Exception;
-use ReflectionClass;
-use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Container\Container as ContainerContract;
+use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+use Illuminate\Support\Str;
+use ReflectionClass;
 
 class Dispatcher implements DispatcherContract
 {
@@ -58,10 +58,9 @@ class Dispatcher implements DispatcherContract
     /**
      * Create a new event dispatcher instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
      */
-    public function __construct(ContainerContract $container = null)
+    public function __construct(?ContainerContract $container = null)
     {
         $this->container = $container ?: new Container;
     }
@@ -199,7 +198,7 @@ class Dispatcher implements DispatcherContract
         // object and use the class as the event name and this event itself as the
         // payload to the handler, which makes object based events quite simple.
         if (is_object($event)) {
-            list($payload, $event) = [[$event], get_class($event)];
+            [$payload, $event] = [[$event], get_class($event)];
         }
 
         $responses = [];
@@ -358,7 +357,7 @@ class Dispatcher implements DispatcherContract
      */
     protected function createClassCallable($listener, $container)
     {
-        list($class, $method) = $this->parseClassCallable($listener);
+        [$class, $method] = $this->parseClassCallable($listener);
 
         if ($this->handlerShouldBeQueued($class)) {
             return $this->createQueuedHandlerCallable($class, $method);
@@ -422,7 +421,6 @@ class Dispatcher implements DispatcherContract
     /**
      * Clone the given arguments for queueing.
      *
-     * @param  array  $arguments
      * @return array
      */
     protected function cloneArgumentsForQueueing(array $arguments)
@@ -491,7 +489,6 @@ class Dispatcher implements DispatcherContract
     /**
      * Set the queue resolver implementation.
      *
-     * @param  callable  $resolver
      * @return $this
      */
     public function setQueueResolver(callable $resolver)

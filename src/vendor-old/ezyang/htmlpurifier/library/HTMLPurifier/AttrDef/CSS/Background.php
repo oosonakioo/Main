@@ -2,20 +2,22 @@
 
 /**
  * Validates shorthand CSS property background.
+ *
  * @warning Does not support url tokens that have internal spaces.
  */
 class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
 {
-
     /**
      * Local copy of component validators.
+     *
      * @type HTMLPurifier_AttrDef[]
+     *
      * @note See HTMLPurifier_AttrDef_Font::$info for a similar impl.
      */
     protected $info;
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      */
     public function __construct($config)
     {
@@ -28,9 +30,9 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
     }
 
     /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $string
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($string, $config, $context)
@@ -47,7 +49,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         // assumes URI doesn't have spaces in it
         $bits = explode(' ', $string); // bits to process
 
-        $caught = array();
+        $caught = [];
         $caught['color'] = false;
         $caught['image'] = false;
         $caught['repeat'] = false;
@@ -65,7 +67,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
                     if ($status !== false) {
                         continue;
                     }
-                    $r = $this->info['background-' . $key]->validate($bit, $config, $context);
+                    $r = $this->info['background-'.$key]->validate($bit, $config, $context);
                 } else {
                     $r = $bit;
                 }
@@ -76,7 +78,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
                     if ($caught[$key] === false) {
                         $caught[$key] = '';
                     }
-                    $caught[$key] .= $r . ' ';
+                    $caught[$key] .= $r.' ';
                 } else {
                     $caught[$key] = $r;
                 }
@@ -85,7 +87,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
             }
         }
 
-        if (!$i) {
+        if (! $i) {
             return false;
         }
         if ($caught['position'] !== false) {
@@ -93,7 +95,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
                 validate($caught['position'], $config, $context);
         }
 
-        $ret = array();
+        $ret = [];
         foreach ($caught as $value) {
             if ($value === false) {
                 continue;
@@ -104,6 +106,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         if (empty($ret)) {
             return false;
         }
+
         return implode(' ', $ret);
     }
 }

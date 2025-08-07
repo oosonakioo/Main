@@ -2,23 +2,20 @@
 
 namespace Faker\Guesser;
 
-use \Faker\Provider\Base;
+use Faker\Provider\Base;
 
 class Name
 {
     protected $generator;
 
-    /**
-     * @param \Faker\Generator $generator
-     */
     public function __construct(\Faker\Generator $generator)
     {
         $this->generator = $generator;
     }
 
     /**
-     * @param string $name
-     * @param int|null $size Length of field, if known
+     * @param  string  $name
+     * @param  int|null  $size  Length of field, if known
      * @return callable
      */
     public function guessFormat($name, $size = null)

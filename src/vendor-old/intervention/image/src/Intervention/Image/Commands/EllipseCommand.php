@@ -9,8 +9,8 @@ class EllipseCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Draws ellipse on given image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

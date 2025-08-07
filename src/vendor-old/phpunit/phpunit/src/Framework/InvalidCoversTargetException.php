@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +12,4 @@
 /**
  * @since Class available since Release 4.0.0
  */
-class PHPUnit_Framework_InvalidCoversTargetException extends PHPUnit_Framework_CodeCoverageException
-{
-}
+class PHPUnit_Framework_InvalidCoversTargetException extends PHPUnit_Framework_CodeCoverageException {}

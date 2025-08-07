@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Cache;
  *
  * @link   www.doctrine-project.org
  * @since  1.4
+ *
  * @author Asmir Mustafic <goetas@gmail.com>
  */
 interface MultiGetCache
@@ -31,9 +33,9 @@ interface MultiGetCache
     /**
      * Returns an associative array of values for keys is found in cache.
      *
-     * @param string[] $keys Array of keys to retrieve from cache
+     * @param  string[]  $keys  Array of keys to retrieve from cache
      * @return mixed[] Array of retrieved values, indexed by the specified keys.
      *                 Values that couldn't be retrieved are not contained in this array.
      */
-    function fetchMultiple(array $keys);
+    public function fetchMultiple(array $keys);
 }

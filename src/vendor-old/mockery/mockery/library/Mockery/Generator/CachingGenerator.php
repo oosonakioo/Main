@@ -5,7 +5,8 @@ namespace Mockery\Generator;
 class CachingGenerator implements Generator
 {
     protected $generator;
-    protected $cache = array();
+
+    protected $cache = [];
 
     public function __construct(Generator $generator)
     {

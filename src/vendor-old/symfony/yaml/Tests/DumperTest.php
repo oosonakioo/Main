@@ -12,35 +12,37 @@
 namespace Symfony\Component\Yaml\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 class DumperTest extends TestCase
 {
     protected $parser;
+
     protected $dumper;
+
     protected $path;
 
-    protected $array = array(
+    protected $array = [
         '' => 'bar',
         'foo' => '#bar',
-        'foo\'bar' => array(),
-        'bar' => array(1, 'foo'),
-        'foobar' => array(
+        'foo\'bar' => [],
+        'bar' => [1, 'foo'],
+        'foobar' => [
             'foo' => 'bar',
-            'bar' => array(1, 'foo'),
-            'foobar' => array(
+            'bar' => [1, 'foo'],
+            'foobar' => [
                 'foo' => 'bar',
-                'bar' => array(1, 'foo'),
-            ),
-        ),
-    );
+                'bar' => [1, 'foo'],
+            ],
+        ],
+    ];
 
     protected function setUp()
     {
-        $this->parser = new Parser();
-        $this->dumper = new Dumper();
+        $this->parser = new Parser;
+        $this->dumper = new Dumper;
         $this->path = __DIR__.'/Fixtures';
     }
 
@@ -52,7 +54,7 @@ class DumperTest extends TestCase
         $this->array = null;
     }
 
-    public function testIndentationInConstructor()
+    public function test_indentation_in_constructor()
     {
         $dumper = new Dumper(7);
         $expected = <<<'EOF'
@@ -80,7 +82,7 @@ EOF;
     /**
      * @group legacy
      */
-    public function testSetIndentation()
+    public function test_set_indentation()
     {
         $this->dumper->setIndentation(7);
 
@@ -106,7 +108,7 @@ EOF;
         $this->assertEquals($expected, $this->dumper->dump($this->array, 4, 0));
     }
 
-    public function testSpecifications()
+    public function test_specifications()
     {
         $files = $this->parser->parse(file_get_contents($this->path.'/index.yml'));
         foreach ($files as $file) {
@@ -114,7 +116,7 @@ EOF;
 
             // split YAMLs documents
             foreach (preg_split('/^---( %YAML\:1\.0)?/m', $yamls) as $yaml) {
-                if (!$yaml) {
+                if (! $yaml) {
                     continue;
                 }
 
@@ -131,7 +133,7 @@ EOF;
         }
     }
 
-    public function testInlineLevel()
+    public function test_inline_level()
     {
         $expected = <<<'EOF'
 { '': bar, foo: '#bar', 'foo''bar': {  }, bar: [1, foo], foobar: { foo: bar, bar: [1, foo], foobar: { foo: bar, bar: [1, foo] } } }
@@ -206,9 +208,9 @@ EOF;
         $this->assertEquals($expected, $this->dumper->dump($this->array, 10), '->dump() takes an inline level argument');
     }
 
-    public function testObjectSupportEnabled()
+    public function test_object_support_enabled()
     {
-        $dump = $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, Yaml::DUMP_OBJECT);
+        $dump = $this->dumper->dump(['foo' => new A, 'bar' => 1], 0, 0, Yaml::DUMP_OBJECT);
 
         $this->assertEquals('{ foo: !php/object:O:30:"Symfony\Component\Yaml\Tests\A":1:{s:1:"a";s:3:"foo";}, bar: 1 }', $dump, '->dump() is able to dump objects');
     }
@@ -216,16 +218,16 @@ EOF;
     /**
      * @group legacy
      */
-    public function testObjectSupportEnabledPassingTrue()
+    public function test_object_support_enabled_passing_true()
     {
-        $dump = $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, false, true);
+        $dump = $this->dumper->dump(['foo' => new A, 'bar' => 1], 0, 0, false, true);
 
         $this->assertEquals('{ foo: !php/object:O:30:"Symfony\Component\Yaml\Tests\A":1:{s:1:"a";s:3:"foo";}, bar: 1 }', $dump, '->dump() is able to dump objects');
     }
 
-    public function testObjectSupportDisabledButNoExceptions()
+    public function test_object_support_disabled_but_no_exceptions()
     {
-        $dump = $this->dumper->dump(array('foo' => new A(), 'bar' => 1));
+        $dump = $this->dumper->dump(['foo' => new A, 'bar' => 1]);
 
         $this->assertEquals('{ foo: null, bar: 1 }', $dump, '->dump() does not dump objects when disabled');
     }
@@ -233,62 +235,63 @@ EOF;
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\DumpException
      */
-    public function testObjectSupportDisabledWithExceptions()
+    public function test_object_support_disabled_with_exceptions()
     {
-        $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE);
+        $this->dumper->dump(['foo' => new A, 'bar' => 1], 0, 0, Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE);
     }
 
     /**
      * @group legacy
+     *
      * @expectedException \Symfony\Component\Yaml\Exception\DumpException
      */
-    public function testObjectSupportDisabledWithExceptionsPassingTrue()
+    public function test_object_support_disabled_with_exceptions_passing_true()
     {
-        $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, true);
+        $this->dumper->dump(['foo' => new A, 'bar' => 1], 0, 0, true);
     }
 
     /**
      * @dataProvider getEscapeSequences
      */
-    public function testEscapedEscapeSequencesInQuotedScalar($input, $expected)
+    public function test_escaped_escape_sequences_in_quoted_scalar($input, $expected)
     {
         $this->assertEquals($expected, $this->dumper->dump($input));
     }
 
     public function getEscapeSequences()
     {
-        return array(
-            'empty string' => array('', "''"),
-            'null' => array("\x0", '"\\0"'),
-            'bell' => array("\x7", '"\\a"'),
-            'backspace' => array("\x8", '"\\b"'),
-            'horizontal-tab' => array("\t", '"\\t"'),
-            'line-feed' => array("\n", '"\\n"'),
-            'vertical-tab' => array("\v", '"\\v"'),
-            'form-feed' => array("\xC", '"\\f"'),
-            'carriage-return' => array("\r", '"\\r"'),
-            'escape' => array("\x1B", '"\\e"'),
-            'space' => array(' ', "' '"),
-            'double-quote' => array('"', "'\"'"),
-            'slash' => array('/', '/'),
-            'backslash' => array('\\', '\\'),
-            'next-line' => array("\xC2\x85", '"\\N"'),
-            'non-breaking-space' => array("\xc2\xa0", '"\\_"'),
-            'line-separator' => array("\xE2\x80\xA8", '"\\L"'),
-            'paragraph-separator' => array("\xE2\x80\xA9", '"\\P"'),
-            'colon' => array(':', "':'"),
-        );
+        return [
+            'empty string' => ['', "''"],
+            'null' => ["\x0", '"\\0"'],
+            'bell' => ["\x7", '"\\a"'],
+            'backspace' => ["\x8", '"\\b"'],
+            'horizontal-tab' => ["\t", '"\\t"'],
+            'line-feed' => ["\n", '"\\n"'],
+            'vertical-tab' => ["\v", '"\\v"'],
+            'form-feed' => ["\xC", '"\\f"'],
+            'carriage-return' => ["\r", '"\\r"'],
+            'escape' => ["\x1B", '"\\e"'],
+            'space' => [' ', "' '"],
+            'double-quote' => ['"', "'\"'"],
+            'slash' => ['/', '/'],
+            'backslash' => ['\\', '\\'],
+            'next-line' => ["\xC2\x85", '"\\N"'],
+            'non-breaking-space' => ["\xc2\xa0", '"\\_"'],
+            'line-separator' => ["\xE2\x80\xA8", '"\\L"'],
+            'paragraph-separator' => ["\xE2\x80\xA9", '"\\P"'],
+            'colon' => [':', "':'"],
+        ];
     }
 
-    public function testBinaryDataIsDumpedBase64Encoded()
+    public function test_binary_data_is_dumped_base64_encoded()
     {
         $binaryData = file_get_contents(__DIR__.'/Fixtures/arrow.gif');
         $expected = '{ data: !!binary '.base64_encode($binaryData).' }';
 
-        $this->assertSame($expected, $this->dumper->dump(array('data' => $binaryData)));
+        $this->assertSame($expected, $this->dumper->dump(['data' => $binaryData]));
     }
 
-    public function testNonUtf8DataIsDumpedBase64Encoded()
+    public function test_non_utf8_data_is_dumped_base64_encoded()
     {
         // "für" (ISO-8859-1 encoded)
         $this->assertSame('!!binary ZsM/cg==', $this->dumper->dump("f\xc3\x3fr"));
@@ -297,7 +300,7 @@ EOF;
     /**
      * @dataProvider objectAsMapProvider
      */
-    public function testDumpObjectAsMap($object, $expected)
+    public function test_dump_object_as_map($object, $expected)
     {
         $yaml = $this->dumper->dump($object, 0, 0, Yaml::DUMP_OBJECT_AS_MAP);
 
@@ -306,62 +309,64 @@ EOF;
 
     public function objectAsMapProvider()
     {
-        $tests = array();
+        $tests = [];
 
-        $bar = new \stdClass();
+        $bar = new \stdClass;
         $bar->class = 'classBar';
-        $bar->args = array('bar');
-        $zar = new \stdClass();
-        $foo = new \stdClass();
+        $bar->args = ['bar'];
+        $zar = new \stdClass;
+        $foo = new \stdClass;
         $foo->bar = $bar;
         $foo->zar = $zar;
-        $object = new \stdClass();
+        $object = new \stdClass;
         $object->foo = $foo;
-        $tests['stdClass'] = array($object, $object);
+        $tests['stdClass'] = [$object, $object];
 
-        $arrayObject = new \ArrayObject();
+        $arrayObject = new \ArrayObject;
         $arrayObject['foo'] = 'bar';
         $arrayObject['baz'] = 'foobar';
-        $parsedArrayObject = new \stdClass();
+        $parsedArrayObject = new \stdClass;
         $parsedArrayObject->foo = 'bar';
         $parsedArrayObject->baz = 'foobar';
-        $tests['ArrayObject'] = array($arrayObject, $parsedArrayObject);
+        $tests['ArrayObject'] = [$arrayObject, $parsedArrayObject];
 
-        $a = new A();
-        $tests['arbitrary-object'] = array($a, null);
+        $a = new A;
+        $tests['arbitrary-object'] = [$a, null];
 
         return $tests;
     }
 
-    public function testDumpMultiLineStringAsScalarBlock()
+    public function test_dump_multi_line_string_as_scalar_block()
     {
-        $data = array(
-            'data' => array(
+        $data = [
+            'data' => [
                 'single_line' => 'foo bar baz',
                 'multi_line' => "foo\nline with trailing spaces:\n  \nbar\r\ninteger like line:\n123456789\nempty line:\n\nbaz",
-                'nested_inlined_multi_line_string' => array(
+                'nested_inlined_multi_line_string' => [
                     'inlined_multi_line' => "foo\nbar\r\nempty line:\n\nbaz",
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $this->assertSame(file_get_contents(__DIR__.'/Fixtures/multiple_lines_as_literal_block.yml'), $this->dumper->dump($data, 2, 0, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK));
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage The indentation must be greater than zero
      */
-    public function testZeroIndentationThrowsException()
+    public function test_zero_indentation_throws_exception()
     {
         new Dumper(0);
     }
 
     /**
      * @expectedException \InvalidArgumentException
+     *
      * @expectedExceptionMessage The indentation must be greater than zero
      */
-    public function testNegativeIndentationThrowsException()
+    public function test_negative_indentation_throws_exception()
     {
         new Dumper(-4);
     }

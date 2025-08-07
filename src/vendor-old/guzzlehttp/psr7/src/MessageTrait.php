@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -12,7 +13,7 @@ trait MessageTrait
     private $headers = [];
 
     /** @var array Map of lowercase header name => original name at registration */
-    private $headerNames  = [];
+    private $headerNames = [];
 
     /** @var string */
     private $protocol = '1.1';
@@ -33,6 +34,7 @@ trait MessageTrait
 
         $new = clone $this;
         $new->protocol = $version;
+
         return $new;
     }
 
@@ -50,7 +52,7 @@ trait MessageTrait
     {
         $header = strtolower($header);
 
-        if (!isset($this->headerNames[$header])) {
+        if (! isset($this->headerNames[$header])) {
             return [];
         }
 
@@ -66,7 +68,7 @@ trait MessageTrait
 
     public function withHeader($header, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = [$value];
         }
 
@@ -85,7 +87,7 @@ trait MessageTrait
 
     public function withAddedHeader($header, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = [$value];
         }
 
@@ -108,7 +110,7 @@ trait MessageTrait
     {
         $normalized = strtolower($header);
 
-        if (!isset($this->headerNames[$normalized])) {
+        if (! isset($this->headerNames[$normalized])) {
             return $this;
         }
 
@@ -122,7 +124,7 @@ trait MessageTrait
 
     public function getBody()
     {
-        if (!$this->stream) {
+        if (! $this->stream) {
             $this->stream = stream_for('');
         }
 
@@ -137,6 +139,7 @@ trait MessageTrait
 
         $new = clone $this;
         $new->stream = $body;
+
         return $new;
     }
 
@@ -144,7 +147,7 @@ trait MessageTrait
     {
         $this->headerNames = $this->headers = [];
         foreach ($headers as $header => $value) {
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 $value = [$value];
             }
 
@@ -168,8 +171,7 @@ trait MessageTrait
      * header-field = field-name ":" OWS field-value OWS
      * OWS          = *( SP / HTAB )
      *
-     * @param string[] $values Header values
-     *
+     * @param  string[]  $values  Header values
      * @return string[] Trimmed header values
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2.4

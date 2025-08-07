@@ -28,109 +28,109 @@ class MetadataBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $array = array();
+    protected $array = [];
 
     protected function setUp()
     {
         parent::setUp();
-        $this->bag = new MetadataBag();
-        $this->array = array(MetadataBag::CREATED => 1234567, MetadataBag::UPDATED => 12345678, MetadataBag::LIFETIME => 0);
+        $this->bag = new MetadataBag;
+        $this->array = [MetadataBag::CREATED => 1234567, MetadataBag::UPDATED => 12345678, MetadataBag::LIFETIME => 0];
         $this->bag->initialize($this->array);
     }
 
     protected function tearDown()
     {
-        $this->array = array();
+        $this->array = [];
         $this->bag = null;
         parent::tearDown();
     }
 
-    public function testInitialize()
+    public function test_initialize()
     {
-        $sessionMetadata = array();
+        $sessionMetadata = [];
 
-        $bag1 = new MetadataBag();
+        $bag1 = new MetadataBag;
         $bag1->initialize($sessionMetadata);
         $this->assertGreaterThanOrEqual(time(), $bag1->getCreated());
         $this->assertEquals($bag1->getCreated(), $bag1->getLastUsed());
 
         sleep(1);
-        $bag2 = new MetadataBag();
+        $bag2 = new MetadataBag;
         $bag2->initialize($sessionMetadata);
         $this->assertEquals($bag1->getCreated(), $bag2->getCreated());
         $this->assertEquals($bag1->getLastUsed(), $bag2->getLastUsed());
         $this->assertEquals($bag2->getCreated(), $bag2->getLastUsed());
 
         sleep(1);
-        $bag3 = new MetadataBag();
+        $bag3 = new MetadataBag;
         $bag3->initialize($sessionMetadata);
         $this->assertEquals($bag1->getCreated(), $bag3->getCreated());
         $this->assertGreaterThan($bag2->getLastUsed(), $bag3->getLastUsed());
         $this->assertNotEquals($bag3->getCreated(), $bag3->getLastUsed());
     }
 
-    public function testGetSetName()
+    public function test_get_set_name()
     {
         $this->assertEquals('__metadata', $this->bag->getName());
         $this->bag->setName('foo');
         $this->assertEquals('foo', $this->bag->getName());
     }
 
-    public function testGetStorageKey()
+    public function test_get_storage_key()
     {
         $this->assertEquals('_sf2_meta', $this->bag->getStorageKey());
     }
 
-    public function testGetLifetime()
+    public function test_get_lifetime()
     {
-        $bag = new MetadataBag();
-        $array = array(MetadataBag::CREATED => 1234567, MetadataBag::UPDATED => 12345678, MetadataBag::LIFETIME => 1000);
+        $bag = new MetadataBag;
+        $array = [MetadataBag::CREATED => 1234567, MetadataBag::UPDATED => 12345678, MetadataBag::LIFETIME => 1000];
         $bag->initialize($array);
         $this->assertEquals(1000, $bag->getLifetime());
     }
 
-    public function testGetCreated()
+    public function test_get_created()
     {
         $this->assertEquals(1234567, $this->bag->getCreated());
     }
 
-    public function testGetLastUsed()
+    public function test_get_last_used()
     {
         $this->assertLessThanOrEqual(time(), $this->bag->getLastUsed());
     }
 
-    public function testClear()
+    public function test_clear()
     {
         $this->bag->clear();
     }
 
-    public function testSkipLastUsedUpdate()
+    public function test_skip_last_used_update()
     {
         $bag = new MetadataBag('', 30);
         $timeStamp = time();
 
         $created = $timeStamp - 15;
-        $sessionMetadata = array(
+        $sessionMetadata = [
             MetadataBag::CREATED => $created,
             MetadataBag::UPDATED => $created,
             MetadataBag::LIFETIME => 1000,
-        );
+        ];
         $bag->initialize($sessionMetadata);
 
         $this->assertEquals($created, $sessionMetadata[MetadataBag::UPDATED]);
     }
 
-    public function testDoesNotSkipLastUsedUpdate()
+    public function test_does_not_skip_last_used_update()
     {
         $bag = new MetadataBag('', 30);
         $timeStamp = time();
 
         $created = $timeStamp - 45;
-        $sessionMetadata = array(
+        $sessionMetadata = [
             MetadataBag::CREATED => $created,
             MetadataBag::UPDATED => $created,
             MetadataBag::LIFETIME => 1000,
-        );
+        ];
         $bag->initialize($sessionMetadata);
 
         $this->assertEquals($timeStamp, $sessionMetadata[MetadataBag::UPDATED]);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,9 +21,8 @@
 namespace Doctrine\Common\Cache;
 
 use Riak\Bucket;
-use Riak\Connection;
-use Riak\Input;
 use Riak\Exception;
+use Riak\Input;
 use Riak\Object;
 
 /**
@@ -30,6 +30,7 @@ use Riak\Object;
  *
  * @link   www.doctrine-project.org
  * @since  1.1
+ *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
 class RiakCache extends CacheProvider
@@ -43,8 +44,6 @@ class RiakCache extends CacheProvider
 
     /**
      * Sets the riak bucket instance to use.
-     *
-     * @param \Riak\Bucket $bucket
      */
     public function __construct(Bucket $bucket)
     {
@@ -60,7 +59,7 @@ class RiakCache extends CacheProvider
             $response = $this->bucket->get($id);
 
             // No objects found
-            if ( ! $response->hasObject()) {
+            if (! $response->hasObject()) {
                 return false;
             }
 
@@ -95,14 +94,14 @@ class RiakCache extends CacheProvider
     {
         try {
             // We only need the HEAD, not the entire object
-            $input = new Input\GetInput();
+            $input = new Input\GetInput;
 
             $input->setReturnHead(true);
 
             $response = $this->bucket->get($id, $input);
 
             // No objects found
-            if ( ! $response->hasObject()) {
+            if (! $response->hasObject()) {
                 return false;
             }
 
@@ -200,11 +199,10 @@ class RiakCache extends CacheProvider
     /**
      * Check if a given Riak Object have expired.
      *
-     * @param \Riak\Object $object
      *
      * @return bool
      */
-    private function isExpired(Object $object)
+    private function isExpired(object $object)
     {
         $metadataMap = $object->getMetadataMap();
 
@@ -226,10 +224,8 @@ class RiakCache extends CacheProvider
      * If by any means our resolution generates another conflict, it'll up to
      * next read to properly solve it.}
      *
-     * @param string $id
-     * @param string $vClock
-     * @param array  $objectList
-     *
+     * @param  string  $id
+     * @param  string  $vClock
      * @return \Riak\Object
      */
     protected function resolveConflict($id, $vClock, array $objectList)
@@ -237,7 +233,7 @@ class RiakCache extends CacheProvider
         // Our approach here is last-write wins
         $winner = $objectList[count($objectList)];
 
-        $putInput = new Input\PutInput();
+        $putInput = new Input\PutInput;
         $putInput->setVClock($vClock);
 
         $mergedObject = new Object($id);

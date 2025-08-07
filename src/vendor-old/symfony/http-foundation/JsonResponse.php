@@ -25,6 +25,7 @@ namespace Symfony\Component\HttpFoundation;
 class JsonResponse extends Response
 {
     protected $data;
+
     protected $callback;
 
     // Encode <, >, ', &, and " for RFC4627-compliant JSON, which may also be embedded into HTML.
@@ -34,16 +35,16 @@ class JsonResponse extends Response
     /**
      * Constructor.
      *
-     * @param mixed $data    The response data
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param  mixed  $data  The response data
+     * @param  int  $status  The response status code
+     * @param  array  $headers  An array of response headers
      */
-    public function __construct($data = null, $status = 200, $headers = array())
+    public function __construct($data = null, $status = 200, $headers = [])
     {
         parent::__construct('', $status, $headers);
 
-        if (null === $data) {
-            $data = new \ArrayObject();
+        if ($data === null) {
+            $data = new \ArrayObject;
         }
 
         $this->setData($data);
@@ -52,7 +53,7 @@ class JsonResponse extends Response
     /**
      * {@inheritdoc}
      */
-    public static function create($data = null, $status = 200, $headers = array())
+    public static function create($data = null, $status = 200, $headers = [])
     {
         return new static($data, $status, $headers);
     }
@@ -60,20 +61,19 @@ class JsonResponse extends Response
     /**
      * Sets the JSONP callback.
      *
-     * @param string|null $callback The JSONP callback or null to use none
-     *
+     * @param  string|null  $callback  The JSONP callback or null to use none
      * @return JsonResponse
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
     public function setCallback($callback = null)
     {
-        if (null !== $callback) {
+        if ($callback !== null) {
             // taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
             $pattern = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
             $parts = explode('.', $callback);
             foreach ($parts as $part) {
-                if (!preg_match($pattern, $part)) {
+                if (! preg_match($pattern, $part)) {
                     throw new \InvalidArgumentException('The callback name is not valid.');
                 }
             }
@@ -87,13 +87,12 @@ class JsonResponse extends Response
     /**
      * Sets the data to be sent as JSON.
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function setData($data = array())
+    public function setData($data = [])
     {
         if (defined('HHVM_VERSION')) {
             // HHVM does not trigger any warnings and let exceptions
@@ -107,14 +106,14 @@ class JsonResponse extends Response
                 // Fortunately, PHP 5.5 and up do not trigger any warning anymore.
                 $data = json_encode($data, $this->encodingOptions);
             } catch (\Exception $e) {
-                if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
+                if (get_class($e) === 'Exception' && strpos($e->getMessage(), 'Failed calling ') === 0) {
                     throw $e->getPrevious() ?: $e;
                 }
                 throw $e;
             }
         }
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \InvalidArgumentException(json_last_error_msg());
         }
 
@@ -136,8 +135,7 @@ class JsonResponse extends Response
     /**
      * Sets options used while encoding data to JSON.
      *
-     * @param int $encodingOptions
-     *
+     * @param  int  $encodingOptions
      * @return JsonResponse
      */
     public function setEncodingOptions($encodingOptions)
@@ -154,7 +152,7 @@ class JsonResponse extends Response
      */
     protected function update()
     {
-        if (null !== $this->callback) {
+        if ($this->callback !== null) {
             // Not using application/javascript for compatibility reasons with older browsers.
             $this->headers->set('Content-Type', 'text/javascript');
 
@@ -163,7 +161,7 @@ class JsonResponse extends Response
 
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
         // in order to not overwrite a custom definition.
-        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
+        if (! $this->headers->has('Content-Type') || $this->headers->get('Content-Type') === 'text/javascript') {
             $this->headers->set('Content-Type', 'application/json');
         }
 

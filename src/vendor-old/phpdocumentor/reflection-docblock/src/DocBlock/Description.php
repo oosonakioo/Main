@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -59,8 +61,8 @@ class Description
     /**
      * Initializes a Description with its body (template) and a listing of the tags used in the body template.
      *
-     * @param string $bodyTemplate
-     * @param Tag[] $tags
+     * @param  string  $bodyTemplate
+     * @param  Tag[]  $tags
      */
     public function __construct($bodyTemplate, array $tags = [])
     {
@@ -74,20 +76,20 @@ class Description
      * Renders this description as a string where the provided formatter will format the tags in the expected string
      * format.
      *
-     * @param Formatter|null $formatter
      *
      * @return string
      */
-    public function render(Formatter $formatter = null)
+    public function render(?Formatter $formatter = null)
     {
         if ($formatter === null) {
-            $formatter = new PassthroughFormatter();
+            $formatter = new PassthroughFormatter;
         }
 
         $tags = [];
         foreach ($this->tags as $tag) {
-            $tags[] = '{' . $formatter->format($tag) . '}';
+            $tags[] = '{'.$formatter->format($tag).'}';
         }
+
         return vsprintf($this->bodyTemplate, $tags);
     }
 

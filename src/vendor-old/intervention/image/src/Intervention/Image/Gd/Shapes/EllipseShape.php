@@ -2,30 +2,30 @@
 
 namespace Intervention\Image\Gd\Shapes;
 
-use Intervention\Image\Image;
 use Intervention\Image\Gd\Color;
+use Intervention\Image\Image;
 
 class EllipseShape extends \Intervention\Image\AbstractShape
 {
     /**
      * Width of ellipse in pixels
      *
-     * @var integer
+     * @var int
      */
     public $width = 100;
 
     /**
      * Height of ellipse in pixels
      *
-     * @var integer
+     * @var int
      */
     public $height = 100;
 
     /**
      * Create new ellipse instance
      *
-     * @param integer $width
-     * @param integer $height
+     * @param  int  $width
+     * @param  int  $height
      */
     public function __construct($width = null, $height = null)
     {
@@ -36,10 +36,9 @@ class EllipseShape extends \Intervention\Image\AbstractShape
     /**
      * Draw ellipse instance on given image
      *
-     * @param  Image   $image
-     * @param  integer $x
-     * @param  integer $y
-     * @return boolean
+     * @param  int  $x
+     * @param  int  $y
+     * @return bool
      */
     public function applyToImage(Image $image, $x = 0, $y = 0)
     {
@@ -48,7 +47,7 @@ class EllipseShape extends \Intervention\Image\AbstractShape
 
         if ($this->hasBorder()) {
             // slightly smaller ellipse to keep 1px bordered edges clean
-            imagefilledellipse($image->getCore(), $x, $y, $this->width-1, $this->height-1, $background->getInt());
+            imagefilledellipse($image->getCore(), $x, $y, $this->width - 1, $this->height - 1, $background->getInt());
 
             $border_color = new Color($this->border_color);
             imagesetthickness($image->getCore(), $this->border_width);

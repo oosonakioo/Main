@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,8 +24,10 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  * Microsoft SQL Server 2005 reserved keyword dictionary.
  *
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
+ *
  * @link    www.doctrine-project.com
  * @since   2.3
+ *
  * @author  Steve Müller <st.mueller@dzh-online.de>
  */
 class SQLServer2005Keywords extends SQLServerKeywords
@@ -44,13 +47,13 @@ class SQLServer2005Keywords extends SQLServerKeywords
      */
     protected function getKeywords()
     {
-        return array_merge(array_diff(parent::getKeywords(), array('DUMMY')), array(
+        return array_merge(array_diff(parent::getKeywords(), ['DUMMY']), [
             'EXTERNAL',
             'PIVOT',
             'REVERT',
             'SECURITYAUDIT',
             'TABLESAMPLE',
-            'UNPIVOT'
-        ));
+            'UNPIVOT',
+        ]);
     }
 }

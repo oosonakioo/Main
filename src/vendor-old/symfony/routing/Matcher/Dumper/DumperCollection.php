@@ -28,12 +28,12 @@ class DumperCollection implements \IteratorAggregate
     /**
      * @var DumperCollection[]|DumperRoute[]
      */
-    private $children = array();
+    private $children = [];
 
     /**
      * @var array
      */
-    private $attributes = array();
+    private $attributes = [];
 
     /**
      * Returns the children routes and collections.
@@ -61,7 +61,7 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Sets children.
      *
-     * @param array $children The children
+     * @param  array  $children  The children
      */
     public function setAll(array $children)
     {
@@ -90,7 +90,7 @@ class DumperCollection implements \IteratorAggregate
      */
     public function getRoot()
     {
-        return (null !== $this->parent) ? $this->parent->getRoot() : $this;
+        return ($this->parent !== null) ? $this->parent->getRoot() : $this;
     }
 
     /**
@@ -106,7 +106,7 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Sets the parent collection.
      *
-     * @param DumperCollection $parent The parent collection
+     * @param  DumperCollection  $parent  The parent collection
      */
     protected function setParent(DumperCollection $parent)
     {
@@ -116,8 +116,7 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Returns true if the attribute is defined.
      *
-     * @param string $name The attribute name
-     *
+     * @param  string  $name  The attribute name
      * @return bool true if the attribute is defined, false otherwise
      */
     public function hasAttribute($name)
@@ -128,9 +127,8 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Returns an attribute by name.
      *
-     * @param string $name    The attribute name
-     * @param mixed  $default Default value is the attribute doesn't exist
-     *
+     * @param  string  $name  The attribute name
+     * @param  mixed  $default  Default value is the attribute doesn't exist
      * @return mixed The attribute value
      */
     public function getAttribute($name, $default = null)
@@ -141,8 +139,8 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Sets an attribute by name.
      *
-     * @param string $name  The attribute name
-     * @param mixed  $value The attribute value
+     * @param  string  $name  The attribute name
+     * @param  mixed  $value  The attribute value
      */
     public function setAttribute($name, $value)
     {
@@ -152,7 +150,7 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Sets multiple attributes.
      *
-     * @param array $attributes The attributes
+     * @param  array  $attributes  The attributes
      */
     public function setAttributes($attributes)
     {

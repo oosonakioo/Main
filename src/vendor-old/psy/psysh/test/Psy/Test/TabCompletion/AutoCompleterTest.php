@@ -21,34 +21,31 @@ use Psy\TabCompletion\Matcher;
 class AutoCompleterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param $line
-     * @param $mustContain
-     * @param $mustNotContain
      * @dataProvider classesInput
      */
-    public function testClassesCompletion($line, $mustContain, $mustNotContain)
+    public function test_classes_completion($line, $mustContain, $mustNotContain)
     {
-        $context = new Context();
+        $context = new Context;
 
-        $commands = array(
-            new ShowCommand(),
-            new ListCommand(),
-        );
+        $commands = [
+            new ShowCommand,
+            new ListCommand,
+        ];
 
-        $matchers = array(
-            new Matcher\VariablesMatcher(),
-            new Matcher\ClassNamesMatcher(),
-            new Matcher\ConstantsMatcher(),
-            new Matcher\FunctionsMatcher(),
-            new Matcher\ObjectMethodsMatcher(),
-            new Matcher\ObjectAttributesMatcher(),
-            new Matcher\KeywordsMatcher(),
-            new Matcher\ClassAttributesMatcher(),
-            new Matcher\ClassMethodsMatcher(),
+        $matchers = [
+            new Matcher\VariablesMatcher,
+            new Matcher\ClassNamesMatcher,
+            new Matcher\ConstantsMatcher,
+            new Matcher\FunctionsMatcher,
+            new Matcher\ObjectMethodsMatcher,
+            new Matcher\ObjectAttributesMatcher,
+            new Matcher\KeywordsMatcher,
+            new Matcher\ClassAttributesMatcher,
+            new Matcher\ClassMethodsMatcher,
             new Matcher\CommandsMatcher($commands),
-        );
+        ];
 
-        $config = new Configuration();
+        $config = new Configuration;
         $tabCompletion = $config->getAutoCompleter();
         foreach ($matchers as $matcher) {
             if ($matcher instanceof ContextAware) {
@@ -57,13 +54,13 @@ class AutoCompleterTest extends \PHPUnit_Framework_TestCase
             $tabCompletion->addMatcher($matcher);
         }
 
-        $context->setAll(array('foo' => 12, 'bar' => new \DOMDocument()));
+        $context->setAll(['foo' => 12, 'bar' => new \DOMDocument]);
 
-        $code = $tabCompletion->processCallback('', 0, array(
-           'line_buffer' => $line,
-           'point'       => 0,
-           'end'         => strlen($line),
-        ));
+        $code = $tabCompletion->processCallback('', 0, [
+            'line_buffer' => $line,
+            'point' => 0,
+            'end' => strlen($line),
+        ]);
 
         foreach ($mustContain as $mc) {
             $this->assertContains($mc, $code);
@@ -92,54 +89,54 @@ class AutoCompleterTest extends \PHPUnit_Framework_TestCase
      */
     public function classesInput()
     {
-        return array(
+        return [
             // input, must had, must not had
-            array('T_OPE', array('T_OPEN_TAG'), array()),
-            array('st', array('stdClass'), array()),
-            array('stdCla', array('stdClass'), array()),
-            array('new s', array('stdClass'), array()),
-            array(
+            ['T_OPE', ['T_OPEN_TAG'], []],
+            ['st', ['stdClass'], []],
+            ['stdCla', ['stdClass'], []],
+            ['new s', ['stdClass'], []],
+            [
                 'new ',
-                array('stdClass', 'Psy\\Context', 'Psy\\Configuration'),
-                array('require', 'array_search', 'T_OPEN_TAG', '$foo'),
-            ),
-            array('new Psy\\C', array('Context'), array('CASE_LOWER')),
-            array('\s', array('stdClass'), array()),
-            array('array_', array('array_search', 'array_map', 'array_merge'), array()),
-            array('$bar->', array('load'), array()),
-            array('$b', array('bar'), array()),
-            array('6 + $b', array('bar'), array()),
-            array('$f', array('foo'), array()),
-            array('l', array('ls'), array()),
-            array('ls ', array(), array('ls')),
-            array('sho', array('show'), array()),
-            array('12 + clone $', array('foo'), array()),
+                ['stdClass', 'Psy\\Context', 'Psy\\Configuration'],
+                ['require', 'array_search', 'T_OPEN_TAG', '$foo'],
+            ],
+            ['new Psy\\C', ['Context'], ['CASE_LOWER']],
+            ['\s', ['stdClass'], []],
+            ['array_', ['array_search', 'array_map', 'array_merge'], []],
+            ['$bar->', ['load'], []],
+            ['$b', ['bar'], []],
+            ['6 + $b', ['bar'], []],
+            ['$f', ['foo'], []],
+            ['l', ['ls'], []],
+            ['ls ', [], ['ls']],
+            ['sho', ['show'], []],
+            ['12 + clone $', ['foo'], []],
             // array(
             //   '$foo ',
             //   array('+', 'clone'),
             //   array('$foo', 'DOMDocument', 'array_map')
             // ), requires a operator matcher?
-            array('$', array('foo', 'bar'), array('require', 'array_search', 'T_OPEN_TAG', 'Psy')),
-            array(
+            ['$', ['foo', 'bar'], ['require', 'array_search', 'T_OPEN_TAG', 'Psy']],
+            [
                 'Psy\\',
-                array('Context', 'TabCompletion\\Matcher\\AbstractMatcher'),
-                array('require', 'array_search'),
-            ),
-            array(
+                ['Context', 'TabCompletion\\Matcher\\AbstractMatcher'],
+                ['require', 'array_search'],
+            ],
+            [
                 'Psy\Test\TabCompletion\StaticSample::CO',
-                array('Psy\Test\TabCompletion\StaticSample::CONSTANT_VALUE'),
-                array(),
-            ),
-            array(
+                ['Psy\Test\TabCompletion\StaticSample::CONSTANT_VALUE'],
+                [],
+            ],
+            [
                 'Psy\Test\TabCompletion\StaticSample::',
-                array('Psy\Test\TabCompletion\StaticSample::$staticVariable'),
-                array(),
-            ),
-            array(
+                ['Psy\Test\TabCompletion\StaticSample::$staticVariable'],
+                [],
+            ],
+            [
                 'Psy\Test\TabCompletion\StaticSample::',
-                array('Psy\Test\TabCompletion\StaticSample::staticFunction'),
-                array(),
-            ),
-        );
+                ['Psy\Test\TabCompletion\StaticSample::staticFunction'],
+                [],
+            ],
+        ];
     }
 }

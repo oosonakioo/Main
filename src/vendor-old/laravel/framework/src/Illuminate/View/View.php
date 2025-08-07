@@ -2,17 +2,17 @@
 
 namespace Illuminate\View;
 
-use Exception;
-use Throwable;
 use ArrayAccess;
 use BadMethodCallException;
-use Illuminate\Support\Str;
-use Illuminate\Support\MessageBag;
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\View\Engines\EngineInterface;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\MessageProvider;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
+use Illuminate\View\Engines\EngineInterface;
+use Throwable;
 
 class View implements ArrayAccess, ViewContract
 {
@@ -54,8 +54,6 @@ class View implements ArrayAccess, ViewContract
     /**
      * Create a new view instance.
      *
-     * @param  \Illuminate\View\Factory  $factory
-     * @param  \Illuminate\View\Engines\EngineInterface  $engine
      * @param  string  $view
      * @param  string  $path
      * @param  mixed  $data
@@ -74,12 +72,11 @@ class View implements ArrayAccess, ViewContract
     /**
      * Get the string contents of the view.
      *
-     * @param  callable|null  $callback
      * @return string
      *
      * @throws \Throwable
      */
-    public function render(callable $callback = null)
+    public function render(?callable $callback = null)
     {
         try {
             $contents = $this->renderContents();
@@ -171,7 +168,7 @@ class View implements ArrayAccess, ViewContract
      * Add a piece of data to the view.
      *
      * @param  string|array  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return $this
      */
     public function with($key, $value = null)
@@ -190,7 +187,6 @@ class View implements ArrayAccess, ViewContract
      *
      * @param  string  $key
      * @param  string  $view
-     * @param  array   $data
      * @return $this
      */
     public function nest($key, $view, array $data = [])
@@ -312,7 +308,7 @@ class View implements ArrayAccess, ViewContract
      * Set a piece of data on the view.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function offsetSet($key, $value)
@@ -346,7 +342,7 @@ class View implements ArrayAccess, ViewContract
      * Set a piece of data on the view.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function __set($key, $value)
@@ -380,7 +376,7 @@ class View implements ArrayAccess, ViewContract
      * Dynamically bind parameters to the view.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return \Illuminate\View\View
      *
      * @throws \BadMethodCallException

@@ -4,9 +4,9 @@ use League\Flysystem\Cached\Storage\Noop;
 
 class NoopCacheTests extends PHPUnit_Framework_TestCase
 {
-    public function testNoop()
+    public function test_noop()
     {
-        $cache = new Noop();
+        $cache = new Noop;
         $this->assertEquals($cache, $cache->storeMiss('file.txt'));
         $this->assertNull($cache->setComplete('', false));
         $this->assertNull($cache->load());

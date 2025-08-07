@@ -18,7 +18,7 @@ class RecursiveDirectoryIteratorTest extends IteratorTestCase
     /**
      * @group network
      */
-    public function testRewindOnFtp()
+    public function test_rewind_on_ftp()
     {
         try {
             $i = new RecursiveDirectoryIterator('ftp://speedtest.tele2.net/', \RecursiveDirectoryIterator::SKIP_DOTS);
@@ -34,7 +34,7 @@ class RecursiveDirectoryIteratorTest extends IteratorTestCase
     /**
      * @group network
      */
-    public function testSeekOnFtp()
+    public function test_seek_on_ftp()
     {
         try {
             $i = new RecursiveDirectoryIterator('ftp://speedtest.tele2.net/', \RecursiveDirectoryIterator::SKIP_DOTS);
@@ -42,11 +42,11 @@ class RecursiveDirectoryIteratorTest extends IteratorTestCase
             $this->markTestSkipped('Unsupported stream "ftp".');
         }
 
-        $contains = array(
+        $contains = [
             'ftp://speedtest.tele2.net'.DIRECTORY_SEPARATOR.'1000GB.zip',
             'ftp://speedtest.tele2.net'.DIRECTORY_SEPARATOR.'100GB.zip',
-        );
-        $actual = array();
+        ];
+        $actual = [];
 
         $i->seek(0);
         $actual[] = $i->getPathname();

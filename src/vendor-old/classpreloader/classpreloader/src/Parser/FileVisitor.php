@@ -34,8 +34,7 @@ class FileVisitor extends AbstractNodeVisitor
     /**
      * Create a new file visitor instance.
      *
-     * @param bool $skip
-     *
+     * @param  bool  $skip
      * @return void
      */
     public function __construct($skip = false)
@@ -46,17 +45,16 @@ class FileVisitor extends AbstractNodeVisitor
     /**
      * Enter and modify the node.
      *
-     * @param \PhpParser\Node $node
-     *
-     * @throws \ClassPreloader\Exceptions\FileConstantException
      *
      * @return \PhpParser\Node\Scalar\String_|null
+     *
+     * @throws \ClassPreloader\Exceptions\FileConstantException
      */
     public function enterNode(Node $node)
     {
         if ($node instanceof FileNode) {
             if ($this->skip) {
-                throw new FileConstantException();
+                throw new FileConstantException;
             }
 
             return new StringNode($this->getFilename());

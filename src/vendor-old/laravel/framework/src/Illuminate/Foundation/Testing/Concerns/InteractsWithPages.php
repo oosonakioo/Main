@@ -3,22 +3,22 @@
 namespace Illuminate\Foundation\Testing\Concerns;
 
 use Closure;
-use InvalidArgumentException;
-use Illuminate\Http\UploadedFile;
-use Symfony\Component\DomCrawler\Form;
-use Symfony\Component\DomCrawler\Crawler;
-use Illuminate\Foundation\Testing\HttpException;
-use Illuminate\Foundation\Testing\Constraints\HasText;
-use Illuminate\Foundation\Testing\Constraints\HasLink;
-use Illuminate\Foundation\Testing\Constraints\HasValue;
-use Illuminate\Foundation\Testing\Constraints\HasSource;
-use Illuminate\Foundation\Testing\Constraints\IsChecked;
 use Illuminate\Foundation\Testing\Constraints\HasElement;
-use Illuminate\Foundation\Testing\Constraints\IsSelected;
 use Illuminate\Foundation\Testing\Constraints\HasInElement;
+use Illuminate\Foundation\Testing\Constraints\HasLink;
+use Illuminate\Foundation\Testing\Constraints\HasSource;
+use Illuminate\Foundation\Testing\Constraints\HasText;
+use Illuminate\Foundation\Testing\Constraints\HasValue;
+use Illuminate\Foundation\Testing\Constraints\IsChecked;
+use Illuminate\Foundation\Testing\Constraints\IsSelected;
 use Illuminate\Foundation\Testing\Constraints\PageConstraint;
 use Illuminate\Foundation\Testing\Constraints\ReversePageConstraint;
+use Illuminate\Foundation\Testing\HttpException;
+use Illuminate\Http\UploadedFile;
+use InvalidArgumentException;
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Form;
 
 trait InteractsWithPages
 {
@@ -101,8 +101,6 @@ trait InteractsWithPages
     /**
      * Make a request to the application using the given form.
      *
-     * @param  \Symfony\Component\DomCrawler\Form  $form
-     * @param  array  $uploads
      * @return $this
      */
     protected function makeRequestUsingForm(Form $form, array $uploads = [])
@@ -117,7 +115,6 @@ trait InteractsWithPages
     /**
      * Extract the parameters from the given form.
      *
-     * @param  \Symfony\Component\DomCrawler\Form  $form
      * @return array
      */
     protected function extractParametersFromForm(Form $form)
@@ -201,7 +198,6 @@ trait InteractsWithPages
      * Narrow the test content to a specific area of the page.
      *
      * @param  string  $element
-     * @param  \Closure  $callback
      * @return $this
      */
     public function within($element, Closure $callback)
@@ -232,7 +228,6 @@ trait InteractsWithPages
     /**
      * Assert the given constraint.
      *
-     * @param  \Illuminate\Foundation\Testing\Constraints\PageConstraint  $constraint
      * @param  bool  $reverse
      * @param  string  $message
      * @return $this
@@ -278,7 +273,6 @@ trait InteractsWithPages
      * Assert that an element is present on the page.
      *
      * @param  string  $selector
-     * @param  array  $attributes
      * @param  bool  $negate
      * @return $this
      */
@@ -291,7 +285,6 @@ trait InteractsWithPages
      * Assert that an element is not present on the page.
      *
      * @param  string  $selector
-     * @param  array  $attributes
      * @return $this
      */
     public function dontSeeElement($selector, array $attributes = [])
@@ -350,8 +343,8 @@ trait InteractsWithPages
     /**
      * Assert that a given link is seen on the page.
      *
-     * @param  string $text
-     * @param  string|null $url
+     * @param  string  $text
+     * @param  string|null  $url
      * @param  bool  $negate
      * @return $this
      */
@@ -661,8 +654,6 @@ trait InteractsWithPages
     /**
      * Convert the given uploads to UploadedFile instances.
      *
-     * @param  \Symfony\Component\DomCrawler\Form  $form
-     * @param  array  $uploads
      * @return array
      */
     protected function convertUploadsForTesting(Form $form, array $uploads)

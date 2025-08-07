@@ -32,8 +32,6 @@ class ThrowUpCommand extends Command implements ContextAware
 
     /**
      * ContextAware interface.
-     *
-     * @param Context $context
      */
     public function setContext(Context $context)
     {
@@ -47,9 +45,9 @@ class ThrowUpCommand extends Command implements ContextAware
     {
         $this
             ->setName('throw-up')
-            ->setDefinition(array(
+            ->setDefinition([
                 new InputArgument('exception', InputArgument::OPTIONAL, 'Exception to throw'),
-            ))
+            ])
             ->setDescription('Throw an exception out of the Psy Shell.')
             ->setHelp(
                 <<<'HELP'
@@ -68,7 +66,7 @@ HELP
      * {@inheritdoc}
      *
      * @throws InvalidArgumentException if there is no exception to throw.
-     * @throws ThrowUpException         because what else do you expect it to do?
+     * @throws ThrowUpException because what else do you expect it to do?
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -78,7 +76,7 @@ HELP
             $orig = $this->context->getLastException();
         }
 
-        if (!$orig instanceof \Exception) {
+        if (! $orig instanceof \Exception) {
             throw new \InvalidArgumentException('throw-up can only throw Exceptions');
         }
 

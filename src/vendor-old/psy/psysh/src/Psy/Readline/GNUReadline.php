@@ -21,7 +21,9 @@ namespace Psy\Readline;
 class GNUReadline implements Readline
 {
     protected $historyFile;
+
     protected $historySize;
+
     protected $eraseDups;
 
     /**
@@ -90,7 +92,7 @@ class GNUReadline implements Readline
         //     https://github.com/php/php-src/blob/423a057023ef3c00d2ffc16a6b43ba01d0f71796/NEWS#L19-L21
         //
         // TODO: add a PHP version check after next point release
-        if (!ini_get('open_basedir')) {
+        if (! ini_get('open_basedir')) {
             readline_read_history();
         }
         readline_clear_history();
@@ -122,12 +124,12 @@ class GNUReadline implements Readline
         // We have to write history first, since it is used
         // by Libedit to list history
         $res = readline_write_history($this->historyFile);
-        if (!$res || !$this->eraseDups && !$this->historySize > 0) {
+        if (! $res || ! $this->eraseDups && ! $this->historySize > 0) {
             return $res;
         }
 
         $hist = $this->listHistory();
-        if (!$hist) {
+        if (! $hist) {
             return true;
         }
 

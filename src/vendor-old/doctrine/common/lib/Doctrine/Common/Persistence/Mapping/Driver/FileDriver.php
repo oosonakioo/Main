@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,6 +32,7 @@ use Doctrine\Common\Persistence\Mapping\MappingException;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
@@ -57,24 +59,23 @@ abstract class FileDriver implements MappingDriver
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param string|array|FileLocator $locator       A FileLocator or one/multiple paths
-     *                                                where mapping documents can be found.
-     * @param string|null              $fileExtension
+     * @param  string|array|FileLocator  $locator  A FileLocator or one/multiple paths
+     *                                             where mapping documents can be found.
+     * @param  string|null  $fileExtension
      */
     public function __construct($locator, $fileExtension = null)
     {
         if ($locator instanceof FileLocator) {
             $this->locator = $locator;
         } else {
-            $this->locator = new DefaultFileLocator((array)$locator, $fileExtension);
+            $this->locator = new DefaultFileLocator((array) $locator, $fileExtension);
         }
     }
 
     /**
      * Sets the global basename.
      *
-     * @param string $file
-     *
+     * @param  string  $file
      * @return void
      */
     public function setGlobalBasename($file)
@@ -96,8 +97,7 @@ abstract class FileDriver implements MappingDriver
      * Gets the element of schema meta data for the class from the mapping file.
      * This will lazily load the mapping file if it is not loaded yet.
      *
-     * @param string $className
-     *
+     * @param  string  $className
      * @return array The element of schema meta data.
      *
      * @throws MappingException
@@ -113,8 +113,8 @@ abstract class FileDriver implements MappingDriver
         }
 
         $result = $this->loadMappingFile($this->locator->findMappingFile($className));
-        if (!isset($result[$className])) {
-            throw MappingException::invalidMappingFile($className, str_replace('\\', '.', $className) . $this->locator->getFileExtension());
+        if (! isset($result[$className])) {
+            throw MappingException::invalidMappingFile($className, str_replace('\\', '.', $className).$this->locator->getFileExtension());
         }
 
         return $result[$className];
@@ -133,7 +133,7 @@ abstract class FileDriver implements MappingDriver
             return false;
         }
 
-        return !$this->locator->fileExists($className);
+        return ! $this->locator->fileExists($className);
     }
 
     /**
@@ -159,8 +159,7 @@ abstract class FileDriver implements MappingDriver
      * Loads a mapping file with the given name and returns a map
      * from class/entity names to their corresponding file driver elements.
      *
-     * @param string $file The mapping file to load.
-     *
+     * @param  string  $file  The mapping file to load.
      * @return array
      */
     abstract protected function loadMappingFile($file);
@@ -179,7 +178,7 @@ abstract class FileDriver implements MappingDriver
     protected function initialize()
     {
         $this->classCache = [];
-        if (null !== $this->globalBasename) {
+        if ($this->globalBasename !== null) {
             foreach ($this->locator->getPaths() as $path) {
                 $file = $path.'/'.$this->globalBasename.$this->locator->getFileExtension();
                 if (is_file($file)) {
@@ -204,8 +203,6 @@ abstract class FileDriver implements MappingDriver
 
     /**
      * Sets the locator used to discover mapping files by className.
-     *
-     * @param FileLocator $locator
      */
     public function setLocator(FileLocator $locator)
     {

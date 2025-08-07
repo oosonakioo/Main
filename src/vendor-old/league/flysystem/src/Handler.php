@@ -19,10 +19,9 @@ abstract class Handler
     /**
      * Constructor.
      *
-     * @param FilesystemInterface $filesystem
-     * @param string              $path
+     * @param  string  $path
      */
-    public function __construct(FilesystemInterface $filesystem = null, $path = null)
+    public function __construct(?FilesystemInterface $filesystem = null, $path = null)
     {
         $this->path = $path;
         $this->filesystem = $filesystem;
@@ -63,7 +62,6 @@ abstract class Handler
     /**
      * Set the Filesystem object.
      *
-     * @param FilesystemInterface $filesystem
      *
      * @return $this
      */
@@ -73,7 +71,7 @@ abstract class Handler
 
         return $this;
     }
-    
+
     /**
      * Retrieve the Filesystem object.
      *
@@ -87,8 +85,7 @@ abstract class Handler
     /**
      * Set the entree path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return $this
      */
     public function setPath($path)
@@ -111,9 +108,7 @@ abstract class Handler
     /**
      * Plugins pass-through.
      *
-     * @param string $method
-     * @param array  $arguments
-     *
+     * @param  string  $method
      * @return mixed
      */
     public function __call($method, array $arguments)
@@ -126,8 +121,8 @@ abstract class Handler
         } catch (BadMethodCallException $e) {
             throw new BadMethodCallException(
                 'Call to undefined method '
-                . get_called_class()
-                . '::' . $method
+                .get_called_class()
+                .'::'.$method
             );
         }
     }

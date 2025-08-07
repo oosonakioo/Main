@@ -1,16 +1,17 @@
 <?php
+
 /**
  * In this example we demonstrate how you can add your own Tag using a Static Factory method in your Tag class.
  */
 
-require_once(__DIR__ . '/../vendor/autoload.php');
+require_once __DIR__.'/../vendor/autoload.php';
 
-use phpDocumentor\Reflection\DocBlock\Serializer;
-use phpDocumentor\Reflection\DocBlock\Tags\Factory\StaticMethod;
-use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Factory\StaticMethod;
+use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Types\Context;
 use Webmozart\Assert\Assert;
 
@@ -46,13 +47,13 @@ final class MyTag extends BaseTag implements StaticMethod
     /**
      * The constructor for this Tag; this should contain all properties for this object.
      *
-     * @param Description $description An example of how to add a Description to the tag; the Description is often
-     *                                 an optional variable so passing null is allowed in this instance (though you can
-     *                                 also construct an empty description object).
+     * @param  Description  $description  An example of how to add a Description to the tag; the Description is often
+     *                                    an optional variable so passing null is allowed in this instance (though you can
+     *                                    also construct an empty description object).
      *
      * @see BaseTag for the declaration of the description property and getDescription method.
      */
-    public function __construct(Description $description = null)
+    public function __construct(?Description $description = null)
     {
         $this->description = $description;
     }
@@ -75,23 +76,22 @@ final class MyTag extends BaseTag implements StaticMethod
      * > it no longer matches the interface. This is why you often see the default tags check that an optional argument
      * > is not null nonetheless.
      *
-     * @param string             $body
-     * @param DescriptionFactory $descriptionFactory
-     * @param Context|null       $context The Context is used to resolve Types and FQSENs, although optional
-     *                                    it is highly recommended to pass it. If you omit it then it is assumed that
-     *                                    the DocBlock is in the global namespace and has no `use` statements.
+     * @param  string  $body
+     * @param  Context|null  $context  The Context is used to resolve Types and FQSENs, although optional
+     *                                 it is highly recommended to pass it. If you omit it then it is assumed that
+     *                                 the DocBlock is in the global namespace and has no `use` statements.
      *
      * @see Tag for the interface declaration of the `create` method.
      * @see Tag::create() for more information on this method's workings.
      *
      * @return MyTag
      */
-    public static function create($body, DescriptionFactory $descriptionFactory = null, Context $context = null)
+    public static function create($body, ?DescriptionFactory $descriptionFactory = null, ?Context $context = null)
     {
         Assert::string($body);
         Assert::notNull($descriptionFactory);
 
-        return new static($descriptionFactory->create($body, $context));
+        return new self($descriptionFactory->create($body, $context));
     }
 
     /**
@@ -104,11 +104,11 @@ final class MyTag extends BaseTag implements StaticMethod
      */
     public function __toString()
     {
-        return (string)$this->description;
+        return (string) $this->description;
     }
 }
 
-$docComment = <<<DOCCOMMENT
+$docComment = <<<'DOCCOMMENT'
 /**
  * This is an example of a summary.
  *
@@ -131,5 +131,5 @@ $customTagObjects = $docblock->getTagsByName('my-tag');
 
 // As an experiment: let's reconstitute the DocBlock and observe that because we added a __toString() method
 // to the tag class that we can now also see it.
-$serializer              = new Serializer();
+$serializer = new Serializer;
 $reconstitutedDocComment = $serializer->getDocComment($docblock);

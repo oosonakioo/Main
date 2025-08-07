@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,4 @@ namespace Doctrine\Common;
  *
  * @author heinrich
  */
-class CommonException extends \Exception
-{
-}
+class CommonException extends \Exception {}

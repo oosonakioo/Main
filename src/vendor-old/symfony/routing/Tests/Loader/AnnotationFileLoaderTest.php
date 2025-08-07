@@ -11,13 +11,14 @@
 
 namespace Symfony\Component\Routing\Tests\Loader;
 
-use Symfony\Component\Routing\Loader\AnnotationFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Loader\AnnotationFileLoader;
 
 class AnnotationFileLoaderTest extends AbstractAnnotationLoaderTest
 {
     protected $loader;
+
     protected $reader;
 
     protected function setUp()
@@ -25,10 +26,10 @@ class AnnotationFileLoaderTest extends AbstractAnnotationLoaderTest
         parent::setUp();
 
         $this->reader = $this->getReader();
-        $this->loader = new AnnotationFileLoader(new FileLocator(), $this->getClassLoader($this->reader));
+        $this->loader = new AnnotationFileLoader(new FileLocator, $this->getClassLoader($this->reader));
     }
 
-    public function testLoad()
+    public function test_load()
     {
         $this->reader->expects($this->once())->method('getClassAnnotation');
 
@@ -38,7 +39,7 @@ class AnnotationFileLoaderTest extends AbstractAnnotationLoaderTest
     /**
      * @requires PHP 5.4
      */
-    public function testLoadTraitWithClassConstant()
+    public function test_load_trait_with_class_constant()
     {
         $this->reader->expects($this->never())->method('getClassAnnotation');
 
@@ -48,17 +49,17 @@ class AnnotationFileLoaderTest extends AbstractAnnotationLoaderTest
     /**
      * @requires PHP 5.6
      */
-    public function testLoadVariadic()
+    public function test_load_variadic()
     {
-        $route = new Route(array('path' => '/path/to/{id}'));
+        $route = new Route(['path' => '/path/to/{id}']);
         $this->reader->expects($this->once())->method('getClassAnnotation');
         $this->reader->expects($this->once())->method('getMethodAnnotations')
-            ->will($this->returnValue(array($route)));
+            ->will($this->returnValue([$route]));
 
         $this->loader->load(__DIR__.'/../Fixtures/OtherAnnotatedClasses/VariadicClass.php');
     }
 
-    public function testSupports()
+    public function test_supports()
     {
         $fixture = __DIR__.'/../Fixtures/annotated.php';
 

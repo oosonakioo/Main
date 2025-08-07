@@ -12,10 +12,10 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoderAcceptanceTest extends \PH
     protected function setUp()
     {
         $this->_samplesDir = realpath(__DIR__.'/../../../../_samples/charsets');
-        $this->_encoder = new Swift_Mime_ContentEncoder_NativeQpContentEncoder();
+        $this->_encoder = new Swift_Mime_ContentEncoder_NativeQpContentEncoder;
     }
 
-    public function testEncodingAndDecodingSamples()
+    public function test_encoding_and_decoding_samples()
     {
         $sampleFp = opendir($this->_samplesDir);
         while (false !== $encodingDir = readdir($sampleFp)) {
@@ -34,10 +34,10 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoderAcceptanceTest extends \PH
 
                     $text = file_get_contents($sampleDir.'/'.$sampleFile);
 
-                    $os = new Swift_ByteStream_ArrayByteStream();
+                    $os = new Swift_ByteStream_ArrayByteStream;
                     $os->write($text);
 
-                    $is = new Swift_ByteStream_ArrayByteStream();
+                    $is = new Swift_ByteStream_ArrayByteStream;
                     $this->_encoder->encodeByteStream($os, $is);
 
                     $encoded = '';
@@ -58,7 +58,7 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoderAcceptanceTest extends \PH
         closedir($sampleFp);
     }
 
-    public function testEncodingAndDecodingSamplesFromDiConfiguredInstance()
+    public function test_encoding_and_decoding_samples_from_di_configured_instance()
     {
         $encoder = $this->_createEncoderFromContainer();
         $this->assertSame('=C3=A4=C3=B6=C3=BC=C3=9F', $encoder->encodeString('äöüß'));
@@ -67,14 +67,14 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoderAcceptanceTest extends \PH
     /**
      * @expectedException \RuntimeException
      */
-    public function testCharsetChangeNotImplemented()
+    public function test_charset_change_not_implemented()
     {
         $this->_encoder->charsetChanged('utf-8');
         $this->_encoder->charsetChanged('charset');
         $this->_encoder->encodeString('foo');
     }
 
-    public function testGetName()
+    public function test_get_name()
     {
         $this->assertSame('quoted-printable', $this->_encoder->getName());
     }
@@ -82,7 +82,6 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoderAcceptanceTest extends \PH
     private function _createEncoderFromContainer()
     {
         return Swift_DependencyContainer::getInstance()
-            ->lookup('mime.nativeqpcontentencoder')
-            ;
+            ->lookup('mime.nativeqpcontentencoder');
     }
 }

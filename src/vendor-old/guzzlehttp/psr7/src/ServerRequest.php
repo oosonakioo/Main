@@ -4,9 +4,9 @@ namespace GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Server-side HTTP request
@@ -55,12 +55,12 @@ class ServerRequest extends Request implements ServerRequestInterface
     private $uploadedFiles = [];
 
     /**
-     * @param string                               $method       HTTP method
-     * @param string|UriInterface                  $uri          URI
-     * @param array                                $headers      Request headers
-     * @param string|null|resource|StreamInterface $body         Request body
-     * @param string                               $version      Protocol version
-     * @param array                                $serverParams Typically the $_SERVER superglobal
+     * @param  string  $method  HTTP method
+     * @param  string|UriInterface  $uri  URI
+     * @param  array  $headers  Request headers
+     * @param  string|null|resource|StreamInterface  $body  Request body
+     * @param  string  $version  Protocol version
+     * @param  array  $serverParams  Typically the $_SERVER superglobal
      */
     public function __construct(
         $method,
@@ -78,9 +78,10 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * Return an UploadedFile instance array.
      *
-     * @param array $files A array which respect $_FILES structure
-     * @throws InvalidArgumentException for unrecognized values
+     * @param  array  $files  A array which respect $_FILES structure
      * @return array
+     *
+     * @throws InvalidArgumentException for unrecognized values
      */
     public static function normalizeFiles(array $files)
     {
@@ -93,6 +94,7 @@ class ServerRequest extends Request implements ServerRequestInterface
                 $normalized[$key] = self::createUploadedFileFromSpec($value);
             } elseif (is_array($value)) {
                 $normalized[$key] = self::normalizeFiles($value);
+
                 continue;
             } else {
                 throw new InvalidArgumentException('Invalid value in files specification');
@@ -108,7 +110,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * If the specification represents an array of values, this method will
      * delegate to normalizeNestedFileSpec() and return that return value.
      *
-     * @param array $value $_FILES struct
+     * @param  array  $value  $_FILES struct
      * @return array|UploadedFileInterface
      */
     private static function createUploadedFileFromSpec(array $value)
@@ -132,7 +134,6 @@ class ServerRequest extends Request implements ServerRequestInterface
      * Loops through all nested files and returns a normalized array of
      * UploadedFileInterface instances.
      *
-     * @param array $files
      * @return UploadedFileInterface[]
      */
     private static function normalizeNestedFileSpec(array $files = [])
@@ -142,10 +143,10 @@ class ServerRequest extends Request implements ServerRequestInterface
         foreach (array_keys($files['tmp_name']) as $key) {
             $spec = [
                 'tmp_name' => $files['tmp_name'][$key],
-                'size'     => $files['size'][$key],
-                'error'    => $files['error'][$key],
-                'name'     => $files['name'][$key],
-                'type'     => $files['type'][$key],
+                'size' => $files['size'][$key],
+                'error' => $files['error'][$key],
+                'name' => $files['name'][$key],
+                'type' => $files['type'][$key],
             ];
             $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
         }
@@ -185,10 +186,11 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return UriInterface
      */
-    public static function getUriFromGlobals() {
+    public static function getUriFromGlobals()
+    {
         $uri = new Uri('');
 
-        $uri = $uri->withScheme(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http');
+        $uri = $uri->withScheme(! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http');
 
         $hasPort = false;
         if (isset($_SERVER['HTTP_HOST'])) {
@@ -204,7 +206,7 @@ class ServerRequest extends Request implements ServerRequestInterface
             $uri = $uri->withHost($_SERVER['SERVER_ADDR']);
         }
 
-        if (!$hasPort && isset($_SERVER['SERVER_PORT'])) {
+        if (! $hasPort && isset($_SERVER['SERVER_PORT'])) {
             $uri = $uri->withPort($_SERVER['SERVER_PORT']);
         }
 
@@ -218,13 +220,12 @@ class ServerRequest extends Request implements ServerRequestInterface
             }
         }
 
-        if (!$hasQuery && isset($_SERVER['QUERY_STRING'])) {
+        if (! $hasQuery && isset($_SERVER['QUERY_STRING'])) {
             $uri = $uri->withQuery($_SERVER['QUERY_STRING']);
         }
 
         return $uri;
     }
-
 
     /**
      * {@inheritdoc}
@@ -323,7 +324,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getAttribute($attribute, $default = null)
     {
-        if (false === array_key_exists($attribute, $this->attributes)) {
+        if (array_key_exists($attribute, $this->attributes) === false) {
             return $default;
         }
 
@@ -346,7 +347,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withoutAttribute($attribute)
     {
-        if (false === array_key_exists($attribute, $this->attributes)) {
+        if (array_key_exists($attribute, $this->attributes) === false) {
             return $this;
         }
 

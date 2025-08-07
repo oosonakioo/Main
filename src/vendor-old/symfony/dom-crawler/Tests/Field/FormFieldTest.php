@@ -15,17 +15,17 @@ use Symfony\Component\DomCrawler\Field\InputFormField;
 
 class FormFieldTest extends FormFieldTestCase
 {
-    public function testGetName()
+    public function test_get_name()
     {
-        $node = $this->createNode('input', '', array('type' => 'text', 'name' => 'name', 'value' => 'value'));
+        $node = $this->createNode('input', '', ['type' => 'text', 'name' => 'name', 'value' => 'value']);
         $field = new InputFormField($node);
 
         $this->assertEquals('name', $field->getName(), '->getName() returns the name of the field');
     }
 
-    public function testGetSetHasValue()
+    public function test_get_set_has_value()
     {
-        $node = $this->createNode('input', '', array('type' => 'text', 'name' => 'name', 'value' => 'value'));
+        $node = $this->createNode('input', '', ['type' => 'text', 'name' => 'name', 'value' => 'value']);
         $field = new InputFormField($node);
 
         $this->assertEquals('value', $field->getValue(), '->getValue() returns the value of the field');

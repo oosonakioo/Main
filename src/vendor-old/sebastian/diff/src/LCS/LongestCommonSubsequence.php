@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Diff package.
  *
@@ -18,8 +19,6 @@ interface LongestCommonSubsequence
     /**
      * Calculates the longest common subsequence of two arrays.
      *
-     * @param array $from
-     * @param array $to
      *
      * @return array
      */

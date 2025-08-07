@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Diff package.
  *
@@ -10,8 +11,6 @@
 
 namespace SebastianBergmann\Diff;
 
-/**
- */
 class Chunk
 {
     /**
@@ -28,6 +27,7 @@ class Chunk
      * @var int
      */
     private $end;
+
     /**
      * @var int
      */
@@ -39,19 +39,18 @@ class Chunk
     private $lines;
 
     /**
-     * @param int   $start
-     * @param int   $startRange
-     * @param int   $end
-     * @param int   $endRange
-     * @param array $lines
+     * @param  int  $start
+     * @param  int  $startRange
+     * @param  int  $end
+     * @param  int  $endRange
      */
-    public function __construct($start = 0, $startRange = 1, $end = 0, $endRange = 1, array $lines = array())
+    public function __construct($start = 0, $startRange = 1, $end = 0, $endRange = 1, array $lines = [])
     {
-        $this->start      = (int) $start;
+        $this->start = (int) $start;
         $this->startRange = (int) $startRange;
-        $this->end        = (int) $end;
-        $this->endRange   = (int) $endRange;
-        $this->lines      = $lines;
+        $this->end = (int) $end;
+        $this->endRange = (int) $endRange;
+        $this->lines = $lines;
     }
 
     /**
@@ -94,9 +93,6 @@ class Chunk
         return $this->lines;
     }
 
-    /**
-     * @param array $lines
-     */
     public function setLines(array $lines)
     {
         $this->lines = $lines;

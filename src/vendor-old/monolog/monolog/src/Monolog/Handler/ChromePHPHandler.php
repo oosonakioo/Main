@@ -32,7 +32,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
      * Header name
      */
     const HEADER_NAME = 'X-ChromeLogger-Data';
-    
+
     /**
      * Regular expression to detect supported browsers (matches any Chrome, or Firefox 43+)
      */
@@ -45,26 +45,26 @@ class ChromePHPHandler extends AbstractProcessingHandler
      *
      * Chrome limits the headers to 256KB, so when we sent 240KB we stop sending
      *
-     * @var Boolean
+     * @var bool
      */
     protected static $overflowed = false;
 
-    protected static $json = array(
+    protected static $json = [
         'version' => self::VERSION,
-        'columns' => array('label', 'log', 'backtrace', 'type'),
-        'rows' => array(),
-    );
+        'columns' => ['label', 'log', 'backtrace', 'type'],
+        'rows' => [],
+    ];
 
     protected static $sendHeaders = true;
 
     /**
-     * @param int     $level  The minimum logging level at which this handler will be triggered
-     * @param Boolean $bubble Whether the messages that are handled can bubble up the stack or not
+     * @param  int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
      */
     public function __construct($level = Logger::DEBUG, $bubble = true)
     {
         parent::__construct($level, $bubble);
-        if (!function_exists('json_encode')) {
+        if (! function_exists('json_encode')) {
             throw new \RuntimeException('PHP\'s json extension is required to use Monolog\'s ChromePHPHandler');
         }
     }
@@ -74,7 +74,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
      */
     public function handleBatch(array $records)
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($records as $record) {
             if ($record['level'] < $this->level) {
@@ -83,7 +83,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
             $messages[] = $this->processRecord($record);
         }
 
-        if (!empty($messages)) {
+        if (! empty($messages)) {
             $messages = $this->getFormatter()->formatBatch($messages);
             self::$json['rows'] = array_merge(self::$json['rows'], $messages);
             $this->send();
@@ -95,7 +95,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter()
     {
-        return new ChromePHPFormatter();
+        return new ChromePHPFormatter;
     }
 
     /**
@@ -103,7 +103,6 @@ class ChromePHPHandler extends AbstractProcessingHandler
      *
      * @see sendHeader()
      * @see send()
-     * @param array $record
      */
     protected function write(array $record)
     {
@@ -119,15 +118,15 @@ class ChromePHPHandler extends AbstractProcessingHandler
      */
     protected function send()
     {
-        if (self::$overflowed || !self::$sendHeaders) {
+        if (self::$overflowed || ! self::$sendHeaders) {
             return;
         }
 
-        if (!self::$initialized) {
+        if (! self::$initialized) {
             self::$initialized = true;
 
             self::$sendHeaders = $this->headersAccepted();
-            if (!self::$sendHeaders) {
+            if (! self::$sendHeaders) {
                 return;
             }
 
@@ -139,15 +138,15 @@ class ChromePHPHandler extends AbstractProcessingHandler
         if (strlen($data) > 240 * 1024) {
             self::$overflowed = true;
 
-            $record = array(
+            $record = [
                 'message' => 'Incomplete logs, chrome header size limit reached',
-                'context' => array(),
+                'context' => [],
                 'level' => Logger::WARNING,
                 'level_name' => Logger::getLevelName(Logger::WARNING),
                 'channel' => 'monolog',
-                'datetime' => new \DateTime(),
-                'extra' => array(),
-            );
+                'datetime' => new \DateTime,
+                'extra' => [],
+            ];
             self::$json['rows'][count(self::$json['rows']) - 1] = $this->getFormatter()->format($record);
             $json = @json_encode(self::$json);
             $data = base64_encode(utf8_encode($json));
@@ -161,12 +160,12 @@ class ChromePHPHandler extends AbstractProcessingHandler
     /**
      * Send header string to the client
      *
-     * @param string $header
-     * @param string $content
+     * @param  string  $header
+     * @param  string  $content
      */
     protected function sendHeader($header, $content)
     {
-        if (!headers_sent() && self::$sendHeaders) {
+        if (! headers_sent() && self::$sendHeaders) {
             header(sprintf('%s: %s', $header, $content));
         }
     }
@@ -174,7 +173,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
     /**
      * Verifies if the headers are accepted by the current user agent
      *
-     * @return Boolean
+     * @return bool
      */
     protected function headersAccepted()
     {
@@ -190,7 +189,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
      */
     public function __get($property)
     {
-        if ('sendHeaders' !== $property) {
+        if ($property !== 'sendHeaders') {
             throw new \InvalidArgumentException('Undefined property '.$property);
         }
 
@@ -202,7 +201,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
      */
     public function __set($property, $value)
     {
-        if ('sendHeaders' !== $property) {
+        if ($property !== 'sendHeaders') {
             throw new \InvalidArgumentException('Undefined property '.$property);
         }
 

@@ -21,35 +21,35 @@ class SyslogUdpHandlerTest extends TestCase
     /**
      * @expectedException UnexpectedValueException
      */
-    public function testWeValidateFacilities()
+    public function test_we_validate_facilities()
     {
-        $handler = new SyslogUdpHandler("ip", null, "invalidFacility");
+        $handler = new SyslogUdpHandler('ip', null, 'invalidFacility');
     }
 
-    public function testWeSplitIntoLines()
+    public function test_we_split_into_lines()
     {
-        $handler = new SyslogUdpHandler("127.0.0.1", 514, "authpriv");
-        $handler->setFormatter(new \Monolog\Formatter\ChromePHPFormatter());
+        $handler = new SyslogUdpHandler('127.0.0.1', 514, 'authpriv');
+        $handler->setFormatter(new \Monolog\Formatter\ChromePHPFormatter);
 
-        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', array('write'), array('lol', 'lol'));
+        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', ['write'], ['lol', 'lol']);
         $socket->expects($this->at(0))
             ->method('write')
-            ->with("lol", "<".(LOG_AUTHPRIV + LOG_WARNING).">1 ");
+            ->with('lol', '<'.(LOG_AUTHPRIV + LOG_WARNING).'>1 ');
         $socket->expects($this->at(1))
             ->method('write')
-            ->with("hej", "<".(LOG_AUTHPRIV + LOG_WARNING).">1 ");
+            ->with('hej', '<'.(LOG_AUTHPRIV + LOG_WARNING).'>1 ');
 
         $handler->setSocket($socket);
 
         $handler->handle($this->getRecordWithMessage("hej\nlol"));
     }
 
-    public function testSplitWorksOnEmptyMsg()
+    public function test_split_works_on_empty_msg()
     {
-        $handler = new SyslogUdpHandler("127.0.0.1", 514, "authpriv");
+        $handler = new SyslogUdpHandler('127.0.0.1', 514, 'authpriv');
         $handler->setFormatter($this->getIdentityFormatter());
 
-        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', array('write'), array('lol', 'lol'));
+        $socket = $this->getMock('\Monolog\Handler\SyslogUdp\UdpSocket', ['write'], ['lol', 'lol']);
         $socket->expects($this->never())
             ->method('write');
 
@@ -60,6 +60,6 @@ class SyslogUdpHandlerTest extends TestCase
 
     protected function getRecordWithMessage($msg)
     {
-        return array('message' => $msg, 'level' => \Monolog\Logger::WARNING, 'context' => null, 'extra' => array(), 'channel' => 'lol');
+        return ['message' => $msg, 'level' => \Monolog\Logger::WARNING, 'context' => null, 'extra' => [], 'channel' => 'lol'];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Hamcrest\Core;
 
 /*
@@ -11,7 +12,6 @@ use Hamcrest\Util;
 
 abstract class ShortcutCombination extends BaseMatcher
 {
-
     /**
      * @var array<\Hamcrest\Matcher>
      */
@@ -33,11 +33,11 @@ abstract class ShortcutCombination extends BaseMatcher
             }
         }
 
-        return !$shortcut;
+        return ! $shortcut;
     }
 
     public function describeToWithOperator(Description $description, $operator)
     {
-        $description->appendList('(', ' ' . $operator . ' ', ')', $this->_matchers);
+        $description->appendList('(', ' '.$operator.' ', ')', $this->_matchers);
     }
 }

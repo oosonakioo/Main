@@ -55,7 +55,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      *
      * @var array
      */
-    protected $_ignoredHeaders = array();
+    protected $_ignoredHeaders = [];
 
     /**
      * Signer identity.
@@ -77,7 +77,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      *
      * @var array
      */
-    private $_signedHeaders = array();
+    private $_signedHeaders = [];
 
     /**
      * Stores the signature header.
@@ -107,14 +107,14 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
 
     private $_bodyCanonLine = '';
 
-    private $_bound = array();
+    private $_bound = [];
 
     /**
      * Constructor.
      *
-     * @param string $privateKey
-     * @param string $domainName
-     * @param string $selector
+     * @param  string  $privateKey
+     * @param  string  $domainName
+     * @param  string  $selector
      */
     public function __construct($privateKey, $domainName, $selector)
     {
@@ -127,10 +127,9 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Instanciate DomainKeySigner.
      *
-     * @param string $privateKey
-     * @param string $domainName
-     * @param string $selector
-     *
+     * @param  string  $privateKey
+     * @param  string  $domainName
+     * @param  string  $selector
      * @return self
      */
     public static function newInstance($privateKey, $domainName, $selector)
@@ -165,11 +164,10 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      * This method returns the sequence ID of the write (i.e. 1 for first, 2 for
      * second, etc etc).
      *
-     * @param string $bytes
+     * @param  string  $bytes
+     * @return $this
      *
      * @throws Swift_IoException
-     *
-     * @return $this
      */
     public function write($bytes)
     {
@@ -185,9 +183,9 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      * For any bytes that are currently buffered inside the stream, force them
      * off the buffer.
      *
-     * @throws Swift_IoException
-     *
      * @return $this
+     *
+     * @throws Swift_IoException
      */
     public function commit()
     {
@@ -200,7 +198,6 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      * The stream acts as an observer, receiving all data that is written.
      * All {@link write()} and {@link flushBuffers()} operations will be mirrored.
      *
-     * @param Swift_InputByteStream $is
      *
      * @return $this
      */
@@ -218,7 +215,6 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      * If the stream currently has any buffered data it will be written to $is
      * before unbinding occurs.
      *
-     * @param Swift_InputByteStream $is
      *
      * @return $this
      */
@@ -240,9 +236,9 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      * Flush the contents of the stream (empty it) and set the internal pointer
      * to the beginning.
      *
-     * @throws Swift_IoException
-     *
      * @return $this
+     *
+     * @throws Swift_IoException
      */
     public function flushBuffers()
     {
@@ -254,8 +250,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Set hash_algorithm, must be one of rsa-sha256 | rsa-sha1 defaults to rsa-sha256.
      *
-     * @param string $hash
-     *
+     * @param  string  $hash
      * @return $this
      */
     public function setHashAlgorithm($hash)
@@ -268,8 +263,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Set the canonicalization algorithm.
      *
-     * @param string $canon simple | nofws defaults to simple
-     *
+     * @param  string  $canon  simple | nofws defaults to simple
      * @return $this
      */
     public function setCanon($canon)
@@ -286,8 +280,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Set the signer identity.
      *
-     * @param string $identity
-     *
+     * @param  string  $identity
      * @return $this
      */
     public function setSignerIdentity($identity)
@@ -300,8 +293,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Enable / disable the DebugHeaders.
      *
-     * @param bool $debug
-     *
+     * @param  bool  $debug
      * @return $this
      */
     public function setDebugHeaders($debug)
@@ -314,9 +306,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Start Body.
      */
-    public function startBody()
-    {
-    }
+    public function startBody() {}
 
     /**
      * End Body.
@@ -334,17 +324,16 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     public function getAlteredHeaders()
     {
         if ($this->_debugHeaders) {
-            return array('DomainKey-Signature', 'X-DebugHash');
+            return ['DomainKey-Signature', 'X-DebugHash'];
         }
 
-        return array('DomainKey-Signature');
+        return ['DomainKey-Signature'];
     }
 
     /**
      * Adds an ignored Header.
      *
-     * @param string $header_name
-     *
+     * @param  string  $header_name
      * @return $this
      */
     public function ignoreHeader($header_name)
@@ -357,7 +346,6 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Set the headers to sign.
      *
-     * @param Swift_Mime_HeaderSet $headers
      *
      * @return $this
      */
@@ -369,7 +357,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
         $listHeaders = $headers->listAll();
         foreach ($listHeaders as $hName) {
             // Check if we need to ignore Header
-            if (!isset($this->_ignoredHeaders[strtolower($hName)])) {
+            if (! isset($this->_ignoredHeaders[strtolower($hName)])) {
                 if ($headers->has($hName)) {
                     $tmp = $headers->getAll($hName);
                     foreach ($tmp as $header) {
@@ -389,14 +377,13 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     /**
      * Add the signature to the given Headers.
      *
-     * @param Swift_Mime_HeaderSet $headers
      *
      * @return $this
      */
     public function addSignature(Swift_Mime_HeaderSet $headers)
     {
         // Prepare the DomainKey-Signature Header
-        $params = array('a' => $this->_hashAlgorithm, 'b' => chunk_split(base64_encode($this->_getEncryptedHash()), 73, ' '), 'c' => $this->_canon, 'd' => $this->_domainName, 'h' => implode(': ', $this->_signedHeaders), 'q' => 'dns', 's' => $this->_selector);
+        $params = ['a' => $this->_hashAlgorithm, 'b' => chunk_split(base64_encode($this->_getEncryptedHash()), 73, ' '), 'c' => $this->_canon, 'd' => $this->_domainName, 'h' => implode(': ', $this->_signedHeaders), 'q' => 'dns', 's' => $this->_selector];
         $string = '';
         foreach ($params as $k => $v) {
             $string .= $k.'='.$v.'; ';
@@ -435,9 +422,10 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
         $len = strlen($string);
         $canon = '';
         $nofws = ($this->_canon == 'nofws');
-        for ($i = 0; $i < $len; ++$i) {
+        for ($i = 0; $i < $len; $i++) {
             if ($this->_bodyCanonIgnoreStart > 0) {
-                --$this->_bodyCanonIgnoreStart;
+                $this->_bodyCanonIgnoreStart--;
+
                 continue;
             }
             switch ($string[$i]) {
@@ -450,7 +438,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
                             $this->_bodyCanonSpace = false;
                         }
                         if ($this->_bodyCanonLine == '') {
-                            ++$this->_bodyCanonEmptyCounter;
+                            $this->_bodyCanonEmptyCounter++;
                         } else {
                             $this->_bodyCanonLine = '';
                             $canon .= "\r\n";
@@ -462,7 +450,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
                     break;
                 case ' ':
                 case "\t":
-                case "\x09": //HTAB
+                case "\x09": // HTAB
                     if ($nofws) {
                         $this->_bodyCanonSpace = true;
                         break;
@@ -505,15 +493,15 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
     }
 
     /**
-     * @throws Swift_SwiftException
-     *
      * @return string
+     *
+     * @throws Swift_SwiftException
      */
     private function _getEncryptedHash()
     {
         $signature = '';
         $pkeyId = openssl_get_privatekey($this->_privateKey);
-        if (!$pkeyId) {
+        if (! $pkeyId) {
             throw new Swift_SwiftException('Unable to load DomainKey Private Key ['.openssl_error_string().']');
         }
         if (openssl_sign($this->_canonData, $signature, $pkeyId, OPENSSL_ALGO_SHA1)) {

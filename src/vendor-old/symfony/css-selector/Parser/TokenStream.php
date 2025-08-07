@@ -29,7 +29,7 @@ class TokenStream
     /**
      * @var Token[]
      */
-    private $tokens = array();
+    private $tokens = [];
 
     /**
      * @var bool
@@ -39,7 +39,7 @@ class TokenStream
     /**
      * @var Token[]
      */
-    private $used = array();
+    private $used = [];
 
     /**
      * @var int
@@ -59,7 +59,6 @@ class TokenStream
     /**
      * Pushes a token.
      *
-     * @param Token $token
      *
      * @return TokenStream
      */
@@ -98,7 +97,7 @@ class TokenStream
             return $this->peeked;
         }
 
-        if (!isset($this->tokens[$this->cursor])) {
+        if (! isset($this->tokens[$this->cursor])) {
             throw new InternalErrorException('Unexpected token stream end.');
         }
 
@@ -112,7 +111,7 @@ class TokenStream
      */
     public function getPeek()
     {
-        if (!$this->peeking) {
+        if (! $this->peeking) {
             $this->peeked = $this->getNext();
             $this->peeking = true;
         }
@@ -141,7 +140,7 @@ class TokenStream
     {
         $next = $this->getNext();
 
-        if (!$next->isIdentifier()) {
+        if (! $next->isIdentifier()) {
             throw SyntaxErrorException::unexpectedToken('identifier', $next);
         }
 
@@ -163,7 +162,7 @@ class TokenStream
             return $next->getValue();
         }
 
-        if ($next->isDelimiter(array('*'))) {
+        if ($next->isDelimiter(['*'])) {
             return;
         }
 

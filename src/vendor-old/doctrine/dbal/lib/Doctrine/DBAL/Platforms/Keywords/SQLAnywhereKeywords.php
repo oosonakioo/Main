@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -41,7 +42,7 @@ class SQLAnywhereKeywords extends KeywordList
      */
     protected function getKeywords()
     {
-        return array(
+        return [
             'ADD',
             'ALL',
             'ALTER',
@@ -275,7 +276,7 @@ class SQLAnywhereKeywords extends KeywordList
             'WITHIN',
             'WORK',
             'WRITETEXT',
-            'XML'
-        );
+            'XML',
+        ];
     }
 }

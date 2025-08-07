@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\Common\Cache;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Ralph Schindler <ralph.schindler@zend.com>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
@@ -42,7 +44,7 @@ class ZendDataCache extends CacheProvider
      */
     protected function doContains($id)
     {
-        return (false !== zend_shm_cache_fetch($id));
+        return zend_shm_cache_fetch($id) !== false;
     }
 
     /**
@@ -70,6 +72,7 @@ class ZendDataCache extends CacheProvider
         if (empty($namespace)) {
             return zend_shm_cache_clear();
         }
+
         return zend_shm_cache_clear($namespace);
     }
 

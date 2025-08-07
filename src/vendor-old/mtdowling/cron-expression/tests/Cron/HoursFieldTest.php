@@ -14,21 +14,21 @@ class HoursFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\HoursField::validate
      */
-    public function testValidatesField()
+    public function test_validates_field()
     {
-        $f = new HoursField();
+        $f = new HoursField;
         $this->assertTrue($f->validate('1'));
         $this->assertTrue($f->validate('*'));
         $this->assertTrue($f->validate('*/3,1,1-12'));
-     }
+    }
 
     /**
      * @covers Cron\HoursField::increment
      */
-    public function testIncrementsDate()
+    public function test_increments_date()
     {
         $d = new DateTime('2011-03-15 11:15:00');
-        $f = new HoursField();
+        $f = new HoursField;
         $f->increment($d);
         $this->assertEquals('2011-03-15 12:00:00', $d->format('Y-m-d H:i:s'));
 
@@ -40,12 +40,12 @@ class HoursFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\HoursField::increment
      */
-    public function testIncrementsDateWithThirtyMinuteOffsetTimezone()
+    public function test_increments_date_with_thirty_minute_offset_timezone()
     {
         $tz = date_default_timezone_get();
         date_default_timezone_set('America/St_Johns');
         $d = new DateTime('2011-03-15 11:15:00');
-        $f = new HoursField();
+        $f = new HoursField;
         $f->increment($d);
         $this->assertEquals('2011-03-15 12:00:00', $d->format('Y-m-d H:i:s'));
 
@@ -58,12 +58,12 @@ class HoursFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\HoursField::increment
      */
-    public function testIncrementDateWithFifteenMinuteOffsetTimezone()
+    public function test_increment_date_with_fifteen_minute_offset_timezone()
     {
         $tz = date_default_timezone_get();
         date_default_timezone_set('Asia/Kathmandu');
         $d = new DateTime('2011-03-15 11:15:00');
-        $f = new HoursField();
+        $f = new HoursField;
         $f->increment($d);
         $this->assertEquals('2011-03-15 12:00:00', $d->format('Y-m-d H:i:s'));
 

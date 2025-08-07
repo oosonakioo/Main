@@ -1,19 +1,20 @@
 <?php
+
 class Issue1337Test extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider dataProvider
      */
-    public function testProvider($a)
+    public function test_provider($a)
     {
         $this->assertTrue($a);
     }
 
     public function dataProvider()
     {
-        return array(
-          'c:\\'=> array(true),
-          0.9   => array(true)
-        );
+        return [
+            'c:\\' => [true],
+            0.9 => [true],
+        ];
     }
 }

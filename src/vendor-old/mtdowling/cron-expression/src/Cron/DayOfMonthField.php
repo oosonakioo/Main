@@ -27,10 +27,9 @@ class DayOfMonthField extends AbstractField
     /**
      * Get the nearest day of the week for a given day in a month
      *
-     * @param int $currentYear  Current year
-     * @param int $currentMonth Current month
-     * @param int $targetDay    Target day of the month
-     *
+     * @param  int  $currentYear  Current year
+     * @param  int  $currentMonth  Current month
+     * @param  int  $targetDay  Target day of the month
      * @return \DateTime Returns the nearest date
      */
     private static function getNearestWeekday($currentYear, $currentMonth, $targetDay)
@@ -45,7 +44,7 @@ class DayOfMonthField extends AbstractField
 
         $lastDayOfMonth = $target->format('t');
 
-        foreach (array(-1, 1, -2, 2) as $i) {
+        foreach ([-1, 1, -2, 2] as $i) {
             $adjusted = $targetDay + $i;
             if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) {
                 $target->setDate($currentYear, $currentMonth, $adjusted);
@@ -74,6 +73,7 @@ class DayOfMonthField extends AbstractField
         if (strpos($value, 'W')) {
             // Parse the target day
             $targetDay = substr($value, 0, strpos($value, 'W'));
+
             // Find out if the current day is the nearest day of the week
             return $date->format('j') == self::getNearestWeekday(
                 $date->format('Y'),
@@ -103,7 +103,7 @@ class DayOfMonthField extends AbstractField
      * Days of the month can contain values of 1-31, *, L, or ? by default. This can be augmented with lists via a ',',
      * ranges via a '-', or with a '[0-9]W' to specify the closest weekday.
      *
-     * @param string $value
+     * @param  string  $value
      * @return bool
      */
     public function validate($value)
@@ -127,7 +127,7 @@ class DayOfMonthField extends AbstractField
 
             $chunks = explode('-', $value);
             foreach ($chunks as $chunk) {
-                if (!$this->validate($chunk)) {
+                if (! $this->validate($chunk)) {
                     return false;
                 }
             }
@@ -144,7 +144,7 @@ class DayOfMonthField extends AbstractField
 
             $chunks = explode(',', $value);
             foreach ($chunks as $chunk) {
-                if (!$this->validate($chunk)) {
+                if (! $this->validate($chunk)) {
                     return false;
                 }
             }
@@ -156,10 +156,11 @@ class DayOfMonthField extends AbstractField
         if ((bool) preg_match('/\//', $value)) {
             $chunks = explode('/', $value);
             foreach ($chunks as $chunk) {
-                if (!$this->validate($chunk)) {
+                if (! $this->validate($chunk)) {
                     return false;
                 }
             }
+
             return true;
         }
 

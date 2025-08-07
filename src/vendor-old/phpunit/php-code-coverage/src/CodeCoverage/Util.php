@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -16,8 +17,8 @@
 class PHP_CodeCoverage_Util
 {
     /**
-     * @param  float $a
-     * @param  float $b
+     * @param  float  $a
+     * @param  float  $b
      * @return float ($a / $b) * 100
      */
     public static function percent($a, $b, $asString = false, $fixedWidth = false)

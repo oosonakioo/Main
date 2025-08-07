@@ -2,13 +2,13 @@
 
 class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTypeIsIdHeader()
+    public function test_type_is_id_header()
     {
         $header = $this->_getHeader('Message-ID');
         $this->assertEquals(Swift_Mime_Header::TYPE_ID, $header->getFieldType());
     }
 
-    public function testValueMatchesMsgIdSpec()
+    public function test_value_matches_msg_id_spec()
     {
         /* -- RFC 2822, 3.6.4.
      message-id      =       "Message-ID:" msg-id CRLF
@@ -33,21 +33,21 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('<id-left@id-right>', $header->getFieldBody());
     }
 
-    public function testIdCanBeRetrievedVerbatim()
+    public function test_id_can_be_retrieved_verbatim()
     {
         $header = $this->_getHeader('Message-ID');
         $header->setId('id-left@id-right');
         $this->assertEquals('id-left@id-right', $header->getId());
     }
 
-    public function testMultipleIdsCanBeSet()
+    public function test_multiple_ids_can_be_set()
     {
         $header = $this->_getHeader('References');
-        $header->setIds(array('a@b', 'x@y'));
-        $this->assertEquals(array('a@b', 'x@y'), $header->getIds());
+        $header->setIds(['a@b', 'x@y']);
+        $this->assertEquals(['a@b', 'x@y'], $header->getIds());
     }
 
-    public function testSettingMultipleIdsProducesAListValue()
+    public function test_setting_multiple_ids_produces_a_list_value()
     {
         /* -- RFC 2822, 3.6.4.
      The "References:" and "In-Reply-To:" field each contain one or more
@@ -61,11 +61,11 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
      */
 
         $header = $this->_getHeader('References');
-        $header->setIds(array('a@b', 'x@y'));
+        $header->setIds(['a@b', 'x@y']);
         $this->assertEquals('<a@b> <x@y>', $header->getFieldBody());
     }
 
-    public function testIdLeftCanBeQuoted()
+    public function test_id_left_can_be_quoted()
     {
         /* -- RFC 2822, 3.6.4.
      id-left         =       dot-atom-text / no-fold-quote / obs-id-left
@@ -77,7 +77,7 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('<"ab"@c>', $header->getFieldBody());
     }
 
-    public function testIdLeftCanContainAnglesAsQuotedPairs()
+    public function test_id_left_can_contain_angles_as_quoted_pairs()
     {
         /* -- RFC 2822, 3.6.4.
      no-fold-quote   =       DQUOTE *(qtext / quoted-pair) DQUOTE
@@ -89,7 +89,7 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('<"a\\<\\>b"@c>', $header->getFieldBody());
     }
 
-    public function testIdLeftCanBeDotAtom()
+    public function test_id_left_can_be_dot_atom()
     {
         $header = $this->_getHeader('References');
         $header->setId('a.b+&%$.c@d');
@@ -97,19 +97,19 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('<a.b+&%$.c@d>', $header->getFieldBody());
     }
 
-    public function testInvalidIdLeftThrowsException()
+    public function test_invalid_id_left_throws_exception()
     {
         try {
             $header = $this->_getHeader('References');
             $header->setId('a b c@d');
             $this->fail(
                 'Exception should be thrown since "a b c" is not valid id-left.'
-                );
+            );
         } catch (Exception $e) {
         }
     }
 
-    public function testIdRightCanBeDotAtom()
+    public function test_id_right_can_be_dot_atom()
     {
         /* -- RFC 2822, 3.6.4.
      id-right        =       dot-atom-text / no-fold-literal / obs-id-right
@@ -121,7 +121,7 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('<a@b.c+&%$.d>', $header->getFieldBody());
     }
 
-    public function testIdRightCanBeLiteral()
+    public function test_id_right_can_be_literal()
     {
         /* -- RFC 2822, 3.6.4.
      no-fold-literal =       "[" *(dtext / quoted-pair) "]"
@@ -133,19 +133,19 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('<a@[1.2.3.4]>', $header->getFieldBody());
     }
 
-    public function testInvalidIdRightThrowsException()
+    public function test_invalid_id_right_throws_exception()
     {
         try {
             $header = $this->_getHeader('References');
             $header->setId('a@b c d');
             $this->fail(
                 'Exception should be thrown since "b c d" is not valid id-right.'
-                );
+            );
         } catch (Exception $e) {
         }
     }
 
-    public function testMissingAtSignThrowsException()
+    public function test_missing_at_sign_throws_exception()
     {
         /* -- RFC 2822, 3.6.4.
      msg-id          =       [CFWS] "<" id-left "@" id-right ">" [CFWS]
@@ -156,34 +156,34 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
             $header->setId('abc');
             $this->fail(
                 'Exception should be thrown since "abc" is does not contain @.'
-                );
+            );
         } catch (Exception $e) {
         }
     }
 
-    public function testSetBodyModel()
+    public function test_set_body_model()
     {
         $header = $this->_getHeader('Message-ID');
         $header->setFieldBodyModel('a@b');
-        $this->assertEquals(array('a@b'), $header->getIds());
+        $this->assertEquals(['a@b'], $header->getIds());
     }
 
-    public function testGetBodyModel()
+    public function test_get_body_model()
     {
         $header = $this->_getHeader('Message-ID');
         $header->setId('a@b');
-        $this->assertEquals(array('a@b'), $header->getFieldBodyModel());
+        $this->assertEquals(['a@b'], $header->getFieldBodyModel());
     }
 
-    public function testStringValue()
+    public function test_string_value()
     {
         $header = $this->_getHeader('References');
-        $header->setIds(array('a@b', 'x@y'));
+        $header->setIds(['a@b', 'x@y']);
         $this->assertEquals('References: <a@b> <x@y>'."\r\n", $header->toString());
     }
 
     private function _getHeader($name)
     {
-        return new Swift_Mime_Headers_IdentificationHeader($name, new Swift_Mime_Grammar());
+        return new Swift_Mime_Headers_IdentificationHeader($name, new Swift_Mime_Grammar);
     }
 }

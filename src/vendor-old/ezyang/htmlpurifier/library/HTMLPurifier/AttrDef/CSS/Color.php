@@ -5,11 +5,10 @@
  */
 class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
 {
-
     /**
-     * @param string $color
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $color
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($color, $config, $context)
@@ -41,7 +40,7 @@ class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
                 return false;
             }
             $type = false; // to ensure that they're all the same type
-            $new_parts = array();
+            $new_parts = [];
             foreach ($parts as $part) {
                 $part = trim($part);
                 if ($part === '') {
@@ -50,12 +49,12 @@ class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
                 $length = strlen($part);
                 if ($part[$length - 1] === '%') {
                     // handle percents
-                    if (!$type) {
+                    if (! $type) {
                         $type = 'percentage';
                     } elseif ($type !== 'percentage') {
                         return false;
                     }
-                    $num = (float)substr($part, 0, $length - 1);
+                    $num = (float) substr($part, 0, $length - 1);
                     if ($num < 0) {
                         $num = 0;
                     }
@@ -65,19 +64,19 @@ class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
                     $new_parts[] = "$num%";
                 } else {
                     // handle integers
-                    if (!$type) {
+                    if (! $type) {
                         $type = 'integer';
                     } elseif ($type !== 'integer') {
                         return false;
                     }
-                    $num = (int)$part;
+                    $num = (int) $part;
                     if ($num < 0) {
                         $num = 0;
                     }
                     if ($num > 255) {
                         $num = 255;
                     }
-                    $new_parts[] = (string)$num;
+                    $new_parts[] = (string) $num;
                 }
             }
             $new_triad = implode(',', $new_parts);
@@ -88,16 +87,17 @@ class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
                 $hex = substr($color, 1);
             } else {
                 $hex = $color;
-                $color = '#' . $color;
+                $color = '#'.$color;
             }
             $length = strlen($hex);
             if ($length !== 3 && $length !== 6) {
                 return false;
             }
-            if (!ctype_xdigit($hex)) {
+            if (! ctype_xdigit($hex)) {
                 return false;
             }
         }
+
         return $color;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return array(
 
     'route' => [
         'prefix' => 'elfinder',
-        'middleware' => ['web', 'auth'], //Set to null to disable middleware filter
+        'middleware' => ['web', 'auth'], // Set to null to disable middleware filter
     ],
 
     /*
@@ -64,22 +64,22 @@ return array(
     |
     */
 
-    'roots' => array(
-        array(
+    'roots' => [
+        [
             'driver' => 'LocalFileSystem',
             'path' => 'uploads',
-            'URL'    => config('app.url') . '/uploads',
-            'attributes' => array(
-            array(
-                'pattern' => '/\/\./',
-                'read' => false,
-                'write' => false,
-                'locked' => true,
-                'hidden' => true
-            )
-          )
-        )
-    ),
+            'URL' => config('app.url').'/uploads',
+            'attributes' => [
+                [
+                    'pattern' => '/\/\./',
+                    'read' => false,
+                    'write' => false,
+                    'locked' => true,
+                    'hidden' => true,
+                ],
+            ],
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return array(
     |
     */
 
-    'options' => array(),
+    'options' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -102,8 +102,8 @@ return array(
     | See https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options-2.1#root-options
     |
     */
-    'root_options' => array(
+    'root_options' => [
 
-    ),
+    ],
 
-);
+];

@@ -3,9 +3,9 @@
 namespace Illuminate\Session;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 use SessionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 
 class CookieSessionHandler implements SessionHandlerInterface
 {
@@ -26,7 +26,6 @@ class CookieSessionHandler implements SessionHandlerInterface
     /**
      * Create a new cookie driven handler instance.
      *
-     * @param  \Illuminate\Contracts\Cookie\QueueingFactory  $cookie
      * @param  int  $minutes
      * @return void
      */
@@ -98,7 +97,6 @@ class CookieSessionHandler implements SessionHandlerInterface
     /**
      * Set the request instance.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return void
      */
     public function setRequest(Request $request)

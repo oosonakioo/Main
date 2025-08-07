@@ -17,7 +17,6 @@ class Authorize
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      * @return void
      */
     public function __construct(Gate $gate)
@@ -29,7 +28,6 @@ class Authorize
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @param  string  $ability
      * @param  string|null  $model
      * @return mixed

@@ -17,24 +17,24 @@ use Symfony\Component\Translation\Writer\TranslationWriter;
 
 class TranslationWriterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWriteTranslations()
+    public function test_write_translations()
     {
         $dumper = $this->getMock('Symfony\Component\Translation\Dumper\DumperInterface');
         $dumper
             ->expects($this->once())
             ->method('dump');
 
-        $writer = new TranslationWriter();
+        $writer = new TranslationWriter;
         $writer->addDumper('test', $dumper);
-        $writer->writeTranslations(new MessageCatalogue(array()), 'test');
+        $writer->writeTranslations(new MessageCatalogue([]), 'test');
     }
 
-    public function testDisableBackup()
+    public function test_disable_backup()
     {
-        $nonBackupDumper = new NonBackupDumper();
-        $backupDumper = new BackupDumper();
+        $nonBackupDumper = new NonBackupDumper;
+        $backupDumper = new BackupDumper;
 
-        $writer = new TranslationWriter();
+        $writer = new TranslationWriter;
         $writer->addDumper('non_backup', $nonBackupDumper);
         $writer->addDumper('backup', $backupDumper);
         $writer->disableBackup();
@@ -45,18 +45,14 @@ class TranslationWriterTest extends \PHPUnit_Framework_TestCase
 
 class NonBackupDumper implements DumperInterface
 {
-    public function dump(MessageCatalogue $messages, $options = array())
-    {
-    }
+    public function dump(MessageCatalogue $messages, $options = []) {}
 }
 
 class BackupDumper implements DumperInterface
 {
     public $backup = true;
 
-    public function dump(MessageCatalogue $messages, $options = array())
-    {
-    }
+    public function dump(MessageCatalogue $messages, $options = []) {}
 
     public function setBackup($backup)
     {

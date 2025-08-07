@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -25,9 +26,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      */
     protected $tests;
 
-    /**
-     * @param PHPUnit_Framework_TestSuite $testSuite
-     */
     public function __construct(PHPUnit_Framework_TestSuite $testSuite)
     {
         $this->tests = $testSuite->tests();

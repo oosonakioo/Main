@@ -8,29 +8,27 @@ interface Foo
 
 class Foo
 {
-    public function bar()
-    {
-    }
+    public function bar() {}
 }
 
 function baz()
 {
     // a one-line comment
-    print '*'; // a one-line comment
+    echo '*'; // a one-line comment
 
     /* a one-line comment */
-    print '*'; /* a one-line comment */
+    echo '*'; /* a one-line comment */
 
     /* a one-line comment
      */
-    print '*'; /* a one-line comment
+    echo '*'; /* a one-line comment
     */
 
-    print '*'; // @codeCoverageIgnore
+    echo '*'; // @codeCoverageIgnore
 
-    print '*'; // @codeCoverageIgnoreStart
-    print '*';
-    print '*'; // @codeCoverageIgnoreEnd
+    echo '*'; // @codeCoverageIgnoreStart
+    echo '*';
+    echo '*'; // @codeCoverageIgnoreEnd
 
-    print '*';
+    echo '*';
 }

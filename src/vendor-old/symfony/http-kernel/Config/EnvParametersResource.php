@@ -18,7 +18,7 @@ use Symfony\Component\Config\Resource\SelfCheckingResourceInterface;
  *
  * @author Chris Wilkinson <chriswilkinson84@gmail.com>
  */
-class EnvParametersResource implements SelfCheckingResourceInterface, \Serializable
+class EnvParametersResource implements \Serializable, SelfCheckingResourceInterface
 {
     /**
      * @var string
@@ -33,7 +33,7 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
     /**
      * Constructor.
      *
-     * @param string $prefix
+     * @param  string  $prefix
      */
     public function __construct($prefix)
     {
@@ -54,7 +54,7 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
      */
     public function getResource()
     {
-        return array('prefix' => $this->prefix, 'variables' => $this->variables);
+        return ['prefix' => $this->prefix, 'variables' => $this->variables];
     }
 
     /**
@@ -67,7 +67,7 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
 
     public function serialize()
     {
-        return serialize(array('prefix' => $this->prefix, 'variables' => $this->variables));
+        return serialize(['prefix' => $this->prefix, 'variables' => $this->variables]);
     }
 
     public function unserialize($serialized)
@@ -80,10 +80,10 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
 
     private function findVariables()
     {
-        $variables = array();
+        $variables = [];
 
         foreach ($_SERVER as $key => $value) {
-            if (0 === strpos($key, $this->prefix)) {
+            if (strpos($key, $this->prefix) === 0) {
                 $variables[$key] = $value;
             }
         }

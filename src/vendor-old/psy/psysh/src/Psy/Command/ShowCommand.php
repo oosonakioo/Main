@@ -28,7 +28,7 @@ class ShowCommand extends ReflectingCommand
     private $colorMode;
 
     /**
-     * @param null|string $colorMode (default: null)
+     * @param  null|string  $colorMode  (default: null)
      */
     public function __construct($colorMode = null)
     {
@@ -44,9 +44,9 @@ class ShowCommand extends ReflectingCommand
     {
         $this
             ->setName('show')
-            ->setDefinition(array(
+            ->setDefinition([
                 new InputArgument('value', InputArgument::REQUIRED, 'Function, class, instance, constant, method or property to show.'),
-            ))
+            ])
             ->setDescription('Show the code for an object, class, constant, method or property.')
             ->setHelp(
                 <<<HELP
@@ -64,7 +64,7 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        list($value, $reflector) = $this->getTargetAndReflector($input->getArgument('value'));
+        [$value, $reflector] = $this->getTargetAndReflector($input->getArgument('value'));
 
         try {
             $output->page(CodeFormatter::format($reflector, $this->colorMode), ShellOutput::OUTPUT_RAW);

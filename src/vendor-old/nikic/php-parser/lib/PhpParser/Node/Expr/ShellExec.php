@@ -12,15 +12,17 @@ class ShellExec extends Expr
     /**
      * Constructs a shell exec (backtick) node.
      *
-     * @param array $parts      Encapsed string array
-     * @param array $attributes Additional attributes
+     * @param  array  $parts  Encapsed string array
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct(array $parts, array $attributes = array()) {
+    public function __construct(array $parts, array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->parts = $parts;
     }
 
-    public function getSubNodeNames() {
-        return array('parts');
+    public function getSubNodeNames()
+    {
+        return ['parts'];
     }
 }

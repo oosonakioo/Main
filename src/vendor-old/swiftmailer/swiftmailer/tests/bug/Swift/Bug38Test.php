@@ -3,7 +3,9 @@
 class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
 {
     private $_attFile;
+
     private $_attFileName;
+
     private $_attFileType;
 
     protected function setUp()
@@ -14,9 +16,9 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
         Swift_Preferences::getInstance()->setCharset('utf-8');
     }
 
-    public function testWritingMessageToByteStreamProducesCorrectStructure()
+    public function test_writing_message_to_byte_stream_produces_correct_structure()
     {
-        $message = new Swift_Message();
+        $message = new Swift_Message;
         $message->setSubject('test subject');
         $message->setTo('user@domain.tld');
         $message->setCc('other@domain.tld');
@@ -32,7 +34,7 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
         $boundary = $message->getBoundary();
         $imgId = $image->getId();
 
-        $stream = new Swift_ByteStream_ArrayByteStream();
+        $stream = new Swift_ByteStream_ArrayByteStream;
 
         $message->toByteStream($stream);
 
@@ -68,9 +70,9 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testWritingMessageToByteStreamTwiceProducesCorrectStructure()
+    public function test_writing_message_to_byte_stream_twice_produces_correct_structure()
     {
-        $message = new Swift_Message();
+        $message = new Swift_Message;
         $message->setSubject('test subject');
         $message->setTo('user@domain.tld');
         $message->setCc('other@domain.tld');
@@ -112,11 +114,10 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
         preg_quote(base64_encode('<data>'), '~').
         "\r\n\r\n".
         '--'.$boundary.'--'."\r\n".
-        '$~D'
-        ;
+        '$~D';
 
-        $streamA = new Swift_ByteStream_ArrayByteStream();
-        $streamB = new Swift_ByteStream_ArrayByteStream();
+        $streamA = new Swift_ByteStream_ArrayByteStream;
+        $streamB = new Swift_ByteStream_ArrayByteStream;
 
         $message->toByteStream($streamA);
         $message->toByteStream($streamB);
@@ -125,9 +126,9 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
         $this->assertPatternInStream($pattern, $streamB);
     }
 
-    public function testWritingMessageToByteStreamTwiceUsingAFileAttachment()
+    public function test_writing_message_to_byte_stream_twice_using_a_file_attachment()
     {
-        $message = new Swift_Message();
+        $message = new Swift_Message;
         $message->setSubject('test subject');
         $message->setTo('user@domain.tld');
         $message->setCc('other@domain.tld');
@@ -143,8 +144,8 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
         $date = preg_quote(date('r', $message->getDate()), '~');
         $boundary = $message->getBoundary();
 
-        $streamA = new Swift_ByteStream_ArrayByteStream();
-        $streamB = new Swift_ByteStream_ArrayByteStream();
+        $streamA = new Swift_ByteStream_ArrayByteStream;
+        $streamB = new Swift_ByteStream_ArrayByteStream;
 
         $pattern = '~^'.
             'Message-ID: <'.$id.'>'."\r\n".
@@ -171,8 +172,7 @@ class Swift_Bug38Test extends \PHPUnit_Framework_TestCase
             preg_quote(base64_encode(file_get_contents($this->_attFile)), '~').
             "\r\n\r\n".
             '--'.$boundary.'--'."\r\n".
-            '$~D'
-            ;
+            '$~D';
 
         $message->toByteStream($streamA);
         $message->toByteStream($streamB);

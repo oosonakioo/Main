@@ -24,7 +24,6 @@ class HasElement extends PageConstraint
      * Create a new constraint instance.
      *
      * @param  string  $selector
-     * @param  array  $attributes
      * @return void
      */
     public function __construct($selector, array $attributes = [])
@@ -61,7 +60,6 @@ class HasElement extends PageConstraint
     /**
      * Determines if the given element has the attributes.
      *
-     * @param  \Symfony\Component\DomCrawler\Crawler  $element
      * @return bool
      */
     protected function hasAttributes(Crawler $element)

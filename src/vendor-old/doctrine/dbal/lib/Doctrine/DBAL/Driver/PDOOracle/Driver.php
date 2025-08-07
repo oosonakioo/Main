@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -36,7 +37,7 @@ class Driver extends AbstractOracleDriver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
     {
         try {
             return new PDOConnection(
@@ -53,16 +54,15 @@ class Driver extends AbstractOracleDriver
     /**
      * Constructs the Oracle PDO DSN.
      *
-     * @param array $params
      *
      * @return string The DSN.
      */
     private function constructPdoDsn(array $params)
     {
-        $dsn = 'oci:dbname=' . $this->getEasyConnectString($params);
+        $dsn = 'oci:dbname='.$this->getEasyConnectString($params);
 
         if (isset($params['charset'])) {
-            $dsn .= ';charset=' . $params['charset'];
+            $dsn .= ';charset='.$params['charset'];
         }
 
         return $dsn;

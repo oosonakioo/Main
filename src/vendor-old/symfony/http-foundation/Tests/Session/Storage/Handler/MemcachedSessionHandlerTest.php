@@ -15,11 +15,13 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHan
 
 /**
  * @requires extension memcached
+ *
  * @group time-sensitive
  */
 class MemcachedSessionHandlerTest extends \PHPUnit_Framework_TestCase
 {
     const PREFIX = 'prefix_';
+
     const TTL = 1000;
 
     /**
@@ -44,7 +46,7 @@ class MemcachedSessionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->memcached = $this->getMock('Memcached');
         $this->storage = new MemcachedSessionHandler(
             $this->memcached,
-            array('prefix' => self::PREFIX, 'expiretime' => self::TTL)
+            ['prefix' => self::PREFIX, 'expiretime' => self::TTL]
         );
     }
 
@@ -55,52 +57,49 @@ class MemcachedSessionHandlerTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
-    public function testOpenSession()
+    public function test_open_session()
     {
         $this->assertTrue($this->storage->open('', ''));
     }
 
-    public function testCloseSession()
+    public function test_close_session()
     {
         $this->assertTrue($this->storage->close());
     }
 
-    public function testReadSession()
+    public function test_read_session()
     {
         $this->memcached
             ->expects($this->once())
             ->method('get')
-            ->with(self::PREFIX.'id')
-        ;
+            ->with(self::PREFIX.'id');
 
         $this->assertEquals('', $this->storage->read('id'));
     }
 
-    public function testWriteSession()
+    public function test_write_session()
     {
         $this->memcached
             ->expects($this->once())
             ->method('set')
             ->with(self::PREFIX.'id', 'data', $this->equalTo(time() + self::TTL, 2))
-            ->will($this->returnValue(true))
-        ;
+            ->will($this->returnValue(true));
 
         $this->assertTrue($this->storage->write('id', 'data'));
     }
 
-    public function testDestroySession()
+    public function test_destroy_session()
     {
         $this->memcached
             ->expects($this->once())
             ->method('delete')
             ->with(self::PREFIX.'id')
-            ->will($this->returnValue(true))
-        ;
+            ->will($this->returnValue(true));
 
         $this->assertTrue($this->storage->destroy('id'));
     }
 
-    public function testGcSession()
+    public function test_gc_session()
     {
         $this->assertTrue($this->storage->gc(123));
     }
@@ -108,7 +107,7 @@ class MemcachedSessionHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getOptionFixtures
      */
-    public function testSupportedOptions($options, $supported)
+    public function test_supported_options($options, $supported)
     {
         try {
             new MemcachedSessionHandler($this->memcached, $options);
@@ -120,15 +119,15 @@ class MemcachedSessionHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function getOptionFixtures()
     {
-        return array(
-            array(array('prefix' => 'session'), true),
-            array(array('expiretime' => 100), true),
-            array(array('prefix' => 'session', 'expiretime' => 200), true),
-            array(array('expiretime' => 100, 'foo' => 'bar'), false),
-        );
+        return [
+            [['prefix' => 'session'], true],
+            [['expiretime' => 100], true],
+            [['prefix' => 'session', 'expiretime' => 200], true],
+            [['expiretime' => 100, 'foo' => 'bar'], false],
+        ];
     }
 
-    public function testGetConnection()
+    public function test_get_connection()
     {
         $method = new \ReflectionMethod($this->storage, 'getMemcached');
         $method->setAccessible(true);

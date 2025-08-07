@@ -21,9 +21,9 @@ interface HelperInterface
     /**
      * Sets the helper set associated with this helper.
      *
-     * @param HelperSet $helperSet A HelperSet instance
+     * @param  HelperSet  $helperSet  A HelperSet instance
      */
-    public function setHelperSet(HelperSet $helperSet = null);
+    public function setHelperSet(?HelperSet $helperSet = null);
 
     /**
      * Gets the helper set associated with this helper.

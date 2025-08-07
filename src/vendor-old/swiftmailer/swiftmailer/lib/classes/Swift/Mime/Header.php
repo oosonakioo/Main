@@ -48,14 +48,14 @@ interface Swift_Mime_Header
      *
      * The actual types needed will vary depending upon the type of Header.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      */
     public function setFieldBodyModel($model);
 
     /**
      * Set the charset used when rendering the Header.
      *
-     * @param string $charset
+     * @param  string  $charset
      */
     public function setCharset($charset);
 

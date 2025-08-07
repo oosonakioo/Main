@@ -17,28 +17,29 @@ class NodeTraverser implements NodeTraverserInterface
     /**
      * Constructs a node traverser.
      *
-     * @param bool $cloneNodes Should the traverser clone the nodes when traversing the AST
+     * @param  bool  $cloneNodes  Should the traverser clone the nodes when traversing the AST
      */
-    public function __construct($cloneNodes = false) {
-        $this->visitors = array();
+    public function __construct($cloneNodes = false)
+    {
+        $this->visitors = [];
         $this->cloneNodes = $cloneNodes;
     }
 
     /**
      * Adds a visitor.
      *
-     * @param NodeVisitor $visitor Visitor to add
+     * @param  NodeVisitor  $visitor  Visitor to add
      */
-    public function addVisitor(NodeVisitor $visitor) {
+    public function addVisitor(NodeVisitor $visitor)
+    {
         $this->visitors[] = $visitor;
     }
 
     /**
      * Removes an added visitor.
-     *
-     * @param NodeVisitor $visitor
      */
-    public function removeVisitor(NodeVisitor $visitor) {
+    public function removeVisitor(NodeVisitor $visitor)
+    {
         foreach ($this->visitors as $index => $storedVisitor) {
             if ($storedVisitor === $visitor) {
                 unset($this->visitors[$index]);
@@ -50,11 +51,11 @@ class NodeTraverser implements NodeTraverserInterface
     /**
      * Traverses an array of nodes using the registered visitors.
      *
-     * @param Node[] $nodes Array of nodes
-     *
+     * @param  Node[]  $nodes  Array of nodes
      * @return Node[] Traversed array of nodes
      */
-    public function traverse(array $nodes) {
+    public function traverse(array $nodes)
+    {
         foreach ($this->visitors as $visitor) {
             if (null !== $return = $visitor->beforeTraverse($nodes)) {
                 $nodes = $return;
@@ -72,13 +73,14 @@ class NodeTraverser implements NodeTraverserInterface
         return $nodes;
     }
 
-    protected function traverseNode(Node $node) {
+    protected function traverseNode(Node $node)
+    {
         if ($this->cloneNodes) {
             $node = clone $node;
         }
 
         foreach ($node->getSubNodeNames() as $name) {
-            $subNode =& $node->$name;
+            $subNode = &$node->$name;
 
             if (is_array($subNode)) {
                 $subNode = $this->traverseArray($subNode);
@@ -86,9 +88,9 @@ class NodeTraverser implements NodeTraverserInterface
                 $traverseChildren = true;
                 foreach ($this->visitors as $visitor) {
                     $return = $visitor->enterNode($subNode);
-                    if (self::DONT_TRAVERSE_CHILDREN === $return) {
+                    if ($return === self::DONT_TRAVERSE_CHILDREN) {
                         $traverseChildren = false;
-                    } else if (null !== $return) {
+                    } elseif ($return !== null) {
                         $subNode = $return;
                     }
                 }
@@ -101,7 +103,7 @@ class NodeTraverser implements NodeTraverserInterface
                     if (null !== $return = $visitor->leaveNode($subNode)) {
                         if (is_array($return)) {
                             throw new \LogicException(
-                                'leaveNode() may only return an array ' .
+                                'leaveNode() may only return an array '.
                                 'if the parent structure is an array'
                             );
                         }
@@ -114,8 +116,9 @@ class NodeTraverser implements NodeTraverserInterface
         return $node;
     }
 
-    protected function traverseArray(array $nodes) {
-        $doNodes = array();
+    protected function traverseArray(array $nodes)
+    {
+        $doNodes = [];
 
         foreach ($nodes as $i => &$node) {
             if (is_array($node)) {
@@ -124,9 +127,9 @@ class NodeTraverser implements NodeTraverserInterface
                 $traverseChildren = true;
                 foreach ($this->visitors as $visitor) {
                     $return = $visitor->enterNode($node);
-                    if (self::DONT_TRAVERSE_CHILDREN === $return) {
+                    if ($return === self::DONT_TRAVERSE_CHILDREN) {
                         $traverseChildren = false;
-                    } else if (null !== $return) {
+                    } elseif ($return !== null) {
                         $node = $return;
                     }
                 }
@@ -138,21 +141,21 @@ class NodeTraverser implements NodeTraverserInterface
                 foreach ($this->visitors as $visitor) {
                     $return = $visitor->leaveNode($node);
 
-                    if (self::REMOVE_NODE === $return) {
-                        $doNodes[] = array($i, array());
+                    if ($return === self::REMOVE_NODE) {
+                        $doNodes[] = [$i, []];
                         break;
                     } elseif (is_array($return)) {
-                        $doNodes[] = array($i, $return);
+                        $doNodes[] = [$i, $return];
                         break;
-                    } elseif (null !== $return) {
+                    } elseif ($return !== null) {
                         $node = $return;
                     }
                 }
             }
         }
 
-        if (!empty($doNodes)) {
-            while (list($i, $replace) = array_pop($doNodes)) {
+        if (! empty($doNodes)) {
+            while ([$i, $replace] = array_pop($doNodes)) {
                 array_splice($nodes, $i, 1, $replace);
             }
         }

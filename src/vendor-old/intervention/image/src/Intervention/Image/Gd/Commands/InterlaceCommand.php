@@ -7,8 +7,8 @@ class InterlaceCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Toggles interlaced encoding mode
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

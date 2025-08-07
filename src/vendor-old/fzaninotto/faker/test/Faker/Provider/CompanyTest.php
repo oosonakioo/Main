@@ -13,15 +13,15 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
      */
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Company($faker));
         $faker->addProvider(new Lorem($faker));
         $this->faker = $faker;
     }
 
-    public function testJobTitle()
+    public function test_job_title()
     {
         $jobTitle = $this->faker->jobTitle();
         $pattern = '/^[A-Za-z]+$/';

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,13 +27,13 @@ use UnexpectedValueException as BaseUnexpectedValueException;
  *
  * @link   www.doctrine-project.org
  * @since  2.4
+ *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
 class UnexpectedValueException extends BaseUnexpectedValueException implements ProxyException
 {
     /**
-     * @param string $proxyDirectory
-     *
+     * @param  string  $proxyDirectory
      * @return self
      */
     public static function proxyDirectoryNotWritable($proxyDirectory)
@@ -41,11 +42,9 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements P
     }
 
     /**
-     * @param string     $className
-     * @param string     $methodName
-     * @param string     $parameterName
-     * @param \Exception $previous
-     *
+     * @param  string  $className
+     * @param  string  $methodName
+     * @param  string  $parameterName
      * @return self
      */
     public static function invalidParameterTypeHint($className, $methodName, $parameterName, \Exception $previous)

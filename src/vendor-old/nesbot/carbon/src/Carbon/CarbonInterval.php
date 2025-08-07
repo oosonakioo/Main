@@ -69,12 +69,19 @@ class CarbonInterval extends DateInterval
      * Interval spec period designators
      */
     const PERIOD_PREFIX = 'P';
+
     const PERIOD_YEARS = 'Y';
+
     const PERIOD_MONTHS = 'M';
+
     const PERIOD_DAYS = 'D';
+
     const PERIOD_TIME_PREFIX = 'T';
+
     const PERIOD_HOURS = 'H';
+
     const PERIOD_MINUTES = 'M';
+
     const PERIOD_SECONDS = 'S';
 
     /**
@@ -93,7 +100,6 @@ class CarbonInterval extends DateInterval
     /**
      * Determine if the interval was created via DateTime:diff() or not.
      *
-     * @param DateInterval $interval
      *
      * @return bool
      */
@@ -102,20 +108,20 @@ class CarbonInterval extends DateInterval
         return $interval->days !== false && $interval->days !== static::PHP_DAYS_FALSE;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //////////////////////////// CONSTRUCTORS /////////////////////////
-    ///////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////
+    // ////////////////////////// CONSTRUCTORS /////////////////////////
+    // /////////////////////////////////////////////////////////////////
 
     /**
      * Create a new CarbonInterval instance.
      *
-     * @param int $years
-     * @param int $months
-     * @param int $weeks
-     * @param int $days
-     * @param int $hours
-     * @param int $minutes
-     * @param int $seconds
+     * @param  int  $years
+     * @param  int  $months
+     * @param  int  $weeks
+     * @param  int  $days
+     * @param  int  $hours
+     * @param  int  $minutes
+     * @param  int  $seconds
      */
     public function __construct($years = 1, $months = null, $weeks = null, $days = null, $hours = null, $minutes = null, $seconds = null)
     {
@@ -151,14 +157,13 @@ class CarbonInterval extends DateInterval
      * syntax as it allows you to do CarbonInterval::create(1)->fn() rather than
      * (new CarbonInterval(1))->fn().
      *
-     * @param int $years
-     * @param int $months
-     * @param int $weeks
-     * @param int $days
-     * @param int $hours
-     * @param int $minutes
-     * @param int $seconds
-     *
+     * @param  int  $years
+     * @param  int  $months
+     * @param  int  $weeks
+     * @param  int  $days
+     * @param  int  $hours
+     * @param  int  $minutes
+     * @param  int  $seconds
      * @return static
      */
     public static function create($years = 1, $months = null, $weeks = null, $days = null, $hours = null, $minutes = null, $seconds = null)
@@ -172,9 +177,8 @@ class CarbonInterval extends DateInterval
      * Note: This is done using the magic method to allow static and instance methods to
      *       have the same names.
      *
-     * @param string $name
-     * @param array  $args
-     *
+     * @param  string  $name
+     * @param  array  $args
      * @return static
      */
     public static function __callStatic($name, $args)
@@ -218,11 +222,10 @@ class CarbonInterval extends DateInterval
      * DateInterval objects created from DateTime::diff() as you can't externally
      * set the $days field.
      *
-     * @param DateInterval $di
-     *
-     * @throws \InvalidArgumentException
      *
      * @return static
+     *
+     * @throws \InvalidArgumentException
      */
     public static function instance(DateInterval $di)
     {
@@ -237,9 +240,9 @@ class CarbonInterval extends DateInterval
         return $instance;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    /////////////////////// LOCALIZATION //////////////////////////////
-    ///////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////
+    // ///////////////////// LOCALIZATION //////////////////////////////
+    // /////////////////////////////////////////////////////////////////
 
     /**
      * Initialize the translator instance if necessary.
@@ -250,7 +253,7 @@ class CarbonInterval extends DateInterval
     {
         if (static::$translator === null) {
             static::$translator = new Translator('en');
-            static::$translator->addLoader('array', new ArrayLoader());
+            static::$translator->addLoader('array', new ArrayLoader);
             static::setLocale('en');
         }
 
@@ -269,8 +272,6 @@ class CarbonInterval extends DateInterval
 
     /**
      * Set the translator instance to use
-     *
-     * @param TranslatorInterface $translator
      */
     public static function setTranslator(TranslatorInterface $translator)
     {
@@ -290,7 +291,7 @@ class CarbonInterval extends DateInterval
     /**
      * Set the current translator locale
      *
-     * @param string $locale
+     * @param  string  $locale
      */
     public static function setLocale($locale)
     {
@@ -300,18 +301,17 @@ class CarbonInterval extends DateInterval
         static::translator()->addResource('array', require __DIR__.'/Lang/'.$locale.'.php', $locale);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ///////////////////////// GETTERS AND SETTERS /////////////////////
-    ///////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////
+    // /////////////////////// GETTERS AND SETTERS /////////////////////
+    // /////////////////////////////////////////////////////////////////
 
     /**
      * Get a part of the CarbonInterval object
      *
-     * @param string $name
+     * @param  string  $name
+     * @return int
      *
      * @throws \InvalidArgumentException
-     *
-     * @return int
      */
     public function __get($name)
     {
@@ -349,8 +349,8 @@ class CarbonInterval extends DateInterval
     /**
      * Set a part of the CarbonInterval object
      *
-     * @param string $name
-     * @param int    $val
+     * @param  string  $name
+     * @param  int  $val
      *
      * @throws \InvalidArgumentException
      */
@@ -390,9 +390,8 @@ class CarbonInterval extends DateInterval
     /**
      * Allow setting of weeks and days to be cumulative.
      *
-     * @param int $weeks Number of weeks to set
-     * @param int $days  Number of days to set
-     *
+     * @param  int  $weeks  Number of weeks to set
+     * @param  int  $days  Number of days to set
      * @return static
      */
     public function weeksAndDays($weeks, $days)
@@ -408,9 +407,8 @@ class CarbonInterval extends DateInterval
      * Note: This is done using the magic method to allow static and instance methods to
      *       have the same names.
      *
-     * @param string $name
-     * @param array  $args
-     *
+     * @param  string  $name
+     * @param  array  $args
      * @return static
      */
     public function __call($name, $args)
@@ -465,7 +463,7 @@ class CarbonInterval extends DateInterval
      */
     public function forHumans()
     {
-        $periods = array(
+        $periods = [
             'year' => $this->years,
             'month' => $this->months,
             'week' => $this->weeks,
@@ -473,12 +471,12 @@ class CarbonInterval extends DateInterval
             'hour' => $this->hours,
             'minute' => $this->minutes,
             'second' => $this->seconds,
-        );
+        ];
 
-        $parts = array();
+        $parts = [];
         foreach ($periods as $unit => $count) {
             if ($count > 0) {
-                array_push($parts, static::translator()->transChoice($unit, $count, array(':count' => $count)));
+                array_push($parts, static::translator()->transChoice($unit, $count, [':count' => $count]));
             }
         }
 
@@ -498,7 +496,6 @@ class CarbonInterval extends DateInterval
     /**
      * Add the passed interval to the current instance
      *
-     * @param DateInterval $interval
      *
      * @return static
      */
@@ -527,17 +524,17 @@ class CarbonInterval extends DateInterval
      */
     public function spec()
     {
-        $date = array_filter(array(
+        $date = array_filter([
             static::PERIOD_YEARS => $this->y,
             static::PERIOD_MONTHS => $this->m,
             static::PERIOD_DAYS => $this->d,
-        ));
+        ]);
 
-        $time = array_filter(array(
+        $time = array_filter([
             static::PERIOD_HOURS => $this->h,
             static::PERIOD_MINUTES => $this->i,
             static::PERIOD_SECONDS => $this->s,
-        ));
+        ]);
 
         $specString = static::PERIOD_PREFIX;
 

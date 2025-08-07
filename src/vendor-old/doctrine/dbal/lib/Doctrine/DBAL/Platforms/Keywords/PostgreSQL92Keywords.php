@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  * PostgreSQL 9.2 reserved keywords list.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -43,8 +45,8 @@ class PostgreSQL92Keywords extends PostgreSQL91Keywords
      */
     protected function getKeywords()
     {
-        return array_merge(parent::getKeywords(), array(
+        return array_merge(parent::getKeywords(), [
             'COLLATION',
-        ));
+        ]);
     }
 }

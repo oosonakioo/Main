@@ -17,9 +17,8 @@ class ListPaths extends AbstractPlugin
     /**
      * List all paths.
      *
-     * @param string $directory
-     * @param bool   $recursive
-     *
+     * @param  string  $directory
+     * @param  bool  $recursive
      * @return array paths
      */
     public function handle($directory = '', $recursive = false)

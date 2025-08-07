@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Routing\Route;
-
 class LocalizerTests extends \Orchestra\Testbench\TestCase
 {
     protected $test_url = 'http://localhost/';
+
     protected $test_url2 = 'http://localhost';
 
     protected $supportedLocales = [];
@@ -25,7 +24,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         ];
     }
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
     }
@@ -33,7 +32,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
     /**
      * Set routes for testing.
      *
-     * @param bool|string $locale
+     * @param  bool|string  $locale
      */
     protected function setRoutes($locale = false)
     {
@@ -42,29 +41,29 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         }
 
         app('router')->group([
-            'prefix'     => app('laravellocalization')->setLocale(),
+            'prefix' => app('laravellocalization')->setLocale(),
             'middleware' => [
                 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes',
                 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter',
             ],
         ], function () {
-            app('router')->get('/', ['as'=> 'index', function () {
+            app('router')->get('/', ['as' => 'index', function () {
                 return app('translator')->get('LaravelLocalization::routes.hello');
             }, ]);
 
-            app('router')->get('test', ['as'=> 'test', function () {
+            app('router')->get('test', ['as' => 'test', function () {
                 return app('translator')->get('LaravelLocalization::routes.test_text');
             }, ]);
 
-            app('router')->get(app('laravellocalization')->transRoute('LaravelLocalization::routes.about'), ['as'=> 'about', function () {
+            app('router')->get(app('laravellocalization')->transRoute('LaravelLocalization::routes.about'), ['as' => 'about', function () {
                 return app('laravellocalization')->getLocalizedURL('es') ?: 'Not url available';
             }, ]);
 
-            app('router')->get(app('laravellocalization')->transRoute('LaravelLocalization::routes.view'), ['as'=> 'view', function () {
+            app('router')->get(app('laravellocalization')->transRoute('LaravelLocalization::routes.view'), ['as' => 'view', function () {
                 return app('laravellocalization')->getLocalizedURL('es') ?: 'Not url available';
             }, ]);
 
-            app('router')->get(app('laravellocalization')->transRoute('LaravelLocalization::routes.view_project'), ['as'=> 'view_project', function () {
+            app('router')->get(app('laravellocalization')->transRoute('LaravelLocalization::routes.view_project'), ['as' => 'view_project', function () {
                 return app('laravellocalization')->getLocalizedURL('es') ?: 'Not url available';
             }, ]);
         });
@@ -73,7 +72,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
     /**
      * Refresh routes and refresh application.
      *
-     * @param bool|string $locale
+     * @param  bool|string  $locale
      */
     protected function refreshApplication($locale = false)
     {
@@ -84,8 +83,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param Illuminate\Foundation\Application $app
-     *
+     * @param  Illuminate\Foundation\Application  $app
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -111,7 +109,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         $this->setRoutes();
     }
 
-    public function testSetLocale()
+    public function test_set_locale()
     {
         $this->assertEquals(route('about'), 'http://localhost/about');
 
@@ -130,7 +128,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         $this->assertEquals('en', app('laravellocalization')->getCurrentLocale());
     }
 
-    public function testLocalizeURL()
+    public function test_localize_url()
     {
         $this->assertEquals(
             $this->test_url.app('laravellocalization')->getCurrentLocale(),
@@ -186,7 +184,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetLocalizedURL()
+    public function test_get_localized_url()
     {
         $this->assertEquals(
             $this->test_url.'es/acerca',
@@ -311,7 +309,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetURLFromRouteNameTranslated()
+    public function test_get_url_from_route_name_translated()
     {
         $this->assertEquals(
             $this->test_url.'es/acerca',
@@ -368,7 +366,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetNonLocalizedURL()
+    public function test_get_non_localized_url()
     {
         $this->assertEquals(
             $this->test_url,
@@ -388,7 +386,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetDefaultLocale()
+    public function test_get_default_locale()
     {
         $this->assertEquals(
             'en',
@@ -404,7 +402,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetSupportedLocales()
+    public function test_get_supported_locales()
     {
         $this->assertEquals(
             $this->supportedLocales,
@@ -412,7 +410,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetCurrentLocaleName()
+    public function test_get_current_locale_name()
     {
         $this->assertEquals(
             'English',
@@ -427,7 +425,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetCurrentLocaleRegional()
+    public function test_get_current_locale_regional()
     {
         $this->assertEquals(
             'en_GB',
@@ -442,7 +440,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetCurrentLocaleDirection()
+    public function test_get_current_locale_direction()
     {
         $this->assertEquals(
             'ltr',
@@ -458,7 +456,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetCurrentLocaleScript()
+    public function test_get_current_locale_script()
     {
         app('laravellocalization')->setLocale('es');
         $this->refreshApplication('es');
@@ -477,7 +475,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetCurrentLocaleNativeReading()
+    public function test_get_current_locale_native_reading()
     {
         $this->assertEquals(
             'English',
@@ -493,7 +491,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetCurrentLocale()
+    public function test_get_current_locale()
     {
         $this->assertEquals(
             'en',
@@ -514,7 +512,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetSupportedLanguagesKeys()
+    public function test_get_supported_languages_keys()
     {
         $this->assertEquals(
             ['en', 'es'],
@@ -522,7 +520,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testGetConfigRepository()
+    public function test_get_config_repository()
     {
         $this->assertEquals(
             app('config'),
@@ -530,7 +528,7 @@ class LocalizerTests extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function testCreateUrlFromUri()
+    public function test_create_url_from_uri()
     {
         $this->assertEquals(
             'http://localhost/view/1',

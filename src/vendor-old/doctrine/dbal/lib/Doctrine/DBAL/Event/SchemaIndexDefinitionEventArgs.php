@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Schema\Index;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaIndexDefinitionEventArgs extends SchemaEventArgs
@@ -54,25 +56,22 @@ class SchemaIndexDefinitionEventArgs extends SchemaEventArgs
     private $_connection;
 
     /**
-     * @param array                     $tableIndex
-     * @param string                    $table
-     * @param \Doctrine\DBAL\Connection $connection
+     * @param  string  $table
      */
     public function __construct(array $tableIndex, $table, Connection $connection)
     {
         $this->_tableIndex = $tableIndex;
-        $this->_table      = $table;
+        $this->_table = $table;
         $this->_connection = $connection;
     }
 
     /**
      * Allows to clear the index which means the index will be excluded from tables index list.
      *
-     * @param null|\Doctrine\DBAL\Schema\Index $index
      *
      * @return SchemaIndexDefinitionEventArgs
      */
-    public function setIndex(Index $index = null)
+    public function setIndex(?Index $index = null)
     {
         $this->_index = $index;
 

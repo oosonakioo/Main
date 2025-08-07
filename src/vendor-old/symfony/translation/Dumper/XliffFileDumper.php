@@ -23,7 +23,7 @@ class XliffFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
     {
         $xliffVersion = '1.2';
         if (array_key_exists('xliff_version', $options)) {
@@ -36,10 +36,10 @@ class XliffFileDumper extends FileDumper
             $defaultLocale = \Locale::getDefault();
         }
 
-        if ('1.2' === $xliffVersion) {
+        if ($xliffVersion === '1.2') {
             return $this->dumpXliff1($defaultLocale, $messages, $domain, $options);
         }
-        if ('2.0' === $xliffVersion) {
+        if ($xliffVersion === '2.0') {
             return $this->dumpXliff2($defaultLocale, $messages, $domain, $options);
         }
 
@@ -54,9 +54,9 @@ class XliffFileDumper extends FileDumper
         return 'xlf';
     }
 
-    private function dumpXliff1($defaultLocale, MessageCatalogue $messages, $domain, array $options = array())
+    private function dumpXliff1($defaultLocale, MessageCatalogue $messages, $domain, array $options = [])
     {
-        $toolInfo = array('tool-id' => 'symfony', 'tool-name' => 'Symfony');
+        $toolInfo = ['tool-id' => 'symfony', 'tool-name' => 'Symfony'];
         if (array_key_exists('tool_info', $options)) {
             $toolInfo = array_merge($toolInfo, $options['tool_info']);
         }
@@ -91,7 +91,7 @@ class XliffFileDumper extends FileDumper
             $s->appendChild($dom->createTextNode($source));
 
             // Does the target contain characters requiring a CDATA section?
-            $text = 1 === preg_match('/[&<>]/', $target) ? $dom->createCDATASection($target) : $dom->createTextNode($target);
+            $text = preg_match('/[&<>]/', $target) === 1 ? $dom->createCDATASection($target) : $dom->createTextNode($target);
 
             $targetElement = $dom->createElement('target');
             $metadata = $messages->getMetadata($source, $domain);
@@ -105,7 +105,7 @@ class XliffFileDumper extends FileDumper
 
             if ($this->hasMetadataArrayInfo('notes', $metadata)) {
                 foreach ($metadata['notes'] as $note) {
-                    if (!isset($note['content'])) {
+                    if (! isset($note['content'])) {
                         continue;
                     }
 
@@ -128,7 +128,7 @@ class XliffFileDumper extends FileDumper
         return $dom->saveXML();
     }
 
-    private function dumpXliff2($defaultLocale, MessageCatalogue $messages, $domain, array $options = array())
+    private function dumpXliff2($defaultLocale, MessageCatalogue $messages, $domain, array $options = [])
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;
@@ -152,7 +152,7 @@ class XliffFileDumper extends FileDumper
             $s->appendChild($dom->createTextNode($source));
 
             // Does the target contain characters requiring a CDATA section?
-            $text = 1 === preg_match('/[&<>]/', $target) ? $dom->createCDATASection($target) : $dom->createTextNode($target);
+            $text = preg_match('/[&<>]/', $target) === 1 ? $dom->createCDATASection($target) : $dom->createTextNode($target);
 
             $targetElement = $dom->createElement('target');
             $metadata = $messages->getMetadata($source, $domain);
@@ -171,13 +171,12 @@ class XliffFileDumper extends FileDumper
     }
 
     /**
-     * @param string     $key
-     * @param array|null $metadata
-     *
+     * @param  string  $key
+     * @param  array|null  $metadata
      * @return bool
      */
     private function hasMetadataArrayInfo($key, $metadata = null)
     {
-        return null !== $metadata && array_key_exists($key, $metadata) && ($metadata[$key] instanceof \Traversable || is_array($metadata[$key]));
+        return $metadata !== null && array_key_exists($key, $metadata) && ($metadata[$key] instanceof \Traversable || is_array($metadata[$key]));
     }
 }

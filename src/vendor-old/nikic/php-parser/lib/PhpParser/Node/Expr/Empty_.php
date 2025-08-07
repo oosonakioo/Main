@@ -12,15 +12,17 @@ class Empty_ extends Expr
     /**
      * Constructs an empty() node.
      *
-     * @param Expr  $expr       Expression
-     * @param array $attributes Additional attributes
+     * @param  Expr  $expr  Expression
+     * @param  array  $attributes  Additional attributes
      */
-    public function __construct(Expr $expr, array $attributes = array()) {
+    public function __construct(Expr $expr, array $attributes = [])
+    {
         parent::__construct($attributes);
         $this->expr = $expr;
     }
 
-    public function getSubNodeNames() {
-        return array('expr');
+    public function getSubNodeNames()
+    {
+        return ['expr'];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -26,7 +28,7 @@ final class TypeResolver
     const OPERATOR_NAMESPACE = '\\';
 
     /** @var string[] List of recognized keywords and unto which Value Object they map */
-    private $keywords = array(
+    private $keywords = [
         'string' => 'phpDocumentor\Reflection\Types\String_',
         'int' => 'phpDocumentor\Reflection\Types\Integer',
         'integer' => 'phpDocumentor\Reflection\Types\Integer',
@@ -47,20 +49,18 @@ final class TypeResolver
         'true' => 'phpDocumentor\Reflection\Types\Boolean',
         'self' => 'phpDocumentor\Reflection\Types\Self_',
         '$this' => 'phpDocumentor\Reflection\Types\This',
-        'static' => 'phpDocumentor\Reflection\Types\Static_'
-    );
+        'static' => 'phpDocumentor\Reflection\Types\Static_',
+    ];
 
     /** @var FqsenResolver */
     private $fqsenResolver;
 
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
-     *
-     * @param FqsenResolver $fqsenResolver
      */
-    public function __construct(FqsenResolver $fqsenResolver = null)
+    public function __construct(?FqsenResolver $fqsenResolver = null)
     {
-        $this->fqsenResolver = $fqsenResolver ?: new FqsenResolver();
+        $this->fqsenResolver = $fqsenResolver ?: new FqsenResolver;
     }
 
     /**
@@ -73,8 +73,7 @@ final class TypeResolver
      * This method only works as expected if the namespace and aliases are set;
      * no dynamic reflection is being performed here.
      *
-     * @param string $type     The relative or absolute type.
-     * @param Context $context
+     * @param  string  $type  The relative or absolute type.
      *
      * @uses Context::getNamespace()        to determine with what to prefix the type name.
      * @uses Context::getNamespaceAliases() to check whether the first part of the relative type name should not be
@@ -82,17 +81,17 @@ final class TypeResolver
      *
      * @return Type|null
      */
-    public function resolve($type, Context $context = null)
+    public function resolve($type, ?Context $context = null)
     {
-        if (!is_string($type)) {
+        if (! is_string($type)) {
             throw new \InvalidArgumentException(
-                'Attempted to resolve type but it appeared not to be a string, received: ' . var_export($type, true)
+                'Attempted to resolve type but it appeared not to be a string, received: '.var_export($type, true)
             );
         }
 
         $type = trim($type);
-        if (!$type) {
-            throw new \InvalidArgumentException('Attempted to resolve "' . $type . '" but it appears to be empty');
+        if (! $type) {
+            throw new \InvalidArgumentException('Attempted to resolve "'.$type.'" but it appears to be empty');
         }
 
         if ($context === null) {
@@ -102,7 +101,7 @@ final class TypeResolver
         switch (true) {
             case $this->isKeyword($type):
                 return $this->resolveKeyword($type);
-            case ($this->isCompoundType($type)):
+            case $this->isCompoundType($type):
                 return $this->resolveCompoundType($type, $context);
             case $this->isTypedArray($type):
                 return $this->resolveTypedArray($type, $context);
@@ -110,11 +109,11 @@ final class TypeResolver
                 return $this->resolveTypedObject($type);
             case $this->isPartialStructuralElementName($type):
                 return $this->resolveTypedObject($type, $context);
-            // @codeCoverageIgnoreStart
+                // @codeCoverageIgnoreStart
             default:
                 // I haven't got the foggiest how the logic would come here but added this as a defense.
                 throw new \RuntimeException(
-                    'Unable to resolve type "' . $type . '", there is no known method to resolve it'
+                    'Unable to resolve type "'.$type.'", there is no known method to resolve it'
                 );
         }
         // @codeCoverageIgnoreEnd
@@ -123,23 +122,22 @@ final class TypeResolver
     /**
      * Adds a keyword to the list of Keywords and associates it with a specific Value Object.
      *
-     * @param string $keyword
-     * @param string $typeClassName
-     *
+     * @param  string  $keyword
+     * @param  string  $typeClassName
      * @return void
      */
     public function addKeyword($keyword, $typeClassName)
     {
-        if (!class_exists($typeClassName)) {
+        if (! class_exists($typeClassName)) {
             throw new \InvalidArgumentException(
-                'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
-                . ' but we could not find the class ' . $typeClassName
+                'The Value Object that needs to be created with a keyword "'.$keyword.'" must be an existing class'
+                .' but we could not find the class '.$typeClassName
             );
         }
 
-        if (!in_array(Type::class, class_implements($typeClassName))) {
+        if (! in_array(Type::class, class_implements($typeClassName))) {
             throw new \InvalidArgumentException(
-                'The class "' . $typeClassName . '" must implement the interface "phpDocumentor\Reflection\Type"'
+                'The class "'.$typeClassName.'" must implement the interface "phpDocumentor\Reflection\Type"'
             );
         }
 
@@ -149,8 +147,7 @@ final class TypeResolver
     /**
      * Detects whether the given type represents an array.
      *
-     * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
-     *
+     * @param  string  $type  A relative or absolute type as defined in the phpDocumentor documentation.
      * @return bool
      */
     private function isTypedArray($type)
@@ -161,8 +158,7 @@ final class TypeResolver
     /**
      * Detects whether the given type represents a PHPDoc keyword.
      *
-     * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
-     *
+     * @param  string  $type  A relative or absolute type as defined in the phpDocumentor documentation.
      * @return bool
      */
     private function isKeyword($type)
@@ -173,20 +169,18 @@ final class TypeResolver
     /**
      * Detects whether the given type represents a relative structural element name.
      *
-     * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
-     *
+     * @param  string  $type  A relative or absolute type as defined in the phpDocumentor documentation.
      * @return bool
      */
     private function isPartialStructuralElementName($type)
     {
-        return ($type[0] !== self::OPERATOR_NAMESPACE) && !$this->isKeyword($type);
+        return ($type[0] !== self::OPERATOR_NAMESPACE) && ! $this->isKeyword($type);
     }
 
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return bool
      */
     private function isFqsen($type)
@@ -197,8 +191,7 @@ final class TypeResolver
     /**
      * Tests whether the given type is a compound type (i.e. `string|int`).
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return bool
      */
     private function isCompoundType($type)
@@ -209,9 +202,7 @@ final class TypeResolver
     /**
      * Resolves the given typed array string (i.e. `string[]`) into an Array object with the right types set.
      *
-     * @param string $type
-     * @param Context $context
-     *
+     * @param  string  $type
      * @return Array_
      */
     private function resolveTypedArray($type, Context $context)
@@ -222,25 +213,23 @@ final class TypeResolver
     /**
      * Resolves the given keyword (such as `string`) into a Type object representing that keyword.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return Type
      */
     private function resolveKeyword($type)
     {
         $className = $this->keywords[strtolower($type)];
 
-        return new $className();
+        return new $className;
     }
 
     /**
      * Resolves the given FQSEN string into an FQSEN object.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return Object_
      */
-    private function resolveTypedObject($type, Context $context = null)
+    private function resolveTypedObject($type, ?Context $context = null)
     {
         return new Object_($this->fqsenResolver->resolve($type, $context));
     }
@@ -248,9 +237,7 @@ final class TypeResolver
     /**
      * Resolves a compound type (i.e. `string|int`) into the appropriate Type objects or FQSEN.
      *
-     * @param string $type
-     * @param Context $context
-     *
+     * @param  string  $type
      * @return Compound
      */
     private function resolveCompoundType($type, Context $context)

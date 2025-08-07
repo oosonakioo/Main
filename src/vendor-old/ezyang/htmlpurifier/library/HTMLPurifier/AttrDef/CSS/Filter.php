@@ -2,6 +2,7 @@
 
 /**
  * Microsoft's proprietary filter: CSS property
+ *
  * @note Currently supports the alpha filter. In the future, this will
  *       probably need an extensible framework
  */
@@ -14,13 +15,13 @@ class HTMLPurifier_AttrDef_CSS_Filter extends HTMLPurifier_AttrDef
 
     public function __construct()
     {
-        $this->intValidator = new HTMLPurifier_AttrDef_Integer();
+        $this->intValidator = new HTMLPurifier_AttrDef_Integer;
     }
 
     /**
-     * @param string $value
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $value
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($value, $config, $context)
@@ -42,10 +43,10 @@ class HTMLPurifier_AttrDef_CSS_Filter extends HTMLPurifier_AttrDef
         $parameters_length = strcspn($value, ')', $cursor);
         $parameters = substr($value, $cursor, $parameters_length);
         $params = explode(',', $parameters);
-        $ret_params = array();
-        $lookup = array();
+        $ret_params = [];
+        $lookup = [];
         foreach ($params as $param) {
-            list($key, $value) = explode('=', $param);
+            [$key, $value] = explode('=', $param);
             $key = trim($key);
             $value = trim($value);
             if (isset($lookup[$key])) {
@@ -58,7 +59,7 @@ class HTMLPurifier_AttrDef_CSS_Filter extends HTMLPurifier_AttrDef
             if ($value === false) {
                 continue;
             }
-            $int = (int)$value;
+            $int = (int) $value;
             if ($int > 100) {
                 $value = '100';
             }
@@ -70,6 +71,7 @@ class HTMLPurifier_AttrDef_CSS_Filter extends HTMLPurifier_AttrDef
         }
         $ret_parameters = implode(',', $ret_params);
         $ret_function = "$function($ret_parameters)";
+
         return $ret_function;
     }
 }

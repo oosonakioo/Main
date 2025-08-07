@@ -17,12 +17,15 @@ namespace Symfony\Component\VarDumper\Cloner;
 class Data
 {
     private $data;
+
     private $maxDepth = 20;
+
     private $maxItemsPerDepth = -1;
+
     private $useRefHandles = -1;
 
     /**
-     * @param array $data A array as returned by ClonerInterface::cloneVar()
+     * @param  array  $data  A array as returned by ClonerInterface::cloneVar()
      */
     public function __construct(array $data)
     {
@@ -40,8 +43,7 @@ class Data
     /**
      * Returns a depth limited clone of $this.
      *
-     * @param int $maxDepth The max dumped depth level
-     *
+     * @param  int  $maxDepth  The max dumped depth level
      * @return self A clone of $this
      */
     public function withMaxDepth($maxDepth)
@@ -55,8 +57,7 @@ class Data
     /**
      * Limits the number of elements per depth level.
      *
-     * @param int $maxItemsPerDepth The max number of items dumped per depth level
-     *
+     * @param  int  $maxItemsPerDepth  The max number of items dumped per depth level
      * @return self A clone of $this
      */
     public function withMaxItemsPerDepth($maxItemsPerDepth)
@@ -70,8 +71,7 @@ class Data
     /**
      * Enables/disables objects' identifiers tracking.
      *
-     * @param bool $useRefHandles False to hide global ref. handles
-     *
+     * @param  bool  $useRefHandles  False to hide global ref. handles
      * @return self A clone of $this
      */
     public function withRefHandles($useRefHandles)
@@ -87,17 +87,17 @@ class Data
      */
     public function dump(DumperInterface $dumper)
     {
-        $refs = array(0);
-        $this->dumpItem($dumper, new Cursor(), $refs, $this->data[0][0]);
+        $refs = [0];
+        $this->dumpItem($dumper, new Cursor, $refs, $this->data[0][0]);
     }
 
     /**
      * Depth-first dumping of items.
      *
-     * @param DumperInterface $dumper The dumper being used for dumping
-     * @param Cursor          $cursor A cursor used for tracking dumper state position
-     * @param array           &$refs  A map of all references discovered while dumping
-     * @param mixed           $item   A Stub object or the original value being dumped
+     * @param  DumperInterface  $dumper  The dumper being used for dumping
+     * @param  Cursor  $cursor  A cursor used for tracking dumper state position
+     * @param  array  &$refs  A map of all references discovered while dumping
+     * @param  mixed  $item  A Stub object or the original value being dumped
      */
     private function dumpItem($dumper, $cursor, &$refs, $item)
     {
@@ -106,11 +106,11 @@ class Data
         $cursor->hardRefTo = $cursor->hardRefHandle = $cursor->hardRefCount = 0;
         $firstSeen = true;
 
-        if (!$item instanceof Stub) {
+        if (! $item instanceof Stub) {
             $type = gettype($item);
-        } elseif (Stub::TYPE_REF === $item->type) {
+        } elseif ($item->type === Stub::TYPE_REF) {
             if ($item->handle) {
-                if (!isset($refs[$r = $item->handle - (PHP_INT_MAX >> 1)])) {
+                if (! isset($refs[$r = $item->handle - (PHP_INT_MAX >> 1)])) {
                     $cursor->refIndex = $refs[$r] = $cursor->refIndex ?: ++$refs[0];
                 } else {
                     $firstSeen = false;
@@ -124,7 +124,7 @@ class Data
         }
         if ($item instanceof Stub) {
             if ($item->refCount) {
-                if (!isset($refs[$r = $item->handle])) {
+                if (! isset($refs[$r = $item->handle])) {
                     $cursor->refIndex = $refs[$r] = $cursor->refIndex ?: ++$refs[0];
                 } else {
                     $firstSeen = false;
@@ -142,14 +142,14 @@ class Data
                     if ($cut >= 0) {
                         $cut += count($children);
                     }
-                    $children = array();
+                    $children = [];
                 }
             } else {
-                $children = array();
+                $children = [];
             }
             switch ($item->type) {
                 case Stub::TYPE_STRING:
-                    $dumper->dumpString($cursor, $item->value, Stub::STRING_BINARY === $item->class, $cut);
+                    $dumper->dumpString($cursor, $item->value, $item->class === Stub::STRING_BINARY, $cut);
                     break;
 
                 case Stub::TYPE_ARRAY:
@@ -163,7 +163,7 @@ class Data
                     $dumper->enterHash($cursor, $item->type, $item->class, $withChildren);
                     if ($withChildren) {
                         $cut = $this->dumpChildren($dumper, $cursor, $refs, $children, $cut, $item->type);
-                    } elseif ($children && 0 <= $cut) {
+                    } elseif ($children && $cut >= 0) {
                         $cut += count($children);
                     }
                     $dumper->leaveHash($cursor, $item->type, $item->class, $withChildren, $cut);
@@ -172,10 +172,10 @@ class Data
                 default:
                     throw new \RuntimeException(sprintf('Unexpected Stub type: %s', $item->type));
             }
-        } elseif ('array' === $type) {
+        } elseif ($type === 'array') {
             $dumper->enterHash($cursor, Cursor::HASH_INDEXED, 0, false);
             $dumper->leaveHash($cursor, Cursor::HASH_INDEXED, 0, false, 0);
-        } elseif ('string' === $type) {
+        } elseif ($type === 'string') {
             $dumper->dumpString($cursor, $item, false, 0);
         } else {
             $dumper->dumpScalar($cursor, $type, $item);
@@ -185,25 +185,24 @@ class Data
     /**
      * Dumps children of hash structures.
      *
-     * @param DumperInterface $dumper
-     * @param Cursor          $parentCursor The cursor of the parent hash
-     * @param array           &$refs        A map of all references discovered while dumping
-     * @param array           $children     The children to dump
-     * @param int             $hashCut      The number of items removed from the original hash
-     * @param string          $hashType     A Cursor::HASH_* const
-     *
+     * @param  DumperInterface  $dumper
+     * @param  Cursor  $parentCursor  The cursor of the parent hash
+     * @param  array  &$refs  A map of all references discovered while dumping
+     * @param  array  $children  The children to dump
+     * @param  int  $hashCut  The number of items removed from the original hash
+     * @param  string  $hashType  A Cursor::HASH_* const
      * @return int The final number of removed items
      */
     private function dumpChildren($dumper, $parentCursor, &$refs, $children, $hashCut, $hashType)
     {
         $cursor = clone $parentCursor;
-        ++$cursor->depth;
+        $cursor->depth++;
         $cursor->hashType = $hashType;
         $cursor->hashIndex = 0;
         $cursor->hashLength = count($children);
         $cursor->hashCut = $hashCut;
         foreach ($children as $key => $child) {
-            $cursor->hashKeyIsBinary = isset($key[0]) && !preg_match('//u', $key);
+            $cursor->hashKeyIsBinary = isset($key[0]) && ! preg_match('//u', $key);
             $cursor->hashKey = $key;
             $this->dumpItem($dumper, $cursor, $refs, $child);
             if (++$cursor->hashIndex === $this->maxItemsPerDepth || $cursor->stop) {

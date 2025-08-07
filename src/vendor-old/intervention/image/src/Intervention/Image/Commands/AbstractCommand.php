@@ -21,7 +21,7 @@ abstract class AbstractCommand
     /**
      * Executes current command on given image
      *
-     * @param  \Intervention\Image\Image $image
+     * @param  \Intervention\Image\Image  $image
      * @return mixed
      */
     abstract public function execute($image);
@@ -29,7 +29,7 @@ abstract class AbstractCommand
     /**
      * Creates new command instance
      *
-     * @param array $arguments
+     * @param  array  $arguments
      */
     public function __construct($arguments)
     {
@@ -39,7 +39,7 @@ abstract class AbstractCommand
     /**
      * Creates new argument instance from given argument key
      *
-     * @param  integer $key
+     * @param  int  $key
      * @return \Intervention\Image\Commands\Argument
      */
     public function argument($key)
@@ -60,7 +60,7 @@ abstract class AbstractCommand
     /**
      * Determines if current instance has output data
      *
-     * @return boolean
+     * @return bool
      */
     public function hasOutput()
     {
@@ -70,7 +70,7 @@ abstract class AbstractCommand
     /**
      * Sets output data of current command
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function setOutput($value)
     {

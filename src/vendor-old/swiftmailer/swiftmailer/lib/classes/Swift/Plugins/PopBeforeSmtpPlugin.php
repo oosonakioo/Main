@@ -45,9 +45,9 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Create a new PopBeforeSmtpPlugin for $host and $port.
      *
-     * @param string $host
-     * @param int    $port
-     * @param string $crypto as "tls" or "ssl"
+     * @param  string  $host
+     * @param  int  $port
+     * @param  string  $crypto  as "tls" or "ssl"
      */
     public function __construct($host, $port = 110, $crypto = null)
     {
@@ -59,10 +59,9 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Create a new PopBeforeSmtpPlugin for $host and $port.
      *
-     * @param string $host
-     * @param int    $port
-     * @param string $crypto as "tls" or "ssl"
-     *
+     * @param  string  $host
+     * @param  int  $port
+     * @param  string  $crypto  as "tls" or "ssl"
      * @return self
      */
     public static function newInstance($host, $port = 110, $crypto = null)
@@ -73,7 +72,6 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Set a Pop3Connection to delegate to instead of connecting directly.
      *
-     * @param Swift_Plugins_Pop_Pop3Connection $connection
      *
      * @return $this
      */
@@ -97,8 +95,7 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Set the connection timeout in seconds (default 10).
      *
-     * @param int $timeout
-     *
+     * @param  int  $timeout
      * @return $this
      */
     public function setTimeout($timeout)
@@ -111,8 +108,7 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Set the username to use when connecting (if needed).
      *
-     * @param string $username
-     *
+     * @param  string  $username
      * @return $this
      */
     public function setUsername($username)
@@ -125,8 +121,7 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Set the password to use when connecting (if needed).
      *
-     * @param string $password
-     *
+     * @param  string  $password
      * @return $this
      */
     public function setPassword($password)
@@ -146,8 +141,8 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
         if (isset($this->_connection)) {
             $this->_connection->connect();
         } else {
-            if (!isset($this->_socket)) {
-                if (!$socket = fsockopen(
+            if (! isset($this->_socket)) {
+                if (! $socket = fsockopen(
                     $this->_getHostString(), $this->_port, $errno, $errstr, $this->_timeout)) {
                     throw new Swift_Plugins_Pop_Pop3Exception(
                         sprintf('Failed to connect to POP3 host [%s]: %s', $this->_host, $errstr)
@@ -180,7 +175,7 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
             $this->_connection->disconnect();
         } else {
             $this->_command("QUIT\r\n");
-            if (!fclose($this->_socket)) {
+            if (! fclose($this->_socket)) {
                 throw new Swift_Plugins_Pop_Pop3Exception(
                     sprintf('POP3 host [%s] connection could not be stopped', $this->_host)
                 );
@@ -191,8 +186,6 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
 
     /**
      * Invoked just before a Transport is started.
-     *
-     * @param Swift_Events_TransportChangeEvent $evt
      */
     public function beforeTransportStarted(Swift_Events_TransportChangeEvent $evt)
     {
@@ -209,27 +202,21 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     /**
      * Not used.
      */
-    public function transportStarted(Swift_Events_TransportChangeEvent $evt)
-    {
-    }
+    public function transportStarted(Swift_Events_TransportChangeEvent $evt) {}
 
     /**
      * Not used.
      */
-    public function beforeTransportStopped(Swift_Events_TransportChangeEvent $evt)
-    {
-    }
+    public function beforeTransportStopped(Swift_Events_TransportChangeEvent $evt) {}
 
     /**
      * Not used.
      */
-    public function transportStopped(Swift_Events_TransportChangeEvent $evt)
-    {
-    }
+    public function transportStopped(Swift_Events_TransportChangeEvent $evt) {}
 
     private function _command($command)
     {
-        if (!fwrite($this->_socket, $command)) {
+        if (! fwrite($this->_socket, $command)) {
             throw new Swift_Plugins_Pop_Pop3Exception(
                 sprintf('Failed to write command [%s] to POP3 host', trim($command))
             );

@@ -25,25 +25,21 @@ class SplFileInfoPatch implements ClassPatchInterface
     /**
      * Supports everything that extends SplFileInfo.
      *
-     * @param ClassNode $node
      *
      * @return bool
      */
     public function supports(ClassNode $node)
     {
-        if (null === $node->getParentClass()) {
+        if ($node->getParentClass() === null) {
             return false;
         }
 
-        return 'SplFileInfo' === $node->getParentClass()
-            || is_subclass_of($node->getParentClass(), 'SplFileInfo')
-        ;
+        return $node->getParentClass() === 'SplFileInfo'
+            || is_subclass_of($node->getParentClass(), 'SplFileInfo');
     }
 
     /**
      * Updated constructor code to call parent one with dummy file argument.
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {
@@ -55,13 +51,13 @@ class SplFileInfoPatch implements ClassPatchInterface
         }
 
         if ($this->nodeIsDirectoryIterator($node)) {
-            $constructor->setCode('return parent::__construct("' . __DIR__ . '");');
+            $constructor->setCode('return parent::__construct("'.__DIR__.'");');
 
             return;
         }
 
         if ($this->nodeIsSplFileObject($node)) {
-            $constructor->setCode('return parent::__construct("' . __FILE__ .'");');
+            $constructor->setCode('return parent::__construct("'.__FILE__.'");');
 
             return;
         }
@@ -80,26 +76,24 @@ class SplFileInfoPatch implements ClassPatchInterface
     }
 
     /**
-     * @param ClassNode $node
-     * @return boolean
+     * @return bool
      */
     private function nodeIsDirectoryIterator(ClassNode $node)
     {
         $parent = $node->getParentClass();
 
-        return 'DirectoryIterator' === $parent
+        return $parent === 'DirectoryIterator'
             || is_subclass_of($parent, 'DirectoryIterator');
     }
 
     /**
-     * @param ClassNode $node
-     * @return boolean
+     * @return bool
      */
     private function nodeIsSplFileObject(ClassNode $node)
     {
         $parent = $node->getParentClass();
 
-        return 'SplFileObject' === $parent
+        return $parent === 'SplFileObject'
             || is_subclass_of($parent, 'SplFileObject');
     }
 }

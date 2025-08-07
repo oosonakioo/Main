@@ -3,7 +3,9 @@
 class Swift_Bug76Test extends \PHPUnit_Framework_TestCase
 {
     private $_inputFile;
+
     private $_outputFile;
+
     private $_encoder;
 
     protected function setUp()
@@ -23,14 +25,14 @@ class Swift_Bug76Test extends \PHPUnit_Framework_TestCase
         unlink($this->_outputFile);
     }
 
-    public function testBase64EncodedLineLengthNeverExceeds76CharactersEvenIfArgsDo()
+    public function test_base64_encoded_line_length_never_exceeds76_characters_even_if_args_do()
     {
         $this->_fillFileWithRandomBytes(1000, $this->_inputFile);
 
         $os = $this->_createStream($this->_inputFile);
         $is = $this->_createStream($this->_outputFile);
 
-        $this->_encoder->encodeByteStream($os, $is, 0, 80); //Exceeds 76
+        $this->_encoder->encodeByteStream($os, $is, 0, 80); // Exceeds 76
 
         $this->assertMaxLineLength(76, $this->_outputFile,
             '%s: Line length should not exceed 76 characters'
@@ -52,7 +54,7 @@ class Swift_Bug76Test extends \PHPUnit_Framework_TestCase
 
         file_put_contents($file, '');
         $fp = fopen($file, 'wb');
-        for ($i = 0; $i < $byteCount; ++$i) {
+        for ($i = 0; $i < $byteCount; $i++) {
             $byteVal = rand(0, 255);
             fwrite($fp, pack('i', $byteVal));
         }
@@ -61,7 +63,7 @@ class Swift_Bug76Test extends \PHPUnit_Framework_TestCase
 
     private function _createEncoder()
     {
-        return new Swift_Mime_ContentEncoder_Base64ContentEncoder();
+        return new Swift_Mime_ContentEncoder_Base64ContentEncoder;
     }
 
     private function _createStream($file)

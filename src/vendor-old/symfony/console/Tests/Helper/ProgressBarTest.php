@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\Console\Tests\Helper;
 
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\StreamOutput;
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\StreamOutput;
  */
 class ProgressBarTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMultipleStart()
+    public function test_multiple_start()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->start();
@@ -36,7 +36,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAdvance()
+    public function test_advance()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->start();
@@ -50,7 +50,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAdvanceWithStep()
+    public function test_advance_with_step()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->start();
@@ -64,7 +64,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAdvanceMultipleTimes()
+    public function test_advance_multiple_times()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->start();
@@ -80,7 +80,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAdvanceOverMax()
+    public function test_advance_over_max()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 10);
         $bar->setProgress(9);
@@ -96,13 +96,12 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFormat()
+    public function test_format()
     {
         $expected =
             '  0/10 [>---------------------------]   0%'.
             $this->generateOutput(' 10/10 [============================] 100%').
-            $this->generateOutput(' 10/10 [============================] 100%')
-        ;
+            $this->generateOutput(' 10/10 [============================] 100%');
 
         // max in construct, no format
         $bar = new ProgressBar($output = $this->getOutputStream(), 10);
@@ -143,7 +142,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, stream_get_contents($output->getStream()));
     }
 
-    public function testCustomizations()
+    public function test_customizations()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 10);
         $bar->setBarWidth(10);
@@ -162,7 +161,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDisplayWithoutStart()
+    public function test_display_without_start()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->display();
@@ -174,7 +173,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDisplayWithQuietVerbosity()
+    public function test_display_with_quiet_verbosity()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(true, StreamOutput::VERBOSITY_QUIET), 50);
         $bar->display();
@@ -186,7 +185,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFinishWithoutStart()
+    public function test_finish_without_start()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->finish();
@@ -198,7 +197,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testPercent()
+    public function test_percent()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->start();
@@ -216,7 +215,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testOverwriteWithShorterLine()
+    public function test_overwrite_with_shorter_line()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->setFormat(' %current%/%max% [%bar%] %percent:3s%%');
@@ -238,7 +237,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testStartWithMax()
+    public function test_start_with_max()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->setFormat('%current%/%max% [%bar%]');
@@ -253,7 +252,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSetCurrentProgress()
+    public function test_set_current_progress()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->start();
@@ -273,9 +272,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     */
-    public function testSetCurrentBeforeStarting()
+    public function test_set_current_before_starting()
     {
         $bar = new ProgressBar($this->getOutputStream());
         $bar->setProgress(15);
@@ -284,9 +281,10 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \LogicException
+     *
      * @expectedExceptionMessage You can't regress the progress bar
      */
-    public function testRegressProgress()
+    public function test_regress_progress()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->start();
@@ -294,9 +292,9 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         $bar->setProgress(10);
     }
 
-    public function testRedrawFrequency()
+    public function test_redraw_frequency()
     {
-        $bar = $this->getMock('Symfony\Component\Console\Helper\ProgressBar', array('display'), array($this->getOutputStream(), 6));
+        $bar = $this->getMock('Symfony\Component\Console\Helper\ProgressBar', ['display'], [$this->getOutputStream(), 6]);
         $bar->expects($this->exactly(4))->method('display');
 
         $bar->setRedrawFrequency(2);
@@ -307,9 +305,9 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         $bar->advance(1);
     }
 
-    public function testRedrawFrequencyIsAtLeastOneIfZeroGiven()
+    public function test_redraw_frequency_is_at_least_one_if_zero_given()
     {
-        $bar = $this->getMock('Symfony\Component\Console\Helper\ProgressBar', array('display'), array($this->getOutputStream()));
+        $bar = $this->getMock('Symfony\Component\Console\Helper\ProgressBar', ['display'], [$this->getOutputStream()]);
 
         $bar->expects($this->exactly(2))->method('display');
         $bar->setRedrawFrequency(0);
@@ -317,9 +315,9 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         $bar->advance();
     }
 
-    public function testRedrawFrequencyIsAtLeastOneIfSmallerOneGiven()
+    public function test_redraw_frequency_is_at_least_one_if_smaller_one_given()
     {
-        $bar = $this->getMock('Symfony\Component\Console\Helper\ProgressBar', array('display'), array($this->getOutputStream()));
+        $bar = $this->getMock('Symfony\Component\Console\Helper\ProgressBar', ['display'], [$this->getOutputStream()]);
 
         $bar->expects($this->exactly(2))->method('display');
         $bar->setRedrawFrequency(0.9);
@@ -327,7 +325,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         $bar->advance();
     }
 
-    public function testMultiByteSupport()
+    public function test_multi_byte_support()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->start();
@@ -342,7 +340,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testClear()
+    public function test_clear()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 50);
         $bar->start();
@@ -358,7 +356,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testPercentNotHundredBeforeComplete()
+    public function test_percent_not_hundred_before_complete()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 200);
         $bar->start();
@@ -376,12 +374,12 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testNonDecoratedOutput()
+    public function test_non_decorated_output()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(false), 200);
         $bar->start();
 
-        for ($i = 0; $i < 200; ++$i) {
+        for ($i = 0; $i < 200; $i++) {
             $bar->advance();
         }
 
@@ -404,7 +402,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testNonDecoratedOutputWithClear()
+    public function test_non_decorated_output_with_clear()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(false), 50);
         $bar->start();
@@ -422,7 +420,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testNonDecoratedOutputWithoutMax()
+    public function test_non_decorated_output_without_max()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(false));
         $bar->start();
@@ -436,7 +434,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testParallelBars()
+    public function test_parallel_bars()
     {
         $output = $this->getOutputStream();
         $bar1 = new ProgressBar($output, 2);
@@ -450,7 +448,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         $output->write("\n");
         $bar3->start();
 
-        for ($i = 1; $i <= 3; ++$i) {
+        for ($i = 1; $i <= 3; $i++) {
             // up two lines
             $output->write("\033[2A");
             if ($i <= 2) {
@@ -495,7 +493,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testWithoutMax()
+    public function test_without_max()
     {
         $output = $this->getOutputStream();
 
@@ -517,7 +515,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAddingPlaceholderFormatter()
+    public function test_adding_placeholder_formatter()
     {
         ProgressBar::setPlaceholderFormatterDefinition('remaining_steps', function (ProgressBar $bar) {
             return $bar->getMaxSteps() - $bar->getProgress();
@@ -538,7 +536,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testMultilineFormat()
+    public function test_multiline_format()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 3);
         $bar->setFormat("%bar%\nfoobar");
@@ -558,7 +556,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAnsiColorsAndEmojis()
+    public function test_ansi_colors_and_emojis()
     {
         $bar = new ProgressBar($output = $this->getOutputStream(), 15);
         ProgressBar::setPlaceholderFormatterDefinition('memory', function (ProgressBar $bar) {
@@ -583,9 +581,9 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         rewind($output->getStream());
         $this->assertEquals(
 
-                " \033[44;37m Starting the demo... fingers crossed  \033[0m\n".
-                '  0/15 '.$progress.str_repeat($empty, 26)."   0%\n".
-                " \xf0\x9f\x8f\x81  < 1 sec                        \033[44;37m 0 B \033[0m"
+            " \033[44;37m Starting the demo... fingers crossed  \033[0m\n".
+            '  0/15 '.$progress.str_repeat($empty, 26)."   0%\n".
+            " \xf0\x9f\x8f\x81  < 1 sec                        \033[44;37m 0 B \033[0m"
             .
             $this->generateOutput(
                 " \033[44;37m Looks good to me...                   \033[0m\n".
@@ -601,7 +599,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSetFormat()
+    public function test_set_format()
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->setFormat('normal');
@@ -625,7 +623,7 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideFormat
      */
-    public function testFormatsWithoutMax($format)
+    public function test_formats_without_max($format)
     {
         $bar = new ProgressBar($output = $this->getOutputStream());
         $bar->setFormat($format);
@@ -642,12 +640,12 @@ class ProgressBarTest extends \PHPUnit_Framework_TestCase
      */
     public function provideFormat()
     {
-        return array(
-            array('normal'),
-            array('verbose'),
-            array('very_verbose'),
-            array('debug'),
-        );
+        return [
+            ['normal'],
+            ['verbose'],
+            ['very_verbose'],
+            ['debug'],
+        ];
     }
 
     protected function getOutputStream($decorated = true, $verbosity = StreamOutput::VERBOSITY_NORMAL)

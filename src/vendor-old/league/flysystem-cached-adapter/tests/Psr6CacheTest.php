@@ -4,7 +4,7 @@ use League\Flysystem\Cached\Storage\Psr6Cache;
 
 class Psr6CacheTests extends PHPUnit_Framework_TestCase
 {
-    public function testLoadFail()
+    public function test_load_fail()
     {
         $pool = Mockery::mock('Psr\Cache\CacheItemPoolInterface');
         $item = Mockery::mock('Psr\Cache\CacheItemInterface');
@@ -15,7 +15,7 @@ class Psr6CacheTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('', false));
     }
 
-    public function testLoadSuccess()
+    public function test_load_success()
     {
         $response = json_encode([[], ['' => true]]);
         $pool = Mockery::mock('Psr\Cache\CacheItemPoolInterface');
@@ -28,7 +28,7 @@ class Psr6CacheTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('', false));
     }
 
-    public function testSave()
+    public function test_save()
     {
         $response = json_encode([[], []]);
         $ttl = 4711;

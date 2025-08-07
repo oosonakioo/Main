@@ -37,7 +37,7 @@ interface BundleInterface extends ContainerAwareInterface
      *
      * It is only ever called once when the cache is empty.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param  ContainerBuilder  $container  A ContainerBuilder instance
      */
     public function build(ContainerBuilder $container);
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,8 +35,8 @@ class Psr0FindFile implements ClassFinderInterface
     protected $prefixes;
 
     /**
-     * @param array $prefixes An array of prefixes. Each key is a PHP namespace and each value is
-     *                        a list of directories.
+     * @param  array  $prefixes  An array of prefixes. Each key is a PHP namespace and each value is
+     *                           a list of directories.
      */
     public function __construct($prefixes)
     {
@@ -48,13 +49,13 @@ class Psr0FindFile implements ClassFinderInterface
     public function findFile($class)
     {
         $lastNsPos = strrpos($class, '\\');
-        if ('\\' == $class[0]) {
+        if ($class[0] == '\\') {
             $class = substr($class, 1);
         }
 
-        if (false !== $lastNsPos) {
+        if ($lastNsPos !== false) {
             // namespaced class name
-            $classPath = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 0, $lastNsPos)) . DIRECTORY_SEPARATOR;
+            $classPath = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 0, $lastNsPos)).DIRECTORY_SEPARATOR;
             $className = substr($class, $lastNsPos + 1);
         } else {
             // PEAR-like class name
@@ -62,13 +63,13 @@ class Psr0FindFile implements ClassFinderInterface
             $className = $class;
         }
 
-        $classPath .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        $classPath .= str_replace('_', DIRECTORY_SEPARATOR, $className).'.php';
 
         foreach ($this->prefixes as $prefix => $dirs) {
-            if (0 === strpos($class, $prefix)) {
+            if (strpos($class, $prefix) === 0) {
                 foreach ($dirs as $dir) {
-                    if (is_file($dir . DIRECTORY_SEPARATOR . $classPath)) {
-                        return $dir . DIRECTORY_SEPARATOR . $classPath;
+                    if (is_file($dir.DIRECTORY_SEPARATOR.$classPath)) {
+                        return $dir.DIRECTORY_SEPARATOR.$classPath;
                     }
                 }
             }

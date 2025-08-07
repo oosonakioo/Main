@@ -27,9 +27,8 @@ class Dotenv
     /**
      * Create a new dotenv instance.
      *
-     * @param string $path
-     * @param string $file
-     *
+     * @param  string  $path
+     * @param  string  $file
      * @return void
      */
     public function __construct($path, $file = '.env')
@@ -61,14 +60,13 @@ class Dotenv
     /**
      * Returns the full path to the file.
      *
-     * @param string $path
-     * @param string $file
-     *
+     * @param  string  $path
+     * @param  string  $file
      * @return string
      */
     protected function getFilePath($path, $file)
     {
-        if (!is_string($file)) {
+        if (! is_string($file)) {
             $file = '.env';
         }
 
@@ -80,13 +78,12 @@ class Dotenv
     /**
      * Actually load the data.
      *
-     * @param bool $overload
-     *
+     * @param  bool  $overload
      * @return array
      */
     protected function loadData($overload = false)
     {
-        $this->loader = new Loader($this->filePath, !$overload);
+        $this->loader = new Loader($this->filePath, ! $overload);
 
         return $this->loader->load();
     }
@@ -94,8 +91,7 @@ class Dotenv
     /**
      * Required ensures that the specified variables exist, and returns a new validator object.
      *
-     * @param string|string[] $variable
-     *
+     * @param  string|string[]  $variable
      * @return \Dotenv\Validator
      */
     public function required($variable)

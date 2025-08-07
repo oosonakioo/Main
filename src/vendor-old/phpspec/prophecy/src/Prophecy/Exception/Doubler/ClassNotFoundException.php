@@ -16,8 +16,8 @@ class ClassNotFoundException extends DoubleException
     private $classname;
 
     /**
-     * @param string $message
-     * @param string $classname
+     * @param  string  $message
+     * @param  string  $classname
      */
     public function __construct($message, $classname)
     {

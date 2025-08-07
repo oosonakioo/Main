@@ -17,7 +17,6 @@ interface Mailer
      * Send a new message using a view.
      *
      * @param  string|array  $view
-     * @param  array  $data
      * @param  \Closure|string  $callback
      * @return void
      */

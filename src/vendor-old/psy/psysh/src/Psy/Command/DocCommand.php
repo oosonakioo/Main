@@ -29,10 +29,10 @@ class DocCommand extends ReflectingCommand
     {
         $this
             ->setName('doc')
-            ->setAliases(array('rtfm', 'man'))
-            ->setDefinition(array(
+            ->setAliases(['rtfm', 'man'])
+            ->setDefinition([
                 new InputArgument('value', InputArgument::REQUIRED, 'Function, class, instance, constant, method or property to document.'),
-            ))
+            ])
             ->setDescription('Read the documentation for an object, class, constant, method or property.')
             ->setHelp(
                 <<<HELP
@@ -55,14 +55,14 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        list($value, $reflector) = $this->getTargetAndReflector($input->getArgument('value'));
+        [$value, $reflector] = $this->getTargetAndReflector($input->getArgument('value'));
 
         $doc = $this->getManualDoc($reflector) ?: DocblockFormatter::format($reflector);
-        $db  = $this->getApplication()->getManualDb();
+        $db = $this->getApplication()->getManualDb();
 
         $output->page(function ($output) use ($reflector, $doc, $db) {
             $output->writeln(SignatureFormatter::format($reflector));
-            if (empty($doc) && !$db) {
+            if (empty($doc) && ! $db) {
                 $output->writeln('');
                 $output->writeln('<warning>PHP manual not found</warning>');
                 $output->writeln('    To document core PHP functionality, download the PHP reference manual:');
@@ -82,7 +82,7 @@ HELP
                 break;
 
             case 'ReflectionMethod':
-                $id = $reflector->class . '::' . $reflector->name;
+                $id = $reflector->class.'::'.$reflector->name;
                 break;
 
             default:

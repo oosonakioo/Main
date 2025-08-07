@@ -26,9 +26,9 @@ class ChainCacheClearer implements CacheClearerInterface
     /**
      * Constructs a new instance of ChainCacheClearer.
      *
-     * @param array $clearers The initial clearers
+     * @param  array  $clearers  The initial clearers
      */
-    public function __construct(array $clearers = array())
+    public function __construct(array $clearers = [])
     {
         $this->clearers = $clearers;
     }
@@ -45,8 +45,6 @@ class ChainCacheClearer implements CacheClearerInterface
 
     /**
      * Adds a cache clearer to the aggregate.
-     *
-     * @param CacheClearerInterface $clearer
      */
     public function add(CacheClearerInterface $clearer)
     {

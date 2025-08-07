@@ -1,4 +1,6 @@
-<?php namespace Maatwebsite\Excel\Filters;
+<?php
+
+namespace Maatwebsite\Excel\Filters;
 
 use PHPExcel_Reader_IReadFilter;
 
@@ -6,33 +8,37 @@ class ChunkReadFilter implements PHPExcel_Reader_IReadFilter
 {
     /**
      * Start row
-     * @var integer
+     *
+     * @var int
      */
     private $_startRow = 0;
 
     /**
      * End row
-     * @var integer
+     *
+     * @var int
      */
     private $_endRow = 0;
 
     /**
      * Set the list of rows that we want to read
-     * @param   integer $startRow
-     * @param   integer $chunkSize
-     * @return  void
+     *
+     * @param  int  $startRow
+     * @param  int  $chunkSize
+     * @return void
      */
     public function setRows($startRow, $chunkSize)
     {
         $this->_startRow = $startRow;
-        $this->_endRow   = $startRow + $chunkSize;
+        $this->_endRow = $startRow + $chunkSize;
     }
 
     /**
      * Read the cell
-     * @param  string   $column
-     * @param  integer  $row
-     * @param  string   $worksheetName
+     *
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $worksheetName
      * @return booleaan
      */
     public function readCell($column, $row, $worksheetName = '')
@@ -41,6 +47,7 @@ class ChunkReadFilter implements PHPExcel_Reader_IReadFilter
         if (($row == config('excel.import.startRow')) || ($row >= $this->_startRow && $row <= $this->_endRow)) {
             return true;
         }
+
         return false;
     }
 }

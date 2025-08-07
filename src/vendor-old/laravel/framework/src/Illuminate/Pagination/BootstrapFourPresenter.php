@@ -2,9 +2,9 @@
 
 namespace Illuminate\Pagination;
 
-use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter as PresenterContract;
+use Illuminate\Support\HtmlString;
 
 class BootstrapFourPresenter implements PresenterContract
 {
@@ -27,11 +27,9 @@ class BootstrapFourPresenter implements PresenterContract
     /**
      * Create a new Bootstrap presenter instance.
      *
-     * @param  \Illuminate\Contracts\Pagination\Paginator  $paginator
-     * @param  \Illuminate\Pagination\UrlWindow|null  $window
      * @return void
      */
-    public function __construct(PaginatorContract $paginator, UrlWindow $window = null)
+    public function __construct(PaginatorContract $paginator, ?UrlWindow $window = null)
     {
         $this->paginator = $paginator;
         $this->window = is_null($window) ? UrlWindow::make($paginator) : $window->get();

@@ -11,8 +11,8 @@
 
 namespace Monolog\Handler;
 
-use Monolog\Logger;
 use Monolog\Formatter\NormalizerFormatter;
+use Monolog\Logger;
 
 /**
  * Logs to a MongoDB database.
@@ -31,7 +31,7 @@ class MongoDBHandler extends AbstractProcessingHandler
 
     public function __construct($mongo, $database, $collection, $level = Logger::DEBUG, $bubble = true)
     {
-        if (!($mongo instanceof \MongoClient || $mongo instanceof \Mongo || $mongo instanceof \MongoDB\Client)) {
+        if (! ($mongo instanceof \MongoClient || $mongo instanceof \Mongo || $mongo instanceof \MongoDB\Client)) {
             throw new \InvalidArgumentException('MongoClient, Mongo or MongoDB\Client instance required');
         }
 
@@ -43,9 +43,9 @@ class MongoDBHandler extends AbstractProcessingHandler
     protected function write(array $record)
     {
         if ($this->mongoCollection instanceof \MongoDB\Collection) {
-            $this->mongoCollection->insertOne($record["formatted"]);
+            $this->mongoCollection->insertOne($record['formatted']);
         } else {
-            $this->mongoCollection->save($record["formatted"]);
+            $this->mongoCollection->save($record['formatted']);
         }
     }
 
@@ -54,6 +54,6 @@ class MongoDBHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter()
     {
-        return new NormalizerFormatter();
+        return new NormalizerFormatter;
     }
 }

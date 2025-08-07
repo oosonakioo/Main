@@ -2,8 +2,8 @@
 
 namespace Illuminate\Foundation;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Filesystem\Filesystem;
 
 class ProviderRepository
 {
@@ -31,8 +31,6 @@ class ProviderRepository
     /**
      * Create a new service repository instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $manifestPath
      * @return void
      */
@@ -46,7 +44,6 @@ class ProviderRepository
     /**
      * Register the application service providers.
      *
-     * @param  array  $providers
      * @return void
      */
     public function load(array $providers)
@@ -81,7 +78,6 @@ class ProviderRepository
      * Register the load events for the given provider.
      *
      * @param  string  $provider
-     * @param  array  $events
      * @return void
      */
     protected function registerLoadEvents($provider, array $events)
@@ -195,7 +191,6 @@ class ProviderRepository
     /**
      * Create a fresh service manifest data structure.
      *
-     * @param  array  $providers
      * @return array
      */
     protected function freshManifest(array $providers)

@@ -16,13 +16,12 @@ namespace Prophecy\Argument\Token;
  *
  * @author Boris Mikhaylov <kaguxmail@gmail.com>
  */
-
 class ArrayCountToken implements TokenInterface
 {
     private $count;
 
     /**
-     * @param integer $value
+     * @param  int  $value
      */
     public function __construct($value)
     {
@@ -32,7 +31,6 @@ class ArrayCountToken implements TokenInterface
     /**
      * Scores 6 when argument has preset number of elements.
      *
-     * @param $argument
      *
      * @return bool|int
      */
@@ -44,7 +42,7 @@ class ArrayCountToken implements TokenInterface
     /**
      * Returns false.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLast()
     {
@@ -64,19 +62,17 @@ class ArrayCountToken implements TokenInterface
     /**
      * Returns true if object is either array or instance of \Countable
      *
-     * @param $argument
      * @return bool
      */
     private function isCountable($argument)
     {
-        return (is_array($argument) || $argument instanceof \Countable);
+        return is_array($argument) || $argument instanceof \Countable;
     }
 
     /**
      * Returns true if $argument has expected number of elements
      *
-     * @param array|\Countable $argument
-     *
+     * @param  array|\Countable  $argument
      * @return bool
      */
     private function hasProperCount($argument)

@@ -10,17 +10,16 @@
  */
 class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier_AttrTransform
 {
-
     /**
-     * @param array $attr
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  array  $attr
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return array
      */
     public function transform($attr, $config, $context)
     {
         $src = true;
-        if (!isset($attr['src'])) {
+        if (! isset($attr['src'])) {
             if ($config->get('Core.RemoveInvalidImg')) {
                 return $attr;
             }
@@ -28,7 +27,7 @@ class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier_AttrTransform
             $src = false;
         }
 
-        if (!isset($attr['alt'])) {
+        if (! isset($attr['alt'])) {
             if ($src) {
                 $alt = $config->get('Attr.DefaultImageAlt');
                 if ($alt === null) {
@@ -40,6 +39,7 @@ class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier_AttrTransform
                 $attr['alt'] = $config->get('Attr.DefaultInvalidImageAlt');
             }
         }
+
         return $attr;
     }
 }

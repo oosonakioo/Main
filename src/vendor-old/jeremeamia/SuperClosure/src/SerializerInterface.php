@@ -1,4 +1,6 @@
-<?php namespace SuperClosure;
+<?php
+
+namespace SuperClosure;
 
 use SuperClosure\Exception\ClosureUnserializationException;
 
@@ -11,8 +13,7 @@ interface SerializerInterface
      * Takes a Closure object, decorates it with a SerializableClosure object,
      * then performs the serialization.
      *
-     * @param \Closure $closure Closure to serialize.
-     *
+     * @param  \Closure  $closure  Closure to serialize.
      * @return string Serialized closure.
      */
     public function serialize(\Closure $closure);
@@ -21,10 +22,10 @@ interface SerializerInterface
      * Takes a serialized closure, performs the unserialization, and then
      * extracts and returns a the Closure object.
      *
-     * @param string $serialized Serialized closure.
+     * @param  string  $serialized  Serialized closure.
+     * @return \Closure Unserialized closure.
      *
      * @throws ClosureUnserializationException if unserialization fails.
-     * @return \Closure Unserialized closure.
      */
     public function unserialize($serialized);
 
@@ -36,9 +37,8 @@ interface SerializerInterface
      * `$forSerialization` is true, then only data relevant to serializing the
      * closure is returned.
      *
-     * @param \Closure $closure          Closure to analyze.
-     * @param bool     $forSerialization Include only serialization data.
-     *
+     * @param  \Closure  $closure  Closure to analyze.
+     * @param  bool  $forSerialization  Include only serialization data.
      * @return \Closure
      */
     public function getData(\Closure $closure, $forSerialization = false);

@@ -11,36 +11,36 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 class DoctrineCouchDBHandlerTest extends TestCase
 {
     protected function setup()
     {
-        if (!class_exists('Doctrine\CouchDB\CouchDBClient')) {
+        if (! class_exists('Doctrine\CouchDB\CouchDBClient')) {
             $this->markTestSkipped('The "doctrine/couchdb" package is not installed');
         }
     }
 
-    public function testHandle()
+    public function test_handle()
     {
         $client = $this->getMockBuilder('Doctrine\\CouchDB\\CouchDBClient')
-            ->setMethods(array('postDocument'))
+            ->setMethods(['postDocument'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $record = $this->getRecord(Logger::WARNING, 'test', array('data' => new \stdClass, 'foo' => 34));
+        $record = $this->getRecord(Logger::WARNING, 'test', ['data' => new \stdClass, 'foo' => 34]);
 
-        $expected = array(
+        $expected = [
             'message' => 'test',
-            'context' => array('data' => '[object] (stdClass: {})', 'foo' => 34),
+            'context' => ['data' => '[object] (stdClass: {})', 'foo' => 34],
             'level' => Logger::WARNING,
             'level_name' => 'WARNING',
             'channel' => 'test',
             'datetime' => $record['datetime']->format('Y-m-d H:i:s'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
         $client->expects($this->once())
             ->method('postDocument')

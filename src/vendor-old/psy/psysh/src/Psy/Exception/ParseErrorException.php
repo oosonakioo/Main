@@ -19,8 +19,8 @@ class ParseErrorException extends \PhpParser\Error implements Exception
     /**
      * Constructor!
      *
-     * @param string $message (default: "")
-     * @param int    $line    (default: -1)
+     * @param  string  $message  (default: "")
+     * @param  int  $line  (default: -1)
      */
     public function __construct($message = '', $line = -1)
     {
@@ -31,7 +31,6 @@ class ParseErrorException extends \PhpParser\Error implements Exception
     /**
      * Create a ParseErrorException from a PhpParser Error.
      *
-     * @param \PhpParser\Error $e
      *
      * @return ParseErrorException
      */

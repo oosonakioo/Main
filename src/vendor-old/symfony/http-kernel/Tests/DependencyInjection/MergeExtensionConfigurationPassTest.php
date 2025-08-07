@@ -15,50 +15,50 @@ use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfiguration
 
 class MergeExtensionConfigurationPassTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAutoloadMainExtension()
+    public function test_autoload_main_extension()
     {
         $container = $this->getMock(
             'Symfony\\Component\\DependencyInjection\\ContainerBuilder',
-            array(
+            [
                 'getExtensionConfig',
                 'loadFromExtension',
                 'getParameterBag',
                 'getDefinitions',
                 'getAliases',
                 'getExtensions',
-            )
+            ]
         );
         $params = $this->getMock('Symfony\\Component\\DependencyInjection\\ParameterBag\\ParameterBag');
 
         $container->expects($this->at(0))
             ->method('getExtensionConfig')
             ->with('loaded')
-            ->will($this->returnValue(array(array())));
+            ->will($this->returnValue([[]]));
         $container->expects($this->at(1))
             ->method('getExtensionConfig')
             ->with('notloaded')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $container->expects($this->once())
             ->method('loadFromExtension')
-            ->with('notloaded', array());
+            ->with('notloaded', []);
 
         $container->expects($this->any())
             ->method('getParameterBag')
             ->will($this->returnValue($params));
         $params->expects($this->any())
             ->method('all')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $container->expects($this->any())
             ->method('getDefinitions')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $container->expects($this->any())
             ->method('getAliases')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $container->expects($this->any())
             ->method('getExtensions')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
-        $configPass = new MergeExtensionConfigurationPass(array('loaded', 'notloaded'));
+        $configPass = new MergeExtensionConfigurationPass(['loaded', 'notloaded']);
         $configPass->process($container);
     }
 }

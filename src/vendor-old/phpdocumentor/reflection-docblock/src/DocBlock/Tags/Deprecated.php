@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,14 +8,15 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
 
-use phpDocumentor\Reflection\Types\Context as TypeContext;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
+use phpDocumentor\Reflection\Types\Context as TypeContext;
 use Webmozart\Assert\Assert;
 
 /**
@@ -43,7 +45,7 @@ final class Deprecated extends BaseTag implements Factory\StaticMethod
     /** @var string The version vector. */
     private $version = '';
 
-    public function __construct($version = null, Description $description = null)
+    public function __construct($version = null, ?Description $description = null)
     {
         Assert::nullOrStringNotEmpty($version);
 
@@ -54,22 +56,22 @@ final class Deprecated extends BaseTag implements Factory\StaticMethod
     /**
      * @return static
      */
-    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null)
+    public static function create($body, ?DescriptionFactory $descriptionFactory = null, ?TypeContext $context = null)
     {
         Assert::nullOrString($body);
         if (empty($body)) {
-            return new static();
+            return new self;
         }
 
         $matches = [];
-        if (!preg_match('/^(' . self::REGEX_VECTOR . ')\s*(.+)?$/sux', $body, $matches)) {
-            return new static(
+        if (! preg_match('/^('.self::REGEX_VECTOR.')\s*(.+)?$/sux', $body, $matches)) {
+            return new self(
                 null,
-                null !== $descriptionFactory ? $descriptionFactory->create($body, $context) : null
+                $descriptionFactory !== null ? $descriptionFactory->create($body, $context) : null
             );
         }
 
-        return new static(
+        return new self(
             $matches[1],
             $descriptionFactory->create(isset($matches[2]) ? $matches[2] : '', $context)
         );
@@ -92,6 +94,6 @@ final class Deprecated extends BaseTag implements Factory\StaticMethod
      */
     public function __toString()
     {
-        return $this->version . ($this->description ? ' ' . $this->description->render() : '');
+        return $this->version.($this->description ? ' '.$this->description->render() : '');
     }
 }

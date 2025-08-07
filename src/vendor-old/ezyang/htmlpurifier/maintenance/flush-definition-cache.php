@@ -15,17 +15,16 @@ assertCli();
  * @param Accepts one argument, cache type to flush; otherwise flushes all
  *      the caches.
  */
-
 echo "Flushing cache... \n";
 
-require_once(dirname(__FILE__) . '/../library/HTMLPurifier.auto.php');
+require_once dirname(__FILE__).'/../library/HTMLPurifier.auto.php';
 
 $config = HTMLPurifier_Config::createDefault();
 
-$names = array('HTML', 'CSS', 'URI', 'Test');
+$names = ['HTML', 'CSS', 'URI', 'Test'];
 if (isset($argv[1])) {
     if (in_array($argv[1], $names)) {
-        $names = array($argv[1]);
+        $names = [$argv[1]];
     } else {
         throw new Exception("Cache parameter {$argv[1]} is not a valid cache");
     }

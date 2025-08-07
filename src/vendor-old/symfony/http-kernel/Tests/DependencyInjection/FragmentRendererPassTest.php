@@ -23,18 +23,18 @@ class FragmentRendererPassTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testContentRendererWithoutInterface()
+    public function test_content_renderer_without_interface()
     {
         // one service, not implementing any interface
-        $services = array(
-            'my_content_renderer' => array(array('alias' => 'foo')),
-        );
+        $services = [
+            'my_content_renderer' => [['alias' => 'foo']],
+        ];
 
         $definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
 
         $builder = $this->getMock(
             'Symfony\Component\DependencyInjection\ContainerBuilder',
-            array('hasDefinition', 'findTaggedServiceIds', 'getDefinition')
+            ['hasDefinition', 'findTaggedServiceIds', 'getDefinition']
         );
         $builder->expects($this->any())
             ->method('hasDefinition')
@@ -49,22 +49,21 @@ class FragmentRendererPassTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->will($this->returnValue($definition));
 
-        $pass = new FragmentRendererPass();
+        $pass = new FragmentRendererPass;
         $pass->process($builder);
     }
 
-    public function testValidContentRenderer()
+    public function test_valid_content_renderer()
     {
-        $services = array(
-            'my_content_renderer' => array(array('alias' => 'foo')),
-        );
+        $services = [
+            'my_content_renderer' => [['alias' => 'foo']],
+        ];
 
         $renderer = $this->getMock('Symfony\Component\DependencyInjection\Definition');
         $renderer
             ->expects($this->once())
             ->method('addMethodCall')
-            ->with('addRendererService', array('foo', 'my_content_renderer'))
-        ;
+            ->with('addRendererService', ['foo', 'my_content_renderer']);
 
         $definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
         $definition->expects($this->atLeastOnce())
@@ -73,12 +72,11 @@ class FragmentRendererPassTest extends \PHPUnit_Framework_TestCase
         $definition
             ->expects($this->once())
             ->method('isPublic')
-            ->will($this->returnValue(true))
-        ;
+            ->will($this->returnValue(true));
 
         $builder = $this->getMock(
             'Symfony\Component\DependencyInjection\ContainerBuilder',
-            array('hasDefinition', 'findTaggedServiceIds', 'getDefinition')
+            ['hasDefinition', 'findTaggedServiceIds', 'getDefinition']
         );
         $builder->expects($this->any())
             ->method('hasDefinition')
@@ -93,16 +91,14 @@ class FragmentRendererPassTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->will($this->onConsecutiveCalls($renderer, $definition));
 
-        $pass = new FragmentRendererPass();
+        $pass = new FragmentRendererPass;
         $pass->process($builder);
     }
 }
 
 class RendererService implements FragmentRendererInterface
 {
-    public function render($uri, Request $request = null, array $options = array())
-    {
-    }
+    public function render($uri, ?Request $request = null, array $options = []) {}
 
     public function getName()
     {

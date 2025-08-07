@@ -73,7 +73,7 @@ abstract class Job
     /**
      * Release the job back into the queue.
      *
-     * @param  int   $delay
+     * @param  int  $delay
      * @return void
      */
     public function release($delay = 0)
@@ -118,12 +118,11 @@ abstract class Job
     /**
      * Resolve and fire the job handler method.
      *
-     * @param  array  $payload
      * @return void
      */
     protected function resolveAndFire(array $payload)
     {
-        list($class, $method) = $this->parseJob($payload['job']);
+        [$class, $method] = $this->parseJob($payload['job']);
 
         $this->instance = $this->resolve($class);
 
@@ -188,7 +187,7 @@ abstract class Job
     protected function resolveQueueableEntity($value)
     {
         if (is_string($value) && Str::startsWith($value, '::entity::')) {
-            list($marker, $type, $id) = explode('|', $value, 3);
+            [$marker, $type, $id] = explode('|', $value, 3);
 
             return $this->getEntityResolver()->resolve($type, $id);
         }
@@ -205,7 +204,7 @@ abstract class Job
     {
         $payload = json_decode($this->getRawBody(), true);
 
-        list($class, $method) = $this->parseJob($payload['job']);
+        [$class, $method] = $this->parseJob($payload['job']);
 
         $this->instance = $this->resolve($class);
 

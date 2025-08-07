@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -12,6 +13,7 @@
  * Driver for Xdebug's code coverage functionality.
  *
  * @since Class available since Release 1.0.0
+ *
  * @codeCoverageIgnore
  */
 class PHP_CodeCoverage_Driver_Xdebug implements PHP_CodeCoverage_Driver
@@ -21,12 +23,12 @@ class PHP_CodeCoverage_Driver_Xdebug implements PHP_CodeCoverage_Driver
      */
     public function __construct()
     {
-        if (!extension_loaded('xdebug')) {
+        if (! extension_loaded('xdebug')) {
             throw new PHP_CodeCoverage_Exception('This driver requires Xdebug');
         }
 
         if (version_compare(phpversion('xdebug'), '2.2.0-dev', '>=') &&
-            !ini_get('xdebug.coverage_enable')) {
+            ! ini_get('xdebug.coverage_enable')) {
             throw new PHP_CodeCoverage_Exception(
                 'xdebug.coverage_enable=On has to be set in php.ini'
             );
@@ -55,8 +57,8 @@ class PHP_CodeCoverage_Driver_Xdebug implements PHP_CodeCoverage_Driver
     }
 
     /**
-     * @param  array $data
      * @return array
+     *
      * @since Method available since Release 2.0.0
      */
     private function cleanup(array $data)
@@ -79,14 +81,15 @@ class PHP_CodeCoverage_Driver_Xdebug implements PHP_CodeCoverage_Driver
     }
 
     /**
-     * @param  string $file
+     * @param  string  $file
      * @return int
+     *
      * @since Method available since Release 2.0.0
      */
     private function getNumberOfLinesInFile($file)
     {
         $buffer = file_get_contents($file);
-        $lines  = substr_count($buffer, "\n");
+        $lines = substr_count($buffer, "\n");
 
         if (substr($buffer, -1) !== "\n") {
             $lines++;

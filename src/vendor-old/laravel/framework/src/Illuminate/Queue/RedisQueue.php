@@ -2,11 +2,11 @@
 
 namespace Illuminate\Queue;
 
+use Illuminate\Contracts\Queue\Queue as QueueContract;
+use Illuminate\Queue\Jobs\RedisJob;
+use Illuminate\Redis\Database;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Redis\Database;
-use Illuminate\Queue\Jobs\RedisJob;
-use Illuminate\Contracts\Queue\Queue as QueueContract;
 
 class RedisQueue extends Queue implements QueueContract
 {
@@ -41,7 +41,6 @@ class RedisQueue extends Queue implements QueueContract
     /**
      * Create a new Redis queue instance.
      *
-     * @param  \Illuminate\Redis\Database  $redis
      * @param  string  $default
      * @param  string  $connection
      * @return void
@@ -57,7 +56,7 @@ class RedisQueue extends Queue implements QueueContract
      * Push a new job onto the queue.
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -71,7 +70,6 @@ class RedisQueue extends Queue implements QueueContract
      *
      * @param  string  $payload
      * @param  string  $queue
-     * @param  array   $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = [])
@@ -86,7 +84,7 @@ class RedisQueue extends Queue implements QueueContract
      *
      * @param  \DateTime|int  $delay
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return mixed
      */
@@ -242,7 +240,7 @@ class RedisQueue extends Queue implements QueueContract
      * Create a payload string from the given job and data.
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string  $queue
      * @return string
      */

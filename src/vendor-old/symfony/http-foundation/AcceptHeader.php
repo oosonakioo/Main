@@ -24,7 +24,7 @@ class AcceptHeader
     /**
      * @var AcceptHeaderItem[]
      */
-    private $items = array();
+    private $items = [];
 
     /**
      * @var bool
@@ -34,7 +34,7 @@ class AcceptHeader
     /**
      * Constructor.
      *
-     * @param AcceptHeaderItem[] $items
+     * @param  AcceptHeaderItem[]  $items
      */
     public function __construct(array $items)
     {
@@ -46,8 +46,7 @@ class AcceptHeader
     /**
      * Builds an AcceptHeader instance from a string.
      *
-     * @param string $headerValue
-     *
+     * @param  string  $headerValue
      * @return AcceptHeader
      */
     public static function fromString($headerValue)
@@ -75,8 +74,7 @@ class AcceptHeader
     /**
      * Tests if header has given value.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return bool
      */
     public function has($value)
@@ -87,8 +85,7 @@ class AcceptHeader
     /**
      * Returns given value's item, if exists.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return AcceptHeaderItem|null
      */
     public function get($value)
@@ -99,7 +96,6 @@ class AcceptHeader
     /**
      * Adds an item.
      *
-     * @param AcceptHeaderItem $item
      *
      * @return AcceptHeader
      */
@@ -126,8 +122,7 @@ class AcceptHeader
     /**
      * Filters items on their value using given regex.
      *
-     * @param string $pattern
-     *
+     * @param  string  $pattern
      * @return AcceptHeader
      */
     public function filter($pattern)
@@ -146,7 +141,7 @@ class AcceptHeader
     {
         $this->sort();
 
-        return !empty($this->items) ? reset($this->items) : null;
+        return ! empty($this->items) ? reset($this->items) : null;
     }
 
     /**
@@ -154,7 +149,7 @@ class AcceptHeader
      */
     private function sort()
     {
-        if (!$this->sorted) {
+        if (! $this->sorted) {
             uasort($this->items, function ($a, $b) {
                 $qA = $a->getQuality();
                 $qB = $b->getQuality();

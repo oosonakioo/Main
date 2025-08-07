@@ -21,16 +21,15 @@ class Response
     /**
      * Quality of displayed image
      *
-     * @var integer
+     * @var int
      */
     public $quality;
 
     /**
      * Creates a new instance of response
      *
-     * @param Image   $image
-     * @param string  $format
-     * @param integer $quality
+     * @param  string  $format
+     * @param  int  $quality
      */
     public function __construct(Image $image, $format = null, $quality = null)
     {
@@ -59,8 +58,8 @@ class Response
 
         } else {
 
-            header('Content-Type: ' . $mime);
-            header('Content-Length: ' . $length);
+            header('Content-Type: '.$mime);
+            header('Content-Length: '.$length);
             $response = $data;
         }
 

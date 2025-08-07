@@ -16,61 +16,65 @@ class HTMLPurifier_DefinitionCache_Decorator_Cleanup extends HTMLPurifier_Defini
      */
     public function copy()
     {
-        return new HTMLPurifier_DefinitionCache_Decorator_Cleanup();
+        return new HTMLPurifier_DefinitionCache_Decorator_Cleanup;
     }
 
     /**
-     * @param HTMLPurifier_Definition $def
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Definition  $def
+     * @param  HTMLPurifier_Config  $config
      * @return mixed
      */
     public function add($def, $config)
     {
         $status = parent::add($def, $config);
-        if (!$status) {
+        if (! $status) {
             parent::cleanup($config);
         }
+
         return $status;
     }
 
     /**
-     * @param HTMLPurifier_Definition $def
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Definition  $def
+     * @param  HTMLPurifier_Config  $config
      * @return mixed
      */
     public function set($def, $config)
     {
         $status = parent::set($def, $config);
-        if (!$status) {
+        if (! $status) {
             parent::cleanup($config);
         }
+
         return $status;
     }
 
     /**
-     * @param HTMLPurifier_Definition $def
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Definition  $def
+     * @param  HTMLPurifier_Config  $config
      * @return mixed
      */
     public function replace($def, $config)
     {
         $status = parent::replace($def, $config);
-        if (!$status) {
+        if (! $status) {
             parent::cleanup($config);
         }
+
         return $status;
     }
 
     /**
-     * @param HTMLPurifier_Config $config
+     * @param  HTMLPurifier_Config  $config
      * @return mixed
      */
     public function get($config)
     {
         $ret = parent::get($config);
-        if (!$ret) {
+        if (! $ret) {
             parent::cleanup($config);
         }
+
         return $ret;
     }
 }

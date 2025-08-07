@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -8,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-class BankAccountException extends RuntimeException
-{
-}
+class BankAccountException extends RuntimeException {}
 
 /**
  * A bank account.
@@ -39,7 +38,7 @@ class BankAccount
     /**
      * Sets the bank account's balance.
      *
-     * @param float $balance
+     * @param  float  $balance
      *
      * @throws BankAccountException
      */
@@ -55,7 +54,7 @@ class BankAccount
     /**
      * Deposits an amount of money to the bank account.
      *
-     * @param float $balance
+     * @param  float  $balance
      *
      * @throws BankAccountException
      */
@@ -69,7 +68,7 @@ class BankAccount
     /**
      * Withdraws an amount of money from the bank account.
      *
-     * @param float $balance
+     * @param  float  $balance
      *
      * @throws BankAccountException
      */

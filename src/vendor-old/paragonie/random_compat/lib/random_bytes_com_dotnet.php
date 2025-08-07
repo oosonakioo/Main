@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -25,18 +26,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-if (!is_callable('random_bytes')) {
+if (! is_callable('random_bytes')) {
     /**
      * Windows with PHP < 5.3.0 will not have the function
      * openssl_random_pseudo_bytes() available, so let's use
      * CAPICOM to work around this deficiency.
      *
-     * @param int $bytes
+     * @param  int  $bytes
+     * @return string
      *
      * @throws Exception
-     *
-     * @return string
      */
     function random_bytes($bytes)
     {
@@ -55,7 +54,7 @@ if (!is_callable('random_bytes')) {
         }
 
         $buf = '';
-        if (!class_exists('COM')) {
+        if (! class_exists('COM')) {
             throw new Error(
                 'COM does not exist'
             );
@@ -75,7 +74,7 @@ if (!is_callable('random_bytes')) {
                  */
                 return RandomCompat_substr($buf, 0, $bytes);
             }
-            ++$execCount;
+            $execCount++;
         } while ($execCount < $bytes);
 
         /**

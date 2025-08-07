@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -22,7 +23,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
     private $allowedInvocations;
 
     /**
-     * @param int $allowedInvocations
+     * @param  int  $allowedInvocations
      */
     public function __construct($allowedInvocations)
     {
@@ -34,7 +35,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
      */
     public function toString()
     {
-        return 'invoked at most ' . $this->allowedInvocations . ' times';
+        return 'invoked at most '.$this->allowedInvocations.' times';
     }
 
     /**
@@ -49,8 +50,8 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
 
         if ($count > $this->allowedInvocations) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-                'Expected invocation at most ' . $this->allowedInvocations .
-                ' times but it occured ' . $count . ' time(s).'
+                'Expected invocation at most '.$this->allowedInvocations.
+                ' times but it occured '.$count.' time(s).'
             );
         }
     }

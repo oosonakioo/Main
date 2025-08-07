@@ -28,34 +28,36 @@ class SlackRecordTest extends TestCase
 
     public function dataGetAttachmentColor()
     {
-        return array(
-            array(Logger::DEBUG, SlackRecord::COLOR_DEFAULT),
-            array(Logger::INFO, SlackRecord::COLOR_GOOD),
-            array(Logger::NOTICE, SlackRecord::COLOR_GOOD),
-            array(Logger::WARNING, SlackRecord::COLOR_WARNING),
-            array(Logger::ERROR, SlackRecord::COLOR_DANGER),
-            array(Logger::CRITICAL, SlackRecord::COLOR_DANGER),
-            array(Logger::ALERT, SlackRecord::COLOR_DANGER),
-            array(Logger::EMERGENCY, SlackRecord::COLOR_DANGER),
-        );
+        return [
+            [Logger::DEBUG, SlackRecord::COLOR_DEFAULT],
+            [Logger::INFO, SlackRecord::COLOR_GOOD],
+            [Logger::NOTICE, SlackRecord::COLOR_GOOD],
+            [Logger::WARNING, SlackRecord::COLOR_WARNING],
+            [Logger::ERROR, SlackRecord::COLOR_DANGER],
+            [Logger::CRITICAL, SlackRecord::COLOR_DANGER],
+            [Logger::ALERT, SlackRecord::COLOR_DANGER],
+            [Logger::EMERGENCY, SlackRecord::COLOR_DANGER],
+        ];
     }
 
     /**
      * @dataProvider dataGetAttachmentColor
-     * @param  int $logLevel
-     * @param  string $expectedColour RGB hex color or name of Slack color
+     *
+     * @param  int  $logLevel
+     * @param  string  $expectedColour  RGB hex color or name of Slack color
+     *
      * @covers ::getAttachmentColor
      */
-    public function testGetAttachmentColor($logLevel, $expectedColour)
+    public function test_get_attachment_color($logLevel, $expectedColour)
     {
-        $slackRecord = new SlackRecord();
+        $slackRecord = new SlackRecord;
         $this->assertSame(
             $expectedColour,
             $slackRecord->getAttachmentColor($logLevel)
         );
     }
 
-    public function testAddsChannel()
+    public function test_adds_channel()
     {
         $channel = '#test';
         $record = new SlackRecord($channel);
@@ -65,9 +67,9 @@ class SlackRecordTest extends TestCase
         $this->assertSame($channel, $data['channel']);
     }
 
-    public function testNoUsernameByDefault()
+    public function test_no_username_by_default()
     {
-        $record = new SlackRecord();
+        $record = new SlackRecord;
         $data = $record->getSlackData($this->getRecord());
 
         $this->assertArrayNotHasKey('username', $data);
@@ -80,22 +82,22 @@ class SlackRecordTest extends TestCase
     {
         $jsonPrettyPrintFlag = defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 128;
 
-        $multipleDimensions = array(array(1, 2));
-        $numericKeys = array('library' => 'monolog');
-        $singleDimension = array(1, 'Hello', 'Jordi');
+        $multipleDimensions = [[1, 2]];
+        $numericKeys = ['library' => 'monolog'];
+        $singleDimension = [1, 'Hello', 'Jordi'];
 
-        return array(
-            array(array(), '[]'),
-            array($multipleDimensions, json_encode($multipleDimensions, $jsonPrettyPrintFlag)),
-            array($numericKeys, json_encode($numericKeys, $jsonPrettyPrintFlag)),
-            array($singleDimension, json_encode($singleDimension))
-        );
+        return [
+            [[], '[]'],
+            [$multipleDimensions, json_encode($multipleDimensions, $jsonPrettyPrintFlag)],
+            [$numericKeys, json_encode($numericKeys, $jsonPrettyPrintFlag)],
+            [$singleDimension, json_encode($singleDimension)],
+        ];
     }
 
     /**
      * @dataProvider dataStringify
      */
-    public function testStringify($fields, $expectedResult)
+    public function test_stringify($fields, $expectedResult)
     {
         $slackRecord = new SlackRecord(
             '#test',
@@ -109,7 +111,7 @@ class SlackRecordTest extends TestCase
         $this->assertSame($expectedResult, $slackRecord->stringify($fields));
     }
 
-    public function testAddsCustomUsername()
+    public function test_adds_custom_username()
     {
         $username = 'Monolog bot';
         $record = new SlackRecord(null, $username);
@@ -119,15 +121,15 @@ class SlackRecordTest extends TestCase
         $this->assertSame($username, $data['username']);
     }
 
-    public function testNoIcon()
+    public function test_no_icon()
     {
-        $record = new SlackRecord();
+        $record = new SlackRecord;
         $data = $record->getSlackData($this->getRecord());
 
         $this->assertArrayNotHasKey('icon_emoji', $data);
     }
 
-    public function testAddsIcon()
+    public function test_adds_icon()
     {
         $record = $this->getRecord();
         $slackRecord = new SlackRecord(null, null, false, 'ghost');
@@ -142,7 +144,7 @@ class SlackRecordTest extends TestCase
         $this->assertSame('http://github.com/Seldaek/monolog', $data2['icon_url']);
     }
 
-    public function testAttachmentsNotPresentIfNoAttachment()
+    public function test_attachments_not_present_if_no_attachment()
     {
         $record = new SlackRecord(null, null, false);
         $data = $record->getSlackData($this->getRecord());
@@ -150,9 +152,9 @@ class SlackRecordTest extends TestCase
         $this->assertArrayNotHasKey('attachments', $data);
     }
 
-    public function testAddsOneAttachment()
+    public function test_adds_one_attachment()
     {
-        $record = new SlackRecord();
+        $record = new SlackRecord;
         $data = $record->getSlackData($this->getRecord());
 
         $this->assertArrayHasKey('attachments', $data);
@@ -160,7 +162,7 @@ class SlackRecordTest extends TestCase
         $this->assertInternalType('array', $data['attachments'][0]);
     }
 
-    public function testTextEqualsMessageIfNoAttachment()
+    public function test_text_equals_message_if_no_attachment()
     {
         $message = 'Test message';
         $record = new SlackRecord(null, null, false);
@@ -170,35 +172,39 @@ class SlackRecordTest extends TestCase
         $this->assertSame($message, $data['text']);
     }
 
-    public function testTextEqualsFormatterOutput()
+    public function test_text_equals_formatter_output()
     {
         $formatter = $this->getMock('Monolog\\Formatter\\FormatterInterface');
         $formatter
             ->expects($this->any())
             ->method('format')
-            ->will($this->returnCallback(function ($record) { return $record['message'] . 'test'; }));
+            ->will($this->returnCallback(function ($record) {
+                return $record['message'].'test';
+            }));
 
         $formatter2 = $this->getMock('Monolog\\Formatter\\FormatterInterface');
         $formatter2
             ->expects($this->any())
             ->method('format')
-            ->will($this->returnCallback(function ($record) { return $record['message'] . 'test1'; }));
+            ->will($this->returnCallback(function ($record) {
+                return $record['message'].'test1';
+            }));
 
         $message = 'Test message';
-        $record = new SlackRecord(null, null, false, null, false, false, array(), $formatter);
+        $record = new SlackRecord(null, null, false, null, false, false, [], $formatter);
         $data = $record->getSlackData($this->getRecord(Logger::WARNING, $message));
 
         $this->assertArrayHasKey('text', $data);
-        $this->assertSame($message . 'test', $data['text']);
+        $this->assertSame($message.'test', $data['text']);
 
         $record->setFormatter($formatter2);
         $data = $record->getSlackData($this->getRecord(Logger::WARNING, $message));
 
         $this->assertArrayHasKey('text', $data);
-        $this->assertSame($message . 'test1', $data['text']);
+        $this->assertSame($message.'test1', $data['text']);
     }
 
-    public function testAddsFallbackAndTextToAttachment()
+    public function test_adds_fallback_and_text_to_attachment()
     {
         $message = 'Test message';
         $record = new SlackRecord(null);
@@ -208,7 +214,7 @@ class SlackRecordTest extends TestCase
         $this->assertSame($message, $data['attachments'][0]['fallback']);
     }
 
-    public function testMapsLevelToColorAttachmentColor()
+    public function test_maps_level_to_color_attachment_color()
     {
         $record = new SlackRecord(null);
         $errorLoggerRecord = $this->getRecord(Logger::ERROR);
@@ -233,26 +239,26 @@ class SlackRecordTest extends TestCase
         $this->assertSame(SlackRecord::COLOR_DEFAULT, $data['attachments'][0]['color']);
     }
 
-    public function testAddsShortAttachmentWithoutContextAndExtra()
+    public function test_adds_short_attachment_without_context_and_extra()
     {
         $level = Logger::ERROR;
         $levelName = Logger::getLevelName($level);
         $record = new SlackRecord(null, null, true, null, true);
-        $data = $record->getSlackData($this->getRecord($level, 'test', array('test' => 1)));
+        $data = $record->getSlackData($this->getRecord($level, 'test', ['test' => 1]));
 
         $attachment = $data['attachments'][0];
         $this->assertArrayHasKey('title', $attachment);
         $this->assertArrayHasKey('fields', $attachment);
         $this->assertSame($levelName, $attachment['title']);
-        $this->assertSame(array(), $attachment['fields']);
+        $this->assertSame([], $attachment['fields']);
     }
 
-    public function testAddsShortAttachmentWithContextAndExtra()
+    public function test_adds_short_attachment_with_context_and_extra()
     {
         $level = Logger::ERROR;
         $levelName = Logger::getLevelName($level);
-        $context = array('test' => 1);
-        $extra = array('tags' => array('web'));
+        $context = ['test' => 1];
+        $extra = ['tags' => ['web']];
         $record = new SlackRecord(null, null, true, null, true, true);
         $loggerRecord = $this->getRecord($level, 'test', $context);
         $loggerRecord['extra'] = $extra;
@@ -264,28 +270,28 @@ class SlackRecordTest extends TestCase
         $this->assertCount(2, $attachment['fields']);
         $this->assertSame($levelName, $attachment['title']);
         $this->assertSame(
-            array(
-                array(
+            [
+                [
                     'title' => 'Extra',
                     'value' => sprintf('```%s```', json_encode($extra, $this->jsonPrettyPrintFlag)),
-                    'short' => false
-                ),
-                array(
+                    'short' => false,
+                ],
+                [
                     'title' => 'Context',
                     'value' => sprintf('```%s```', json_encode($context, $this->jsonPrettyPrintFlag)),
-                    'short' => false
-                )
-            ),
+                    'short' => false,
+                ],
+            ],
             $attachment['fields']
         );
     }
 
-    public function testAddsLongAttachmentWithoutContextAndExtra()
+    public function test_adds_long_attachment_without_context_and_extra()
     {
         $level = Logger::ERROR;
         $levelName = Logger::getLevelName($level);
         $record = new SlackRecord(null, null, true, null);
-        $data = $record->getSlackData($this->getRecord($level, 'test', array('test' => 1)));
+        $data = $record->getSlackData($this->getRecord($level, 'test', ['test' => 1]));
 
         $attachment = $data['attachments'][0];
         $this->assertArrayHasKey('title', $attachment);
@@ -293,43 +299,43 @@ class SlackRecordTest extends TestCase
         $this->assertCount(1, $attachment['fields']);
         $this->assertSame('Message', $attachment['title']);
         $this->assertSame(
-            array(array(
+            [[
                 'title' => 'Level',
                 'value' => $levelName,
-                'short' => false
-            )),
+                'short' => false,
+            ]],
             $attachment['fields']
         );
     }
 
-    public function testAddsLongAttachmentWithContextAndExtra()
+    public function test_adds_long_attachment_with_context_and_extra()
     {
         $level = Logger::ERROR;
         $levelName = Logger::getLevelName($level);
-        $context = array('test' => 1);
-        $extra = array('tags' => array('web'));
+        $context = ['test' => 1];
+        $extra = ['tags' => ['web']];
         $record = new SlackRecord(null, null, true, null, false, true);
         $loggerRecord = $this->getRecord($level, 'test', $context);
         $loggerRecord['extra'] = $extra;
         $data = $record->getSlackData($loggerRecord);
 
-        $expectedFields = array(
-            array(
+        $expectedFields = [
+            [
                 'title' => 'Level',
                 'value' => $levelName,
                 'short' => false,
-            ),
-            array(
+            ],
+            [
                 'title' => 'tags',
                 'value' => sprintf('```%s```', json_encode($extra['tags'])),
-                'short' => false
-            ),
-            array(
+                'short' => false,
+            ],
+            [
                 'title' => 'test',
                 'value' => $context['test'],
-                'short' => false
-            )
-        );
+                'short' => false,
+            ],
+        ];
 
         $attachment = $data['attachments'][0];
         $this->assertArrayHasKey('title', $attachment);
@@ -342,10 +348,10 @@ class SlackRecordTest extends TestCase
         );
     }
 
-    public function testAddsTimestampToAttachment()
+    public function test_adds_timestamp_to_attachment()
     {
         $record = $this->getRecord();
-        $slackRecord = new SlackRecord();
+        $slackRecord = new SlackRecord;
         $data = $slackRecord->getSlackData($this->getRecord());
 
         $attachment = $data['attachments'][0];
@@ -353,31 +359,31 @@ class SlackRecordTest extends TestCase
         $this->assertSame($record['datetime']->getTimestamp(), $attachment['ts']);
     }
 
-    public function testExcludeExtraAndContextFields()
+    public function test_exclude_extra_and_context_fields()
     {
         $record = $this->getRecord(
             Logger::WARNING,
             'test',
-            array('info' => array('library' => 'monolog', 'author' => 'Jordi'))
+            ['info' => ['library' => 'monolog', 'author' => 'Jordi']]
         );
-        $record['extra'] = array('tags' => array('web', 'cli'));
+        $record['extra'] = ['tags' => ['web', 'cli']];
 
-        $slackRecord = new SlackRecord(null, null, true, null, false, true, array('context.info.library', 'extra.tags.1'));
+        $slackRecord = new SlackRecord(null, null, true, null, false, true, ['context.info.library', 'extra.tags.1']);
         $data = $slackRecord->getSlackData($record);
         $attachment = $data['attachments'][0];
 
-        $expected = array(
-            array(
+        $expected = [
+            [
                 'title' => 'info',
-                'value' => sprintf('```%s```', json_encode(array('author' => 'Jordi'), $this->jsonPrettyPrintFlag)),
-                'short' => false
-            ),
-            array(
+                'value' => sprintf('```%s```', json_encode(['author' => 'Jordi'], $this->jsonPrettyPrintFlag)),
+                'short' => false,
+            ],
+            [
                 'title' => 'tags',
-                'value' => sprintf('```%s```', json_encode(array('web'))),
-                'short' => false
-            ),
-        );
+                'value' => sprintf('```%s```', json_encode(['web'])),
+                'short' => false,
+            ],
+        ];
 
         foreach ($expected as $field) {
             $this->assertNotFalse(array_search($field, $attachment['fields']));

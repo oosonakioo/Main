@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Types\Type;
  * @author Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.0
  */
 class OracleSchemaManager extends AbstractSchemaManager
@@ -48,9 +50,9 @@ class OracleSchemaManager extends AbstractSchemaManager
     {
         $user = \array_change_key_case($user, CASE_LOWER);
 
-        return array(
+        return [
             'user' => $user['username'],
-        );
+        ];
     }
 
     /**
@@ -67,17 +69,18 @@ class OracleSchemaManager extends AbstractSchemaManager
      * {@inheritdoc}
      *
      * @license New BSD License
+     *
      * @link http://ezcomponents.org/docs/api/trunk/DatabaseSchema/ezcDbSchemaPgsqlReader.html
      */
-    protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
+    protected function _getPortableTableIndexesList($tableIndexes, $tableName = null)
     {
-        $indexBuffer = array();
+        $indexBuffer = [];
         foreach ($tableIndexes as $tableIndex) {
             $tableIndex = \array_change_key_case($tableIndex, CASE_LOWER);
 
             $keyName = strtolower($tableIndex['name']);
 
-            if (strtolower($tableIndex['is_primary']) == "p") {
+            if (strtolower($tableIndex['is_primary']) == 'p') {
                 $keyName = 'primary';
                 $buffer['primary'] = true;
                 $buffer['non_unique'] = false;
@@ -101,17 +104,17 @@ class OracleSchemaManager extends AbstractSchemaManager
         $tableColumn = \array_change_key_case($tableColumn, CASE_LOWER);
 
         $dbType = strtolower($tableColumn['data_type']);
-        if (strpos($dbType, "timestamp(") === 0) {
-            if (strpos($dbType, "WITH TIME ZONE")) {
-                $dbType = "timestamptz";
+        if (strpos($dbType, 'timestamp(') === 0) {
+            if (strpos($dbType, 'WITH TIME ZONE')) {
+                $dbType = 'timestamptz';
             } else {
-                $dbType = "timestamp";
+                $dbType = 'timestamp';
             }
         }
 
         $unsigned = $fixed = null;
 
-        if ( ! isset($tableColumn['column_name'])) {
+        if (! isset($tableColumn['column_name'])) {
             $tableColumn['column_name'] = '';
         }
 
@@ -122,7 +125,7 @@ class OracleSchemaManager extends AbstractSchemaManager
             $tableColumn['data_default'] = null;
         }
 
-        if (null !== $tableColumn['data_default']) {
+        if ($tableColumn['data_default'] !== null) {
             // Default values returned from database are enclosed in single quotes.
             $tableColumn['data_default'] = trim($tableColumn['data_default'], "'");
         }
@@ -197,19 +200,19 @@ class OracleSchemaManager extends AbstractSchemaManager
                 $length = null;
         }
 
-        $options = array(
-            'notnull'    => (bool) ($tableColumn['nullable'] === 'N'),
-            'fixed'      => (bool) $fixed,
-            'unsigned'   => (bool) $unsigned,
-            'default'    => $tableColumn['data_default'],
-            'length'     => $length,
-            'precision'  => $precision,
-            'scale'      => $scale,
-            'comment'    => isset($tableColumn['comments']) && '' !== $tableColumn['comments']
+        $options = [
+            'notnull' => (bool) ($tableColumn['nullable'] === 'N'),
+            'fixed' => (bool) $fixed,
+            'unsigned' => (bool) $unsigned,
+            'default' => $tableColumn['data_default'],
+            'length' => $length,
+            'precision' => $precision,
+            'scale' => $scale,
+            'comment' => isset($tableColumn['comments']) && $tableColumn['comments'] !== ''
                 ? $tableColumn['comments']
                 : null,
-            'platformDetails' => array(),
-        );
+            'platformDetails' => [],
+        ];
 
         return new Column($this->getQuotedIdentifierName($tableColumn['column_name']), Type::getType($type), $options);
     }
@@ -219,21 +222,21 @@ class OracleSchemaManager extends AbstractSchemaManager
      */
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
-        $list = array();
+        $list = [];
         foreach ($tableForeignKeys as $value) {
             $value = \array_change_key_case($value, CASE_LOWER);
-            if (!isset($list[$value['constraint_name']])) {
-                if ($value['delete_rule'] == "NO ACTION") {
+            if (! isset($list[$value['constraint_name']])) {
+                if ($value['delete_rule'] == 'NO ACTION') {
                     $value['delete_rule'] = null;
                 }
 
-                $list[$value['constraint_name']] = array(
+                $list[$value['constraint_name']] = [
                     'name' => $this->getQuotedIdentifierName($value['constraint_name']),
-                    'local' => array(),
-                    'foreign' => array(),
+                    'local' => [],
+                    'foreign' => [],
                     'foreignTable' => $value['references_table'],
                     'onDelete' => $value['delete_rule'],
-                );
+                ];
             }
 
             $localColumn = $this->getQuotedIdentifierName($value['local_column']);
@@ -243,12 +246,12 @@ class OracleSchemaManager extends AbstractSchemaManager
             $list[$value['constraint_name']]['foreign'][$value['position']] = $foreignColumn;
         }
 
-        $result = array();
+        $result = [];
         foreach ($list as $constraint) {
             $result[] = new ForeignKeyConstraint(
                 array_values($constraint['local']), $this->getQuotedIdentifierName($constraint['foreignTable']),
                 array_values($constraint['foreign']), $this->getQuotedIdentifierName($constraint['name']),
-                array('onDelete' => $constraint['onDelete'])
+                ['onDelete' => $constraint['onDelete']]
             );
         }
 
@@ -299,22 +302,21 @@ class OracleSchemaManager extends AbstractSchemaManager
         }
 
         $params = $this->_conn->getParams();
-        $username   = $database;
-        $password   = $params['password'];
+        $username = $database;
+        $password = $params['password'];
 
-        $query  = 'CREATE USER ' . $username . ' IDENTIFIED BY ' . $password;
+        $query = 'CREATE USER '.$username.' IDENTIFIED BY '.$password;
         $this->_conn->executeUpdate($query);
 
-        $query = 'GRANT CREATE SESSION, CREATE TABLE, UNLIMITED TABLESPACE, CREATE SEQUENCE, CREATE TRIGGER TO ' . $username;
+        $query = 'GRANT CREATE SESSION, CREATE TABLE, UNLIMITED TABLESPACE, CREATE SEQUENCE, CREATE TRIGGER TO '.$username;
         $this->_conn->executeUpdate($query);
 
         return true;
     }
 
     /**
-     * @param string $table
-     *
-     * @return boolean
+     * @param  string  $table
+     * @return bool
      */
     public function dropAutoincrement($table)
     {
@@ -342,8 +344,7 @@ class OracleSchemaManager extends AbstractSchemaManager
      * Quotes non-uppercase identifiers explicitly to preserve case
      * and thus make references to the particular identifier work.
      *
-     * @param string $identifier The identifier to quote.
-     *
+     * @param  string  $identifier  The identifier to quote.
      * @return string The quoted identifier.
      */
     private function getQuotedIdentifierName($identifier)

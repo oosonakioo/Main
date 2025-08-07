@@ -4,7 +4,7 @@ use League\Flysystem\Cached\Storage\Memcached;
 
 class MemcachedTests extends PHPUnit_Framework_TestCase
 {
-    public function testLoadFail()
+    public function test_load_fail()
     {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('HHVM has a bug breaking mockery');
@@ -17,7 +17,7 @@ class MemcachedTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('', false));
     }
 
-    public function testLoadSuccess()
+    public function test_load_success()
     {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('HHVM has a bug breaking mockery');
@@ -31,7 +31,7 @@ class MemcachedTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('', false));
     }
 
-    public function testSave()
+    public function test_save()
     {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('HHVM has a bug breaking mockery');

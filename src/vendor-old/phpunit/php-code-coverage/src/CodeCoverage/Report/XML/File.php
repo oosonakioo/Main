@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -25,7 +26,7 @@ class PHP_CodeCoverage_Report_XML_File
 
     public function __construct(DOMElement $context)
     {
-        $this->dom         = $context->ownerDocument;
+        $this->dom = $context->ownerDocument;
         $this->contextNode = $context;
     }
 
@@ -33,7 +34,7 @@ class PHP_CodeCoverage_Report_XML_File
     {
         $totalsContainer = $this->contextNode->firstChild;
 
-        if (!$totalsContainer) {
+        if (! $totalsContainer) {
             $totalsContainer = $this->contextNode->appendChild(
                 $this->dom->createElementNS(
                     'http://schema.phpunit.de/coverage/1.0',
@@ -52,7 +53,7 @@ class PHP_CodeCoverage_Report_XML_File
             'coverage'
         )->item(0);
 
-        if (!$coverage) {
+        if (! $coverage) {
             $coverage = $this->contextNode->appendChild(
                 $this->dom->createElementNS(
                     'http://schema.phpunit.de/coverage/1.0',

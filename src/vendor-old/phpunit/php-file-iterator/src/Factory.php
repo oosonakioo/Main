@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the File_Iterator package.
  *
@@ -18,34 +19,33 @@
 class File_Iterator_Factory
 {
     /**
-     * @param  array|string   $paths
-     * @param  array|string   $suffixes
-     * @param  array|string   $prefixes
-     * @param  array          $exclude
+     * @param  array|string  $paths
+     * @param  array|string  $suffixes
+     * @param  array|string  $prefixes
      * @return AppendIterator
      */
-    public function getFileIterator($paths, $suffixes = '', $prefixes = '', array $exclude = array())
+    public function getFileIterator($paths, $suffixes = '', $prefixes = '', array $exclude = [])
     {
         if (is_string($paths)) {
-            $paths = array($paths);
+            $paths = [$paths];
         }
 
-        $paths   = $this->getPathsAfterResolvingWildcards($paths);
+        $paths = $this->getPathsAfterResolvingWildcards($paths);
         $exclude = $this->getPathsAfterResolvingWildcards($exclude);
 
         if (is_string($prefixes)) {
             if ($prefixes != '') {
-                $prefixes = array($prefixes);
+                $prefixes = [$prefixes];
             } else {
-                $prefixes = array();
+                $prefixes = [];
             }
         }
 
         if (is_string($suffixes)) {
             if ($suffixes != '') {
-                $suffixes = array($suffixes);
+                $suffixes = [$suffixes];
             } else {
-                $suffixes = array();
+                $suffixes = [];
             }
         }
 
@@ -54,15 +54,15 @@ class File_Iterator_Factory
         foreach ($paths as $path) {
             if (is_dir($path)) {
                 $iterator->append(
-                  new File_Iterator(
-                    new RecursiveIteratorIterator(
-                      new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::FOLLOW_SYMLINKS)
-                    ),
-                    $suffixes,
-                    $prefixes,
-                    $exclude,
-                    $path
-                  )
+                    new File_Iterator(
+                        new RecursiveIteratorIterator(
+                            new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::FOLLOW_SYMLINKS)
+                        ),
+                        $suffixes,
+                        $prefixes,
+                        $exclude,
+                        $path
+                    )
                 );
             }
         }
@@ -71,12 +71,11 @@ class File_Iterator_Factory
     }
 
     /**
-     * @param  array $paths
      * @return array
      */
     protected function getPathsAfterResolvingWildcards(array $paths)
     {
-        $_paths = array();
+        $_paths = [];
 
         foreach ($paths as $path) {
             if ($locals = glob($path, GLOB_ONLYDIR)) {

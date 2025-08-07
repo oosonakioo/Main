@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -26,7 +28,7 @@ final class Example extends BaseTag
 
     /**
      * @var bool Whether the file path component represents an URI. This determines how the file portion
-     *     appears at {@link getContent()}.
+     *           appears at {@link getContent()}.
      */
     private $isURI = false;
 
@@ -35,15 +37,15 @@ final class Example extends BaseTag
      */
     public function getContent()
     {
-        if (null === $this->description) {
-            $filePath = '"' . $this->filePath . '"';
+        if ($this->description === null) {
+            $filePath = '"'.$this->filePath.'"';
             if ($this->isURI) {
                 $filePath = $this->isUriRelative($this->filePath)
                     ? str_replace('%2F', '/', rawurlencode($this->filePath))
-                    :$this->filePath;
+                    : $this->filePath;
             }
 
-            $this->description = $filePath . ' ' . parent::getContent();
+            $this->description = $filePath.' '.parent::getContent();
         }
 
         return $this->description;
@@ -60,34 +62,34 @@ final class Example extends BaseTag
         }
 
         $filePath = null;
-        $fileUri  = null;
-        if ('' !== $matches[1]) {
+        $fileUri = null;
+        if ($matches[1] !== '') {
             $filePath = $matches[1];
         } else {
             $fileUri = $matches[2];
         }
 
         $startingLine = 1;
-        $lineCount    = null;
-        $description  = null;
+        $lineCount = null;
+        $description = null;
 
         // Starting line / Number of lines / Description
         if (preg_match('/^([1-9]\d*)\s*(?:((?1))\s+)?(.*)$/sux', $matches[3], $matches)) {
-            $startingLine = (int)$matches[1];
+            $startingLine = (int) $matches[1];
             if (isset($matches[2]) && $matches[2] !== '') {
-                $lineCount = (int)$matches[2];
+                $lineCount = (int) $matches[2];
             }
             $description = $matches[3];
         }
 
-        return new static($filePath, $fileUri, $startingLine, $lineCount, $description);
+        return new self($filePath, $fileUri, $startingLine, $lineCount, $description);
     }
 
     /**
      * Returns the file path.
      *
      * @return string Path to a file to use as an example.
-     *     May also be an absolute URI.
+     *                May also be an absolute URI.
      */
     public function getFilePath()
     {
@@ -97,8 +99,7 @@ final class Example extends BaseTag
     /**
      * Sets the file path.
      *
-     * @param string $filePath The new file path to use for the example.
-     *
+     * @param  string  $filePath  The new file path to use for the example.
      * @return $this
      */
     public function setFilePath($filePath)
@@ -107,6 +108,7 @@ final class Example extends BaseTag
         $this->filePath = trim($filePath);
 
         $this->description = null;
+
         return $this;
     }
 
@@ -118,17 +120,16 @@ final class Example extends BaseTag
      *
      * There is no getFileURI(), as {@link getFilePath()} is compatible.
      *
-     * @param string $uri The new file URI to use as an example.
-     *
+     * @param  string  $uri  The new file URI to use as an example.
      * @return $this
      */
     public function setFileURI($uri)
     {
-        $this->isURI   = true;
+        $this->isURI = true;
         $this->description = null;
 
         $this->filePath = $this->isUriRelative($uri)
-            ? rawurldecode(str_replace(array('/', '\\'), '%2F', $uri))
+            ? rawurldecode(str_replace(['/', '\\'], '%2F', $uri))
             : $this->filePath = $uri;
 
         return $this;
@@ -141,18 +142,17 @@ final class Example extends BaseTag
      */
     public function __toString()
     {
-        return $this->filePath . ($this->description ? ' ' . $this->description->render() : '');
+        return $this->filePath.($this->description ? ' '.$this->description->render() : '');
     }
 
     /**
      * Returns true if the provided URI is relative or contains a complete scheme (and thus is absolute).
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return bool
      */
     private function isUriRelative($uri)
     {
-        return false === strpos($uri, ':');
+        return strpos($uri, ':') === false;
     }
 }

@@ -1,88 +1,88 @@
 <?php
+
 namespace Hamcrest\Arrays;
 
 use Hamcrest\AbstractMatcherTest;
 
 class IsArrayTest extends AbstractMatcherTest
 {
-
     protected function createMatcher()
     {
-        return IsArray::anArray(array(equalTo('irrelevant')));
+        return IsArray::anArray([equalTo('irrelevant')]);
     }
 
-    public function testMatchesAnArrayThatMatchesAllTheElementMatchers()
+    public function test_matches_an_array_that_matches_all_the_element_matchers()
     {
         $this->assertMatches(
-            anArray(array(equalTo('a'), equalTo('b'), equalTo('c'))),
-            array('a', 'b', 'c'),
+            anArray([equalTo('a'), equalTo('b'), equalTo('c')]),
+            ['a', 'b', 'c'],
             'should match array with matching elements'
         );
     }
 
-    public function testDoesNotMatchAnArrayWhenElementsDoNotMatch()
+    public function test_does_not_match_an_array_when_elements_do_not_match()
     {
         $this->assertDoesNotMatch(
-            anArray(array(equalTo('a'), equalTo('b'))),
-            array('b', 'c'),
+            anArray([equalTo('a'), equalTo('b')]),
+            ['b', 'c'],
             'should not match array with different elements'
         );
     }
 
-    public function testDoesNotMatchAnArrayOfDifferentSize()
+    public function test_does_not_match_an_array_of_different_size()
     {
         $this->assertDoesNotMatch(
-            anArray(array(equalTo('a'), equalTo('b'))),
-            array('a', 'b', 'c'),
+            anArray([equalTo('a'), equalTo('b')]),
+            ['a', 'b', 'c'],
             'should not match larger array'
         );
         $this->assertDoesNotMatch(
-            anArray(array(equalTo('a'), equalTo('b'))),
-            array('a'),
+            anArray([equalTo('a'), equalTo('b')]),
+            ['a'],
             'should not match smaller array'
         );
     }
 
-    public function testDoesNotMatchNull()
+    public function test_does_not_match_null()
     {
         $this->assertDoesNotMatch(
-            anArray(array(equalTo('a'))),
+            anArray([equalTo('a')]),
             null,
             'should not match null'
         );
     }
 
-    public function testHasAReadableDescription()
+    public function test_has_a_readable_description()
     {
         $this->assertDescription(
             '["a", "b"]',
-            anArray(array(equalTo('a'), equalTo('b')))
+            anArray([equalTo('a'), equalTo('b')])
         );
     }
 
-    public function testHasAReadableMismatchDescriptionWhenKeysDontMatch()
+    public function test_has_a_readable_mismatch_description_when_keys_dont_match()
     {
         $this->assertMismatchDescription(
             'array keys were [<1>, <2>]',
-            anArray(array(equalTo('a'), equalTo('b'))),
-            array(1 => 'a', 2 => 'b')
+            anArray([equalTo('a'), equalTo('b')]),
+            [1 => 'a', 2 => 'b']
         );
     }
 
-    public function testSupportsMatchesAssociativeArrays()
+    public function test_supports_matches_associative_arrays()
     {
         $this->assertMatches(
-            anArray(array('x'=>equalTo('a'), 'y'=>equalTo('b'), 'z'=>equalTo('c'))),
-            array('x'=>'a', 'y'=>'b', 'z'=>'c'),
+            anArray(['x' => equalTo('a'), 'y' => equalTo('b'), 'z' => equalTo('c')]),
+            ['x' => 'a', 'y' => 'b', 'z' => 'c'],
             'should match associative array with matching elements'
         );
     }
 
-    public function testDoesNotMatchAnAssociativeArrayWhenKeysDoNotMatch()
+    public function test_does_not_match_an_associative_array_when_keys_do_not_match()
     {
         $this->assertDoesNotMatch(
-            anArray(array('x'=>equalTo('a'), 'y'=>equalTo('b'))),
-            array('x'=>'b', 'z'=>'c'),
+            anArray(['x' => equalTo('a'), 'y' => equalTo('b')]),
+            ['x' => 'b', 'z' => 'c'],
             'should not match array with different keys'
         );
     }

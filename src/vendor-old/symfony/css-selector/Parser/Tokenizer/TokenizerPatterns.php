@@ -151,8 +151,7 @@ class TokenizerPatterns
     }
 
     /**
-     * @param string $quote
-     *
+     * @param  string  $quote
      * @return string
      */
     public function getQuotedStringPattern($quote)

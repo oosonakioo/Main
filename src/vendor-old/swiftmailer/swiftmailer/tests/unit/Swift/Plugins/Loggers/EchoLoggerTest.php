@@ -2,7 +2,7 @@
 
 class Swift_Plugins_Loggers_EchoLoggerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAddingEntryDumpsSingleLineWithoutHtml()
+    public function test_adding_entry_dumps_single_line_without_html()
     {
         $logger = new Swift_Plugins_Loggers_EchoLogger(false);
         ob_start();
@@ -12,7 +12,7 @@ class Swift_Plugins_Loggers_EchoLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('>> Foo'.PHP_EOL, $data);
     }
 
-    public function testAddingEntryDumpsEscapedLineWithHtml()
+    public function test_adding_entry_dumps_escaped_line_with_html()
     {
         $logger = new Swift_Plugins_Loggers_EchoLogger(true);
         ob_start();

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,7 +31,6 @@ abstract class ExpressionVisitor
     /**
      * Converts a comparison expression into the target query language output.
      *
-     * @param Comparison $comparison
      *
      * @return mixed
      */
@@ -39,7 +39,6 @@ abstract class ExpressionVisitor
     /**
      * Converts a value expression into the target query language part.
      *
-     * @param Value $value
      *
      * @return mixed
      */
@@ -48,7 +47,6 @@ abstract class ExpressionVisitor
     /**
      * Converts a composite expression into the target query language output.
      *
-     * @param CompositeExpression $expr
      *
      * @return mixed
      */
@@ -57,7 +55,6 @@ abstract class ExpressionVisitor
     /**
      * Dispatches walking an expression to the appropriate handler.
      *
-     * @param Expression $expr
      *
      * @return mixed
      *
@@ -66,17 +63,17 @@ abstract class ExpressionVisitor
     public function dispatch(Expression $expr)
     {
         switch (true) {
-            case ($expr instanceof Comparison):
+            case $expr instanceof Comparison:
                 return $this->walkComparison($expr);
 
-            case ($expr instanceof Value):
+            case $expr instanceof Value:
                 return $this->walkValue($expr);
 
-            case ($expr instanceof CompositeExpression):
+            case $expr instanceof CompositeExpression:
                 return $this->walkCompositeExpression($expr);
 
             default:
-                throw new \RuntimeException("Unknown Expression " . get_class($expr));
+                throw new \RuntimeException('Unknown Expression '.get_class($expr));
         }
     }
 }

@@ -6,10 +6,10 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->_dispatcher = new Swift_Events_SimpleEventDispatcher();
+        $this->_dispatcher = new Swift_Events_SimpleEventDispatcher;
     }
 
-    public function testSendEventCanBeCreated()
+    public function test_send_event_can_be_created()
     {
         $transport = $this->getMockBuilder('Swift_Transport')->getMock();
         $message = $this->getMockBuilder('Swift_Mime_Message')->getMock();
@@ -19,17 +19,17 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($transport, $evt->getTransport());
     }
 
-    public function testCommandEventCanBeCreated()
+    public function test_command_event_can_be_created()
     {
         $buf = $this->getMockBuilder('Swift_Transport')->getMock();
-        $evt = $this->_dispatcher->createCommandEvent($buf, "FOO\r\n", array(250));
+        $evt = $this->_dispatcher->createCommandEvent($buf, "FOO\r\n", [250]);
         $this->assertInstanceOf('Swift_Events_CommandEvent', $evt);
         $this->assertSame($buf, $evt->getSource());
         $this->assertEquals("FOO\r\n", $evt->getCommand());
-        $this->assertEquals(array(250), $evt->getSuccessCodes());
+        $this->assertEquals([250], $evt->getSuccessCodes());
     }
 
-    public function testResponseEventCanBeCreated()
+    public function test_response_event_can_be_created()
     {
         $buf = $this->getMockBuilder('Swift_Transport')->getMock();
         $evt = $this->_dispatcher->createResponseEvent($buf, "250 Ok\r\n", true);
@@ -39,7 +39,7 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($evt->isValid());
     }
 
-    public function testTransportChangeEventCanBeCreated()
+    public function test_transport_change_event_can_be_created()
     {
         $transport = $this->getMockBuilder('Swift_Transport')->getMock();
         $evt = $this->_dispatcher->createTransportChangeEvent($transport);
@@ -47,7 +47,7 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($transport, $evt->getSource());
     }
 
-    public function testTransportExceptionEventCanBeCreated()
+    public function test_transport_exception_event_can_be_created()
     {
         $transport = $this->getMockBuilder('Swift_Transport')->getMock();
         $ex = new Swift_TransportException('');
@@ -57,7 +57,7 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($ex, $evt->getException());
     }
 
-    public function testListenersAreNotifiedOfDispatchedEvent()
+    public function test_listeners_are_notified_of_dispatched_event()
     {
         $transport = $this->getMockBuilder('Swift_Transport')->getMock();
 
@@ -70,16 +70,16 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->_dispatcher->bindEventListener($listenerB);
 
         $listenerA->expects($this->once())
-                  ->method('transportStarted')
-                  ->with($evt);
+            ->method('transportStarted')
+            ->with($evt);
         $listenerB->expects($this->once())
-                  ->method('transportStarted')
-                  ->with($evt);
+            ->method('transportStarted')
+            ->with($evt);
 
         $this->_dispatcher->dispatchEvent($evt, 'transportStarted');
     }
 
-    public function testListenersAreOnlyCalledIfImplementingCorrectInterface()
+    public function test_listeners_are_only_called_if_implementing_correct_interface()
     {
         $transport = $this->getMockBuilder('Swift_Transport')->getMock();
         $message = $this->getMockBuilder('Swift_Mime_Message')->getMock();
@@ -93,15 +93,15 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->_dispatcher->bindEventListener($otherListener);
 
         $targetListener->expects($this->once())
-                       ->method('sendPerformed')
-                       ->with($evt);
+            ->method('sendPerformed')
+            ->with($evt);
         $otherListener->expects($this->never())
-                    ->method('sendPerformed');
+            ->method('sendPerformed');
 
         $this->_dispatcher->dispatchEvent($evt, 'sendPerformed');
     }
 
-    public function testListenersCanCancelBubblingOfEvent()
+    public function test_listeners_can_cancel_bubbling_of_event()
     {
         $transport = $this->getMockBuilder('Swift_Transport')->getMock();
         $message = $this->getMockBuilder('Swift_Mime_Message')->getMock();
@@ -115,13 +115,13 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->_dispatcher->bindEventListener($listenerB);
 
         $listenerA->expects($this->once())
-                  ->method('sendPerformed')
-                  ->with($evt)
-                  ->will($this->returnCallback(function ($object) {
-                      $object->cancelBubble(true);
-                  }));
+            ->method('sendPerformed')
+            ->with($evt)
+            ->will($this->returnCallback(function ($object) {
+                $object->cancelBubble(true);
+            }));
         $listenerB->expects($this->never())
-                  ->method('sendPerformed');
+            ->method('sendPerformed');
 
         $this->_dispatcher->dispatchEvent($evt, 'sendPerformed');
 
@@ -136,7 +136,5 @@ class Swift_Events_SimpleEventDispatcherTest extends \PHPUnit_Framework_TestCase
 
 class DummyListener implements Swift_Events_EventListener
 {
-    public function sendPerformed(Swift_Events_SendEvent $evt)
-    {
-    }
+    public function sendPerformed(Swift_Events_SendEvent $evt) {}
 }

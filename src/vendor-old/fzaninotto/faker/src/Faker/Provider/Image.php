@@ -7,10 +7,10 @@ namespace Faker\Provider;
  */
 class Image extends Base
 {
-    protected static $categories = array(
+    protected static $categories = [
         'abstract', 'animals', 'business', 'cats', 'city', 'food', 'nightlife',
-        'fashion', 'people', 'nature', 'sports', 'technics', 'transport'
-    );
+        'fashion', 'people', 'nature', 'sports', 'technics', 'transport',
+    ];
 
     /**
      * Generate the URL that will return a random image
@@ -21,15 +21,15 @@ class Image extends Base
      */
     public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null, $gray = false)
     {
-        $baseUrl = "http://lorempixel.com/";
+        $baseUrl = 'http://lorempixel.com/';
         $url = "{$width}/{$height}/";
-        
+
         if ($gray) {
-            $url = "gray/" . $url;
+            $url = 'gray/'.$url;
         }
-        
+
         if ($category) {
-            if (!in_array($category, static::$categories)) {
+            if (! in_array($category, static::$categories)) {
                 throw new \InvalidArgumentException(sprintf('Unknown image category "%s"', $category));
             }
             $url .= "{$category}/";
@@ -39,10 +39,10 @@ class Image extends Base
         }
 
         if ($randomize) {
-            $url .= '?' . static::randomNumber(5, true);
+            $url .= '?'.static::randomNumber(5, true);
         }
 
-        return $baseUrl . $url;
+        return $baseUrl.$url;
     }
 
     /**
@@ -56,15 +56,15 @@ class Image extends Base
     {
         $dir = is_null($dir) ? sys_get_temp_dir() : $dir; // GNU/Linux / OS X / Windows compatible
         // Validate directory path
-        if (!is_dir($dir) || !is_writable($dir)) {
+        if (! is_dir($dir) || ! is_writable($dir)) {
             throw new \InvalidArgumentException(sprintf('Cannot write to directory "%s"', $dir));
         }
 
         // Generate a random filename. Use the server address so that a file
         // generated at the same time on a different server won't have a collision.
         $name = md5(uniqid(empty($_SERVER['SERVER_ADDR']) ? '' : $_SERVER['SERVER_ADDR'], true));
-        $filename = $name .'.jpg';
-        $filepath = $dir . DIRECTORY_SEPARATOR . $filename;
+        $filename = $name.'.jpg';
+        $filepath = $dir.DIRECTORY_SEPARATOR.$filename;
 
         $url = static::imageUrl($width, $height, $category, $randomize, $word);
 
@@ -84,7 +84,7 @@ class Image extends Base
             return new \RuntimeException('The image formatter downloads an image from a remote HTTP server. Therefore, it requires that PHP can request remote hosts, either via cURL or fopen()');
         }
 
-        if (!$success) {
+        if (! $success) {
             // could not contact the distant URL or HTTP error - fail silently.
             return false;
         }

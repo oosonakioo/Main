@@ -7,5 +7,5 @@ $screen = new Screen\Capture('url');
 $screen->jobs->clean();
 
 // if not you can simply create a jobs instance
-$jobs = new \Screen\Jobs();
+$jobs = new \Screen\Jobs;
 $jobs->clean();

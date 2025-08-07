@@ -1,7 +1,6 @@
 <?php
+
 class OverrideTestCase extends OneTestCase
 {
-    public function testCase($arg = '')
-    {
-    }
+    public function test_case($arg = '') {}
 }

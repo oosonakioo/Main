@@ -9,7 +9,7 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Get font size in points
      *
-     * @return integer
+     * @return int
      */
     protected function getPointSize()
     {
@@ -19,14 +19,14 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Filter function to access internal integer font values
      *
-     * @return integer
+     * @return int
      */
     private function getInternalFont()
     {
         $internalfont = is_null($this->file) ? 1 : $this->file;
         $internalfont = is_numeric($internalfont) ? $internalfont : false;
 
-        if ( ! in_array($internalfont, array(1, 2, 3, 4, 5))) {
+        if (! in_array($internalfont, [1, 2, 3, 4, 5])) {
             throw new \Intervention\Image\Exception\NotSupportedException(
                 sprintf('Internal GD font (%s) not available. Use only 1-5.', $internalfont)
             );
@@ -38,7 +38,7 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Get width of an internal font character
      *
-     * @return integer
+     * @return int
      */
     private function getInternalFontWidth()
     {
@@ -48,7 +48,7 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Get height of an internal font character
      *
-     * @return integer
+     * @return int
      */
     private function getInternalFontHeight()
     {
@@ -73,11 +73,11 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Calculates bounding box of current font setting
      *
-     * @return Array
+     * @return array
      */
     public function getBoxSize()
     {
-        $box = array();
+        $box = [];
 
         if ($this->hasApplicableFontFile()) {
 
@@ -89,7 +89,7 @@ class Font extends \Intervention\Image\AbstractFont
 
                 $angle = pi() * 2 - $this->angle * pi() * 2 / 360;
 
-                for ($i=0; $i<4; $i++) {
+                for ($i = 0; $i < 4; $i++) {
                     $x = $box[$i * 2];
                     $y = $box[$i * 2 + 1];
                     $box[$i * 2] = cos($angle) * $x - sin($angle) * $y;
@@ -123,9 +123,8 @@ class Font extends \Intervention\Image\AbstractFont
     /**
      * Draws font to given image at given position
      *
-     * @param  Image   $image
-     * @param  integer $posx
-     * @param  integer $posy
+     * @param  int  $posx
+     * @param  int  $posy
      * @return void
      */
     public function applyToImage(Image $image, $posx = 0, $posy = 0)
@@ -146,8 +145,8 @@ class Font extends \Intervention\Image\AbstractFont
                 switch ($align.'-'.$valign) {
 
                     case 'center-top':
-                        $posx = $posx - round(($box[6]+$box[4])/2);
-                        $posy = $posy - round(($box[7]+$box[5])/2);
+                        $posx = $posx - round(($box[6] + $box[4]) / 2);
+                        $posy = $posy - round(($box[7] + $box[5]) / 2);
                         break;
 
                     case 'right-top':
@@ -162,25 +161,25 @@ class Font extends \Intervention\Image\AbstractFont
 
                     case 'center-center':
                     case 'center-middle':
-                        $posx = $posx - round(($box[0]+$box[4])/2);
-                        $posy = $posy - round(($box[1]+$box[5])/2);
+                        $posx = $posx - round(($box[0] + $box[4]) / 2);
+                        $posy = $posy - round(($box[1] + $box[5]) / 2);
                         break;
 
                     case 'right-center':
                     case 'right-middle':
-                        $posx = $posx - round(($box[2]+$box[4])/2);
-                        $posy = $posy - round(($box[3]+$box[5])/2);
+                        $posx = $posx - round(($box[2] + $box[4]) / 2);
+                        $posy = $posy - round(($box[3] + $box[5]) / 2);
                         break;
 
                     case 'left-center':
                     case 'left-middle':
-                        $posx = $posx - round(($box[0]+$box[6])/2);
-                        $posy = $posy - round(($box[1]+$box[7])/2);
+                        $posx = $posx - round(($box[0] + $box[6]) / 2);
+                        $posy = $posy - round(($box[1] + $box[7]) / 2);
                         break;
 
                     case 'center-bottom':
-                        $posx = $posx - round(($box[0]+$box[2])/2);
-                        $posy = $posy - round(($box[1]+$box[3])/2);
+                        $posx = $posx - round(($box[0] + $box[2]) / 2);
+                        $posy = $posy - round(($box[1] + $box[3]) / 2);
                         break;
 
                     case 'right-bottom':

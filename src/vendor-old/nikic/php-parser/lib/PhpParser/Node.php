@@ -28,7 +28,7 @@ interface Node
     /**
      * Sets line the node started in.
      *
-     * @param int $line Line
+     * @param  int  $line  Line
      */
     public function setLine($line);
 
@@ -44,16 +44,15 @@ interface Node
     /**
      * Sets an attribute on a node.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param  string  $key
+     * @param  mixed  $value
      */
     public function setAttribute($key, $value);
 
     /**
      * Returns whether an attribute exists.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return bool
      */
     public function hasAttribute($key);
@@ -61,9 +60,8 @@ interface Node
     /**
      * Returns the value of an attribute.
      *
-     * @param string $key
-     * @param mixed  $default
-     *
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function &getAttribute($key, $default = null);

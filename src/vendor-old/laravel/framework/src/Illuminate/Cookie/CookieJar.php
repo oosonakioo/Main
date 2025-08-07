@@ -2,9 +2,9 @@
 
 namespace Illuminate\Cookie;
 
+use Illuminate\Contracts\Cookie\QueueingFactory as JarContract;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Cookie;
-use Illuminate\Contracts\Cookie\QueueingFactory as JarContract;
 
 class CookieJar implements JarContract
 {
@@ -41,16 +41,16 @@ class CookieJar implements JarContract
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  int     $minutes
+     * @param  int  $minutes
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
-     * @param  bool    $httpOnly
+     * @param  bool  $secure
+     * @param  bool  $httpOnly
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
     public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true)
     {
-        list($path, $domain, $secure) = $this->getPathAndDomain($path, $domain, $secure);
+        [$path, $domain, $secure] = $this->getPathAndDomain($path, $domain, $secure);
 
         $time = ($minutes == 0) ? 0 : time() + ($minutes * 60);
 
@@ -64,8 +64,8 @@ class CookieJar implements JarContract
      * @param  string  $value
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
-     * @param  bool    $httpOnly
+     * @param  bool  $secure
+     * @param  bool  $httpOnly
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
     public function forever($name, $value, $path = null, $domain = null, $secure = false, $httpOnly = true)
@@ -101,7 +101,7 @@ class CookieJar implements JarContract
      * Get a queued cookie instance.
      *
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
     public function queued($key, $default = null)
@@ -142,7 +142,7 @@ class CookieJar implements JarContract
      *
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
+     * @param  bool  $secure
      * @return array
      */
     protected function getPathAndDomain($path, $domain, $secure = false)
@@ -155,12 +155,12 @@ class CookieJar implements JarContract
      *
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
+     * @param  bool  $secure
      * @return $this
      */
     public function setDefaultPathAndDomain($path, $domain, $secure = false)
     {
-        list($this->path, $this->domain, $this->secure) = [$path, $domain, $secure];
+        [$this->path, $this->domain, $this->secure] = [$path, $domain, $secure];
 
         return $this;
     }

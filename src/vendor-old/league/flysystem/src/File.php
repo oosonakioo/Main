@@ -37,8 +37,7 @@ class File extends Handler
     /**
      * Write the new file.
      *
-     * @param string $content
-     *
+     * @param  string  $content
      * @return bool success boolean
      */
     public function write($content)
@@ -49,8 +48,7 @@ class File extends Handler
     /**
      * Write the new file using a stream.
      *
-     * @param resource $resource
-     *
+     * @param  resource  $resource
      * @return bool success boolean
      */
     public function writeStream($resource)
@@ -61,8 +59,7 @@ class File extends Handler
     /**
      * Update the file contents.
      *
-     * @param string $content
-     *
+     * @param  string  $content
      * @return bool success boolean
      */
     public function update($content)
@@ -73,8 +70,7 @@ class File extends Handler
     /**
      * Update the file contents with a stream.
      *
-     * @param resource $resource
-     *
+     * @param  resource  $resource
      * @return bool success boolean
      */
     public function updateStream($resource)
@@ -85,8 +81,7 @@ class File extends Handler
     /**
      * Create the file or update if exists.
      *
-     * @param string $content
-     *
+     * @param  string  $content
      * @return bool success boolean
      */
     public function put($content)
@@ -97,8 +92,7 @@ class File extends Handler
     /**
      * Create the file or update if exists using a stream.
      *
-     * @param resource $resource
-     *
+     * @param  resource  $resource
      * @return bool success boolean
      */
     public function putStream($resource)
@@ -109,8 +103,7 @@ class File extends Handler
     /**
      * Rename the file.
      *
-     * @param string $newpath
-     *
+     * @param  string  $newpath
      * @return bool success boolean
      */
     public function rename($newpath)
@@ -127,8 +120,7 @@ class File extends Handler
     /**
      * Copy the file.
      *
-     * @param string $newpath
-     *
+     * @param  string  $newpath
      * @return File|false new file or false
      */
     public function copy($newpath)

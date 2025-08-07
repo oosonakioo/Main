@@ -38,7 +38,6 @@ class AliasLoader
     /**
      * Get or create the singleton alias loader instance.
      *
-     * @param  array  $aliases
      * @return \Illuminate\Foundation\AliasLoader
      */
     public static function getInstance(array $aliases = [])
@@ -116,7 +115,6 @@ class AliasLoader
     /**
      * Set the registered aliases.
      *
-     * @param  array  $aliases
      * @return void
      */
     public function setAliases(array $aliases)

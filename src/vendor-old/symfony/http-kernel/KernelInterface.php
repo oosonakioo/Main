@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\HttpKernel;
 
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
  * The Kernel is the heart of the Symfony system.
@@ -22,7 +22,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface KernelInterface extends HttpKernelInterface, \Serializable
+interface KernelInterface extends \Serializable, HttpKernelInterface
 {
     /**
      * Returns an array of bundles to register.
@@ -34,7 +34,7 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Loads the container configuration.
      *
-     * @param LoaderInterface $loader A LoaderInterface instance
+     * @param  LoaderInterface  $loader  A LoaderInterface instance
      */
     public function registerContainerConfiguration(LoaderInterface $loader);
 
@@ -60,9 +60,8 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Returns a bundle and optionally its descendants by its name.
      *
-     * @param string $name  Bundle name
-     * @param bool   $first Whether to return the first bundle only or together with its descendants
-     *
+     * @param  string  $name  Bundle name
+     * @param  bool  $first  Whether to return the first bundle only or together with its descendants
      * @return BundleInterface|BundleInterface[] A BundleInterface instance or an array of BundleInterface instances if $first is false
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
@@ -88,14 +87,13 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
      *
      * before looking in the bundle resource folder.
      *
-     * @param string $name  A resource name to locate
-     * @param string $dir   A directory where to look for the resource first
-     * @param bool   $first Whether to return the first path or paths for all matching bundles
-     *
+     * @param  string  $name  A resource name to locate
+     * @param  string  $dir  A directory where to look for the resource first
+     * @param  bool  $first  Whether to return the first path or paths for all matching bundles
      * @return string|array The absolute path of the resource or an array if $first is false
      *
      * @throws \InvalidArgumentException if the file cannot be found or the name is not valid
-     * @throws \RuntimeException         if the name contains invalid/unsafe characters
+     * @throws \RuntimeException if the name contains invalid/unsafe characters
      */
     public function locateResource($name, $dir = null, $first = true);
 

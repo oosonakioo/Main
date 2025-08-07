@@ -14,9 +14,9 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\MonthField::validate
      */
-    public function testValidatesField()
+    public function test_validates_field()
     {
-        $f = new MonthField();
+        $f = new MonthField;
         $this->assertTrue($f->validate('12'));
         $this->assertTrue($f->validate('*'));
         $this->assertTrue($f->validate('*/10,2,1-12'));
@@ -26,10 +26,10 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testIncrementsDate()
+    public function test_increments_date()
     {
         $d = new DateTime('2011-03-15 11:15:00');
-        $f = new MonthField();
+        $f = new MonthField;
         $f->increment($d);
         $this->assertEquals('2011-04-01 00:00:00', $d->format('Y-m-d H:i:s'));
 
@@ -41,12 +41,12 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testIncrementsDateWithThirtyMinuteTimezone()
+    public function test_increments_date_with_thirty_minute_timezone()
     {
         $tz = date_default_timezone_get();
         date_default_timezone_set('America/St_Johns');
         $d = new DateTime('2011-03-31 11:59:59');
-        $f = new MonthField();
+        $f = new MonthField;
         $f->increment($d);
         $this->assertEquals('2011-04-01 00:00:00', $d->format('Y-m-d H:i:s'));
 
@@ -56,13 +56,12 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase
         date_default_timezone_set($tz);
     }
 
-
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testIncrementsYearAsNeeded()
+    public function test_increments_year_as_needed()
     {
-        $f = new MonthField();
+        $f = new MonthField;
         $d = new DateTime('2011-12-15 00:00:00');
         $f->increment($d);
         $this->assertEquals('2012-01-01 00:00:00', $d->format('Y-m-d H:i:s'));
@@ -71,9 +70,9 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testDecrementsYearAsNeeded()
+    public function test_decrements_year_as_needed()
     {
-        $f = new MonthField();
+        $f = new MonthField;
         $d = new DateTime('2011-01-15 00:00:00');
         $f->increment($d, true);
         $this->assertEquals('2010-12-31 23:59:00', $d->format('Y-m-d H:i:s'));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -29,12 +31,12 @@ final class Compound implements Type
     /**
      * Initializes a compound type (i.e. `string|int`) and tests if the provided types all implement the Type interface.
      *
-     * @param Type[] $types
+     * @param  Type[]  $types
      */
     public function __construct(array $types)
     {
         foreach ($types as $type) {
-            if (!$type instanceof Type) {
+            if (! $type instanceof Type) {
                 throw new \InvalidArgumentException('A compound type can only have other types as elements');
             }
         }
@@ -45,13 +47,12 @@ final class Compound implements Type
     /**
      * Returns the type at the given index.
      *
-     * @param integer $index
-     *
+     * @param  int  $index
      * @return Type|null
      */
     public function get($index)
     {
-        if (!$this->has($index)) {
+        if (! $this->has($index)) {
             return null;
         }
 
@@ -61,8 +62,7 @@ final class Compound implements Type
     /**
      * Tests if this compound type has a type with the given index.
      *
-     * @param integer $index
-     *
+     * @param  int  $index
      * @return bool
      */
     public function has($index)

@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\HttpFoundation\File\MimeType;
 
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * Guesses the mime type with the binary "file" (only available on *nix).
@@ -31,7 +31,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
      *
      * The command output must start with the mime type of the file.
      *
-     * @param string $cmd The command to run to get the mime type of a file
+     * @param  string  $cmd  The command to run to get the mime type of a file
      */
     public function __construct($cmd = 'file -b --mime %s 2>/dev/null')
     {
@@ -53,15 +53,15 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
      */
     public function guess($path)
     {
-        if (!is_file($path)) {
+        if (! is_file($path)) {
             throw new FileNotFoundException($path);
         }
 
-        if (!is_readable($path)) {
+        if (! is_readable($path)) {
             throw new AccessDeniedException($path);
         }
 
-        if (!self::isSupported()) {
+        if (! self::isSupported()) {
             return;
         }
 
@@ -77,7 +77,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
 
         $type = trim(ob_get_clean());
 
-        if (!preg_match('#^([a-z0-9\-]+/[a-z0-9\-\.]+)#i', $type, $match)) {
+        if (! preg_match('#^([a-z0-9\-]+/[a-z0-9\-\.]+)#i', $type, $match)) {
             // it's not a type, but an error message
             return;
         }

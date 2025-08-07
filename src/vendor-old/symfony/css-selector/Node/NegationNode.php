@@ -33,10 +33,6 @@ class NegationNode extends AbstractNode
      */
     private $subSelector;
 
-    /**
-     * @param NodeInterface $selector
-     * @param NodeInterface $subSelector
-     */
     public function __construct(NodeInterface $selector, NodeInterface $subSelector)
     {
         $this->selector = $selector;

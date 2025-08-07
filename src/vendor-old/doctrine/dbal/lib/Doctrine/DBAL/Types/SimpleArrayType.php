@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,6 +28,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * Only use this type if you are sure that your values cannot contain a ",".
  *
  * @since  2.3
+ *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class SimpleArrayType extends Type
@@ -44,7 +46,7 @@ class SimpleArrayType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (!$value) {
+        if (! $value) {
             return null;
         }
 
@@ -57,7 +59,7 @@ class SimpleArrayType extends Type
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
-            return array();
+            return [];
         }
 
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;

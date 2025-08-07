@@ -28,7 +28,7 @@ class StreamOutputTest extends \PHPUnit_Framework_TestCase
         $this->stream = null;
     }
 
-    public function testConstructor()
+    public function test_constructor()
     {
         $output = new StreamOutput($this->stream, Output::VERBOSITY_QUIET, true);
         $this->assertEquals(Output::VERBOSITY_QUIET, $output->getVerbosity(), '__construct() takes the verbosity as its first argument');
@@ -37,20 +37,21 @@ class StreamOutputTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \InvalidArgumentException
+     *
      * @expectedExceptionMessage The StreamOutput class needs a stream as its first argument.
      */
-    public function testStreamIsRequired()
+    public function test_stream_is_required()
     {
         new StreamOutput('foo');
     }
 
-    public function testGetStream()
+    public function test_get_stream()
     {
         $output = new StreamOutput($this->stream);
         $this->assertEquals($this->stream, $output->getStream(), '->getStream() returns the current stream');
     }
 
-    public function testDoWrite()
+    public function test_do_write()
     {
         $output = new StreamOutput($this->stream);
         $output->writeln('foo');

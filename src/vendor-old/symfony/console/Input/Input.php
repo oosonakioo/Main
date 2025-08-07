@@ -31,19 +31,22 @@ abstract class Input implements InputInterface
      * @var InputDefinition
      */
     protected $definition;
-    protected $options = array();
-    protected $arguments = array();
+
+    protected $options = [];
+
+    protected $arguments = [];
+
     protected $interactive = true;
 
     /**
      * Constructor.
      *
-     * @param InputDefinition|null $definition A InputDefinition instance
+     * @param  InputDefinition|null  $definition  A InputDefinition instance
      */
-    public function __construct(InputDefinition $definition = null)
+    public function __construct(?InputDefinition $definition = null)
     {
-        if (null === $definition) {
-            $this->definition = new InputDefinition();
+        if ($definition === null) {
+            $this->definition = new InputDefinition;
         } else {
             $this->bind($definition);
             $this->validate();
@@ -55,8 +58,8 @@ abstract class Input implements InputInterface
      */
     public function bind(InputDefinition $definition)
     {
-        $this->arguments = array();
-        $this->options = array();
+        $this->arguments = [];
+        $this->options = [];
         $this->definition = $definition;
 
         $this->parse();
@@ -76,7 +79,7 @@ abstract class Input implements InputInterface
         $givenArguments = $this->arguments;
 
         $missingArguments = array_filter(array_keys($definition->getArguments()), function ($argument) use ($definition, $givenArguments) {
-            return !array_key_exists($argument, $givenArguments) && $definition->getArgument($argument)->isRequired();
+            return ! array_key_exists($argument, $givenArguments) && $definition->getArgument($argument)->isRequired();
         });
 
         if (count($missingArguments) > 0) {
@@ -113,7 +116,7 @@ abstract class Input implements InputInterface
      */
     public function getArgument($name)
     {
-        if (!$this->definition->hasArgument($name)) {
+        if (! $this->definition->hasArgument($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
@@ -125,7 +128,7 @@ abstract class Input implements InputInterface
      */
     public function setArgument($name, $value)
     {
-        if (!$this->definition->hasArgument($name)) {
+        if (! $this->definition->hasArgument($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
@@ -153,7 +156,7 @@ abstract class Input implements InputInterface
      */
     public function getOption($name)
     {
-        if (!$this->definition->hasOption($name)) {
+        if (! $this->definition->hasOption($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" option does not exist.', $name));
         }
 
@@ -165,7 +168,7 @@ abstract class Input implements InputInterface
      */
     public function setOption($name, $value)
     {
-        if (!$this->definition->hasOption($name)) {
+        if (! $this->definition->hasOption($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" option does not exist.', $name));
         }
 
@@ -183,8 +186,7 @@ abstract class Input implements InputInterface
     /**
      * Escapes a token through escapeshellarg if it contains unsafe chars.
      *
-     * @param string $token
-     *
+     * @param  string  $token
      * @return string
      */
     public function escapeToken($token)

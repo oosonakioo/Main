@@ -1,10 +1,11 @@
 <?php
+
 namespace Hamcrest\Core;
 
 class SetTest extends \Hamcrest\AbstractMatcherTest
 {
-
     public static $_classProperty;
+
     public $_instanceProperty;
 
     protected function setUp()
@@ -18,87 +19,87 @@ class SetTest extends \Hamcrest\AbstractMatcherTest
         return \Hamcrest\Core\Set::set('property_name');
     }
 
-    public function testEvaluatesToTrueIfArrayPropertyIsSet()
+    public function test_evaluates_to_true_if_array_property_is_set()
     {
-        assertThat(array('foo' => 'bar'), set('foo'));
+        assertThat(['foo' => 'bar'], set('foo'));
     }
 
-    public function testNegatedEvaluatesToFalseIfArrayPropertyIsSet()
+    public function test_negated_evaluates_to_false_if_array_property_is_set()
     {
-        assertThat(array('foo' => 'bar'), not(notSet('foo')));
+        assertThat(['foo' => 'bar'], not(notSet('foo')));
     }
 
-    public function testEvaluatesToTrueIfClassPropertyIsSet()
+    public function test_evaluates_to_true_if_class_property_is_set()
     {
         self::$_classProperty = 'bar';
         assertThat('Hamcrest\Core\SetTest', set('_classProperty'));
     }
 
-    public function testNegatedEvaluatesToFalseIfClassPropertyIsSet()
+    public function test_negated_evaluates_to_false_if_class_property_is_set()
     {
         self::$_classProperty = 'bar';
         assertThat('Hamcrest\Core\SetTest', not(notSet('_classProperty')));
     }
 
-    public function testEvaluatesToTrueIfObjectPropertyIsSet()
+    public function test_evaluates_to_true_if_object_property_is_set()
     {
         $this->_instanceProperty = 'bar';
         assertThat($this, set('_instanceProperty'));
     }
 
-    public function testNegatedEvaluatesToFalseIfObjectPropertyIsSet()
+    public function test_negated_evaluates_to_false_if_object_property_is_set()
     {
         $this->_instanceProperty = 'bar';
         assertThat($this, not(notSet('_instanceProperty')));
     }
 
-    public function testEvaluatesToFalseIfArrayPropertyIsNotSet()
+    public function test_evaluates_to_false_if_array_property_is_not_set()
     {
-        assertThat(array('foo' => 'bar'), not(set('baz')));
+        assertThat(['foo' => 'bar'], not(set('baz')));
     }
 
-    public function testNegatedEvaluatesToTrueIfArrayPropertyIsNotSet()
+    public function test_negated_evaluates_to_true_if_array_property_is_not_set()
     {
-        assertThat(array('foo' => 'bar'), notSet('baz'));
+        assertThat(['foo' => 'bar'], notSet('baz'));
     }
 
-    public function testEvaluatesToFalseIfClassPropertyIsNotSet()
+    public function test_evaluates_to_false_if_class_property_is_not_set()
     {
         assertThat('Hamcrest\Core\SetTest', not(set('_classProperty')));
     }
 
-    public function testNegatedEvaluatesToTrueIfClassPropertyIsNotSet()
+    public function test_negated_evaluates_to_true_if_class_property_is_not_set()
     {
         assertThat('Hamcrest\Core\SetTest', notSet('_classProperty'));
     }
 
-    public function testEvaluatesToFalseIfObjectPropertyIsNotSet()
+    public function test_evaluates_to_false_if_object_property_is_not_set()
     {
         assertThat($this, not(set('_instanceProperty')));
     }
 
-    public function testNegatedEvaluatesToTrueIfObjectPropertyIsNotSet()
+    public function test_negated_evaluates_to_true_if_object_property_is_not_set()
     {
         assertThat($this, notSet('_instanceProperty'));
     }
 
-    public function testHasAReadableDescription()
+    public function test_has_a_readable_description()
     {
         $this->assertDescription('set property foo', set('foo'));
         $this->assertDescription('unset property bar', notSet('bar'));
     }
 
-    public function testDecribesPropertySettingInMismatchMessage()
+    public function test_decribes_property_setting_in_mismatch_message()
     {
         $this->assertMismatchDescription(
             'was not set',
             set('bar'),
-            array('foo' => 'bar')
+            ['foo' => 'bar']
         );
         $this->assertMismatchDescription(
             'was "bar"',
             notSet('foo'),
-            array('foo' => 'bar')
+            ['foo' => 'bar']
         );
         self::$_classProperty = 'bar';
         $this->assertMismatchDescription(

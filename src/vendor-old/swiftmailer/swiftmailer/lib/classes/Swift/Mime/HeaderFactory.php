@@ -18,9 +18,8 @@ interface Swift_Mime_HeaderFactory extends Swift_Mime_CharsetObserver
     /**
      * Create a new Mailbox Header with a list of $addresses.
      *
-     * @param string       $name
-     * @param array|string $addresses
-     *
+     * @param  string  $name
+     * @param  array|string  $addresses
      * @return Swift_Mime_Header
      */
     public function createMailboxHeader($name, $addresses = null);
@@ -28,9 +27,8 @@ interface Swift_Mime_HeaderFactory extends Swift_Mime_CharsetObserver
     /**
      * Create a new Date header using $timestamp (UNIX time).
      *
-     * @param string $name
-     * @param int    $timestamp
-     *
+     * @param  string  $name
+     * @param  int  $timestamp
      * @return Swift_Mime_Header
      */
     public function createDateHeader($name, $timestamp = null);
@@ -38,9 +36,8 @@ interface Swift_Mime_HeaderFactory extends Swift_Mime_CharsetObserver
     /**
      * Create a new basic text header with $name and $value.
      *
-     * @param string $name
-     * @param string $value
-     *
+     * @param  string  $name
+     * @param  string  $value
      * @return Swift_Mime_Header
      */
     public function createTextHeader($name, $value = null);
@@ -48,20 +45,18 @@ interface Swift_Mime_HeaderFactory extends Swift_Mime_CharsetObserver
     /**
      * Create a new ParameterizedHeader with $name, $value and $params.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $params
-     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array  $params
      * @return Swift_Mime_ParameterizedHeader
      */
-    public function createParameterizedHeader($name, $value = null, $params = array());
+    public function createParameterizedHeader($name, $value = null, $params = []);
 
     /**
      * Create a new ID header for Message-ID or Content-ID.
      *
-     * @param string       $name
-     * @param string|array $ids
-     *
+     * @param  string  $name
+     * @param  string|array  $ids
      * @return Swift_Mime_Header
      */
     public function createIdHeader($name, $ids = null);
@@ -69,9 +64,8 @@ interface Swift_Mime_HeaderFactory extends Swift_Mime_CharsetObserver
     /**
      * Create a new Path header with an address (path) in it.
      *
-     * @param string $name
-     * @param string $path
-     *
+     * @param  string  $name
+     * @param  string  $path
      * @return Swift_Mime_Header
      */
     public function createPathHeader($name, $path = null);

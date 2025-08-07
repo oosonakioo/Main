@@ -24,15 +24,18 @@ class LineFormatter extends NormalizerFormatter
     const SIMPLE_FORMAT = "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n";
 
     protected $format;
+
     protected $allowInlineLineBreaks;
+
     protected $ignoreEmptyContextAndExtra;
+
     protected $includeStacktraces;
 
     /**
-     * @param string $format                     The format of the message
-     * @param string $dateFormat                 The format of the timestamp: one supported by DateTime::format
-     * @param bool   $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
-     * @param bool   $ignoreEmptyContextAndExtra
+     * @param  string  $format  The format of the message
+     * @param  string  $dateFormat  The format of the timestamp: one supported by DateTime::format
+     * @param  bool  $allowInlineLineBreaks  Whether to allow inline line breaks in log entries
+     * @param  bool  $ignoreEmptyContextAndExtra
      */
     public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
     {
@@ -70,15 +73,14 @@ class LineFormatter extends NormalizerFormatter
         $output = $this->format;
 
         foreach ($vars['extra'] as $var => $val) {
-            if (false !== strpos($output, '%extra.'.$var.'%')) {
+            if (strpos($output, '%extra.'.$var.'%') !== false) {
                 $output = str_replace('%extra.'.$var.'%', $this->stringify($val), $output);
                 unset($vars['extra'][$var]);
             }
         }
 
-
         foreach ($vars['context'] as $var => $val) {
-            if (false !== strpos($output, '%context.'.$var.'%')) {
+            if (strpos($output, '%context.'.$var.'%') !== false) {
                 $output = str_replace('%context.'.$var.'%', $this->stringify($val), $output);
                 unset($vars['context'][$var]);
             }
@@ -97,13 +99,13 @@ class LineFormatter extends NormalizerFormatter
         }
 
         foreach ($vars as $var => $val) {
-            if (false !== strpos($output, '%'.$var.'%')) {
+            if (strpos($output, '%'.$var.'%') !== false) {
                 $output = str_replace('%'.$var.'%', $this->stringify($val), $output);
             }
         }
 
         // remove leftover %extra.xxx% and %context.xxx% if any
-        if (false !== strpos($output, '%')) {
+        if (strpos($output, '%') !== false) {
             $output = preg_replace('/%(?:extra|context)\..+?%/', '', $output);
         }
 
@@ -128,7 +130,7 @@ class LineFormatter extends NormalizerFormatter
     protected function normalizeException($e)
     {
         // TODO 2.0 only check for Throwable
-        if (!$e instanceof \Exception && !$e instanceof \Throwable) {
+        if (! $e instanceof \Exception && ! $e instanceof \Throwable) {
             throw new \InvalidArgumentException('Exception/Throwable expected, got '.gettype($e).' / '.get_class($e));
         }
 
@@ -149,7 +151,7 @@ class LineFormatter extends NormalizerFormatter
 
     protected function convertToString($data)
     {
-        if (null === $data || is_bool($data)) {
+        if ($data === null || is_bool($data)) {
             return var_export($data, true);
         }
 
@@ -167,13 +169,13 @@ class LineFormatter extends NormalizerFormatter
     protected function replaceNewlines($str)
     {
         if ($this->allowInlineLineBreaks) {
-            if (0 === strpos($str, '{')) {
-                return str_replace(array('\r', '\n'), array("\r", "\n"), $str);
+            if (strpos($str, '{') === 0) {
+                return str_replace(['\r', '\n'], ["\r", "\n"], $str);
             }
 
             return $str;
         }
 
-        return str_replace(array("\r\n", "\r", "\n"), ' ', $str);
+        return str_replace(["\r\n", "\r", "\n"], ' ', $str);
     }
 }

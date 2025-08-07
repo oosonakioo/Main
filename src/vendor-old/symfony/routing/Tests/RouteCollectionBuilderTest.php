@@ -18,7 +18,7 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testImport()
+    public function test_import()
     {
         $resolvedLoader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
         $resolver = $this->getMock('Symfony\Component\Config\Loader\LoaderResolverInterface');
@@ -28,7 +28,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($resolvedLoader));
 
         $originalRoute = new Route('/foo/path');
-        $expectedCollection = new RouteCollection();
+        $expectedCollection = new RouteCollection;
         $expectedCollection->add('one_test_route', $originalRoute);
         $expectedCollection->addResource(new FileResource(__DIR__.'/Fixtures/file_resource.yml'));
 
@@ -64,15 +64,15 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \BadMethodCallException
      */
-    public function testImportWithoutLoaderThrowsException()
+    public function test_import_without_loader_throws_exception()
     {
-        $collectionBuilder = new RouteCollectionBuilder();
+        $collectionBuilder = new RouteCollectionBuilder;
         $collectionBuilder->import('routing.yml');
     }
 
-    public function testAdd()
+    public function test_add()
     {
-        $collectionBuilder = new RouteCollectionBuilder();
+        $collectionBuilder = new RouteCollectionBuilder;
 
         $addedRoute = $collectionBuilder->add('/checkout', 'AppBundle:Order:checkout');
         $addedRoute2 = $collectionBuilder->add('/blogs', 'AppBundle:Blog:list', 'blog_list');
@@ -83,9 +83,9 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($addedRoute2, $finalCollection->get('blog_list'));
     }
 
-    public function testFlushOrdering()
+    public function test_flush_ordering()
     {
-        $importedCollection = new RouteCollection();
+        $importedCollection = new RouteCollection;
         $importedCollection->add('imported_route1', new Route('/imported/foo1'));
         $importedCollection->add('imported_route2', new Route('/imported/foo2'));
 
@@ -117,13 +117,13 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(5, $actualCollection);
         $actualRouteNames = array_keys($actualCollection->all());
-        $this->assertEquals(array(
+        $this->assertEquals([
             'checkout_route',
             'imported_route1',
             'imported_route2',
             'homepage',
             'admin_dashboard',
-        ), $actualRouteNames);
+        ], $actualRouteNames);
 
         // make sure the defaults were set
         $checkoutRoute = $actualCollection->get('checkout_route');
@@ -132,31 +132,31 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('fr', $defaults['_locale']);
     }
 
-    public function testFlushSetsRouteNames()
+    public function test_flush_sets_route_names()
     {
-        $collectionBuilder = new RouteCollectionBuilder();
+        $collectionBuilder = new RouteCollectionBuilder;
 
         // add a "named" route
         $collectionBuilder->add('/admin', 'AppBundle:Admin:dashboard', 'admin_dashboard');
         // add an unnamed route
         $collectionBuilder->add('/blogs', 'AppBundle:Blog:list')
-            ->setMethods(array('GET'));
+            ->setMethods(['GET']);
 
         // integer route names are allowed - they don't confuse things
         $collectionBuilder->add('/products', 'AppBundle:Product:list', 100);
 
         $actualCollection = $collectionBuilder->build();
         $actualRouteNames = array_keys($actualCollection->all());
-        $this->assertEquals(array(
+        $this->assertEquals([
             'admin_dashboard',
             'GET_blogs',
             '100',
-        ), $actualRouteNames);
+        ], $actualRouteNames);
     }
 
-    public function testFlushSetsDetailsOnChildrenRoutes()
+    public function test_flush_sets_details_on_children_routes()
     {
-        $routes = new RouteCollectionBuilder();
+        $routes = new RouteCollectionBuilder;
 
         $routes->add('/blogs/{page}', 'listAction', 'blog_list')
             // unique things for the route
@@ -169,8 +169,8 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
             ->setOption('fooBar', true)
             ->setHost('example.com')
             ->setCondition('request.isSecure()')
-            ->setSchemes(array('https'))
-            ->setMethods(array('POST'));
+            ->setSchemes(['https'])
+            ->setMethods(['POST']);
 
         // a simple route, nothing added to it
         $routes->add('/blogs/{id}', 'editAction', 'blog_edit');
@@ -187,8 +187,8 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
             ->setDefault('_locale', 'fr')
             ->setRequirement('_locale', 'fr|en')
             ->setOption('niceRoute', true)
-            ->setSchemes(array('http'))
-            ->setMethods(array('GET', 'POST'));
+            ->setSchemes(['http'])
+            ->setMethods(['GET', 'POST']);
 
         $collection = $routes->build();
         $actualListRoute = $collection->get('blog_list');
@@ -202,8 +202,8 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($actualListRoute->getOption('fooBar'));
         $this->assertEquals('example.com', $actualListRoute->getHost());
         $this->assertEquals('request.isSecure()', $actualListRoute->getCondition());
-        $this->assertEquals(array('https'), $actualListRoute->getSchemes());
-        $this->assertEquals(array('POST'), $actualListRoute->getMethods());
+        $this->assertEquals(['https'], $actualListRoute->getSchemes());
+        $this->assertEquals(['POST'], $actualListRoute->getMethods());
         // inherited from the main collection
         $this->assertEquals('fr', $actualListRoute->getDefault('_locale'));
         $this->assertEquals('fr|en', $actualListRoute->getRequirement('_locale'));
@@ -213,20 +213,20 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         // inherited from the collection
         $this->assertEquals('symfony.com', $actualEditRoute->getHost());
         $this->assertEquals('request.query.get("page")==1', $actualEditRoute->getCondition());
-        $this->assertEquals(array('http'), $actualEditRoute->getSchemes());
-        $this->assertEquals(array('GET', 'POST'), $actualEditRoute->getMethods());
+        $this->assertEquals(['http'], $actualEditRoute->getSchemes());
+        $this->assertEquals(['GET', 'POST'], $actualEditRoute->getMethods());
     }
 
     /**
      * @dataProvider providePrefixTests
      */
-    public function testFlushPrefixesPaths($collectionPrefix, $routePath, $expectedPath)
+    public function test_flush_prefixes_paths($collectionPrefix, $routePath, $expectedPath)
     {
-        $routes = new RouteCollectionBuilder();
+        $routes = new RouteCollectionBuilder;
 
         $routes->add($routePath, 'someController', 'test_route');
 
-        $outerRoutes = new RouteCollectionBuilder();
+        $outerRoutes = new RouteCollectionBuilder;
         $outerRoutes->mount($collectionPrefix, $routes);
 
         $collection = $outerRoutes->build();
@@ -236,21 +236,21 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function providePrefixTests()
     {
-        $tests = array();
+        $tests = [];
         // empty prefix is of course ok
-        $tests[] = array('', '/foo', '/foo');
+        $tests[] = ['', '/foo', '/foo'];
         // normal prefix - does not matter if it's a wildcard
-        $tests[] = array('/{admin}', '/foo', '/{admin}/foo');
+        $tests[] = ['/{admin}', '/foo', '/{admin}/foo'];
         // shows that a prefix will always be given the starting slash
-        $tests[] = array('0', '/foo', '/0/foo');
+        $tests[] = ['0', '/foo', '/0/foo'];
 
         // spaces are ok, and double slahses at the end are cleaned
-        $tests[] = array('/ /', '/foo', '/ /foo');
+        $tests[] = ['/ /', '/foo', '/ /foo'];
 
         return $tests;
     }
 
-    public function testFlushSetsPrefixedWithMultipleLevels()
+    public function test_flush_sets_prefixed_with_multiple_levels()
     {
         $loader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
         $routes = new RouteCollectionBuilder($loader);
@@ -277,7 +277,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $adminRoutes->mount('/stats', $otherAdminRoutes);
 
         // add a normal collection and see that it is also prefixed
-        $importedCollection = new RouteCollection();
+        $importedCollection = new RouteCollection;
         $importedCollection->add('imported_route', new Route('/foo'));
         // make this loader able to do the import - keeps mocking simple
         $loader->expects($this->any())
@@ -298,9 +298,9 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/admin/imported/foo', $collection->get('imported_route')->getPath(), 'Normal RouteCollections are also prefixed properly');
     }
 
-    public function testAutomaticRouteNamesDoNotConflict()
+    public function test_automatic_route_names_do_not_conflict()
     {
-        $routes = new RouteCollectionBuilder();
+        $routes = new RouteCollectionBuilder;
 
         $adminRoutes = $routes->createBuilder();
         // route 1
@@ -309,10 +309,10 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $accountRoutes = $routes->createBuilder();
         // route 2
         $accountRoutes->add('/dashboard', '')
-            ->setMethods(array('GET'));
+            ->setMethods(['GET']);
         // route 3
         $accountRoutes->add('/dashboard', '')
-            ->setMethods(array('POST'));
+            ->setMethods(['POST']);
 
         $routes->mount('/admin', $adminRoutes);
         $routes->mount('/account', $accountRoutes);

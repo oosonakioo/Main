@@ -1,4 +1,5 @@
 <?php
+
 require 'vendor/autoload.php';
 
 use Jenssegers\Date\Date;
@@ -6,7 +7,7 @@ use Jenssegers\Date\Date;
 // Set the language
 setlocale(LC_ALL, $argv[1] ?: 'en');
 
-$months = array(
+$months = [
     'january',
     'february',
     'march',
@@ -19,9 +20,9 @@ $months = array(
     'october',
     'november',
     'december',
-);
+];
 
-$days = array(
+$days = [
     'monday',
     'tuesday',
     'wednesday',
@@ -29,16 +30,16 @@ $days = array(
     'friday',
     'saturday',
     'sunday',
-);
+];
 
-$translations = array();
+$translations = [];
 
 foreach ($months as $month) {
     $date = new Date($month);
     $translation = strftime('%B', $date->getTimestamp());
     $translations[$month] = $translation;
 
-    echo "'" . $month . "'\t=> '" . $translation . "',\n";
+    echo "'".$month."'\t=> '".$translation."',\n";
 }
 
 echo "\n";
@@ -48,5 +49,5 @@ foreach ($days as $day) {
     $translation = strftime('%A', $date->getTimestamp());
     $translations[$day] = $translation;
 
-    echo "'" . $day . "'\t=> '" . $translation . "',\n";
+    echo "'".$day."'\t=> '".$translation."',\n";
 }

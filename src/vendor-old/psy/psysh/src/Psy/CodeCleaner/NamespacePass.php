@@ -29,11 +29,9 @@ use Psy\CodeCleaner;
 class NamespacePass extends CodeCleanerPass
 {
     private $namespace = null;
+
     private $cleaner;
 
-    /**
-     * @param CodeCleaner $cleaner
-     */
     public function __construct(CodeCleaner $cleaner)
     {
         $this->cleaner = $cleaner;
@@ -44,8 +42,6 @@ class NamespacePass extends CodeCleanerPass
      *
      * Otherwise, apply remembered namespaces to the code until a new namespace
      * is encountered.
-     *
-     * @param array $nodes
      */
     public function beforeTraverse(array $nodes)
     {
@@ -57,7 +53,7 @@ class NamespacePass extends CodeCleanerPass
                 if ($node instanceof NamespaceStmt) {
                     $this->setNamespace(null);
                 } elseif ($this->namespace !== null) {
-                    $nodes[$key] = new NamespaceStmt($this->namespace, array($node));
+                    $nodes[$key] = new NamespaceStmt($this->namespace, [$node]);
                 }
             }
         }
@@ -69,7 +65,7 @@ class NamespacePass extends CodeCleanerPass
      * Remember the namespace and (re)set the namespace on the CodeCleaner as
      * well.
      *
-     * @param null|Name $namespace
+     * @param  null|Name  $namespace
      */
     private function setNamespace($namespace)
     {

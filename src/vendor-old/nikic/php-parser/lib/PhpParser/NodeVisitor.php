@@ -11,8 +11,7 @@ interface NodeVisitor
      *  * null:      $nodes stays as-is
      *  * otherwise: $nodes is set to the return value
      *
-     * @param Node[] $nodes Array of nodes
-     *
+     * @param  Node[]  $nodes  Array of nodes
      * @return null|Node[] Array of nodes
      */
     public function beforeTraverse(array $nodes);
@@ -24,8 +23,7 @@ interface NodeVisitor
      *  * null:      $node stays as-is
      *  * otherwise: $node is set to the return value
      *
-     * @param Node $node Node
-     *
+     * @param  Node  $node  Node
      * @return null|Node Node
      */
     public function enterNode(Node $node);
@@ -39,8 +37,7 @@ interface NodeVisitor
      *  * array:     The return value is merged into the parent array (at the position of the $node)
      *  * otherwise: $node is set to the return value
      *
-     * @param Node $node Node
-     *
+     * @param  Node  $node  Node
      * @return null|Node|false|Node[] Node
      */
     public function leaveNode(Node $node);
@@ -52,8 +49,7 @@ interface NodeVisitor
      *  * null:      $nodes stays as-is
      *  * otherwise: $nodes is set to the return value
      *
-     * @param Node[] $nodes Array of nodes
-     *
+     * @param  Node[]  $nodes  Array of nodes
      * @return null|Node[] Array of nodes
      */
     public function afterTraverse(array $nodes);

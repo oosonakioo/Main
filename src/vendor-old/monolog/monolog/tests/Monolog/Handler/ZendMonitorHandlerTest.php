@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,9 +17,9 @@ class ZendMonitorHandlerTest extends TestCase
 {
     protected $zendMonitorHandler;
 
-    public function setUp()
+    protected function setUp()
     {
-        if (!function_exists('zend_monitor_custom_event')) {
+        if (! function_exists('zend_monitor_custom_event')) {
             $this->markTestSkipped('ZendServer is not installed');
         }
     }
@@ -26,15 +27,15 @@ class ZendMonitorHandlerTest extends TestCase
     /**
      * @covers  Monolog\Handler\ZendMonitorHandler::write
      */
-    public function testWrite()
+    public function test_write()
     {
         $record = $this->getRecord();
-        $formatterResult = array(
+        $formatterResult = [
             'message' => $record['message'],
-        );
+        ];
 
         $zendMonitor = $this->getMockBuilder('Monolog\Handler\ZendMonitorHandler')
-            ->setMethods(array('writeZendMonitorCustomEvent', 'getDefaultFormatter'))
+            ->setMethods(['writeZendMonitorCustomEvent', 'getDefaultFormatter'])
             ->getMock();
 
         $formatterMock = $this->getMockBuilder('Monolog\Formatter\NormalizerFormatter')
@@ -61,9 +62,9 @@ class ZendMonitorHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\ZendMonitorHandler::getDefaultFormatter
      */
-    public function testGetDefaultFormatterReturnsNormalizerFormatter()
+    public function test_get_default_formatter_returns_normalizer_formatter()
     {
-        $zendMonitor = new ZendMonitorHandler();
+        $zendMonitor = new ZendMonitorHandler;
         $this->assertInstanceOf('Monolog\Formatter\NormalizerFormatter', $zendMonitor->getDefaultFormatter());
     }
 }

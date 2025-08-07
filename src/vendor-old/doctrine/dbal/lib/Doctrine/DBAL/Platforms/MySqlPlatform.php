@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,9 +21,9 @@
 namespace Doctrine\DBAL\Platforms;
 
 use Doctrine\DBAL\Schema\Identifier;
-use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\BlobType;
 use Doctrine\DBAL\Types\TextType;
 
@@ -32,18 +33,24 @@ use Doctrine\DBAL\Types\TextType;
  * uses the InnoDB storage engine.
  *
  * @since  2.0
+ *
  * @author Roman Borschel <roman@code-factory.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @todo   Rename: MySQLPlatform
  */
 class MySqlPlatform extends AbstractPlatform
 {
-    const LENGTH_LIMIT_TINYTEXT   = 255;
-    const LENGTH_LIMIT_TEXT       = 65535;
+    const LENGTH_LIMIT_TINYTEXT = 255;
+
+    const LENGTH_LIMIT_TEXT = 65535;
+
     const LENGTH_LIMIT_MEDIUMTEXT = 16777215;
 
-    const LENGTH_LIMIT_TINYBLOB   = 255;
-    const LENGTH_LIMIT_BLOB       = 65535;
+    const LENGTH_LIMIT_TINYBLOB = 255;
+
+    const LENGTH_LIMIT_BLOB = 65535;
+
     const LENGTH_LIMIT_MEDIUMBLOB = 16777215;
 
     /**
@@ -53,12 +60,12 @@ class MySqlPlatform extends AbstractPlatform
     protected function doModifyLimitQuery($query, $limit, $offset)
     {
         if ($limit !== null) {
-            $query .= ' LIMIT ' . $limit;
+            $query .= ' LIMIT '.$limit;
             if ($offset !== null) {
-                $query .= ' OFFSET ' . $offset;
+                $query .= ' OFFSET '.$offset;
             }
         } elseif ($offset !== null) {
-            $query .= ' LIMIT 18446744073709551615 OFFSET ' . $offset;
+            $query .= ' LIMIT 18446744073709551615 OFFSET '.$offset;
         }
 
         return $query;
@@ -94,10 +101,10 @@ class MySqlPlatform extends AbstractPlatform
     public function getLocateExpression($str, $substr, $startPos = false)
     {
         if ($startPos == false) {
-            return 'LOCATE(' . $substr . ', ' . $str . ')';
+            return 'LOCATE('.$substr.', '.$str.')';
         }
 
-        return 'LOCATE(' . $substr . ', ' . $str . ', '.$startPos.')';
+        return 'LOCATE('.$substr.', '.$str.', '.$startPos.')';
     }
 
     /**
@@ -107,7 +114,7 @@ class MySqlPlatform extends AbstractPlatform
     {
         $args = func_get_args();
 
-        return 'CONCAT(' . join(', ', (array) $args) . ')';
+        return 'CONCAT('.implode(', ', (array) $args).')';
     }
 
     /**
@@ -115,9 +122,9 @@ class MySqlPlatform extends AbstractPlatform
      */
     protected function getDateArithmeticIntervalExpression($date, $operator, $interval, $unit)
     {
-        $function = '+' === $operator ? 'DATE_ADD' : 'DATE_SUB';
+        $function = $operator === '+' ? 'DATE_ADD' : 'DATE_SUB';
 
-        return $function . '(' . $date . ', INTERVAL ' . $interval . ' ' . $unit . ')';
+        return $function.'('.$date.', INTERVAL '.$interval.' '.$unit.')';
     }
 
     /**
@@ -125,7 +132,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getDateDiffExpression($date1, $date2)
     {
-        return 'DATEDIFF(' . $date1 . ', ' . $date2 . ')';
+        return 'DATEDIFF('.$date1.', '.$date2.')';
     }
 
     /**
@@ -141,7 +148,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getListTableConstraintsSQL($table)
     {
-        return 'SHOW INDEX FROM ' . $table;
+        return 'SHOW INDEX FROM '.$table;
     }
 
     /**
@@ -156,14 +163,14 @@ class MySqlPlatform extends AbstractPlatform
             $currentDatabase = $this->quoteStringLiteral($currentDatabase);
             $table = $this->quoteStringLiteral($table);
 
-            return "SELECT TABLE_NAME AS `Table`, NON_UNIQUE AS Non_Unique, INDEX_NAME AS Key_name, ".
-                   "SEQ_IN_INDEX AS Seq_in_index, COLUMN_NAME AS Column_Name, COLLATION AS Collation, ".
-                   "CARDINALITY AS Cardinality, SUB_PART AS Sub_Part, PACKED AS Packed, " .
-                   "NULLABLE AS `Null`, INDEX_TYPE AS Index_Type, COMMENT AS Comment " .
-                   "FROM information_schema.STATISTICS WHERE TABLE_NAME = " . $table . " AND TABLE_SCHEMA = " . $currentDatabase;
+            return 'SELECT TABLE_NAME AS `Table`, NON_UNIQUE AS Non_Unique, INDEX_NAME AS Key_name, '.
+                   'SEQ_IN_INDEX AS Seq_in_index, COLUMN_NAME AS Column_Name, COLLATION AS Collation, '.
+                   'CARDINALITY AS Cardinality, SUB_PART AS Sub_Part, PACKED AS Packed, '.
+                   'NULLABLE AS `Null`, INDEX_TYPE AS Index_Type, COMMENT AS Comment '.
+                   'FROM information_schema.STATISTICS WHERE TABLE_NAME = '.$table.' AND TABLE_SCHEMA = '.$currentDatabase;
         }
 
-        return 'SHOW INDEX FROM ' . $table;
+        return 'SHOW INDEX FROM '.$table;
     }
 
     /**
@@ -173,7 +180,7 @@ class MySqlPlatform extends AbstractPlatform
     {
         $database = $this->quoteStringLiteral($database);
 
-        return "SELECT * FROM information_schema.VIEWS WHERE TABLE_SCHEMA = " . $database;
+        return 'SELECT * FROM information_schema.VIEWS WHERE TABLE_SCHEMA = '.$database;
     }
 
     /**
@@ -183,21 +190,21 @@ class MySqlPlatform extends AbstractPlatform
     {
         $table = $this->quoteStringLiteral($table);
 
-        if (null !== $database) {
+        if ($database !== null) {
             $database = $this->quoteStringLiteral($database);
         }
 
-        $sql = "SELECT DISTINCT k.`CONSTRAINT_NAME`, k.`COLUMN_NAME`, k.`REFERENCED_TABLE_NAME`, ".
-               "k.`REFERENCED_COLUMN_NAME` /*!50116 , c.update_rule, c.delete_rule */ ".
-               "FROM information_schema.key_column_usage k /*!50116 ".
-               "INNER JOIN information_schema.referential_constraints c ON ".
-               "  c.constraint_name = k.constraint_name AND ".
+        $sql = 'SELECT DISTINCT k.`CONSTRAINT_NAME`, k.`COLUMN_NAME`, k.`REFERENCED_TABLE_NAME`, '.
+               'k.`REFERENCED_COLUMN_NAME` /*!50116 , c.update_rule, c.delete_rule */ '.
+               'FROM information_schema.key_column_usage k /*!50116 '.
+               'INNER JOIN information_schema.referential_constraints c ON '.
+               '  c.constraint_name = k.constraint_name AND '.
                "  c.table_name = $table */ WHERE k.table_name = $table";
 
-        $databaseNameSql = null === $database ? 'DATABASE()' : $database;
+        $databaseNameSql = $database === null ? 'DATABASE()' : $database;
 
         $sql .= " AND k.table_schema = $databaseNameSql /*!50116 AND c.constraint_schema = $databaseNameSql */";
-        $sql .= " AND k.`REFERENCED_COLUMN_NAME` is not NULL";
+        $sql .= ' AND k.`REFERENCED_COLUMN_NAME` is not NULL';
 
         return $sql;
     }
@@ -207,7 +214,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getCreateViewSQL($name, $sql)
     {
-        return 'CREATE VIEW ' . $name . ' AS ' . $sql;
+        return 'CREATE VIEW '.$name.' AS '.$sql;
     }
 
     /**
@@ -215,7 +222,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getDropViewSQL($name)
     {
-        return 'DROP VIEW '. $name;
+        return 'DROP VIEW '.$name;
     }
 
     /**
@@ -223,8 +230,8 @@ class MySqlPlatform extends AbstractPlatform
      */
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(255)')
-                : ($length ? 'VARCHAR(' . $length . ')' : 'VARCHAR(255)');
+        return $fixed ? ($length ? 'CHAR('.$length.')' : 'CHAR(255)')
+                : ($length ? 'VARCHAR('.$length.')' : 'VARCHAR(255)');
     }
 
     /**
@@ -232,7 +239,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? 'BINARY(' . ($length ?: 255) . ')' : 'VARBINARY(' . ($length ?: 255) . ')';
+        return $fixed ? 'BINARY('.($length ?: 255).')' : 'VARBINARY('.($length ?: 255).')';
     }
 
     /**
@@ -242,13 +249,12 @@ class MySqlPlatform extends AbstractPlatform
      *     MEDIUMTEXT : 2 ^ 24 - 1 = 16777215
      *     LONGTEXT   : 2 ^ 32 - 1 = 4294967295
      *
-     * @param array $field
      *
      * @return string
      */
     public function getClobTypeDeclarationSQL(array $field)
     {
-        if ( ! empty($field['length']) && is_numeric($field['length'])) {
+        if (! empty($field['length']) && is_numeric($field['length'])) {
             $length = $field['length'];
 
             if ($length <= static::LENGTH_LIMIT_TINYTEXT) {
@@ -309,10 +315,9 @@ class MySqlPlatform extends AbstractPlatform
      *
      * @deprecated Deprecated since version 2.5, Use {@link self::getColumnCollationDeclarationSQL()} instead.
      *
-     * @param string $collation name of the collation
-     *
-     * @return string  DBMS specific SQL code portion needed to set the COLLATION
-     *                 of a field declaration.
+     * @param  string  $collation  name of the collation
+     * @return string DBMS specific SQL code portion needed to set the COLLATION
+     *                of a field declaration.
      */
     public function getCollationFieldDeclaration($collation)
     {
@@ -374,10 +379,10 @@ class MySqlPlatform extends AbstractPlatform
             $database = 'DATABASE()';
         }
 
-        return "SELECT COLUMN_NAME AS Field, COLUMN_TYPE AS Type, IS_NULLABLE AS `Null`, ".
-               "COLUMN_KEY AS `Key`, COLUMN_DEFAULT AS `Default`, EXTRA AS Extra, COLUMN_COMMENT AS Comment, " .
-               "CHARACTER_SET_NAME AS CharacterSet, COLLATION_NAME AS Collation ".
-               "FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = " . $database . " AND TABLE_NAME = " . $table;
+        return 'SELECT COLUMN_NAME AS Field, COLUMN_TYPE AS Type, IS_NULLABLE AS `Null`, '.
+               'COLUMN_KEY AS `Key`, COLUMN_DEFAULT AS `Default`, EXTRA AS Extra, COLUMN_COMMENT AS Comment, '.
+               'CHARACTER_SET_NAME AS CharacterSet, COLLATION_NAME AS Collation '.
+               'FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '.$database.' AND TABLE_NAME = '.$table;
     }
 
     /**
@@ -385,7 +390,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getCreateDatabaseSQL($name)
     {
-        return 'CREATE DATABASE ' . $name;
+        return 'CREATE DATABASE '.$name;
     }
 
     /**
@@ -393,46 +398,46 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getDropDatabaseSQL($name)
     {
-        return 'DROP DATABASE ' . $name;
+        return 'DROP DATABASE '.$name;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function _getCreateTableSQL($tableName, array $columns, array $options = array())
+    protected function _getCreateTableSQL($tableName, array $columns, array $options = [])
     {
         $queryFields = $this->getColumnDeclarationListSQL($columns);
 
         if (isset($options['uniqueConstraints']) && ! empty($options['uniqueConstraints'])) {
             foreach ($options['uniqueConstraints'] as $index => $definition) {
-                $queryFields .= ', ' . $this->getUniqueConstraintDeclarationSQL($index, $definition);
+                $queryFields .= ', '.$this->getUniqueConstraintDeclarationSQL($index, $definition);
             }
         }
 
         // add all indexes
         if (isset($options['indexes']) && ! empty($options['indexes'])) {
             foreach ($options['indexes'] as $index => $definition) {
-                $queryFields .= ', ' . $this->getIndexDeclarationSQL($index, $definition);
+                $queryFields .= ', '.$this->getIndexDeclarationSQL($index, $definition);
             }
         }
 
         // attach all primary keys
         if (isset($options['primary']) && ! empty($options['primary'])) {
             $keyColumns = array_unique(array_values($options['primary']));
-            $queryFields .= ', PRIMARY KEY(' . implode(', ', $keyColumns) . ')';
+            $queryFields .= ', PRIMARY KEY('.implode(', ', $keyColumns).')';
         }
 
         $query = 'CREATE ';
 
-        if (!empty($options['temporary'])) {
+        if (! empty($options['temporary'])) {
             $query .= 'TEMPORARY ';
         }
 
-        $query .= 'TABLE ' . $tableName . ' (' . $queryFields . ') ';
+        $query .= 'TABLE '.$tableName.' ('.$queryFields.') ';
         $query .= $this->buildTableOptions($options);
         $query .= $this->buildPartitionOptions($options);
 
-        $sql[]  = $query;
+        $sql[] = $query;
         $engine = 'INNODB';
 
         if (isset($options['engine'])) {
@@ -465,7 +470,6 @@ class MySqlPlatform extends AbstractPlatform
     /**
      * Build SQL for table options
      *
-     * @param array $options
      *
      * @return string
      */
@@ -475,24 +479,24 @@ class MySqlPlatform extends AbstractPlatform
             return $options['table_options'];
         }
 
-        $tableOptions = array();
+        $tableOptions = [];
 
         // Charset
-        if ( ! isset($options['charset'])) {
+        if (! isset($options['charset'])) {
             $options['charset'] = 'utf8';
         }
 
         $tableOptions[] = sprintf('DEFAULT CHARACTER SET %s', $options['charset']);
 
         // Collate
-        if ( ! isset($options['collate'])) {
+        if (! isset($options['collate'])) {
             $options['collate'] = 'utf8_unicode_ci';
         }
 
         $tableOptions[] = sprintf('COLLATE %s', $options['collate']);
 
         // Engine
-        if ( ! isset($options['engine'])) {
+        if (! isset($options['engine'])) {
             $options['engine'] = 'InnoDB';
         }
 
@@ -507,7 +511,7 @@ class MySqlPlatform extends AbstractPlatform
         if (isset($options['comment'])) {
             $comment = trim($options['comment'], " '");
 
-            $tableOptions[] = sprintf("COMMENT = %s ", $this->quoteStringLiteral($comment));
+            $tableOptions[] = sprintf('COMMENT = %s ', $this->quoteStringLiteral($comment));
         }
 
         // Row format
@@ -521,14 +525,13 @@ class MySqlPlatform extends AbstractPlatform
     /**
      * Build SQL for partition options.
      *
-     * @param array $options
      *
      * @return string
      */
     private function buildPartitionOptions(array $options)
     {
         return (isset($options['partition_options']))
-            ? ' ' . $options['partition_options']
+            ? ' '.$options['partition_options']
             : '';
     }
 
@@ -537,10 +540,10 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getAlterTableSQL(TableDiff $diff)
     {
-        $columnSql = array();
-        $queryParts = array();
+        $columnSql = [];
+        $queryParts = [];
         if ($diff->newName !== false) {
-            $queryParts[] = 'RENAME TO ' . $diff->getNewName()->getQuotedName($this);
+            $queryParts[] = 'RENAME TO '.$diff->getNewName()->getQuotedName($this);
         }
 
         foreach ($diff->addedColumns as $column) {
@@ -550,7 +553,7 @@ class MySqlPlatform extends AbstractPlatform
 
             $columnArray = $column->toArray();
             $columnArray['comment'] = $this->getColumnComment($column);
-            $queryParts[] = 'ADD ' . $this->getColumnDeclarationSQL($column->getQuotedName($this), $columnArray);
+            $queryParts[] = 'ADD '.$this->getColumnDeclarationSQL($column->getQuotedName($this), $columnArray);
         }
 
         foreach ($diff->removedColumns as $column) {
@@ -558,7 +561,7 @@ class MySqlPlatform extends AbstractPlatform
                 continue;
             }
 
-            $queryParts[] =  'DROP ' . $column->getQuotedName($this);
+            $queryParts[] = 'DROP '.$column->getQuotedName($this);
         }
 
         foreach ($diff->changedColumns as $columnDiff) {
@@ -579,8 +582,8 @@ class MySqlPlatform extends AbstractPlatform
             }
 
             $columnArray['comment'] = $this->getColumnComment($column);
-            $queryParts[] =  'CHANGE ' . ($columnDiff->getOldColumnName()->getQuotedName($this)) . ' '
-                    . $this->getColumnDeclarationSQL($column->getQuotedName($this), $columnArray);
+            $queryParts[] = 'CHANGE '.($columnDiff->getOldColumnName()->getQuotedName($this)).' '
+                    .$this->getColumnDeclarationSQL($column->getQuotedName($this), $columnArray);
         }
 
         foreach ($diff->renamedColumns as $oldColumnName => $column) {
@@ -591,22 +594,22 @@ class MySqlPlatform extends AbstractPlatform
             $oldColumnName = new Identifier($oldColumnName);
             $columnArray = $column->toArray();
             $columnArray['comment'] = $this->getColumnComment($column);
-            $queryParts[] =  'CHANGE ' . $oldColumnName->getQuotedName($this) . ' '
-                    . $this->getColumnDeclarationSQL($column->getQuotedName($this), $columnArray);
+            $queryParts[] = 'CHANGE '.$oldColumnName->getQuotedName($this).' '
+                    .$this->getColumnDeclarationSQL($column->getQuotedName($this), $columnArray);
         }
 
         if (isset($diff->addedIndexes['primary'])) {
             $keyColumns = array_unique(array_values($diff->addedIndexes['primary']->getColumns()));
-            $queryParts[] = 'ADD PRIMARY KEY (' . implode(', ', $keyColumns) . ')';
+            $queryParts[] = 'ADD PRIMARY KEY ('.implode(', ', $keyColumns).')';
             unset($diff->addedIndexes['primary']);
         }
 
-        $sql = array();
-        $tableSql = array();
+        $sql = [];
+        $tableSql = [];
 
-        if ( ! $this->onSchemaAlterTable($diff, $tableSql)) {
+        if (! $this->onSchemaAlterTable($diff, $tableSql)) {
             if (count($queryParts) > 0) {
-                $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' ' . implode(", ", $queryParts);
+                $sql[] = 'ALTER TABLE '.$diff->getName($this)->getQuotedName($this).' '.implode(', ', $queryParts);
             }
             $sql = array_merge(
                 $this->getPreAlterTableIndexForeignKeySQL($diff),
@@ -623,7 +626,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     protected function getPreAlterTableIndexForeignKeySQL(TableDiff $diff)
     {
-        $sql = array();
+        $sql = [];
         $table = $diff->getName($this)->getQuotedName($this);
 
         foreach ($diff->changedIndexes as $changedIndex) {
@@ -636,17 +639,17 @@ class MySqlPlatform extends AbstractPlatform
             foreach ($diff->addedIndexes as $addKey => $addIndex) {
                 if ($remIndex->getColumns() == $addIndex->getColumns()) {
 
-                    $indexClause = 'INDEX ' . $addIndex->getName();
+                    $indexClause = 'INDEX '.$addIndex->getName();
 
                     if ($addIndex->isPrimary()) {
                         $indexClause = 'PRIMARY KEY';
                     } elseif ($addIndex->isUnique()) {
-                        $indexClause = 'UNIQUE INDEX ' . $addIndex->getName();
+                        $indexClause = 'UNIQUE INDEX '.$addIndex->getName();
                     }
 
-                    $query = 'ALTER TABLE ' . $table . ' DROP INDEX ' . $remIndex->getName() . ', ';
-                    $query .= 'ADD ' . $indexClause;
-                    $query .= ' (' . $this->getIndexFieldDeclarationListSQL($addIndex->getQuotedColumns($this)) . ')';
+                    $query = 'ALTER TABLE '.$table.' DROP INDEX '.$remIndex->getName().', ';
+                    $query .= 'ADD '.$indexClause;
+                    $query .= ' ('.$this->getIndexFieldDeclarationListSQL($addIndex->getQuotedColumns($this)).')';
 
                     $sql[] = $query;
 
@@ -665,10 +668,10 @@ class MySqlPlatform extends AbstractPlatform
         }
 
         // Suppress foreign key constraint propagation on non-supporting engines.
-        if ('INNODB' !== $engine) {
-            $diff->addedForeignKeys   = array();
-            $diff->changedForeignKeys = array();
-            $diff->removedForeignKeys = array();
+        if ($engine !== 'INNODB') {
+            $diff->addedForeignKeys = [];
+            $diff->changedForeignKeys = [];
+            $diff->removedForeignKeys = [];
         }
 
         $sql = array_merge(
@@ -682,14 +685,11 @@ class MySqlPlatform extends AbstractPlatform
     }
 
     /**
-     * @param TableDiff $diff
-     * @param Index     $index
-     *
      * @return string[]
      */
     private function getPreAlterTableAlterPrimaryKeySQL(TableDiff $diff, Index $index)
     {
-        $sql = array();
+        $sql = [];
 
         if (! $index->isPrimary() || ! $diff->fromTable instanceof Table) {
             return $sql;
@@ -704,7 +704,7 @@ class MySqlPlatform extends AbstractPlatform
             if ($column->getAutoincrement() === true) {
                 $column->setAutoincrement(false);
 
-                $sql[] = 'ALTER TABLE ' . $tableName . ' MODIFY ' .
+                $sql[] = 'ALTER TABLE '.$tableName.' MODIFY '.
                     $this->getColumnDeclarationSQL($column->getQuotedName($this), $column->toArray());
 
                 // original autoincrement information might be needed later on by other parts of the table alteration
@@ -716,13 +716,12 @@ class MySqlPlatform extends AbstractPlatform
     }
 
     /**
-     * @param TableDiff $diff The table diff to gather the SQL for.
-     *
+     * @param  TableDiff  $diff  The table diff to gather the SQL for.
      * @return array
      */
     private function getPreAlterTableAlterIndexForeignKeySQL(TableDiff $diff)
     {
-        $sql = array();
+        $sql = [];
         $table = $diff->getName($this)->getQuotedName($this);
 
         foreach ($diff->changedIndexes as $changedIndex) {
@@ -737,7 +736,7 @@ class MySqlPlatform extends AbstractPlatform
                         // before we can drop and recreate the primary key.
                         $column->setAutoincrement(false);
 
-                        $sql[] = 'ALTER TABLE ' . $table . ' MODIFY ' .
+                        $sql[] = 'ALTER TABLE '.$table.' MODIFY '.
                             $this->getColumnDeclarationSQL($column->getQuotedName($this), $column->toArray());
 
                         // Restore the autoincrement attribute as it might be needed later on
@@ -752,13 +751,12 @@ class MySqlPlatform extends AbstractPlatform
     }
 
     /**
-     * @param TableDiff $diff The table diff to gather the SQL for.
-     *
+     * @param  TableDiff  $diff  The table diff to gather the SQL for.
      * @return array
      */
     protected function getPreAlterTableRenameIndexForeignKeySQL(TableDiff $diff)
     {
-        $sql = array();
+        $sql = [];
         $tableName = $diff->getName($this)->getQuotedName($this);
 
         foreach ($this->getRemainingForeignKeyConstraintsRequiringRenamedIndexes($diff) as $foreignKey) {
@@ -776,17 +774,16 @@ class MySqlPlatform extends AbstractPlatform
      * "Remaining" here refers to the diff between the foreign keys currently defined in the associated
      * table and the foreign keys to be removed.
      *
-     * @param TableDiff $diff The table diff to evaluate.
-     *
+     * @param  TableDiff  $diff  The table diff to evaluate.
      * @return array
      */
     private function getRemainingForeignKeyConstraintsRequiringRenamedIndexes(TableDiff $diff)
     {
         if (empty($diff->renamedIndexes) || ! $diff->fromTable instanceof Table) {
-            return array();
+            return [];
         }
 
-        $foreignKeys = array();
+        $foreignKeys = [];
         /** @var \Doctrine\DBAL\Schema\ForeignKeyConstraint[] $remainingForeignKeys */
         $remainingForeignKeys = array_diff_key(
             $diff->fromTable->getForeignKeys(),
@@ -818,14 +815,13 @@ class MySqlPlatform extends AbstractPlatform
     }
 
     /**
-     * @param TableDiff $diff The table diff to gather the SQL for.
-     *
+     * @param  TableDiff  $diff  The table diff to gather the SQL for.
      * @return array
      */
     protected function getPostAlterTableRenameIndexForeignKeySQL(TableDiff $diff)
     {
-        $sql = array();
-        $tableName = (false !== $diff->newName)
+        $sql = [];
+        $tableName = ($diff->newName !== false)
             ? $diff->getNewName()->getQuotedName($this)
             : $diff->getName($this)->getQuotedName($this);
 
@@ -860,7 +856,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getIntegerTypeDeclarationSQL(array $field)
     {
-        return 'INT' . $this->_getCommonIntegerTypeDeclarationSQL($field);
+        return 'INT'.$this->_getCommonIntegerTypeDeclarationSQL($field);
     }
 
     /**
@@ -868,7 +864,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getBigIntTypeDeclarationSQL(array $field)
     {
-        return 'BIGINT' . $this->_getCommonIntegerTypeDeclarationSQL($field);
+        return 'BIGINT'.$this->_getCommonIntegerTypeDeclarationSQL($field);
     }
 
     /**
@@ -876,7 +872,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getSmallIntTypeDeclarationSQL(array $field)
     {
-        return 'SMALLINT' . $this->_getCommonIntegerTypeDeclarationSQL($field);
+        return 'SMALLINT'.$this->_getCommonIntegerTypeDeclarationSQL($field);
     }
 
     /**
@@ -885,12 +881,12 @@ class MySqlPlatform extends AbstractPlatform
     protected function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
     {
         $autoinc = '';
-        if ( ! empty($columnDef['autoincrement'])) {
+        if (! empty($columnDef['autoincrement'])) {
             $autoinc = ' AUTO_INCREMENT';
         }
         $unsigned = (isset($columnDef['unsigned']) && $columnDef['unsigned']) ? ' UNSIGNED' : '';
 
-        return $unsigned . $autoinc;
+        return $unsigned.$autoinc;
     }
 
     /**
@@ -900,7 +896,7 @@ class MySqlPlatform extends AbstractPlatform
     {
         $query = '';
         if ($foreignKey->hasOption('match')) {
-            $query .= ' MATCH ' . $foreignKey->getOption('match');
+            $query .= ' MATCH '.$foreignKey->getOption('match');
         }
         $query .= parent::getAdvancedForeignKeyOptionsSQL($foreignKey);
 
@@ -910,7 +906,7 @@ class MySqlPlatform extends AbstractPlatform
     /**
      * {@inheritDoc}
      */
-    public function getDropIndexSQL($index, $table=null)
+    public function getDropIndexSQL($index, $table = null)
     {
         if ($index instanceof Index) {
             $indexName = $index->getQuotedName($this);
@@ -922,7 +918,7 @@ class MySqlPlatform extends AbstractPlatform
 
         if ($table instanceof Table) {
             $table = $table->getQuotedName($this);
-        } elseif (!is_string($table)) {
+        } elseif (! is_string($table)) {
             throw new \InvalidArgumentException('MysqlPlatform::getDropIndexSQL() expects $table parameter to be string or \Doctrine\DBAL\Schema\Table.');
         }
 
@@ -932,17 +928,16 @@ class MySqlPlatform extends AbstractPlatform
             return $this->getDropPrimaryKeySQL($table);
         }
 
-        return 'DROP INDEX ' . $indexName . ' ON ' . $table;
+        return 'DROP INDEX '.$indexName.' ON '.$table;
     }
 
     /**
-     * @param string $table
-     *
+     * @param  string  $table
      * @return string
      */
     protected function getDropPrimaryKeySQL($table)
     {
-        return 'ALTER TABLE ' . $table . ' DROP PRIMARY KEY';
+        return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
     }
 
     /**
@@ -950,7 +945,7 @@ class MySqlPlatform extends AbstractPlatform
      */
     public function getSetTransactionIsolationSQL($level)
     {
-        return 'SET SESSION TRANSACTION ISOLATION LEVEL ' . $this->_getTransactionIsolationLevelSQL($level);
+        return 'SET SESSION TRANSACTION ISOLATION LEVEL '.$this->_getTransactionIsolationLevelSQL($level);
     }
 
     /**
@@ -974,38 +969,38 @@ class MySqlPlatform extends AbstractPlatform
      */
     protected function initializeDoctrineTypeMappings()
     {
-        $this->doctrineTypeMapping = array(
-            'tinyint'       => 'boolean',
-            'smallint'      => 'smallint',
-            'mediumint'     => 'integer',
-            'int'           => 'integer',
-            'integer'       => 'integer',
-            'bigint'        => 'bigint',
-            'tinytext'      => 'text',
-            'mediumtext'    => 'text',
-            'longtext'      => 'text',
-            'text'          => 'text',
-            'varchar'       => 'string',
-            'string'        => 'string',
-            'char'          => 'string',
-            'date'          => 'date',
-            'datetime'      => 'datetime',
-            'timestamp'     => 'datetime',
-            'time'          => 'time',
-            'float'         => 'float',
-            'double'        => 'float',
-            'real'          => 'float',
-            'decimal'       => 'decimal',
-            'numeric'       => 'decimal',
-            'year'          => 'date',
-            'longblob'      => 'blob',
-            'blob'          => 'blob',
-            'mediumblob'    => 'blob',
-            'tinyblob'      => 'blob',
-            'binary'        => 'binary',
-            'varbinary'     => 'binary',
-            'set'           => 'simple_array',
-        );
+        $this->doctrineTypeMapping = [
+            'tinyint' => 'boolean',
+            'smallint' => 'smallint',
+            'mediumint' => 'integer',
+            'int' => 'integer',
+            'integer' => 'integer',
+            'bigint' => 'bigint',
+            'tinytext' => 'text',
+            'mediumtext' => 'text',
+            'longtext' => 'text',
+            'text' => 'text',
+            'varchar' => 'string',
+            'string' => 'string',
+            'char' => 'string',
+            'date' => 'date',
+            'datetime' => 'datetime',
+            'timestamp' => 'datetime',
+            'time' => 'time',
+            'float' => 'float',
+            'double' => 'float',
+            'real' => 'float',
+            'decimal' => 'decimal',
+            'numeric' => 'decimal',
+            'year' => 'date',
+            'longblob' => 'blob',
+            'blob' => 'blob',
+            'mediumblob' => 'blob',
+            'tinyblob' => 'blob',
+            'binary' => 'binary',
+            'varbinary' => 'binary',
+            'set' => 'simple_array',
+        ];
     }
 
     /**
@@ -1042,11 +1037,11 @@ class MySqlPlatform extends AbstractPlatform
     {
         if ($table instanceof Table) {
             $table = $table->getQuotedName($this);
-        } elseif (!is_string($table)) {
+        } elseif (! is_string($table)) {
             throw new \InvalidArgumentException('getDropTableSQL() expects $table parameter to be string or \Doctrine\DBAL\Schema\Table.');
         }
 
-        return 'DROP TEMPORARY TABLE ' . $table;
+        return 'DROP TEMPORARY TABLE '.$table;
     }
 
     /**
@@ -1056,13 +1051,12 @@ class MySqlPlatform extends AbstractPlatform
      *     MEDIUMBLOB : 2 ^ 24 - 1 = 16777215
      *     LONGBLOB   : 2 ^ 32 - 1 = 4294967295
      *
-     * @param array $field
      *
      * @return string
      */
     public function getBlobTypeDeclarationSQL(array $field)
     {
-        if ( ! empty($field['length']) && is_numeric($field['length'])) {
+        if (! empty($field['length']) && is_numeric($field['length'])) {
             $length = $field['length'];
 
             if ($length <= static::LENGTH_LIMIT_TINYBLOB) {

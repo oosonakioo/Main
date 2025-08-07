@@ -2,7 +2,6 @@
 
 namespace Mcamara\LaravelLocalization\Middleware;
 
-
 class LaravelLocalizationMiddlewareBase
 {
     /**

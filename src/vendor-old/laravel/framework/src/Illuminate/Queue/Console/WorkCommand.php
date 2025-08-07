@@ -3,13 +3,13 @@
 namespace Illuminate\Queue\Console;
 
 use Carbon\Carbon;
-use Illuminate\Queue\Worker;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
-use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Queue\Worker;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class WorkCommand extends Command
 {
@@ -37,7 +37,6 @@ class WorkCommand extends Command
     /**
      * Create a new queue listen command.
      *
-     * @param  \Illuminate\Queue\Worker  $worker
      * @return void
      */
     public function __construct(Worker $worker)
@@ -129,7 +128,6 @@ class WorkCommand extends Command
     /**
      * Write the status output for the queue worker.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  bool  $failed
      * @return void
      */

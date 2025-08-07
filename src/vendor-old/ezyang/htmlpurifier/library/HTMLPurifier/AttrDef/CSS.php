@@ -2,6 +2,7 @@
 
 /**
  * Validates the HTML attribute style, otherwise known as CSS.
+ *
  * @note We don't implement the whole CSS specification, so it might be
  *       difficult to reuse this component in the context of validating
  *       actual stylesheet declarations.
@@ -13,11 +14,10 @@
  */
 class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
 {
-
     /**
-     * @param string $css
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
+     * @param  string  $css
+     * @param  HTMLPurifier_Config  $config
+     * @param  HTMLPurifier_Context  $context
      * @return bool|string
      */
     public function validate($css, $config, $context)
@@ -25,7 +25,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         $css = $this->parseCDATA($css);
 
         $definition = $config->getCSSDefinition();
-        $allow_duplicates = $config->get("CSS.AllowDuplicates");
+        $allow_duplicates = $config->get('CSS.AllowDuplicates');
 
         // we're going to break the spec and explode by semicolons.
         // This is because semicolon rarely appears in escaped form
@@ -34,7 +34,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         // for details
 
         $declarations = explode(';', $css);
-        $propvalues = array();
+        $propvalues = [];
         $new_declarations = '';
 
         /**
@@ -44,13 +44,13 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         $context->register('CurrentCSSProperty', $property);
 
         foreach ($declarations as $declaration) {
-            if (!$declaration) {
+            if (! $declaration) {
                 continue;
             }
-            if (!strpos($declaration, ':')) {
+            if (! strpos($declaration, ':')) {
                 continue;
             }
-            list($property, $value) = explode(':', $declaration, 2);
+            [$property, $value] = explode(':', $declaration, 2);
             $property = trim($property);
             $value = trim($value);
             $ok = false;
@@ -68,7 +68,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
                     break;
                 }
             } while (0);
-            if (!$ok) {
+            if (! $ok) {
                 continue;
             }
             // inefficient call, since the validator will do this again
@@ -105,7 +105,6 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         return $new_declarations ? $new_declarations : false;
 
     }
-
 }
 
 // vim: et sw=4 sts=4

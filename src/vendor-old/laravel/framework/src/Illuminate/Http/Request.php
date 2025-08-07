@@ -2,14 +2,14 @@
 
 namespace Illuminate\Http;
 
-use Closure;
 use ArrayAccess;
-use SplFileInfo;
-use RuntimeException;
+use Closure;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Support\Arrayable;
+use RuntimeException;
+use SplFileInfo;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
@@ -114,7 +114,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Get the full URL for the request with the added query string parameters.
      *
-     * @param  array  $query
      * @return string
      */
     public function fullUrlWithQuery(array $query)
@@ -438,7 +437,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Convert the given array of Symfony UploadedFiles to custom Laravel UploadedFiles.
      *
-     * @param  array  $files
      * @return array
      */
     protected function convertUploadedFiles(array $files)
@@ -549,7 +547,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * Flash the input for the current request to the session.
      *
      * @param  string  $filter
-     * @param  array   $keys
+     * @param  array  $keys
      * @return void
      */
     public function flash($filter = null, $keys = [])
@@ -615,7 +613,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Merge new input into the current request's input array.
      *
-     * @param  array  $input
      * @return void
      */
     public function merge(array $input)
@@ -626,7 +623,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Replace the input for the current request.
      *
-     * @param  array  $input
      * @return void
      */
     public function replace(array $input)
@@ -638,7 +634,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * Get the JSON payload for the request.
      *
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function json($key = null, $default = null)
@@ -824,7 +820,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Create an Illuminate request from a Symfony instance.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return \Illuminate\Http\Request
      */
     public static function createFromBase(SymfonyRequest $request)
@@ -852,7 +847,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null)
+    public function duplicate(?array $query = null, ?array $request = null, ?array $attributes = null, ?array $cookies = null, ?array $files = null, ?array $server = null)
     {
         return parent::duplicate($query, $request, $attributes, $cookies, array_filter((array) $files), $server);
     }
@@ -887,8 +882,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Get the route handling the request.
      *
-     * @param string|null $param
-     *
+     * @param  string|null  $param
      * @return \Illuminate\Routing\Route|object|string
      */
     public function route($param = null)
@@ -938,7 +932,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Set the user resolver callback.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function setUserResolver(Closure $callback)
@@ -963,7 +956,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     /**
      * Set the route resolver callback.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function setRouteResolver(Closure $callback)

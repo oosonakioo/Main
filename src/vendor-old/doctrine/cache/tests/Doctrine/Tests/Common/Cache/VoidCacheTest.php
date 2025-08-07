@@ -9,25 +9,25 @@ use Doctrine\Common\Cache\VoidCache;
  */
 class VoidCacheTest extends \PHPUnit_Framework_TestCase
 {
-    public function testShouldAlwaysReturnFalseOnContains()
+    public function test_should_always_return_false_on_contains()
     {
-        $cache = new VoidCache();
+        $cache = new VoidCache;
 
         $this->assertFalse($cache->contains('foo'));
         $this->assertFalse($cache->contains('bar'));
     }
 
-    public function testShouldAlwaysReturnFalseOnFetch()
+    public function test_should_always_return_false_on_fetch()
     {
-        $cache = new VoidCache();
+        $cache = new VoidCache;
 
         $this->assertFalse($cache->fetch('foo'));
         $this->assertFalse($cache->fetch('bar'));
     }
 
-    public function testShouldAlwaysReturnTrueOnSaveButNotStoreAnything()
+    public function test_should_always_return_true_on_save_but_not_store_anything()
     {
-        $cache = new VoidCache();
+        $cache = new VoidCache;
 
         $this->assertTrue($cache->save('foo', 'fooVal'));
 
@@ -35,23 +35,23 @@ class VoidCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($cache->fetch('foo'));
     }
 
-    public function testShouldAlwaysReturnTrueOnDelete()
+    public function test_should_always_return_true_on_delete()
     {
-        $cache = new VoidCache();
+        $cache = new VoidCache;
 
         $this->assertTrue($cache->delete('foo'));
     }
 
-    public function testShouldAlwaysReturnNullOnGetStatus()
+    public function test_should_always_return_null_on_get_status()
     {
-        $cache = new VoidCache();
+        $cache = new VoidCache;
 
         $this->assertNull($cache->getStats());
     }
 
-    public function testShouldAlwaysReturnTrueOnFlush()
+    public function test_should_always_return_true_on_flush()
     {
-        $cache = new VoidCache();
+        $cache = new VoidCache;
 
         $this->assertTrue($cache->flushAll());
     }

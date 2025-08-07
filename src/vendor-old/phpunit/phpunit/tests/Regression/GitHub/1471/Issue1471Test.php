@@ -1,11 +1,12 @@
 <?php
+
 class Issue1471Test extends PHPUnit_Framework_TestCase
 {
-    public function testFailure()
+    public function test_failure()
     {
         $this->expectOutputString('*');
 
-        print '*';
+        echo '*';
 
         $this->assertTrue(false);
     }

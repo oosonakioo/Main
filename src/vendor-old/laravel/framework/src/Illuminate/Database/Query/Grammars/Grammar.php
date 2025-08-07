@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Query\Grammars;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Grammar as BaseGrammar;
+use Illuminate\Database\Query\Builder;
 
 class Grammar extends BaseGrammar
 {
@@ -37,7 +37,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a select query into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     public function compileSelect(Builder $query)
@@ -58,7 +57,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the components necessary for a select clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
      */
     protected function compileComponents(Builder $query)
@@ -82,7 +80,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile an aggregated select clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $aggregate
      * @return string
      */
@@ -103,7 +100,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "select *" portion of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $columns
      * @return string|null
      */
@@ -124,7 +120,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "from" portion of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
      * @return string
      */
@@ -136,7 +131,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "join" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $joins
      * @return string
      */
@@ -152,7 +146,7 @@ class Grammar extends BaseGrammar
             // Cross joins generate a cartesian product between this first table and a joined
             // table. In case the user didn't specify any "on" clauses on the join we will
             // append this SQL and jump right back into the next iteration of this loop.
-            if ($type === 'cross' &&  ! $join->clauses) {
+            if ($type === 'cross' && ! $join->clauses) {
                 $sql[] = "cross join $table";
 
                 continue;
@@ -186,7 +180,6 @@ class Grammar extends BaseGrammar
     /**
      * Create a join clause constraint segment.
      *
-     * @param  array  $clause
      * @return string
      */
     protected function compileJoinConstraint(array $clause)
@@ -213,7 +206,6 @@ class Grammar extends BaseGrammar
     /**
      * Create a nested join clause constraint segment.
      *
-     * @param  array  $clause
      * @return string
      */
     protected function compileNestedJoinConstraint(array $clause)
@@ -234,7 +226,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "where" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     protected function compileWheres(Builder $query)
@@ -269,7 +260,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a nested where clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -283,8 +273,7 @@ class Grammar extends BaseGrammar
     /**
      * Compile a where condition with a sub-select.
      *
-     * @param  \Illuminate\Database\Query\Builder $query
-     * @param  array   $where
+     * @param  array  $where
      * @return string
      */
     protected function whereSub(Builder $query, $where)
@@ -297,7 +286,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a basic where clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -311,7 +299,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a where clause comparing two columns..
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -325,7 +312,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "between" where clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -339,7 +325,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a where exists clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -351,7 +336,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a where exists clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -363,7 +347,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where in" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -381,7 +364,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where not in" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -399,7 +381,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a where in sub-select clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -413,7 +394,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a where not in sub-select clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -427,7 +407,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where null" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -439,7 +418,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where not null" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -451,7 +429,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where date" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -463,7 +440,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where time" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -475,7 +451,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where day" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -487,7 +462,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where month" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -499,7 +473,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a "where year" clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -512,7 +485,6 @@ class Grammar extends BaseGrammar
      * Compile a date based where clause.
      *
      * @param  string  $type
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -526,7 +498,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a raw where clause.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
      * @return string
      */
@@ -538,7 +509,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "group by" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $groups
      * @return string
      */
@@ -550,7 +520,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "having" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $havings
      * @return string
      */
@@ -564,7 +533,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a single having clause.
      *
-     * @param  array   $having
      * @return string
      */
     protected function compileHaving(array $having)
@@ -582,7 +550,7 @@ class Grammar extends BaseGrammar
     /**
      * Compile a basic having clause.
      *
-     * @param  array   $having
+     * @param  array  $having
      * @return string
      */
     protected function compileBasicHaving($having)
@@ -597,7 +565,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "order by" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $orders
      * @return string
      */
@@ -626,7 +593,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "limit" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  int  $limit
      * @return string
      */
@@ -638,7 +604,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "offset" portions of the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  int  $offset
      * @return string
      */
@@ -650,7 +615,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the "union" queries attached to the main query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     protected function compileUnions(Builder $query)
@@ -679,7 +643,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a single union statement.
      *
-     * @param  array  $union
      * @return string
      */
     protected function compileUnion(array $union)
@@ -692,7 +655,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile an exists statement into SQL.
      *
-     * @param \Illuminate\Database\Query\Builder $query
      * @return string
      */
     public function compileExists(Builder $query)
@@ -705,8 +667,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile an insert statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $values
      * @return string
      */
     public function compileInsert(Builder $query, array $values)
@@ -739,8 +699,7 @@ class Grammar extends BaseGrammar
     /**
      * Compile an insert and get ID statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array   $values
+     * @param  array  $values
      * @param  string  $sequence
      * @return string
      */
@@ -752,7 +711,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile an update statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
      * @return string
      */
@@ -791,8 +749,6 @@ class Grammar extends BaseGrammar
     /**
      * Prepare the bindings for an update statement.
      *
-     * @param  array  $bindings
-     * @param  array  $values
      * @return array
      */
     public function prepareBindingsForUpdate(array $bindings, array $values)
@@ -803,7 +759,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a delete statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     public function compileDelete(Builder $query)
@@ -818,7 +773,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile a truncate table statement into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
      */
     public function compileTruncate(Builder $query)
@@ -829,7 +783,6 @@ class Grammar extends BaseGrammar
     /**
      * Compile the lock into SQL.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
      * @return string
      */
@@ -873,7 +826,7 @@ class Grammar extends BaseGrammar
     /**
      * Concatenate an array of segments, removing empties.
      *
-     * @param  array   $segments
+     * @param  array  $segments
      * @return string
      */
     protected function concatenate($segments)

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -18,6 +19,7 @@ use SebastianBergmann\Exporter\Exporter;
 class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Framework_MockObject_Stub
 {
     protected $stack;
+
     protected $value;
 
     public function __construct($stack)

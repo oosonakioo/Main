@@ -18,30 +18,25 @@ use Monolog\Logger;
  */
 class MongoDBFormatterTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        if (!class_exists('MongoDate')) {
+        if (! class_exists('MongoDate')) {
             $this->markTestSkipped('mongo extension not installed');
         }
     }
 
     public function constructArgumentProvider()
     {
-        return array(
-            array(1, true, 1, true),
-            array(0, false, 0, false),
-        );
+        return [
+            [1, true, 1, true],
+            [0, false, 0, false],
+        ];
     }
 
     /**
-     * @param $traceDepth
-     * @param $traceAsString
-     * @param $expectedTraceDepth
-     * @param $expectedTraceAsString
-     *
      * @dataProvider constructArgumentProvider
      */
-    public function testConstruct($traceDepth, $traceAsString, $expectedTraceDepth, $expectedTraceAsString)
+    public function test_construct($traceDepth, $traceAsString, $expectedTraceDepth, $expectedTraceAsString)
     {
         $formatter = new MongoDBFormatter($traceDepth, $traceAsString);
 
@@ -54,66 +49,66 @@ class MongoDBFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedTraceDepth, $reflDepth->getValue($formatter));
     }
 
-    public function testSimpleFormat()
+    public function test_simple_format()
     {
-        $record = array(
+        $record = [
             'message' => 'some log message',
-            'context' => array(),
+            'context' => [],
             'level' => Logger::WARNING,
             'level_name' => Logger::getLevelName(Logger::WARNING),
             'channel' => 'test',
             'datetime' => new \DateTime('2014-02-01 00:00:00'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
-        $formatter = new MongoDBFormatter();
+        $formatter = new MongoDBFormatter;
         $formattedRecord = $formatter->format($record);
 
         $this->assertCount(7, $formattedRecord);
         $this->assertEquals('some log message', $formattedRecord['message']);
-        $this->assertEquals(array(), $formattedRecord['context']);
+        $this->assertEquals([], $formattedRecord['context']);
         $this->assertEquals(Logger::WARNING, $formattedRecord['level']);
         $this->assertEquals(Logger::getLevelName(Logger::WARNING), $formattedRecord['level_name']);
         $this->assertEquals('test', $formattedRecord['channel']);
         $this->assertInstanceOf('\MongoDate', $formattedRecord['datetime']);
         $this->assertEquals('0.00000000 1391212800', $formattedRecord['datetime']->__toString());
-        $this->assertEquals(array(), $formattedRecord['extra']);
+        $this->assertEquals([], $formattedRecord['extra']);
     }
 
-    public function testRecursiveFormat()
+    public function test_recursive_format()
     {
-        $someObject = new \stdClass();
+        $someObject = new \stdClass;
         $someObject->foo = 'something';
         $someObject->bar = 'stuff';
 
-        $record = array(
+        $record = [
             'message' => 'some log message',
-            'context' => array(
+            'context' => [
                 'stuff' => new \DateTime('2014-02-01 02:31:33'),
                 'some_object' => $someObject,
                 'context_string' => 'some string',
                 'context_int' => 123456,
                 'except' => new \Exception('exception message', 987),
-            ),
+            ],
             'level' => Logger::WARNING,
             'level_name' => Logger::getLevelName(Logger::WARNING),
             'channel' => 'test',
             'datetime' => new \DateTime('2014-02-01 00:00:00'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
-        $formatter = new MongoDBFormatter();
+        $formatter = new MongoDBFormatter;
         $formattedRecord = $formatter->format($record);
 
         $this->assertCount(5, $formattedRecord['context']);
         $this->assertInstanceOf('\MongoDate', $formattedRecord['context']['stuff']);
         $this->assertEquals('0.00000000 1391221893', $formattedRecord['context']['stuff']->__toString());
         $this->assertEquals(
-            array(
+            [
                 'foo' => 'something',
                 'bar' => 'stuff',
                 'class' => 'stdClass',
-            ),
+            ],
             $formattedRecord['context']['some_object']
         );
         $this->assertEquals('some string', $formattedRecord['context']['context_string']);
@@ -128,129 +123,129 @@ class MongoDBFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Exception', $formattedRecord['context']['except']['class']);
     }
 
-    public function testFormatDepthArray()
+    public function test_format_depth_array()
     {
-        $record = array(
+        $record = [
             'message' => 'some log message',
-            'context' => array(
-                'nest2' => array(
+            'context' => [
+                'nest2' => [
                     'property' => 'anything',
-                    'nest3' => array(
+                    'nest3' => [
                         'nest4' => 'value',
                         'property' => 'nothing',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             'level' => Logger::WARNING,
             'level_name' => Logger::getLevelName(Logger::WARNING),
             'channel' => 'test',
             'datetime' => new \DateTime('2014-02-01 00:00:00'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
         $formatter = new MongoDBFormatter(2);
         $formattedResult = $formatter->format($record);
 
         $this->assertEquals(
-            array(
-                'nest2' => array(
+            [
+                'nest2' => [
                     'property' => 'anything',
                     'nest3' => '[...]',
-                ),
-            ),
+                ],
+            ],
             $formattedResult['context']
         );
     }
 
-    public function testFormatDepthArrayInfiniteNesting()
+    public function test_format_depth_array_infinite_nesting()
     {
-        $record = array(
+        $record = [
             'message' => 'some log message',
-            'context' => array(
-                'nest2' => array(
+            'context' => [
+                'nest2' => [
                     'property' => 'something',
-                    'nest3' => array(
+                    'nest3' => [
                         'property' => 'anything',
-                        'nest4' => array(
+                        'nest4' => [
                             'property' => 'nothing',
-                        ),
-                    ),
-                ),
-            ),
+                        ],
+                    ],
+                ],
+            ],
             'level' => Logger::WARNING,
             'level_name' => Logger::getLevelName(Logger::WARNING),
             'channel' => 'test',
             'datetime' => new \DateTime('2014-02-01 00:00:00'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
         $formatter = new MongoDBFormatter(0);
         $formattedResult = $formatter->format($record);
 
         $this->assertEquals(
-            array(
-                'nest2' => array(
+            [
+                'nest2' => [
                     'property' => 'something',
-                    'nest3' => array(
+                    'nest3' => [
                         'property' => 'anything',
-                        'nest4' => array(
+                        'nest4' => [
                             'property' => 'nothing',
-                        ),
-                    ),
-                ),
-            ),
+                        ],
+                    ],
+                ],
+            ],
             $formattedResult['context']
         );
     }
 
-    public function testFormatDepthObjects()
+    public function test_format_depth_objects()
     {
-        $someObject = new \stdClass();
+        $someObject = new \stdClass;
         $someObject->property = 'anything';
-        $someObject->nest3 = new \stdClass();
+        $someObject->nest3 = new \stdClass;
         $someObject->nest3->property = 'nothing';
         $someObject->nest3->nest4 = 'invisible';
 
-        $record = array(
+        $record = [
             'message' => 'some log message',
-            'context' => array(
+            'context' => [
                 'nest2' => $someObject,
-            ),
+            ],
             'level' => Logger::WARNING,
             'level_name' => Logger::getLevelName(Logger::WARNING),
             'channel' => 'test',
             'datetime' => new \DateTime('2014-02-01 00:00:00'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
         $formatter = new MongoDBFormatter(2, true);
         $formattedResult = $formatter->format($record);
 
         $this->assertEquals(
-            array(
-                'nest2' => array(
+            [
+                'nest2' => [
                     'property' => 'anything',
                     'nest3' => '[...]',
                     'class' => 'stdClass',
-                ),
-            ),
+                ],
+            ],
             $formattedResult['context']
         );
     }
 
-    public function testFormatDepthException()
+    public function test_format_depth_exception()
     {
-        $record = array(
+        $record = [
             'message' => 'some log message',
-            'context' => array(
+            'context' => [
                 'nest2' => new \Exception('exception message', 987),
-            ),
+            ],
             'level' => Logger::WARNING,
             'level_name' => Logger::getLevelName(Logger::WARNING),
             'channel' => 'test',
             'datetime' => new \DateTime('2014-02-01 00:00:00'),
-            'extra' => array(),
-        );
+            'extra' => [],
+        ];
 
         $formatter = new MongoDBFormatter(2, false);
         $formattedRecord = $formatter->format($record);

@@ -9,14 +9,14 @@ class Size
     /**
      * Width
      *
-     * @var integer
+     * @var int
      */
     public $width;
 
     /**
      * Height
      *
-     * @var integer
+     * @var int
      */
     public $height;
 
@@ -30,11 +30,10 @@ class Size
     /**
      * Creates a new Size instance
      *
-     * @param integer $width
-     * @param integer $height
-     * @param Point   $pivot
+     * @param  int  $width
+     * @param  int  $height
      */
-    public function __construct($width = null, $height = null, Point $pivot = null)
+    public function __construct($width = null, $height = null, ?Point $pivot = null)
     {
         $this->width = is_numeric($width) ? intval($width) : 1;
         $this->height = is_numeric($height) ? intval($height) : 1;
@@ -44,8 +43,8 @@ class Size
     /**
      * Set the width and height absolutely
      *
-     * @param integer $width
-     * @param integer $height
+     * @param  int  $width
+     * @param  int  $height
      */
     public function set($width, $height)
     {
@@ -55,8 +54,6 @@ class Size
 
     /**
      * Set current pivot point
-     *
-     * @param Point $point
      */
     public function setPivot(Point $point)
     {
@@ -66,7 +63,7 @@ class Size
     /**
      * Get the current width
      *
-     * @return integer
+     * @return int
      */
     public function getWidth()
     {
@@ -76,7 +73,7 @@ class Size
     /**
      * Get the current height
      *
-     * @return integer
+     * @return int
      */
     public function getHeight()
     {
@@ -96,16 +93,15 @@ class Size
     /**
      * Resize to desired width and/or height
      *
-     * @param  integer $width
-     * @param  integer $height
-     * @param  Closure $callback
+     * @param  int  $width
+     * @param  int  $height
      * @return Size
      */
-    public function resize($width, $height, Closure $callback = null)
+    public function resize($width, $height, ?Closure $callback = null)
     {
         if (is_null($width) && is_null($height)) {
             throw new \Intervention\Image\Exception\InvalidArgumentException(
-                "Width or height needs to be defined."
+                'Width or height needs to be defined.'
             );
         }
 
@@ -132,11 +128,10 @@ class Size
     /**
      * Scale size according to given constraints
      *
-     * @param  integer $width
-     * @param  Closure $callback
+     * @param  int  $width
      * @return Size
      */
-    private function resizeWidth($width, Closure $callback = null)
+    private function resizeWidth($width, ?Closure $callback = null)
     {
         $constraint = $this->getConstraint($callback);
 
@@ -168,11 +163,10 @@ class Size
     /**
      * Scale size according to given constraints
      *
-     * @param  integer $height
-     * @param  Closure $callback
+     * @param  int  $height
      * @return Size
      */
-    private function resizeHeight($height, Closure $callback = null)
+    private function resizeHeight($height, ?Closure $callback = null)
     {
         $constraint = $this->getConstraint($callback);
 
@@ -205,7 +199,6 @@ class Size
      * Calculate the relative position to another Size
      * based on the pivot point settings of both sizes.
      *
-     * @param  Size   $size
      * @return \Intervention\Image\Point
      */
     public function relativePosition(Size $size)
@@ -219,7 +212,6 @@ class Size
     /**
      * Resize given Size to best fitting size of current size.
      *
-     * @param  Size   $size
      * @return \Intervention\Image\Size
      */
     public function fit(Size $size, $position = 'center')
@@ -258,8 +250,7 @@ class Size
     /**
      * Checks if given size fits into current size
      *
-     * @param  Size   $size
-     * @return boolean
+     * @return bool
      */
     public function fitsInto(Size $size)
     {
@@ -271,8 +262,8 @@ class Size
      * and moves point automatically by offset.
      *
      * @param  string  $position
-     * @param  integer $offset_x
-     * @param  integer $offset_y
+     * @param  int  $offset_x
+     * @param  int  $offset_y
      * @return \Intervention\Image\Size
      */
     public function align($position, $offset_x = 0, $offset_y = 0)
@@ -357,10 +348,9 @@ class Size
     /**
      * Runs constraints on current size
      *
-     * @param  Closure $callback
      * @return \Intervention\Image\Constraint
      */
-    private function getConstraint(Closure $callback = null)
+    private function getConstraint(?Closure $callback = null)
     {
         $constraint = new Constraint(clone $this);
 

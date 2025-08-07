@@ -19,9 +19,9 @@ class FilterHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\FilterHandler::isHandling
      */
-    public function testIsHandling()
+    public function test_is_handling()
     {
-        $test    = new TestHandler();
+        $test = new TestHandler;
         $handler = new FilterHandler($test, Logger::INFO, Logger::NOTICE);
         $this->assertFalse($handler->isHandling($this->getRecord(Logger::DEBUG)));
         $this->assertTrue($handler->isHandling($this->getRecord(Logger::INFO)));
@@ -38,9 +38,9 @@ class FilterHandlerTest extends TestCase
      * @covers Monolog\Handler\FilterHandler::setAcceptedLevels
      * @covers Monolog\Handler\FilterHandler::isHandling
      */
-    public function testHandleProcessOnlyNeededLevels()
+    public function test_handle_process_only_needed_levels()
     {
-        $test    = new TestHandler();
+        $test = new TestHandler;
         $handler = new FilterHandler($test, Logger::INFO, Logger::NOTICE);
 
         $handler->handle($this->getRecord(Logger::DEBUG));
@@ -62,8 +62,8 @@ class FilterHandlerTest extends TestCase
         $handler->handle($this->getRecord(Logger::EMERGENCY));
         $this->assertFalse($test->hasEmergencyRecords());
 
-        $test    = new TestHandler();
-        $handler = new FilterHandler($test, array(Logger::INFO, Logger::ERROR));
+        $test = new TestHandler;
+        $handler = new FilterHandler($test, [Logger::INFO, Logger::ERROR]);
 
         $handler->handle($this->getRecord(Logger::DEBUG));
         $this->assertFalse($test->hasDebugRecords());
@@ -81,19 +81,19 @@ class FilterHandlerTest extends TestCase
      * @covers Monolog\Handler\FilterHandler::setAcceptedLevels
      * @covers Monolog\Handler\FilterHandler::getAcceptedLevels
      */
-    public function testAcceptedLevelApi()
+    public function test_accepted_level_api()
     {
-        $test    = new TestHandler();
+        $test = new TestHandler;
         $handler = new FilterHandler($test);
 
-        $levels = array(Logger::INFO, Logger::ERROR);
+        $levels = [Logger::INFO, Logger::ERROR];
         $handler->setAcceptedLevels($levels);
         $this->assertSame($levels, $handler->getAcceptedLevels());
 
-        $handler->setAcceptedLevels(array('info', 'error'));
+        $handler->setAcceptedLevels(['info', 'error']);
         $this->assertSame($levels, $handler->getAcceptedLevels());
 
-        $levels = array(Logger::CRITICAL, Logger::ALERT, Logger::EMERGENCY);
+        $levels = [Logger::CRITICAL, Logger::ALERT, Logger::EMERGENCY];
         $handler->setAcceptedLevels(Logger::CRITICAL, Logger::EMERGENCY);
         $this->assertSame($levels, $handler->getAcceptedLevels());
 
@@ -104,9 +104,9 @@ class FilterHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\FilterHandler::handle
      */
-    public function testHandleUsesProcessors()
+    public function test_handle_uses_processors()
     {
-        $test    = new TestHandler();
+        $test = new TestHandler;
         $handler = new FilterHandler($test, Logger::DEBUG, Logger::EMERGENCY);
         $handler->pushProcessor(
             function ($record) {
@@ -124,9 +124,9 @@ class FilterHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\FilterHandler::handle
      */
-    public function testHandleRespectsBubble()
+    public function test_handle_respects_bubble()
     {
-        $test = new TestHandler();
+        $test = new TestHandler;
 
         $handler = new FilterHandler($test, Logger::INFO, Logger::NOTICE, false);
         $this->assertTrue($handler->handle($this->getRecord(Logger::INFO)));
@@ -140,9 +140,9 @@ class FilterHandlerTest extends TestCase
     /**
      * @covers Monolog\Handler\FilterHandler::handle
      */
-    public function testHandleWithCallback()
+    public function test_handle_with_callback()
     {
-        $test    = new TestHandler();
+        $test = new TestHandler;
         $handler = new FilterHandler(
             function ($record, $handler) use ($test) {
                 return $test;
@@ -156,9 +156,10 @@ class FilterHandlerTest extends TestCase
 
     /**
      * @covers Monolog\Handler\FilterHandler::handle
+     *
      * @expectedException \RuntimeException
      */
-    public function testHandleWithBadCallbackThrowsException()
+    public function test_handle_with_bad_callback_throws_exception()
     {
         $handler = new FilterHandler(
             function ($record, $handler) {

@@ -29,13 +29,12 @@ class ArrayConverter
      * Converts linear messages array to tree-like array.
      * For example this rray('foo.bar' => 'value') will be converted to array('foo' => array('bar' => 'value')).
      *
-     * @param array $messages Linear messages array
-     *
+     * @param  array  $messages  Linear messages array
      * @return array Tree-like messages array
      */
     public static function expandToTree(array $messages)
     {
-        $tree = array();
+        $tree = [];
 
         foreach ($messages as $id => $value) {
             $referenceToElement = &self::getElementByPath($tree, explode('.', $id));
@@ -62,7 +61,7 @@ class ArrayConverter
                  * $tree['foo'] was string before we found array {bar: test2}.
                  *  Treat new element as string too, e.g. add $tree['foo.bar'] = 'test2';
                  */
-                $elem = &$elem[ implode('.', array_slice($parts, $i)) ];
+                $elem = &$elem[implode('.', array_slice($parts, $i))];
                 break;
             }
             $parentOfElem = &$elem;

@@ -7,20 +7,19 @@ use Faker\Provider\bg_BG\Payment;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Generator
      */
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Payment($faker));
         $this->faker = $faker;
     }
 
-    public function testVatIsValid()
+    public function test_vat_is_valid()
     {
         $vat = $this->faker->vat();
         $unspacedVat = $this->faker->vat(false);

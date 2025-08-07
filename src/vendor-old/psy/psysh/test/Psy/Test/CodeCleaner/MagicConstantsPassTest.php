@@ -15,25 +15,25 @@ use Psy\CodeCleaner\MagicConstantsPass;
 
 class MagicConstantsPassTest extends CodeCleanerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        $this->setPass(new MagicConstantsPass());
+        $this->setPass(new MagicConstantsPass);
     }
 
     /**
      * @dataProvider magicConstants
      */
-    public function testProcess($from, $to)
+    public function test_process($from, $to)
     {
         $this->assertProcessesAs($from, $to);
     }
 
     public function magicConstants()
     {
-        return array(
-            array('__DIR__;', 'getcwd();'),
-            array('__FILE__;', "'';"),
-            array('___FILE___;', '___FILE___;'),
-        );
+        return [
+            ['__DIR__;', 'getcwd();'],
+            ['__FILE__;', "'';"],
+            ['___FILE___;', '___FILE___;'],
+        ];
     }
 }

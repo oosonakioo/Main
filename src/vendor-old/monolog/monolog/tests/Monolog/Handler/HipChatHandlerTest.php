@@ -11,20 +11,22 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 /**
  * @author Rafael Dohms <rafael@doh.ms>
+ *
  * @see    https://www.hipchat.com/docs/api
  */
 class HipChatHandlerTest extends TestCase
 {
     private $res;
-    /** @var  HipChatHandler */
+
+    /** @var HipChatHandler */
     private $handler;
 
-    public function testWriteHeader()
+    public function test_write_header()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -36,7 +38,7 @@ class HipChatHandlerTest extends TestCase
         return $content;
     }
 
-    public function testWriteCustomHostHeader()
+    public function test_write_custom_host_header()
     {
         $this->createHandler('myToken', 'room1', 'Monolog', true, 'hipchat.foo.bar');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -48,7 +50,7 @@ class HipChatHandlerTest extends TestCase
         return $content;
     }
 
-    public function testWriteV2()
+    public function test_write_v2()
     {
         $this->createHandler('myToken', 'room1', 'Monolog', false, 'hipchat.foo.bar', 'v2');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -60,7 +62,7 @@ class HipChatHandlerTest extends TestCase
         return $content;
     }
 
-    public function testWriteV2Notify()
+    public function test_write_v2_notify()
     {
         $this->createHandler('myToken', 'room1', 'Monolog', true, 'hipchat.foo.bar', 'v2');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -72,7 +74,7 @@ class HipChatHandlerTest extends TestCase
         return $content;
     }
 
-    public function testRoomSpaces()
+    public function test_room_spaces()
     {
         $this->createHandler('myToken', 'room name', 'Monolog', false, 'hipchat.foo.bar', 'v2');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -85,14 +87,14 @@ class HipChatHandlerTest extends TestCase
     }
 
     /**
-     * @depends testWriteHeader
+     * @depends test_write_header
      */
-    public function testWriteContent($content)
+    public function test_write_content($content)
     {
         $this->assertRegexp('/notify=0&message=test1&message_format=text&color=red&room_id=room1&from=Monolog$/', $content);
     }
 
-    public function testWriteContentV1WithoutName()
+    public function test_write_content_v1_without_name()
     {
         $this->createHandler('myToken', 'room1', null, false, 'hipchat.foo.bar', 'v1');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -105,30 +107,30 @@ class HipChatHandlerTest extends TestCase
     }
 
     /**
-     * @depends testWriteCustomHostHeader
+     * @depends test_write_custom_host_header
      */
-    public function testWriteContentNotify($content)
+    public function test_write_content_notify($content)
     {
         $this->assertRegexp('/notify=1&message=test1&message_format=text&color=red&room_id=room1&from=Monolog$/', $content);
     }
 
     /**
-     * @depends testWriteV2
+     * @depends test_write_v2
      */
-    public function testWriteContentV2($content)
+    public function test_write_content_v2($content)
     {
         $this->assertRegexp('/notify=false&message=test1&message_format=text&color=red&from=Monolog$/', $content);
     }
 
     /**
-     * @depends testWriteV2Notify
+     * @depends test_write_v2_notify
      */
-    public function testWriteContentV2Notify($content)
+    public function test_write_content_v2_notify($content)
     {
         $this->assertRegexp('/notify=true&message=test1&message_format=text&color=red&from=Monolog$/', $content);
     }
 
-    public function testWriteContentV2WithoutName()
+    public function test_write_content_v2_without_name()
     {
         $this->createHandler('myToken', 'room1', null, false, 'hipchat.foo.bar', 'v2');
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'test1'));
@@ -140,7 +142,7 @@ class HipChatHandlerTest extends TestCase
         return $content;
     }
 
-    public function testWriteWithComplexMessage()
+    public function test_write_with_complex_message()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, 'Backup of database "example" finished in 16 minutes.'));
@@ -150,7 +152,7 @@ class HipChatHandlerTest extends TestCase
         $this->assertRegexp('/message=Backup\+of\+database\+%22example%22\+finished\+in\+16\+minutes\./', $content);
     }
 
-    public function testWriteTruncatesLongMessage()
+    public function test_write_truncates_long_message()
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord(Logger::CRITICAL, str_repeat('abcde', 2000)));
@@ -163,7 +165,7 @@ class HipChatHandlerTest extends TestCase
     /**
      * @dataProvider provideLevelColors
      */
-    public function testWriteWithErrorLevelsAndColors($level, $expectedColor)
+    public function test_write_with_error_levels_and_colors($level, $expectedColor)
     {
         $this->createHandler();
         $this->handler->handle($this->getRecord($level, 'Backup of database "example" finished in 16 minutes.'));
@@ -175,22 +177,22 @@ class HipChatHandlerTest extends TestCase
 
     public function provideLevelColors()
     {
-        return array(
-            array(Logger::DEBUG,    'gray'),
-            array(Logger::INFO,     'green'),
-            array(Logger::WARNING,  'yellow'),
-            array(Logger::ERROR,    'red'),
-            array(Logger::CRITICAL, 'red'),
-            array(Logger::ALERT,    'red'),
-            array(Logger::EMERGENCY,'red'),
-            array(Logger::NOTICE,   'green'),
-        );
+        return [
+            [Logger::DEBUG,    'gray'],
+            [Logger::INFO,     'green'],
+            [Logger::WARNING,  'yellow'],
+            [Logger::ERROR,    'red'],
+            [Logger::CRITICAL, 'red'],
+            [Logger::ALERT,    'red'],
+            [Logger::EMERGENCY, 'red'],
+            [Logger::NOTICE,   'green'],
+        ];
     }
 
     /**
      * @dataProvider provideBatchRecords
      */
-    public function testHandleBatch($records, $expectedColor)
+    public function test_handle_batch($records, $expectedColor)
     {
         $this->createHandler();
 
@@ -204,45 +206,45 @@ class HipChatHandlerTest extends TestCase
 
     public function provideBatchRecords()
     {
-        return array(
-            array(
-                array(
-                    array('level' => Logger::WARNING, 'message' => 'Oh bugger!', 'level_name' => 'warning', 'datetime' => new \DateTime()),
-                    array('level' => Logger::NOTICE, 'message' => 'Something noticeable happened.', 'level_name' => 'notice', 'datetime' => new \DateTime()),
-                    array('level' => Logger::CRITICAL, 'message' => 'Everything is broken!', 'level_name' => 'critical', 'datetime' => new \DateTime()),
-                ),
+        return [
+            [
+                [
+                    ['level' => Logger::WARNING, 'message' => 'Oh bugger!', 'level_name' => 'warning', 'datetime' => new \DateTime],
+                    ['level' => Logger::NOTICE, 'message' => 'Something noticeable happened.', 'level_name' => 'notice', 'datetime' => new \DateTime],
+                    ['level' => Logger::CRITICAL, 'message' => 'Everything is broken!', 'level_name' => 'critical', 'datetime' => new \DateTime],
+                ],
                 'red',
-            ),
-            array(
-                array(
-                    array('level' => Logger::WARNING, 'message' => 'Oh bugger!', 'level_name' => 'warning', 'datetime' => new \DateTime()),
-                    array('level' => Logger::NOTICE, 'message' => 'Something noticeable happened.', 'level_name' => 'notice', 'datetime' => new \DateTime()),
-                ),
+            ],
+            [
+                [
+                    ['level' => Logger::WARNING, 'message' => 'Oh bugger!', 'level_name' => 'warning', 'datetime' => new \DateTime],
+                    ['level' => Logger::NOTICE, 'message' => 'Something noticeable happened.', 'level_name' => 'notice', 'datetime' => new \DateTime],
+                ],
                 'yellow',
-            ),
-            array(
-                array(
-                    array('level' => Logger::DEBUG, 'message' => 'Just debugging.', 'level_name' => 'debug', 'datetime' => new \DateTime()),
-                    array('level' => Logger::NOTICE, 'message' => 'Something noticeable happened.', 'level_name' => 'notice', 'datetime' => new \DateTime()),
-                ),
+            ],
+            [
+                [
+                    ['level' => Logger::DEBUG, 'message' => 'Just debugging.', 'level_name' => 'debug', 'datetime' => new \DateTime],
+                    ['level' => Logger::NOTICE, 'message' => 'Something noticeable happened.', 'level_name' => 'notice', 'datetime' => new \DateTime],
+                ],
                 'green',
-            ),
-            array(
-                array(
-                    array('level' => Logger::DEBUG, 'message' => 'Just debugging.', 'level_name' => 'debug', 'datetime' => new \DateTime()),
-                ),
+            ],
+            [
+                [
+                    ['level' => Logger::DEBUG, 'message' => 'Just debugging.', 'level_name' => 'debug', 'datetime' => new \DateTime],
+                ],
                 'gray',
-            ),
-        );
+            ],
+        ];
     }
 
     private function createHandler($token = 'myToken', $room = 'room1', $name = 'Monolog', $notify = false, $host = 'api.hipchat.com', $version = 'v1')
     {
-        $constructorArgs = array($token, $room, $name, $notify, Logger::DEBUG, true, true, 'text', $host, $version);
+        $constructorArgs = [$token, $room, $name, $notify, Logger::DEBUG, true, true, 'text', $host, $version];
         $this->res = fopen('php://memory', 'a');
         $this->handler = $this->getMock(
             '\Monolog\Handler\HipChatHandler',
-            array('fsockopen', 'streamSetTimeout', 'closeSocket'),
+            ['fsockopen', 'streamSetTimeout', 'closeSocket'],
             $constructorArgs
         );
 
@@ -266,12 +268,12 @@ class HipChatHandlerTest extends TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testCreateWithTooLongName()
+    public function test_create_with_too_long_name()
     {
         $hipChatHandler = new HipChatHandler('token', 'room', 'SixteenCharsHere');
     }
 
-    public function testCreateWithTooLongNameV2()
+    public function test_create_with_too_long_name_v2()
     {
         // creating a handler with too long of a name but using the v2 api doesn't matter.
         $hipChatHandler = new HipChatHandler('token', 'room', 'SixteenCharsHere', false, Logger::CRITICAL, true, true, 'test', 'api.hipchat.com', 'v2');

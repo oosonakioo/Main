@@ -28,6 +28,4 @@ namespace Doctrine\Common\Annotations\Annotation;
  *
  * @Annotation
  */
-final class Required
-{
-}
+final class Required {}

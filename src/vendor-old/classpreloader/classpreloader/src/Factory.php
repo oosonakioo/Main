@@ -33,13 +33,12 @@ class Factory
      *
      * Any options provided determine how the node traverser is setup.
      *
-     * @param bool[] $options
-     *
+     * @param  bool[]  $options
      * @return \ClassPreloader\ClassPreloader
      */
     public function create(array $options = [])
     {
-        $printer = new PrettyPrinter();
+        $printer = new PrettyPrinter;
 
         $parser = $this->getParser();
 
@@ -58,25 +57,24 @@ class Factory
     protected function getParser()
     {
         if (class_exists(ParserFactory::class)) {
-            return (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+            return (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         }
 
-        return new Parser(new Lexer());
+        return new Parser(new Lexer);
     }
 
     /**
      * Get the node traverser to use.
      *
-     * @param bool $dir
-     * @param bool $file
-     * @param bool $skip
-     * @param bool $strict
-     *
+     * @param  bool  $dir
+     * @param  bool  $file
+     * @param  bool  $skip
+     * @param  bool  $strict
      * @return \ClassPreloader\Parser\NodeTraverser
      */
     protected function getTraverser($dir, $file, $skip, $strict)
     {
-        $traverser = new NodeTraverser();
+        $traverser = new NodeTraverser;
 
         if ($dir) {
             $traverser->addVisitor(new DirVisitor($skip));
@@ -86,8 +84,8 @@ class Factory
             $traverser->addVisitor(new FileVisitor($skip));
         }
 
-        if (!$strict) {
-            $traverser->addVisitor(new StrictTypesVisitor());
+        if (! $strict) {
+            $traverser->addVisitor(new StrictTypesVisitor);
         }
 
         return $traverser;

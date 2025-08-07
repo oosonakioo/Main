@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,6 +24,7 @@ namespace Doctrine\DBAL\Schema\Visitor;
  * Visitor that can visit schema namespaces.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -31,7 +33,7 @@ interface NamespaceVisitor
     /**
      * Accepts a schema namespace name.
      *
-     * @param string $namespaceName The schema namespace name to accept.
+     * @param  string  $namespaceName  The schema namespace name to accept.
      */
     public function acceptNamespace($namespaceName);
 }

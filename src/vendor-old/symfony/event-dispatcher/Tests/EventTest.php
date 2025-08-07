@@ -30,7 +30,7 @@ class EventTest extends TestCase
      */
     protected function setUp()
     {
-        $this->event = new Event();
+        $this->event = new Event;
     }
 
     /**
@@ -42,12 +42,12 @@ class EventTest extends TestCase
         $this->event = null;
     }
 
-    public function testIsPropagationStopped()
+    public function test_is_propagation_stopped()
     {
         $this->assertFalse($this->event->isPropagationStopped());
     }
 
-    public function testStopPropagationAndIsPropagationStopped()
+    public function test_stop_propagation_and_is_propagation_stopped()
     {
         $this->event->stopPropagation();
         $this->assertTrue($this->event->isPropagationStopped());

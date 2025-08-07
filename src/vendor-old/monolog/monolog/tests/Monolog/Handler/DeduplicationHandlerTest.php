@@ -11,17 +11,17 @@
 
 namespace Monolog\Handler;
 
-use Monolog\TestCase;
 use Monolog\Logger;
+use Monolog\TestCase;
 
 class DeduplicationHandlerTest extends TestCase
 {
     /**
      * @covers Monolog\Handler\DeduplicationHandler::flush
      */
-    public function testFlushPassthruIfAllRecordsUnderTrigger()
+    public function test_flush_passthru_if_all_records_under_trigger()
     {
-        $test = new TestHandler();
+        $test = new TestHandler;
         @unlink(sys_get_temp_dir().'/monolog_dedup.log');
         $handler = new DeduplicationHandler($test, sys_get_temp_dir().'/monolog_dedup.log', 0);
 
@@ -39,9 +39,9 @@ class DeduplicationHandlerTest extends TestCase
      * @covers Monolog\Handler\DeduplicationHandler::flush
      * @covers Monolog\Handler\DeduplicationHandler::appendRecord
      */
-    public function testFlushPassthruIfEmptyLog()
+    public function test_flush_passthru_if_empty_log()
     {
-        $test = new TestHandler();
+        $test = new TestHandler;
         @unlink(sys_get_temp_dir().'/monolog_dedup.log');
         $handler = new DeduplicationHandler($test, sys_get_temp_dir().'/monolog_dedup.log', 0);
 
@@ -59,11 +59,12 @@ class DeduplicationHandlerTest extends TestCase
      * @covers Monolog\Handler\DeduplicationHandler::flush
      * @covers Monolog\Handler\DeduplicationHandler::appendRecord
      * @covers Monolog\Handler\DeduplicationHandler::isDuplicate
-     * @depends testFlushPassthruIfEmptyLog
+     *
+     * @depends test_flush_passthru_if_empty_log
      */
-    public function testFlushSkipsIfLogExists()
+    public function test_flush_skips_if_log_exists()
     {
-        $test = new TestHandler();
+        $test = new TestHandler;
         $handler = new DeduplicationHandler($test, sys_get_temp_dir().'/monolog_dedup.log', 0);
 
         $handler->handle($this->getRecord(Logger::ERROR, 'Foo:bar'));
@@ -80,11 +81,12 @@ class DeduplicationHandlerTest extends TestCase
      * @covers Monolog\Handler\DeduplicationHandler::flush
      * @covers Monolog\Handler\DeduplicationHandler::appendRecord
      * @covers Monolog\Handler\DeduplicationHandler::isDuplicate
-     * @depends testFlushPassthruIfEmptyLog
+     *
+     * @depends test_flush_passthru_if_empty_log
      */
-    public function testFlushPassthruIfLogTooOld()
+    public function test_flush_passthru_if_log_too_old()
     {
-        $test = new TestHandler();
+        $test = new TestHandler;
         $handler = new DeduplicationHandler($test, sys_get_temp_dir().'/monolog_dedup.log', 0);
 
         $record = $this->getRecord(Logger::ERROR);
@@ -107,9 +109,9 @@ class DeduplicationHandlerTest extends TestCase
      * @covers Monolog\Handler\DeduplicationHandler::isDuplicate
      * @covers Monolog\Handler\DeduplicationHandler::collectLogs
      */
-    public function testGcOldLogs()
+    public function test_gc_old_logs()
     {
-        $test = new TestHandler();
+        $test = new TestHandler;
         @unlink(sys_get_temp_dir().'/monolog_dedup.log');
         $handler = new DeduplicationHandler($test, sys_get_temp_dir().'/monolog_dedup.log', 0);
 
@@ -127,10 +129,10 @@ class DeduplicationHandlerTest extends TestCase
         // log is written as none of them are duplicate
         $handler->flush();
         $this->assertSame(
-            $record['datetime']->getTimestamp() . ":ERROR:test\n" .
-            $record2['datetime']->getTimestamp() . ":CRITICAL:test\n" .
-            $record3['datetime']->getTimestamp() . ":CRITICAL:test\n",
-            file_get_contents(sys_get_temp_dir() . '/monolog_dedup.log')
+            $record['datetime']->getTimestamp().":ERROR:test\n".
+            $record2['datetime']->getTimestamp().":CRITICAL:test\n".
+            $record3['datetime']->getTimestamp().":CRITICAL:test\n",
+            file_get_contents(sys_get_temp_dir().'/monolog_dedup.log')
         );
         $this->assertTrue($test->hasErrorRecords());
         $this->assertTrue($test->hasCriticalRecords());
@@ -148,10 +150,10 @@ class DeduplicationHandlerTest extends TestCase
 
         // log should now contain the new errors and the previous one that was recent enough
         $this->assertSame(
-            $record3['datetime']->getTimestamp() . ":CRITICAL:test\n" .
-            $record['datetime']->getTimestamp() . ":ERROR:test\n" .
-            $record2['datetime']->getTimestamp() . ":CRITICAL:test\n",
-            file_get_contents(sys_get_temp_dir() . '/monolog_dedup.log')
+            $record3['datetime']->getTimestamp().":CRITICAL:test\n".
+            $record['datetime']->getTimestamp().":ERROR:test\n".
+            $record2['datetime']->getTimestamp().":CRITICAL:test\n",
+            file_get_contents(sys_get_temp_dir().'/monolog_dedup.log')
         );
         $this->assertTrue($test->hasErrorRecords());
         $this->assertTrue($test->hasCriticalRecords());

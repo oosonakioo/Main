@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -17,21 +18,18 @@
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
+class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework_MockObject_Builder_Namespace, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Stub_MatcherCollection
 {
     /**
      * @var PHPUnit_Framework_MockObject_Matcher_Invocation[]
      */
-    protected $matchers = array();
+    protected $matchers = [];
 
     /**
      * @var PHPUnit_Framework_MockObject_Builder_Match[]
      */
-    protected $builderMap = array();
+    protected $builderMap = [];
 
-    /**
-     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
-     */
     public function addMatcher(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         $this->matchers[] = $matcher;
@@ -52,7 +50,7 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  mixed     $id
+     * @param  mixed  $id
      * @return bool|null
      */
     public function lookupId($id)
@@ -61,19 +59,18 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
             return $this->builderMap[$id];
         }
 
-        return;
     }
 
     /**
-     * @param  mixed                                      $id
-     * @param  PHPUnit_Framework_MockObject_Builder_Match $builder
+     * @param  mixed  $id
+     *
      * @throws PHPUnit_Framework_Exception
      */
     public function registerId($id, PHPUnit_Framework_MockObject_Builder_Match $builder)
     {
         if (isset($this->builderMap[$id])) {
             throw new PHPUnit_Framework_Exception(
-                'Match builder with id <' . $id . '> is already registered.'
+                'Match builder with id <'.$id.'> is already registered.'
             );
         }
 
@@ -81,7 +78,6 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Matcher_Invocation       $matcher
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
@@ -93,12 +89,11 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
      * @return mixed
      */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
-        $exception      = null;
+        $exception = null;
         $hasReturnValue = false;
 
         if (strtolower($invocation->methodName) == '__tostring') {
@@ -112,8 +107,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
                 if ($match->matches($invocation)) {
                     $value = $match->invoked($invocation);
 
-                    if (!$hasReturnValue) {
-                        $returnValue    = $value;
+                    if (! $hasReturnValue) {
+                        $returnValue = $value;
                         $hasReturnValue = true;
                     }
                 }
@@ -130,13 +125,12 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         foreach ($this->matchers as $matcher) {
-            if (!$matcher->matches($invocation)) {
+            if (! $matcher->matches($invocation)) {
                 return false;
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -15,12 +17,11 @@ namespace phpDocumentor\Reflection\DocBlock\Tags;
 use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
-use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Source
+ *
  * @covers ::<private>
  */
 class SourceTest extends \PHPUnit_Framework_TestCase
@@ -28,9 +29,10 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Source::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned()
+    public function test_if_correct_tag_name_is_returned()
     {
         $fixture = new Source(1, null, new Description('Description'));
 
@@ -42,10 +44,11 @@ class SourceTest extends \PHPUnit_Framework_TestCase
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Source::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    public function test_if_tag_can_be_rendered_using_default_formatter()
     {
         $fixture = new Source(1, 10, new Description('Description'));
         $this->assertSame('@source 1 10 Description', $fixture->render());
@@ -59,9 +62,10 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Source::__construct
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    public function test_if_tag_can_be_rendered_using_specific_formatter()
     {
         $fixture = new Source(1);
 
@@ -75,7 +79,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getStartingLine
      */
-    public function testHasStartingLine()
+    public function test_has_starting_line()
     {
         $expected = 1;
 
@@ -88,7 +92,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getLineCount
      */
-    public function testHasLineCount()
+    public function test_has_line_count()
     {
         $expected = 2;
 
@@ -100,9 +104,10 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription()
+    public function test_has_description()
     {
         $expected = new Description('Description');
 
@@ -114,34 +119,36 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::__toString
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\Types\String_
      */
-    public function testStringRepresentationIsReturned()
+    public function test_string_representation_is_returned()
     {
         $fixture = new Source(1, 10, new Description('Description'));
 
-        $this->assertSame('1 10 Description', (string)$fixture);
+        $this->assertSame('1 10 Description', (string) $fixture);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Source::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod()
+    public function test_factory_method()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $context            = new Context('');
+        $context = new Context('');
 
         $description = new Description('My Description');
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
         $fixture = Source::create('1 10 My Description', $descriptionFactory, $context);
 
-        $this->assertSame('1 10 My Description', (string)$fixture);
+        $this->assertSame('1 10 My Description', (string) $fixture);
         $this->assertSame(1, $fixture->getStartingLine());
         $this->assertSame(10, $fixture->getLineCount());
         $this->assertSame($description, $fixture->getDescription());
@@ -149,12 +156,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Source::<public>
      * @uses \phpDocumentor\Reflection\TypeResolver
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfEmptyBodyIsGiven()
+    public function test_factory_method_fails_if_empty_body_is_given()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         Source::create('', $descriptionFactory);
@@ -162,37 +171,42 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString()
+    public function test_factory_method_fails_if_body_is_not_string()
     {
         Source::create([]);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\TypeResolver
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    public function test_factory_method_fails_if_description_factory_is_null()
     {
         Source::create('1');
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfStartingLineIsNotInteger()
+    public function test_exception_is_thrown_if_starting_line_is_not_integer()
     {
         new Source('blabla');
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfLineCountIsNotIntegerOrNull()
+    public function test_exception_is_thrown_if_line_count_is_not_integer_or_null()
     {
         new Source('1', []);
     }

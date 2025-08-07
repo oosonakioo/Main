@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -37,12 +39,10 @@ final class Param extends BaseTag implements Factory\StaticMethod
     private $isVariadic = false;
 
     /**
-     * @param string $variableName
-     * @param Type $type
-     * @param bool $isVariadic
-     * @param Description $description
+     * @param  string  $variableName
+     * @param  bool  $isVariadic
      */
-    public function __construct($variableName, Type $type = null, $isVariadic = false, Description $description = null)
+    public function __construct($variableName, ?Type $type = null, $isVariadic = false, ?Description $description = null)
     {
         Assert::string($variableName);
         Assert::boolean($isVariadic);
@@ -58,9 +58,9 @@ final class Param extends BaseTag implements Factory\StaticMethod
      */
     public static function create(
         $body,
-        TypeResolver $typeResolver = null,
-        DescriptionFactory $descriptionFactory = null,
-        TypeContext $context = null
+        ?TypeResolver $typeResolver = null,
+        ?DescriptionFactory $descriptionFactory = null,
+        ?TypeContext $context = null
     ) {
         Assert::stringNotEmpty($body);
         Assert::allNotNull([$typeResolver, $descriptionFactory]);
@@ -93,7 +93,7 @@ final class Param extends BaseTag implements Factory\StaticMethod
 
         $description = $descriptionFactory->create(implode('', $parts), $context);
 
-        return new static($variableName, $type, $isVariadic, $description);
+        return new self($variableName, $type, $isVariadic, $description);
     }
 
     /**
@@ -119,7 +119,7 @@ final class Param extends BaseTag implements Factory\StaticMethod
     /**
      * Returns whether this tag is variadic.
      *
-     * @return boolean
+     * @return bool
      */
     public function isVariadic()
     {
@@ -133,9 +133,9 @@ final class Param extends BaseTag implements Factory\StaticMethod
      */
     public function __toString()
     {
-        return ($this->type ? $this->type . ' ' : '')
-        . ($this->isVariadic() ? '...' : '')
-        . '$' . $this->variableName
-        . ($this->description ? ' ' . $this->description : '');
+        return ($this->type ? $this->type.' ' : '')
+        .($this->isVariadic() ? '...' : '')
+        .'$'.$this->variableName
+        .($this->description ? ' '.$this->description : '');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,6 +33,7 @@ use Doctrine\DBAL\VersionAwarePlatformDriver;
  * Abstract base implementation of the {@link Doctrine\DBAL\Driver} interface for PostgreSQL based drivers.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
+ *
  * @link   www.doctrine-project.org
  * @since  2.5
  */
@@ -96,7 +98,7 @@ abstract class AbstractPostgreSQLDriver implements Driver, ExceptionConverterDri
      */
     public function createDatabasePlatformForVersion($version)
     {
-        if ( ! preg_match('/^(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?)?/', $version, $versionParts)) {
+        if (! preg_match('/^(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?)?/', $version, $versionParts)) {
             throw DBALException::invalidPlatformVersionSpecified(
                 $version,
                 '<major_version>.<minor_version>.<patch_version>'
@@ -106,15 +108,15 @@ abstract class AbstractPostgreSQLDriver implements Driver, ExceptionConverterDri
         $majorVersion = $versionParts['major'];
         $minorVersion = isset($versionParts['minor']) ? $versionParts['minor'] : 0;
         $patchVersion = isset($versionParts['patch']) ? $versionParts['patch'] : 0;
-        $version      = $majorVersion . '.' . $minorVersion . '.' . $patchVersion;
+        $version = $majorVersion.'.'.$minorVersion.'.'.$patchVersion;
 
-        switch(true) {
+        switch (true) {
             case version_compare($version, '9.2', '>='):
-                return new PostgreSQL92Platform();
+                return new PostgreSQL92Platform;
             case version_compare($version, '9.1', '>='):
-                return new PostgreSQL91Platform();
+                return new PostgreSQL91Platform;
             default:
-                return new PostgreSqlPlatform();
+                return new PostgreSqlPlatform;
         }
     }
 
@@ -135,7 +137,7 @@ abstract class AbstractPostgreSQLDriver implements Driver, ExceptionConverterDri
      */
     public function getDatabasePlatform()
     {
-        return new PostgreSqlPlatform();
+        return new PostgreSqlPlatform;
     }
 
     /**

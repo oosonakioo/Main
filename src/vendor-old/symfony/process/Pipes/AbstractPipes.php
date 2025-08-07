@@ -19,12 +19,14 @@ namespace Symfony\Component\Process\Pipes;
 abstract class AbstractPipes implements PipesInterface
 {
     /** @var array */
-    public $pipes = array();
+    public $pipes = [];
 
     /** @var string */
     private $inputBuffer = '';
+
     /** @var resource|null */
     private $input;
+
     /** @var bool */
     private $blocked = true;
 
@@ -47,7 +49,7 @@ abstract class AbstractPipes implements PipesInterface
         foreach ($this->pipes as $pipe) {
             fclose($pipe);
         }
-        $this->pipes = array();
+        $this->pipes = [];
     }
 
     /**
@@ -60,7 +62,7 @@ abstract class AbstractPipes implements PipesInterface
         $lastError = error_get_last();
 
         // stream_select returns false when the `select` system call is interrupted by an incoming signal
-        return isset($lastError['message']) && false !== stripos($lastError['message'], 'interrupted system call');
+        return isset($lastError['message']) && stripos($lastError['message'], 'interrupted system call') !== false;
     }
 
     /**
@@ -68,14 +70,14 @@ abstract class AbstractPipes implements PipesInterface
      */
     protected function unblock()
     {
-        if (!$this->blocked) {
+        if (! $this->blocked) {
             return;
         }
 
         foreach ($this->pipes as $pipe) {
             stream_set_blocking($pipe, 0);
         }
-        if (null !== $this->input) {
+        if ($this->input !== null) {
             stream_set_blocking($this->input, 0);
         }
 
@@ -87,12 +89,12 @@ abstract class AbstractPipes implements PipesInterface
      */
     protected function write()
     {
-        if (!isset($this->pipes[0])) {
+        if (! isset($this->pipes[0])) {
             return;
         }
         $input = $this->input;
-        $r = $e = array();
-        $w = array($this->pipes[0]);
+        $r = $e = [];
+        $w = [$this->pipes[0]];
 
         // let's have a look if something changed in streams
         if (false === $n = @stream_select($r, $w, $e, 0, 0)) {
@@ -104,14 +106,14 @@ abstract class AbstractPipes implements PipesInterface
                 $written = fwrite($stdin, $this->inputBuffer);
                 $this->inputBuffer = substr($this->inputBuffer, $written);
                 if (isset($this->inputBuffer[0])) {
-                    return array($this->pipes[0]);
+                    return [$this->pipes[0]];
                 }
             }
 
             if ($input) {
-                for (;;) {
+                for (; ;) {
                     $data = fread($input, self::CHUNK_SIZE);
-                    if (!isset($data[0])) {
+                    if (! isset($data[0])) {
                         break;
                     }
                     $written = fwrite($stdin, $data);
@@ -119,7 +121,7 @@ abstract class AbstractPipes implements PipesInterface
                     if (isset($data[0])) {
                         $this->inputBuffer = $data;
 
-                        return array($this->pipes[0]);
+                        return [$this->pipes[0]];
                     }
                 }
                 if (feof($input)) {
@@ -131,13 +133,13 @@ abstract class AbstractPipes implements PipesInterface
         }
 
         // no input to read on resource, buffer is empty
-        if (null === $this->input && !isset($this->inputBuffer[0])) {
+        if ($this->input === null && ! isset($this->inputBuffer[0])) {
             fclose($this->pipes[0]);
             unset($this->pipes[0]);
         }
 
-        if (!$w) {
-            return array($this->pipes[0]);
+        if (! $w) {
+            return [$this->pipes[0]];
         }
     }
 }

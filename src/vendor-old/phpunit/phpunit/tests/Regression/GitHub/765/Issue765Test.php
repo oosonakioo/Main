@@ -1,16 +1,18 @@
 <?php
+
 class Issue765Test extends PHPUnit_Framework_TestCase
 {
-    public function testDependee()
+    public function test_dependee()
     {
         $this->assertTrue(true);
     }
 
     /**
-     * @depends testDependee
+     * @depends test_dependee
+     *
      * @dataProvider dependentProvider
      */
-    public function testDependent($a)
+    public function test_dependent($a)
     {
         $this->assertTrue(true);
     }

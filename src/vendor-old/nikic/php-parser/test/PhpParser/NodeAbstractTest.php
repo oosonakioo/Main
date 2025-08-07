@@ -2,51 +2,58 @@
 
 namespace PhpParser;
 
-class DummyNode extends NodeAbstract {
+class DummyNode extends NodeAbstract
+{
     public $subNode1;
+
     public $subNode2;
 
-    public function __construct($subNode1, $subNode2, $attributes) {
+    public function __construct($subNode1, $subNode2, $attributes)
+    {
         parent::__construct($attributes);
         $this->subNode1 = $subNode1;
         $this->subNode2 = $subNode2;
     }
 
-    public function getSubNodeNames() {
-        return array('subNode1', 'subNode2');
+    public function getSubNodeNames()
+    {
+        return ['subNode1', 'subNode2'];
     }
 
     // This method is only overwritten because the node is located in an unusual namespace
-    public function getType() {
+    public function getType()
+    {
         return 'Dummy';
     }
 }
 
 class NodeAbstractTest extends \PHPUnit_Framework_TestCase
 {
-    public function provideNodes() {
-        $attributes = array(
+    public function provideNodes()
+    {
+        $attributes = [
             'startLine' => 10,
-            'comments'  => array(
-                new Comment('// Comment' . "\n"),
+            'comments' => [
+                new Comment('// Comment'."\n"),
                 new Comment\Doc('/** doc comment */'),
-            ),
-        );
+            ],
+        ];
 
         $node = new DummyNode('value1', 'value2', $attributes);
         $node->notSubNode = 'value3';
 
-        return array(
-            array($attributes, $node),
-        );
+        return [
+            [$attributes, $node],
+        ];
     }
 
     /**
      * @dataProvider provideNodes
      */
-    public function testConstruct(array $attributes, Node $node) {
+    public function test_construct(array $attributes, Node $node)
+    {
         $this->assertSame('Dummy', $node->getType());
-        $this->assertSame(array('subNode1', 'subNode2'), $node->getSubNodeNames());
+        $this->assertSame(['subNode1', 'subNode2'], $node->getSubNodeNames());
         $this->assertSame(10, $node->getLine());
         $this->assertSame('/** doc comment */', $node->getDocComment()->getText());
         $this->assertSame('value1', $node->subNode1);
@@ -62,7 +69,8 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideNodes
      */
-    public function testGetDocComment(array $attributes, Node $node) {
+    public function test_get_doc_comment(array $attributes, Node $node)
+    {
         $this->assertSame('/** doc comment */', $node->getDocComment()->getText());
         array_pop($node->getAttribute('comments')); // remove doc comment
         $this->assertNull($node->getDocComment());
@@ -73,7 +81,8 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideNodes
      */
-    public function testChange(array $attributes, Node $node) {
+    public function test_change(array $attributes, Node $node)
+    {
         // change of line
         $node->setLine(15);
         $this->assertSame(15, $node->getLine());
@@ -83,7 +92,7 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('newValue', $node->subNode);
 
         // indirect modification
-        $subNode =& $node->subNode;
+        $subNode = &$node->subNode;
         $subNode = 'newNewValue';
         $this->assertSame('newNewValue', $node->subNode);
 
@@ -95,7 +104,8 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideNodes
      */
-    public function testIteration(array $attributes, Node $node) {
+    public function test_iteration(array $attributes, Node $node)
+    {
         // Iteration is simple object iteration over properties,
         // not over subnodes
         $i = 0;
@@ -103,10 +113,10 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
             if ($i === 0) {
                 $this->assertSame('subNode1', $key);
                 $this->assertSame('value1', $value);
-            } else if ($i === 1) {
+            } elseif ($i === 1) {
                 $this->assertSame('subNode2', $key);
                 $this->assertSame('value2', $value);
-            } else if ($i === 2) {
+            } elseif ($i === 2) {
                 $this->assertSame('notSubNode', $key);
                 $this->assertSame('value3', $value);
             } else {
@@ -117,7 +127,8 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(3, $i);
     }
 
-    public function testAttributes() {
+    public function test_attributes()
+    {
         /** @var $node Node */
         $node = $this->getMockForAbstractClass('PhpParser\NodeAbstract');
 
@@ -137,10 +148,10 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($node->getAttribute('null', 'default'));
 
         $this->assertSame(
-            array(
-                'key'  => 'value',
+            [
+                'key' => 'value',
                 'null' => null,
-            ),
+            ],
             $node->getAttributes()
         );
     }

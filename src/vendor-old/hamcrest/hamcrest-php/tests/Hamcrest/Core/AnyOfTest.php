@@ -1,15 +1,15 @@
 <?php
+
 namespace Hamcrest\Core;
 
 class AnyOfTest extends \Hamcrest\AbstractMatcherTest
 {
-
     protected function createMatcher()
     {
         return \Hamcrest\Core\AnyOf::anyOf('irrelevant');
     }
 
-    public function testAnyOfEvaluatesToTheLogicalDisjunctionOfTwoOtherMatchers()
+    public function test_any_of_evaluates_to_the_logical_disjunction_of_two_other_matchers()
     {
         assertThat('good', anyOf('bad', 'good'));
         assertThat('good', anyOf('good', 'good'));
@@ -18,13 +18,13 @@ class AnyOfTest extends \Hamcrest\AbstractMatcherTest
         assertThat('good', not(anyOf('bad', startsWith('b'))));
     }
 
-    public function testAnyOfEvaluatesToTheLogicalDisjunctionOfManyOtherMatchers()
+    public function test_any_of_evaluates_to_the_logical_disjunction_of_many_other_matchers()
     {
         assertThat('good', anyOf('bad', 'good', 'bad', 'bad', 'bad'));
         assertThat('good', not(anyOf('bad', 'bad', 'bad', 'bad', 'bad')));
     }
 
-    public function testAnyOfSupportsMixedTypes()
+    public function test_any_of_supports_mixed_types()
     {
         $combined = anyOf(
             equalTo(new \Hamcrest\Core\SampleBaseClass('good')),
@@ -35,7 +35,7 @@ class AnyOfTest extends \Hamcrest\AbstractMatcherTest
         assertThat(new \Hamcrest\Core\SampleSubClass('good'), $combined);
     }
 
-    public function testAnyOfHasAReadableDescription()
+    public function test_any_of_has_a_readable_description()
     {
         $this->assertDescription(
             '("good" or "bad" or "ugly")',
@@ -43,7 +43,7 @@ class AnyOfTest extends \Hamcrest\AbstractMatcherTest
         );
     }
 
-    public function testNoneOfEvaluatesToTheLogicalDisjunctionOfTwoOtherMatchers()
+    public function test_none_of_evaluates_to_the_logical_disjunction_of_two_other_matchers()
     {
         assertThat('good', not(noneOf('bad', 'good')));
         assertThat('good', not(noneOf('good', 'good')));
@@ -52,13 +52,13 @@ class AnyOfTest extends \Hamcrest\AbstractMatcherTest
         assertThat('good', noneOf('bad', startsWith('b')));
     }
 
-    public function testNoneOfEvaluatesToTheLogicalDisjunctionOfManyOtherMatchers()
+    public function test_none_of_evaluates_to_the_logical_disjunction_of_many_other_matchers()
     {
         assertThat('good', not(noneOf('bad', 'good', 'bad', 'bad', 'bad')));
         assertThat('good', noneOf('bad', 'bad', 'bad', 'bad', 'bad'));
     }
 
-    public function testNoneOfSupportsMixedTypes()
+    public function test_none_of_supports_mixed_types()
     {
         $combined = noneOf(
             equalTo(new \Hamcrest\Core\SampleBaseClass('good')),
@@ -69,7 +69,7 @@ class AnyOfTest extends \Hamcrest\AbstractMatcherTest
         assertThat(new \Hamcrest\Core\SampleSubClass('bad'), $combined);
     }
 
-    public function testNoneOfHasAReadableDescription()
+    public function test_none_of_has_a_readable_description()
     {
         $this->assertDescription(
             'not ("good" or "bad" or "ugly")',

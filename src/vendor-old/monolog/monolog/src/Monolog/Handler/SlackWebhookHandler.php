@@ -12,42 +12,45 @@
 namespace Monolog\Handler;
 
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Logger;
 use Monolog\Handler\Slack\SlackRecord;
+use Monolog\Logger;
 
 /**
  * Sends notifications through Slack Webhooks
  *
  * @author Haralan Dobrev <hkdobrev@gmail.com>
+ *
  * @see    https://api.slack.com/incoming-webhooks
  */
 class SlackWebhookHandler extends AbstractProcessingHandler
 {
     /**
      * Slack Webhook token
+     *
      * @var string
      */
     private $webhookUrl;
 
     /**
      * Instance of the SlackRecord util class preparing data for Slack API.
+     *
      * @var SlackRecord
      */
     private $slackRecord;
 
     /**
-     * @param  string      $webhookUrl             Slack Webhook URL
-     * @param  string|null $channel                Slack channel (encoded ID or name)
-     * @param  string|null $username               Name of a bot
-     * @param  bool        $useAttachment          Whether the message should be added to Slack as attachment (plain text otherwise)
-     * @param  string|null $iconEmoji              The emoji name to use (or null)
-     * @param  bool        $useShortAttachment     Whether the the context/extra messages added to Slack as attachments are in a short style
-     * @param  bool        $includeContextAndExtra Whether the attachment should include context and extra data
-     * @param  int         $level                  The minimum logging level at which this handler will be triggered
-     * @param  bool        $bubble                 Whether the messages that are handled can bubble up the stack or not
-     * @param  array       $excludeFields          Dot separated list of fields to exclude from slack message. E.g. ['context.field1', 'extra.field2']
+     * @param  string  $webhookUrl  Slack Webhook URL
+     * @param  string|null  $channel  Slack channel (encoded ID or name)
+     * @param  string|null  $username  Name of a bot
+     * @param  bool  $useAttachment  Whether the message should be added to Slack as attachment (plain text otherwise)
+     * @param  string|null  $iconEmoji  The emoji name to use (or null)
+     * @param  bool  $useShortAttachment  Whether the the context/extra messages added to Slack as attachments are in a short style
+     * @param  bool  $includeContextAndExtra  Whether the attachment should include context and extra data
+     * @param  int  $level  The minimum logging level at which this handler will be triggered
+     * @param  bool  $bubble  Whether the messages that are handled can bubble up the stack or not
+     * @param  array  $excludeFields  Dot separated list of fields to exclude from slack message. E.g. ['context.field1', 'extra.field2']
      */
-    public function __construct($webhookUrl, $channel = null, $username = null, $useAttachment = true, $iconEmoji = null, $useShortAttachment = false, $includeContextAndExtra = false, $level = Logger::CRITICAL, $bubble = true, array $excludeFields = array())
+    public function __construct($webhookUrl, $channel = null, $username = null, $useAttachment = true, $iconEmoji = null, $useShortAttachment = false, $includeContextAndExtra = false, $level = Logger::CRITICAL, $bubble = true, array $excludeFields = [])
     {
         parent::__construct($level, $bubble);
 
@@ -72,8 +75,6 @@ class SlackWebhookHandler extends AbstractProcessingHandler
 
     /**
      * {@inheritdoc}
-     *
-     * @param array $record
      */
     protected function write(array $record)
     {
@@ -87,7 +88,7 @@ class SlackWebhookHandler extends AbstractProcessingHandler
         if (defined('CURLOPT_SAFE_UPLOAD')) {
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
         }
-        curl_setopt($ch, CURLOPT_POSTFIELDS, array('payload' => $postString));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ['payload' => $postString]);
 
         Curl\Util::execute($ch);
     }

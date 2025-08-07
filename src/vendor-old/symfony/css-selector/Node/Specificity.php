@@ -26,7 +26,9 @@ namespace Symfony\Component\CssSelector\Node;
 class Specificity
 {
     const A_FACTOR = 100;
+
     const B_FACTOR = 10;
+
     const C_FACTOR = 1;
 
     /**
@@ -47,9 +49,9 @@ class Specificity
     /**
      * Constructor.
      *
-     * @param int $a
-     * @param int $b
-     * @param int $c
+     * @param  int  $a
+     * @param  int  $b
+     * @param  int  $c
      */
     public function __construct($a, $b, $c)
     {
@@ -59,8 +61,6 @@ class Specificity
     }
 
     /**
-     * @param Specificity $specificity
-     *
      * @return Specificity
      */
     public function plus(Specificity $specificity)
@@ -82,7 +82,6 @@ class Specificity
      * Returns -1 if the object specificity is lower than the argument,
      * 0 if they are equal, and 1 if the argument is lower.
      *
-     * @param Specificity $specificity
      *
      * @return int
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  PHPExcel
  *
@@ -19,15 +20,15 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  *  @category    PHPExcel
- *  @package     PHPExcel_Writer_PDF
+ *
  *  @copyright   Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  *  @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ *
  *  @version     ##VERSION##, ##DATE##
  */
 
-
 /**  Require tcPDF library */
-$pdfRendererClassFile = PHPExcel_Settings::getPdfRendererPath() . '/tcpdf.php';
+$pdfRendererClassFile = PHPExcel_Settings::getPdfRendererPath().'/tcpdf.php';
 if (file_exists($pdfRendererClassFile)) {
     $k_path_url = PHPExcel_Settings::getPdfRendererPath();
     require_once $pdfRendererClassFile;
@@ -39,7 +40,7 @@ if (file_exists($pdfRendererClassFile)) {
  *  PHPExcel_Writer_PDF_tcPDF
  *
  *  @category    PHPExcel
- *  @package     PHPExcel_Writer_PDF
+ *
  *  @copyright   Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPExcel_Writer_IWriter
@@ -47,7 +48,7 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
     /**
      *  Create a new PHPExcel_Writer_PDF
      *
-     *  @param  PHPExcel  $phpExcel  PHPExcel object
+     * @param  PHPExcel  $phpExcel  PHPExcel object
      */
     public function __construct(PHPExcel $phpExcel)
     {
@@ -57,10 +58,11 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
     /**
      *  Save PHPExcel to file
      *
-     *  @param     string     $pFilename   Name of the file to save as
-     *  @throws    PHPExcel_Writer_Exception
+     * @param  string  $pFilename  Name of the file to save as
+     *
+     * @throws PHPExcel_Writer_Exception
      */
-    public function save($pFilename = NULL)
+    public function save($pFilename = null)
     {
         $fileHandle = parent::prepareForSave($pFilename);
 
@@ -85,13 +87,13 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
         }
 
         //  Override Page Orientation
-        if (!is_null($this->getOrientation())) {
+        if (! is_null($this->getOrientation())) {
             $orientation = ($this->getOrientation() == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE)
                 ? 'L'
                 : 'P';
         }
         //  Override Paper Size
-        if (!is_null($this->getPaperSize())) {
+        if (! is_null($this->getPaperSize())) {
             $printPaperSize = $this->getPaperSize();
         }
 
@@ -99,24 +101,23 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
             $paperSize = self::$_paperSizes[$printPaperSize];
         }
 
-
         //  Create PDF
         $pdf = new TCPDF($orientation, 'pt', $paperSize);
-        $pdf->setFontSubsetting(FALSE);
+        $pdf->setFontSubsetting(false);
         //    Set margins, converting inches to points (using 72 dpi)
         $pdf->SetMargins($printMargins->getLeft() * 72, $printMargins->getTop() * 72, $printMargins->getRight() * 72);
-        $pdf->SetAutoPageBreak(TRUE, $printMargins->getBottom() * 72);
+        $pdf->SetAutoPageBreak(true, $printMargins->getBottom() * 72);
 
-        $pdf->setPrintHeader(FALSE);
-        $pdf->setPrintFooter(FALSE);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
 
         $pdf->AddPage();
 
         //  Set the appropriate font
         $pdf->SetFont($this->getFont());
         $pdf->writeHTML(
-            $this->generateHTMLHeader(FALSE) .
-            $this->generateSheetData() .
+            $this->generateHTMLHeader(false).
+            $this->generateSheetData().
             $this->generateHTMLFooter()
         );
 
@@ -130,7 +131,6 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
         //  Write to file
         fwrite($fileHandle, $pdf->output($pFilename, 'S'));
 
-		parent::restoreStateAfterSave($fileHandle);
+        parent::restoreStateAfterSave($fileHandle);
     }
-
 }

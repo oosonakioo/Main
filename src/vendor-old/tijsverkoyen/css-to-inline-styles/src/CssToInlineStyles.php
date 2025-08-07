@@ -8,7 +8,6 @@ use Symfony\Component\CssSelector\Exception\ExceptionInterface;
 use TijsVerkoyen\CssToInlineStyles\Css\Processor;
 use TijsVerkoyen\CssToInlineStyles\Css\Property\Processor as PropertyProcessor;
 use TijsVerkoyen\CssToInlineStyles\Css\Rule\Processor as RuleProcessor;
-use TijsVerkoyen\CssToInlineStyles\Css\Rule\Rule;
 
 class CssToInlineStyles
 {
@@ -17,7 +16,7 @@ class CssToInlineStyles
     public function __construct()
     {
         if (class_exists('Symfony\Component\CssSelector\CssSelectorConverter')) {
-            $this->cssConverter = new CssSelectorConverter();
+            $this->cssConverter = new CssSelectorConverter;
         }
     }
 
@@ -27,14 +26,14 @@ class CssToInlineStyles
      * Remark: if the html contains <style>-tags those will be used, the rules
      * in $css will be appended.
      *
-     * @param string $html
-     * @param string $css
+     * @param  string  $html
+     * @param  string  $css
      * @return string
      */
     public function convert($html, $css = null)
     {
         $document = $this->createDomDocumentFromHtml($html);
-        $processor = new Processor();
+        $processor = new Processor;
 
         // get all styles from the style-tags
         $rules = $processor->getRules(
@@ -53,8 +52,7 @@ class CssToInlineStyles
     /**
      * Inline the given properties on an given DOMElement
      *
-     * @param \DOMElement             $element
-     * @param Css\Property\Property[] $properties
+     * @param  Css\Property\Property[]  $properties
      * @return \DOMElement
      */
     public function inlineCssOnElement(\DOMElement $element, array $properties)
@@ -63,20 +61,20 @@ class CssToInlineStyles
             return $element;
         }
 
-        $cssProperties = array();
-        $inlineProperties = array();
+        $cssProperties = [];
+        $inlineProperties = [];
 
         foreach ($this->getInlineStyles($element) as $property) {
             $inlineProperties[$property->getName()] = $property;
         }
 
         foreach ($properties as $property) {
-            if (!isset($inlineProperties[$property->getName()])) {
+            if (! isset($inlineProperties[$property->getName()])) {
                 $cssProperties[$property->getName()] = $property;
             }
         }
 
-        $rules = array();
+        $rules = [];
         foreach (array_merge($cssProperties, $inlineProperties) as $property) {
             $rules[] = $property->toString();
         }
@@ -88,12 +86,11 @@ class CssToInlineStyles
     /**
      * Get the current inline styles for a given DOMElement
      *
-     * @param \DOMElement $element
      * @return Css\Property\Property[]
      */
     public function getInlineStyles(\DOMElement $element)
     {
-        $processor = new PropertyProcessor();
+        $processor = new PropertyProcessor;
 
         return $processor->convertArrayToObjects(
             $processor->splitIntoSeparateProperties(
@@ -103,7 +100,7 @@ class CssToInlineStyles
     }
 
     /**
-     * @param string $html
+     * @param  string  $html
      * @return \DOMDocument
      */
     protected function createDomDocumentFromHtml($html)
@@ -118,7 +115,6 @@ class CssToInlineStyles
     }
 
     /**
-     * @param \DOMDocument $document
      * @return string
      */
     protected function getHtmlFromDocument(\DOMDocument $document)
@@ -143,8 +139,7 @@ class CssToInlineStyles
     }
 
     /**
-     * @param \DOMDocument    $document
-     * @param Css\Rule\Rule[] $rules
+     * @param  Css\Rule\Rule[]  $rules
      * @return \DOMDocument
      */
     protected function inline(\DOMDocument $document, array $rules)
@@ -153,15 +148,15 @@ class CssToInlineStyles
             return $document;
         }
 
-        $propertyStorage = new \SplObjectStorage();
+        $propertyStorage = new \SplObjectStorage;
 
         $xPath = new \DOMXPath($document);
 
-        usort($rules, array(RuleProcessor::class, 'sortOnSpecificity'));
+        usort($rules, [RuleProcessor::class, 'sortOnSpecificity']);
 
         foreach ($rules as $rule) {
             try {
-                if (null !== $this->cssConverter) {
+                if ($this->cssConverter !== null) {
                     $expression = $this->cssConverter->toXPath($rule->getSelector());
                 } else {
                     // Compatibility layer for Symfony 2.7 and older
@@ -180,7 +175,7 @@ class CssToInlineStyles
             foreach ($elements as $element) {
                 $propertyStorage[$element] = $this->calculatePropertiesToBeApplied(
                     $rule->getProperties(),
-                    $propertyStorage->contains($element) ? $propertyStorage[$element] : array()
+                    $propertyStorage->contains($element) ? $propertyStorage[$element] : []
                 );
             }
         }
@@ -195,9 +190,8 @@ class CssToInlineStyles
     /**
      * Merge the CSS rules to determine the applied properties.
      *
-     * @param Css\Property\Property[] $properties
-     * @param Css\Property\Property[] $cssProperties existing applied properties indexed by name
-     *
+     * @param  Css\Property\Property[]  $properties
+     * @param  Css\Property\Property[]  $cssProperties  existing applied properties indexed by name
      * @return Css\Property\Property[] updated properties, indexed by name
      */
     private function calculatePropertiesToBeApplied(array $properties, array $cssProperties)
@@ -210,14 +204,14 @@ class CssToInlineStyles
             if (isset($cssProperties[$property->getName()])) {
                 $existingProperty = $cssProperties[$property->getName()];
 
-                //skip check to overrule if existing property is important and current is not
-                if ($existingProperty->isImportant() && !$property->isImportant()) {
+                // skip check to overrule if existing property is important and current is not
+                if ($existingProperty->isImportant() && ! $property->isImportant()) {
                     continue;
                 }
 
-                //overrule if current property is important and existing is not, else check specificity
-                $overrule = !$existingProperty->isImportant() && $property->isImportant();
-                if (!$overrule) {
+                // overrule if current property is important and existing is not, else check specificity
+                $overrule = ! $existingProperty->isImportant() && $property->isImportant();
+                if (! $overrule) {
                     $overrule = $existingProperty->getOriginalSpecificity()->compareTo($property->getOriginalSpecificity()) <= 0;
                 }
 

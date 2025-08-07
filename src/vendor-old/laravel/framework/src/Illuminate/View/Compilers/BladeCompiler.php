@@ -216,7 +216,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function parseToken($token)
     {
-        list($id, $content) = $token;
+        [$id, $content] = $token;
 
         if ($id == T_INLINE_HTML) {
             foreach ($this->compilers as $type) {
@@ -932,7 +932,6 @@ class BladeCompiler extends Compiler implements CompilerInterface
     /**
      * Register a custom Blade compiler.
      *
-     * @param  callable  $compiler
      * @return void
      */
     public function extend(callable $compiler)
@@ -944,7 +943,6 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Register a handler for custom directives.
      *
      * @param  string  $name
-     * @param  callable  $handler
      * @return void
      */
     public function directive($name, callable $handler)
@@ -989,7 +987,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      *
      * @param  string  $openTag
      * @param  string  $closeTag
-     * @param  bool    $escaped
+     * @param  bool  $escaped
      * @return void
      */
     public function setContentTags($openTag, $closeTag, $escaped = false)

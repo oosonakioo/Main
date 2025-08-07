@@ -7,11 +7,10 @@
  */
 class HTMLPurifier_VarParser_Native extends HTMLPurifier_VarParser
 {
-
     /**
-     * @param mixed $var
-     * @param int $type
-     * @param bool $allow_null
+     * @param  mixed  $var
+     * @param  int  $type
+     * @param  bool  $allow_null
      * @return null|string
      */
     protected function parseImplementation($var, $type, $allow_null)
@@ -20,8 +19,9 @@ class HTMLPurifier_VarParser_Native extends HTMLPurifier_VarParser
     }
 
     /**
-     * @param string $expr
+     * @param  string  $expr
      * @return mixed
+     *
      * @throws HTMLPurifier_VarParserException
      */
     protected function evalExpression($expr)
@@ -29,8 +29,9 @@ class HTMLPurifier_VarParser_Native extends HTMLPurifier_VarParser
         $var = null;
         $result = eval("\$var = $expr;");
         if ($result === false) {
-            throw new HTMLPurifier_VarParserException("Fatal error in evaluated code");
+            throw new HTMLPurifier_VarParserException('Fatal error in evaluated code');
         }
+
         return $var;
     }
 }

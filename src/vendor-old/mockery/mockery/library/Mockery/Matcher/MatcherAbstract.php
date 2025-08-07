@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mockery
  *
@@ -13,7 +14,7 @@
  * to padraic@php.net so we can send you a copy immediately.
  *
  * @category   Mockery
- * @package    Mockery
+ *
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
@@ -22,7 +23,6 @@ namespace Mockery\Matcher;
 
 abstract class MatcherAbstract
 {
-
     /**
      * The expected value (or part thereof)
      *
@@ -33,7 +33,7 @@ abstract class MatcherAbstract
     /**
      * Set the expected value
      *
-     * @param mixed $expected
+     * @param  mixed  $expected
      */
     public function __construct($expected = null)
     {
@@ -45,7 +45,7 @@ abstract class MatcherAbstract
      * Actual passed by reference to preserve reference trail (where applicable)
      * back to the original method parameter.
      *
-     * @param mixed $actual
+     * @param  mixed  $actual
      * @return bool
      */
     abstract public function match(&$actual);

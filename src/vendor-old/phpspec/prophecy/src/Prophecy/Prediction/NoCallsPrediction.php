@@ -12,10 +12,10 @@
 namespace Prophecy\Prediction;
 
 use Prophecy\Call\Call;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Util\StringUtil;
 use Prophecy\Exception\Prediction\UnexpectedCallsException;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Util\StringUtil;
 
 /**
  * No calls prediction.
@@ -28,10 +28,8 @@ class NoCallsPrediction implements PredictionInterface
 
     /**
      * Initializes prediction.
-     *
-     * @param null|StringUtil $util
      */
-    public function __construct(StringUtil $util = null)
+    public function __construct(?StringUtil $util = null)
     {
         $this->util = $util ?: new StringUtil;
     }
@@ -39,15 +37,13 @@ class NoCallsPrediction implements PredictionInterface
     /**
      * Tests that there were no calls made.
      *
-     * @param Call[]         $calls
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
+     * @param  Call[]  $calls
      *
      * @throws \Prophecy\Exception\Prediction\UnexpectedCallsException
      */
     public function check(array $calls, ObjectProphecy $object, MethodProphecy $method)
     {
-        if (!count($calls)) {
+        if (! count($calls)) {
             return;
         }
 

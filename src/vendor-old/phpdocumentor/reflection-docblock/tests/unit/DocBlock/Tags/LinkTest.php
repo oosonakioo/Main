@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -19,6 +21,7 @@ use phpDocumentor\Reflection\Types\Context;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Link
+ *
  * @covers ::<private>
  */
 class LinkTest extends \PHPUnit_Framework_TestCase
@@ -26,9 +29,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Link::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned()
+    public function test_if_correct_tag_name_is_returned()
     {
         $fixture = new Link('http://this.is.my/link', new Description('Description'));
 
@@ -40,10 +44,11 @@ class LinkTest extends \PHPUnit_Framework_TestCase
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Link::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    public function test_if_tag_can_be_rendered_using_default_formatter()
     {
         $fixture = new Link('http://this.is.my/link', new Description('Description'));
 
@@ -53,9 +58,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Link::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    public function test_if_tag_can_be_rendered_using_specific_formatter()
     {
         $fixture = new Link('http://this.is.my/link', new Description('Description'));
 
@@ -69,7 +75,7 @@ class LinkTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getLink
      */
-    public function testHasLinkUrl()
+    public function test_has_link_url()
     {
         $expected = 'http://this.is.my/link';
 
@@ -81,9 +87,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription()
+    public function test_has_description()
     {
         $expected = new Description('Description');
 
@@ -95,23 +102,25 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::__toString
+     *
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testStringRepresentationIsReturned()
+    public function test_string_representation_is_returned()
     {
         $fixture = new Link('http://this.is.my/link', new Description('Description'));
 
-        $this->assertSame('http://this.is.my/link Description', (string)$fixture);
+        $this->assertSame('http://this.is.my/link Description', (string) $fixture);
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Link::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod()
+    public function test_factory_method()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $context = new Context('');
@@ -123,35 +132,37 @@ class LinkTest extends \PHPUnit_Framework_TestCase
 
         $fixture = Link::create('http://this.is.my/link My Description', $descriptionFactory, $context);
 
-        $this->assertSame('http://this.is.my/link My Description', (string)$fixture);
+        $this->assertSame('http://this.is.my/link My Description', (string) $fixture);
         $this->assertSame($links, $fixture->getLink());
         $this->assertSame($description, $fixture->getDescription());
     }
 
     /**
      * @covers ::create
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Link::<public>
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethodCreatesEmptyLinkTag()
+    public function test_factory_method_creates_empty_link_tag()
     {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $descriptionFactory->shouldReceive('create')->never();
 
         $fixture = Link::create('', $descriptionFactory, new Context(''));
 
-        $this->assertSame('', (string)$fixture);
+        $this->assertSame('', (string) $fixture);
         $this->assertSame('', $fixture->getLink());
         $this->assertSame(null, $fixture->getDescription());
     }
 
     /**
      * @covers ::create
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfVersionIsNotString()
+    public function test_factory_method_fails_if_version_is_not_string()
     {
         $this->assertNull(Link::create([]));
     }

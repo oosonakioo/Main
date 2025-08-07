@@ -16,6 +16,4 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  *
  * @see http://php.net/sessionhandler
  */
-class NativeSessionHandler extends \SessionHandler
-{
-}
+class NativeSessionHandler extends \SessionHandler {}

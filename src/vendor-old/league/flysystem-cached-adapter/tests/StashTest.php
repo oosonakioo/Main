@@ -4,7 +4,7 @@ use League\Flysystem\Cached\Storage\Stash;
 
 class StashTests extends PHPUnit_Framework_TestCase
 {
-    public function testLoadFail()
+    public function test_load_fail()
     {
         $pool = Mockery::mock('Stash\Pool');
         $item = Mockery::mock('Stash\Item');
@@ -16,7 +16,7 @@ class StashTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('', false));
     }
 
-    public function testLoadSuccess()
+    public function test_load_success()
     {
         $response = json_encode([[], ['' => true]]);
         $pool = Mockery::mock('Stash\Pool');
@@ -29,7 +29,7 @@ class StashTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('', false));
     }
 
-    public function testSave()
+    public function test_save()
     {
         $response = json_encode([[], []]);
         $pool = Mockery::mock('Stash\Pool');

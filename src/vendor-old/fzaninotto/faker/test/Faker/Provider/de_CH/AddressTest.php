@@ -8,15 +8,14 @@ use Faker\Provider\de_CH\Person;
 
 class AddressTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Faker\Generator
      */
     private $faker;
 
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Address($faker));
         $faker->addProvider(new Person($faker));
         $this->faker = $faker;
@@ -25,13 +24,13 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function canton ()
+    public function canton()
     {
         $canton = $this->faker->canton();
         $this->assertInternalType('array', $canton);
         $this->assertCount(1, $canton);
 
-        foreach ($canton as $cantonShort => $cantonName){
+        foreach ($canton as $cantonShort => $cantonName) {
             $this->assertInternalType('string', $cantonShort);
             $this->assertEquals(2, strlen($cantonShort));
             $this->assertInternalType('string', $cantonName);
@@ -42,7 +41,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function cantonName ()
+    public function canton_name()
     {
         $cantonName = $this->faker->cantonName();
         $this->assertInternalType('string', $cantonName);
@@ -52,7 +51,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function cantonShort ()
+    public function canton_short()
     {
         $cantonShort = $this->faker->cantonShort();
         $this->assertInternalType('string', $cantonShort);
@@ -62,7 +61,8 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function address (){
+    public function address()
+    {
         $address = $this->faker->address();
         $this->assertInternalType('string', $address);
     }

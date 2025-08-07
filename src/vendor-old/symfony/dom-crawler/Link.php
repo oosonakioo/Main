@@ -36,15 +36,15 @@ class Link
     /**
      * Constructor.
      *
-     * @param \DOMElement $node       A \DOMElement instance
-     * @param string      $currentUri The URI of the page where the link is embedded (or the base href)
-     * @param string      $method     The method to use for the link (get by default)
+     * @param  \DOMElement  $node  A \DOMElement instance
+     * @param  string  $currentUri  The URI of the page where the link is embedded (or the base href)
+     * @param  string  $method  The method to use for the link (get by default)
      *
      * @throws \InvalidArgumentException if the node is not a link
      */
     public function __construct(\DOMElement $node, $currentUri, $method = 'GET')
     {
-        if (!in_array(strtolower(substr($currentUri, 0, 4)), array('http', 'file'))) {
+        if (! in_array(strtolower(substr($currentUri, 0, 4)), ['http', 'file'])) {
             throw new \InvalidArgumentException(sprintf('Current URI must be an absolute URL ("%s").', $currentUri));
         }
 
@@ -83,35 +83,35 @@ class Link
         $uri = trim($this->getRawUri());
 
         // absolute URL?
-        if (null !== parse_url($uri, PHP_URL_SCHEME)) {
+        if (parse_url($uri, PHP_URL_SCHEME) !== null) {
             return $uri;
         }
 
         // empty URI
-        if (!$uri) {
+        if (! $uri) {
             return $this->currentUri;
         }
 
         // an anchor
-        if ('#' === $uri[0]) {
+        if ($uri[0] === '#') {
             return $this->cleanupAnchor($this->currentUri).$uri;
         }
 
         $baseUri = $this->cleanupUri($this->currentUri);
 
-        if ('?' === $uri[0]) {
+        if ($uri[0] === '?') {
             return $baseUri.$uri;
         }
 
         // absolute URL with relative schema
-        if (0 === strpos($uri, '//')) {
+        if (strpos($uri, '//') === 0) {
             return preg_replace('#^([^/]*)//.*$#', '$1', $baseUri).$uri;
         }
 
         $baseUri = preg_replace('#^(.*?//[^/]*)(?:\/.*)?$#', '$1', $baseUri);
 
         // absolute path
-        if ('/' === $uri[0]) {
+        if ($uri[0] === '/') {
             return $baseUri.$uri;
         }
 
@@ -119,7 +119,7 @@ class Link
         $path = parse_url(substr($this->currentUri, strlen($baseUri)), PHP_URL_PATH);
         $path = $this->canonicalizePath(substr($path, 0, strrpos($path, '/')).'/'.$uri);
 
-        return $baseUri.('' === $path || '/' !== $path[0] ? '/' : '').$path;
+        return $baseUri.($path === '' || $path[0] !== '/' ? '/' : '').$path;
     }
 
     /**
@@ -135,26 +135,25 @@ class Link
     /**
      * Returns the canonicalized URI path (see RFC 3986, section 5.2.4).
      *
-     * @param string $path URI path
-     *
+     * @param  string  $path  URI path
      * @return string
      */
     protected function canonicalizePath($path)
     {
-        if ('' === $path || '/' === $path) {
+        if ($path === '' || $path === '/') {
             return $path;
         }
 
-        if ('.' === substr($path, -1)) {
+        if (substr($path, -1) === '.') {
             $path .= '/';
         }
 
-        $output = array();
+        $output = [];
 
         foreach (explode('/', $path) as $segment) {
-            if ('..' === $segment) {
+            if ($segment === '..') {
                 array_pop($output);
-            } elseif ('.' !== $segment) {
+            } elseif ($segment !== '.') {
                 $output[] = $segment;
             }
         }
@@ -165,13 +164,13 @@ class Link
     /**
      * Sets current \DOMElement instance.
      *
-     * @param \DOMElement $node A \DOMElement instance
+     * @param  \DOMElement  $node  A \DOMElement instance
      *
      * @throws \LogicException If given node is not an anchor
      */
     protected function setNode(\DOMElement $node)
     {
-        if ('a' !== $node->nodeName && 'area' !== $node->nodeName && 'link' !== $node->nodeName) {
+        if ($node->nodeName !== 'a' && $node->nodeName !== 'area' && $node->nodeName !== 'link') {
             throw new \LogicException(sprintf('Unable to navigate from a "%s" tag.', $node->nodeName));
         }
 
@@ -181,8 +180,7 @@ class Link
     /**
      * Removes the query string and the anchor from the given uri.
      *
-     * @param string $uri The uri to clean
-     *
+     * @param  string  $uri  The uri to clean
      * @return string
      */
     private function cleanupUri($uri)
@@ -193,8 +191,7 @@ class Link
     /**
      * Remove the query string from the uri.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return string
      */
     private function cleanupQuery($uri)
@@ -209,8 +206,7 @@ class Link
     /**
      * Remove the anchor from the uri.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return string
      */
     private function cleanupAnchor($uri)

@@ -2,11 +2,11 @@
 
 namespace Illuminate\Broadcasting;
 
-use ReflectionClass;
-use ReflectionProperty;
+use Illuminate\Contracts\Broadcasting\Broadcaster;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Broadcasting\Broadcaster;
+use ReflectionClass;
+use ReflectionProperty;
 
 class BroadcastEvent
 {
@@ -20,7 +20,6 @@ class BroadcastEvent
     /**
      * Create a new job handler instance.
      *
-     * @param  \Illuminate\Contracts\Broadcasting\Broadcaster  $broadcaster
      * @return void
      */
     public function __construct(Broadcaster $broadcaster)
@@ -31,8 +30,6 @@ class BroadcastEvent
     /**
      * Handle the queued job.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  array  $data
      * @return void
      */
     public function fire(Job $job, array $data)

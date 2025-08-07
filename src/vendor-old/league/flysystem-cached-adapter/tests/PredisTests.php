@@ -4,7 +4,7 @@ use League\Flysystem\Cached\Storage\Predis;
 
 class PredisTests extends PHPUnit_Framework_TestCase
 {
-    public function testLoadFail()
+    public function test_load_fail()
     {
         $client = Mockery::mock('Predis\Client');
         $command = Mockery::mock('Predis\Command\CommandInterface');
@@ -15,7 +15,7 @@ class PredisTests extends PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isComplete('', false));
     }
 
-    public function testLoadSuccess()
+    public function test_load_success()
     {
         $response = json_encode([[], ['' => true]]);
         $client = Mockery::mock('Predis\Client');
@@ -27,7 +27,7 @@ class PredisTests extends PHPUnit_Framework_TestCase
         $this->assertTrue($cache->isComplete('', false));
     }
 
-    public function testSave()
+    public function test_save()
     {
         $data = json_encode([[], []]);
         $client = Mockery::mock('Predis\Client');
@@ -38,7 +38,7 @@ class PredisTests extends PHPUnit_Framework_TestCase
         $cache->save();
     }
 
-    public function testSaveWithExpire()
+    public function test_save_with_expire()
     {
         $data = json_encode([[], []]);
         $client = Mockery::mock('Predis\Client');

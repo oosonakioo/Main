@@ -1,10 +1,10 @@
 <?php
 
-require_once(__DIR__ . '/../../vendor/autoload.php');
+require_once __DIR__.'/../../vendor/autoload.php';
 
 use phpDocumentor\Reflection\DocBlockFactory;
 
-$docComment = <<<DOCCOMMENT
+$docComment = <<<'DOCCOMMENT'
 /**
  * This is an example of a summary.
  *
@@ -20,14 +20,14 @@ $docComment = <<<DOCCOMMENT
  */
 DOCCOMMENT;
 
-$factory  = DocBlockFactory::createInstance();
+$factory = DocBlockFactory::createInstance();
 $docblock = $factory->create($docComment);
 
 // Escaping is automatic so this happens in the DescriptionFactory.
 $description = $docblock->getDescription();
 
 // This is the rendition that we will receive of the Description.
-$receivedDocComment = <<<DOCCOMMENT
+$receivedDocComment = <<<'DOCCOMMENT'
 /**
  * This is an example of a summary.
  *

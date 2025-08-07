@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,6 +29,7 @@ use Doctrine\Common\Persistence\Mapping\MappingException;
  *
  * @link   www.doctrine-project.org
  * @since  2.2
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
@@ -52,7 +54,7 @@ class StaticPHPDriver implements MappingDriver
     /**
      * Constructor.
      *
-     * @param array|string $paths
+     * @param  array|string  $paths
      */
     public function __construct($paths)
     {
@@ -62,7 +64,6 @@ class StaticPHPDriver implements MappingDriver
     /**
      * Adds paths.
      *
-     * @param array $paths
      *
      * @return void
      */
@@ -81,6 +82,7 @@ class StaticPHPDriver implements MappingDriver
 
     /**
      * {@inheritDoc}
+     *
      * @todo Same code exists in AnnotationDriver, should we re-use it somehow or not worry about it?
      */
     public function getAllClassNames()
@@ -89,7 +91,7 @@ class StaticPHPDriver implements MappingDriver
             return $this->classNames;
         }
 
-        if (!$this->paths) {
+        if (! $this->paths) {
             throw MappingException::pathRequired();
         }
 
@@ -97,7 +99,7 @@ class StaticPHPDriver implements MappingDriver
         $includedFiles = [];
 
         foreach ($this->paths as $path) {
-            if (!is_dir($path)) {
+            if (! is_dir($path)) {
                 throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
             }
 
@@ -122,7 +124,7 @@ class StaticPHPDriver implements MappingDriver
         foreach ($declared as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
-            if (in_array($sourceFile, $includedFiles) && !$this->isTransient($className)) {
+            if (in_array($sourceFile, $includedFiles) && ! $this->isTransient($className)) {
                 $classes[] = $className;
             }
         }

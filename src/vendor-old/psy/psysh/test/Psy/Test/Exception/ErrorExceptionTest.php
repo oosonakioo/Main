@@ -16,16 +16,16 @@ use Psy\Exception\Exception;
 
 class ErrorExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testInstance()
+    public function test_instance()
     {
-        $e = new ErrorException();
+        $e = new ErrorException;
 
         $this->assertTrue($e instanceof Exception);
         $this->assertTrue($e instanceof \ErrorException);
         $this->assertTrue($e instanceof ErrorException);
     }
 
-    public function testMessage()
+    public function test_message()
     {
         $e = new ErrorException('foo');
 
@@ -36,21 +36,21 @@ class ErrorExceptionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getLevels
      */
-    public function testErrorLevels($level, $type)
+    public function test_error_levels($level, $type)
     {
         $e = new ErrorException('foo', 0, $level);
-        $this->assertContains('PHP ' . $type, $e->getMessage());
+        $this->assertContains('PHP '.$type, $e->getMessage());
     }
 
     /**
      * @dataProvider getLevels
      */
-    public function testThrowException($level, $type)
+    public function test_throw_exception($level, $type)
     {
         try {
             ErrorException::throwException($level, '{whot}', '{file}', '13');
         } catch (ErrorException $e) {
-            $this->assertContains('PHP ' . $type, $e->getMessage());
+            $this->assertContains('PHP '.$type, $e->getMessage());
             $this->assertContains('{whot}', $e->getMessage());
             $this->assertContains('in {file}', $e->getMessage());
             $this->assertContains('on line 13', $e->getMessage());
@@ -59,26 +59,26 @@ class ErrorExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function getLevels()
     {
-        return array(
-            array(E_WARNING,         'warning'),
-            array(E_CORE_WARNING,    'warning'),
-            array(E_COMPILE_WARNING, 'warning'),
-            array(E_USER_WARNING,    'warning'),
-            array(E_STRICT,          'Strict error'),
-            array(0,                 'error'),
-        );
+        return [
+            [E_WARNING,         'warning'],
+            [E_CORE_WARNING,    'warning'],
+            [E_COMPILE_WARNING, 'warning'],
+            [E_USER_WARNING,    'warning'],
+            [E_STRICT,          'Strict error'],
+            [0,                 'error'],
+        ];
     }
 
     /**
      * @dataProvider getUserLevels
      */
-    public function testThrowExceptionAsErrorHandler($level, $type)
+    public function test_throw_exception_as_error_handler($level, $type)
     {
-        set_error_handler(array('Psy\Exception\ErrorException', 'throwException'));
+        set_error_handler(['Psy\Exception\ErrorException', 'throwException']);
         try {
             trigger_error('{whot}', $level);
         } catch (ErrorException $e) {
-            $this->assertContains('PHP ' . $type, $e->getMessage());
+            $this->assertContains('PHP '.$type, $e->getMessage());
             $this->assertContains('{whot}', $e->getMessage());
         }
         restore_error_handler();
@@ -86,15 +86,15 @@ class ErrorExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function getUserLevels()
     {
-        return array(
-            array(E_USER_ERROR,      'error'),
-            array(E_USER_WARNING,    'warning'),
-            array(E_USER_NOTICE,     'error'),
-            array(E_USER_DEPRECATED, 'error'),
-        );
+        return [
+            [E_USER_ERROR,      'error'],
+            [E_USER_WARNING,    'warning'],
+            [E_USER_NOTICE,     'error'],
+            [E_USER_DEPRECATED, 'error'],
+        ];
     }
 
-    public function testIgnoreExecutionLoopFilename()
+    public function test_ignore_execution_loop_filename()
     {
         $e = new ErrorException('{{message}}', 0, 1, '/fake/path/to/Psy/ExecutionLoop/Loop.php');
         $this->assertEmpty($e->getFile());

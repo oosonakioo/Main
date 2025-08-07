@@ -7,8 +7,8 @@ class InsertCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Insert another image into given image
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {

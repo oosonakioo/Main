@@ -1,18 +1,19 @@
 <?php
+
 namespace Faker\Test\Provider;
 
-use Faker\Provider\en_US\Text;
 use Faker\Generator;
+use Faker\Provider\en_US\Text;
 
 class TextTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTextMaxLength()
+    public function test_text_max_length()
     {
-        $generator = new Generator();
+        $generator = new Generator;
         $generator->addProvider(new Text($generator));
         $generator->seed(0);
 
-        $lengths = array(10, 20, 50, 70, 90, 120, 150, 200, 500);
+        $lengths = [10, 20, 50, 70, 90, 120, 150, 200, 500];
 
         foreach ($lengths as $length) {
             $this->assertLessThan($length, $generator->realText($length));
@@ -22,20 +23,20 @@ class TextTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testTextMaxIndex()
+    public function test_text_max_index()
     {
-    $generator = new Generator();
+        $generator = new Generator;
         $generator->addProvider(new Text($generator));
         $generator->seed(0);
-    $generator->realText(200, 11);
+        $generator->realText(200, 11);
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testTextMinIndex()
+    public function test_text_min_index()
     {
-    $generator = new Generator();
+        $generator = new Generator;
         $generator->addProvider(new Text($generator));
         $generator->seed(0);
         $generator->realText(200, 0);
@@ -44,9 +45,9 @@ class TextTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testTextMinLength()
+    public function test_text_min_length()
     {
-    $generator = new Generator();
+        $generator = new Generator;
         $generator->addProvider(new Text($generator));
         $generator->seed(0);
         $generator->realText(9);

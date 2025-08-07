@@ -21,25 +21,25 @@ use Prophecy\Util\StringUtil;
 class IdenticalValueToken implements TokenInterface
 {
     private $value;
+
     private $string;
+
     private $util;
 
     /**
      * Initializes token.
      *
-     * @param mixed      $value
-     * @param StringUtil $util
+     * @param  mixed  $value
      */
-    public function __construct($value, StringUtil $util = null)
+    public function __construct($value, ?StringUtil $util = null)
     {
         $this->value = $value;
-        $this->util  = $util ?: new StringUtil();
+        $this->util = $util ?: new StringUtil;
     }
 
     /**
      * Scores 11 if argument matches preset value.
      *
-     * @param $argument
      *
      * @return bool|int
      */
@@ -65,7 +65,7 @@ class IdenticalValueToken implements TokenInterface
      */
     public function __toString()
     {
-        if (null === $this->string) {
+        if ($this->string === null) {
             $this->string = sprintf('identical(%s)', $this->util->stringify($this->value));
         }
 

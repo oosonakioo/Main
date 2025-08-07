@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,6 +25,7 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  *
  * @link   www.doctrine-project.org
  * @since  2.0
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class DB2Keywords extends KeywordList
@@ -41,7 +43,7 @@ class DB2Keywords extends KeywordList
      */
     protected function getKeywords()
     {
-        return array(
+        return [
             'ACTIVATE',
             'ADD',
             'AFTER',
@@ -436,6 +438,6 @@ class DB2Keywords extends KeywordList
             'LOCATORS',
             'ROLLBACK',
             'YEARS',
-        );
+        ];
     }
 }

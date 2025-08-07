@@ -21,81 +21,75 @@ interface StyleInterface
     /**
      * Formats a command title.
      *
-     * @param string $message
+     * @param  string  $message
      */
     public function title($message);
 
     /**
      * Formats a section title.
      *
-     * @param string $message
+     * @param  string  $message
      */
     public function section($message);
 
     /**
      * Formats a list.
-     *
-     * @param array $elements
      */
     public function listing(array $elements);
 
     /**
      * Formats informational text.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function text($message);
 
     /**
      * Formats a success result bar.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function success($message);
 
     /**
      * Formats an error result bar.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function error($message);
 
     /**
      * Formats an warning result bar.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function warning($message);
 
     /**
      * Formats a note admonition.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function note($message);
 
     /**
      * Formats a caution admonition.
      *
-     * @param string|array $message
+     * @param  string|array  $message
      */
     public function caution($message);
 
     /**
      * Formats a table.
-     *
-     * @param array $headers
-     * @param array $rows
      */
     public function table(array $headers, array $rows);
 
     /**
      * Asks a question.
      *
-     * @param string        $question
-     * @param string|null   $default
-     * @param callable|null $validator
-     *
+     * @param  string  $question
+     * @param  string|null  $default
+     * @param  callable|null  $validator
      * @return string
      */
     public function ask($question, $default = null, $validator = null);
@@ -103,9 +97,8 @@ interface StyleInterface
     /**
      * Asks a question with the user input hidden.
      *
-     * @param string        $question
-     * @param callable|null $validator
-     *
+     * @param  string  $question
+     * @param  callable|null  $validator
      * @return string
      */
     public function askHidden($question, $validator = null);
@@ -113,9 +106,8 @@ interface StyleInterface
     /**
      * Asks for confirmation.
      *
-     * @param string $question
-     * @param bool   $default
-     *
+     * @param  string  $question
+     * @param  bool  $default
      * @return bool
      */
     public function confirm($question, $default = true);
@@ -123,10 +115,8 @@ interface StyleInterface
     /**
      * Asks a choice question.
      *
-     * @param string          $question
-     * @param array           $choices
-     * @param string|int|null $default
-     *
+     * @param  string  $question
+     * @param  string|int|null  $default
      * @return string
      */
     public function choice($question, array $choices, $default = null);
@@ -134,21 +124,21 @@ interface StyleInterface
     /**
      * Add newline(s).
      *
-     * @param int $count The number of newlines
+     * @param  int  $count  The number of newlines
      */
     public function newLine($count = 1);
 
     /**
      * Starts the progress output.
      *
-     * @param int $max Maximum steps (0 if unknown)
+     * @param  int  $max  Maximum steps (0 if unknown)
      */
     public function progressStart($max = 0);
 
     /**
      * Advances the progress output X steps.
      *
-     * @param int $step Number of steps to advance
+     * @param  int  $step  Number of steps to advance
      */
     public function progressAdvance($step = 1);
 

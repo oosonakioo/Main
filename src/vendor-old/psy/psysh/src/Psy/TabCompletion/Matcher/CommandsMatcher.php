@@ -24,12 +24,12 @@ use Psy\Command\Command;
 class CommandsMatcher extends AbstractMatcher
 {
     /** @var string[] */
-    protected $commands = array();
+    protected $commands = [];
 
     /**
      * CommandsMatcher constructor.
      *
-     * @param Command[] $commands
+     * @param  Command[]  $commands
      */
     public function __construct(array $commands)
     {
@@ -39,13 +39,13 @@ class CommandsMatcher extends AbstractMatcher
     /**
      * Set Commands for completion.
      *
-     * @param Command[] $commands
+     * @param  Command[]  $commands
      */
     public function setCommands(array $commands)
     {
-        $names = array();
+        $names = [];
         foreach ($commands as $command) {
-            $names = array_merge(array($command->getName()), $names);
+            $names = array_merge([$command->getName()], $names);
             $names = array_merge($command->getAliases(), $names);
         }
         $this->commands = $names;
@@ -54,8 +54,7 @@ class CommandsMatcher extends AbstractMatcher
     /**
      * Check whether a command $name is defined.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     protected function isCommand($name)
@@ -66,8 +65,7 @@ class CommandsMatcher extends AbstractMatcher
     /**
      * Check whether input matches a defined command.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     protected function matchCommand($name)
@@ -84,7 +82,7 @@ class CommandsMatcher extends AbstractMatcher
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array())
+    public function getMatches(array $tokens, array $info = [])
     {
         $input = $this->getInput($tokens);
 
@@ -103,9 +101,9 @@ class CommandsMatcher extends AbstractMatcher
 
         switch (true) {
             case self::tokenIs($command, self::T_STRING) &&
-                !$this->isCommand($command[1]) &&
-                $this->matchCommand($command[1]) &&
-                empty($tokens):
+            ! $this->isCommand($command[1]) &&
+            $this->matchCommand($command[1]) &&
+            empty($tokens):
                 return true;
         }
 

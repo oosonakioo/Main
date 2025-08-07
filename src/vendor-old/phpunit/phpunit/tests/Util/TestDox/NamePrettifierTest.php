@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -23,7 +24,7 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_TestDox_NamePrettifier::prettifyTestClass
      */
-    public function testTitleHasSensibleDefaults()
+    public function test_title_has_sensible_defaults()
     {
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('FooTest'));
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('TestFoo'));
@@ -34,7 +35,7 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_TestDox_NamePrettifier::prettifyTestClass
      */
-    public function testCaterForUserDefinedSuffix()
+    public function test_cater_for_user_defined_suffix()
     {
         $this->namePrettifier->setSuffix('TestCase');
         $this->namePrettifier->setPrefix(null);
@@ -47,7 +48,7 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_TestDox_NamePrettifier::prettifyTestClass
      */
-    public function testCaterForUserDefinedPrefix()
+    public function test_cater_for_user_defined_prefix()
     {
         $this->namePrettifier->setSuffix(null);
         $this->namePrettifier->setPrefix('XXX');
@@ -60,7 +61,7 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_TestDox_NamePrettifier::prettifyTestMethod
      */
-    public function testTestNameIsConvertedToASentence()
+    public function test_test_name_is_converted_to_a_sentence()
     {
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest'));
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest2'));
@@ -71,9 +72,10 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_TestDox_NamePrettifier::prettifyTestMethod
+     *
      * @ticket 224
      */
-    public function testTestNameIsNotGroupedWhenNotInSequence()
+    public function test_test_name_is_not_grouped_when_not_in_sequence()
     {
         $this->assertEquals('Sets redirect header on 301', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn301'));
         $this->assertEquals('Sets redirect header on 302', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn302'));

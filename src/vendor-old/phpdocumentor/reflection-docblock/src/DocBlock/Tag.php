@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -20,7 +22,7 @@ interface Tag
 
     public static function create($body);
 
-    public function render(Formatter $formatter = null);
+    public function render(?Formatter $formatter = null);
 
     public function __toString();
 }

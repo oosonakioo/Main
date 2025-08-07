@@ -28,8 +28,6 @@ class City extends Eloquent
     /**
      * This is the foreign key used to define the translation relationship.
      * Set this if you want to overwrite the laravel default for foreign keys.
-     *
-     * @var
      */
     public $translationForeignKey;
 

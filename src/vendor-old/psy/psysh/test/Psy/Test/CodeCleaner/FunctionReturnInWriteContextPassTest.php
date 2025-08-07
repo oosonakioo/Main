@@ -17,19 +17,21 @@ use Psy\Exception\FatalErrorException;
 
 class FunctionReturnInWriteContextPassTest extends CodeCleanerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        $this->pass      = new FunctionReturnInWriteContextPass();
-        $this->traverser = new NodeTraverser();
+        $this->pass = new FunctionReturnInWriteContextPass;
+        $this->traverser = new NodeTraverser;
         $this->traverser->addVisitor($this->pass);
     }
 
     /**
      * @dataProvider invalidStatements
+     *
      * @expectedException \Psy\Exception\FatalErrorException
+     *
      * @expectedExceptionMessage Can't use function return value in write context
      */
-    public function testProcessStatementFails($code)
+    public function test_process_statement_fails($code)
     {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
@@ -37,16 +39,16 @@ class FunctionReturnInWriteContextPassTest extends CodeCleanerTestCase
 
     public function invalidStatements()
     {
-        return array(
-            array('f(&g())'),
-            array('array(& $object->method())'),
-            array('$a->method(& $closure())'),
-            array('array(& A::b())'),
-            array('f() = 5'),
-        );
+        return [
+            ['f(&g())'],
+            ['array(& $object->method())'],
+            ['$a->method(& $closure())'],
+            ['array(& A::b())'],
+            ['f() = 5'],
+        ];
     }
 
-    public function testIsset()
+    public function test_isset()
     {
         try {
             $this->traverser->traverse($this->parse('isset(strtolower("A"))'));
@@ -65,9 +67,10 @@ class FunctionReturnInWriteContextPassTest extends CodeCleanerTestCase
 
     /**
      * @expectedException \Psy\Exception\FatalErrorException
+     *
      * @expectedExceptionMessage Can't use function return value in write context
      */
-    public function testEmpty()
+    public function test_empty()
     {
         if (version_compare(PHP_VERSION, '5.5', '>=')) {
             $this->markTestSkipped();

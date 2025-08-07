@@ -7,15 +7,14 @@ use Faker\Provider\pt_BR\Person;
 
 class PersonTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function setUp()
+    protected function setUp()
     {
-        $faker = new Generator();
+        $faker = new Generator;
         $faker->addProvider(new Person($faker));
         $this->faker = $faker;
     }
 
-    public function testCpfFormatIsValid()
+    public function test_cpf_format_is_valid()
     {
         $cpf = $this->faker->cpf(false);
         $this->assertRegExp('/\d{9}\d{2}/', $cpf);
@@ -23,7 +22,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/\d{3}\.\d{3}\.\d{3}-\d{2}/', $cpf);
     }
 
-    public function testRgFormatIsValid()
+    public function test_rg_format_is_valid()
     {
         $rg = $this->faker->rg(false);
         $this->assertRegExp('/\d{8}\d/', $rg);

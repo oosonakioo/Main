@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -63,9 +64,8 @@ class SymfonyFileLocator implements FileLocator
     /**
      * Constructor.
      *
-     * @param array       $prefixes
-     * @param string|null $fileExtension
-     * @param string      $nsSeparator String which would be used when converting FQCN to filename and vice versa. Should not be empty
+     * @param  string|null  $fileExtension
+     * @param  string  $nsSeparator  String which would be used when converting FQCN to filename and vice versa. Should not be empty
      */
     public function __construct(array $prefixes, $fileExtension = null, $nsSeparator = '.')
     {
@@ -82,7 +82,6 @@ class SymfonyFileLocator implements FileLocator
     /**
      * Adds Namespace Prefixes.
      *
-     * @param array $prefixes
      *
      * @return void
      */
@@ -121,8 +120,7 @@ class SymfonyFileLocator implements FileLocator
     /**
      * Sets the file extension used to look for mapping files under.
      *
-     * @param string $fileExtension The file extension to set.
-     *
+     * @param  string  $fileExtension  The file extension to set.
      * @return void
      */
     public function setFileExtension($fileExtension)
@@ -137,7 +135,7 @@ class SymfonyFileLocator implements FileLocator
     {
         $defaultFileName = str_replace('\\', $this->nsSeparator, $className).$this->fileExtension;
         foreach ($this->paths as $path) {
-            if (!isset($this->prefixes[$path])) {
+            if (! isset($this->prefixes[$path])) {
                 // global namespace class
                 if (is_file($path.DIRECTORY_SEPARATOR.$defaultFileName)) {
                     return true;
@@ -148,11 +146,11 @@ class SymfonyFileLocator implements FileLocator
 
             $prefix = $this->prefixes[$path];
 
-            if (0 !== strpos($className, $prefix.'\\')) {
+            if (strpos($className, $prefix.'\\') !== 0) {
                 continue;
             }
 
-            $filename = $path.'/'.strtr(substr($className, strlen($prefix)+1), '\\', $this->nsSeparator).$this->fileExtension;
+            $filename = $path.'/'.strtr(substr($className, strlen($prefix) + 1), '\\', $this->nsSeparator).$this->fileExtension;
             if (is_file($filename)) {
                 return true;
             }
@@ -170,7 +168,7 @@ class SymfonyFileLocator implements FileLocator
 
         if ($this->paths) {
             foreach ((array) $this->paths as $path) {
-                if (!is_dir($path)) {
+                if (! is_dir($path)) {
                     throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
                 }
 
@@ -196,7 +194,7 @@ class SymfonyFileLocator implements FileLocator
                             '\\'
                         );
 
-                        $classes[] = $this->prefixes[$path] . str_replace(DIRECTORY_SEPARATOR, '\\', $nsSuffix) . '\\' .str_replace($this->nsSeparator, '\\', $fileName);
+                        $classes[] = $this->prefixes[$path].str_replace(DIRECTORY_SEPARATOR, '\\', $nsSuffix).'\\'.str_replace($this->nsSeparator, '\\', $fileName);
                     } else {
                         $classes[] = str_replace($this->nsSeparator, '\\', $fileName);
                     }
@@ -214,7 +212,7 @@ class SymfonyFileLocator implements FileLocator
     {
         $defaultFileName = str_replace('\\', $this->nsSeparator, $className).$this->fileExtension;
         foreach ($this->paths as $path) {
-            if (!isset($this->prefixes[$path])) {
+            if (! isset($this->prefixes[$path])) {
                 if (is_file($path.DIRECTORY_SEPARATOR.$defaultFileName)) {
                     return $path.DIRECTORY_SEPARATOR.$defaultFileName;
                 }
@@ -224,11 +222,11 @@ class SymfonyFileLocator implements FileLocator
 
             $prefix = $this->prefixes[$path];
 
-            if (0 !== strpos($className, $prefix.'\\')) {
+            if (strpos($className, $prefix.'\\') !== 0) {
                 continue;
             }
 
-            $filename = $path.'/'.strtr(substr($className, strlen($prefix)+1), '\\', $this->nsSeparator ).$this->fileExtension;
+            $filename = $path.'/'.strtr(substr($className, strlen($prefix) + 1), '\\', $this->nsSeparator).$this->fileExtension;
             if (is_file($filename)) {
                 return $filename;
             }

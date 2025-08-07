@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHP_CodeCoverage package.
  *
@@ -17,9 +18,9 @@
 class PHP_CodeCoverage_Util_InvalidArgumentHelper
 {
     /**
-     * @param int    $argument
-     * @param string $type
-     * @param mixed  $value
+     * @param  int  $argument
+     * @param  string  $type
+     * @param  mixed  $value
      */
     public static function factory($argument, $type, $value = null)
     {
@@ -29,7 +30,7 @@ class PHP_CodeCoverage_Util_InvalidArgumentHelper
             sprintf(
                 'Argument #%d%sof %s::%s() must be a %s',
                 $argument,
-                $value !== null ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
+                $value !== null ? ' ('.gettype($value).'#'.$value.')' : ' (No Value) ',
                 $stack[1]['class'],
                 $stack[1]['function'],
                 $type

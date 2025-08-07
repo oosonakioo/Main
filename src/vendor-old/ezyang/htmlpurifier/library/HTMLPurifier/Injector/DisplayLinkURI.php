@@ -13,24 +13,19 @@ class HTMLPurifier_Injector_DisplayLinkURI extends HTMLPurifier_Injector
     /**
      * @type array
      */
-    public $needed = array('a');
+    public $needed = ['a'];
+
+    public function handleElement(&$token) {}
 
     /**
-     * @param $token
-     */
-    public function handleElement(&$token)
-    {
-    }
-
-    /**
-     * @param HTMLPurifier_Token $token
+     * @param  HTMLPurifier_Token  $token
      */
     public function handleEnd(&$token)
     {
         if (isset($token->start->attr['href'])) {
             $url = $token->start->attr['href'];
             unset($token->start->attr['href']);
-            $token = array($token, new HTMLPurifier_Token_Text(" ($url)"));
+            $token = [$token, new HTMLPurifier_Token_Text(" ($url)")];
         } else {
             // nothing to display
         }

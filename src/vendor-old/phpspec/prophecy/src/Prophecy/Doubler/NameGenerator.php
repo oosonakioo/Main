@@ -26,16 +26,14 @@ class NameGenerator
     /**
      * Generates name.
      *
-     * @param ReflectionClass   $class
-     * @param ReflectionClass[] $interfaces
-     *
+     * @param  ReflectionClass[]  $interfaces
      * @return string
      */
-    public function name(ReflectionClass $class = null, array $interfaces)
+    public function name(?ReflectionClass $class, array $interfaces)
     {
-        $parts = array();
+        $parts = [];
 
-        if (null !== $class) {
+        if ($class !== null) {
             $parts[] = $class->getName();
         } else {
             foreach ($interfaces as $interface) {
@@ -43,7 +41,7 @@ class NameGenerator
             }
         }
 
-        if (!count($parts)) {
+        if (! count($parts)) {
             $parts[] = 'stdClass';
         }
 

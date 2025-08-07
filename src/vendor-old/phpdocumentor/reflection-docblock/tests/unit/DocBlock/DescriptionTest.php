@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -7,6 +8,7 @@
  *
  * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @link      http://phpdoc.org
  */
 
@@ -24,11 +26,12 @@ class DescriptionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::render
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Generic
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      */
-    public function testDescriptionCanRenderUsingABodyWithPlaceholdersAndTags()
+    public function test_description_can_render_using_a_body_with_placeholders_and_tags()
     {
         $body = 'This is a %1$s body.';
         $expected = 'This is a {@internal significant } body.';
@@ -49,11 +52,12 @@ class DescriptionTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::render
      * @covers ::__toString
+     *
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Generic
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      */
-    public function testDescriptionCanBeCastToString()
+    public function test_description_can_be_cast_to_string()
     {
         $body = 'This is a %1$s body.';
         $expected = 'This is a {@internal significant } body.';
@@ -61,14 +65,15 @@ class DescriptionTest extends \PHPUnit_Framework_TestCase
 
         $fixture = new Description($body, $tags);
 
-        $this->assertSame($expected, (string)$fixture);
+        $this->assertSame($expected, (string) $fixture);
     }
 
     /**
      * @covers ::__construct
+     *
      * @expectedException \InvalidArgumentException
      */
-    public function testBodyTemplateMustBeAString()
+    public function test_body_template_must_be_a_string()
     {
         new Description([]);
     }

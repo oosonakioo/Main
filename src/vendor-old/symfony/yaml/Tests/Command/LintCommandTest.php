@@ -12,10 +12,10 @@
 namespace Symfony\Component\Yaml\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Yaml\Command\LintCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Yaml\Command\LintCommand;
 
 /**
  * Tests the YamlLintCommand.
@@ -26,18 +26,18 @@ class LintCommandTest extends TestCase
 {
     private $files;
 
-    public function testLintCorrectFile()
+    public function test_lint_correct_file()
     {
         $tester = $this->createCommandTester();
         $filename = $this->createFile('foo: bar');
 
-        $ret = $tester->execute(array('filename' => $filename), array('verbosity' => OutputInterface::VERBOSITY_VERBOSE, 'decorated' => false));
+        $ret = $tester->execute(['filename' => $filename], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE, 'decorated' => false]);
 
         $this->assertEquals(0, $ret, 'Returns 0 in case of success');
         $this->assertRegExp('/^\/\/ OK in /', trim($tester->getDisplay()));
     }
 
-    public function testLintIncorrectFile()
+    public function test_lint_incorrect_file()
     {
         $incorrectContent = '
 foo:
@@ -45,7 +45,7 @@ bar';
         $tester = $this->createCommandTester();
         $filename = $this->createFile($incorrectContent);
 
-        $ret = $tester->execute(array('filename' => $filename), array('decorated' => false));
+        $ret = $tester->execute(['filename' => $filename], ['decorated' => false]);
 
         $this->assertEquals(1, $ret, 'Returns 1 in case of error');
         $this->assertContains('Unable to parse at line 3 (near "bar").', trim($tester->getDisplay()));
@@ -54,13 +54,13 @@ bar';
     /**
      * @expectedException \RuntimeException
      */
-    public function testLintFileNotReadable()
+    public function test_lint_file_not_readable()
     {
         $tester = $this->createCommandTester();
         $filename = $this->createFile('');
         unlink($filename);
 
-        $ret = $tester->execute(array('filename' => $filename), array('decorated' => false));
+        $ret = $tester->execute(['filename' => $filename], ['decorated' => false]);
     }
 
     /**
@@ -81,8 +81,8 @@ bar';
      */
     protected function createCommandTester()
     {
-        $application = new Application();
-        $application->add(new LintCommand());
+        $application = new Application;
+        $application->add(new LintCommand);
         $command = $application->find('lint:yaml');
 
         return new CommandTester($command);
@@ -90,7 +90,7 @@ bar';
 
     protected function setUp()
     {
-        $this->files = array();
+        $this->files = [];
         @mkdir(sys_get_temp_dir().'/framework-yml-lint-test');
     }
 

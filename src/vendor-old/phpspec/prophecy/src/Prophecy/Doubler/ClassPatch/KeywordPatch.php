@@ -23,9 +23,8 @@ class KeywordPatch implements ClassPatchInterface
     /**
      * Support any class
      *
-     * @param ClassNode $node
      *
-     * @return boolean
+     * @return bool
      */
     public function supports(ClassNode $node)
     {
@@ -34,8 +33,6 @@ class KeywordPatch implements ClassPatchInterface
 
     /**
      * Remove methods that clash with php keywords
-     *
-     * @param ClassNode $node
      */
     public function apply(ClassNode $node)
     {
@@ -51,7 +48,8 @@ class KeywordPatch implements ClassPatchInterface
      *
      * @return int Priority number (higher - earlier)
      */
-    public function getPriority() {
+    public function getPriority()
+    {
         return 49;
     }
 
@@ -60,9 +58,10 @@ class KeywordPatch implements ClassPatchInterface
      *
      * @return array
      */
-    private function getKeywords() {
+    private function getKeywords()
+    {
 
-        return array(
+        return [
             '__halt_compiler',
             'abstract',
             'and',
@@ -130,6 +129,6 @@ class KeywordPatch implements ClassPatchInterface
             'while',
             'xor',
             'yield',
-        );
+        ];
     }
 }

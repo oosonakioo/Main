@@ -1,7 +1,8 @@
 <?php
+
 if ($neverHappens) {
     // @codeCoverageIgnoreStart
-    print '*';
+    echo '*';
     // @codeCoverageIgnoreEnd
 }
 
@@ -10,9 +11,7 @@ if ($neverHappens) {
  */
 class Foo
 {
-    public function bar()
-    {
-    }
+    public function bar() {}
 }
 
 class Bar
@@ -20,18 +19,15 @@ class Bar
     /**
      * @codeCoverageIgnore
      */
-    public function foo()
-    {
-    }
+    public function foo() {}
 }
 
 function baz()
 {
-    print '*'; // @codeCoverageIgnore
+    echo '*'; // @codeCoverageIgnore
 }
 
 interface Bor
 {
     public function foo();
-
 }

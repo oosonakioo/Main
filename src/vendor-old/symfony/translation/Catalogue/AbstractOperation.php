@@ -69,8 +69,8 @@ abstract class AbstractOperation implements OperationInterface
     protected $messages;
 
     /**
-     * @param MessageCatalogueInterface $source The source catalogue
-     * @param MessageCatalogueInterface $target The target catalogue
+     * @param  MessageCatalogueInterface  $source  The source catalogue
+     * @param  MessageCatalogueInterface  $target  The target catalogue
      *
      * @throws \LogicException
      */
@@ -84,7 +84,7 @@ abstract class AbstractOperation implements OperationInterface
         $this->target = $target;
         $this->result = new MessageCatalogue($source->getLocale());
         $this->domains = null;
-        $this->messages = array();
+        $this->messages = [];
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getDomains()
     {
-        if (null === $this->domains) {
+        if ($this->domains === null) {
             $this->domains = array_values(array_unique(array_merge($this->source->getDomains(), $this->target->getDomains())));
         }
 
@@ -104,11 +104,11 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (! in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
-        if (!isset($this->messages[$domain]['all'])) {
+        if (! isset($this->messages[$domain]['all'])) {
             $this->processDomain($domain);
         }
 
@@ -120,11 +120,11 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getNewMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (! in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
-        if (!isset($this->messages[$domain]['new'])) {
+        if (! isset($this->messages[$domain]['new'])) {
             $this->processDomain($domain);
         }
 
@@ -136,11 +136,11 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getObsoleteMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (! in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
-        if (!isset($this->messages[$domain]['obsolete'])) {
+        if (! isset($this->messages[$domain]['obsolete'])) {
             $this->processDomain($domain);
         }
 
@@ -153,7 +153,7 @@ abstract class AbstractOperation implements OperationInterface
     public function getResult()
     {
         foreach ($this->getDomains() as $domain) {
-            if (!isset($this->messages[$domain])) {
+            if (! isset($this->messages[$domain])) {
                 $this->processDomain($domain);
             }
         }
@@ -165,7 +165,7 @@ abstract class AbstractOperation implements OperationInterface
      * Performs operation on source and target catalogues for the given domain and
      * stores the results.
      *
-     * @param string $domain The domain which the operation will be performed for
+     * @param  string  $domain  The domain which the operation will be performed for
      */
     abstract protected function processDomain($domain);
 }

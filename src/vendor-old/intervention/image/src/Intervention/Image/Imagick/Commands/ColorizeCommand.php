@@ -7,8 +7,8 @@ class ColorizeCommand extends \Intervention\Image\Commands\AbstractCommand
     /**
      * Changes balance of different RGB color channels
      *
-     * @param  \Intervention\Image\Image $image
-     * @return boolean
+     * @param  \Intervention\Image\Image  $image
+     * @return bool
      */
     public function execute($image)
     {
@@ -34,9 +34,9 @@ class ColorizeCommand extends \Intervention\Image\Commands\AbstractCommand
     private function normalizeLevel($level)
     {
         if ($level > 0) {
-            return $level/5;
+            return $level / 5;
         } else {
-            return ($level+100)/100;
+            return ($level + 100) / 100;
         }
     }
 }

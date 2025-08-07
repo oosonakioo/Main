@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\HttpKernel\Bundle;
 
+use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\Finder\Finder;
 
 /**
  * An implementation of BundleInterface that adds a few conventions
@@ -29,22 +29,20 @@ abstract class Bundle implements BundleInterface
     use ContainerAwareTrait;
 
     protected $name;
+
     protected $extension;
+
     protected $path;
 
     /**
      * Boots the Bundle.
      */
-    public function boot()
-    {
-    }
+    public function boot() {}
 
     /**
      * Shutdowns the Bundle.
      */
-    public function shutdown()
-    {
-    }
+    public function shutdown() {}
 
     /**
      * Builds the bundle.
@@ -54,11 +52,9 @@ abstract class Bundle implements BundleInterface
      * This method can be overridden to register compilation passes,
      * other extensions, ...
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param  ContainerBuilder  $container  A ContainerBuilder instance
      */
-    public function build(ContainerBuilder $container)
-    {
-    }
+    public function build(ContainerBuilder $container) {}
 
     /**
      * Returns the bundle's container extension.
@@ -69,11 +65,11 @@ abstract class Bundle implements BundleInterface
      */
     public function getContainerExtension()
     {
-        if (null === $this->extension) {
+        if ($this->extension === null) {
             $extension = $this->createContainerExtension();
 
-            if (null !== $extension) {
-                if (!$extension instanceof ExtensionInterface) {
+            if ($extension !== null) {
+                if (! $extension instanceof ExtensionInterface) {
                     throw new \LogicException(sprintf('Extension %s must implement Symfony\Component\DependencyInjection\Extension\ExtensionInterface.', get_class($extension)));
                 }
 
@@ -118,7 +114,7 @@ abstract class Bundle implements BundleInterface
      */
     public function getPath()
     {
-        if (null === $this->path) {
+        if ($this->path === null) {
             $reflected = new \ReflectionObject($this);
             $this->path = dirname($reflected->getFileName());
         }
@@ -131,9 +127,7 @@ abstract class Bundle implements BundleInterface
      *
      * @return string The Bundle parent name it overrides or null if no parent
      */
-    public function getParent()
-    {
-    }
+    public function getParent() {}
 
     /**
      * Returns the bundle name (the class short name).
@@ -142,14 +136,14 @@ abstract class Bundle implements BundleInterface
      */
     final public function getName()
     {
-        if (null !== $this->name) {
+        if ($this->name !== null) {
             return $this->name;
         }
 
         $name = get_class($this);
         $pos = strrpos($name, '\\');
 
-        return $this->name = false === $pos ? $name : substr($name, $pos + 1);
+        return $this->name = $pos === false ? $name : substr($name, $pos + 1);
     }
 
     /**
@@ -160,19 +154,19 @@ abstract class Bundle implements BundleInterface
      * * Commands are in the 'Command' sub-directory
      * * Commands extend Symfony\Component\Console\Command\Command
      *
-     * @param Application $application An Application instance
+     * @param  Application  $application  An Application instance
      */
     public function registerCommands(Application $application)
     {
-        if (!is_dir($dir = $this->getPath().'/Command')) {
+        if (! is_dir($dir = $this->getPath().'/Command')) {
             return;
         }
 
-        if (!class_exists('Symfony\Component\Finder\Finder')) {
+        if (! class_exists('Symfony\Component\Finder\Finder')) {
             throw new \RuntimeException('You need the symfony/finder component to register bundle commands.');
         }
 
-        $finder = new Finder();
+        $finder = new Finder;
         $finder->files()->name('*Command.php')->in($dir);
 
         $prefix = $this->getNamespace().'\\Command';
@@ -189,7 +183,7 @@ abstract class Bundle implements BundleInterface
                 }
             }
             $r = new \ReflectionClass($class);
-            if ($r->isSubclassOf('Symfony\\Component\\Console\\Command\\Command') && !$r->isAbstract() && !$r->getConstructor()->getNumberOfRequiredParameters()) {
+            if ($r->isSubclassOf('Symfony\\Component\\Console\\Command\\Command') && ! $r->isAbstract() && ! $r->getConstructor()->getNumberOfRequiredParameters()) {
                 $application->add($r->newInstance());
             }
         }
@@ -215,7 +209,7 @@ abstract class Bundle implements BundleInterface
     protected function createContainerExtension()
     {
         if (class_exists($class = $this->getContainerExtensionClass())) {
-            return new $class();
+            return new $class;
         }
     }
 }
