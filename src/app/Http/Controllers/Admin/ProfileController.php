@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\AdminController;
 use Auth;
 use Helper;
@@ -28,7 +29,7 @@ class ProfileController extends AdminController
             $password = $request->password;
 
             $user = Auth::user();
-            $user->password = bcrypt($password);
+            $user->password = Hash::make($password);
             $user->save();
             Auth::login($user);
 

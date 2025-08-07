@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\AdminController;
 use App\User;
 use Helper;
@@ -108,7 +109,7 @@ class UserController extends AdminController
 
         $users->name = $request->name;
         $users->email = $request->email;
-        $users->password = bcrypt($request->password);
+        $users->password = Hash::make($request->password);
         $users->permission = $permission;
         $users->save();
     }
