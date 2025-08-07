@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\AdminController;
 use App\User;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
