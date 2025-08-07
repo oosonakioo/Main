@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header', trans('admin.welcome'). ' : '. studly_case(Auth::user()->name))
+@section('header', trans('admin.welcome'). ' : '. Str::studly(Auth::user()->name))
 
 @section('content')
 

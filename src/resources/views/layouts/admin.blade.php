@@ -90,7 +90,7 @@
                     <li class="user user-menu">
                         <a href="{{ Helper::url('admin/profile') }}">
                             <img src="{{ asset('js/admin/img/avatar5.png') }}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{ studly_case(Auth::user()->name) }}</span>
+                            <span class="hidden-xs">{{ Str::studly(Auth::user()->name) }}</span>
                         </a>
                     </li>
                     <li>
