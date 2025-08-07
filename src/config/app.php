@@ -1,14 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\ServiceProvider;
 
 return [
 
     'timezone' => 'Asia/Bangkok',
 
     'log' => env('APP_LOG', 'single'),
-
 
     'aliases' => Facade::defaultAliases()->merge([
         'Captcha' => Mews\Captcha\Facades\Captcha::class,

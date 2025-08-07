@@ -37,7 +37,6 @@ class AppServiceProvider extends ServiceProvider
             'lang_map' => $lang_map,
         ]);
 
-
         $this->bootRoute();
     }
 
