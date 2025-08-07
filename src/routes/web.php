@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Home;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Route;
 
 /***
  * CKEditor
