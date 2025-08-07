@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,7 @@ class Products extends Model
 
     public $translatedAttributes = ['title', 'detail'];
 
-    public function categories()
+    public function categories(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Categories::class);
     }

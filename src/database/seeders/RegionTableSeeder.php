@@ -13,7 +13,7 @@ class RegionTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $loop = 0;
         $json = File::get('database/data/region.json');

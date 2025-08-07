@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,7 +14,7 @@ class Medias extends Model
 
     public $translatedAttributes = ['title'];
 
-    public function gallerys()
+    public function gallerys(): HasMany
     {
         return $this->hasMany('App\Model\MediasGallery');
     }
