@@ -332,7 +332,7 @@ class MaillistsController extends AdminController
                     $mail->Password = env('MAIL_PASSWORD');
 
                     $mail->Port       = 587; //env('MAIL_PORT');;
-                    $mail->SMTPSecure = 'tls'; //env('MAIL_ENCRYPTION');
+                    $mail->SMTPSecure = 'tls'; //env('MAIL_SCHEME');
                     $mail->SMTPAuth   = true;
 
                     $mail->AddAddress($mail_to); // name is optional

@@ -307,7 +307,7 @@ class MaillistsController extends AdminController
 					$mail->Password = env('MAIL_PASSWORD');
 
 					$mail->Port       = env('MAIL_PORT');;
-					$mail->SMTPSecure = env('MAIL_ENCRYPTION');
+					$mail->SMTPSecure = env('MAIL_SCHEME');
 					$mail->SMTPAuth   = true;
 
 					$mail->AddAddress($mail_to); // name is optional
