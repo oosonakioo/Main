@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Paymentmasters;
 use DateTime;
 use DB;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportsController extends AdminController

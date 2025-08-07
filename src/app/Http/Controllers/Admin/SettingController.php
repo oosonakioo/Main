@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Settings;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SettingController extends AdminController
 {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Subscribe;
+use Illuminate\View\View;
 
 class SubscribeController extends AdminController
 {

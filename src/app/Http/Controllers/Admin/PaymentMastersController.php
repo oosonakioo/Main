@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 use App\Http\Controllers\AdminController;
 use App\Models\Maillists;
 use App\Models\Paymentdetails;
@@ -12,7 +10,9 @@ use App\Models\Students;
 use DB;
 use File;
 use Helper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PaymentMastersController extends AdminController
 {

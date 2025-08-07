@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AdminController;
 use App\Models\Maillists;
 use App\Models\Paymentdetails;
@@ -14,9 +12,11 @@ use App\Models\Templates;
 use Carbon\Carbon;
 use File;
 use Helper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Screen\Capture;

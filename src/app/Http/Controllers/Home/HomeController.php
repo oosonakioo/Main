@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Home;
 
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Paymentdetails;
 use App\Models\Paymentmasters;
@@ -12,6 +11,7 @@ use Carbon\Carbon;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
